@@ -20,6 +20,8 @@ var sheet = {
 
 	"mounted": false,
 
+	"level": 0,
+
 	"growths": {
 		"hp": 0,
 		"str": 0,
@@ -320,7 +322,8 @@ function fill_hitpoints() {
 function refresh_level() {
 	const display = document.getElementById("level");
 	const input   = document.getElementById("level-input");
-	display.textContent = 1 + Math.floor(input.value / 100);
+	sheet.level   = 1 + Math.floor(input.value / 100);
+	display.textContent = sheet.level;
 }
 
 function refresh_class() {
@@ -536,7 +539,6 @@ function import_sheet(e) {
 	const reader = new FileReader();
 	reader.onload = function (e) {
 		const char = JSON.parse(e.target.result);
-		console.log(char.hitpoints);
 
 		char.mounted = false;
 
