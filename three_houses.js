@@ -14,6 +14,8 @@ var sheet = {
 
 	"homeland": "The Adrestian Empire",
 
+	"hitpoints": 0,
+
 	"triangle": 0,
 
 	"mounted": false,
@@ -296,9 +298,28 @@ function forget_ability(category, ability) {
 	}
 }
 
+function refresh_hitpoints() {
+	const display = document.getElementById("hitpoints");
+	const input   = document.getElementById("hitpoints-input");
+
+	if (Number(input.value) > computed.statistics.hp) {
+		input.value = computed.statistics.hp;
+	}
+
+	display.value   = input.value;
+	sheet.hitpoints = Number(input.value); 
+}
+
+function fill_hitpoints() {
+	const display = document.getElementById("hitpoints");
+	const input   = document.getElementById("hitpoints-input");
+	input.value   = computed.statistics.hp;
+	display.value = computed.statistics.hp;
+}
+
 function refresh_level() {
-	let display = document.getElementById("level");
-	let input   = document.getElementById("level-input");
+	const display = document.getElementById("level");
+	const input   = document.getElementById("level-input");
 	display.textContent = 1 + Math.floor(input.value / 100);
 }
 
@@ -433,6 +454,15 @@ function refresh_statistic(statistic) {
 	sheet.statistics[statistic]    = base;
 	computed.statistics[statistic] = value;
 	display.textContent            = value;
+
+	if (statistic == "hp") {
+		const display   = document.getElementById("hitpoints");
+		display.max     = computed.statistics.hp;
+		display.optimum = computed.statistics.hp;
+		display.high    = Math.floor(computed.statistics.hp / 2);
+		display.low     = Math.floor(computed.statistics.hp / 4) + 1;
+		refresh_hitpoints();
+	}
 
 	refresh_computed_statistics();
 }

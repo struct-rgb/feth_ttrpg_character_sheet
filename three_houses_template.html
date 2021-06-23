@@ -5,109 +5,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Three Houses TTRPG Character Sheet</title>
 
-	<script type="text/javascript" src="./three_houses.js">
+	<link href="./style.css" rel="stylesheet" />
+	<script type="text/javascript" src="./three_houses.js" />
 
 	</script>
 </head>
 <body>
-	<style type="text/css">
-
-		.container {
-			display: grid;
-			grid-template-columns: 80px 130px 1fr 1fr;
-			grid-auto-rows: repeat(2, 1fr);
-			grid-column-gap: 10px;
-			grid-row-gap: 10px;
-		}
-
-		.span-1-3 {
-			grid-column: 1 / 4;
-		}
-
-		select {
-			/*font-weight: bold;*/
-		    outline: none;
-		    background: white;
-		    border-radius: 3px;
-		    border-width: 1px;
-		    border-color: black;
-		    border-style: solid;
-		}
-
-		input {
-			/*font-weight: bold;*/
-		    outline: none;
-		    background: white;
-		    border-radius: 3px;
-		    border-width: 1px;
-		    border-color: black;
-		    border-style: solid;
-		}
-
-		.no-display {
-			display: none;
-		}
-
-		.custom-file-input {
-		    outline: none;
-		    background: white;
-		    border-radius: 3px;
-		    border-width: 1px;
-		    border-color: black;
-		    border-style: solid;
-		    display: inline-block;
-		    padding: 3px 6px;
-		    cursor: pointer;
-		}
-
-		textarea {
-		    outline: none;
-		    background: white;
-		    border-radius: 3px;
-		    border-width: 1px;
-		    border-color: black;
-		    border-style: solid;
-		}
-
-		dt {
-			font-weight: bold;
-		}
-
-		.datum {
-			font-weight: bold;
-			color: blue;
-			padding: 0px;
-			margin: 0px;
-		}
-
-		.computed {
-			font-weight: bold;
-			color: orange;
-			padding: 0px;
-			margin: 0px;
-		}
-
-		.hidden-field {
-			display: none;
-			width: 6ch;
-		}
-
-		.hidden-field:hover {
-			display: inline;
-			z-index: 2;
-			position: absolute;
-		}
-
-		.hidden-field:focus {
-			display: inline;
-			z-index: 2;
-			position: absolute;
-		}
-
-	</style>
 
 	<div class="container">
-		<div> <!-- SKILL SECTION -->
+		<div class="span-1"> <!-- SKILL SECTION -->
 			<table>
 				<tbody>
 					{% for skill in definitions["skills"] %}
@@ -135,7 +41,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div> <!-- STATISTICS AND GROWTHS -->
+		<div class="span-2"> <!-- STATISTICS AND GROWTHS -->
 			<table>
 				<!-- <caption>Statistsics and Growths</caption> -->
 				<tbody>
@@ -254,6 +160,30 @@
 		</div> 
 		<div> <!-- BACKGROUND AND PERSONALITY -->
 			<div>
+				<label for="hitpoints">Health</label>
+
+				<input
+					type="button"
+					value="Fill"
+					onclick="fill_hitpoints()"> <br />
+
+				<label for="hitpoints-input">
+					<meter id="hitpoints" min="0" max="100" low="33" high="66" value="50">
+						Current Hitpoints
+					</meter>
+				</label>
+
+				<input
+					id="hitpoints-input"
+					oninput="refresh_hitpoints()"
+					class="hidden-field"
+					type="number"
+					name="level-input"
+					min="0"
+					value="0"/>
+
+				<br />
+
 				<label for="character-name">Name</label> <br />
 				<input
 					id="character-name"
@@ -344,7 +274,6 @@
 				</select>
 				<dl id="abilities-known"></dl>
 			</details>
-
 		</div>
 		<div> <!-- INVENTORY -->
 		<!-- 	<table>
