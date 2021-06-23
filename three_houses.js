@@ -492,6 +492,7 @@ function refresh_homeland() {
 }
 
 function refresh_sheet() {
+	refresh_hitpoints();
 	refresh_class();
 	refresh_statistics();
 	refresh_grades();
@@ -501,7 +502,6 @@ function refresh_sheet() {
 	refresh_description();
 	refresh_mounted();
 	refresh_homeland();
-	refresh_hitpoints();
 }
 
 function export_sheet() {
@@ -568,6 +568,7 @@ function import_sheet(e) {
     	document.getElementById("character-weapon").value      = char.weapon.name;
     	document.getElementById("character-class").value       = char.class.name;
     	document.getElementById("character-description").value = char.description;
+    	document.getElementById("hitpoints-input").value       = char.hitpoints;
 
     	document.getElementById("level-input").value = char.level;
 
