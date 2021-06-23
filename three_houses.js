@@ -501,6 +501,7 @@ function refresh_sheet() {
 	refresh_description();
 	refresh_mounted();
 	refresh_homeland();
+	refresh_hitpoints();
 }
 
 function export_sheet() {
