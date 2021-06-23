@@ -1,0 +1,1697 @@
+{
+	"statistics": {
+		"abbr": ["hp", "str", "mag", "dex", "spd", "def", "res", "cha", "mov"],
+		"linked": [
+			["str", "pmt"],
+			["mag", "mmt"],
+			["dex", "hit"],
+			["spd", "avo"],
+			["def", "pdr"],
+			["res", "mdr"]
+		]
+	},
+
+	"skills": [
+		"Axes",
+		"Swords",
+		"Lances",
+		"Brawl",
+		"Archery",
+		"Reason",
+		"Faith",
+		"Guile",
+		"Armor",
+		"Riding",
+		"Flying"
+	],
+
+	"classes": [
+		{
+			"name": "Commoner",
+			"abilities": [],
+			"growths": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Noble",
+			"abilities": [],
+			"growths": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Dancer",
+			"abilities": ["Dance"],
+			"growths": {
+				"hp":  20,
+				"str": -5,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": -5,
+				"res": -5,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 1,
+				"mag": 0,
+				"dex": 3,
+				"spd": 3,
+				"def": 2,
+				"res": 1,
+				"cha": 2,
+				"mov": 2
+			}
+		},
+		{
+			"name": "Myrmidon",
+			"abilities": [],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 5,
+				"def": 0,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 1,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Soldier",
+			"abilities": [],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 5,
+				"def": 0,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 1,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Fighter",
+			"abilities": [],
+			"growths": {
+				"hp" : 10,
+				"str": 5,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 1,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Monk",
+			"abilities": [],
+			"growths": {
+				"hp" : 5,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 1,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Lord",
+			"abilities": ["Charm"],
+			"growths": {
+				"hp" : 20,
+				"str": 0,
+				"mag": 0,
+				"dex": 10,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 1,
+				"def": 0,
+				"res": 0,
+				"cha": 2,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Mercenary",
+			"abilities": [],
+			"growths": {
+				"hp" : 20,
+				"str": 5,
+				"mag": 0,
+				"dex": 0,
+				"spd": 5,
+				"def": 0,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 1,
+				"mag": 0,
+				"dex": 0,
+				"spd": 1,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Thief",
+			"abilities": ["Steal", "Locktouch"],
+			"growths": {
+				"hp" : 20,
+				"str": 0,
+				"mag": 0,
+				"dex": 10,
+				"spd": 10,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 2,
+				"spd": 2,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Armored Knight",
+			"abilities": [],
+			"growths": {
+				"hp" : 20,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": -10,
+				"def": 10,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  3,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": -2,
+				"def": 4,
+				"res": -1,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Cavalier",
+			"abilities": ["Canto"],
+			"growths": {
+				"hp" : 20,
+				"str": 5,
+				"mag": 0,
+				"dex": 5,
+				"spd": -10,
+				"def": 5,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 1,
+				"mag": 0,
+				"dex": 2,
+				"spd": 1,
+				"def": 1,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			},
+			"mount": {
+				"type": "Horse",
+				"modifiers": {
+					"spd": -2,
+					"mov": 3
+				}
+			}
+		},
+		{
+			"name": "Brigand",
+			"abilities": [],
+			"growths": {
+				"hp" : 30,
+				"str": 10,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  2,
+				"str": 2,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Archer",
+			"abilities": ["Bowrange +1"],
+			"growths": {
+				"hp" : 5,
+				"str": 0,
+				"mag": 0,
+				"dex": 10,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 2,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Brawler",
+			"abilities": ["Unarmed Combat"],
+			"growths": {
+				"hp" : 30,
+				"str": 0,
+				"mag": -10,
+				"dex": 10,
+				"spd": 10,
+				"def": 0,
+				"res": -10,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 0,
+				"mag": 0,
+				"dex": 2,
+				"spd": 2,
+				"def": 0,
+				"res": -1,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Mage",
+			"abilities": ["Fire"],
+			"growths": {
+				"hp" : 5,
+				"str": -5,
+				"mag": 10,
+				"dex": 5,
+				"spd": 0,
+				"def": -5,
+				"res": 5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 1,
+				"dex": 1,
+				"spd": 0,
+				"def": 0,
+				"res": 2,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Dark Mage",
+			"abilities": ["Miasma", "Heartseeker"],
+			"growths": {
+				"hp" : 5,
+				"str": -5,
+				"mag": 5,
+				"dex": 5,
+				"spd": 0,
+				"def": -5,
+				"res": 5,
+				"cha": 0
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 2,
+				"dex": 1,
+				"spd": 0,
+				"def": 0,
+				"res": 1,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Priest",
+			"abilities": ["Heal", "White Magic Heal +5"],
+			"growths": {
+				"hp" : 5,
+				"str": -5,
+				"mag": 5,
+				"dex": 5,
+				"spd": 0,
+				"def": -5,
+				"res": 10,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 1,
+				"spd": 0,
+				"def": 0,
+				"res": 3,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Pegasus Knight",
+			"abilities": ["Canto", "Avoid +10"],
+			"growths": {
+				"hp" : 15,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 10,
+				"def": 0,
+				"res": 5,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 2,
+				"spd": 1,
+				"def": 0,
+				"res": 2,
+				"cha": 0,
+				"mov": 0
+			},
+			"mount": {
+				"type": "Pegasus",
+				"modifiers": {
+					"spd": 2,
+					"mov": 2
+				}
+			}
+		},
+		{
+			"name": "Hero",
+			"abilities": ["Swordfaire", "Vantage"],
+			"growths": {
+				"hp" : 30,
+				"str": 10,
+				"mag": 0,
+				"dex": 0,
+				"spd": 10,
+				"def": 0,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  3,
+				"str": 2,
+				"mag": 0,
+				"dex": 0,
+				"spd": 2,
+				"def": 1,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Swordmaster",
+			"abilities": ["Swordfaire", "Sword Critical +10"],
+			"growths": {
+				"hp" : 25,
+				"str": 10,
+				"mag": 0,
+				"dex": 0,
+				"spd": 20,
+				"def": 0,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 2,
+				"mag": 0,
+				"dex": 1,
+				"spd": 4,
+				"def": 1,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Assassin",
+			"abilities": ["Swordfaire", "Locktouch", "Stealth"],
+			"growths": {
+				"hp" : 20,
+				"str": 0,
+				"mag": 0,
+				"dex": 20,
+				"spd": 20,
+				"def": 0,
+				"res": 0,
+				"cha": 0
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 3,
+				"spd": 5,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 2
+			}
+		},
+		{
+			"name": "Fortress Knight",
+			"abilities": ["Axefaire", "Weight -5"],
+			"growths": {
+				"hp" : 30,
+				"str": 10,
+				"mag": 0,
+				"dex": 0,
+				"spd": -10,
+				"def": 15,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  5,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": -6,
+				"def": 10,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Paladin",
+			"abilities": ["Canto", "Lancefaire", "Terrain Resistance"],
+			"growths": {
+				"hp" : 30,
+				"str": 10,
+				"mag": 0,
+				"dex": 5,
+				"spd": -10,
+				"def": 5,
+				"res": 5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  2,
+				"str": 2,
+				"mag": 0,
+				"dex": 2,
+				"spd": 1,
+				"def": 2,
+				"res": 2,
+				"cha": 0,
+				"mov": 2
+			},
+			"mount": {
+				"type": "Horse",
+				"modifiers": {
+					"spd": -2,
+					"mov": 2
+				}
+			}
+		},
+		{
+			"name": "Wyvern Rider",
+			"abilities": ["Canto", "Axefaire"],
+			"growths": {
+				"hp" : 30,
+				"str": 10,
+				"mag": -5,
+				"dex": 0,
+				"spd": 0,
+				"def": 5,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 2,
+				"mag": 0,
+				"dex": 1,
+				"spd": 1,
+				"def": 2,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			},
+			"mount": {
+				"type": "Wyvern",
+				"modifiers": {
+					"str": 1,
+					"spd": 2,
+					"mov": 2
+				}
+			}
+		},
+		{
+			"name": "Warrior",
+			"abilities": ["Axefaire", "Axe Critical +10"],
+			"growths": {
+				"hp" : 40,
+				"str": 15,
+				"mag": -5,
+				"dex": 0,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  3,
+				"str": 3,
+				"mag": 0,
+				"dex": 0,
+				"spd": 1,
+				"def": 1,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Sniper",
+			"abilities": ["Bowfaire", "Bowrange +1"],
+			"growths": {
+				"hp" : 10,
+				"str": 5,
+				"mag": 0,
+				"dex": 20,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 1,
+				"mag": 0,
+				"dex": 5,
+				"spd": 0,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 1
+			}
+		},
+		{
+			"name": "Grappler",
+			"abilities": ["Fistfaire", "Unarmed Combat"],
+			"growths": {
+				"hp" : 40,
+				"str": 10,
+				"mag": 0,
+				"dex": 10,
+				"spd": 10,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  2,
+				"str": 1,
+				"mag": 0,
+				"dex": 3,
+				"spd": 3,
+				"def": 1,
+				"res": -1,
+				"cha": 0,
+				"mov": 2
+			}
+		},
+		{
+			"name": "Warlock",
+			"abilities": ["Black Tomefaire", "Black Magic Uses x2"],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 10,
+				"dex": 0,
+				"spd": 0,
+				"def": -5,
+				"res": 5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 3,
+				"dex": 1,
+				"spd": 1,
+				"def": 0,
+				"res": 4,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Dark Bishop",
+			"abilities": ["Miasma", "Heartseeker", "Fiendish Blow"],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 10,
+				"dex": -5,
+				"spd": 0,
+				"def": 0,
+				"res": 5,
+				"cha": 0
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 4,
+				"dex": 2,
+				"spd": 0,
+				"def": 0,
+				"res": 3,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Bishop",
+			"abilities": ["White Magic Uses x2", "White Magic Heal +10", "Terrain Resistance"],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 10,
+				"dex": 0,
+				"spd": 0,
+				"def": -5,
+				"res": 5,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 0,
+				"mag": 2,
+				"dex": 1,
+				"spd": 0,
+				"def": 0,
+				"res": 5,
+				"cha": 0,
+				"mov": 0
+			}
+		},
+		{
+			"name": "Falcon Knight",
+			"abilities": [],
+			"growths": {
+				"hp" : 30,
+				"str": 10,
+				"mag": 0,
+				"dex": 0,
+				"spd": 20,
+				"def": 0,
+				"res": 5,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 0,
+				"dex": 4,
+				"spd": 3,
+				"def": 0,
+				"res": 4,
+				"cha": 0,
+				"mov": 2
+			},
+			"mount": {
+				"type": "Pegasus",
+				"modifiers": {
+					"str": 1,
+					"spd": 2,
+					"mov": 2
+				}
+			}
+		},
+		{
+			"name": "Wyvern Lord",
+			"abilities": [],
+			"growths": {
+				"hp" : 30,
+				"str": 15,
+				"mag": -5,
+				"dex": 0,
+				"spd": 10,
+				"def": 5,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  2,
+				"str": 2,
+				"mag": 0,
+				"dex": 1,
+				"spd": 2,
+				"def": 3,
+				"res": 0,
+				"cha": 0,
+				"mov": 2
+			},
+			"mount": {
+				"type": "Wyvern",
+				"modifiers": {
+					"str": 2,
+					"spd": 2,
+					"mov": 2
+				}
+			}
+		},
+		{
+			"name": "Mortal Savant",
+			"abilities": [],
+			"growths": {
+				"hp" : 20,
+				"str": 10,
+				"mag": 20,
+				"dex": 0,
+				"spd": -10,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 1,
+				"mag": 2,
+				"dex": 1,
+				"spd": 1,
+				"def": 2,
+				"res": 2,
+				"cha": 0,
+				"mov": 2
+			}
+		},
+		{
+			"name": "Great Knight",
+			"abilities": [],
+			"growths": {
+				"hp" : 30,
+				"str": 10,
+				"mag": 0,
+				"dex": 0,
+				"spd": -10,
+				"def": 5,
+				"res": -5,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  5,
+				"str": 1,
+				"mag": 0,
+				"dex": 0,
+				"spd": -2,
+				"def": 6,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			},
+			"mount": {
+				"type": "Horse",
+				"modifiers": {
+					"spd": -2,
+					"def": 2,
+					"mov": 3
+				}
+			}
+		},
+		{
+			"name": "Bow Knight",
+			"abilities": [],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": -5,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  2,
+				"str": 1,
+				"mag": 0,
+				"dex": 3,
+				"spd": 3,
+				"def": 1,
+				"res": 0,
+				"cha": 0,
+				"mov": 2
+			},
+			"mount": {
+				"type": "Horse",
+				"modifiers": {
+					"spd": -2,
+					"mov": 2
+				}
+			}
+		},
+		{
+			"name": "Dark Knight",
+			"abilities": [],
+			"growths": {
+				"hp" : 10,
+				"str": 5,
+				"mag": 10,
+				"dex": 0,
+				"spd": -5,
+				"def": 5,
+				"res": 10,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 1,
+				"mag": 2,
+				"dex": 2,
+				"spd": 1,
+				"def": 1,
+				"res": 3,
+				"cha": 0,
+				"mov": 1
+			},
+			"mount": {
+				"type": "Horse",
+				"modifiers": {
+					"spd": -2,
+					"def": 1,
+					"mov": 1
+				}
+			}
+		},
+		{
+			"name": "Holy Knight",
+			"abilities": [],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 10,
+				"dex": 0,
+				"spd": -5,
+				"def": 5,
+				"res": 10,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  2,
+				"str": 1,
+				"mag": 1,
+				"dex": 2,
+				"spd": 1,
+				"def": 0,
+				"res": 4,
+				"cha": 0,
+				"mov": 2
+			},
+			"mount": {
+				"type": "Horse",
+				"modifiers": {
+					"spd": -2,
+					"def": 1,
+					"mov": 1
+				}
+			}
+		},
+		{
+			"name": "War Master",
+			"abilities": [],
+			"growths": {
+				"hp" : 40,
+				"str": 15,
+				"mag": 0,
+				"dex": 0,
+				"spd": 10,
+				"def": 0,
+				"res": 0,
+				"cha": 5
+			},
+			"modifiers": {
+				"hp":  3,
+				"str": 5,
+				"mag": 0,
+				"dex": 0,
+				"spd": 2,
+				"def": 1,
+				"res": 0,
+				"cha": 0,
+				"mov": 2
+			}
+		},
+		{
+			"name": "Gremory",
+			"abilities": [],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 10,
+				"dex": 10,
+				"spd": 0,
+				"def": 0,
+				"res": 5,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  0,
+				"str": 0,
+				"mag": 5,
+				"dex": 2,
+				"spd": 1,
+				"def": 0,
+				"res": 4,
+				"cha": 2,
+				"mov": 1
+			}
+		}
+	],
+
+	"abilities": [
+		{
+			"name": "None",
+			"activation": "None",
+			"description": "This is a template ability; it doesn't do anything.",
+			"modifiers": {},
+			"multipliers": {}
+		},
+		{
+			"name": "HP +5",
+			"activation": "Passive",
+			"description": "Increases maximum HP by 5",
+			"modifiers": {"hp": 5}
+		},
+		{
+			"name": "Dance",
+			"activation": "Command",
+			"description": "Use Dance to allow an ally to move again."
+		},
+		{
+			"name": "Special Dance",
+			"activation": "Passive",
+			"description": "When using the Dance ability, grant Dex/Spd to target ally.",
+			"modifiers": {"dex": 4, "spd": 4}
+		},
+		{
+			"name": "Speed +2",
+			"activation": "Passive",
+			"description": "Increases Spd by 2.",
+			"modifiers": {"spd": 2}
+		},
+		{
+			"name": "Defense +2",
+			"activation": "Passive",
+			"description": "Increases Def by 2.",
+			"modifiers": {"def": 2}
+		},
+		{
+			"name": "Strength +2",
+			"activation": "Passive",
+			"description": "Increases Str by 2",
+			"modifiers": {"str": 2}
+		},
+		{
+			"name": "Magic +2",
+			"activation": "Passive",
+			"description": "Increases Mag by 2.",
+			"modifiers": {"mag": 2}
+		},
+		{
+			"name": "Charm",
+			"activation": "Passive",
+			"description": "Allies within 1 space inflict +3 damage in combat.",
+			"modifiers": {"pmt": 3, "mmt": 3}
+		},
+		{
+			"name": "Resistance +2",
+			"activation": "Passive",
+			"description": "Increases Res by 2.",
+			"modifiers": {"res": 2}
+		},
+		{
+			"name": "Vantage",
+			"activation": "Passive",
+			"description": "If foe initiates combat, and if HP is ≤ 50%, unit still attacks first"
+		},
+		{
+			"name": "Steal",
+			"activation": "Passive",
+			"description": "Allows unit to steal a non-weapon item form a foe with a lower Spd stat."
+		},
+		{
+			"name": "Locktouch",
+			"activation": "Passive",
+			"description": "Allows the user to open normal doors and chests without keys"
+		},
+		{
+			"name": "Canto",
+			"activation": "Passive",
+			"description": "After performing an action, user can user their leftover movement."
+		},
+		{
+			"name": "Desperation",
+			"activation": "Passive",
+			"description": "If unit initiates combat with HP ≤ 50%, unit’s follow-up attack (if possible) occurs before foe’s counterattack."
+		},
+		{
+			"name": "Avoid +10",
+			"activation": "Passive",
+			"description": "Raises Avoidance by 10.",
+			"modifiers": {"avo": 10}
+		},
+		{
+			"name": "Darting Blow",
+			"activation": "When initiating combat",
+			"description": "If unit initiates combat, grants AS +6 during combat.",
+			"modifiers": {"as": 6}
+		},
+		{
+			"name": "Death Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Str +6 during combat.",
+			"modifiers": {"str": 6}
+		},
+		{
+			"name": "Armored Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Def +6 during combat.",
+			"modifiers": {"def": 6}
+		},
+		{
+			"name": "Bowrange +1",
+			"activation": "Passive",
+			"description": "Maximum Bow range +1",
+			"modifiers": {"range": 1}
+		},
+		{
+			"name": "Hit +20",
+			"activation": "Passive",
+			"description": "Increases Hit by 20.",
+			"modifiers": {"hit": 20}
+		},
+		{
+			"name": "Unarmed Combat",
+			"activation": "Passive",
+			"description": "User is able to fight barehandedly."
+		},
+		{
+			"name": "Fire",
+			"activation": "Passive",
+			"description": "Grants access to Fire. If unit has already learned Fire, mulitplies its uses per battle by 2x.",
+			"multipliers": {"uses": {"Fire": 2}}
+		},
+		{
+			"name": "Fiendish Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Magic +6 during combat.",
+			"modifiers": {"mag": 6}
+		},
+		{
+			"name": "Miasma",
+			"activation": "Passive",
+			"description": "Grants access to Miasma. If unit has already learned Miasma, mulitplies its uses per battle by 2x.",
+			"multipliers": {"uses": {"Miasma": 2}}
+		},
+		{
+			"name": "Poison Strike",
+			"activation": "Passive",
+			"description": "If unit initiates combat and lands a hit, targeted foe loses up to 20% of max HP after combat."
+		},
+		{
+			"name": "Heartseeker",
+			"activation": "Passive",
+			"description": "If foes is within a 1-space radius, grants foes Avoid -20",
+			"modifiers": {"avo": -20}
+		},
+		{
+			"name": "Heal",
+			"activation": "Passive",
+			"description": "Grants access to Heal. If unit has already learned Heal, multiplies its uses per battle by 2×.",
+			"multipliers": {"uses": {"Heal": 2}}
+		},
+		{
+			"name": "White Magic Heal +5",
+			"activation": "Passive",
+			"description": "Adds 5 additional Health Points when healing with White Magic.",
+			"modifiers": {"mmt": 5}
+		},
+		{
+			"name": "Miracle",
+			"activation": "player.dex",
+			"description": "Chance to survive lethal damage with 1 HP, if HP is > 1."
+		},
+		{
+			"name": "Swordfaire",
+			"activation": "Passive",
+			"description": "Might +5 when a sword is equipped.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Sword Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a Sword",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Lancefaire",
+			"activation": "Passive",
+			"description": "Might +5 when a lance is equipped.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Lance Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a Lance",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Axefaire",
+			"activation": "Passive",
+			"description": "Might +5 when a axe is equipped.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Axe Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a Axe",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Aegis",
+			"activation": "player.dex",
+			"description": "Chance to reduce bow/magic damage by half."
+		},
+		{
+			"name": "Pavise",
+			"activation": "player.dex",
+			"description": "Chance to reduce sword/lance/axe/brawling damage by half."
+		},
+		{
+			"name": "Weight -5",
+			"activation": "Passive",
+			"description": "The combained Weight of equiptment is reduced by 5.",
+			"modifiers": {"weight": -5}
+		},
+		{
+			"name": "Seal Defense",
+			"activation": "Passive",
+			"description": "If unit damages foe during combat, foe suffers Def -6 for 1 turn after combat.",
+			"modifiers": {"def": -6}
+		},
+		{
+			"name": "Seal Resistance",
+			"activation": "Passive",
+			"description": "If unit damages foe during combat, foe suffers Res -6 for 1 turn after combat.",
+			"modifiers": {"res": -6}
+		},
+		{
+			"name": "Tomefaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when equipped with a Black Magic spell.",
+			"modifiers": {"mmt": 5}
+		},
+		{
+			"name": "Fistfaire",
+			"activation": "Passive",
+			"description": "Grants Attack +5 when equipped with a Gauntlet or when the Unarmed Combat Skill is active or using an onagler.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Bowfaire",
+			"activation": "Passive",
+			"description": "Might +5 when a bow is equipped or using a ballista.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Lifetaker",
+			"activation": "Passive",
+			"description": "Unit recovers HP equal to 50% of damage dealt after defeating a foe."
+		},
+		{
+			"name": "Renewal",
+			"activation": "Passive",
+			"description": "Unit recovers up to 20% of max HP at the start of each turn."
+		},
+		{
+			"name": "White Magic Uses x2",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for white magic by 2",
+			"multipliers": {"uses": {"light": 2}}
+		},
+		{
+			"name": "Black Magic Uses x2",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for black magic by 2",
+			"multipliers": {"uses": {"anima": 2}}
+		},
+		{
+			"name": "Dark Magic Uses x2",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for dark magic by 2",
+			"multipliers": {"uses": {"anima": 2}}
+		},
+		{
+			"name": "Terrain Resistance",
+			"activation": "Passive",
+			"description": "Nullifies damage from terrain."
+		},
+		{
+			"name": "Tomebreaker",
+			"activation": "Passive",
+			"description": "Grants Hit/Avo +20 when brawling against magic users.",
+			"modifiers": {"hit": 20, "avo": 20}
+		},
+		{
+			"name": "Wrath",
+			"activation": "Passive",
+			"description": "If foe initiates combat while unit’s HP is ≤ 50%, grants Crit +50."
+		},
+		{
+			"name": "Lethality",
+			"activation": "player.dex/4",
+			"description": "Chance to instantly kill a foe when dealing damage."
+		},
+		{
+			"name": "Defiant Strength",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Strength +8.",
+			"modifiers": {"str": 8}
+		},
+		{
+			"name": "Defiant Resistance",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Resistance +8.",
+			"modifiers": {"res": 8}
+		},
+		{
+			"name": "Defiant Defense",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Defense +8.",
+			"modifiers": {"def": 8}
+		},
+		{
+			"name": "Lucky Seven",
+			"activation": "Passive",
+			"description": "Each turn, grants +5 to one of the following stats: Str, Mag, Spd, Def, Res, Hit, or Avo.",
+			"modifiers": {"str": 5, "mag": 5, "spd": 5, "def": 5, "res": 5, "hit": 5, "avo": 5}
+		},
+		{
+			"name": "Duelist's Blow",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when user triggers battle.",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Brawl Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when Brawling",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Transmute",
+			"activation": "Passive",
+			"description": "If unit is hit with a magic attack during enemy phase, grants +3 to all stats until next player phase ends.",
+			"modifiers": {"str": 5, "mag": 5, "spd": 5, "def": 5, "dex": 5, "res": 5, "cha": 5}
+		},
+		{
+			"name": "Black Magic Range +1",
+			"activation": "Passive",
+			"description": "Maximum Black Magic range +1",
+			"modifiers": {"range": 1}
+		},
+		{
+			"name": "Dark Magic Range +1",
+			"activation": "Passive",
+			"description": "Maximum Dark Magic range +1",
+			"modifiers": {"range": 1}
+		},
+		{
+			"name": "White Magic Range +1",
+			"activation": "Passive",
+			"description": "Maximum White Magic range +1",
+			"modifiers": {"range": 1}
+		},
+		{
+			"name": "Bowrange +2",
+			"activation": "Passive",
+			"description": "Maximum Bow range +2",
+			"modifiers": {"range": 1}
+		},
+		{
+			"name": "Uncanny Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Hit Rate +30 during combat.",
+			"modifiers": {"hit": 30}
+		},
+		{
+			"name": "Defiant Avoid",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Avoid +30.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Defiant Critical",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Critical +50.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Defiant Magic",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Magic +8.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Defiant Speed",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Speed +8.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Warding Blow",
+			"activation": "Passive",
+			"description": "When user triggers the battle, grants Resistance +20",
+			"modifiers": {"res": 20}
+		},
+		{
+			"name": "Quick Riposte",
+			"activation": "Passive",
+			"description": "If Unit's HP ≥ 50%, if attacked by a foe, treats unit's Attack Speed as 4 higher than the foe's, granting the unit a follow up attack and denying the enemy's."
+		},
+		{
+			"name": "Critical +20",
+			"activation": "Passive",
+			"description": "Grants its user a 20% bonus to their Critical rate.",
+			"modifiers": {"crit": 20}
+		},
+		{
+			"name": "Combat Medic",
+			"activation": "Passive",
+			"description": "If its user restores hitpoints to an ally during the player phase, doubles the MT of counterattacks during the enemy phase",
+			"multipliers": {"pmt": 2, "mmt": 2}
+		},
+		{
+			"name": "Can't Keep Up?",
+			"activation": "Passive",
+			"description": "If the user hits with an attack, grants Spd +3 and Str +3 until damaged. Can only activate once per turn.",
+			"modifiers": {"spd": 3, "str": 3}
+		},
+		{
+			"name": "Try Your Best",
+			"activation": "Passive",
+			"description": "Allies within 1 space are granted Str +3 and Def +3 during combat.",
+			"modifiers": {"str": 3, "def": 3}
+		},
+		{
+			"name": "Dead Man's Hand",
+			"activation": "Passive",
+			"description": "Enemies within the user's movement range cannot target allies.",
+			"modifiers": {}
+		},
+		{
+			"name": "Sibling Bond A",
+			"activation": "Passive",
+			"description": "While within 2 spaces of Amalia, user's attacks inflicts 2 extra damage",
+			"modifiers": {"mmt": 2, "pmt": 2}
+		},
+		{
+			"name": "Sibling Bond B",
+			"activation": "Passive",
+			"description": "While within 2 spaces of Oskar, user reduces damage taken by 2.",
+			"modifiers": {"pdr": 2, "mdr": 2}
+		},
+		{
+			"name": "Wrathful Empathy",
+			"activation": "Passive",
+			"description": "An any ally within 3 spaces has HP ≤ 50%, grants +4 Mag and +4 Dex",
+			"modifiers": {"mag": 4, "dex": 4}
+		},
+		{
+			"name": "Stealth",
+			"activation": "Passive",
+			"description": "Enemies can't target the user if an ally not possessing stealth is in range."
+		},
+		{
+			"name": "Hesitant Prodigy (Debuff)",
+			"activation": "Passive",
+			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
+			"modifiers": {"pmt": -4, "mmt": -4}
+		},
+		{
+			"name": "Hesitant Prodigy (Buff)",
+			"activation": "Passive",
+			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
+			"modifiers": {"pmt": 4, "mmt": 4}
+		},
+		{
+			"name": "Brittle Bones",
+			"activation": "Passive",
+			"description": "Inflicts Def -2 and Res -2 when attacked, but grants +4 Spd,",
+			"modifiers": {"def": -2, "res": -2, "spd": 4}
+		},
+		{
+			"name": "Zephyr",
+			"activation": "Passive",
+			"description": "This unit always attacks first, even when attacked."
+		}
+	],
+
+	"weapons": [
+		{
+			"name": "Unarmed",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"crit": 0,
+			"min": 1,
+			"max": 1
+		},
+		{
+			"name": "Iron Sword",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 90,
+			"crit": 0,
+			"min": 1,
+			"max": 1
+		},
+		{
+			"name": "Iron Lance",
+			"pmt": 6,
+			"mmt": 0,
+			"hit": 80,
+			"crit": 0,
+			"min": 1,
+			"max": 1
+		},
+		{
+			"name": "Iron Axe",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 70,
+			"crit": 0,
+			"min": 1,
+			"max": 1
+		},
+		{
+			"name": "Iron Bow",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 85,
+			"crit": 0,
+			"min": 2,
+			"max": 2
+		},
+		{
+			"name": "Miasma",
+			"pmt": 0,
+			"mmt": 5,
+			"hit": 80,
+			"crit": 0,
+			"min": 1,
+			"max": 2
+		},
+		{
+			"name": "Wind",
+			"pmt": 0,
+			"mmt": 2,
+			"hit": 100,
+			"crit": 0,
+			"min": 1,
+			"max": 2
+		},
+		{
+			"name": "Fire",
+			"pmt": 0,
+			"mmt": 3,
+			"hit": 90,
+			"crit": 0,
+			"min": 1,
+			"max": 2
+		},
+		{
+			"name": "Blizzard",
+			"pmt": 0,
+			"mmt": 3,
+			"hit": 70,
+			"crit": 10,
+			"min": 1,
+			"max": 2
+		},
+		{
+			"name": "Nosferatu",
+			"pmt": 0,
+			"mmt": 1,
+			"hit": 80,
+			"crit": 0,
+			"min": 1,
+			"max": 2
+		},
+		{
+			"name": "Heal",
+			"pmt": 0,
+			"mmt": 8,
+			"hit": 100,
+			"crit": 0,
+			"min": 1,
+			"max": 1
+		}
+	]
+}

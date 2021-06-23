@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Three Houses TTRPG Character Sheet</title>
+
+	<script type="text/javascript" src="./three_houses.js">
+
+	</script>
+</head>
+<body>
+	<style type="text/css">
+
+		.container {
+			display: grid;
+			grid-template-columns: 80px 130px 1fr 1fr;
+			grid-auto-rows: repeat(2, 1fr);
+			grid-column-gap: 10px;
+			grid-row-gap: 10px;
+		}
+
+		.span-1-3 {
+			grid-column: 1 / 4;
+		}
+
+		select {
+			/*font-weight: bold;*/
+		    outline: none;
+		    background: white;
+		    border-radius: 3px;
+		    border-width: 1px;
+		    border-color: black;
+		    border-style: solid;
+		}
+
+		input {
+			/*font-weight: bold;*/
+		    outline: none;
+		    background: white;
+		    border-radius: 3px;
+		    border-width: 1px;
+		    border-color: black;
+		    border-style: solid;
+		}
+
+		.no-display {
+			display: none;
+		}
+
+		.custom-file-input {
+		    outline: none;
+		    background: white;
+		    border-radius: 3px;
+		    border-width: 1px;
+		    border-color: black;
+		    border-style: solid;
+		    display: inline-block;
+		    padding: 3px 6px;
+		    cursor: pointer;
+		}
+
+		textarea {
+		    outline: none;
+		    background: white;
+		    border-radius: 3px;
+		    border-width: 1px;
+		    border-color: black;
+		    border-style: solid;
+		}
+
+		dt {
+			font-weight: bold;
+		}
+
+		.datum {
+			font-weight: bold;
+			color: blue;
+			padding: 0px;
+			margin: 0px;
+		}
+
+		.computed {
+			font-weight: bold;
+			color: orange;
+			padding: 0px;
+			margin: 0px;
+		}
+
+		.hidden-field {
+			display: none;
+			width: 6ch;
+		}
+
+		.hidden-field:hover {
+			display: inline;
+			z-index: 2;
+			position: absolute;
+		}
+
+		.hidden-field:focus {
+			display: inline;
+			z-index: 2;
+			position: absolute;
+		}
+
+	</style>
+
+	<div class="container">
+		<div> <!-- SKILL SECTION -->
+			<table>
+				<tbody>
+					{% for skill in definitions["skills"] %}
+					<tr>
+						<th>
+							{{ skill }}
+						</th>
+						<td>
+							<label for="skill-{{ skill }}" id="skill-{{ skill }}-grade" class="datum">E&nbsp;</label>
+						</td>
+						<td>
+							<input
+								id="skill-{{ skill }}"
+								oninput="refresh_grade('{{ skill }}')"
+								class="hidden-field"
+								type="number"
+								name="skill-{{ skill }}"
+								min="0"
+								max="100"
+								step="1"
+								value="0"/>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div> <!-- STATISTICS AND GROWTHS -->
+			<table>
+				<!-- <caption>Statistsics and Growths</caption> -->
+				<tbody>
+					<tr>
+						<th>
+							Level
+						</th>
+						<td>
+							<label id="level" for="level-input" class="datum">
+								1
+							</label>
+							<input
+								id="level-input"
+								oninput="refresh_level()"
+								type="number"
+								class="hidden-field"
+								name="level-input"
+								min="0"
+								value="0"/>
+						</td>
+						<td>
+							<input
+								type="button"
+								value="Up"
+								onclick="level_up()">
+						</td>
+					</tr>
+
+					{% for statistic in definitions["statistics"]["abbr"] %}
+					<tr>
+						<th>
+							{{ statistic.upper() }}
+						</th>
+						<td>
+							<label
+								id="{{ statistic }}-total"
+								for="{{ statistic }}-base"
+								class="datum">
+								0		
+							</label>
+							<input
+								id="{{ statistic }}-base"
+								oninput="refresh_statistic('{{ statistic }}')"
+								type="number"
+								name="{{ statistic }}-base"
+								class="hidden-field"
+								min="0"
+								max="100"
+								value="0"/>
+						</td>
+						<td>
+							{% if statistic != "mov" %}
+							(<label
+								id="{{ statistic }}-growth-total"
+								for="{{ statistic }}-growth-base"
+								class="datum">
+								0%
+							</label><input
+								id="{{ statistic }}-growth-base"
+								oninput="refresh_growth('{{ statistic }}')"
+								type="number"
+								class="hidden-field"
+								name="{{ statistic }}-growth-base"
+								min="0"
+								max="100"
+								step="1"
+								value="0"/>)
+							{% endif %}
+						</td>
+					</tr>
+					{% endfor %}
+					<tr>
+						<th>PHD</th>
+						<td>
+							+<span id="pmt-total" class="computed">0</span>
+						</td>
+						<td>
+							-<span id="pdr-total" class="computed">0</span>
+						</td>
+					</tr>
+					<tr>
+						<th>MAD</th>
+						<td>
+							+<span id="mmt-total" class="computed">0</span>
+						</td>
+						<td>
+							-<span id="mdr-total" class="computed">0</span>
+						</td>
+					</tr>
+					<tr>
+						<th>HIT</th>
+						<td>
+							+<span id="hit-total" class="computed">0</span>
+						</td>
+						<td>
+							-<span id="avo-total" class="computed">0</span>
+						</td>
+					</tr>
+					<tr>
+						<th>RNG</th>
+						<td>
+							≤<span id="rng-max-total" class="computed">0</span>
+						</td>
+						<td>
+							≥<span id="rng-min-total" class="computed">0</span>
+						</td>
+					</tr>
+					<tr>
+						<th>CRIT</th>
+						<td>
+							<span id="crit-total" class="computed">0</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div> 
+		<div> <!-- BACKGROUND AND PERSONALITY -->
+			<div>
+				<label for="character-name">Name</label> <br />
+				<input
+					id="character-name"
+					oninput="refresh_name()"
+					type="text"
+					name="character-name"> <br />
+				<label for="character-weapon">Weapon / Triangle Effect</label> <br />
+				<select id="character-weapon" name="character-weapon" oninput="refresh_weapon()">
+					{% for weapon in definitions["weapons"] %}
+					<option value="{{ weapon['name'] }}">{{ weapon["name"] }}</option>
+					{% endfor %}
+				</select>
+				<select id="character-triangle" oninput="refresh_triangle()">
+					<option value="15">
+						Advantage
+					</option>
+					<option value="0" selected="">
+						Normal
+					</option>
+					<option value="-15">
+						Disadvantage
+					</option>
+				</select> <br />
+				<label for="character-class">Class</label> <br />
+				<select id="character-class" name="character-class" oninput="refresh_class()">
+					{% for klass in definitions["classes"] %}
+					<option value="{{ klass['name'] }}">{{ klass["name"] }}</option>
+					{% endfor %}
+				</select>
+				<label>
+					<input id="character-mounted" onclick="refresh_mounted()" type="checkbox" /> Mounted?
+				</label><br />
+				<label for="character-homeland">Homeland</label> <br />
+				<select id="character-homeland" oninput="refresh_homeland()">
+					<option value="adrestia">The Adrestian Empire</option>
+					<option value="almyra">Almyra</option>
+					<option value="brigid">Brigid Archipelago</option>
+					<option value="duscurr">Mountains of Duscurr</option>
+					<option value="fearghus">The Kingdom of Fearghus</option>
+					<option value="leicester">The Leicester Alliance</option>
+				</select> <br />
+				<label for="character-description">Description</label> <br />
+				<textarea
+					id="character-description"
+					name="character-description"
+					oninput="refresh_description()"
+					>Write your character description here.</textarea>
+				<br />
+				<label for="import-sheet" class="custom-file-input">
+					Import
+				</label>
+				<input id="import-sheet" type="file" accept=".json" class="no-display" />
+				<label for="export-sheet" class="custom-file-input">
+					Export
+				</label>
+				<input id="export-sheet" type="button" onclick="export_sheet()" class="no-display" />
+			</div>
+		</div>
+		<div class="span-1-3"> <!-- ABILITIES -->
+			<details>
+				<summary>Class Abilities</summary>
+				<dl id="abilities-class"></dl>
+			</details>
+
+			<details>
+				<summary>Equipped Abilites</summary>
+				<dl id="abilities-equipped"></dl>
+			</details>
+			
+			<details>
+				<summary>Battlefield Abilities</summary>
+				<input type="button" value="Add" onclick="learn_ability('battlefield')" />
+				<select id="learn-ability-select-battlefield">
+					{% for ability in definitions['abilities'] %}
+					<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+					{% endfor %}
+				</select>
+				<dl id="abilities-battlefield"></dl>
+			</details>
+
+			<details>
+				<summary>Known Abilities</summary>
+				<input type="button" value="Add" onclick="learn_ability('known')" />
+				<select id="learn-ability-select-known">
+					{% for ability in definitions['abilities'] %}
+					<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+					{% endfor %}
+				</select>
+				<dl id="abilities-known"></dl>
+			</details>
+
+		</div>
+		<div> <!-- INVENTORY -->
+		<!-- 	<table>
+				<caption>Inventory</caption>
+					
+				<tbody>
+					{% for i in range(6) %}
+					<tr>
+						<td>
+							<input type="radio" name="equipped">
+						</td>
+						<td>
+							<input type="text" name="">
+						</td>
+						<td>
+							<input
+								type="number"
+								name="inventory-slot-durability-1-{{i}}"
+								min="0"
+								max="100"
+								step="1"
+								value="0"
+								size="3" />
+							/
+							<input
+								type="number"
+								name="inventory-slot-durability-2-{{i}}"
+								min="0"
+								max="100"
+								step="1"
+								value="0"
+								size="3" />
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table> -->
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		definitions = {{ definition_literal }};
+		add_lookup(definitions, "classes", "class_by_name", "name");
+		add_lookup(definitions, "abilities", "ability_by_name", "name");
+		add_lookup(definitions, "weapons", "weapon_by_name", "name");
+		refresh_sheet();
+
+		document
+			.getElementById("import-sheet")
+			.addEventListener("change", import_sheet, false);
+	</script>
+</body>
+</html>
