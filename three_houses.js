@@ -322,8 +322,8 @@ function fill_hitpoints() {
 function refresh_level() {
 	const display = document.getElementById("level");
 	const input   = document.getElementById("level-input");
-	sheet.level   = 1 + Math.floor(input.value / 100);
-	display.textContent = sheet.level;
+	sheet.level   = Number(input.value);
+	display.textContent = 1 + Math.floor(input.value / 100);
 }
 
 function refresh_class() {
