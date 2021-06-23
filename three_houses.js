@@ -492,9 +492,9 @@ function refresh_homeland() {
 }
 
 function refresh_sheet() {
-	refresh_hitpoints();
 	refresh_class();
 	refresh_statistics();
+	refresh_hitpoints();
 	refresh_grades();
 	refresh_level();
 	refresh_weapon();
@@ -536,6 +536,7 @@ function import_sheet(e) {
 	const reader = new FileReader();
 	reader.onload = function (e) {
 		const char = JSON.parse(e.target.result);
+		console.log(char.hitpoints);
 
 		char.mounted = false;
 
