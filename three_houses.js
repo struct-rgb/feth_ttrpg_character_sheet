@@ -4,6 +4,7 @@
 var definitions;
 
 var sheet = {
+	
 	"name": "",
 
 	"description": "",
@@ -170,6 +171,7 @@ function add_lookup(object, source, destination, key) {
 
 function refresh_name() {
 	sheet.name = document.getElementById("character-name").value;
+	return sheet.name;
 }
 
 function refresh_mounted() {
@@ -183,10 +185,12 @@ function refresh_mounted() {
 		refresh_statistics();
 		refresh_computed_statistics();
 	}
+	return check;
 }
 
 function refresh_description() {
 	sheet.description = document.getElementById("character-description").value;
+	return sheet.description;
 }
 
 function refresh_grade(skill_name) {
@@ -197,6 +201,7 @@ function refresh_grade(skill_name) {
 	sheet.skills[skill_name] = points;
 
 	document.getElementById(base + "-grade").textContent = grade;
+	return grade;
 }
 
 function refresh_grades() {
@@ -205,17 +210,27 @@ function refresh_grades() {
 
 function refresh_growth(statistic) {
 
+	// TODO figure out a way to replace this with a set
+	if (!definitions.statistics.abbr.includes(statistic)) {
+		console.log("Tried to refresh invalid growth \"" + statistic + "\"");
+		return;
+	}
+
 	if (statistic == "mov") return; // TODO fix input validation
+
 	const display = document.getElementById(statistic + "-growth-total");
 	const base    = Number(document.getElementById(statistic + "-growth-base").value);
 	
 	sheet.growths[statistic]    = base;
-	computed.growths[statistic] = Math.max(
+
+	const growth = Math.max(
 		base + Number(sheet.class.growths[statistic]),
 		0,
 	);
 
-	display.textContent = computed.growths[statistic] + "%";
+	computed.growths[statistic] = growth;
+	display.textContent         = growth + "%";
+	return growth;
 }
 
 function add_ability(parent, category, ability, check_fn, remove_fn) {
@@ -310,6 +325,7 @@ function refresh_hitpoints() {
 
 	display.value   = input.value;
 	sheet.hitpoints = Number(input.value); 
+	return sheet.hitpoints;
 }
 
 function fill_hitpoints() {
@@ -326,12 +342,24 @@ function refresh_level() {
 	display.textContent = 1 + Math.floor(input.value / 100);
 }
 
+function remove_children(parent) {
+
+	let removed = 0;
+	while (parent.lastChild) {
+		parent.removeChild(parent.lastChild);
+		++removed;
+	}
+
+	return removed;
+}
+
 function refresh_class() {
 
 	sheet.class = definitions.class_by_name[
 		document.getElementById("character-class").value
 	];
 
+	// account for whether the character is mounted before stat calcs
 	const mounted = document.getElementById("character-mounted");
 	mounted.checked = "mount" in sheet.class;
 
@@ -342,14 +370,13 @@ function refresh_class() {
 
 	const abilities = document.getElementById("abilities-class");
 
-	while (abilities.lastChild) {
-		abilities.removeChild(abilities.lastChild)
-	}
-
+	remove_children(abilities);
 	for (let name of sheet.class.abilities) {
 		const ability = definitions.ability_by_name[name];
 		add_ability(abilities, "class", ability, ability_toggler(ability));
 	}
+
+	return sheet.class;
 }
 
 function modifier(statistic) {
@@ -385,7 +412,7 @@ function computed_statistic(base, weapon) {
 		return Math.max(
 			computed.statistics[base]
 				+ (modifier(weapon) * multiplier(weapon))
-				+ sheet.triangle > 0 ? sheet.triangle : 0,
+				+ (sheet.triangle > 0 ? sheet.triangle : 0),
 			0,
 		);
 
@@ -394,7 +421,7 @@ function computed_statistic(base, weapon) {
 			computed.statistics[base]
 				+ (sheet.weapon[weapon] + modifier(weapon)) 
 					* multiplier(weapon)
-				+ sheet.triangle < 0 ? sheet.triangle : 0,
+				+ (sheet.triangle < 0 ? sheet.triangle : 0),
 			0,
 		);
 
@@ -436,6 +463,13 @@ function refresh_computed_statistics() {
 }
 
 function refresh_statistic(statistic) {
+
+	// TODO figure out a way to replace this with a set
+	if (!definitions.statistics.abbr.includes(statistic)) {
+		console.log("Tried to refresh invalid statistic \"" + statistic + "\"");
+		return;
+	}
+
 	const display = document.getElementById(statistic + "-total");
 	const base    = Number(document.getElementById(statistic + "-base").value);
 	const value   = Math.max(
@@ -468,6 +502,7 @@ function refresh_statistic(statistic) {
 	}
 
 	refresh_computed_statistics();
+	return value;
 }
 
 function refresh_statistics() {
@@ -480,6 +515,7 @@ function refresh_triangle() {
 	);
 
 	refresh_computed_statistics();
+	return sheet.triangle;
 }
 
 function refresh_weapon() {
@@ -488,10 +524,12 @@ function refresh_weapon() {
 	];
 
 	refresh_computed_statistics();
+	return sheet.weapon;
 }
 
 function refresh_homeland() {
-	sheet.homeland =  document.getElementById("character-homeland").value;
+	sheet.homeland = document.getElementById("character-homeland").value;
+	return sheet.homeland;
 }
 
 function refresh_sheet() {
@@ -540,6 +578,7 @@ function import_sheet(e) {
 	reader.onload = function (e) {
 		const char = JSON.parse(e.target.result);
 
+		// minor bookeeping and intialization of data structures
 		char.mounted = false;
 
 		for (let key in char.abilities) {
@@ -551,6 +590,7 @@ function import_sheet(e) {
     	char.weapon   = definitions.weapon_by_name[char.weapon];
     	char.triangle = 0;
 
+    	// fill the statistics boxes
     	for (let statistic of definitions.statistics.abbr) {
     		document.getElementById(statistic + "-base").value =
     			char.statistics[statistic];
@@ -560,23 +600,29 @@ function import_sheet(e) {
     			char.growths[statistic];
     	}
 
+    	// fill the skills boxes
     	for (let skill of definitions.skills) {
     		document.getElementById("skill-" + skill).value =
     			char.skills[skill];
     	}
 
-    	console.log(char);
+    	
+    	// fill the "character and backstory" section entries
     	document.getElementById("character-name").value        = char.name;
     	document.getElementById("character-homeland").value    = char.homeland;
     	document.getElementById("character-weapon").value      = char.weapon.name;
     	document.getElementById("character-class").value       = char.class.name;
     	document.getElementById("character-description").value = char.description;
     	document.getElementById("hitpoints-input").value       = char.hitpoints;
+    	document.getElementById("level-input").value           = char.level;
 
-    	document.getElementById("level-input").value = char.level;
+    	// parent element
+    	let parent;
 
+    	// fill the known abilities
+    	parent = document.getElementById("abilities-known");
+    	remove_children(parent);
     	for (let name of char.abilities.known) {
-    		const parent  = document.getElementById("abilities-known");
     		const ability = definitions.ability_by_name[name]; 
     		add_ability(
     			parent,
@@ -587,8 +633,10 @@ function import_sheet(e) {
     		);
     	}
 
+    	// fill the battlefield abilities
+    	parent = document.getElementById("abilities-battlefield");
+    	remove_children(parent);
     	for (let name of char.abilities.battlefield) {
-    		const parent  = document.getElementById("abilities-battlefield");
     		const ability = definitions.ability_by_name[name]; 
     		add_ability(
     			parent,
@@ -599,8 +647,10 @@ function import_sheet(e) {
     		);
     	}
 
+    	// fill the equipped abilities
+    	parent = document.getElementById("abilities-equipped");
+    	remove_children(parent);
     	for (let name of char.abilities.equipped) {
-    		const parent  = document.getElementById("abilities-equipped");
     		const ability = definitions.ability_by_name[name]; 
     		add_ability(
     			parent,

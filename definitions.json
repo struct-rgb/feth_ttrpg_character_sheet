@@ -1,6 +1,6 @@
 {
 	"statistics": {
-		"abbr": ["hp", "str", "mag", "dex", "spd", "def", "res", "cha", "mov"],
+		"abbr": ["hp", "str", "mag", "dex", "spd", "def", "res", "mov"],
 		"linked": [
 			["str", "pmt"],
 			["mag", "mmt"],
@@ -1112,6 +1112,415 @@
 			"modifiers": {},
 			"multipliers": {}
 		},
+				{
+			"name": "Riposte",
+			"activation": "Support",
+			"description": "If you can roll a hit, you can nullify a second attack the enemy makes against a friendly unit."
+		},
+		{
+			"name": "Sword Prowess Lv 1",
+			"activation": "Passive",
+			"description": "Grants Hit +5, Avo +7, and Crit Avo +5 when using a sword.",
+			"modifiers": {"hit": 5, "avo": 7, "cravo": 5}
+		},
+		{
+			"name": "Sword Prowess Lv 2",
+			"activation": "Passive",
+			"description": "Grants Hit +6, Avo +10, and Crit Avo +6 when using a sword.",
+			"modifiers": {"hit": 6, "avo": 10, "cravo": 6}
+		},
+		{
+			"name": "Sword Prowess Lv 3",
+			"activation": "Passive",
+			"description": "Grants Hit +7, Avo +13, and Crit Avo +7 when using a sword.",
+			"modifiers": {"hit": 7, "avo": 13, "cravo": 7}
+		},
+		{
+			"name": "Sword Prowess Lv 4",
+			"activation": "Passive",
+			"description": "Grants Hit +8, Avo +16, and Crit Avo +8 when using a sword.",
+			"modifiers": {"hit": 8, "avo": 16, "cravo": 8}
+		},
+		{
+			"name": "Sword Prowess Lv 5",
+			"activation": "Passive",
+			"description": "Grants Hit +10, Avo +20, and Crit Avo +10 when using a sword.",
+			"modifiers": {"hit": 10, "avo": 20, "cravo": 10}
+		},
+		{
+			"name": "Axe Breaker",
+			"activation": "Passive",
+			"description": "Grants Hit/Avo +20 when using an sword against axe users.",
+			"modifiers": {"hit": 20, "avo": 20}
+		},
+		{
+			"name": "Attack of Opportunity",
+			"activation": "Support",
+			"description": "If an enemy was within 1 space of you at the start of the enemy phase and that enemy moves out of that space, you may make an attack against that enemy."
+		},
+		{
+			"name": "Lance Prowess Lv 1",
+			"activation": "Passive",
+			"description": "Grants Hit +6, Avo +6, and Crit Avo +5 when using a lance.",
+			"modifiers": {"hit": 6, "avo": 6, "cravo": 5}
+		},
+		{
+			"name": "Lance Prowess Lv 2",
+			"activation": "Passive",
+			"description": "Grants Hit +8, Avo +8, and Crit Avo +6 when using a lance.",
+			"modifiers": {"hit": 8, "avo": 8, "cravo": 6}
+		},
+		{
+			"name": "Lance Prowess Lv 3",
+			"activation": "Passive",
+			"description": "Grants Hit +10, Avo +10, and Crit Avo +7 when using a lance.",
+			"modifiers": {"hit": 10, "avo": 10, "cravo": 7}
+		},
+		{
+			"name": "Lance Prowess Lv 4",
+			"activation": "Passive",
+			"description": "Grants Hit +12, Avo +12, and Crit Avo +8 when using a lance.",
+			"modifiers": {"hit": 12, "avo": 12, "cravo": 8}
+		},
+		{
+			"name": "Lance Prowess Lv 5",
+			"activation": "Passive",
+			"description": "Grants Hit +15, Avo +15, and Crit Avo +10 when using a lance.",
+			"modifiers": {"hit": 15, "avo": 15, "cravo": 10}
+		},
+		{
+			"name": "Sword Breaker",
+			"activation": "Passive",
+			"description": "Grants Hit/Avo +20 when using an lance against sword users.",
+			"modifiers": {"hit": 20, "avo": 20}
+		},
+		{
+			"name": "Sunder (Attack)",
+			"activation": "Support",
+			"description": "If you can roll a hit, you decrease an enemy’s ATK or DEF by 5.",
+			"modifiers": {"pmt": -5, "mmt": -5}
+		},
+		{
+			"name": "Sunder (Defense)",
+			"activation": "Support",
+			"description": "If you can roll a hit, you decrease an enemy’s ATK or DEF by 5.",
+			"modifiers": {"pdr": -5, "mdr": -5}
+		},
+		{
+			"name": "Axe Prowess Lv 1",
+			"activation": "Passive",
+			"description": "Grants Hit +7, Avo +5, and Crit Avo +5 when using a axe.",
+			"modifiers": {"hit": 7, "avo": 5, "cravo": 5}
+		},
+		{
+			"name": "Axe Prowess Lv 2",
+			"activation": "Passive",
+			"description": "Grants Hit +10, Avo +6, and Crit Avo +6 when using a axe.",
+			"modifiers": {"hit": 10, "avo": 6, "cravo": 6}
+		},
+		{
+			"name": "Axe Prowess Lv 3",
+			"activation": "Passive",
+			"description": "Grants Hit +13, Avo +7, and Crit Avo +7 when using a axe.",
+			"modifiers": {"hit": 13, "avo": 7, "cravo": 7}
+		},
+		{
+			"name": "Axe Prowess Lv 4",
+			"activation": "Passive",
+			"description": "Grants Hit +16, Avo +8, and Crit Avo +8 when using a axe.",
+			"modifiers": {"hit": 16, "avo": 8, "cravo": 8}
+		},
+		{
+			"name": "Axe Prowess Lv 5",
+			"activation": "Passive",
+			"description": "Grants Hit +20, Avo +10, and Crit Avo +10 when using a axe.",
+			"modifiers": {"hit": 20, "avo": 10, "cravo": 10}
+		},
+		{
+			"name": "Lance Breaker",
+			"activation": "Passive",
+			"description": "Grants Hit/Avo +20 when using an axe against lance users.",
+			"modifiers": {"hit": 20, "avo": 20}
+		},
+		{
+			"name": "Covering Fire",
+			"activation": "Support",
+			"description": "Halve ranged damage inflicted upon a friendly unit."
+		},
+		{
+			"name": "Bow Prowess Lv 1",
+			"activation": "Passive",
+			"description": "Grants Hit +6, Avo +6, and Crit Avo +5 when using a bow.",
+			"modifiers": {"hit": 6, "avo": 6, "cravo": 5}
+		},
+		{
+			"name": "Bow Prowess Lv 2",
+			"activation": "Passive",
+			"description": "Grants Hit +8, Avo +8, and Crit Avo +6 when using a bow.",
+			"modifiers": {"hit": 8, "avo": 8, "cravo": 6}
+		},
+		{
+			"name": "Bow Prowess Lv 3",
+			"activation": "Passive",
+			"description": "Grants Hit +10, Avo +10, and Crit Avo +7 when using a bow.",
+			"modifiers": {"hit": 10, "avo": 10, "cravo": 7}
+		},
+		{
+			"name": "Bow Prowess Lv 4",
+			"activation": "Passive",
+			"description": "Grants Hit +12, Avo +12, and Crit Avo +8 when using a bow.",
+			"modifiers": {"hit": 12, "avo": 12, "cravo": 8}
+		},
+		{
+			"name": "Bow Prowess Lv 5",
+			"activation": "Passive",
+			"description": "Grants Hit +15, Avo +15, and Crit Avo +10 when using a bow.",
+			"modifiers": {"hit": 15, "avo": 15, "cravo": 10}
+		},
+		{
+			"name": "Close Counter",
+			"activation": "Passive",
+			"description": "Allows unit to counterattack adjacent foes.",
+			"modifiers": {"min": 1}
+		},
+		{
+			"name": "Ice Block",
+			"activation": "Support",
+			"description": "Create a block of impassable terrain."
+		},
+		{
+			"name": "Reason Lv 1",
+			"activation": "Passive",
+			"description": "Grants Hit +7, Avo +5, and Crit Avo +5 when using a anima magic.",
+			"modifiers": {"hit": 7, "avo": 5, "cravo": 5}
+		},
+		{
+			"name": "Reason Lv 2",
+			"activation": "Passive",
+			"description": "Grants Hit +10, Avo +6, and Crit Avo +6 when using a anima magic.",
+			"modifiers": {"hit": 10, "avo": 6, "cravo": 6}
+		},
+		{
+			"name": "Reason Lv 3",
+			"activation": "Passive",
+			"description": "Grants Hit +13, Avo +7, and Crit Avo +7 when using a anima magic.",
+			"modifiers": {"hit": 13, "avo": 7, "cravo": 7}
+		},
+		{
+			"name": "Reason Lv 4",
+			"activation": "Passive",
+			"description": "Grants Hit +16, Avo +8, and Crit Avo +8 when using a anima magic.",
+			"modifiers": {"hit": 16, "avo": 8, "cravo": 8}
+		},
+		{
+			"name": "Reason Lv 5",
+			"activation": "Passive",
+			"description": "Grants Hit +20, Avo +10, and Crit Avo +10 when using a anima magic.",
+			"modifiers": {"hit": 20, "avo": 10, "cravo": 10}
+		},
+		{
+			"name": "Bless",
+			"activation": "Support",
+			"description": "Allow an ally to reroll an attack."
+		},
+		{
+			"name": "Faith Lv 1",
+			"activation": "Passive",
+			"description": "Grants Hit +5, Avo +7, and Crit Avo +5 when using a light magic.",
+			"modifiers": {"hit": 5, "avo": 7, "cravo": 5}
+		},
+		{
+			"name": "Faith Lv 2",
+			"activation": "Passive",
+			"description": "Grants Hit +6, Avo +10, and Crit Avo +6 when using a light magic.",
+			"modifiers": {"hit": 6, "avo": 10, "cravo": 6}
+		},
+		{
+			"name": "Faith Lv 3",
+			"activation": "Passive",
+			"description": "Grants Hit +7, Avo +13, and Crit Avo +7 when using a light magic.",
+			"modifiers": {"hit": 7, "avo": 13, "cravo": 7}
+		},
+		{
+			"name": "Faith Lv 4",
+			"activation": "Passive",
+			"description": "Grants Hit +8, Avo +16, and Crit Avo +8 when using a light magic.",
+			"modifiers": {"hit": 8, "avo": 16, "cravo": 8}
+		},
+		{
+			"name": "Faith Lv 5",
+			"activation": "Passive",
+			"description": "Grants Hit +10, Avo +20, and Crit Avo +10 when using a light magic.",
+			"modifiers": {"hit": 10, "avo": 20, "cravo": 10}
+		},
+		{
+			"name": "Curse",
+			"activation": "Support",
+			"description": "Force an enemy to reroll an attack."
+		},
+		{
+			"name": "Guile Lv 1",
+			"activation": "Passive",
+			"description": "Grants Hit +7, Avo +5, and Crit Avo +5 when using a dark magic.",
+			"modifiers": {"hit": 7, "avo": 5, "cravo": 5}
+		},
+		{
+			"name": "Guile Lv 2",
+			"activation": "Passive",
+			"description": "Grants Hit +10, Avo +6, and Crit Avo +6 when using a dark magic.",
+			"modifiers": {"hit": 10, "avo": 6, "cravo": 6}
+		},
+		{
+			"name": "Guile Lv 3",
+			"activation": "Passive",
+			"description": "Grants Hit +13, Avo +7, and Crit Avo +7 when using a dark magic.",
+			"modifiers": {"hit": 13, "avo": 7, "cravo": 7}
+		},
+		{
+			"name": "Guile Lv 4",
+			"activation": "Passive",
+			"description": "Grants Hit +16, Avo +8, and Crit Avo +8 when using a dark magic.",
+			"modifiers": {"hit": 16, "avo": 8, "cravo": 8}
+		},
+		{
+			"name": "Guile Lv 5",
+			"activation": "Passive",
+			"description": "Grants Hit +20, Avo +10, and Crit Avo +10 when using a dark magic.",
+			"modifiers": {"hit": 20, "avo": 10, "cravo": 10}
+		},
+		{
+			"name": "Defend",
+			"activation": "Support",
+			"description": "Halve melee damage inflicted upon a friendly unit."
+		},
+		{
+			"name": "Armored Combatant",
+			"activation": "Support",
+			"description": "Gain an additional +15 Avo and +15 Hit against Heavy Armor units.",
+			"modifiers": {"hit": 15, "avo": 15}
+		},
+		{
+			"name": "Give a Lift",
+			"activation": "Support",
+			"description": "Give an ally +1 movement for their turn.",
+			"modifiers": {"mov": 1}
+		},
+		{
+			"name": "Mounted Combatant",
+			"activation": "Support",
+			"description": "Gain an additional +15 Avo and +15 Hit against Mounted units.",
+			"modifiers": {"hit": 15, "avo": 15}
+		},
+		{
+			"name": "Dexterity +4",
+			"activation": "Passive",
+			"description": "Increases Dexterity by 4",
+			"modifiers": {"dex": 4}
+		},
+		{
+			"name": "Movement +1",
+			"activation": "Passive",
+			"description": "Increases Movement by 1",
+			"modifiers": {"mov": 1}
+		},
+		{
+			"name": "Pass",
+			"activation": "Passive",
+			"description": "Move through enemy spaces."
+		},
+		{
+			"name": "Wing Buffet",
+			"activation": "Support",
+			"description": "Move any unit one space in any direction."
+		},
+		{
+			"name": "Mounted Combatant",
+			"activation": "Passive",
+			"description": "Gain an additional +15 Avo and +15 Hit against other Flying units.",
+			"modifiers": {"hit": 15, "avo": 15}
+		},
+		{
+			"name": "Alert Stance",
+			"activation": "Passive",
+			"description": "If unit takes no action except Wait, grants Avo +15 for 1 turn.",
+			"modifiers": {"avo": 15}
+		},
+		{
+			"name": "Alert Stance+",
+			"activation": "Passive",
+			"description": "If unit takes no action except Wait, grants Avo +30 for 1 turn.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Combat Medic",
+			"activation": "Passive",
+			"description": "If its user restores hitpoints to an ally during the player phase, doubles the MT of counterattacks during the enemy phase",
+			"multipliers": {"pmt": 2, "mmt": 2}
+		},
+		{
+			"name": "Can't Keep Up?",
+			"activation": "Passive",
+			"description": "If the user hits with an attack, grants Spd +3 and Str +3 until damaged. Can only activate once per turn.",
+			"modifiers": {"spd": 3, "str": 3}
+		},
+		{
+			"name": "Try Your Best",
+			"activation": "Passive",
+			"description": "Allies within 1 space are granted Str +3 and Def +3 during combat.",
+			"modifiers": {"str": 3, "def": 3}
+		},
+		{
+			"name": "Dead Man's Hand",
+			"activation": "Passive",
+			"description": "Enemies within the user's movement range cannot target allies.",
+			"modifiers": {}
+		},
+		{
+			"name": "Sibling Bond A",
+			"activation": "Passive",
+			"description": "While within 2 spaces of Amalia, user's attacks inflicts 2 extra damage",
+			"modifiers": {"mmt": 2, "pmt": 2}
+		},
+		{
+			"name": "Sibling Bond B",
+			"activation": "Passive",
+			"description": "While within 2 spaces of Oskar, user reduces damage taken by 2.",
+			"modifiers": {"pdr": 2, "mdr": 2}
+		},
+		{
+			"name": "Wrathful Empathy",
+			"activation": "Passive",
+			"description": "An any ally within 3 spaces has HP ≤ 50%, grants +4 Mag and +4 Dex",
+			"modifiers": {"mag": 4, "dex": 4}
+		},
+		{
+			"name": "Stealth",
+			"activation": "Passive",
+			"description": "Enemies can't target the user if an ally not possessing stealth is in range."
+		},
+		{
+			"name": "Hesitant Prodigy (Debuff)",
+			"activation": "Passive",
+			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
+			"modifiers": {"pmt": -4, "mmt": -4}
+		},
+		{
+			"name": "Hesitant Prodigy (Buff)",
+			"activation": "Passive",
+			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
+			"modifiers": {"pmt": 4, "mmt": 4}
+		},
+		{
+			"name": "Brittle Bones",
+			"activation": "Passive",
+			"description": "Inflicts Def -2 and Res -2 when attacked, but grants +4 Spd,",
+			"modifiers": {"def": -2, "res": -2, "spd": 4}
+		},
+		{
+			"name": "Zephyr",
+			"activation": "Passive",
+			"description": "This unit always attacks first, even when attacked."
+		},
 		{
 			"name": "HP +5",
 			"activation": "Passive",
@@ -1520,76 +1929,6 @@
 			"activation": "Passive",
 			"description": "Grants its user a 20% bonus to their Critical rate.",
 			"modifiers": {"crit": 20}
-		},
-		{
-			"name": "Combat Medic",
-			"activation": "Passive",
-			"description": "If its user restores hitpoints to an ally during the player phase, doubles the MT of counterattacks during the enemy phase",
-			"multipliers": {"pmt": 2, "mmt": 2}
-		},
-		{
-			"name": "Can't Keep Up?",
-			"activation": "Passive",
-			"description": "If the user hits with an attack, grants Spd +3 and Str +3 until damaged. Can only activate once per turn.",
-			"modifiers": {"spd": 3, "str": 3}
-		},
-		{
-			"name": "Try Your Best",
-			"activation": "Passive",
-			"description": "Allies within 1 space are granted Str +3 and Def +3 during combat.",
-			"modifiers": {"str": 3, "def": 3}
-		},
-		{
-			"name": "Dead Man's Hand",
-			"activation": "Passive",
-			"description": "Enemies within the user's movement range cannot target allies.",
-			"modifiers": {}
-		},
-		{
-			"name": "Sibling Bond A",
-			"activation": "Passive",
-			"description": "While within 2 spaces of Amalia, user's attacks inflicts 2 extra damage",
-			"modifiers": {"mmt": 2, "pmt": 2}
-		},
-		{
-			"name": "Sibling Bond B",
-			"activation": "Passive",
-			"description": "While within 2 spaces of Oskar, user reduces damage taken by 2.",
-			"modifiers": {"pdr": 2, "mdr": 2}
-		},
-		{
-			"name": "Wrathful Empathy",
-			"activation": "Passive",
-			"description": "An any ally within 3 spaces has HP ≤ 50%, grants +4 Mag and +4 Dex",
-			"modifiers": {"mag": 4, "dex": 4}
-		},
-		{
-			"name": "Stealth",
-			"activation": "Passive",
-			"description": "Enemies can't target the user if an ally not possessing stealth is in range."
-		},
-		{
-			"name": "Hesitant Prodigy (Debuff)",
-			"activation": "Passive",
-			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
-			"modifiers": {"pmt": -4, "mmt": -4}
-		},
-		{
-			"name": "Hesitant Prodigy (Buff)",
-			"activation": "Passive",
-			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
-			"modifiers": {"pmt": 4, "mmt": 4}
-		},
-		{
-			"name": "Brittle Bones",
-			"activation": "Passive",
-			"description": "Inflicts Def -2 and Res -2 when attacked, but grants +4 Spd,",
-			"modifiers": {"def": -2, "res": -2, "spd": 4}
-		},
-		{
-			"name": "Zephyr",
-			"activation": "Passive",
-			"description": "This unit always attacks first, even when attacked."
 		}
 	],
 
