@@ -4,7 +4,7 @@
 var definitions;
 
 var sheet = {
-	
+
 	"name": "",
 
 	"description": "",
@@ -127,7 +127,7 @@ function level_up() {
 			max_growth = growth;
 		}
 
-		if (Math.random() <= growth) {
+		if (Math.random() * 100 <= growth) {
 			increases   += 1;
 			const input =  document.getElementById(statistic + "-base");
 			input.value =  Number(input.value) + 1;
@@ -656,7 +656,7 @@ function import_sheet(e) {
     			parent,
     			"equipped",
     			ability,
-    			equip_toggler(ability),
+    			ability_toggler(ability),
     			equip_remover(ability)
     		);
 
