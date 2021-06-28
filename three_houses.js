@@ -423,7 +423,7 @@ function computed_statistic(base, weapon) {
 		return Math.max(
 			computed.statistics[base]
 				+ (modifier(weapon) * multiplier(weapon))
-				+ (sheet.triangle > 0 ? sheet.triangle : 0),
+				+ (sheet.triangle < 0 ? sheet.triangle : 0),
 			0,
 		);
 
@@ -432,7 +432,7 @@ function computed_statistic(base, weapon) {
 			computed.statistics[base]
 				+ (sheet.weapon[weapon] + modifier(weapon)) 
 					* multiplier(weapon)
-				+ (sheet.triangle < 0 ? sheet.triangle : 0),
+				+ (sheet.triangle > 0 ? sheet.triangle : 0),
 			0,
 		);
 
