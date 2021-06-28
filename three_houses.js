@@ -67,7 +67,7 @@ var sheet = {
 	}
 };
 
-var computed = {
+const computed = {
 	"statistics": {},
 	"growths": {}
 };
@@ -114,19 +114,28 @@ function equip_toggler(ability) {
 }
 
 function level_up() {
+
+	// statistics that increased from this level up
 	let increases  = 0;
+
+	// name and value of largest growth
 	let max_name   = "hp";
 	let max_growth = 0;
+
 	for (let statistic of definitions.statistics.abbr) {
 
-		if (statistic == "move") continue;
+		// mov does not increase with level
+		if (statistic == "mov") continue;
+
 		const growth = computed.growths[statistic];
 		
+		// find stat with highest growth rate
 		if (growth > max_growth) {
 			max_name   = statistic;
 			max_growth = growth;
 		}
 
+		// if roll succeeds increase statistic
 		if (Math.random() * 100 <= growth) {
 			increases   += 1;
 			const input =  document.getElementById(statistic + "-base");
@@ -134,6 +143,8 @@ function level_up() {
 		}
 	}
 
+	// if no statistic increased during level up, then
+	// increase the one with the highest growth rate
 	if (increases == 0) {
 		const input =  document.getElementById(max_name + "-base");
 		input.value =  Number(input.value) + 1;

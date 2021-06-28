@@ -1522,6 +1522,12 @@
 			"description": "This unit always attacks first, even when attacked."
 		},
 		{
+			"name": "Painless",
+			"activation": "Passive",
+			"description": "When a non-adjacent enemy initiates combat, -4 damage taken.",
+			"modifiers": {"mdr": 4, "pdr": 4}
+		},
+		{
 			"name": "HP +5",
 			"activation": "Passive",
 			"description": "Increases maximum HP by 5",
