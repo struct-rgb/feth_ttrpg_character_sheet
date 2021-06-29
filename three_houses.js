@@ -116,38 +116,43 @@ function equip_toggler(ability) {
 function level_up() {
 
 	// statistics that increased from this level up
-	let increases  = 0;
+	const increases  = new Set();
+	const stat_names = definitions.statistics.abbr.filter(
+		name => name != "mov"
+	);
 
-	// name and value of largest growth
-	let max_name   = "hp";
-	let max_growth = 0;
-
-	for (let statistic of definitions.statistics.abbr) {
-
-		// mov does not increase with level
-		if (statistic == "mov") continue;
-
-		const growth = computed.growths[statistic];
-		
-		// find stat with highest growth rate
-		if (growth > max_growth) {
-			max_name   = statistic;
-			max_growth = growth;
-		}
-
-		// if roll succeeds increase statistic
-		if (Math.random() * 100 <= growth) {
-			increases   += 1;
-			const input =  document.getElementById(statistic + "-base");
-			input.value =  Number(input.value) + 1;
+	// for each stat, if roll succeeds increase statistics
+	for (let name of stat_names) {
+		if (Math.random() * 100 <= computed.growths[name]) {
+			increases.add(name);
 		}
 	}
 
-	// if no statistic increased during level up, then
-	// increase the one with the highest growth rate
-	if (increases == 0) {
-		const input =  document.getElementById(max_name + "-base");
-		input.value =  Number(input.value) + 1;
+	// if onle of fewer statistics increased during level up,
+	// then prompt user for stat to increase with popup
+	if (increases.size <= 1) {
+
+		increases.clear();
+
+		let   choosen     = null;
+		const prompt_text = (
+			"Enter one of: " + stat_names.join(" ")
+		);
+
+		while (choosen === null || !stat_names.includes(choosen)) {
+			choosen = prompt(prompt_text)?.toLowerCase();
+		}
+
+		increases.add(choosen);
+	}
+
+	// show user summary of levelup
+	alert("Increases: " + Array.from(increases).join(" "));
+
+	// update and refresh the sheet
+	for (let name of increases) {
+		const input = document.getElementById(name + "-base");
+		input.value = Number(input.value) + 1;
 	}
 
 	const level_input = document.getElementById("level-input");
@@ -447,6 +452,12 @@ function computed_statistic(base, weapon) {
 			0,
 		);
 
+		case "maxrng":
+		case "minrng":
+		return (
+			sheet.weapon[weapon] + modifier(weapon) * multiplier(weapon)
+		);
+
 		default:
 		console.log("Invalid weapon for computed statistic");
 		return;
@@ -469,10 +480,15 @@ function refresh_computed_statistics() {
 		) * multiplier("crit")
 	);
 
-	document.getElementById("crit-total").textContent    = crit; 
-	document.getElementById("rng-min-total").textContent = sheet.weapon.min;
-	document.getElementById("rng-max-total").textContent = 
-		sheet.weapon.max + modifier("range");
+	document.getElementById("crit-total").textContent    = crit;
+
+	document.getElementById("rng-min-total").textContent = computed_statistic(
+		null, "minrng"
+	);
+
+	document.getElementById("rng-max-total").textContent = computed_statistic(
+		null, "maxrng"
+	);
 }
 
 function refresh_statistic(statistic) {
@@ -681,4 +697,8 @@ function import_sheet(e) {
     	refresh_sheet();
 	}
 	reader.readAsText(file);
+}
+
+function clear_sheet() {
+	_
 }

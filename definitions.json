@@ -1281,7 +1281,7 @@
 			"name": "Close Counter",
 			"activation": "Passive",
 			"description": "Allows unit to counterattack adjacent foes.",
-			"modifiers": {"min": 1}
+			"modifiers": {"minrng": -1}
 		},
 		{
 			"name": "Ice Block",
@@ -1638,7 +1638,7 @@
 			"name": "Bowrange +1",
 			"activation": "Passive",
 			"description": "Maximum Bow range +1",
-			"modifiers": {"range": 1}
+			"modifiers": {"maxrng": 1}
 		},
 		{
 			"name": "Hit +20",
@@ -1880,25 +1880,25 @@
 			"name": "Black Magic Range +1",
 			"activation": "Passive",
 			"description": "Maximum Black Magic range +1",
-			"modifiers": {"range": 1}
+			"modifiers": {"maxrng": 1}
 		},
 		{
 			"name": "Dark Magic Range +1",
 			"activation": "Passive",
 			"description": "Maximum Dark Magic range +1",
-			"modifiers": {"range": 1}
+			"modifiers": {"maxrng": 1}
 		},
 		{
 			"name": "White Magic Range +1",
 			"activation": "Passive",
 			"description": "Maximum White Magic range +1",
-			"modifiers": {"range": 1}
+			"modifiers": {"maxrng": 1}
 		},
 		{
 			"name": "Bowrange +2",
 			"activation": "Passive",
 			"description": "Maximum Bow range +2",
-			"modifiers": {"range": 1}
+			"modifiers": {"maxrng": 1}
 		},
 		{
 			"name": "Uncanny Blow",
@@ -1956,8 +1956,8 @@
 			"mmt": 0,
 			"hit": 0,
 			"crit": 0,
-			"min": 1,
-			"max": 1
+			"minrng": 1,
+			"maxrng": 1
 		},
 		{
 			"name": "Iron Sword",
@@ -1965,8 +1965,8 @@
 			"mmt": 0,
 			"hit": 90,
 			"crit": 0,
-			"min": 1,
-			"max": 1
+			"minrng": 1,
+			"maxrng": 1
 		},
 		{
 			"name": "Iron Lance",
@@ -1974,8 +1974,8 @@
 			"mmt": 0,
 			"hit": 80,
 			"crit": 0,
-			"min": 1,
-			"max": 1
+			"minrng": 1,
+			"maxrng": 1
 		},
 		{
 			"name": "Iron Axe",
@@ -1983,8 +1983,8 @@
 			"mmt": 0,
 			"hit": 70,
 			"crit": 0,
-			"min": 1,
-			"max": 1
+			"minrng": 1,
+			"maxrng": 1
 		},
 		{
 			"name": "Iron Bow",
@@ -1992,8 +1992,8 @@
 			"mmt": 0,
 			"hit": 85,
 			"crit": 0,
-			"min": 2,
-			"max": 2
+			"minrng": 2,
+			"maxrng": 2
 		},
 		{
 			"name": "Miasma",
@@ -2001,8 +2001,8 @@
 			"mmt": 5,
 			"hit": 80,
 			"crit": 0,
-			"min": 1,
-			"max": 2
+			"minrng": 1,
+			"maxrng": 2
 		},
 		{
 			"name": "Wind",
@@ -2010,8 +2010,8 @@
 			"mmt": 2,
 			"hit": 100,
 			"crit": 0,
-			"min": 1,
-			"max": 2
+			"minrng": 1,
+			"maxrng": 2
 		},
 		{
 			"name": "Fire",
@@ -2019,8 +2019,8 @@
 			"mmt": 3,
 			"hit": 90,
 			"crit": 0,
-			"min": 1,
-			"max": 2
+			"minrng": 1,
+			"maxrng": 2
 		},
 		{
 			"name": "Blizzard",
@@ -2028,8 +2028,8 @@
 			"mmt": 3,
 			"hit": 70,
 			"crit": 10,
-			"min": 1,
-			"max": 2
+			"minrng": 1,
+			"maxrng": 2
 		},
 		{
 			"name": "Nosferatu",
@@ -2037,8 +2037,8 @@
 			"mmt": 1,
 			"hit": 80,
 			"crit": 0,
-			"min": 1,
-			"max": 2
+			"minrng": 1,
+			"maxrng": 2
 		},
 		{
 			"name": "Heal",
@@ -2046,8 +2046,8 @@
 			"mmt": 8,
 			"hit": 100,
 			"crit": 0,
-			"min": 1,
-			"max": 1
+			"minrng": 1,
+			"maxrng": 1
 		}
 	]
 }
