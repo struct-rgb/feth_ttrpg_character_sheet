@@ -215,7 +215,9 @@
 				<label for="character-class">Class</label> <br />
 				<select id="character-class" name="character-class" oninput="refresh_class()">
 					{% for klass in definitions["classes"] %}
-					<option value="{{ klass['name'] }}">{{ klass["name"] }}</option>
+						{% if "hidden" not in klass or not klass["hidden"] %}
+							<option value="{{ klass['name'] }}">{{ klass["name"] }}</option>
+						{% endif %}
 					{% endfor %}
 				</select>
 				<label>
@@ -263,7 +265,9 @@
 				<input type="button" value="Add" onclick="learn_ability('battlefield')" />
 				<select id="learn-ability-select-battlefield">
 					{% for ability in definitions['abilities'] %}
-					<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+						{% if "hidden" not in ability or not ability["hidden"] %}
+							<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+						{% endif %}
 					{% endfor %}
 				</select>
 				<dl id="abilities-battlefield"></dl>
@@ -274,7 +278,9 @@
 				<input type="button" value="Add" onclick="learn_ability('known')" />
 				<select id="learn-ability-select-known">
 					{% for ability in definitions['abilities'] %}
-					<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+						{% if "hidden" not in ability or not ability["hidden"] %}
+							<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+						{% endif %}
 					{% endfor %}
 				</select>
 				<dl id="abilities-known"></dl>

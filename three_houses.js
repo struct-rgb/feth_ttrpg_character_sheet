@@ -132,18 +132,26 @@ function level_up() {
 	// then prompt user for stat to increase with popup
 	if (increases.size <= 1) {
 
-		increases.clear();
-
 		let   choosen     = null;
 		const prompt_text = (
 			"Enter one of: " + stat_names.join(" ")
 		);
 
-		while (choosen === null || !stat_names.includes(choosen)) {
-			choosen = prompt(prompt_text)?.toLowerCase();
+		while (!stat_names.includes(choosen)) {
+
+			choosen = prompt(prompt_text);
+
+			if (choosen === null) {
+				break;
+			} else {
+				choosen = choosen.toLowerCase();
+			}
 		}
 
-		increases.add(choosen);
+		if (choosen !== null) {
+			increases.clear();
+			increases.add(choosen);
+		}
 	}
 
 	// show user summary of levelup
@@ -164,7 +172,7 @@ function level_up() {
 }
 
 var skill_grades = ["E", "E+", "D", "D+", "C", "C+", "B", "B+", "A", "A+", "S", "S+"];
-var grade_levels = [  0,   8,   16,   24,  32,   40,  48,   56,  64,   72,  80,   88];
+var grade_levels = [  0,    3,   7,   13,  22,   33,  49,   69,  95,  126,  165, 211];
 
 function grade_for_points(skill_points) {
 	let grade = "S+";

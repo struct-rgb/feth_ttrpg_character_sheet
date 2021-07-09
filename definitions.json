@@ -1,6 +1,6 @@
 {
 	"statistics": {
-		"abbr": ["hp", "str", "mag", "dex", "spd", "def", "res", "mov"],
+		"abbr": ["hp", "str", "mag", "dex", "spd", "def", "res", "cha", "mov"],
 		"linked": [
 			["str", "pmt"],
 			["mag", "mmt"],
@@ -460,7 +460,7 @@
 		},
 		{
 			"name": "Priest",
-			"abilities": ["Heal", "White Magic Heal +5"],
+			"abilities": ["Heal", "Light Magic Heal +5"],
 			"growths": {
 				"hp" : 5,
 				"str": -5,
@@ -757,7 +757,7 @@
 		},
 		{
 			"name": "Warlock",
-			"abilities": ["Black Tomefaire", "Black Magic Uses x2"],
+			"abilities": ["Anima Tomefaire", "Anima Magic Uses x2"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
@@ -807,7 +807,7 @@
 		},
 		{
 			"name": "Bishop",
-			"abilities": ["White Magic Uses x2", "White Magic Heal +10", "Terrain Resistance"],
+			"abilities": ["Light Magic Uses x2", "Light Magic Heal +10", "Terrain Resistance"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
@@ -832,7 +832,7 @@
 		},
 		{
 			"name": "Falcon Knight",
-			"abilities": [],
+			"abilities": ["Canto", "Lancefaire", "Avoid +10"],
 			"growths": {
 				"hp" : 30,
 				"str": 10,
@@ -865,7 +865,7 @@
 		},
 		{
 			"name": "Wyvern Lord",
-			"abilities": [],
+			"abilities": ["Canto", "Axefaire", "Avoid +10"],
 			"growths": {
 				"hp" : 30,
 				"str": 15,
@@ -898,7 +898,7 @@
 		},
 		{
 			"name": "Mortal Savant",
-			"abilities": [],
+			"abilities": ["Swordfaire", "Anima Tomefaire"],
 			"growths": {
 				"hp" : 20,
 				"str": 10,
@@ -923,7 +923,7 @@
 		},
 		{
 			"name": "Great Knight",
-			"abilities": [],
+			"abilities": ["Canto", "Lancefaire", "Axefaire"],
 			"growths": {
 				"hp" : 30,
 				"str": 10,
@@ -956,7 +956,7 @@
 		},
 		{
 			"name": "Bow Knight",
-			"abilities": [],
+			"abilities": ["Canto", "Bowfaire", "Bowrange +2"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
@@ -988,7 +988,7 @@
 		},
 		{
 			"name": "Dark Knight",
-			"abilities": [],
+			"abilities": ["Canto", "Anima Tomefaire", "Dark Tomefaire"],
 			"growths": {
 				"hp" : 10,
 				"str": 5,
@@ -1021,7 +1021,7 @@
 		},
 		{
 			"name": "Holy Knight",
-			"abilities": [],
+			"abilities": ["Canto", "Light Tomefaire", "Terrain Resistance"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
@@ -1054,7 +1054,7 @@
 		},
 		{
 			"name": "War Master",
-			"abilities": [],
+			"abilities": ["Fistfaire", "Axefaire", "Critical +20"],
 			"growths": {
 				"hp" : 40,
 				"str": 15,
@@ -1079,7 +1079,7 @@
 		},
 		{
 			"name": "Gremory",
-			"abilities": [],
+			"abilities": ["Anima Magic x2", "Dark Magic x2", "Light Magic x2"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
@@ -1101,6 +1101,58 @@
 				"cha": 2,
 				"mov": 1
 			}
+		},
+		{
+			"name": "Summoner",
+			"abilities": ["Summon", "Bestowal"],
+			"growths": {
+				"hp" : 10,
+				"str": 0,
+				"mag": 0,
+				"dex": -5,
+				"spd": 0,
+				"def": 5,
+				"res": 10,
+				"cha": 10
+			},
+			"modifiers": {
+				"hp":  3,
+				"str": 0,
+				"mag": 0,
+				"dex": 0,
+				"spd": 0,
+				"def": 2,
+				"res": 5,
+				"cha": 2,
+				"mov": 0
+			},
+			"hidden": true
+		},
+		{
+			"name": "Phantom",
+			"abilities": ["Immaterial", "Retention"],
+			"growths": {
+				"hp" : 0,
+				"str": 50,
+				"mag": 0,
+				"dex": 50,
+				"spd": 45,
+				"def": 0,
+				"res": 0,
+				"cha": 0
+			},
+			"modifiers": {
+				"hp":  1,
+				"str": 8,
+				"mag": 0,
+				"dex": 7,
+				"spd": 6,
+				"def": 0,
+				"res": 0,
+				"cha": 0,
+				"mov": 0
+			},
+			"hidden": true
 		}
 	],
 
@@ -1112,7 +1164,7 @@
 			"modifiers": {},
 			"multipliers": {}
 		},
-				{
+		{
 			"name": "Riposte",
 			"activation": "Support",
 			"description": "If you can roll a hit, you can nullify a second attack the enemy makes against a friendly unit."
@@ -1148,7 +1200,7 @@
 			"modifiers": {"hit": 10, "avo": 20, "cravo": 10}
 		},
 		{
-			"name": "Axe Breaker",
+			"name": "Axebreaker",
 			"activation": "Passive",
 			"description": "Grants Hit/Avo +20 when using an sword against axe users.",
 			"modifiers": {"hit": 20, "avo": 20}
@@ -1189,7 +1241,7 @@
 			"modifiers": {"hit": 15, "avo": 15, "cravo": 10}
 		},
 		{
-			"name": "Sword Breaker",
+			"name": "Swordbreaker",
 			"activation": "Passive",
 			"description": "Grants Hit/Avo +20 when using an lance against sword users.",
 			"modifiers": {"hit": 20, "avo": 20}
@@ -1237,7 +1289,7 @@
 			"modifiers": {"hit": 20, "avo": 10, "cravo": 10}
 		},
 		{
-			"name": "Lance Breaker",
+			"name": "Lancebreaker",
 			"activation": "Passive",
 			"description": "Grants Hit/Avo +20 when using an axe against lance users.",
 			"modifiers": {"hit": 20, "avo": 20}
@@ -1291,31 +1343,31 @@
 		{
 			"name": "Reason Lv 1",
 			"activation": "Passive",
-			"description": "Grants Hit +7, Avo +5, and Crit Avo +5 when using a anima magic.",
+			"description": "Grants Hit +7, Avo +5, and Crit Avo +5 when using anima magic.",
 			"modifiers": {"hit": 7, "avo": 5, "cravo": 5}
 		},
 		{
 			"name": "Reason Lv 2",
 			"activation": "Passive",
-			"description": "Grants Hit +10, Avo +6, and Crit Avo +6 when using a anima magic.",
+			"description": "Grants Hit +10, Avo +6, and Crit Avo +6 when using anima magic.",
 			"modifiers": {"hit": 10, "avo": 6, "cravo": 6}
 		},
 		{
 			"name": "Reason Lv 3",
 			"activation": "Passive",
-			"description": "Grants Hit +13, Avo +7, and Crit Avo +7 when using a anima magic.",
+			"description": "Grants Hit +13, Avo +7, and Crit Avo +7 when using anima magic.",
 			"modifiers": {"hit": 13, "avo": 7, "cravo": 7}
 		},
 		{
 			"name": "Reason Lv 4",
 			"activation": "Passive",
-			"description": "Grants Hit +16, Avo +8, and Crit Avo +8 when using a anima magic.",
+			"description": "Grants Hit +16, Avo +8, and Crit Avo +8 when using anima magic.",
 			"modifiers": {"hit": 16, "avo": 8, "cravo": 8}
 		},
 		{
 			"name": "Reason Lv 5",
 			"activation": "Passive",
-			"description": "Grants Hit +20, Avo +10, and Crit Avo +10 when using a anima magic.",
+			"description": "Grants Hit +20, Avo +10, and Crit Avo +10 when using anima magic.",
 			"modifiers": {"hit": 20, "avo": 10, "cravo": 10}
 		},
 		{
@@ -1326,31 +1378,31 @@
 		{
 			"name": "Faith Lv 1",
 			"activation": "Passive",
-			"description": "Grants Hit +5, Avo +7, and Crit Avo +5 when using a light magic.",
+			"description": "Grants Hit +5, Avo +7, and Crit Avo +5 when using light magic.",
 			"modifiers": {"hit": 5, "avo": 7, "cravo": 5}
 		},
 		{
 			"name": "Faith Lv 2",
 			"activation": "Passive",
-			"description": "Grants Hit +6, Avo +10, and Crit Avo +6 when using a light magic.",
+			"description": "Grants Hit +6, Avo +10, and Crit Avo +6 when using light magic.",
 			"modifiers": {"hit": 6, "avo": 10, "cravo": 6}
 		},
 		{
 			"name": "Faith Lv 3",
 			"activation": "Passive",
-			"description": "Grants Hit +7, Avo +13, and Crit Avo +7 when using a light magic.",
+			"description": "Grants Hit +7, Avo +13, and Crit Avo +7 when using light magic.",
 			"modifiers": {"hit": 7, "avo": 13, "cravo": 7}
 		},
 		{
 			"name": "Faith Lv 4",
 			"activation": "Passive",
-			"description": "Grants Hit +8, Avo +16, and Crit Avo +8 when using a light magic.",
+			"description": "Grants Hit +8, Avo +16, and Crit Avo +8 when using light magic.",
 			"modifiers": {"hit": 8, "avo": 16, "cravo": 8}
 		},
 		{
 			"name": "Faith Lv 5",
 			"activation": "Passive",
-			"description": "Grants Hit +10, Avo +20, and Crit Avo +10 when using a light magic.",
+			"description": "Grants Hit +10, Avo +20, and Crit Avo +10 when using light magic.",
 			"modifiers": {"hit": 10, "avo": 20, "cravo": 10}
 		},
 		{
@@ -1361,31 +1413,31 @@
 		{
 			"name": "Guile Lv 1",
 			"activation": "Passive",
-			"description": "Grants Hit +7, Avo +5, and Crit Avo +5 when using a dark magic.",
+			"description": "Grants Hit +7, Avo +5, and Crit Avo +5 when using dark magic.",
 			"modifiers": {"hit": 7, "avo": 5, "cravo": 5}
 		},
 		{
 			"name": "Guile Lv 2",
 			"activation": "Passive",
-			"description": "Grants Hit +10, Avo +6, and Crit Avo +6 when using a dark magic.",
+			"description": "Grants Hit +10, Avo +6, and Crit Avo +6 when using dark magic.",
 			"modifiers": {"hit": 10, "avo": 6, "cravo": 6}
 		},
 		{
 			"name": "Guile Lv 3",
 			"activation": "Passive",
-			"description": "Grants Hit +13, Avo +7, and Crit Avo +7 when using a dark magic.",
+			"description": "Grants Hit +13, Avo +7, and Crit Avo +7 when using dark magic.",
 			"modifiers": {"hit": 13, "avo": 7, "cravo": 7}
 		},
 		{
 			"name": "Guile Lv 4",
 			"activation": "Passive",
-			"description": "Grants Hit +16, Avo +8, and Crit Avo +8 when using a dark magic.",
+			"description": "Grants Hit +16, Avo +8, and Crit Avo +8 when using dark magic.",
 			"modifiers": {"hit": 16, "avo": 8, "cravo": 8}
 		},
 		{
 			"name": "Guile Lv 5",
 			"activation": "Passive",
-			"description": "Grants Hit +20, Avo +10, and Crit Avo +10 when using a dark magic.",
+			"description": "Grants Hit +20, Avo +10, and Crit Avo +10 when using dark magic.",
 			"modifiers": {"hit": 20, "avo": 10, "cravo": 10}
 		},
 		{
@@ -1412,10 +1464,201 @@
 			"modifiers": {"hit": 15, "avo": 15}
 		},
 		{
+			"name": "Wing Buffet",
+			"activation": "Support",
+			"description": "Move any unit one space in any direction."
+		},
+		{
+			"name": "Swordfaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when using a sword.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Lancefaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when using a lance.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Axefaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when a axe is equipped.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Bowfaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when using a bow or using a ballista.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Fistfaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when using a Gauntlet or when the Unarmed Combat Skill is active or using an onagler.",
+			"modifiers": {"pmt": 5}
+		},
+		{
+			"name": "Anima Tomefaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when using anima magic.",
+			"modifiers": {"mmt": 5}
+		},
+		{
+			"name": "Light Tomefaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when using light magic.",
+			"modifiers": {"mmt": 5}
+		},
+		{
+			"name": "Dark Tomefaire",
+			"activation": "Passive",
+			"description": "Grants Might +5 when using dark magic.",
+			"modifiers": {"mmt": 5}
+		},
+		{
+			"name": "Sword Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a sword",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Lance Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a lance",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Axe Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a axe",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Bow Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a bow",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Brawl Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using a gauntlet or the Unarmed Combat skill is active",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Anima Magic Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using anima magic",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Light Magic Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using light magic",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Dark Magic Critical +10",
+			"activation": "Passive",
+			"description": "Grants Critical +10 when using dark magic",
+			"modifiers": {"crit": 10}
+		},
+		{
+			"name": "Sword Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using a sword",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Lance Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using a lance",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Axe Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using a axe",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Bow Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using a bow",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Brawl Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using a gauntlet or the Unarmed Combat skill is active",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Anima Magic Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using anima magic",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Light Magic Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using light magic",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Dark Magic Avoid +20",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when using dark magic",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "HP +5",
+			"activation": "Passive",
+			"description": "Increases maximum HP by 5",
+			"modifiers": {"hp": 5}
+		},
+		{
+			"name": "Strength +2",
+			"activation": "Passive",
+			"description": "Increases Str by 2",
+			"modifiers": {"str": 2}
+		},
+		{
+			"name": "Magic +2",
+			"activation": "Passive",
+			"description": "Increases Mag by 2.",
+			"modifiers": {"mag": 2}
+		},
+		{
 			"name": "Dexterity +4",
 			"activation": "Passive",
 			"description": "Increases Dexterity by 4",
 			"modifiers": {"dex": 4}
+		},
+		{
+			"name": "Speed +2",
+			"activation": "Passive",
+			"description": "Increases Spd by 2.",
+			"modifiers": {"spd": 2}
+		},
+		{
+			"name": "Pomp & Circumstance",
+			"activation": "Passive",
+			"description": "Grants Dex/Cha +4.",
+			"modifiers": {"dex": 4, "cha": 4}
+		},
+		{
+			"name": "Defense +2",
+			"activation": "Passive",
+			"description": "Increases Def by 2.",
+			"modifiers": {"def": 2}
+		},
+		{
+			"name": "Resistance +2",
+			"activation": "Passive",
+			"description": "Increases Res by 2.",
+			"modifiers": {"res": 2}
 		},
 		{
 			"name": "Movement +1",
@@ -1424,20 +1667,444 @@
 			"modifiers": {"mov": 1}
 		},
 		{
+			"name": "Hit +20",
+			"activation": "Passive",
+			"description": "Increases Hit by 20.",
+			"modifiers": {"hit": 20}
+		},
+		{
+			"name": "Avoid +10",
+			"activation": "Passive",
+			"description": "Raises Avoidance by 10.",
+			"modifiers": {"avo": 10}
+		},
+		{
+			"name": "Critical +20",
+			"activation": "Passive",
+			"description": "Grants its user a 20% bonus to their Critical rate.",
+			"modifiers": {"crit": 20}
+		},
+		{
+			"name": "Defiant Strength",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Strength +8.",
+			"modifiers": {"str": 8}
+		},
+		{
+			"name": "Defiant Magic",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Magic +8.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Defiant Speed",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Speed +8.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Defiant Resistance",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Resistance +8.",
+			"modifiers": {"res": 8}
+		},
+		{
+			"name": "Defiant Defense",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Defense +8.",
+			"modifiers": {"def": 8}
+		},
+		{
+			"name": "Defiant Avoid",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Avoid +30.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Defiant Critical",
+			"activation": "Passive",
+			"description": "At start of turn, if unit's HP ≤ 25%, Grants Critical +50.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Death Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Str +6 during combat.",
+			"modifiers": {"str": 6}
+		},
+		{
+			"name": "Fiendish Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Magic +6 during combat.",
+			"modifiers": {"mag": 6}
+		},
+		{
+			"name": "Darting Blow",
+			"activation": "When initiating combat",
+			"description": "If unit initiates combat, grants AS +6 during combat.",
+			"modifiers": {"as": 6}
+		},
+		{
+			"name": "Armored Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Def +6 during combat.",
+			"modifiers": {"def": 6}
+		},
+		{
+			"name": "Warding Blow",
+			"activation": "Passive",
+			"description": "When user triggers the battle, grants Resistance +20",
+			"modifiers": {"res": 20}
+		},
+		{
+			"name": "Charm",
+			"activation": "Passive",
+			"description": "Allies within 1 space inflict +3 damage in combat.",
+			"modifiers": {"pmt": 3, "mmt": 3}
+		},
+		{
+			"name": "Seal Defense",
+			"activation": "Passive",
+			"description": "If unit damages foe during combat, foe suffers Def -6 for 1 turn after combat.",
+			"modifiers": {"def": -6}
+		},
+		{
+			"name": "Seal Resistance",
+			"activation": "Passive",
+			"description": "If unit damages foe during combat, foe suffers Res -6 for 1 turn after combat.",
+			"modifiers": {"res": -6}
+		},
+		{
+			"name": "Heartseeker",
+			"activation": "Passive",
+			"description": "If foes is within a 1-space radius, grants foes Avoid -20",
+			"modifiers": {"avo": -20}
+		},
+		{
+			"name": "Tomebreaker",
+			"activation": "Passive",
+			"description": "Grants Hit/Avo +20 when brawling against magic users.",
+			"modifiers": {"hit": 20, "avo": 20}
+		},
+		{
+			"name": "Bowbreaker",
+			"activation": "Passive",
+			"description": "Grants Hit/Avo +20 when using magic against bow users.",
+			"modifiers": {"hit": 20, "avo": 20}
+		},
+		{
+			"name": "Fistbreaker",
+			"activation": "Passive",
+			"description": "Grants Hit/Avo +20 when using a bow against brawlers.",
+			"modifiers": {"hit": 20, "avo": 20}
+		},
+		{
+			"name": "Fire",
+			"activation": "Passive",
+			"description": "Grants access to Fire. If unit has already learned Fire, mulitplies its uses per battle by 2x.",
+			"multipliers": {"uses": {"Fire": 2}}
+		},
+		{
+			"name": "Miasma",
+			"activation": "Passive",
+			"description": "Grants access to Miasma. If unit has already learned Miasma, mulitplies its uses per battle by 2x.",
+			"multipliers": {"uses": {"Miasma": 2}}
+		},
+		{
+			"name": "Heal",
+			"activation": "Passive",
+			"description": "Grants access to Heal. If unit has already learned Heal, multiplies its uses per battle by 2×.",
+			"multipliers": {"uses": {"Heal": 2}}
+		},
+		{
+			"name": "Renewal",
+			"activation": "Passive",
+			"description": "Unit recovers up to 20% of max HP at the start of each turn."
+		},
+		{
+			"name": "Poison Strike",
+			"activation": "Passive",
+			"description": "If unit initiates combat and lands a hit, targeted foe loses up to 20% of max HP after combat."
+		},
+		{
+			"name": "Lifetaker",
+			"activation": "Passive",
+			"description": "Unit recovers HP equal to 50% of damage dealt after defeating a foe."
+		},
+		{
+			"name": "Lethality",
+			"activation": "dex/4",
+			"description": "Chance to instantly kill a foe when dealing damage."
+		},
+		{
+			"name": "Poison",
+			"activation": "dex",
+			"description": "Chance to inflict poison on a foe when dealing damage."
+		},
+		{
+			"name": "Pavise",
+			"activation": "player.dex",
+			"description": "Chance to reduce sword/lance/axe/brawling damage by half."
+		},
+		{
+			"name": "Aegis",
+			"activation": "player.dex",
+			"description": "Chance to reduce bow/magic damage by half."
+		},
+		{
+			"name": "Miracle",
+			"activation": "player.dex",
+			"description": "Chance to survive lethal damage with 1 HP, if HP is > 1."
+		},
+		{
+			"name": "Terrain Resistance",
+			"activation": "Passive",
+			"description": "Nullifies damage from terrain."
+		},
+		{
+			"name": "Special Dance",
+			"activation": "Passive",
+			"description": "When using the Dance ability, grant Dex/Spd to target ally.",
+			"modifiers": {"dex": 4, "spd": 4}
+		},
+		{
+			"name": "Vantage",
+			"activation": "Passive",
+			"description": "If foe initiates combat, and if HP is ≤ 50%, unit still attacks first"
+		},
+		{
+			"name": "Desperation",
+			"activation": "Passive",
+			"description": "If unit initiates combat with HP ≤ 50%, unit’s follow-up attack (if possible) occurs before foe’s counterattack."
+		},
+		{
+			"name": "Quick Riposte",
+			"activation": "Passive",
+			"description": "If Unit's HP ≥ 50%, if attacked by a foe, treats unit's Attack Speed as 4 higher than the foe's, granting the unit a follow up attack and denying the enemy's."
+		},
+		{
+			"name": "Wrath",
+			"activation": "Passive",
+			"description": "If foe initiates combat while unit’s HP is ≤ 50%, grants Crit +50."
+		},
+		{
+			"name": "Dance",
+			"activation": "Command",
+			"description": "Use Dance to allow an ally to move again."
+		},
+		{
+			"name": "Steal",
+			"activation": "Passive",
+			"description": "Allows unit to steal a non-weapon item form a foe with a lower Spd stat."
+		},
+		{
+			"name": "Locktouch",
+			"activation": "Passive",
+			"description": "Allows the user to open normal doors and chests without keys"
+		},
+		{
+			"name": "Stealth",
+			"activation": "Passive",
+			"description": "Enemies can't target the user if an ally not possessing stealth is in range."
+		},
+		{
+			"name": "Canto",
+			"activation": "Passive",
+			"description": "After performing an action, user can user their leftover movement."
+		},
+		{
 			"name": "Pass",
 			"activation": "Passive",
 			"description": "Move through enemy spaces."
 		},
 		{
-			"name": "Wing Buffet",
-			"activation": "Support",
-			"description": "Move any unit one space in any direction."
+			"name": "Bowrange +1",
+			"activation": "Passive",
+			"description": "Maximum Bow range +1",
+			"modifiers": {"maxrng": 1}
 		},
 		{
-			"name": "Mounted Combatant",
+			"name": "Bowrange +2",
 			"activation": "Passive",
-			"description": "Gain an additional +15 Avo and +15 Hit against other Flying units.",
-			"modifiers": {"hit": 15, "avo": 15}
+			"description": "Maximum Bow range +2",
+			"modifiers": {"maxrng": 1}
+		},
+		{
+			"name": "Anima Magic Range +1",
+			"activation": "Passive",
+			"description": "Maximum anima magic range +1",
+			"modifiers": {"maxrng": 1}
+		},
+		{
+			"name": "Dark Magic Range +1",
+			"activation": "Passive",
+			"description": "Maximum dark magic range +1",
+			"modifiers": {"maxrng": 1}
+		},
+		{
+			"name": "Light Magic Range +1",
+			"activation": "Passive",
+			"description": "Maximum light magic range +1",
+			"modifiers": {"maxrng": 1}
+		},
+		{
+			"name": "Unarmed Combat",
+			"activation": "Passive",
+			"description": "User is able to fight barehandedly."
+		},
+		{
+			"name": "Anima Magic Uses x2",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for anima magic by 2",
+			"multipliers": {"uses": {"anima": 2}}
+		},
+		{
+			"name": "Dark Magic Uses x2",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for dark magic by 2",
+			"multipliers": {"uses": {"dark": 2}}
+		},
+		{
+			"name": "Light Magic Uses x2",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for light magic by 2",
+			"multipliers": {"uses": {"light": 2}}
+		},
+		{
+			"name": "Light Magic Heal +5",
+			"activation": "Passive",
+			"description": "Adds 5 additional HP when healing with light magic.",
+			"modifiers": {"mmt": 5}
+		},
+		{
+			"name": "Light Magic Heal +10",
+			"activation": "Passive",
+			"description": "Adds 10 additional HP when healing with light magic.",
+			"modifiers": {"mmt": 10}
+		},
+		{
+			"name": "Unsealable Magic",
+			"activation": "Passive",
+			"description": "Prevents unit from being silenced."
+		},
+		{
+			"name": "Immune Status",
+			"activation": "Passive",
+			"description": "Nullifies status effects and debuffs."
+		},
+		{
+			"name": "General",
+			"activation": "Passive",
+			"description": "Nullifies instant death effects."
+		},
+		{
+			"name": "Commander",
+			"activation": "Passive",
+			"description": "Nullifies instant death effects, status effects, and movement effects."
+		},
+		{
+			"name": "Infinite Magic",
+			"activation": "Passive",
+			"description": "Removes the limitation on the number of times magic can be used."
+		},
+		{
+			"name": "Magic Bind",
+			"activation": "Passive",
+			"description": "If the unit lands a hit, targeted foe is unable to use magic for 1 turn."
+		},
+		{
+			"name": "Infantry Effect Null",
+			"activation": "Passive",
+			"description": "Nullifies any extra effectiveness against infantry units."
+		},
+		{
+			"name": "Armored Effect Null",
+			"activation": "Passive",
+			"description": "Nullifies any extra effectiveness against armored units."
+		},
+		{
+			"name": "Cavalry Effect Null",
+			"activation": "Passive",
+			"description": "Nullifies any extra effectiveness against cavalry units."
+		},
+		{
+			"name": "Flying Effect Null",
+			"activation": "Passive",
+			"description": "Nullifies any extra effectiveness against flying units."
+		},
+		{
+			"name": "Dragon Effect Null",
+			"activation": "Passive",
+			"description": "Nullifies any extra effectiveness against dragons."
+		},
+		{
+			"name": "Monster Effect Null",
+			"activation": "Passive",
+			"description": "Nullifies any extra effectiveness against monsters."
+		},
+		{
+			"name": "Effect Null",
+			"activation": "Passive",
+			"description": "Cancels all types of effectiveness."
+		},
+		{
+			"name": "Vital Defense",
+			"activation": "Passive",
+			"description": "Makes critical hits against this unit impossible."
+		},
+		{
+			"name": "Giant Wings",
+			"activation": "Passive",
+			"description": "Grants Avoid +30 against sword, lance, and axe users.",
+			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Anti-magic Armor",
+			"activation": "Passive",
+			"description": "Nullifies damage from magical attacks."
+		},
+		{
+			"name": "Noncombatant",
+			"activation": "Passive",
+			"description": "Unit cannot be targetted by foes."
+		},
+		{
+			"name": "Cursed Power",
+			"activation": "Passive",
+			"description": "Unit recovers HP on swamp terrain."
+		},
+		{
+			"name": "Anchor",
+			"activation": "Passive",
+			"description": "Prevents unit from being moved."
+		},
+		{
+			"name": "Counterattack",
+			"activation": "Passive",
+			"description": "Allows unit to counterattack regardless of distance to attacker."
+		},
+		{
+			"name": "Counterattack",
+			"activation": "Passive",
+			"description": "Allows unit to counterattack regardless of distance to attacker."
+		},
+			{
+			"name": "Anima Magic Uses x4",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for anima magic by 4",
+			"multipliers": {"uses": {"anima": 4}}
+		},
+		{
+			"name": "Dark Magic Uses x4",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for dark magic by 4",
+			"multipliers": {"uses": {"dark": 4}}
+		},
+		{
+			"name": "Light Magic Uses x4",
+			"activation": "Passive",
+			"description": "Multiplies the number of uses for light magic by 4",
+			"multipliers": {"uses": {"light": 4}}
 		},
 		{
 			"name": "Alert Stance",
@@ -1450,6 +2117,36 @@
 			"activation": "Passive",
 			"description": "If unit takes no action except Wait, grants Avo +30 for 1 turn.",
 			"modifiers": {"avo": 30}
+		},
+		{
+			"name": "Agarthan Technology",
+			"activation": "Passive",
+			"description": "Adjacent foes deal 3 less damage during combat.",
+			"modifiers": {"pdr": 3, "mdr": 3}
+		},
+		{
+			"name": "Lucky Seven",
+			"activation": "Passive",
+			"description": "Each turn, grants +5 to one of the following stats: Str, Mag, Spd, Def, Res, Hit, or Avo.",
+			"modifiers": {"str": 5, "mag": 5, "spd": 5, "def": 5, "res": 5, "hit": 5, "avo": 5}
+		},
+		{
+			"name": "Transmute",
+			"activation": "Passive",
+			"description": "If unit is hit with a magic attack during enemy phase, grants +3 to all stats until next player phase ends.",
+			"modifiers": {"str": 5, "mag": 5, "spd": 5, "def": 5, "dex": 5, "res": 5, "cha": 5}
+		},
+		{
+			"name": "Duelist's Blow",
+			"activation": "Passive",
+			"description": "Grants Avoid +20 when user triggers battle.",
+			"modifiers": {"avo": 20}
+		},
+		{
+			"name": "Uncanny Blow",
+			"activation": "Passive",
+			"description": "If unit initiates combat, grants Hit Rate +30 during combat.",
+			"modifiers": {"hit": 30}
 		},
 		{
 			"name": "Combat Medic",
@@ -1472,8 +2169,7 @@
 		{
 			"name": "Dead Man's Hand",
 			"activation": "Passive",
-			"description": "Enemies within the user's movement range cannot target allies.",
-			"modifiers": {}
+			"description": "Enemies within the user's movement range cannot target allies."
 		},
 		{
 			"name": "Sibling Bond A",
@@ -1488,15 +2184,22 @@
 			"modifiers": {"pdr": 2, "mdr": 2}
 		},
 		{
+			"name": "Oskar's Sibling Bond",
+			"activation": "Passive",
+			"description": "While within 2 spaces of Amalia, user's attacks inflicts 2 extra damage",
+			"modifiers": {"mmt": 2, "pmt": 2}
+		},
+		{
+			"name": "Amalia's Sibling Bond",
+			"activation": "Passive",
+			"description": "While within 2 spaces of Oskar, user reduces damage taken by 2.",
+			"modifiers": {"pdr": 2, "mdr": 2}
+		},
+		{
 			"name": "Wrathful Empathy",
 			"activation": "Passive",
 			"description": "An any ally within 3 spaces has HP ≤ 50%, grants +4 Mag and +4 Dex",
 			"modifiers": {"mag": 4, "dex": 4}
-		},
-		{
-			"name": "Stealth",
-			"activation": "Passive",
-			"description": "Enemies can't target the user if an ally not possessing stealth is in range."
 		},
 		{
 			"name": "Hesitant Prodigy (Debuff)",
@@ -1533,419 +2236,48 @@
 			"description": "(Ryan L.: I didn't know how to adapt this one. ThatBardBoi, PM me when you decide how this works.)"
 		},
 		{
-			"name": "HP +5",
-			"activation": "Passive",
-			"description": "Increases maximum HP by 5",
-			"modifiers": {"hp": 5}
-		},
-		{
-			"name": "Dance",
-			"activation": "Command",
-			"description": "Use Dance to allow an ally to move again."
-		},
-		{
-			"name": "Special Dance",
-			"activation": "Passive",
-			"description": "When using the Dance ability, grant Dex/Spd to target ally.",
-			"modifiers": {"dex": 4, "spd": 4}
-		},
-		{
-			"name": "Speed +2",
-			"activation": "Passive",
-			"description": "Increases Spd by 2.",
-			"modifiers": {"spd": 2}
-		},
-		{
-			"name": "Defense +2",
-			"activation": "Passive",
-			"description": "Increases Def by 2.",
-			"modifiers": {"def": 2}
-		},
-		{
-			"name": "Strength +2",
-			"activation": "Passive",
-			"description": "Increases Str by 2",
-			"modifiers": {"str": 2}
-		},
-		{
-			"name": "Magic +2",
-			"activation": "Passive",
-			"description": "Increases Mag by 2.",
-			"modifiers": {"mag": 2}
-		},
-		{
-			"name": "Charm",
-			"activation": "Passive",
-			"description": "Allies within 1 space inflict +3 damage in combat.",
-			"modifiers": {"pmt": 3, "mmt": 3}
-		},
-		{
-			"name": "Resistance +2",
-			"activation": "Passive",
-			"description": "Increases Res by 2.",
-			"modifiers": {"res": 2}
-		},
-		{
-			"name": "Vantage",
-			"activation": "Passive",
-			"description": "If foe initiates combat, and if HP is ≤ 50%, unit still attacks first"
-		},
-		{
-			"name": "Steal",
-			"activation": "Passive",
-			"description": "Allows unit to steal a non-weapon item form a foe with a lower Spd stat."
-		},
-		{
-			"name": "Locktouch",
-			"activation": "Passive",
-			"description": "Allows the user to open normal doors and chests without keys"
-		},
-		{
-			"name": "Canto",
-			"activation": "Passive",
-			"description": "After performing an action, user can user their leftover movement."
-		},
-		{
-			"name": "Desperation",
-			"activation": "Passive",
-			"description": "If unit initiates combat with HP ≤ 50%, unit’s follow-up attack (if possible) occurs before foe’s counterattack."
-		},
-		{
-			"name": "Avoid +10",
-			"activation": "Passive",
-			"description": "Raises Avoidance by 10.",
-			"modifiers": {"avo": 10}
-		},
-		{
-			"name": "Darting Blow",
-			"activation": "When initiating combat",
-			"description": "If unit initiates combat, grants AS +6 during combat.",
-			"modifiers": {"as": 6}
-		},
-		{
-			"name": "Death Blow",
-			"activation": "Passive",
-			"description": "If unit initiates combat, grants Str +6 during combat.",
-			"modifiers": {"str": 6}
-		},
-		{
-			"name": "Armored Blow",
-			"activation": "Passive",
-			"description": "If unit initiates combat, grants Def +6 during combat.",
-			"modifiers": {"def": 6}
-		},
-		{
-			"name": "Bowrange +1",
-			"activation": "Passive",
-			"description": "Maximum Bow range +1",
-			"modifiers": {"maxrng": 1}
-		},
-		{
-			"name": "Hit +20",
-			"activation": "Passive",
-			"description": "Increases Hit by 20.",
-			"modifiers": {"hit": 20}
-		},
-		{
-			"name": "Unarmed Combat",
-			"activation": "Passive",
-			"description": "User is able to fight barehandedly."
-		},
-		{
-			"name": "Fire",
-			"activation": "Passive",
-			"description": "Grants access to Fire. If unit has already learned Fire, mulitplies its uses per battle by 2x.",
-			"multipliers": {"uses": {"Fire": 2}}
-		},
-		{
-			"name": "Fiendish Blow",
-			"activation": "Passive",
-			"description": "If unit initiates combat, grants Magic +6 during combat.",
-			"modifiers": {"mag": 6}
-		},
-		{
-			"name": "Miasma",
-			"activation": "Passive",
-			"description": "Grants access to Miasma. If unit has already learned Miasma, mulitplies its uses per battle by 2x.",
-			"multipliers": {"uses": {"Miasma": 2}}
-		},
-		{
-			"name": "Poison Strike",
-			"activation": "Passive",
-			"description": "If unit initiates combat and lands a hit, targeted foe loses up to 20% of max HP after combat."
-		},
-		{
-			"name": "Heartseeker",
-			"activation": "Passive",
-			"description": "If foes is within a 1-space radius, grants foes Avoid -20",
-			"modifiers": {"avo": -20}
-		},
-		{
-			"name": "Heal",
-			"activation": "Passive",
-			"description": "Grants access to Heal. If unit has already learned Heal, multiplies its uses per battle by 2×.",
-			"multipliers": {"uses": {"Heal": 2}}
-		},
-		{
-			"name": "White Magic Heal +5",
-			"activation": "Passive",
-			"description": "Adds 5 additional Health Points when healing with White Magic.",
-			"modifiers": {"mmt": 5}
-		},
-		{
-			"name": "Miracle",
-			"activation": "player.dex",
-			"description": "Chance to survive lethal damage with 1 HP, if HP is > 1."
-		},
-		{
-			"name": "Swordfaire",
-			"activation": "Passive",
-			"description": "Might +5 when a sword is equipped.",
-			"modifiers": {"pmt": 5}
-		},
-		{
-			"name": "Sword Critical +10",
-			"activation": "Passive",
-			"description": "Grants Critical +10 when using a Sword",
-			"modifiers": {"crit": 10}
-		},
-		{
-			"name": "Lancefaire",
-			"activation": "Passive",
-			"description": "Might +5 when a lance is equipped.",
-			"modifiers": {"pmt": 5}
-		},
-		{
-			"name": "Lance Critical +10",
-			"activation": "Passive",
-			"description": "Grants Critical +10 when using a Lance",
-			"modifiers": {"crit": 10}
-		},
-		{
-			"name": "Axefaire",
-			"activation": "Passive",
-			"description": "Might +5 when a axe is equipped.",
-			"modifiers": {"pmt": 5}
-		},
-		{
-			"name": "Axe Critical +10",
-			"activation": "Passive",
-			"description": "Grants Critical +10 when using a Axe",
-			"modifiers": {"crit": 10}
-		},
-		{
-			"name": "Aegis",
-			"activation": "player.dex",
-			"description": "Chance to reduce bow/magic damage by half."
-		},
-		{
-			"name": "Pavise",
-			"activation": "player.dex",
-			"description": "Chance to reduce sword/lance/axe/brawling damage by half."
-		},
-		{
 			"name": "Weight -5",
 			"activation": "Passive",
 			"description": "The combained Weight of equiptment is reduced by 5.",
-			"modifiers": {"weight": -5}
-		},
+			"modifiers": {"weight": -5},
+			"hidden": true
+		},		
 		{
-			"name": "Seal Defense",
+			"name": "Umbral Leech",
 			"activation": "Passive",
-			"description": "If unit damages foe during combat, foe suffers Def -6 for 1 turn after combat.",
-			"modifiers": {"def": -6}
+			"description": "Unit absorbs HP from phantoms.",
+			"hidden": true
 		},
 		{
-			"name": "Seal Resistance",
+			"name": "Manifest Phantom",
 			"activation": "Passive",
-			"description": "If unit damages foe during combat, foe suffers Res -6 for 1 turn after combat.",
-			"modifiers": {"res": -6}
+			"description": "Unit births phantoms",
+			"hidden": true
 		},
 		{
-			"name": "Tomefaire",
+			"name": "Summon",
 			"activation": "Passive",
-			"description": "Grants Might +5 when equipped with a Black Magic spell.",
-			"modifiers": {"mmt": 5}
+			"description": "Grants access to Summon. If unit has already learned Summon, mulitplies its uses per battle by 2x.",
+			"multipliers": {"uses": {"Summon": 2}},
+			"hidden": true
 		},
 		{
-			"name": "Fistfaire",
+			"name": "Bestowal",
 			"activation": "Passive",
-			"description": "Grants Attack +5 when equipped with a Gauntlet or when the Unarmed Combat Skill is active or using an onagler.",
-			"modifiers": {"pmt": 5}
+			"description": "User's equipped abilities, excluding personal and class abilities, are also equipped by any phantom the user summons. Phantom's skills are equal to summoner's skills.",
+			"hidden": true
 		},
 		{
-			"name": "Bowfaire",
+			"name": "Immaterial",
 			"activation": "Passive",
-			"description": "Might +5 when a bow is equipped or using a ballista.",
-			"modifiers": {"pmt": 5}
+			"description": "User's movement type is flight, but user does not take effective damage from being a flyer.",
+			"hidden": true
 		},
 		{
-			"name": "Lifetaker",
+			"name": "Retention",
 			"activation": "Passive",
-			"description": "Unit recovers HP equal to 50% of damage dealt after defeating a foe."
-		},
-		{
-			"name": "Renewal",
-			"activation": "Passive",
-			"description": "Unit recovers up to 20% of max HP at the start of each turn."
-		},
-		{
-			"name": "White Magic Uses x2",
-			"activation": "Passive",
-			"description": "Multiplies the number of uses for white magic by 2",
-			"multipliers": {"uses": {"light": 2}}
-		},
-		{
-			"name": "Black Magic Uses x2",
-			"activation": "Passive",
-			"description": "Multiplies the number of uses for black magic by 2",
-			"multipliers": {"uses": {"anima": 2}}
-		},
-		{
-			"name": "Dark Magic Uses x2",
-			"activation": "Passive",
-			"description": "Multiplies the number of uses for dark magic by 2",
-			"multipliers": {"uses": {"anima": 2}}
-		},
-		{
-			"name": "Terrain Resistance",
-			"activation": "Passive",
-			"description": "Nullifies damage from terrain."
-		},
-		{
-			"name": "White Magic Heal +10",
-			"activation": "Passive",
-			"description": "Adds 10 additional Health Points when healing with White Magic.",
-			"modifiers": {"mmt": 10}
-		},
-		{
-			"name": "Tomebreaker",
-			"activation": "Passive",
-			"description": "Grants Hit/Avo +20 when brawling against magic users.",
-			"modifiers": {"hit": 20, "avo": 20}
-		},
-		{
-			"name": "Wrath",
-			"activation": "Passive",
-			"description": "If foe initiates combat while unit’s HP is ≤ 50%, grants Crit +50."
-		},
-		{
-			"name": "Lethality",
-			"activation": "player.dex/4",
-			"description": "Chance to instantly kill a foe when dealing damage."
-		},
-		{
-			"name": "Defiant Strength",
-			"activation": "Passive",
-			"description": "At start of turn, if unit's HP ≤ 25%, Grants Strength +8.",
-			"modifiers": {"str": 8}
-		},
-		{
-			"name": "Defiant Resistance",
-			"activation": "Passive",
-			"description": "At start of turn, if unit's HP ≤ 25%, Grants Resistance +8.",
-			"modifiers": {"res": 8}
-		},
-		{
-			"name": "Defiant Defense",
-			"activation": "Passive",
-			"description": "At start of turn, if unit's HP ≤ 25%, Grants Defense +8.",
-			"modifiers": {"def": 8}
-		},
-		{
-			"name": "Lucky Seven",
-			"activation": "Passive",
-			"description": "Each turn, grants +5 to one of the following stats: Str, Mag, Spd, Def, Res, Hit, or Avo.",
-			"modifiers": {"str": 5, "mag": 5, "spd": 5, "def": 5, "res": 5, "hit": 5, "avo": 5}
-		},
-		{
-			"name": "Duelist's Blow",
-			"activation": "Passive",
-			"description": "Grants Avoid +20 when user triggers battle.",
-			"modifiers": {"avo": 20}
-		},
-		{
-			"name": "Brawl Avoid +20",
-			"activation": "Passive",
-			"description": "Grants Avoid +20 when Brawling",
-			"modifiers": {"avo": 20}
-		},
-		{
-			"name": "Transmute",
-			"activation": "Passive",
-			"description": "If unit is hit with a magic attack during enemy phase, grants +3 to all stats until next player phase ends.",
-			"modifiers": {"str": 5, "mag": 5, "spd": 5, "def": 5, "dex": 5, "res": 5, "cha": 5}
-		},
-		{
-			"name": "Black Magic Range +1",
-			"activation": "Passive",
-			"description": "Maximum Black Magic range +1",
-			"modifiers": {"maxrng": 1}
-		},
-		{
-			"name": "Dark Magic Range +1",
-			"activation": "Passive",
-			"description": "Maximum Dark Magic range +1",
-			"modifiers": {"maxrng": 1}
-		},
-		{
-			"name": "White Magic Range +1",
-			"activation": "Passive",
-			"description": "Maximum White Magic range +1",
-			"modifiers": {"maxrng": 1}
-		},
-		{
-			"name": "Bowrange +2",
-			"activation": "Passive",
-			"description": "Maximum Bow range +2",
-			"modifiers": {"maxrng": 1}
-		},
-		{
-			"name": "Uncanny Blow",
-			"activation": "Passive",
-			"description": "If unit initiates combat, grants Hit Rate +30 during combat.",
-			"modifiers": {"hit": 30}
-		},
-		{
-			"name": "Defiant Avoid",
-			"activation": "Passive",
-			"description": "At start of turn, if unit's HP ≤ 25%, Grants Avoid +30.",
-			"modifiers": {"avo": 30}
-		},
-		{
-			"name": "Defiant Critical",
-			"activation": "Passive",
-			"description": "At start of turn, if unit's HP ≤ 25%, Grants Critical +50.",
-			"modifiers": {"avo": 30}
-		},
-		{
-			"name": "Defiant Magic",
-			"activation": "Passive",
-			"description": "At start of turn, if unit's HP ≤ 25%, Grants Magic +8.",
-			"modifiers": {"avo": 30}
-		},
-		{
-			"name": "Defiant Speed",
-			"activation": "Passive",
-			"description": "At start of turn, if unit's HP ≤ 25%, Grants Speed +8.",
-			"modifiers": {"avo": 30}
-		},
-		{
-			"name": "Warding Blow",
-			"activation": "Passive",
-			"description": "When user triggers the battle, grants Resistance +20",
-			"modifiers": {"res": 20}
-		},
-		{
-			"name": "Quick Riposte",
-			"activation": "Passive",
-			"description": "If Unit's HP ≥ 50%, if attacked by a foe, treats unit's Attack Speed as 4 higher than the foe's, granting the unit a follow up attack and denying the enemy's."
-		},
-		{
-			"name": "Critical +20",
-			"activation": "Passive",
-			"description": "Grants its user a 20% bonus to their Critical rate.",
-			"modifiers": {"crit": 20}
+			"description": "Items in the user's inventory disappear when defeated and reappear when resummoned.",
+			"hidden": true
 		}
 	],
 
