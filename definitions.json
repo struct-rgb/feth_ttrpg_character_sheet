@@ -2172,18 +2172,6 @@
 			"description": "Enemies within the user's movement range cannot target allies."
 		},
 		{
-			"name": "Sibling Bond A",
-			"activation": "Passive",
-			"description": "While within 2 spaces of Amalia, user's attacks inflicts 2 extra damage",
-			"modifiers": {"mmt": 2, "pmt": 2}
-		},
-		{
-			"name": "Sibling Bond B",
-			"activation": "Passive",
-			"description": "While within 2 spaces of Oskar, user reduces damage taken by 2.",
-			"modifiers": {"pdr": 2, "mdr": 2}
-		},
-		{
 			"name": "Oskar's Sibling Bond",
 			"activation": "Passive",
 			"description": "While within 2 spaces of Amalia, user's attacks inflicts 2 extra damage",
