@@ -482,7 +482,7 @@ function refresh_computed_statistics() {
 	
 	const crit = Math.floor(
 		(
-			  computed.statistics["dex"] / 3
+			  computed.statistics["dex"] / 2
 			+ sheet.weapon["crit"]
 			+ modifier("crit")
 		) * multiplier("crit")
