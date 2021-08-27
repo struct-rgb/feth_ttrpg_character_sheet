@@ -105,7 +105,7 @@
 								type="number"
 								class="hidden-field"
 								name="{{ statistic }}-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -194,7 +194,9 @@
 					id="character-name"
 					oninput="refresh_name()"
 					type="text"
-					name="character-name"> <br />
+					name="character-name">
+				<!-- <input type="button" value="!" onclick="generate_summary()" /> <br /> -->
+				<br />
 				<label for="character-weapon">Weapon / Triangle Effect</label> <br />
 				<select id="character-weapon" name="character-weapon" oninput="refresh_weapon()">
 					{% for weapon in definitions["weapons"] %}
@@ -211,7 +213,9 @@
 					<option value="-15">
 						Disadvantage
 					</option>
-				</select> <br />
+				</select>
+				<!-- <input type="button" value="!" onclick="generate_macro()" /> <br /> -->
+			</div>
 				<label for="character-class">Class</label> <br />
 				<select id="character-class" name="character-class" oninput="refresh_class()">
 					{% for klass in definitions["classes"] %}
@@ -231,6 +235,7 @@
 					<option value="duscurr">Mountains of Duscurr</option>
 					<option value="fearghus">The Kingdom of Fearghus</option>
 					<option value="leicester">The Leicester Alliance</option>
+					<option value="other">Other</option>
 				</select> <br />
 				<label for="character-description">Description</label> <br />
 				<textarea

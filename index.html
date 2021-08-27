@@ -315,7 +315,7 @@
 								type="number"
 								class="hidden-field"
 								name="hp-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -357,7 +357,7 @@
 								type="number"
 								class="hidden-field"
 								name="str-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -399,7 +399,7 @@
 								type="number"
 								class="hidden-field"
 								name="mag-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -441,7 +441,7 @@
 								type="number"
 								class="hidden-field"
 								name="dex-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -483,7 +483,7 @@
 								type="number"
 								class="hidden-field"
 								name="spd-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -525,7 +525,7 @@
 								type="number"
 								class="hidden-field"
 								name="def-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -567,7 +567,7 @@
 								type="number"
 								class="hidden-field"
 								name="res-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -609,7 +609,7 @@
 								type="number"
 								class="hidden-field"
 								name="cha-growth-base"
-								min="0"
+								min="-4"
 								max="100"
 								step="1"
 								value="0"/>)
@@ -724,7 +724,9 @@
 					id="character-name"
 					oninput="refresh_name()"
 					type="text"
-					name="character-name"> <br />
+					name="character-name">
+				<!-- <input type="button" value="!" onclick="generate_summary()" /> <br /> -->
+				<br />
 				<label for="character-weapon">Weapon / Triangle Effect</label> <br />
 				<select id="character-weapon" name="character-weapon" oninput="refresh_weapon()">
 					
@@ -752,6 +754,18 @@
 					
 					<option value="Heal">Heal</option>
 					
+					<option value="Steel Sword">Steel Sword</option>
+					
+					<option value="Steel Lance">Steel Lance</option>
+					
+					<option value="Steel Axe">Steel Axe</option>
+					
+					<option value="Steel Bow">Steel Bow</option>
+					
+					<option value="Levin Sword+">Levin Sword+</option>
+					
+					<option value="Ethereal Javelin">Ethereal Javelin</option>
+					
 				</select>
 				<select id="character-triangle" oninput="refresh_triangle()">
 					<option value="15">
@@ -763,7 +777,9 @@
 					<option value="-15">
 						Disadvantage
 					</option>
-				</select> <br />
+				</select>
+				<!-- <input type="button" value="!" onclick="generate_macro()" /> <br /> -->
+			</div>
 				<label for="character-class">Class</label> <br />
 				<select id="character-class" name="character-class" oninput="refresh_class()">
 					
@@ -956,7 +972,11 @@
 						
 					
 						
+							<option value="Summoner">Summoner</option>
+						
 					
+						
+							<option value="Phantom">Phantom</option>
 						
 					
 						
@@ -973,6 +993,7 @@
 					<option value="duscurr">Mountains of Duscurr</option>
 					<option value="fearghus">The Kingdom of Fearghus</option>
 					<option value="leicester">The Leicester Alliance</option>
+					<option value="other">Other</option>
 				</select> <br />
 				<label for="character-description">Description</label> <br />
 				<textarea
@@ -1208,6 +1229,10 @@
 						
 					
 						
+							<option value="Pack Mule">Pack Mule</option>
+						
+					
+						
 							<option value="Give a Lift">Give a Lift</option>
 						
 					
@@ -1728,11 +1753,11 @@
 						
 					
 						
-							<option value="Hesitant Prodigy (Debuff)">Hesitant Prodigy (Debuff)</option>
+							<option value="Hesitant Prodigy">Hesitant Prodigy</option>
 						
 					
 						
-							<option value="Hesitant Prodigy (Buff)">Hesitant Prodigy (Buff)</option>
+					
 						
 					
 						
@@ -1752,6 +1777,10 @@
 						
 					
 						
+							<option value="Primed for Danger">Primed for Danger</option>
+						
+					
+						
 							<option value="Blessed Fortitude">Blessed Fortitude</option>
 						
 					
@@ -1767,6 +1796,24 @@
 					
 						
 					
+						
+					
+						
+							<option value="Infernal Chorus">Infernal Chorus</option>
+						
+					
+						
+					
+						
+							<option value="Animal Affinity">Animal Affinity</option>
+						
+					
+						
+							<option value="Near Miss">Near Miss</option>
+						
+					
+						
+							<option value="Undying Bloodlust">Undying Bloodlust</option>
 						
 					
 				</select>
@@ -1979,6 +2026,10 @@
 						
 					
 						
+							<option value="Pack Mule">Pack Mule</option>
+						
+					
+						
 							<option value="Give a Lift">Give a Lift</option>
 						
 					
@@ -2499,11 +2550,11 @@
 						
 					
 						
-							<option value="Hesitant Prodigy (Debuff)">Hesitant Prodigy (Debuff)</option>
+							<option value="Hesitant Prodigy">Hesitant Prodigy</option>
 						
 					
 						
-							<option value="Hesitant Prodigy (Buff)">Hesitant Prodigy (Buff)</option>
+					
 						
 					
 						
@@ -2523,6 +2574,10 @@
 						
 					
 						
+							<option value="Primed for Danger">Primed for Danger</option>
+						
+					
+						
 							<option value="Blessed Fortitude">Blessed Fortitude</option>
 						
 					
@@ -2538,6 +2593,24 @@
 					
 						
 					
+						
+					
+						
+							<option value="Infernal Chorus">Infernal Chorus</option>
+						
+					
+						
+					
+						
+							<option value="Animal Affinity">Animal Affinity</option>
+						
+					
+						
+							<option value="Near Miss">Near Miss</option>
+						
+					
+						
+							<option value="Undying Bloodlust">Undying Bloodlust</option>
 						
 					
 				</select>
@@ -3251,7 +3324,7 @@
 				"dex": 10,
 				"spd": 0,
 				"def": 0,
-				"res": 10,
+				"res": 5,
 				"cha": 10
 			},
 			"modifiers": {
@@ -3855,7 +3928,7 @@
 		},
 		{
 			"name": "Gremory/Guru",
-			"abilities": ["Anima Magic x2", "Dark Magic x2", "Light Magic x2"],
+			"abilities": ["Anima Magic Uses x2", "Dark Magic Uses x2", "Light Magic Uses x2"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
@@ -4028,7 +4101,7 @@
 		},
 		{
 			"name": "Summoner",
-			"abilities": ["Summon", "Bestowal"],
+			"abilities": ["Summon", "Heartseeker", "Bestowal"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
@@ -4042,15 +4115,15 @@
 			"modifiers": {
 				"hp":  3,
 				"str": 0,
-				"mag": 0,
+				"mag": 1,
 				"dex": 0,
 				"spd": 0,
 				"def": 2,
-				"res": 5,
-				"cha": 2,
+				"res": 3,
+				"cha": 3,
 				"mov": 0
 			},
-			"hidden": true
+			"hidden": false
 		},
 		{
 			"name": "Phantom",
@@ -4076,7 +4149,7 @@
 				"cha": 0,
 				"mov": 0
 			},
-			"hidden": true
+			"hidden": false
 		},
 		{
 			"name": "Wild One",
@@ -4400,6 +4473,12 @@
 			"activation": "Support",
 			"description": "Gain an additional +15 Avo and +15 Hit against Heavy Armor units.",
 			"modifiers": {"hit": 15, "avo": 15}
+		},
+		{
+			"name": "Pack Mule",
+			"activation": "Passive",
+			"description": "Unit can now equip 2 accessory items or doubles carrying slots, idk, tbd.",
+			"hidden": false
 		},
 		{
 			"name": "Give a Lift",
@@ -5101,7 +5180,7 @@
 		{
 			"name": "Combat Medic",
 			"activation": "Passive",
-			"description": "Unit's knowledge of anatomy grants Crit +10 when attacking with light or dark magic.",
+			"description": "Unit's knowledge of anatomy grants Crit +10 in combat.",
 			"modifiers": {"crit": 10}
 		},
 		{
@@ -5140,16 +5219,24 @@
 			"modifiers": {"mag": 4, "dex": 4}
 		},
 		{
+			"name": "Hesitant Prodigy",
+			"activation": "Passive",
+			"description": "Use can choose increase the might of an attack by 4 at the cost of 4 HP",
+			"modifiers": {"pmt": 4, "mmt": 4}
+		},
+		{
 			"name": "Hesitant Prodigy (Debuff)",
 			"activation": "Passive",
 			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
-			"modifiers": {"pmt": -4, "mmt": -4}
+			"modifiers": {"pmt": -4, "mmt": -4},
+			"hidden": true
 		},
 		{
 			"name": "Hesitant Prodigy (Buff)",
 			"activation": "Passive",
 			"description": "If the user is within 1 space of an ally, attacks deal 4 less damage, but 4 more damage otherwise",
-			"modifiers": {"pmt": 4, "mmt": 4}
+			"modifiers": {"pmt": 4, "mmt": 4},
+			"hidden": true
 		},
 		{
 			"name": "Brittle Bones",
@@ -5172,6 +5259,11 @@
 			"name": "Bond of Silence",
 			"activation": "Passive",
 			"description": "(Ryan L.: I didn't know how to adapt this one. ThatBardBoi, PM me when you decide how this works.)"
+		},
+		{
+			"name": "Primed for Danger",
+			"activation": "Passive",
+			"description": "While Clara is at 80% HP or above, she attacks first in combat."
 		},
 		{
 			"name": "Blessed Fortitude",
@@ -5208,7 +5300,7 @@
 		{
 			"name": "Bestowal",
 			"activation": "Passive",
-			"description": "User's equipped abilities, excluding personal and class abilities, are also equipped by any phantom the user summons. Phantom's skills are equal to summoner's skills.",
+			"description": "User's equipped abilities and combat arts, excluding personal and class abilities, are also equipped by any phantom the user summons. Phantom's skill levels are equal to summoner's skills levels, and phantoms are summoned equipped with a weapon usable at those skill levels. This weapon disappears when the phantom does.",
 			"hidden": true
 		},
 		{
@@ -5222,6 +5314,40 @@
 			"activation": "Passive",
 			"description": "Items in the user's inventory disappear when defeated and reappear when resummoned.",
 			"hidden": true
+		},
+		{
+			"name": "Infernal Chorus",
+			"activation": "Passive",
+			"description": "Enables user to summon and control more than one phantom at once.",
+			"hidden": false
+		},
+		{
+			"name": "Hero Complex",
+			"activation": "Passive",
+			"description": "Increases Might of combat arts by +5 when targeted foe is adjacent to an ally.",
+			"modifiers": {"pmt": 5, "mmt": 5},
+			"hidden": true
+		},
+		{
+			"name": "Animal Affinity",
+			"activation": "Passive",
+			"description": "Damage taken from mounted foes is reduced by 10 but so is damage done to mounted foes.",
+			"modifiers": {"pmt": -10, "mmt": -10, "pdr": 10, "mdr": 10},
+			"hidden": false
+		},
+		{
+			"name": "Near Miss",
+			"activation": "Passive",
+			"description": "If attacking foes's attack roll is within 10 of its to hit, damage is reduced by 10 and the attack is not a critical hit.",
+			"modifiers": {"pdr": 10, "mdr": 10},
+			"hidden": false
+		},
+		{
+			"name": "Undying Bloodlust",
+			"activation": "Passive",
+			"description": "Triples maximum HP and grants immunity to critical hits, but unit treats all others as foes.",
+			"multipliers": {"hp": 3},
+			"hidden": false
 		}
 	],
 
@@ -5333,6 +5459,60 @@
 			"crit": 0,
 			"minrng": 1,
 			"maxrng": 1
+		},
+		{
+			"name": "Steel Sword",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 85,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Steel Lance",
+			"pmt": 9,
+			"mmt": 0,
+			"hit": 75,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Steel Axe",
+			"pmt": 11,
+			"mmt": 0,
+			"hit": 65,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Steel Bow",
+			"pmt": 9,
+			"mmt": 0,
+			"hit": 80,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Levin Sword+",
+			"pmt": 0,
+			"mmt": 9,
+			"hit": 70,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 3
+		},
+		{
+			"name": "Ethereal Javelin",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 80,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 2
 		}
 	]
 };

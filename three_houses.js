@@ -72,6 +72,66 @@ const computed = {
 	"growths": {}
 };
 
+function generate_summary() {
+
+	const summary = [];
+
+	for (let statistic of definitions.statistics.abbr) {
+		summary.push(
+			statistic.toUpperCase(),
+			": ",
+			computed.statistics[statistic],
+			"\n",
+		);
+	}
+
+	summary.push(
+		"\n",
+		sheet.weapon.name, "\n",
+		Math.max(sheet.weapon.pmt, sheet.weapon.mmt), " Mt ",
+		sheet.weapon.hit, " Hit ",
+	);
+
+	if (sheet.weapon.crit > 0) {
+		summary.push(sheet.weapon.crit, " Crit");
+	}
+
+	for (let ability of sheet.class.abilities) {
+		const description = definitions.ability_by_name[ability].description;
+		summary.push(ability, ": ", description, "\n");
+	}
+
+	for (let ability of sheet.abilities.equipped) {
+		const description = definitions.ability_by_name[ability].description;
+		summary.push(ability, ": ", description, "\n");
+	}
+
+	const text = summary.join("");
+
+	console.log(text);
+	alert(text);
+}
+
+function generate_macro() {
+
+	const reduction_statistic =
+		sheet.weapon.pmt > sheet.weapon.mmt
+			? "DEF"
+			: "RES";
+
+	const text =
+		  sheet.name + " attacks using their " + sheet.weapon.name + "\n"
+		+ "To hit [[ceil(1d100-@{" + sheet.name + "|Skl_i}-?{Support Rank?|NS,0|None,3|C,5|B,7|A,10|S,15}-?{Ability Bonus?|0}-?{Equipment Bonus?|0}+?{Weapon Triangle?|Neutral,0|Positive,-15|Negative,15})]]\n"
+		+ "Hit is less than [[" + sheet.weapon.hit + "+@{" + sheet.name + "|Skl_i}]] minus target's AVO\n"
+		+ "Damage is [[" + Math.max(sheet.weapon.pmt, sheet.weapon.mmt) + "+@{" + sheet.name + "|Mag_i}]] minus target's " + reduction_statistic + "\n"
+		+ "Reduces enemy to-hit by [[@{" + sheet.name + "|Spd_i}]]\n"
+		+ "To Crit: [[1d100]]\n"
+		+ "Crit is on [[floor(@{" + sheet.name + "|Skl_i}/2+?{Critical Ability Bonus?|0}+" + sheet.weapon.crit + ")]] or lower.";
+
+	console.log(text);
+	alert(text);
+}
+
 function ability_toggler(ability) {
 	return function () { // TODO this bugs out if battlefield and known
 		if (sheet.abilities.active.has(ability)) {
@@ -172,7 +232,7 @@ function level_up() {
 }
 
 var skill_grades = ["E", "E+", "D", "D+", "C", "C+", "B", "B+", "A", "A+", "S", "S+"];
-var grade_levels = [  0,    3,   7,   13,  22,   33,  49,   69,  95,  126,  165, 211];
+var grade_levels = [  0,    1,   2,    4,   8,   12,  18,   25,  32,   40,  50,   60];
 
 function grade_for_points(skill_points) {
 	let grade = "S+";
@@ -606,6 +666,46 @@ function export_sheet() {
     a.click();
     URL.revokeObjectURL(a.href);
 }
+
+// function Sheet() {
+// 	let o = {
+
+// 	};
+
+// 	o.import = function (e) {
+// 		const file = e.target.files[0];
+// 		if (!file) return;
+// 	};
+
+// 	o.export = function () {
+// 		const a  = document.createElement("a");
+// 		const c  = JSON.parse(JSON.stringify(o)); // a dirty copy
+// 		c.class  = c.class.name;
+// 		c.weapon = c.weapon.name;
+
+// 		// these are an issue to persist, so delete them
+// 		delete c.mounted;
+// 		delete c.abilities.active;
+// 		delete c.triangle;
+
+// 		for (let key in c.abilities) {
+// 			c.abilities[key] = Array.from(o.abilities[key]);
+// 		}
+
+// 		const file = new Blob([JSON.stringify(c, null, 4)], {type: "application/json"});
+// 		a.href     = URL.createObjectURL(file);
+// 		a.download = o.name.replace(/ /g, "_") + ".json";
+
+// 		a.click();
+// 		URL.revokeObjectURL(a.href);
+// 	};
+
+// 	o.refresh = function () {
+
+// 	};
+
+// 	return o;
+// }
 
 function import_sheet(e) {
 	const file = e.target.files[0];
