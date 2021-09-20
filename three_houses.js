@@ -64,6 +64,22 @@ var sheet = {
 		"equipped": new Set(),
 		"battlefield": new Set(),
 		"known": new Set()
+	},
+
+	"combatarts": {
+		"active": null,
+		"equipped": new Set(),
+		"known": new Set()
+	},
+
+	"weapons": {
+		"active": null,
+		"known": new Set()
+	},
+
+	"equipment": {
+		"active": null,
+		"known": new Set()
 	}
 };
 
@@ -88,7 +104,7 @@ function generate_summary() {
 	summary.push(
 		"\n",
 		sheet.weapon.name, "\n",
-		Math.max(sheet.weapon.pmt, sheet.weapon.mmt), " Mt ",
+		Weapon.might(), " Mt ",
 		sheet.weapon.hit, " Hit ",
 	);
 
@@ -97,12 +113,12 @@ function generate_summary() {
 	}
 
 	for (let ability of sheet.class.abilities) {
-		const description = definitions.ability_by_name[ability].description;
+		const description = Ability.by_name[ability].description;
 		summary.push(ability, ": ", description, "\n");
 	}
 
 	for (let ability of sheet.abilities.equipped) {
-		const description = definitions.ability_by_name[ability].description;
+		const description = Ability.by_name[ability].description;
 		summary.push(ability, ": ", description, "\n");
 	}
 
@@ -123,54 +139,13 @@ function generate_macro() {
 		  sheet.name + " attacks using their " + sheet.weapon.name + "\n"
 		+ "To hit [[ceil(1d100-@{" + sheet.name + "|Skl_i}-?{Support Rank?|NS,0|None,3|C,5|B,7|A,10|S,15}-?{Ability Bonus?|0}-?{Equipment Bonus?|0}+?{Weapon Triangle?|Neutral,0|Positive,-15|Negative,15})]]\n"
 		+ "Hit is less than [[" + sheet.weapon.hit + "+@{" + sheet.name + "|Skl_i}]] minus target's AVO\n"
-		+ "Damage is [[" + Math.max(sheet.weapon.pmt, sheet.weapon.mmt) + "+@{" + sheet.name + "|Mag_i}]] minus target's " + reduction_statistic + "\n"
+		+ "Damage is [[" + Weapon.might() + "+@{" + sheet.name + "|Mag_i}]] minus target's " + reduction_statistic + "\n"
 		+ "Reduces enemy to-hit by [[@{" + sheet.name + "|Spd_i}]]\n"
 		+ "To Crit: [[1d100]]\n"
 		+ "Crit is on [[floor(@{" + sheet.name + "|Skl_i}/2+?{Critical Ability Bonus?|0}+" + sheet.weapon.crit + ")]] or lower.";
 
 	console.log(text);
 	alert(text);
-}
-
-function ability_toggler(ability) {
-	return function () { // TODO this bugs out if battlefield and known
-		if (sheet.abilities.active.has(ability)) {
-			sheet.abilities.active.delete(ability);
-		} else {
-			sheet.abilities.active.add(ability);
-		}
-
-		refresh_statistics();
-		refresh_computed_statistics();
-	}
-}
-
-function equip_remover(ability) {
-	return function () {forget_ability("equipped", ability);
-		const checkbox   = document.getElementById(
-			ability.name + "-known-checkbox"
-		);
-		checkbox.checked = false;
-	}
-}
-
-function equip_toggler(ability) {
-	return function () {
-		if (sheet.abilities.equipped.has(ability.name)) {
-			forget_ability("equipped", ability);
-		} else {
-			sheet.abilities.equipped.add(ability.name);
-
-			const parent = document.getElementById("abilities-equipped");
-			add_ability(
-				parent,
-				"equipped",
-				ability,
-				ability_toggler(ability),
-				equip_remover(ability)
-			);
-		}
-	}
 }
 
 function level_up() {
@@ -232,7 +207,7 @@ function level_up() {
 }
 
 var skill_grades = ["E", "E+", "D", "D+", "C", "C+", "B", "B+", "A", "A+", "S", "S+"];
-var grade_levels = [  0,    1,   2,    4,   8,   12,  18,   25,  32,   40,  50,   60];
+var grade_levels = [  0,    1,   2,    4,   8,   12,  18,   25,  32,   40,  50, 60];
 
 function grade_for_points(skill_points) {
 	let grade = "S+";
@@ -247,7 +222,7 @@ function grade_for_points(skill_points) {
 
 function add_lookup(object, source, destination, key) {
 	const table = {};
-	for (let element of object[source]) {
+	for (let element of source) {
 		table[element[key]] = element;
 	}
 	object[destination] = table;
@@ -317,87 +292,349 @@ function refresh_growth(statistic) {
 	return growth;
 }
 
-function add_ability(parent, category, ability, check_fn, remove_fn) {
-	const dt = document.createElement("dt");
-	dt.id    = ability.name + "-" + category + "-dt";
+function unimplemented() {
+	console.log("THIS FUNCTION IS UNIMLEMENTED");
+}
 
-	// add checkbox to apply modifers/multipliers
-	const checkbox   = document.createElement("input");
-	checkbox.id      = ability.name + "-" + category + "-checkbox";
-	checkbox.type    = "checkbox";
-	checkbox.onclick = check_fn;
-	dt.appendChild(checkbox);
+function inherit_singleton(proto, obj) {
+	obj.by_name = {};
+	Object.setPrototypeOf(obj, proto);
+	return Object.freeze(obj);
+}
 
-	// add ability title content
-	dt.appendChild(
-		document.createTextNode(" " + ability.name + " (" + ability.activation + ") ")
-	)
+const Feature = {
 
-	// if remove function is not, make a "remove" button
-	if (remove_fn != null) {
-		const remove_button   = document.createElement("input");
-		remove_button.value   = "✗";
-		remove_button.type    = "button";
-		remove_button.onclick = remove_fn;
-		dt.appendChild(remove_button);
+	kind: "NO KIND",
+
+	is_active: function (item) {
+		return sheet[this.kind].active !== null;
+	},
+
+	toggle_active: unimplemented,
+
+	toggler: function (item) {
+		const singleton = this;
+		return function () { 
+			singleton.toggle_active(item);
+		};
+	},
+
+	unequipper: function (item, category) {
+		const singleton = this;
+		category = category || "equipped"; // TODO find a way to remove
+		return function () {
+			singleton.forget(item, category);
+			const checkbox = document.getElementById(
+				item.name + "-known-checkbox"
+			);
+			checkbox.checked = false;
+		};
+	},
+
+	equip_toggler: function (item, category) {
+		const singleton = this;
+		category = category || "equipped"; // TODO find a way to remove
+		return function () {
+			if (sheet[singleton.kind][category].has(item.name)) {
+				singleton.forget(item, category);
+			} else {
+				sheet[singleton.kind][category].add(item.name);
+
+				const parent = document.getElementById(
+					singleton.kind + "-" + category
+				);
+
+				singleton.add(
+					parent,
+					category,
+					item,
+					singleton.toggler(item),
+					singleton.unequipper(item, category)
+				);
+			}
+		};
+	},
+
+	toggler_chooser: function (item, category) {
+		return category == "known"
+			? this.equip_toggler(item)
+			: this.toggler(item);
+	},
+
+	import_features: function (char, category, toggle_factory, remove_factory, equip) {
+		
+		// remove currently present elements from details
+		parent = document.getElementById(this.kind + "-" + category);
+		remove_children(parent);
+
+		// if the format is old/bad, just skill this process
+		if (!(this.kind in char)) return;
+
+		for (let name of char[this.kind][category]) {
+			const item = this.by_name[name];
+			this.add(
+				parent,
+				category,
+				item,
+				this[toggle_factory](item, category),
+				this[remove_factory](item, category),
+			);
+
+			if (equip) {
+				const equip = document.getElementById(name + "-known-checkbox");
+    			equip.checked = true;
+			}
+		}
+	},
+
+	set_lookup_by_name: function (definitions) {
+
+		for (let key in this.by_name) {
+			delete this.by_name[key];
+		}
+
+		for (let element of definitions[this.kind]) {
+			this.by_name[element.name] = element;
+		}
+	},
+
+	add_entry: function (parent, identifier, title, description, check_fn, remove_fn) {
+		const dt = document.createElement("dt");
+		dt.id    = identifier + "-dt";
+
+		// add checkbox to apply any modifers/multipliers
+		const checkbox   = document.createElement("input");
+		checkbox.id      = identifier + "-checkbox";
+		checkbox.type    = "checkbox";
+		checkbox.onclick = check_fn;
+		dt.appendChild(checkbox);
+
+		// add entry title content
+		dt.appendChild(document.createTextNode(title))
+
+		// if remove function is not, make a "remove" button
+		if (remove_fn != null) {
+			const remove_button   = document.createElement("input");
+			remove_button.value   = "✗";
+			remove_button.type    = "button";
+			remove_button.onclick = remove_fn;
+			dt.appendChild(remove_button);
+		}
+
+		// add entry content description
+		const dd = document.createElement("dd");
+		dd.id    = identifier + "-dd";
+		dd.appendChild(document.createTextNode(description));
+
+		// add elements to parent
+		parent.appendChild(dt);
+		parent.appendChild(dd);
+	},
+
+	learn: function (category) {
+
+		const id   = "learn-" + this.kind + "-select-" + category;
+		const item = this.by_name[document.getElementById(id).value];
+
+		if (sheet[this.kind][category].has(item.name)) return;
+		sheet[this.kind][category].add(item.name);
+
+		const parent = document.getElementById(this.kind + "-" + category);
+
+		this.add(
+			parent,
+			category,
+			item,
+			this.toggler_chooser(item, category),
+			this.forgetter(item, category)
+		);
+	},
+
+	forget: function (item, category) {
+
+		if (this.is_active(item)) {
+			this.toggle_active(item);
+		}
+
+		if (category == "known" && sheet[this.kind].equipped.has(item.name)) {
+			this.forget(item, "equipped");
+		}
+
+		sheet[this.kind][category].delete(item.name);
+
+		for (let suffix of ["-dt", "-dd"]) {
+			const id      = item.name + "-" + category + suffix;
+			const element = document.getElementById(id);
+			element.parentNode.removeChild(element);
+		}
+	},
+
+	forgetter: function (item, category) {
+		let singleton = this;
+		return function () {
+			singleton.forget(item, category);
+		}
 	}
+};
 
-	// add ability content description
-	const dd = document.createElement("dd");
-	dd.id    = ability.name + "-" + category + "-dd";
-	dd.appendChild(document.createTextNode(ability.description));
+const Ability = inherit_singleton(Feature, {
 
-	// add elements to parent
-	parent.appendChild(dt);
-	parent.appendChild(dd);
-}
+	kind: "abilities",
 
-function learn_ability(category) {
+	is_active: function (item) {
+		return sheet.abilities.active.has(item);
+	},
 
-	const ability = definitions.ability_by_name[
-		document.getElementById("learn-ability-select-" + category).value
-	];
+	toggle_active: function (item) { // TODO this bugs out if battlefield and known
+		if (this.is_active(item)) {
+			sheet.abilities.active.delete(item);
+		} else {
+			sheet.abilities.active.add(item);
+		}
 
-	if (sheet.abilities[category].has(ability.name)) return;
-	sheet.abilities[category].add(ability.name);
-
-	const parent = document.getElementById("abilities-" + category);
-	const toggle = category == "known" ? equip_toggler(ability) : ability_toggler(ability);
-	add_ability(
-		parent,
-		category,
-		ability,
-		toggle,
-		ability_forgetter(category, ability)
-	);
-}
-
-function ability_forgetter(category, ability) {
-	return function () {
-		forget_ability(category, ability);
-	}
-}
-
-function forget_ability(category, ability) {
-
-	if (sheet.abilities.active.has(ability)) {
-		sheet.abilities.active.delete(ability);
 		refresh_statistics();
 		refresh_computed_statistics();
+	},
+
+	add: function (parent, category, ability, check_fn, remove_fn) {
+		const identifier  = ability.name + "-" + category;
+		const title       = " " + ability.name + " (" + ability.activation + ") ";
+		const description = ability.description;
+		this.add_entry(parent, identifier, title, description, check_fn, remove_fn);
+	},
+
+});
+
+const StatedFeature = inherit_singleton(Feature, {
+
+	mod: function (field) {
+		if (sheet[this.kind].active) {
+			const item = this.by_name[sheet[this.kind].active];
+			return field in item ? item[field] : 0;
+		}
+		return 0;
+	},
+
+	is_magic: function () {
+		if (sheet[this.kind].active) {
+			const item = this.by_name[sheet[this.kind].active];
+			return item.mmt >= item.pmt;
+		}
+		return false;
+	},
+
+	might: function () {
+		if (sheet[this.kind].active) {
+			const weapon = this.by_name[sheet[this.kind].active];
+			return Math.max(item.mmt, item.pmt);
+		}
+		return 0;
+	},
+
+	toggle_active: function (item) {
+
+		const sets = sheet[this.kind];
+
+		if (this.is_active(item)) {
+
+			if (sets.active != item.name) {
+				const checkbox = document.getElementById(
+					sets.active + "-" + this.active_tab + "-checkbox"
+				);
+				checkbox.checked = false;
+
+				sets.active = item.name;
+			} else {
+				sets.active = null;
+			}
+		} else {
+			sets.active = item.name;
+		}
+
+		refresh_statistics();
+		refresh_computed_statistics();
+	},
+
+});
+
+const CombatArt = inherit_singleton(StatedFeature, {
+
+	kind: "combatarts",
+
+	active_tab: "equipped",
+
+	add: function (parent, category, art, check_fn, remove_fn) {
+		const identifier  = art.name + "-" + category;
+		const title       = " " + art.name + " (Rank " + art.rank + " " + art.type + " Art) ";
+		const might       = Math.max(art.pmt, art.mmt);
+		const description = (
+			  (might    ? "Might: " + might + ", "   : "")
+			+ (art.hit  ? "Hit: " + art.hit + ", "   : "")
+			+ (art.avo  ? "Avo: " + art.avo + ", "   : "")
+			+ (art.crit ? "Crit: " + art.crit + ", " : "")
+			+ (art.cost ? "Cost: " + art.cost + ", " : "")
+			+ "Range: " + (art.minrng == art.maxrng ? art.minrng : art.minrng + "-" + art.maxrng) + "\n"
+			+ art.description
+		);
+		this.add_entry(parent, identifier, title, description, check_fn, remove_fn);
+	}
+});
+
+const Weapon = inherit_singleton(StatedFeature, {
+
+	kind: "weapons",
+
+	active_tab: "known",
+
+	toggler_chooser: function (item, category) {
+		return this.toggler(item);
+	},
+
+	add: function (parent, category, weapon, check_fn, remove_fn) {
+		const identifier  = weapon.name + "-" + category;
+		const title       = " " + weapon.name + " (Rank " + weapon.rank + " " + weapon.type + ") ";
+		const might       = Math.max(weapon.pmt, weapon.mmt);
+		const description = (
+			  (might       ? "Might: " + might + ", "      : "")
+			+ (weapon.hit  ? "Hit: " + weapon.hit + ", "   : "")
+			+ (weapon.avo  ? "Avo: " + weapon.avo + ", "   : "")
+			+ (weapon.crit ? "Crit: " + weapon.crit + ", " : "")
+			+ "Range: " + (weapon.minrng == weapon.maxrng ? weapon.minrng : weapon.minrng + "-" + weapon.maxrng) + "\n"
+			+ weapon.description
+		);
+		this.add_entry(parent, identifier, title, description, check_fn, remove_fn);
+	},
+
+	forget: function (item, category) {
+
+		if (this.is_active()) {
+			this.toggle_active(item);
+		}
+
+		sheet[this.kind][category].delete(item.name);
+
+		for (let suffix of ["-dt", "-dd"]) {
+			const id      = item.name + "-" + category + suffix;
+			const element = document.getElementById(id);
+			element.parentNode.removeChild(element);
+		}
+	}
+});
+
+const Equipment = inherit_singleton(Weapon, {
+
+	kind: "equipment",
+
+	active_tab: "known",
+
+	add: function (parent, category, equipment, check_fn, remove_fn) {
+		const identifier  = equipment.name + "-" + category;
+		const title       = " " + equipment.name + " (" + equipment.type + ") ";
+		const description = equipment.description;
+		this.add_entry(parent, identifier, title, description, check_fn, remove_fn);
 	}
 
-	if (category == "known" && sheet.abilities.equipped.has(ability.name)) {
-		forget_ability("equipped", ability);
-	}
-
-	sheet.abilities[category].delete(ability.name);
-
-	for (let suffix of ["-dt", "-dd"]) {
-		const id      = ability.name + "-" + category + suffix;
-		const element = document.getElementById(id);
-		element.parentNode.removeChild(element);
-	}
-}
+});
 
 function refresh_hitpoints() {
 	const display = document.getElementById("hitpoints");
@@ -456,8 +693,8 @@ function refresh_class() {
 
 	remove_children(abilities);
 	for (let name of sheet.class.abilities) {
-		const ability = definitions.ability_by_name[name];
-		add_ability(abilities, "class", ability, ability_toggler(ability));
+		const ability = Ability.by_name[name];
+		Ability.add(abilities, "class", ability, Ability.toggler(ability));
 	}
 
 	return sheet.class;
@@ -488,42 +725,80 @@ function computed_statistic(base, weapon) {
 		case "pdr":
 		case "mdr":
 		return Math.max(
-			computed.statistics[base] + modifier(weapon) * multiplier(weapon),
-			0,
-		);
-
-		case "avo":
-		return Math.max(
-			computed.statistics[base]
-				+ (modifier(weapon) * multiplier(weapon))
-				+ sheet.triangle,
-				// + (sheet.triangle < 0 ? sheet.triangle : 0),
+			(computed.statistics[base]
+				+ modifier(weapon)
+				+ Equipment.mod(weapon))
+				* multiplier(weapon),
 			0,
 		);
 
 		case "hit":
+		case "avo":
 		return Math.max( 
-			computed.statistics[base]
-				+ (sheet.weapon[weapon] + modifier(weapon)) 
+			(computed.statistics[base]
+				+ Weapon.mod(weapon)
+				+ CombatArt.mod(weapon)
+				+ Equipment.mod(weapon)
+				+ modifier(weapon))
 					* multiplier(weapon)
 				+  sheet.triangle,
 				// + (sheet.triangle > 0 ? sheet.triangle : 0),
 			0,
 		);
 
-		case "pmt":
-		case "mmt":
-		return Math.max(
-			computed.statistics[base]
-				+ (sheet.weapon[weapon] + modifier(weapon))
-					* multiplier(weapon),
-			0,
-		);
+		case "pmt": {
+			const scale     = CombatArt.mod("scale");
+			const hitpoints = document.getElementById("hitpoints");
+			return Math.max(
+				Math.floor(
+					(computed.statistics.str
+						+ (CombatArt.is_magic()
+							? 0
+							: Weapon.mod(weapon) + CombatArt.mod(weapon))
+						+ (CombatArt.mod("scale")
+							? Math.floor(computed.statistics[scale] * 0.3)
+							: 0)
+						+ (CombatArt.mod("vengeance")
+							? Math.floor(
+								(-hitpoints.value + computed.statistics.hp) / 2)
+							: 0)
+						+ Equipment.mod(weapon)
+						+ modifier(weapon))
+					* multiplier(weapon)
+					* (CombatArt.mod("astra") ? 0.3 : 1.0)),
+				0,
+			);
+		}
+
+		case "mmt": {
+			const scale = CombatArt.mod("scale");
+			return Math.max(
+				Math.floor(
+					((computed.statistics.mag
+						* (Weapon.mod("healing") ? 0.5 : 1))
+						+ (CombatArt.is_magic()
+							? Math.max(Weapon.mod("pmt"), Weapon.mod("mmt"))
+							: Weapon.mod(weapon))
+						+ (Weapon.is_magic()
+							? Math.max(CombatArt.mod("pmt"), CombatArt.mod("mmt"))
+							: CombatArt.mod(weapon))
+						+ (CombatArt.mod("scale")
+							? Math.floor(computed.statistics[scale] * 0.3)
+							: 0)
+						+ Equipment.mod(weapon)
+						+ modifier(weapon))
+					* multiplier(weapon)),
+				0,
+			);
+		}
 
 		case "maxrng":
 		case "minrng":
 		return (
-			sheet.weapon[weapon] + modifier(weapon) * multiplier(weapon)
+			((CombatArt.mod(weapon) ? CombatArt.mod(weapon) : Weapon.mod(weapon))
+				+ Equipment.mod(weapon)
+				+ modifier(weapon))
+			* multiplier(weapon)
 		);
 
 		default:
@@ -543,7 +818,8 @@ function refresh_computed_statistics() {
 	const crit = Math.floor(
 		(
 			  computed.statistics["dex"] / 2
-			+ sheet.weapon["crit"]
+			+ Weapon.mod("crit")
+			+ CombatArt.mod("crit")
 			+ modifier("crit")
 		) * multiplier("crit")
 	);
@@ -578,6 +854,7 @@ function refresh_statistic(statistic) {
 					: 0
 			)
 			+ sheet.class.modifiers[statistic]
+			+ Equipment.mod(statistic)
 			+ modifier(statistic)
 			+ base
 		) * multiplier(statistic),
@@ -615,14 +892,14 @@ function refresh_triangle() {
 	return sheet.triangle;
 }
 
-function refresh_weapon() {
-	sheet.weapon = definitions.weapon_by_name[
-		document.getElementById("character-weapon").value
-	];
+// function refresh_weapon() {
+// 	sheet.weapon = Weapon.by_name[
+// 		document.getElementById("character-weapon").value
+// 	];
 
-	refresh_computed_statistics();
-	return sheet.weapon;
-}
+// 	refresh_computed_statistics();
+// 	return sheet.weapon;
+// }
 
 function refresh_homeland() {
 	sheet.homeland = document.getElementById("character-homeland").value;
@@ -635,7 +912,7 @@ function refresh_sheet() {
 	refresh_hitpoints();
 	refresh_grades();
 	refresh_level();
-	refresh_weapon();
+	// refresh_weapon();
 	refresh_name();
 	refresh_description();
 	refresh_mounted();
@@ -648,64 +925,29 @@ function export_sheet() {
     	JSON.stringify(sheet) // dirty way to make a copy
     );
 
-    char.class            = char.class.name;
-    char.weapon           = char.weapon.name;
+    char.class  = char.class.name;
+    // char.weapon = char.weapon.name;
 
     // these are trouble to persist so ignore them
     delete char.mounted;
     delete char.abilities.active;
     delete char.triangle;
+    delete char.combatarts.active;
+    delete char.weapons.active;
+    delete char.equipment.active;
 
-    for (let key in char.abilities) {
-    	char.abilities[key] = Array.from(sheet.abilities[key]);
+    for (let kind of ["abilities", "combatarts", "weapons", "equipment"]) {
+    	for (let key in char[kind]) {
+    		char[kind][key] = Array.from(sheet[kind][key]);
+    	}
     }
-
+    
     const file = new Blob([JSON.stringify(char, null, 4)], {type: "application/json"});
     a.href     = URL.createObjectURL(file);
     a.download = sheet.name.replace(/ /g, "_") + ".json";
     a.click();
     URL.revokeObjectURL(a.href);
 }
-
-// function Sheet() {
-// 	let o = {
-
-// 	};
-
-// 	o.import = function (e) {
-// 		const file = e.target.files[0];
-// 		if (!file) return;
-// 	};
-
-// 	o.export = function () {
-// 		const a  = document.createElement("a");
-// 		const c  = JSON.parse(JSON.stringify(o)); // a dirty copy
-// 		c.class  = c.class.name;
-// 		c.weapon = c.weapon.name;
-
-// 		// these are an issue to persist, so delete them
-// 		delete c.mounted;
-// 		delete c.abilities.active;
-// 		delete c.triangle;
-
-// 		for (let key in c.abilities) {
-// 			c.abilities[key] = Array.from(o.abilities[key]);
-// 		}
-
-// 		const file = new Blob([JSON.stringify(c, null, 4)], {type: "application/json"});
-// 		a.href     = URL.createObjectURL(file);
-// 		a.download = o.name.replace(/ /g, "_") + ".json";
-
-// 		a.click();
-// 		URL.revokeObjectURL(a.href);
-// 	};
-
-// 	o.refresh = function () {
-
-// 	};
-
-// 	return o;
-// }
 
 function import_sheet(e) {
 	const file = e.target.files[0];
@@ -714,6 +956,10 @@ function import_sheet(e) {
 	const reader = new FileReader();
 	reader.onload = function (e) {
 		const char = JSON.parse(e.target.result);
+
+		if ("weapon" in char) {
+			delete char.weapon;
+		}
 
 		// minor bookeeping and intialization of data structures
 		char.mounted = false;
@@ -724,8 +970,49 @@ function import_sheet(e) {
     	char.abilities.active = new Set();
 
     	char.class    = definitions.class_by_name[char.class];
-    	char.weapon   = definitions.weapon_by_name[char.weapon];
+    	char.weapon   = Weapon.by_name[char.weapon];
     	char.triangle = 0;
+
+    	// backwards compatibility
+    	if ("combatarts" in char) {
+    		char.combatarts = {
+	    		active: null,
+	    		equipped: new Set(char.combatarts.equipped),
+	    		known: new Set(char.combatarts.known),
+	    	}
+    	} else {
+	    	char.combatarts =  {
+	    		active: null,
+	    		equipped: new Set(),
+	    		known: new Set(),
+	    	}
+	    }
+
+	    // backwards compatibility
+	  	if ("weapons" in char) {
+    		char.weapons = {
+	    		active: null,
+	    		known: new Set(char.weapons.known),
+	    	}
+    	} else {
+	    	char.weapons =  {
+	    		active: null,
+	    		known: new Set(),
+	    	}
+	    }
+
+	    // backwards compatibility
+	  	if ("equipment" in char) {
+    		char.equipment = {
+	    		active: null,
+	    		known: new Set(char.equipment.known),
+	    	}
+    	} else {
+	    	char.equipment =  {
+	    		active: null,
+	    		known: new Set(),
+	    	}
+	    }
 
     	// fill the statistics boxes
     	for (let statistic of definitions.statistics.abbr) {
@@ -747,59 +1034,69 @@ function import_sheet(e) {
     	// fill the "character and backstory" section entries
     	document.getElementById("character-name").value        = char.name;
     	document.getElementById("character-homeland").value    = char.homeland;
-    	document.getElementById("character-weapon").value      = char.weapon.name;
+    	// document.getElementById("character-weapon").value      = char.weapon.name;
     	document.getElementById("character-class").value       = char.class.name;
     	document.getElementById("character-description").value = char.description;
     	document.getElementById("hitpoints-input").value       = char.hitpoints;
     	document.getElementById("level-input").value           = char.level;
 
-    	// parent element
-    	let parent;
-
     	// fill the known abilities
-    	parent = document.getElementById("abilities-known");
-    	remove_children(parent);
-    	for (let name of char.abilities.known) {
-    		const ability = definitions.ability_by_name[name]; 
-    		add_ability(
-    			parent,
-    			"known",
-    			ability,
-    			equip_toggler(ability),
-    			ability_forgetter("known", ability)
-    		);
-    	}
+    	Ability.import_features(
+    		char,
+    		"known",
+    		"equip_toggler",
+    		"forgetter"
+    	);
 
     	// fill the battlefield abilities
-    	parent = document.getElementById("abilities-battlefield");
-    	remove_children(parent);
-    	for (let name of char.abilities.battlefield) {
-    		const ability = definitions.ability_by_name[name]; 
-    		add_ability(
-    			parent,
-    			"battlefield",
-    			ability,
-    			ability_toggler(ability),
-    			ability_forgetter("battlefield", ability)
-    		);
-    	}
+    	Ability.import_features(
+    		char,
+    		"battlefield",
+    		"toggler",
+    		"forgetter",
+    	);
 
     	// fill the equipped abilities
-    	parent = document.getElementById("abilities-equipped");
-    	remove_children(parent);
-    	for (let name of char.abilities.equipped) {
-    		const ability = definitions.ability_by_name[name]; 
-    		add_ability(
-    			parent,
-    			"equipped",
-    			ability,
-    			ability_toggler(ability),
-    			equip_remover(ability)
-    		);
+    	Ability.import_features(
+    		char,
+    		"equipped",
+    		"toggler",
+    		"unequipper",
+    		true
+    	);
 
-    		const equip = document.getElementById(name + "-known-checkbox");
-    		equip.checked = true;
-    	}
+    	// fill the known combat arts
+    	CombatArt.import_features(
+    		char,
+    		"known",
+    		"equip_toggler",
+    		"forgetter"
+    	)
+
+    	// fill the equipped combat arts
+    	CombatArt.import_features(
+    		char,
+    		"equipped",
+    		"toggler",
+    		"unequipper",
+    		true
+    	)
+
+    	// fill the weapons and spells
+    	Weapon.import_features(
+    		char,
+    		"known",
+    		"toggler",
+    		"forgetter"
+    	);
+
+    	// fill the equiptment
+    	Equipment.import_features(
+    		char,
+    		"known",
+    		"toggler",
+    		"forgetter"
+    	);
 
     	sheet = char;
     	refresh_sheet();
@@ -808,5 +1105,5 @@ function import_sheet(e) {
 }
 
 function clear_sheet() {
-	_
+
 }

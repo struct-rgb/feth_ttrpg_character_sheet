@@ -69,6 +69,11 @@ dt {
 	font-weight: bold;
 }
 
+dd {
+	white-space: pre-line;
+	text-indent: 0em;
+}
+
 .datum {
 	font-weight: bold;
 	color: blue;
@@ -104,4 +109,12 @@ meter {
 	display: inline;
 	z-index: 2;
 	position: absolute;
+}
+
+.entry-tab-title {
+	font-weight: bold;
+}
+
+.entry-tab-body details {
+	text-indent: 0.5em;
 }

@@ -727,46 +727,7 @@
 					name="character-name">
 				<!-- <input type="button" value="!" onclick="generate_summary()" /> <br /> -->
 				<br />
-				<label for="character-weapon">Weapon / Triangle Effect</label> <br />
-				<select id="character-weapon" name="character-weapon" oninput="refresh_weapon()">
-					
-					<option value="Unarmed">Unarmed</option>
-					
-					<option value="Iron Sword">Iron Sword</option>
-					
-					<option value="Iron Lance">Iron Lance</option>
-					
-					<option value="Iron Axe">Iron Axe</option>
-					
-					<option value="Iron Bow">Iron Bow</option>
-					
-					<option value="Miasma">Miasma</option>
-					
-					<option value="Wind">Wind</option>
-					
-					<option value="Fire">Fire</option>
-					
-					<option value="Blizzard">Blizzard</option>
-					
-					<option value="Thunder">Thunder</option>
-					
-					<option value="Nosferatu">Nosferatu</option>
-					
-					<option value="Heal">Heal</option>
-					
-					<option value="Steel Sword">Steel Sword</option>
-					
-					<option value="Steel Lance">Steel Lance</option>
-					
-					<option value="Steel Axe">Steel Axe</option>
-					
-					<option value="Steel Bow">Steel Bow</option>
-					
-					<option value="Levin Sword+">Levin Sword+</option>
-					
-					<option value="Ethereal Javelin">Ethereal Javelin</option>
-					
-				</select>
+				<label for="character-triangle">Triangle Effect</label> <br />
 				<select id="character-triangle" oninput="refresh_triangle()">
 					<option value="15">
 						Advantage
@@ -1014,458 +975,2080 @@
 		</div>
 		<div class="span-1-3"> <!-- ABILITIES -->
 			<details>
-				<summary>Class Abilities</summary>
-				<dl id="abilities-class"></dl>
+				<summary class="entry-tab-title">
+					Abilities
+				</summary>
+				<div class="entry-tab-body">
+					<details>
+						<summary>Class</summary>
+						<dl id="abilities-class"></dl>
+					</details>
+
+					<details>
+						<summary>Equipped</summary>
+						<dl id="abilities-equipped"></dl>
+					</details>
+					
+					<details>
+						<summary>Battlefield</summary>
+						<input type="button" value="Add" onclick="Ability.learn('battlefield')" />
+						<select id="learn-abilities-select-battlefield">
+							
+								
+									<option value="None">None</option>
+								
+							
+								
+									<option value="Riposte">Riposte</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 1">Sword Prowess Lv 1</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 2">Sword Prowess Lv 2</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 3">Sword Prowess Lv 3</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 4">Sword Prowess Lv 4</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 5">Sword Prowess Lv 5</option>
+								
+							
+								
+									<option value="Axebreaker">Axebreaker</option>
+								
+							
+								
+									<option value="Attack of Opportunity">Attack of Opportunity</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 1">Lance Prowess Lv 1</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 2">Lance Prowess Lv 2</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 3">Lance Prowess Lv 3</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 4">Lance Prowess Lv 4</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 5">Lance Prowess Lv 5</option>
+								
+							
+								
+									<option value="Swordbreaker">Swordbreaker</option>
+								
+							
+								
+									<option value="Sunder (Attack)">Sunder (Attack)</option>
+								
+							
+								
+									<option value="Sunder (Defense)">Sunder (Defense)</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 1">Axe Prowess Lv 1</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 2">Axe Prowess Lv 2</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 3">Axe Prowess Lv 3</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 4">Axe Prowess Lv 4</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 5">Axe Prowess Lv 5</option>
+								
+							
+								
+									<option value="Lancebreaker">Lancebreaker</option>
+								
+							
+								
+									<option value="Covering Fire">Covering Fire</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 1">Bow Prowess Lv 1</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 2">Bow Prowess Lv 2</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 3">Bow Prowess Lv 3</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 4">Bow Prowess Lv 4</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 5">Bow Prowess Lv 5</option>
+								
+							
+								
+									<option value="Close Counter">Close Counter</option>
+								
+							
+								
+									<option value="Ice Block">Ice Block</option>
+								
+							
+								
+									<option value="Reason Lv 1">Reason Lv 1</option>
+								
+							
+								
+									<option value="Reason Lv 2">Reason Lv 2</option>
+								
+							
+								
+									<option value="Reason Lv 3">Reason Lv 3</option>
+								
+							
+								
+									<option value="Reason Lv 4">Reason Lv 4</option>
+								
+							
+								
+									<option value="Reason Lv 5">Reason Lv 5</option>
+								
+							
+								
+									<option value="Bless">Bless</option>
+								
+							
+								
+									<option value="Faith Lv 1">Faith Lv 1</option>
+								
+							
+								
+									<option value="Faith Lv 2">Faith Lv 2</option>
+								
+							
+								
+									<option value="Faith Lv 3">Faith Lv 3</option>
+								
+							
+								
+									<option value="Faith Lv 4">Faith Lv 4</option>
+								
+							
+								
+									<option value="Faith Lv 5">Faith Lv 5</option>
+								
+							
+								
+									<option value="Curse">Curse</option>
+								
+							
+								
+									<option value="Guile Lv 1">Guile Lv 1</option>
+								
+							
+								
+									<option value="Guile Lv 2">Guile Lv 2</option>
+								
+							
+								
+									<option value="Guile Lv 3">Guile Lv 3</option>
+								
+							
+								
+									<option value="Guile Lv 4">Guile Lv 4</option>
+								
+							
+								
+									<option value="Guile Lv 5">Guile Lv 5</option>
+								
+							
+								
+									<option value="Defend">Defend</option>
+								
+							
+								
+									<option value="Armored Combatant">Armored Combatant</option>
+								
+							
+								
+									<option value="Pack Mule">Pack Mule</option>
+								
+							
+								
+									<option value="Give a Lift">Give a Lift</option>
+								
+							
+								
+									<option value="Mounted Combatant">Mounted Combatant</option>
+								
+							
+								
+									<option value="Wing Buffet">Wing Buffet</option>
+								
+							
+								
+									<option value="Swordfaire">Swordfaire</option>
+								
+							
+								
+									<option value="Lancefaire">Lancefaire</option>
+								
+							
+								
+									<option value="Axefaire">Axefaire</option>
+								
+							
+								
+									<option value="Bowfaire">Bowfaire</option>
+								
+							
+								
+									<option value="Fistfaire">Fistfaire</option>
+								
+							
+								
+									<option value="Anima Tomefaire">Anima Tomefaire</option>
+								
+							
+								
+									<option value="Light Tomefaire">Light Tomefaire</option>
+								
+							
+								
+									<option value="Dark Tomefaire">Dark Tomefaire</option>
+								
+							
+								
+									<option value="Sword Critical +10">Sword Critical +10</option>
+								
+							
+								
+									<option value="Lance Critical +10">Lance Critical +10</option>
+								
+							
+								
+									<option value="Axe Critical +10">Axe Critical +10</option>
+								
+							
+								
+									<option value="Bow Critical +10">Bow Critical +10</option>
+								
+							
+								
+									<option value="Brawl Critical +10">Brawl Critical +10</option>
+								
+							
+								
+									<option value="Anima Magic Critical +10">Anima Magic Critical +10</option>
+								
+							
+								
+									<option value="Light Magic Critical +10">Light Magic Critical +10</option>
+								
+							
+								
+									<option value="Dark Magic Critical +10">Dark Magic Critical +10</option>
+								
+							
+								
+									<option value="Sword Avoid +20">Sword Avoid +20</option>
+								
+							
+								
+									<option value="Lance Avoid +20">Lance Avoid +20</option>
+								
+							
+								
+									<option value="Axe Avoid +20">Axe Avoid +20</option>
+								
+							
+								
+									<option value="Bow Avoid +20">Bow Avoid +20</option>
+								
+							
+								
+									<option value="Brawl Avoid +20">Brawl Avoid +20</option>
+								
+							
+								
+									<option value="Anima Magic Avoid +20">Anima Magic Avoid +20</option>
+								
+							
+								
+									<option value="Light Magic Avoid +20">Light Magic Avoid +20</option>
+								
+							
+								
+									<option value="Dark Magic Avoid +20">Dark Magic Avoid +20</option>
+								
+							
+								
+									<option value="HP +5">HP +5</option>
+								
+							
+								
+									<option value="Strength +2">Strength +2</option>
+								
+							
+								
+									<option value="Magic +2">Magic +2</option>
+								
+							
+								
+									<option value="Dexterity +4">Dexterity +4</option>
+								
+							
+								
+									<option value="Speed +2">Speed +2</option>
+								
+							
+								
+									<option value="Pomp & Circumstance">Pomp & Circumstance</option>
+								
+							
+								
+									<option value="Defense +2">Defense +2</option>
+								
+							
+								
+									<option value="Resistance +2">Resistance +2</option>
+								
+							
+								
+									<option value="Movement +1">Movement +1</option>
+								
+							
+								
+									<option value="Hit +20">Hit +20</option>
+								
+							
+								
+									<option value="Avoid +10">Avoid +10</option>
+								
+							
+								
+									<option value="Critical +20">Critical +20</option>
+								
+							
+								
+									<option value="Defiant Strength">Defiant Strength</option>
+								
+							
+								
+									<option value="Defiant Magic">Defiant Magic</option>
+								
+							
+								
+									<option value="Defiant Speed">Defiant Speed</option>
+								
+							
+								
+									<option value="Defiant Resistance">Defiant Resistance</option>
+								
+							
+								
+									<option value="Defiant Defense">Defiant Defense</option>
+								
+							
+								
+									<option value="Defiant Avoid">Defiant Avoid</option>
+								
+							
+								
+									<option value="Defiant Critical">Defiant Critical</option>
+								
+							
+								
+									<option value="Death Blow">Death Blow</option>
+								
+							
+								
+									<option value="Fiendish Blow">Fiendish Blow</option>
+								
+							
+								
+									<option value="Darting Blow">Darting Blow</option>
+								
+							
+								
+									<option value="Armored Blow">Armored Blow</option>
+								
+							
+								
+									<option value="Warding Blow">Warding Blow</option>
+								
+							
+								
+									<option value="Charm">Charm</option>
+								
+							
+								
+									<option value="Seal Defense">Seal Defense</option>
+								
+							
+								
+									<option value="Seal Resistance">Seal Resistance</option>
+								
+							
+								
+									<option value="Heartseeker">Heartseeker</option>
+								
+							
+								
+									<option value="Tomebreaker">Tomebreaker</option>
+								
+							
+								
+									<option value="Bowbreaker">Bowbreaker</option>
+								
+							
+								
+									<option value="Fistbreaker">Fistbreaker</option>
+								
+							
+								
+									<option value="Fire">Fire</option>
+								
+							
+								
+									<option value="Miasma">Miasma</option>
+								
+							
+								
+									<option value="Heal">Heal</option>
+								
+							
+								
+									<option value="Renewal">Renewal</option>
+								
+							
+								
+									<option value="Poison Strike">Poison Strike</option>
+								
+							
+								
+									<option value="Lifetaker">Lifetaker</option>
+								
+							
+								
+									<option value="Lethality">Lethality</option>
+								
+							
+								
+									<option value="Poison">Poison</option>
+								
+							
+								
+									<option value="Pavise">Pavise</option>
+								
+							
+								
+									<option value="Aegis">Aegis</option>
+								
+							
+								
+									<option value="Miracle">Miracle</option>
+								
+							
+								
+									<option value="Terrain Resistance">Terrain Resistance</option>
+								
+							
+								
+									<option value="Special Dance">Special Dance</option>
+								
+							
+								
+									<option value="Vantage">Vantage</option>
+								
+							
+								
+									<option value="Desperation">Desperation</option>
+								
+							
+								
+									<option value="Quick Riposte">Quick Riposte</option>
+								
+							
+								
+									<option value="Wrath">Wrath</option>
+								
+							
+								
+									<option value="Dance">Dance</option>
+								
+							
+								
+									<option value="Steal">Steal</option>
+								
+							
+								
+									<option value="Locktouch">Locktouch</option>
+								
+							
+								
+									<option value="Stealth">Stealth</option>
+								
+							
+								
+									<option value="Canto">Canto</option>
+								
+							
+								
+									<option value="Pass">Pass</option>
+								
+							
+								
+									<option value="Bowrange +1">Bowrange +1</option>
+								
+							
+								
+									<option value="Bowrange +2">Bowrange +2</option>
+								
+							
+								
+									<option value="Anima Magic Range +1">Anima Magic Range +1</option>
+								
+							
+								
+									<option value="Dark Magic Range +1">Dark Magic Range +1</option>
+								
+							
+								
+									<option value="Light Magic Range +1">Light Magic Range +1</option>
+								
+							
+								
+									<option value="Unarmed Combat">Unarmed Combat</option>
+								
+							
+								
+									<option value="Anima Magic Uses x2">Anima Magic Uses x2</option>
+								
+							
+								
+									<option value="Dark Magic Uses x2">Dark Magic Uses x2</option>
+								
+							
+								
+									<option value="Light Magic Uses x2">Light Magic Uses x2</option>
+								
+							
+								
+									<option value="Light Magic Heal +5">Light Magic Heal +5</option>
+								
+							
+								
+									<option value="Light Magic Heal +10">Light Magic Heal +10</option>
+								
+							
+								
+									<option value="Unsealable Magic">Unsealable Magic</option>
+								
+							
+								
+									<option value="Immune Status">Immune Status</option>
+								
+							
+								
+									<option value="General">General</option>
+								
+							
+								
+									<option value="Commander">Commander</option>
+								
+							
+								
+									<option value="Infinite Magic">Infinite Magic</option>
+								
+							
+								
+									<option value="Magic Bind">Magic Bind</option>
+								
+							
+								
+									<option value="Infantry Effect Null">Infantry Effect Null</option>
+								
+							
+								
+									<option value="Armored Effect Null">Armored Effect Null</option>
+								
+							
+								
+									<option value="Cavalry Effect Null">Cavalry Effect Null</option>
+								
+							
+								
+									<option value="Flying Effect Null">Flying Effect Null</option>
+								
+							
+								
+									<option value="Dragon Effect Null">Dragon Effect Null</option>
+								
+							
+								
+									<option value="Monster Effect Null">Monster Effect Null</option>
+								
+							
+								
+									<option value="Effect Null">Effect Null</option>
+								
+							
+								
+									<option value="Vital Defense">Vital Defense</option>
+								
+							
+								
+									<option value="Giant Wings">Giant Wings</option>
+								
+							
+								
+									<option value="Anti-magic Armor">Anti-magic Armor</option>
+								
+							
+								
+									<option value="Noncombatant">Noncombatant</option>
+								
+							
+								
+									<option value="Cursed Power">Cursed Power</option>
+								
+							
+								
+									<option value="Anchor">Anchor</option>
+								
+							
+								
+									<option value="Counterattack">Counterattack</option>
+								
+							
+								
+									<option value="Counterattack">Counterattack</option>
+								
+							
+								
+									<option value="Anima Magic Uses x4">Anima Magic Uses x4</option>
+								
+							
+								
+									<option value="Dark Magic Uses x4">Dark Magic Uses x4</option>
+								
+							
+								
+									<option value="Light Magic Uses x4">Light Magic Uses x4</option>
+								
+							
+								
+									<option value="Alert Stance">Alert Stance</option>
+								
+							
+								
+									<option value="Alert Stance+">Alert Stance+</option>
+								
+							
+								
+									<option value="Agarthan Technology">Agarthan Technology</option>
+								
+							
+								
+									<option value="Lucky Seven">Lucky Seven</option>
+								
+							
+								
+									<option value="Transmute">Transmute</option>
+								
+							
+								
+									<option value="Duelist's Blow">Duelist's Blow</option>
+								
+							
+								
+									<option value="Uncanny Blow">Uncanny Blow</option>
+								
+							
+								
+									<option value="Combat Medic">Combat Medic</option>
+								
+							
+								
+									<option value="Can't Keep Up?">Can't Keep Up?</option>
+								
+							
+								
+									<option value="Try Your Best">Try Your Best</option>
+								
+							
+								
+									<option value="Dead Man's Hand">Dead Man's Hand</option>
+								
+							
+								
+									<option value="Oskar's Sibling Bond">Oskar's Sibling Bond</option>
+								
+							
+								
+									<option value="Amalia's Sibling Bond">Amalia's Sibling Bond</option>
+								
+							
+								
+									<option value="Wrathful Empathy">Wrathful Empathy</option>
+								
+							
+								
+									<option value="Hesitant Prodigy">Hesitant Prodigy</option>
+								
+							
+								
+							
+								
+							
+								
+									<option value="Brittle Bones">Brittle Bones</option>
+								
+							
+								
+									<option value="Zephyr">Zephyr</option>
+								
+							
+								
+									<option value="Painless">Painless</option>
+								
+							
+								
+									<option value="Painless Conduit">Painless Conduit</option>
+								
+							
+								
+									<option value="Bond of Silence">Bond of Silence</option>
+								
+							
+								
+									<option value="Primed for Danger">Primed for Danger</option>
+								
+							
+								
+									<option value="Blessed Fortitude">Blessed Fortitude</option>
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+									<option value="Infernal Chorus">Infernal Chorus</option>
+								
+							
+								
+							
+								
+									<option value="Animal Affinity">Animal Affinity</option>
+								
+							
+								
+									<option value="Near Miss">Near Miss</option>
+								
+							
+								
+									<option value="Undying Bloodlust">Undying Bloodlust</option>
+								
+							
+						</select>
+						<dl id="abilities-battlefield"></dl>
+					</details>
+
+					<details>
+						<summary>Known</summary>
+						<input type="button" value="Add" onclick="Ability.learn('known')" />
+						<select id="learn-abilities-select-known">
+							
+								
+									<option value="None">None</option>
+								
+							
+								
+									<option value="Riposte">Riposte</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 1">Sword Prowess Lv 1</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 2">Sword Prowess Lv 2</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 3">Sword Prowess Lv 3</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 4">Sword Prowess Lv 4</option>
+								
+							
+								
+									<option value="Sword Prowess Lv 5">Sword Prowess Lv 5</option>
+								
+							
+								
+									<option value="Axebreaker">Axebreaker</option>
+								
+							
+								
+									<option value="Attack of Opportunity">Attack of Opportunity</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 1">Lance Prowess Lv 1</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 2">Lance Prowess Lv 2</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 3">Lance Prowess Lv 3</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 4">Lance Prowess Lv 4</option>
+								
+							
+								
+									<option value="Lance Prowess Lv 5">Lance Prowess Lv 5</option>
+								
+							
+								
+									<option value="Swordbreaker">Swordbreaker</option>
+								
+							
+								
+									<option value="Sunder (Attack)">Sunder (Attack)</option>
+								
+							
+								
+									<option value="Sunder (Defense)">Sunder (Defense)</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 1">Axe Prowess Lv 1</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 2">Axe Prowess Lv 2</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 3">Axe Prowess Lv 3</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 4">Axe Prowess Lv 4</option>
+								
+							
+								
+									<option value="Axe Prowess Lv 5">Axe Prowess Lv 5</option>
+								
+							
+								
+									<option value="Lancebreaker">Lancebreaker</option>
+								
+							
+								
+									<option value="Covering Fire">Covering Fire</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 1">Bow Prowess Lv 1</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 2">Bow Prowess Lv 2</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 3">Bow Prowess Lv 3</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 4">Bow Prowess Lv 4</option>
+								
+							
+								
+									<option value="Bow Prowess Lv 5">Bow Prowess Lv 5</option>
+								
+							
+								
+									<option value="Close Counter">Close Counter</option>
+								
+							
+								
+									<option value="Ice Block">Ice Block</option>
+								
+							
+								
+									<option value="Reason Lv 1">Reason Lv 1</option>
+								
+							
+								
+									<option value="Reason Lv 2">Reason Lv 2</option>
+								
+							
+								
+									<option value="Reason Lv 3">Reason Lv 3</option>
+								
+							
+								
+									<option value="Reason Lv 4">Reason Lv 4</option>
+								
+							
+								
+									<option value="Reason Lv 5">Reason Lv 5</option>
+								
+							
+								
+									<option value="Bless">Bless</option>
+								
+							
+								
+									<option value="Faith Lv 1">Faith Lv 1</option>
+								
+							
+								
+									<option value="Faith Lv 2">Faith Lv 2</option>
+								
+							
+								
+									<option value="Faith Lv 3">Faith Lv 3</option>
+								
+							
+								
+									<option value="Faith Lv 4">Faith Lv 4</option>
+								
+							
+								
+									<option value="Faith Lv 5">Faith Lv 5</option>
+								
+							
+								
+									<option value="Curse">Curse</option>
+								
+							
+								
+									<option value="Guile Lv 1">Guile Lv 1</option>
+								
+							
+								
+									<option value="Guile Lv 2">Guile Lv 2</option>
+								
+							
+								
+									<option value="Guile Lv 3">Guile Lv 3</option>
+								
+							
+								
+									<option value="Guile Lv 4">Guile Lv 4</option>
+								
+							
+								
+									<option value="Guile Lv 5">Guile Lv 5</option>
+								
+							
+								
+									<option value="Defend">Defend</option>
+								
+							
+								
+									<option value="Armored Combatant">Armored Combatant</option>
+								
+							
+								
+									<option value="Pack Mule">Pack Mule</option>
+								
+							
+								
+									<option value="Give a Lift">Give a Lift</option>
+								
+							
+								
+									<option value="Mounted Combatant">Mounted Combatant</option>
+								
+							
+								
+									<option value="Wing Buffet">Wing Buffet</option>
+								
+							
+								
+									<option value="Swordfaire">Swordfaire</option>
+								
+							
+								
+									<option value="Lancefaire">Lancefaire</option>
+								
+							
+								
+									<option value="Axefaire">Axefaire</option>
+								
+							
+								
+									<option value="Bowfaire">Bowfaire</option>
+								
+							
+								
+									<option value="Fistfaire">Fistfaire</option>
+								
+							
+								
+									<option value="Anima Tomefaire">Anima Tomefaire</option>
+								
+							
+								
+									<option value="Light Tomefaire">Light Tomefaire</option>
+								
+							
+								
+									<option value="Dark Tomefaire">Dark Tomefaire</option>
+								
+							
+								
+									<option value="Sword Critical +10">Sword Critical +10</option>
+								
+							
+								
+									<option value="Lance Critical +10">Lance Critical +10</option>
+								
+							
+								
+									<option value="Axe Critical +10">Axe Critical +10</option>
+								
+							
+								
+									<option value="Bow Critical +10">Bow Critical +10</option>
+								
+							
+								
+									<option value="Brawl Critical +10">Brawl Critical +10</option>
+								
+							
+								
+									<option value="Anima Magic Critical +10">Anima Magic Critical +10</option>
+								
+							
+								
+									<option value="Light Magic Critical +10">Light Magic Critical +10</option>
+								
+							
+								
+									<option value="Dark Magic Critical +10">Dark Magic Critical +10</option>
+								
+							
+								
+									<option value="Sword Avoid +20">Sword Avoid +20</option>
+								
+							
+								
+									<option value="Lance Avoid +20">Lance Avoid +20</option>
+								
+							
+								
+									<option value="Axe Avoid +20">Axe Avoid +20</option>
+								
+							
+								
+									<option value="Bow Avoid +20">Bow Avoid +20</option>
+								
+							
+								
+									<option value="Brawl Avoid +20">Brawl Avoid +20</option>
+								
+							
+								
+									<option value="Anima Magic Avoid +20">Anima Magic Avoid +20</option>
+								
+							
+								
+									<option value="Light Magic Avoid +20">Light Magic Avoid +20</option>
+								
+							
+								
+									<option value="Dark Magic Avoid +20">Dark Magic Avoid +20</option>
+								
+							
+								
+									<option value="HP +5">HP +5</option>
+								
+							
+								
+									<option value="Strength +2">Strength +2</option>
+								
+							
+								
+									<option value="Magic +2">Magic +2</option>
+								
+							
+								
+									<option value="Dexterity +4">Dexterity +4</option>
+								
+							
+								
+									<option value="Speed +2">Speed +2</option>
+								
+							
+								
+									<option value="Pomp & Circumstance">Pomp & Circumstance</option>
+								
+							
+								
+									<option value="Defense +2">Defense +2</option>
+								
+							
+								
+									<option value="Resistance +2">Resistance +2</option>
+								
+							
+								
+									<option value="Movement +1">Movement +1</option>
+								
+							
+								
+									<option value="Hit +20">Hit +20</option>
+								
+							
+								
+									<option value="Avoid +10">Avoid +10</option>
+								
+							
+								
+									<option value="Critical +20">Critical +20</option>
+								
+							
+								
+									<option value="Defiant Strength">Defiant Strength</option>
+								
+							
+								
+									<option value="Defiant Magic">Defiant Magic</option>
+								
+							
+								
+									<option value="Defiant Speed">Defiant Speed</option>
+								
+							
+								
+									<option value="Defiant Resistance">Defiant Resistance</option>
+								
+							
+								
+									<option value="Defiant Defense">Defiant Defense</option>
+								
+							
+								
+									<option value="Defiant Avoid">Defiant Avoid</option>
+								
+							
+								
+									<option value="Defiant Critical">Defiant Critical</option>
+								
+							
+								
+									<option value="Death Blow">Death Blow</option>
+								
+							
+								
+									<option value="Fiendish Blow">Fiendish Blow</option>
+								
+							
+								
+									<option value="Darting Blow">Darting Blow</option>
+								
+							
+								
+									<option value="Armored Blow">Armored Blow</option>
+								
+							
+								
+									<option value="Warding Blow">Warding Blow</option>
+								
+							
+								
+									<option value="Charm">Charm</option>
+								
+							
+								
+									<option value="Seal Defense">Seal Defense</option>
+								
+							
+								
+									<option value="Seal Resistance">Seal Resistance</option>
+								
+							
+								
+									<option value="Heartseeker">Heartseeker</option>
+								
+							
+								
+									<option value="Tomebreaker">Tomebreaker</option>
+								
+							
+								
+									<option value="Bowbreaker">Bowbreaker</option>
+								
+							
+								
+									<option value="Fistbreaker">Fistbreaker</option>
+								
+							
+								
+									<option value="Fire">Fire</option>
+								
+							
+								
+									<option value="Miasma">Miasma</option>
+								
+							
+								
+									<option value="Heal">Heal</option>
+								
+							
+								
+									<option value="Renewal">Renewal</option>
+								
+							
+								
+									<option value="Poison Strike">Poison Strike</option>
+								
+							
+								
+									<option value="Lifetaker">Lifetaker</option>
+								
+							
+								
+									<option value="Lethality">Lethality</option>
+								
+							
+								
+									<option value="Poison">Poison</option>
+								
+							
+								
+									<option value="Pavise">Pavise</option>
+								
+							
+								
+									<option value="Aegis">Aegis</option>
+								
+							
+								
+									<option value="Miracle">Miracle</option>
+								
+							
+								
+									<option value="Terrain Resistance">Terrain Resistance</option>
+								
+							
+								
+									<option value="Special Dance">Special Dance</option>
+								
+							
+								
+									<option value="Vantage">Vantage</option>
+								
+							
+								
+									<option value="Desperation">Desperation</option>
+								
+							
+								
+									<option value="Quick Riposte">Quick Riposte</option>
+								
+							
+								
+									<option value="Wrath">Wrath</option>
+								
+							
+								
+									<option value="Dance">Dance</option>
+								
+							
+								
+									<option value="Steal">Steal</option>
+								
+							
+								
+									<option value="Locktouch">Locktouch</option>
+								
+							
+								
+									<option value="Stealth">Stealth</option>
+								
+							
+								
+									<option value="Canto">Canto</option>
+								
+							
+								
+									<option value="Pass">Pass</option>
+								
+							
+								
+									<option value="Bowrange +1">Bowrange +1</option>
+								
+							
+								
+									<option value="Bowrange +2">Bowrange +2</option>
+								
+							
+								
+									<option value="Anima Magic Range +1">Anima Magic Range +1</option>
+								
+							
+								
+									<option value="Dark Magic Range +1">Dark Magic Range +1</option>
+								
+							
+								
+									<option value="Light Magic Range +1">Light Magic Range +1</option>
+								
+							
+								
+									<option value="Unarmed Combat">Unarmed Combat</option>
+								
+							
+								
+									<option value="Anima Magic Uses x2">Anima Magic Uses x2</option>
+								
+							
+								
+									<option value="Dark Magic Uses x2">Dark Magic Uses x2</option>
+								
+							
+								
+									<option value="Light Magic Uses x2">Light Magic Uses x2</option>
+								
+							
+								
+									<option value="Light Magic Heal +5">Light Magic Heal +5</option>
+								
+							
+								
+									<option value="Light Magic Heal +10">Light Magic Heal +10</option>
+								
+							
+								
+									<option value="Unsealable Magic">Unsealable Magic</option>
+								
+							
+								
+									<option value="Immune Status">Immune Status</option>
+								
+							
+								
+									<option value="General">General</option>
+								
+							
+								
+									<option value="Commander">Commander</option>
+								
+							
+								
+									<option value="Infinite Magic">Infinite Magic</option>
+								
+							
+								
+									<option value="Magic Bind">Magic Bind</option>
+								
+							
+								
+									<option value="Infantry Effect Null">Infantry Effect Null</option>
+								
+							
+								
+									<option value="Armored Effect Null">Armored Effect Null</option>
+								
+							
+								
+									<option value="Cavalry Effect Null">Cavalry Effect Null</option>
+								
+							
+								
+									<option value="Flying Effect Null">Flying Effect Null</option>
+								
+							
+								
+									<option value="Dragon Effect Null">Dragon Effect Null</option>
+								
+							
+								
+									<option value="Monster Effect Null">Monster Effect Null</option>
+								
+							
+								
+									<option value="Effect Null">Effect Null</option>
+								
+							
+								
+									<option value="Vital Defense">Vital Defense</option>
+								
+							
+								
+									<option value="Giant Wings">Giant Wings</option>
+								
+							
+								
+									<option value="Anti-magic Armor">Anti-magic Armor</option>
+								
+							
+								
+									<option value="Noncombatant">Noncombatant</option>
+								
+							
+								
+									<option value="Cursed Power">Cursed Power</option>
+								
+							
+								
+									<option value="Anchor">Anchor</option>
+								
+							
+								
+									<option value="Counterattack">Counterattack</option>
+								
+							
+								
+									<option value="Counterattack">Counterattack</option>
+								
+							
+								
+									<option value="Anima Magic Uses x4">Anima Magic Uses x4</option>
+								
+							
+								
+									<option value="Dark Magic Uses x4">Dark Magic Uses x4</option>
+								
+							
+								
+									<option value="Light Magic Uses x4">Light Magic Uses x4</option>
+								
+							
+								
+									<option value="Alert Stance">Alert Stance</option>
+								
+							
+								
+									<option value="Alert Stance+">Alert Stance+</option>
+								
+							
+								
+									<option value="Agarthan Technology">Agarthan Technology</option>
+								
+							
+								
+									<option value="Lucky Seven">Lucky Seven</option>
+								
+							
+								
+									<option value="Transmute">Transmute</option>
+								
+							
+								
+									<option value="Duelist's Blow">Duelist's Blow</option>
+								
+							
+								
+									<option value="Uncanny Blow">Uncanny Blow</option>
+								
+							
+								
+									<option value="Combat Medic">Combat Medic</option>
+								
+							
+								
+									<option value="Can't Keep Up?">Can't Keep Up?</option>
+								
+							
+								
+									<option value="Try Your Best">Try Your Best</option>
+								
+							
+								
+									<option value="Dead Man's Hand">Dead Man's Hand</option>
+								
+							
+								
+									<option value="Oskar's Sibling Bond">Oskar's Sibling Bond</option>
+								
+							
+								
+									<option value="Amalia's Sibling Bond">Amalia's Sibling Bond</option>
+								
+							
+								
+									<option value="Wrathful Empathy">Wrathful Empathy</option>
+								
+							
+								
+									<option value="Hesitant Prodigy">Hesitant Prodigy</option>
+								
+							
+								
+							
+								
+							
+								
+									<option value="Brittle Bones">Brittle Bones</option>
+								
+							
+								
+									<option value="Zephyr">Zephyr</option>
+								
+							
+								
+									<option value="Painless">Painless</option>
+								
+							
+								
+									<option value="Painless Conduit">Painless Conduit</option>
+								
+							
+								
+									<option value="Bond of Silence">Bond of Silence</option>
+								
+							
+								
+									<option value="Primed for Danger">Primed for Danger</option>
+								
+							
+								
+									<option value="Blessed Fortitude">Blessed Fortitude</option>
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+									<option value="Infernal Chorus">Infernal Chorus</option>
+								
+							
+								
+							
+								
+									<option value="Animal Affinity">Animal Affinity</option>
+								
+							
+								
+									<option value="Near Miss">Near Miss</option>
+								
+							
+								
+									<option value="Undying Bloodlust">Undying Bloodlust</option>
+								
+							
+						</select>
+						<dl id="abilities-known"></dl>
+					</details>
+				</div>
 			</details>
 
 			<details>
-				<summary>Equipped Abilites</summary>
-				<dl id="abilities-equipped"></dl>
+				<summary class="entry-tab-title">
+					Combat Arts
+				</summary>
+				<div class="entry-tab-body">
+					<details>
+						<summary>Equipped</summary>
+						<dl id="combatarts-equipped"></dl>
+					</details>
+
+					<details>
+						<summary>Known</summary>
+						<input type="button" value="Add" onclick="CombatArt.learn('known')" />
+						<select id="learn-combatarts-select-known">
+							
+								
+									<option value="Standard Attack">Standard Attack</option>
+								
+							
+								
+									<option value="Healing Focus">Healing Focus</option>
+								
+							
+								
+									<option value="Swap">Swap</option>
+								
+							
+								
+									<option value="Shove">Shove</option>
+								
+							
+								
+									<option value="Reposition">Reposition</option>
+								
+							
+								
+									<option value="Draw Back">Draw Back</option>
+								
+							
+								
+									<option value="Smite">Smite</option>
+								
+							
+								
+									<option value="Triangle Attack">Triangle Attack</option>
+								
+							
+								
+									<option value="Foul Play">Foul Play</option>
+								
+							
+								
+									<option value="Super Juke">Super Juke</option>
+								
+							
+								
+									<option value="Sunder">Sunder</option>
+								
+							
+								
+									<option value="Wrath Strike">Wrath Strike</option>
+								
+							
+								
+									<option value="Grounder">Grounder</option>
+								
+							
+								
+									<option value="Haze Slice">Haze Slice</option>
+								
+							
+								
+									<option value="Bane of Monsters">Bane of Monsters</option>
+								
+							
+								
+									<option value="Soulblade">Soulblade</option>
+								
+							
+								
+									<option value="Hexblade">Hexblade</option>
+								
+							
+								
+									<option value="Finesse Blade">Finesse Blade</option>
+								
+							
+								
+									<option value="Windsweep">Windsweep</option>
+								
+							
+								
+									<option value="Subdue">Subdue</option>
+								
+							
+								
+									<option value="Foudroyant Strike">Foudroyant Strike</option>
+								
+							
+								
+									<option value="Beast Fang">Beast Fang</option>
+								
+							
+								
+									<option value="Ruptured Heaven">Ruptured Heaven</option>
+								
+							
+								
+									<option value="Heaven’s Fall">Heaven’s Fall</option>
+								
+							
+								
+									<option value="Assassinate">Assassinate</option>
+								
+							
+								
+									<option value="Astra">Astra</option>
+								
+							
+								
+									<option value="Sublime Heaven">Sublime Heaven</option>
+								
+							
+								
+									<option value="Sword Dance">Sword Dance</option>
+								
+							
+								
+									<option value="Tempest Lance">Tempest Lance</option>
+								
+							
+								
+									<option value="Hit and Run">Hit and Run</option>
+								
+							
+								
+									<option value="Knight Kneeler">Knight Kneeler</option>
+								
+							
+								
+									<option value="Shatter Slash">Shatter Slash</option>
+								
+							
+								
+									<option value="Vengeance">Vengeance</option>
+								
+							
+								
+									<option value="Monster Piercer">Monster Piercer</option>
+								
+							
+								
+									<option value="Frozen Lance">Frozen Lance</option>
+								
+							
+								
+									<option value="Hook">Hook</option>
+								
+							
+								
+									<option value="Swift Strikes">Swift Strikes</option>
+								
+							
+								
+									<option value="Lance Jab">Lance Jab</option>
+								
+							
+								
+									<option value="Glowing Ember">Glowing Ember</option>
+								
+							
+								
+									<option value="Ruined Sky">Ruined Sky</option>
+								
+							
+								
+									<option value="Atrocity">Atrocity</option>
+								
+							
+								
+									<option value="Burning Quake">Burning Quake</option>
+								
+							
+								
+									<option value="Paraselene">Paraselene</option>
+								
+							
+								
+									<option value="Smash">Smash</option>
+								
+							
+								
+									<option value="Spike">Spike</option>
+								
+							
+								
+									<option value="Helm Splitter">Helm Splitter</option>
+								
+							
+								
+									<option value="Focused Strike">Focused Strike</option>
+								
+							
+								
+									<option value="Wild Abandon">Wild Abandon</option>
+								
+							
+								
+									<option value="Lightning Axe">Lightning Axe</option>
+								
+							
+								
+									<option value="Monster Breaker">Monster Breaker</option>
+								
+							
+								
+									<option value="Armored Strike">Armored Strike</option>
+								
+							
+								
+									<option value="Diamond Axe">Diamond Axe</option>
+								
+							
+								
+									<option value="Exhaustive Strike">Exhaustive Strike</option>
+								
+							
+								
+									<option value="Nedler's Amputator">Nedler's Amputator</option>
+								
+							
+								
+									<option value="Apocalyptic Flame">Apocalyptic Flame</option>
+								
+							
+								
+									<option value="Dust">Dust</option>
+								
+							
+								
+									<option value="Raging Storm">Raging Storm</option>
+								
+							
+								
+									<option value="Flickering Flower">Flickering Flower</option>
+								
+							
+								
+									<option value="War Hero’s Strike">War Hero’s Strike</option>
+								
+							
+								
+									<option value="Curved Shot">Curved Shot</option>
+								
+							
+								
+									<option value="Monster Blaster">Monster Blaster</option>
+								
+							
+								
+									<option value="Deadeye">Deadeye</option>
+								
+							
+								
+									<option value="Waning Shot">Waning Shot</option>
+								
+							
+								
+									<option value="Break Shot">Break Shot</option>
+								
+							
+								
+									<option value="Schism Shot">Schism Shot</option>
+								
+							
+								
+									<option value="Heavy Draw">Heavy Draw</option>
+								
+							
+								
+									<option value="Point-Blank Volley">Point-Blank Volley</option>
+								
+							
+								
+									<option value="Encloser">Encloser</option>
+								
+							
+								
+									<option value="Ward Arrow">Ward Arrow</option>
+								
+							
+								
+									<option value="Fallen Star">Fallen Star</option>
+								
+							
+								
+									<option value="Hunter’s Volley">Hunter’s Volley</option>
+								
+							
+								
+									<option value="Wind God">Wind God</option>
+								
+							
+						</select>
+						<dl id="combatarts-known"></dl>
+					</details>
+				</div>
 			</details>
-			
+
 			<details>
-				<summary>Battlefield Abilities</summary>
-				<input type="button" value="Add" onclick="learn_ability('battlefield')" />
-				<select id="learn-ability-select-battlefield">
+				<summary class="entry-tab-title">
+					Weapons & Spells
+				</summary>
+				<input type="button" value="Add" onclick="Weapon.learn('known')" />
+				<select id="learn-weapons-select-known">
 					
 						
-							<option value="None">None</option>
+							<option value="Unarmed">Unarmed</option>
 						
 					
 						
-							<option value="Riposte">Riposte</option>
+							<option value="Iron Sword">Iron Sword</option>
 						
 					
 						
-							<option value="Sword Prowess Lv 1">Sword Prowess Lv 1</option>
+							<option value="Iron Sword+">Iron Sword+</option>
 						
 					
 						
-							<option value="Sword Prowess Lv 2">Sword Prowess Lv 2</option>
+							<option value="Venin Edge">Venin Edge</option>
 						
 					
 						
-							<option value="Sword Prowess Lv 3">Sword Prowess Lv 3</option>
+							<option value="Steel Sword">Steel Sword</option>
 						
 					
 						
-							<option value="Sword Prowess Lv 4">Sword Prowess Lv 4</option>
+							<option value="Steel Sword+">Steel Sword+</option>
 						
 					
 						
-							<option value="Sword Prowess Lv 5">Sword Prowess Lv 5</option>
+							<option value="Silver Sword">Silver Sword</option>
 						
 					
 						
-							<option value="Axebreaker">Axebreaker</option>
+							<option value="Silver Sword+">Silver Sword+</option>
 						
 					
 						
-							<option value="Attack of Opportunity">Attack of Opportunity</option>
+							<option value="Brave Sword">Brave Sword</option>
 						
 					
 						
-							<option value="Lance Prowess Lv 1">Lance Prowess Lv 1</option>
+							<option value="Brave Sword+">Brave Sword+</option>
 						
 					
 						
-							<option value="Lance Prowess Lv 2">Lance Prowess Lv 2</option>
+							<option value="Iron Lance">Iron Lance</option>
 						
 					
 						
-							<option value="Lance Prowess Lv 3">Lance Prowess Lv 3</option>
+							<option value="Iron Lance+">Iron Lance+</option>
 						
 					
 						
-							<option value="Lance Prowess Lv 4">Lance Prowess Lv 4</option>
+							<option value="Steel Lance">Steel Lance</option>
 						
 					
 						
-							<option value="Lance Prowess Lv 5">Lance Prowess Lv 5</option>
+							<option value="Steel Lance+">Steel Lance+</option>
 						
 					
 						
-							<option value="Swordbreaker">Swordbreaker</option>
+							<option value="Silver Lance">Silver Lance</option>
 						
 					
 						
-							<option value="Sunder (Attack)">Sunder (Attack)</option>
+							<option value="Silver Lance+">Silver Lance+</option>
 						
 					
 						
-							<option value="Sunder (Defense)">Sunder (Defense)</option>
+							<option value="Brave Lance">Brave Lance</option>
 						
 					
 						
-							<option value="Axe Prowess Lv 1">Axe Prowess Lv 1</option>
+							<option value="Iron Axe">Iron Axe</option>
 						
 					
 						
-							<option value="Axe Prowess Lv 2">Axe Prowess Lv 2</option>
+							<option value="Iron Axe+">Iron Axe+</option>
 						
 					
 						
-							<option value="Axe Prowess Lv 3">Axe Prowess Lv 3</option>
+							<option value="Steel Axe">Steel Axe</option>
 						
 					
 						
-							<option value="Axe Prowess Lv 4">Axe Prowess Lv 4</option>
+							<option value="Steel Axe+">Steel Axe+</option>
 						
 					
 						
-							<option value="Axe Prowess Lv 5">Axe Prowess Lv 5</option>
+							<option value="Silver Axe">Silver Axe</option>
 						
 					
 						
-							<option value="Lancebreaker">Lancebreaker</option>
+							<option value="Silver Axe+">Silver Axe+</option>
 						
 					
 						
-							<option value="Covering Fire">Covering Fire</option>
+							<option value="Brave Axe">Brave Axe</option>
 						
 					
 						
-							<option value="Bow Prowess Lv 1">Bow Prowess Lv 1</option>
+							<option value="Brave Axe+">Brave Axe+</option>
 						
 					
 						
-							<option value="Bow Prowess Lv 2">Bow Prowess Lv 2</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 3">Bow Prowess Lv 3</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 4">Bow Prowess Lv 4</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 5">Bow Prowess Lv 5</option>
-						
-					
-						
-							<option value="Close Counter">Close Counter</option>
-						
-					
-						
-							<option value="Ice Block">Ice Block</option>
-						
-					
-						
-							<option value="Reason Lv 1">Reason Lv 1</option>
-						
-					
-						
-							<option value="Reason Lv 2">Reason Lv 2</option>
-						
-					
-						
-							<option value="Reason Lv 3">Reason Lv 3</option>
-						
-					
-						
-							<option value="Reason Lv 4">Reason Lv 4</option>
-						
-					
-						
-							<option value="Reason Lv 5">Reason Lv 5</option>
-						
-					
-						
-							<option value="Bless">Bless</option>
-						
-					
-						
-							<option value="Faith Lv 1">Faith Lv 1</option>
-						
-					
-						
-							<option value="Faith Lv 2">Faith Lv 2</option>
-						
-					
-						
-							<option value="Faith Lv 3">Faith Lv 3</option>
-						
-					
-						
-							<option value="Faith Lv 4">Faith Lv 4</option>
-						
-					
-						
-							<option value="Faith Lv 5">Faith Lv 5</option>
-						
-					
-						
-							<option value="Curse">Curse</option>
-						
-					
-						
-							<option value="Guile Lv 1">Guile Lv 1</option>
-						
-					
-						
-							<option value="Guile Lv 2">Guile Lv 2</option>
-						
-					
-						
-							<option value="Guile Lv 3">Guile Lv 3</option>
-						
-					
-						
-							<option value="Guile Lv 4">Guile Lv 4</option>
-						
-					
-						
-							<option value="Guile Lv 5">Guile Lv 5</option>
-						
-					
-						
-							<option value="Defend">Defend</option>
-						
-					
-						
-							<option value="Armored Combatant">Armored Combatant</option>
-						
-					
-						
-							<option value="Pack Mule">Pack Mule</option>
-						
-					
-						
-							<option value="Give a Lift">Give a Lift</option>
-						
-					
-						
-							<option value="Mounted Combatant">Mounted Combatant</option>
-						
-					
-						
-							<option value="Wing Buffet">Wing Buffet</option>
-						
-					
-						
-							<option value="Swordfaire">Swordfaire</option>
-						
-					
-						
-							<option value="Lancefaire">Lancefaire</option>
-						
-					
-						
-							<option value="Axefaire">Axefaire</option>
-						
-					
-						
-							<option value="Bowfaire">Bowfaire</option>
-						
-					
-						
-							<option value="Fistfaire">Fistfaire</option>
-						
-					
-						
-							<option value="Anima Tomefaire">Anima Tomefaire</option>
-						
-					
-						
-							<option value="Light Tomefaire">Light Tomefaire</option>
-						
-					
-						
-							<option value="Dark Tomefaire">Dark Tomefaire</option>
-						
-					
-						
-							<option value="Sword Critical +10">Sword Critical +10</option>
-						
-					
-						
-							<option value="Lance Critical +10">Lance Critical +10</option>
-						
-					
-						
-							<option value="Axe Critical +10">Axe Critical +10</option>
-						
-					
-						
-							<option value="Bow Critical +10">Bow Critical +10</option>
-						
-					
-						
-							<option value="Brawl Critical +10">Brawl Critical +10</option>
-						
-					
-						
-							<option value="Anima Magic Critical +10">Anima Magic Critical +10</option>
-						
-					
-						
-							<option value="Light Magic Critical +10">Light Magic Critical +10</option>
-						
-					
-						
-							<option value="Dark Magic Critical +10">Dark Magic Critical +10</option>
-						
-					
-						
-							<option value="Sword Avoid +20">Sword Avoid +20</option>
-						
-					
-						
-							<option value="Lance Avoid +20">Lance Avoid +20</option>
-						
-					
-						
-							<option value="Axe Avoid +20">Axe Avoid +20</option>
-						
-					
-						
-							<option value="Bow Avoid +20">Bow Avoid +20</option>
-						
-					
-						
-							<option value="Brawl Avoid +20">Brawl Avoid +20</option>
-						
-					
-						
-							<option value="Anima Magic Avoid +20">Anima Magic Avoid +20</option>
-						
-					
-						
-							<option value="Light Magic Avoid +20">Light Magic Avoid +20</option>
-						
-					
-						
-							<option value="Dark Magic Avoid +20">Dark Magic Avoid +20</option>
-						
-					
-						
-							<option value="HP +5">HP +5</option>
-						
-					
-						
-							<option value="Strength +2">Strength +2</option>
-						
-					
-						
-							<option value="Magic +2">Magic +2</option>
-						
 					
 						
-							<option value="Dexterity +4">Dexterity +4</option>
-						
-					
-						
-							<option value="Speed +2">Speed +2</option>
-						
-					
-						
-							<option value="Pomp & Circumstance">Pomp & Circumstance</option>
-						
-					
-						
-							<option value="Defense +2">Defense +2</option>
-						
-					
-						
-							<option value="Resistance +2">Resistance +2</option>
-						
-					
-						
-							<option value="Movement +1">Movement +1</option>
-						
-					
-						
-							<option value="Hit +20">Hit +20</option>
-						
-					
-						
-							<option value="Avoid +10">Avoid +10</option>
-						
-					
-						
-							<option value="Critical +20">Critical +20</option>
-						
-					
-						
-							<option value="Defiant Strength">Defiant Strength</option>
-						
 					
-						
-							<option value="Defiant Magic">Defiant Magic</option>
-						
-					
-						
-							<option value="Defiant Speed">Defiant Speed</option>
-						
-					
-						
-							<option value="Defiant Resistance">Defiant Resistance</option>
-						
-					
-						
-							<option value="Defiant Defense">Defiant Defense</option>
-						
-					
-						
-							<option value="Defiant Avoid">Defiant Avoid</option>
-						
-					
-						
-							<option value="Defiant Critical">Defiant Critical</option>
-						
-					
-						
-							<option value="Death Blow">Death Blow</option>
-						
-					
-						
-							<option value="Fiendish Blow">Fiendish Blow</option>
-						
-					
-						
-							<option value="Darting Blow">Darting Blow</option>
-						
-					
-						
-							<option value="Armored Blow">Armored Blow</option>
 						
 					
 						
-							<option value="Warding Blow">Warding Blow</option>
+							<option value="Iron Bow">Iron Bow</option>
 						
 					
 						
-							<option value="Charm">Charm</option>
+							<option value="Iron Bow+">Iron Bow+</option>
 						
 					
 						
-							<option value="Seal Defense">Seal Defense</option>
+							<option value="Steel Bow">Steel Bow</option>
 						
 					
 						
-							<option value="Seal Resistance">Seal Resistance</option>
+							<option value="Steel Bow+">Steel Bow+</option>
 						
 					
 						
-							<option value="Heartseeker">Heartseeker</option>
+							<option value="Silver Bow">Silver Bow</option>
 						
 					
 						
-							<option value="Tomebreaker">Tomebreaker</option>
+							<option value="Silver Bow+">Silver Bow+</option>
 						
 					
 						
-							<option value="Bowbreaker">Bowbreaker</option>
+							<option value="Brave Bow">Brave Bow</option>
 						
 					
 						
-							<option value="Fistbreaker">Fistbreaker</option>
+							<option value="Brave Bow+">Brave Bow+</option>
 						
 					
 						
-							<option value="Fire">Fire</option>
+							<option value="Brave Lance+">Brave Lance+</option>
 						
 					
 						
@@ -1473,792 +3056,7 @@
 						
 					
 						
-							<option value="Heal">Heal</option>
-						
-					
-						
-							<option value="Renewal">Renewal</option>
-						
-					
-						
-							<option value="Poison Strike">Poison Strike</option>
-						
-					
-						
-							<option value="Lifetaker">Lifetaker</option>
-						
-					
-						
-							<option value="Lethality">Lethality</option>
-						
-					
-						
-							<option value="Poison">Poison</option>
-						
-					
-						
-							<option value="Pavise">Pavise</option>
-						
-					
-						
-							<option value="Aegis">Aegis</option>
-						
-					
-						
-							<option value="Miracle">Miracle</option>
-						
-					
-						
-							<option value="Terrain Resistance">Terrain Resistance</option>
-						
-					
-						
-							<option value="Special Dance">Special Dance</option>
-						
-					
-						
-							<option value="Vantage">Vantage</option>
-						
-					
-						
-							<option value="Desperation">Desperation</option>
-						
-					
-						
-							<option value="Quick Riposte">Quick Riposte</option>
-						
-					
-						
-							<option value="Wrath">Wrath</option>
-						
-					
-						
-							<option value="Dance">Dance</option>
-						
-					
-						
-							<option value="Steal">Steal</option>
-						
-					
-						
-							<option value="Locktouch">Locktouch</option>
-						
-					
-						
-							<option value="Stealth">Stealth</option>
-						
-					
-						
-							<option value="Canto">Canto</option>
-						
-					
-						
-							<option value="Pass">Pass</option>
-						
-					
-						
-							<option value="Bowrange +1">Bowrange +1</option>
-						
-					
-						
-							<option value="Bowrange +2">Bowrange +2</option>
-						
-					
-						
-							<option value="Anima Magic Range +1">Anima Magic Range +1</option>
-						
-					
-						
-							<option value="Dark Magic Range +1">Dark Magic Range +1</option>
-						
-					
-						
-							<option value="Light Magic Range +1">Light Magic Range +1</option>
-						
-					
-						
-							<option value="Unarmed Combat">Unarmed Combat</option>
-						
-					
-						
-							<option value="Anima Magic Uses x2">Anima Magic Uses x2</option>
-						
-					
-						
-							<option value="Dark Magic Uses x2">Dark Magic Uses x2</option>
-						
-					
-						
-							<option value="Light Magic Uses x2">Light Magic Uses x2</option>
-						
-					
-						
-							<option value="Light Magic Heal +5">Light Magic Heal +5</option>
-						
-					
-						
-							<option value="Light Magic Heal +10">Light Magic Heal +10</option>
-						
-					
-						
-							<option value="Unsealable Magic">Unsealable Magic</option>
-						
-					
-						
-							<option value="Immune Status">Immune Status</option>
-						
-					
-						
-							<option value="General">General</option>
-						
-					
-						
-							<option value="Commander">Commander</option>
-						
-					
-						
-							<option value="Infinite Magic">Infinite Magic</option>
-						
-					
-						
-							<option value="Magic Bind">Magic Bind</option>
-						
-					
-						
-							<option value="Infantry Effect Null">Infantry Effect Null</option>
-						
-					
-						
-							<option value="Armored Effect Null">Armored Effect Null</option>
-						
-					
-						
-							<option value="Cavalry Effect Null">Cavalry Effect Null</option>
-						
-					
-						
-							<option value="Flying Effect Null">Flying Effect Null</option>
-						
-					
-						
-							<option value="Dragon Effect Null">Dragon Effect Null</option>
-						
-					
-						
-							<option value="Monster Effect Null">Monster Effect Null</option>
-						
-					
-						
-							<option value="Effect Null">Effect Null</option>
-						
-					
-						
-							<option value="Vital Defense">Vital Defense</option>
-						
-					
-						
-							<option value="Giant Wings">Giant Wings</option>
-						
-					
-						
-							<option value="Anti-magic Armor">Anti-magic Armor</option>
-						
-					
-						
-							<option value="Noncombatant">Noncombatant</option>
-						
-					
-						
-							<option value="Cursed Power">Cursed Power</option>
-						
-					
-						
-							<option value="Anchor">Anchor</option>
-						
-					
-						
-							<option value="Counterattack">Counterattack</option>
-						
-					
-						
-							<option value="Counterattack">Counterattack</option>
-						
-					
-						
-							<option value="Anima Magic Uses x4">Anima Magic Uses x4</option>
-						
-					
-						
-							<option value="Dark Magic Uses x4">Dark Magic Uses x4</option>
-						
-					
-						
-							<option value="Light Magic Uses x4">Light Magic Uses x4</option>
-						
-					
-						
-							<option value="Alert Stance">Alert Stance</option>
-						
-					
-						
-							<option value="Alert Stance+">Alert Stance+</option>
-						
-					
-						
-							<option value="Agarthan Technology">Agarthan Technology</option>
-						
-					
-						
-							<option value="Lucky Seven">Lucky Seven</option>
-						
-					
-						
-							<option value="Transmute">Transmute</option>
-						
-					
-						
-							<option value="Duelist's Blow">Duelist's Blow</option>
-						
-					
-						
-							<option value="Uncanny Blow">Uncanny Blow</option>
-						
-					
-						
-							<option value="Combat Medic">Combat Medic</option>
-						
-					
-						
-							<option value="Can't Keep Up?">Can't Keep Up?</option>
-						
-					
-						
-							<option value="Try Your Best">Try Your Best</option>
-						
-					
-						
-							<option value="Dead Man's Hand">Dead Man's Hand</option>
-						
-					
-						
-							<option value="Oskar's Sibling Bond">Oskar's Sibling Bond</option>
-						
-					
-						
-							<option value="Amalia's Sibling Bond">Amalia's Sibling Bond</option>
-						
-					
-						
-							<option value="Wrathful Empathy">Wrathful Empathy</option>
-						
-					
-						
-							<option value="Hesitant Prodigy">Hesitant Prodigy</option>
-						
-					
-						
-					
-						
-					
-						
-							<option value="Brittle Bones">Brittle Bones</option>
-						
-					
-						
-							<option value="Zephyr">Zephyr</option>
-						
-					
-						
-							<option value="Painless">Painless</option>
-						
-					
-						
-							<option value="Bond of Silence">Bond of Silence</option>
-						
-					
-						
-							<option value="Primed for Danger">Primed for Danger</option>
-						
-					
-						
-							<option value="Blessed Fortitude">Blessed Fortitude</option>
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-							<option value="Infernal Chorus">Infernal Chorus</option>
-						
-					
-						
-					
-						
-							<option value="Animal Affinity">Animal Affinity</option>
-						
-					
-						
-							<option value="Near Miss">Near Miss</option>
-						
-					
-						
-							<option value="Undying Bloodlust">Undying Bloodlust</option>
-						
-					
-				</select>
-				<dl id="abilities-battlefield"></dl>
-			</details>
-
-			<details>
-				<summary>Known Abilities</summary>
-				<input type="button" value="Add" onclick="learn_ability('known')" />
-				<select id="learn-ability-select-known">
-					
-						
-							<option value="None">None</option>
-						
-					
-						
-							<option value="Riposte">Riposte</option>
-						
-					
-						
-							<option value="Sword Prowess Lv 1">Sword Prowess Lv 1</option>
-						
-					
-						
-							<option value="Sword Prowess Lv 2">Sword Prowess Lv 2</option>
-						
-					
-						
-							<option value="Sword Prowess Lv 3">Sword Prowess Lv 3</option>
-						
-					
-						
-							<option value="Sword Prowess Lv 4">Sword Prowess Lv 4</option>
-						
-					
-						
-							<option value="Sword Prowess Lv 5">Sword Prowess Lv 5</option>
-						
-					
-						
-							<option value="Axebreaker">Axebreaker</option>
-						
-					
-						
-							<option value="Attack of Opportunity">Attack of Opportunity</option>
-						
-					
-						
-							<option value="Lance Prowess Lv 1">Lance Prowess Lv 1</option>
-						
-					
-						
-							<option value="Lance Prowess Lv 2">Lance Prowess Lv 2</option>
-						
-					
-						
-							<option value="Lance Prowess Lv 3">Lance Prowess Lv 3</option>
-						
-					
-						
-							<option value="Lance Prowess Lv 4">Lance Prowess Lv 4</option>
-						
-					
-						
-							<option value="Lance Prowess Lv 5">Lance Prowess Lv 5</option>
-						
-					
-						
-							<option value="Swordbreaker">Swordbreaker</option>
-						
-					
-						
-							<option value="Sunder (Attack)">Sunder (Attack)</option>
-						
-					
-						
-							<option value="Sunder (Defense)">Sunder (Defense)</option>
-						
-					
-						
-							<option value="Axe Prowess Lv 1">Axe Prowess Lv 1</option>
-						
-					
-						
-							<option value="Axe Prowess Lv 2">Axe Prowess Lv 2</option>
-						
-					
-						
-							<option value="Axe Prowess Lv 3">Axe Prowess Lv 3</option>
-						
-					
-						
-							<option value="Axe Prowess Lv 4">Axe Prowess Lv 4</option>
-						
-					
-						
-							<option value="Axe Prowess Lv 5">Axe Prowess Lv 5</option>
-						
-					
-						
-							<option value="Lancebreaker">Lancebreaker</option>
-						
-					
-						
-							<option value="Covering Fire">Covering Fire</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 1">Bow Prowess Lv 1</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 2">Bow Prowess Lv 2</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 3">Bow Prowess Lv 3</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 4">Bow Prowess Lv 4</option>
-						
-					
-						
-							<option value="Bow Prowess Lv 5">Bow Prowess Lv 5</option>
-						
-					
-						
-							<option value="Close Counter">Close Counter</option>
-						
-					
-						
-							<option value="Ice Block">Ice Block</option>
-						
-					
-						
-							<option value="Reason Lv 1">Reason Lv 1</option>
-						
-					
-						
-							<option value="Reason Lv 2">Reason Lv 2</option>
-						
-					
-						
-							<option value="Reason Lv 3">Reason Lv 3</option>
-						
-					
-						
-							<option value="Reason Lv 4">Reason Lv 4</option>
-						
-					
-						
-							<option value="Reason Lv 5">Reason Lv 5</option>
-						
-					
-						
-							<option value="Bless">Bless</option>
-						
-					
-						
-							<option value="Faith Lv 1">Faith Lv 1</option>
-						
-					
-						
-							<option value="Faith Lv 2">Faith Lv 2</option>
-						
-					
-						
-							<option value="Faith Lv 3">Faith Lv 3</option>
-						
-					
-						
-							<option value="Faith Lv 4">Faith Lv 4</option>
-						
-					
-						
-							<option value="Faith Lv 5">Faith Lv 5</option>
-						
-					
-						
-							<option value="Curse">Curse</option>
-						
-					
-						
-							<option value="Guile Lv 1">Guile Lv 1</option>
-						
-					
-						
-							<option value="Guile Lv 2">Guile Lv 2</option>
-						
-					
-						
-							<option value="Guile Lv 3">Guile Lv 3</option>
-						
-					
-						
-							<option value="Guile Lv 4">Guile Lv 4</option>
-						
-					
-						
-							<option value="Guile Lv 5">Guile Lv 5</option>
-						
-					
-						
-							<option value="Defend">Defend</option>
-						
-					
-						
-							<option value="Armored Combatant">Armored Combatant</option>
-						
-					
-						
-							<option value="Pack Mule">Pack Mule</option>
-						
-					
-						
-							<option value="Give a Lift">Give a Lift</option>
-						
-					
-						
-							<option value="Mounted Combatant">Mounted Combatant</option>
-						
-					
-						
-							<option value="Wing Buffet">Wing Buffet</option>
-						
-					
-						
-							<option value="Swordfaire">Swordfaire</option>
-						
-					
-						
-							<option value="Lancefaire">Lancefaire</option>
-						
-					
-						
-							<option value="Axefaire">Axefaire</option>
-						
-					
-						
-							<option value="Bowfaire">Bowfaire</option>
-						
-					
-						
-							<option value="Fistfaire">Fistfaire</option>
-						
-					
-						
-							<option value="Anima Tomefaire">Anima Tomefaire</option>
-						
-					
-						
-							<option value="Light Tomefaire">Light Tomefaire</option>
-						
-					
-						
-							<option value="Dark Tomefaire">Dark Tomefaire</option>
-						
-					
-						
-							<option value="Sword Critical +10">Sword Critical +10</option>
-						
-					
-						
-							<option value="Lance Critical +10">Lance Critical +10</option>
-						
-					
-						
-							<option value="Axe Critical +10">Axe Critical +10</option>
-						
-					
-						
-							<option value="Bow Critical +10">Bow Critical +10</option>
-						
-					
-						
-							<option value="Brawl Critical +10">Brawl Critical +10</option>
-						
-					
-						
-							<option value="Anima Magic Critical +10">Anima Magic Critical +10</option>
-						
-					
-						
-							<option value="Light Magic Critical +10">Light Magic Critical +10</option>
-						
-					
-						
-							<option value="Dark Magic Critical +10">Dark Magic Critical +10</option>
-						
-					
-						
-							<option value="Sword Avoid +20">Sword Avoid +20</option>
-						
-					
-						
-							<option value="Lance Avoid +20">Lance Avoid +20</option>
-						
-					
-						
-							<option value="Axe Avoid +20">Axe Avoid +20</option>
-						
-					
-						
-							<option value="Bow Avoid +20">Bow Avoid +20</option>
-						
-					
-						
-							<option value="Brawl Avoid +20">Brawl Avoid +20</option>
-						
-					
-						
-							<option value="Anima Magic Avoid +20">Anima Magic Avoid +20</option>
-						
-					
-						
-							<option value="Light Magic Avoid +20">Light Magic Avoid +20</option>
-						
-					
-						
-							<option value="Dark Magic Avoid +20">Dark Magic Avoid +20</option>
-						
-					
-						
-							<option value="HP +5">HP +5</option>
-						
-					
-						
-							<option value="Strength +2">Strength +2</option>
-						
-					
-						
-							<option value="Magic +2">Magic +2</option>
-						
-					
-						
-							<option value="Dexterity +4">Dexterity +4</option>
-						
-					
-						
-							<option value="Speed +2">Speed +2</option>
-						
-					
-						
-							<option value="Pomp & Circumstance">Pomp & Circumstance</option>
-						
-					
-						
-							<option value="Defense +2">Defense +2</option>
-						
-					
-						
-							<option value="Resistance +2">Resistance +2</option>
-						
-					
-						
-							<option value="Movement +1">Movement +1</option>
-						
-					
-						
-							<option value="Hit +20">Hit +20</option>
-						
-					
-						
-							<option value="Avoid +10">Avoid +10</option>
-						
-					
-						
-							<option value="Critical +20">Critical +20</option>
-						
-					
-						
-							<option value="Defiant Strength">Defiant Strength</option>
-						
-					
-						
-							<option value="Defiant Magic">Defiant Magic</option>
-						
-					
-						
-							<option value="Defiant Speed">Defiant Speed</option>
-						
-					
-						
-							<option value="Defiant Resistance">Defiant Resistance</option>
-						
-					
-						
-							<option value="Defiant Defense">Defiant Defense</option>
-						
-					
-						
-							<option value="Defiant Avoid">Defiant Avoid</option>
-						
-					
-						
-							<option value="Defiant Critical">Defiant Critical</option>
-						
-					
-						
-							<option value="Death Blow">Death Blow</option>
-						
-					
-						
-							<option value="Fiendish Blow">Fiendish Blow</option>
-						
-					
-						
-							<option value="Darting Blow">Darting Blow</option>
-						
-					
-						
-							<option value="Armored Blow">Armored Blow</option>
-						
-					
-						
-							<option value="Warding Blow">Warding Blow</option>
-						
-					
-						
-							<option value="Charm">Charm</option>
-						
-					
-						
-							<option value="Seal Defense">Seal Defense</option>
-						
-					
-						
-							<option value="Seal Resistance">Seal Resistance</option>
-						
-					
-						
-							<option value="Heartseeker">Heartseeker</option>
-						
-					
-						
-							<option value="Tomebreaker">Tomebreaker</option>
-						
-					
-						
-							<option value="Bowbreaker">Bowbreaker</option>
-						
-					
-						
-							<option value="Fistbreaker">Fistbreaker</option>
+							<option value="Wind">Wind</option>
 						
 					
 						
@@ -2266,7 +3064,19 @@
 						
 					
 						
-							<option value="Miasma">Miasma</option>
+							<option value="Blizzard">Blizzard</option>
+						
+					
+						
+							<option value="Thunder">Thunder</option>
+						
+					
+						
+							<option value="Thoron">Thoron</option>
+						
+					
+						
+							<option value="Nosferatu">Nosferatu</option>
 						
 					
 						
@@ -2274,525 +3084,161 @@
 						
 					
 						
-							<option value="Renewal">Renewal</option>
+							<option value="Bless">Bless</option>
 						
 					
 						
-							<option value="Poison Strike">Poison Strike</option>
+							<option value="Ethereal Javelin">Ethereal Javelin</option>
 						
 					
 						
-							<option value="Lifetaker">Lifetaker</option>
-						
-					
-						
-							<option value="Lethality">Lethality</option>
-						
-					
-						
-							<option value="Poison">Poison</option>
-						
-					
-						
-							<option value="Pavise">Pavise</option>
-						
-					
-						
-							<option value="Aegis">Aegis</option>
-						
-					
-						
-							<option value="Miracle">Miracle</option>
-						
-					
-						
-							<option value="Terrain Resistance">Terrain Resistance</option>
-						
-					
-						
-							<option value="Special Dance">Special Dance</option>
-						
-					
-						
-							<option value="Vantage">Vantage</option>
-						
-					
-						
-							<option value="Desperation">Desperation</option>
-						
-					
-						
-							<option value="Quick Riposte">Quick Riposte</option>
-						
-					
-						
-							<option value="Wrath">Wrath</option>
-						
-					
-						
-							<option value="Dance">Dance</option>
-						
-					
-						
-							<option value="Steal">Steal</option>
-						
-					
-						
-							<option value="Locktouch">Locktouch</option>
-						
-					
-						
-							<option value="Stealth">Stealth</option>
-						
-					
-						
-							<option value="Canto">Canto</option>
-						
-					
-						
-							<option value="Pass">Pass</option>
-						
-					
-						
-							<option value="Bowrange +1">Bowrange +1</option>
-						
-					
-						
-							<option value="Bowrange +2">Bowrange +2</option>
-						
-					
-						
-							<option value="Anima Magic Range +1">Anima Magic Range +1</option>
-						
-					
-						
-							<option value="Dark Magic Range +1">Dark Magic Range +1</option>
-						
-					
-						
-							<option value="Light Magic Range +1">Light Magic Range +1</option>
-						
-					
-						
-							<option value="Unarmed Combat">Unarmed Combat</option>
-						
-					
-						
-							<option value="Anima Magic Uses x2">Anima Magic Uses x2</option>
-						
-					
-						
-							<option value="Dark Magic Uses x2">Dark Magic Uses x2</option>
-						
-					
-						
-							<option value="Light Magic Uses x2">Light Magic Uses x2</option>
-						
-					
-						
-							<option value="Light Magic Heal +5">Light Magic Heal +5</option>
-						
-					
-						
-							<option value="Light Magic Heal +10">Light Magic Heal +10</option>
-						
-					
-						
-							<option value="Unsealable Magic">Unsealable Magic</option>
-						
-					
-						
-							<option value="Immune Status">Immune Status</option>
-						
-					
-						
-							<option value="General">General</option>
-						
-					
-						
-							<option value="Commander">Commander</option>
-						
-					
-						
-							<option value="Infinite Magic">Infinite Magic</option>
-						
-					
-						
-							<option value="Magic Bind">Magic Bind</option>
-						
-					
-						
-							<option value="Infantry Effect Null">Infantry Effect Null</option>
-						
-					
-						
-							<option value="Armored Effect Null">Armored Effect Null</option>
-						
-					
-						
-							<option value="Cavalry Effect Null">Cavalry Effect Null</option>
-						
-					
-						
-							<option value="Flying Effect Null">Flying Effect Null</option>
-						
-					
-						
-							<option value="Dragon Effect Null">Dragon Effect Null</option>
-						
-					
-						
-							<option value="Monster Effect Null">Monster Effect Null</option>
-						
-					
-						
-							<option value="Effect Null">Effect Null</option>
-						
-					
-						
-							<option value="Vital Defense">Vital Defense</option>
-						
-					
-						
-							<option value="Giant Wings">Giant Wings</option>
-						
-					
-						
-							<option value="Anti-magic Armor">Anti-magic Armor</option>
-						
-					
-						
-							<option value="Noncombatant">Noncombatant</option>
-						
-					
-						
-							<option value="Cursed Power">Cursed Power</option>
-						
-					
-						
-							<option value="Anchor">Anchor</option>
-						
-					
-						
-							<option value="Counterattack">Counterattack</option>
-						
-					
-						
-							<option value="Counterattack">Counterattack</option>
-						
-					
-						
-							<option value="Anima Magic Uses x4">Anima Magic Uses x4</option>
-						
-					
-						
-							<option value="Dark Magic Uses x4">Dark Magic Uses x4</option>
-						
-					
-						
-							<option value="Light Magic Uses x4">Light Magic Uses x4</option>
-						
-					
-						
-							<option value="Alert Stance">Alert Stance</option>
-						
-					
-						
-							<option value="Alert Stance+">Alert Stance+</option>
-						
-					
-						
-							<option value="Agarthan Technology">Agarthan Technology</option>
-						
-					
-						
-							<option value="Lucky Seven">Lucky Seven</option>
-						
-					
-						
-							<option value="Transmute">Transmute</option>
-						
-					
-						
-							<option value="Duelist's Blow">Duelist's Blow</option>
-						
-					
-						
-							<option value="Uncanny Blow">Uncanny Blow</option>
-						
-					
-						
-							<option value="Combat Medic">Combat Medic</option>
-						
-					
-						
-							<option value="Can't Keep Up?">Can't Keep Up?</option>
-						
-					
-						
-							<option value="Try Your Best">Try Your Best</option>
-						
-					
-						
-							<option value="Dead Man's Hand">Dead Man's Hand</option>
-						
-					
-						
-							<option value="Oskar's Sibling Bond">Oskar's Sibling Bond</option>
-						
-					
-						
-							<option value="Amalia's Sibling Bond">Amalia's Sibling Bond</option>
-						
-					
-						
-							<option value="Wrathful Empathy">Wrathful Empathy</option>
-						
-					
-						
-							<option value="Hesitant Prodigy">Hesitant Prodigy</option>
-						
-					
-						
-					
-						
-					
-						
-							<option value="Brittle Bones">Brittle Bones</option>
-						
-					
-						
-							<option value="Zephyr">Zephyr</option>
-						
-					
-						
-							<option value="Painless">Painless</option>
-						
-					
-						
-							<option value="Bond of Silence">Bond of Silence</option>
-						
-					
-						
-							<option value="Primed for Danger">Primed for Danger</option>
-						
-					
-						
-							<option value="Blessed Fortitude">Blessed Fortitude</option>
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-					
-						
-							<option value="Infernal Chorus">Infernal Chorus</option>
-						
-					
-						
-					
-						
-							<option value="Animal Affinity">Animal Affinity</option>
-						
-					
-						
-							<option value="Near Miss">Near Miss</option>
-						
 					
 						
-							<option value="Undying Bloodlust">Undying Bloodlust</option>
+							<option value="Mistilaz">Mistilaz</option>
 						
 					
 				</select>
-				<dl id="abilities-known"></dl>
+				<dl id="weapons-known"></dl>
 			</details>
-		</div>
-		<div> <!-- INVENTORY -->
-		<!-- 	<table>
-				<caption>Inventory</caption>
+
+			<details>
+				<summary class="entry-tab-title">
+					Equipment
+				</summary>
+				<input type="button" value="Add" onclick="Equipment.learn('known')" />
+				<select id="learn-equipment-select-known">
 					
-				<tbody>
+						
+							<option value="Placeholder">Placeholder</option>
+						
 					
-					<tr>
-						<td>
-							<input type="radio" name="equipped">
-						</td>
-						<td>
-							<input type="text" name="">
-						</td>
-						<td>
-							<input
-								type="number"
-								name="inventory-slot-durability-1-0"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-							/
-							<input
-								type="number"
-								name="inventory-slot-durability-2-0"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-						</td>
-					</tr>
+						
+							<option value="Leather Shield">Leather Shield</option>
+						
 					
-					<tr>
-						<td>
-							<input type="radio" name="equipped">
-						</td>
-						<td>
-							<input type="text" name="">
-						</td>
-						<td>
-							<input
-								type="number"
-								name="inventory-slot-durability-1-1"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-							/
-							<input
-								type="number"
-								name="inventory-slot-durability-2-1"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-						</td>
-					</tr>
+						
+							<option value="Iron Shield">Iron Shield</option>
+						
 					
-					<tr>
-						<td>
-							<input type="radio" name="equipped">
-						</td>
-						<td>
-							<input type="text" name="">
-						</td>
-						<td>
-							<input
-								type="number"
-								name="inventory-slot-durability-1-2"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-							/
-							<input
-								type="number"
-								name="inventory-slot-durability-2-2"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-						</td>
-					</tr>
+						
+							<option value="Steel Shield">Steel Shield</option>
+						
 					
-					<tr>
-						<td>
-							<input type="radio" name="equipped">
-						</td>
-						<td>
-							<input type="text" name="">
-						</td>
-						<td>
-							<input
-								type="number"
-								name="inventory-slot-durability-1-3"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-							/
-							<input
-								type="number"
-								name="inventory-slot-durability-2-3"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-						</td>
-					</tr>
+						
+							<option value="Silver Shield">Silver Shield</option>
+						
 					
-					<tr>
-						<td>
-							<input type="radio" name="equipped">
-						</td>
-						<td>
-							<input type="text" name="">
-						</td>
-						<td>
-							<input
-								type="number"
-								name="inventory-slot-durability-1-4"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-							/
-							<input
-								type="number"
-								name="inventory-slot-durability-2-4"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-						</td>
-					</tr>
+						
+							<option value="Talisman Shield">Talisman Shield</option>
+						
 					
-					<tr>
-						<td>
-							<input type="radio" name="equipped">
-						</td>
-						<td>
-							<input type="text" name="">
-						</td>
-						<td>
-							<input
-								type="number"
-								name="inventory-slot-durability-1-5"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-							/
-							<input
-								type="number"
-								name="inventory-slot-durability-2-5"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-						</td>
-					</tr>
+						
+							<option value="Hexlock Shield">Hexlock Shield</option>
+						
 					
-				</tbody>
-			</table> -->
+						
+							<option value="Aegis Shield">Aegis Shield</option>
+						
+					
+						
+							<option value="Ochain Shield">Ochain Shield</option>
+						
+					
+						
+							<option value="Seiros Shield">Seiros Shield</option>
+						
+					
+						
+							<option value="Aurora Shield">Aurora Shield</option>
+						
+					
+						
+							<option value="Kadmos Shield">Kadmos Shield</option>
+						
+					
+						
+							<option value="Lampos Shield">Lampos Shield</option>
+						
+					
+						
+							<option value="Accuracy Ring">Accuracy Ring</option>
+						
+					
+						
+							<option value="Critical Ring">Critical Ring</option>
+						
+					
+						
+							<option value="Evasion Ring">Evasion Ring</option>
+						
+					
+						
+							<option value="Speed Ring">Speed Ring</option>
+						
+					
+						
+							<option value="March Ring">March Ring</option>
+						
+					
+						
+							<option value="Goddess Ring">Goddess Ring</option>
+						
+					
+						
+							<option value="Prayer Ring">Prayer Ring</option>
+						
+					
+						
+							<option value="Magic Staff">Magic Staff</option>
+						
+					
+						
+							<option value="Healing Staff">Healing Staff</option>
+						
+					
+						
+							<option value="Magic Staff">Magic Staff</option>
+						
+					
+						
+							<option value="Cadeuseus Staff">Cadeuseus Staff</option>
+						
+					
+						
+							<option value="Thyrsus">Thyrsus</option>
+						
+					
+						
+							<option value="Rafail Gem">Rafail Gem</option>
+						
+					
+						
+							<option value="Black Eagle Pendant">Black Eagle Pendant</option>
+						
+					
+						
+							<option value="Blue Lion Brooch">Blue Lion Brooch</option>
+						
+					
+						
+							<option value="Golden Deer Bracelet">Golden Deer Bracelet</option>
+						
+					
+						
+							<option value="White Dragon Scarf">White Dragon Scarf</option>
+						
+					
+						
+							<option value="Fetters of Dromi">Fetters of Dromi</option>
+						
+					
+						
+							<option value="Tactiball Trophy">Tactiball Trophy</option>
+						
+					
+				</select>
+				<dl id="equipment-known"></dl>
+			</details>
 		</div>
 	</div>
 
@@ -4501,25 +4947,25 @@
 			"name": "Swordfaire",
 			"activation": "Passive",
 			"description": "Grants Might +5 when using a sword.",
-			"modifiers": {"pmt": 5}
+			"modifiers": {"pmt": 5, "mmt": 5}
 		},
 		{
 			"name": "Lancefaire",
 			"activation": "Passive",
 			"description": "Grants Might +5 when using a lance.",
-			"modifiers": {"pmt": 5}
+			"modifiers": {"pmt": 5, "mmt": 5}
 		},
 		{
 			"name": "Axefaire",
 			"activation": "Passive",
 			"description": "Grants Might +5 when a axe is equipped.",
-			"modifiers": {"pmt": 5}
+			"modifiers": {"pmt": 5, "mmt": 5}
 		},
 		{
 			"name": "Bowfaire",
 			"activation": "Passive",
 			"description": "Grants Might +5 when using a bow or using a ballista.",
-			"modifiers": {"pmt": 5}
+			"modifiers": {"pmt": 5, "mmt": 5}
 		},
 		{
 			"name": "Fistfaire",
@@ -5256,6 +5702,12 @@
 			"modifiers": {"mdr": 4, "pdr": 4}
 		},
 		{
+			"name": "Painless Conduit",
+			"activation": "Passive",
+			"description": "Immune to status effects from enemy mana-wells, and takes half damage from mana-wells. While HP is below 50% and an enemy initiates combat with him, Nico takes -2 damage and gains 15 avoid.",
+			"modifiers": {"pdr": 2, "mdr": 2, "avo": 15}
+		},
+		{
 			"name": "Bond of Silence",
 			"activation": "Passive",
 			"description": "(Ryan L.: I didn't know how to adapt this one. ThatBardBoi, PM me when you decide how this works.)"
@@ -5354,171 +5806,1978 @@
 	"weapons": [
 		{
 			"name": "Unarmed",
+			"type": "Generic",
+			"description": "No special effect.",
+			"rank": "E",
 			"pmt": 0,
 			"mmt": 0,
 			"hit": 0,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 1
 		},
 		{
 			"name": "Iron Sword",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "E",
 			"pmt": 5,
 			"mmt": 0,
 			"hit": 90,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 1
 		},
 		{
-			"name": "Iron Lance",
+			"name": "Iron Sword+",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "E",
 			"pmt": 6,
 			"mmt": 0,
-			"hit": 80,
+			"hit": 100,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 1
 		},
 		{
-			"name": "Iron Axe",
-			"pmt": 8,
-			"mmt": 0,
-			"hit": 70,
-			"crit": 0,
-			"minrng": 1,
-			"maxrng": 1
-		},
-		{
-			"name": "Iron Bow",
+			"name": "Venin Edge",
+			"type": "Sword",
+			"description": "Inflicts poison on hit.",
+			"rank": "E",
 			"pmt": 5,
 			"mmt": 0,
-			"hit": 85,
-			"crit": 0,
-			"minrng": 2,
-			"maxrng": 2
-		},
-		{
-			"name": "Miasma",
-			"pmt": 0,
-			"mmt": 5,
-			"hit": 80,
-			"crit": 0,
-			"minrng": 1,
-			"maxrng": 2
-		},
-		{
-			"name": "Wind",
-			"pmt": 0,
-			"mmt": 2,
-			"hit": 100,
-			"crit": 0,
-			"minrng": 1,
-			"maxrng": 2
-		},
-		{
-			"name": "Fire",
-			"pmt": 0,
-			"mmt": 3,
 			"hit": 90,
+			"avo": 0,
 			"crit": 0,
-			"minrng": 1,
-			"maxrng": 2
-		},
-		{
-			"name": "Blizzard",
-			"pmt": 0,
-			"mmt": 3,
-			"hit": 70,
-			"crit": 10,
-			"minrng": 1,
-			"maxrng": 2
-		},
-		{
-			"name": "Thunder",
-			"pmt": 0,
-			"mmt": 3,
-			"hit": 80,
-			"crit": 5,
-			"minrng": 1,
-			"maxrng": 2
-		},
-		{
-			"name": "Nosferatu",
-			"pmt": 0,
-			"mmt": 1,
-			"hit": 80,
-			"crit": 0,
-			"minrng": 1,
-			"maxrng": 2
-		},
-		{
-			"name": "Heal",
-			"pmt": 0,
-			"mmt": 8,
-			"hit": 100,
-			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 1
 		},
 		{
 			"name": "Steel Sword",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "D",
 			"pmt": 8,
 			"mmt": 0,
 			"hit": 85,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+		
+			"name": "Steel Sword+",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 85,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Silver Sword",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 12,
+			"mmt": 0,
+			"hit": 90,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Silver Sword+",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 13,
+			"mmt": 0,
+			"hit": 90,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Brave Sword",
+			"type": "Sword",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 9,
+			"mmt": 0,
+			"hit": 75,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Brave Sword+",
+			"type": "Sword",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 85,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Iron Lance",
+			"type": "Lance",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 6,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Iron Lance+",
+			"type": "Lance",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 6,
+			"mmt": 0,
+			"hit": 90,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 1
 		},
 		{
 			"name": "Steel Lance",
+			"type": "Lance",
+			"description": "No special effect.",
+			"rank": "D",
 			"pmt": 9,
 			"mmt": 0,
 			"hit": 75,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 1
 		},
 		{
+			"name": "Steel Lance+",
+			"type": "Lance",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 11,
+			"mmt": 0,
+			"hit": 75,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},		
+		{
+			"name": "Silver Lance",
+			"type": "Lance",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 13,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Silver Lance+",
+			"type": "Lance",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 14,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Brave Lance",
+			"type": "Lance",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Iron Axe",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Iron Axe+",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},	
+		{
 			"name": "Steel Axe",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "D",
 			"pmt": 11,
 			"mmt": 0,
 			"hit": 65,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 1
 		},
 		{
-			"name": "Steel Bow",
-			"pmt": 9,
+			"name": "Steel Axe+",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 13,
 			"mmt": 0,
-			"hit": 80,
+			"hit": 65,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Silver Axe",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 16,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Silver Axe+",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 17,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Brave Axe",
+			"type": "Axe",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 12,
+			"mmt": 0,
+			"hit": 60,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Brave Axe+",
+			"type": "Axe",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 13,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Bolt Axe",
+			"type": "Axe",
+			"description": "Deals magic-based damage.",
+			"rank": "B",
+			"pmt": 0,
+			"mmt": 14,
+			"hit": 60,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"hidden": true
+		},
+		{
+			"name": "Hand Axe",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"hidden": true
+		},
+		{
+			"name": "Killer Axe+",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "C",
+			"pmt": 12,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 35,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"hidden": true
+		},
+		{
+			"name": "Iron Bow",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 85,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 2,
 			"maxrng": 2
 		},
 		{
-			"name": "Levin Sword+",
+			"name": "Iron Bow+",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 85,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Steel Bow",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 9,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Steel Bow+",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 11,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Silver Bow",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 12,
+			"mmt": 0,
+			"hit": 75,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Silver Bow+",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "B",
+			"pmt": 13,
+			"mmt": 0,
+			"hit": 75,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Brave Bow",
+			"type": "Bow",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 70,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Brave Bow+",
+			"type": "Bow",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 11,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 2,
+			"maxrng": 2
+		},
+		{
+			"name": "Brave Lance+",
+			"type": "Lance",
+			"description": "2 consecutive hits when initiating combat.",
+			"rank": "B",
+			"pmt": 11,
+			"mmt": 0,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1
+		},
+		{
+			"name": "Miasma",
+			"type": "Dark Magic",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 5,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 2
+		},
+		{
+			"name": "Wind",
+			"type": "Anima Magic",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 2,
+			"hit": 100,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 2
+		},
+		{
+			"name": "Fire",
+			"type": "Anima Magic",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 3,
+			"hit": 90,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 2
+		},
+		{
+			"name": "Blizzard",
+			"type": "Anima Magic",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 3,
+			"hit": 70,
+			"avo": 0,
+			"crit": 10,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 2
+		},
+		{
+			"name": "Thunder",
+			"type": "Anima Magic",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 3,
+			"hit": 80,
+			"avo": 0,
+			"crit": 5,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 2
+		},
+		{
+			"name": "Thoron",
+			"type": "Anima Magic",
+			"description": "No special effect.",
+			"rank": "C",
 			"pmt": 0,
 			"mmt": 9,
-			"hit": 70,
-			"crit": 0,
+			"hit": 75,
+			"avo": 0,
+			"crit": 10,
+			"uses": 4,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 3
 		},
 		{
+			"name": "Nosferatu",
+			"type": "Light Magic",
+			"description": "Restores HP equal to 50% of damage dealt to foe.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 1,
+			"hit": 80,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 2
+		},
+		{
+			"name": "Heal",
+			"type": "Light Magic",
+			"description": "Restores HP to an ally.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 8,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"uses": 10,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"healing": true
+		},
+		{
+			"name": "Bless",
+			"type": "Light Magic",
+			"description": "Bless a friendly unit within range of 5. Until the start of your next turn, the blessed unit makes attack rolls twice, taking the better hit result of the two.",
+			"rank": "D",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"uses": 0,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 5,
+			"healing": true
+		},
+		{
 			"name": "Ethereal Javelin",
+			"type": "Lance",
+			"description": "Can only be wielded using the Ethereal Weapon spell; disappears upon caster's death. Enables the use of the Hook combat art.",
+			"rank": "E",
 			"pmt": 8,
 			"mmt": 0,
 			"hit": 80,
+			"avo": 0,
 			"crit": 0,
+			"uses": 0,
+			"cost": 0,
 			"minrng": 1,
 			"maxrng": 2
+		},
+		{
+			"name": "Balthraz",
+			"type": "Lance",
+			"description": "Possesses a modified weapon triangle, and is strong against all magic and weak to Swords, Lances, and Axes except for its twin, Mistilaz. Sacred weapon (Crest of the Watcher) that restores HP every turn. (Effect increased with Crest.)",
+			"pmt": 19,
+			"mmt": 0,
+			"hit": 75,
+			"avo": 0,
+			"crit": 5,
+			"minrng": 1,
+			"maxrng": 1,
+			"uses": 0,
+			"cost": 0,
+			"hidden": true
+		},
+		{
+			"name": "Mistilaz",
+			"type": "Axe",
+			"description": "Possesses a modified weapon triangle, is strong against Swords, Lances, and Axes, except for its twin, Balthraz and weak to all magic. Deals magic-based damage. Sacred weapon (Crest of the Watcher) that restores HP every turn. (Effect increased with Crest.)",
+			"pmt": 0,
+			"mmt": 12,
+			"hit": 80,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"uses": 0,
+			"cost": 0,
+			"hidden": false
+		}
+	],
+
+	"equipment": [
+		{
+			"name": "Placeholder",
+			"description": "This is a template.",
+			"type": "Generic"
+		},
+		{
+			"name": "Leather Shield",
+			"description": "Prot +1",
+			"type": "Shield",
+			"pdr": 1
+		},
+		{
+			"name": "Iron Shield",
+			"description": "Prot +1",
+			"type": "Shield",
+			"pdr": 2
+		},
+		{
+			"name": "Steel Shield",
+			"description": "Prot +1",
+			"type": "Shield",
+			"pdr": 3
+		},
+		{
+			"name": "Silver Shield",
+			"description": "Prot +1",
+			"type": "Shield",
+			"pdr": 4
+		},
+		{
+			"name": "Talisman Shield",
+			"description": "Prot +1 and Resl +2",
+			"type": "Shield",
+			"pdr": 1,
+			"mdr": 2
+		},
+		{
+			"name": "Hexlock Shield",
+			"description": "Prot +2 and Resl +4",
+			"type": "Shield",
+			"pdr": 2,
+			"mdr": 4
+		},
+		{
+			"name": "Aegis Shield",
+			"description": "Relic shield. Prot +6 and Resl +3, may halve damage for Crest of Fraldarius",
+			"type": "Shield",
+			"pdr": 6,
+			"mdr": 3
+		},
+		{
+			"name": "Ochain Shield",
+			"description": "Sacred shield (Crest of Chichol). Prot +6, restores hp each turn and negates foe's critical hits.",
+			"type": "Shield",
+			"pdr": 6
+		},
+		{
+			"name": "Seiros Shield",
+			"description": "Sacred shield (Crest of Seiros). Prot +5, restores hp each turn and halves damage from monsters.",
+			"type": "Shield",
+			"pdr": 5
+		},
+		{
+			"name": "Aurora Shield",
+			"description": "Prot +3. Nullifies user's Flying-type weakness.",
+			"type": "Shield",
+			"pdr": 3
+		},
+		{
+			"name": "Kadmos Shield",
+			"description": "Prot +3. Nullifies user's Armoured-type weakness.",
+			"type": "Shield",
+			"pdr": 3
+		},
+		{
+			"name": "Lampos Shield",
+			"description": "Prot +3. Nullifies user's Cavalry-type weakness.",
+			"type": "Shield",
+			"pdr": 3
+		},
+		{
+			"name": "Accuracy Ring",
+			"description": "Hit +10",
+			"type": "Ring",
+			"hit": 10
+		},
+		{
+			"name": "Critical Ring",
+			"description": "Crit +5",
+			"type": "Ring",
+			"hit": 5
+		},
+		{
+			"name": "Evasion Ring",
+			"description": "Avo +10",
+			"type": "Ring",
+			"avo": 10
+		},
+		{
+			"name": "Speed Ring",
+			"description": "Spd +2",
+			"type": "Ring",
+			"spd": 2
+		},
+		{
+			"name": "March Ring",
+			"description": "Mov +1",
+			"type": "Ring",
+			"mov": 1
+		},
+		{
+			"name": "Goddess Ring",
+			"description": "Dex +4; restores HP each turn",
+			"type": "Ring",
+			"hit": 10
+		},
+		{
+			"name": "Prayer Ring",
+			"description": "Grants Miracle ability; restores HP each turn",
+			"type": "Ring"
+		},
+		{
+			"name": "Magic Staff",
+			"description": "Increases might of spells by 3.",
+			"type": "Staff",
+			"mmt": 3
+		},
+		{
+			"name": "Healing Staff",
+			"description": "Increases healing power by 10.",
+			"type": "Staff",
+			"mmt": 10
+		},
+		{
+			"name": "Magic Staff",
+			"description": "Increases might of spells by 3.",
+			"type": "Staff",
+			"mmt": 3
+		},
+		{
+			"name": "Cadeuseus Staff",
+			"description": "Sacred staff (Crest of Cethleann). Range +1 for offensive magic, restores hp each turn.",
+			"type": "Staff",
+			"maxrng": 1
+		},
+		{
+			"name": "Thyrsus",
+			"description": "Relic staff (Crest of Gloucester). Range +2 for offensive magic, may halve damage receives.",
+			"type": "Staff",
+			"maxrng": 2
+		},
+		{
+			"name": "Rafail Gem",
+			"description": "Relic gem (Crest of Lamine). Nullifies user’s class type weaknesses, prevents foe’s critical hits, and may halve damage received.",
+			"type": "Gem"
+		},
+		{
+			"name": "Black Eagle Pendant",
+			"description": "Cha +2",
+			"type": "Accessory",
+			"cha": 2
+		},
+		{
+			"name": "Blue Lion Brooch",
+			"description": "Cha +2",
+			"type": "Accessory",
+			"cha": 2
+		},
+		{
+			"name": "Golden Deer Bracelet",
+			"description": "Cha +2",
+			"type": "Accessory",
+			"cha": 2
+		},
+		{
+			"name": "White Dragon Scarf",
+			"description": "Cha +2",
+			"type": "Accessory",
+			"cha": 2
+		},
+		{
+			"name": "Fetters of Dromi",
+			"description": "Relic ring (Crest of Aubin). Movement +1, user can continue moving after taking certain actions, and may halve damage received.",
+			"type": "Ring",
+			"mov": 1
+		},
+		{
+			"name": "Tactiball Trophy",
+			"description": "Cha +1, Avo +5. Enables the use of the Super Juke combat art.",
+			"type": "Accessory",
+			"cha": 1,
+			"avo": 5
+		}
+
+	],
+
+	"combatarts": [
+		{
+			"name": "Standard Attack",
+			"type": "Generic",
+			"description": "This is a combat art that represents not using a combat art. Serves as a template/placeholder",
+			"rank": "E",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 0
+		},
+		{
+			"name": "Healing Focus",
+			"type": "Generic",
+			"description": "Restores 50% of the user’s HP.",
+			"rank": "Unknown",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 0,
+			"maxrng": 0,
+			"cost": 0
+		},
+		{
+			"name": "Swap",
+			"type": "Generic",
+			"description": "User swaps places with the enemy.",
+			"rank": "Myrmidon Mastery",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 0
+		},
+		{
+			"name": "Shove",
+			"type": "Generic",
+			"description": "User pushes ally forward 1 space.",
+			"rank": "Fighter Mastery",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 0
+		},
+		{
+			"name": "Reposition",
+			"type": "Generic",
+			"description": "User moves ally to the space behind the user.",
+			"rank": "Soldier Mastery",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 0
+		},
+		{
+			"name": "Draw Back",
+			"type": "Generic",
+			"description": "User moves 1 space backwards and ally is moved to where the user was previously.",
+			"rank": "Monk Mastery",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 0
+		},
+		{
+			"name": "Smite",
+			"type": "Armor",
+			"description": "User pushes ally forward 2 spaces.",
+			"rank": "B",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 0
+		},
+		{
+			"name": "Triangle Attack",
+			"type": "Generic",
+			"description": "Can only be triggered when 3 allied Flying units (including the user) are adjacent to the same enemy.",
+			"rank": "Exclusive",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 30,
+			"avo": 0,
+			"crit": 40,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Foul Play",
+			"type": "Generic",
+			"description": "Unit swaps positions with an ally in range. Exclusive to the Trickster class.",
+			"rank": "Exclusive",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 5,
+			"cost": 0
+		},
+		{
+			"name": "Super Juke",
+			"type": "Generic",
+			"description": "Tactiball Trophy only; Once per combat, +2 move for a turn.",
+			"rank": "Exclusive",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 0,
+			"maxrng": 0,
+			"cost": 0
+		},
+		{
+			"name": "Sunder",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 15,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Wrath Strike",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Grounder",
+			"type": "Sword",
+			"description": "Effective against Flying foes.",
+			"rank": "C-B",
+			"pmt": 3,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 5,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4
+		},
+		{
+			"name": "Haze Slice",
+			"type": "Sword",
+			"description": "No special effect.",
+			"rank": "C-B",
+			"pmt": 2,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 30,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Bane of Monsters",
+			"type": "Sword",
+			"description": "Effective against Monster foes.",
+			"rank": "C-B",
+			"pmt": 6,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4
+		},
+		{
+			"name": "Soulblade",
+			"type": "Sword",
+			"description": "Deals magic-based damage. Might increases based on user’s Resistance",
+			"rank": "C-B",
+			"pmt": 2,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4,
+			"scale": "res"
+		},
+		{
+			"name": "Hexblade",
+			"type": "Sword",
+			"description": "Deals magic-based damage.",
+			"rank": "A",
+			"pmt": 0,
+			"mmt": 7,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Finesse Blade",
+			"type": "Sword",
+			"description": "Might increases based on user’s Dexterity.",
+			"rank": "A",
+			"pmt": 2,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 10,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4,
+			"scale": "dex"
+		},
+		{
+			"name": "Windsweep",
+			"type": "Sword",
+			"description": "Prevent enemy counter-attack.",
+			"rank": "A",
+			"pmt": 3,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Subdue",
+			"type": "Sword",
+			"description": "Leaves foe with at least 1 HP.",
+			"rank": "Lord Mastery",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 2
+		},
+		{
+			"name": "Foudroyant Strike",
+			"type": "Sword",
+			"description": "Thunderbrand only; effective against Armoured and Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 6,
+			"mmt": 0,
+			"hit": 30,
+			"avo": 0,
+			"crit": 30,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Beast Fang",
+			"type": "Sword",
+			"description": "Blutgang only; effective against Cavalry and Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 30,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Ruptured Heaven",
+			"type": "Sword",
+			"description": "Sword of the Creator only; Might increases based on user’s Magic, effective against Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 7,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 2,
+			"cost": 3,
+			"scale": "mag"
+		},
+		{
+			"name": "Heaven’s Fall",
+			"type": "Sword",
+			"description": "Dark Creator Sword only; Might increases based on user’s Magic.",
+			"rank": "Exclusive",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 2,
+			"cost": 3,
+			"scale": "mag"
+		},
+		{
+			"name": "Assassinate",
+			"type": "Sword",
+			"description": "Assassin only; Avoid +15, can kill enemies instantly.",
+			"rank": "Exclusive",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 15,
+			"avo": 15,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Astra",
+			"type": "Sword",
+			"description": "Swordmaster only; triggers 5 consecutive hits at 30% Might.",
+			"rank": "Exclusive",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": -10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 9,
+			"astra": true
+		},
+		{
+			"name": "Sublime Heaven",
+			"type": "Sword",
+			"description": "Sublime Creator Sword only; Might increases based on user’s Magic, effective against Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 20,
+			"minrng": 1,
+			"maxrng": 2,
+			"cost": 3,
+			"scale": "mag"
+		},
+		{
+			"name": "Sword Dance",
+			"type": "Sword",
+			"description": "Might increases based on user’s Charm.",
+			"rank": "Exclusive",
+			"pmt": 1,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 20,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 2,
+			"scale": "mag"
+		},
+		{
+			"name": "Tempest Lance",
+			"type": "Lance",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Hit and Run",
+			"type": "Lance",
+			"description": "After combat, user moves 1 space backwards.",
+			"rank": "D",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 20,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4
+		},
+		{
+			"name": "Knight Kneeler",
+			"type": "Lance",
+			"description": "Effective against Cavalry foes.",
+			"rank": "C-B",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4
+		},
+		{
+			"name": "Shatter Slash",
+			"type": "Lance",
+			"description": "After combat, inflicts Def -5 on foe for 1 turn.",
+			"rank": "C-B",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Vengeance",
+			"type": "Lance",
+			"description": "Damage increases in relation to the user’s missing HP.",
+			"rank": "C-B",
+			"pmt": 2,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4,
+			"vengeance": true
+		},
+		{
+			"name": "Monster Piercer",
+			"type": "Lance",
+			"description": "Effective against Monster foes.",
+			"rank": "C-B",
+			"pmt": 7,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 10,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4
+		},
+		{
+			"name": "Frozen Lance",
+			"type": "Lance",
+			"description": "Deals magic-based damage. Might increases based on user’s Dexterity.",
+			"rank": "C-B",
+			"pmt": 0,
+			"mmt": 3,
+			"hit": 5,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4,
+			"scale": "dex"
+		},
+		{
+			"name": "Hook",
+			"type": "Lance",
+			"description": "On hit, draws the target one space closer to the user.",
+			"rank": "C-B",
+			"pmt": 1,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 2,
+			"cost": 4
+		},
+		{
+			"name": "Swift Strikes",
+			"type": "Lance",
+			"description": "Triggers 2 consecutive hits.",
+			"rank": "A",
+			"pmt": 2,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4
+		},
+		{
+			"name": "Lance Jab",
+			"type": "Lance",
+			"description": "Might increases based on user’s Speed.",
+			"rank": "A",
+			"pmt": 3,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5,
+			"scale": "spd"
+		},
+		
+		{
+			"name": "Glowing Ember",
+			"type": "Lance",
+			"description": "Might increases based on user’s Defence.",
+			"rank": "A",
+			"pmt": 2,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 10,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4,
+			"scale": "def"
+		},
+		{
+			"name": "Ruined Sky",
+			"type": "Lance",
+			"description": "Lance of Ruin only; Avoid +10, effective against Flying and Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 13,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 10,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Atrocity",
+			"type": "Lance",
+			"description": "Areadbhar only; effective against all foes.",
+			"rank": "Exclusive",
+			"pmt": 15,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Burning Quake",
+			"type": "Lance",
+			"description": "Lúin only; Might increases based on user’s Speed, effective against Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 10,
+			"crit": 20,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3,
+			"scale": "spd"
+		},
+		{
+			"name": "Paraselene",
+			"type": "Lance",
+			"description": "Great Lord only; After combat, user moves 1 space backwards.",
+			"rank": "Exclusive",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 10,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Smash",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 3,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 20,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Spike",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "E",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 15,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Helm Splitter",
+			"type": "Axe",
+			"description": "Effective against Armoured foes.",
+			"rank": "C-B",
+			"pmt": 7,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 5,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Focused Strike",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "C-B",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 30,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Wild Abandon",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "C-B",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": -30,
+			"avo": 0,
+			"crit": 30,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Lightning Axe",
+			"type": "Axe",
+			"description": "Deals magic-based damage. Might increases based on user’s Resistance.",
+			"rank": "C-B",
+			"pmt": 0,
+			"mmt": 4,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3,
+			"scale": "res"
+		},
+		{
+			"name": "Monster Breaker",
+			"type": "Axe",
+			"description": "Effective against Monster foes.",
+			"rank": "C-B",
+			"pmt": 9,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Armored Strike",
+			"type": "Axe",
+			"description": "Might increases based on user’s Defence.",
+			"rank": "A",
+			"pmt": 3,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4,
+			"scale": "def"
+		},
+		{
+			"name": "Diamond Axe",
+			"type": "Axe",
+			"description": "No special effect.",
+			"rank": "A",
+			"pmt": 14,
+			"mmt": 0,
+			"hit": -20,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 7
+		},
+		{
+			"name": "Exhaustive Strike",
+			"type": "Axe",
+			"description": "One use.",
+			"rank": "A",
+			"pmt": 14,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 35,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 1
+		},
+		{
+			"name": "Nedler's Amputator",
+			"type": "Axe",
+			"description": "Deals magic-based damage. Might increases based on user’s Speed",
+			"rank": "A",
+			"pmt": 0,
+			"mmt": 4,
+			"hit": 15,
+			"avo": 0,
+			"crit": 25,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5,
+			"scale": "spd"
+		},
+		{
+			"name": "Apocalyptic Flame",
+			"type": "Axe",
+			"description": "Freikugel only; inflicts Str -5 on foe for 1 turn, effective against Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 15,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Dust",
+			"type": "Axe",
+			"description": "Crusher only; inflicts Def -5 on foe for 1 turn, effective against Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 20,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Raging Storm",
+			"type": "Axe",
+			"description": "Aymr only; if attack lands, user can move again, effective against Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 14,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "Flickering Flower",
+			"type": "Axe",
+			"description": "Emperor only; prevents foe from moving for 1 turn.",
+			"rank": "Exclusive",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 3
+		},
+		{
+			"name": "War Hero’s Strike",
+			"type": "Axe",
+			"description": "War Hero only; effective against all foes.",
+			"rank": "Exclusive",
+			"pmt": 3,
+			"mmt": 0,
+			"hit": 30,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 5
+		},
+		{
+			"name": "Curved Shot",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "D",
+			"pmt": 1,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 30,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 3,
+			"cost": 3
+		},
+		{
+			"name": "Monster Blaster",
+			"type": "Bow",
+			"description": "Effective against Monster foes.",
+			"rank": "D",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 2,
+			"maxrng": 2,
+			"cost": 4
+		},
+		{
+			"name": "Deadeye",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "C-B",
+			"pmt": 6,
+			"mmt": 0,
+			"hit": 0,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 3,
+			"maxrng": 5,
+			"cost": 5
+		},
+		{
+			"name": "Waning Shot",
+			"type": "Bow",
+			"description": "After combat, inflicts Str -5 on foe for 1 turn.",
+			"rank": "C-B",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 3,
+			"cost": 3
+		},
+		{
+			"name": "Break Shot",
+			"type": "Bow",
+			"description": "After combat, inflicts Def -5 on foe for 1 turn.",
+			"rank": "C-B",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 5,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 3,
+			"cost": 3
+		},
+		{
+			"name": "Schism Shot",
+			"type": "Bow",
+			"description": "After combat, inflicts Res -5 on foe for 1 turn.",
+			"rank": "C-B",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 15,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 3,
+			"cost": 3
+		},
+		{
+			"name": "Heavy Draw",
+			"type": "Bow",
+			"description": "No special effect.",
+			"rank": "C-B",
+			"pmt": 8,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 2,
+			"cost": 5
+		},
+		{
+			"name": "Point-Blank Volley",
+			"type": "Bow",
+			"description": "Triggers 2 consecutive hits.",
+			"rank": "A",
+			"pmt": 2,
+			"mmt": 0,
+			"hit": 10,
+			"avo": 10,
+			"crit": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"cost": 4
+		},
+		{
+			"name": "Encloser",
+			"type": "Bow",
+			"description": "Prevents foe from moving for 1 turn.",
+			"rank": "A",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 15,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 2,
+			"cost": 3
+		},
+		{
+			"name": "Ward Arrow",
+			"type": "Bow",
+			"description": "Prevents foe from using magic for 1 turn.",
+			"rank": "A",
+			"pmt": 4,
+			"mmt": 0,
+			"hit": 15,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 2,
+			"cost": 3
+		},
+		{
+			"name": "Fallen Star",
+			"type": "Bow",
+			"description": "Failnaught only; avoids all attacks during the next round of combat; effective against Dragon foes.",
+			"rank": "Exclusive",
+			"pmt": 10,
+			"mmt": 0,
+			"hit": 30,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 2,
+			"maxrng": 3,
+			"cost": 3
+		},
+		{
+			"name": "Hunter’s Volley",
+			"type": "Bow",
+			"description": "Sniper only; triggers 2 consecutive hits.",
+			"rank": "Exclusive",
+			"pmt": 1,
+			"mmt": 0,
+			"hit": 15,
+			"avo": 0,
+			"crit": 10,
+			"minrng": 2,
+			"maxrng": 3,
+			"cost": 5
+		},
+		{
+			"name": "Wind God",
+			"type": "Bow",
+			"description": "Barbarossa only.",
+			"rank": "Exclusive",
+			"pmt": 5,
+			"mmt": 0,
+			"hit": 20,
+			"avo": 0,
+			"crit": 0,
+			"minrng": 2,
+			"maxrng": 5,
+			"cost": 3
 		}
 	]
 };
-		add_lookup(definitions, "classes", "class_by_name", "name");
-		add_lookup(definitions, "abilities", "ability_by_name", "name");
-		add_lookup(definitions, "weapons", "weapon_by_name", "name");
+
+		add_lookup(definitions, definitions["classes"], "class_by_name", "name");
+
+		for (each of [Ability, Weapon, CombatArt, Equipment]) {
+			each.set_lookup_by_name(definitions);
+		}
+		
 		refresh_sheet();
 
 		document

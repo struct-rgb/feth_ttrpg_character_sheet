@@ -197,12 +197,7 @@
 					name="character-name">
 				<!-- <input type="button" value="!" onclick="generate_summary()" /> <br /> -->
 				<br />
-				<label for="character-weapon">Weapon / Triangle Effect</label> <br />
-				<select id="character-weapon" name="character-weapon" oninput="refresh_weapon()">
-					{% for weapon in definitions["weapons"] %}
-					<option value="{{ weapon['name'] }}">{{ weapon["name"] }}</option>
-					{% endfor %}
-				</select>
+				<label for="character-triangle">Triangle Effect</label> <br />
 				<select id="character-triangle" oninput="refresh_triangle()">
 					<option value="15">
 						Advantage
@@ -256,85 +251,114 @@
 		</div>
 		<div class="span-1-3"> <!-- ABILITIES -->
 			<details>
-				<summary>Class Abilities</summary>
-				<dl id="abilities-class"></dl>
-			</details>
+				<summary class="entry-tab-title">
+					Abilities
+				</summary>
+				<div class="entry-tab-body">
+					<details>
+						<summary>Class</summary>
+						<dl id="abilities-class"></dl>
+					</details>
 
-			<details>
-				<summary>Equipped Abilites</summary>
-				<dl id="abilities-equipped"></dl>
-			</details>
-			
-			<details>
-				<summary>Battlefield Abilities</summary>
-				<input type="button" value="Add" onclick="learn_ability('battlefield')" />
-				<select id="learn-ability-select-battlefield">
-					{% for ability in definitions['abilities'] %}
-						{% if "hidden" not in ability or not ability["hidden"] %}
-							<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
-						{% endif %}
-					{% endfor %}
-				</select>
-				<dl id="abilities-battlefield"></dl>
-			</details>
-
-			<details>
-				<summary>Known Abilities</summary>
-				<input type="button" value="Add" onclick="learn_ability('known')" />
-				<select id="learn-ability-select-known">
-					{% for ability in definitions['abilities'] %}
-						{% if "hidden" not in ability or not ability["hidden"] %}
-							<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
-						{% endif %}
-					{% endfor %}
-				</select>
-				<dl id="abilities-known"></dl>
-			</details>
-		</div>
-		<div> <!-- INVENTORY -->
-		<!-- 	<table>
-				<caption>Inventory</caption>
+					<details>
+						<summary>Equipped</summary>
+						<dl id="abilities-equipped"></dl>
+					</details>
 					
-				<tbody>
-					{% for i in range(6) %}
-					<tr>
-						<td>
-							<input type="radio" name="equipped">
-						</td>
-						<td>
-							<input type="text" name="">
-						</td>
-						<td>
-							<input
-								type="number"
-								name="inventory-slot-durability-1-{{i}}"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-							/
-							<input
-								type="number"
-								name="inventory-slot-durability-2-{{i}}"
-								min="0"
-								max="100"
-								step="1"
-								value="0"
-								size="3" />
-						</td>
-					</tr>
+					<details>
+						<summary>Battlefield</summary>
+						<input type="button" value="Add" onclick="Ability.learn('battlefield')" />
+						<select id="learn-abilities-select-battlefield">
+							{% for ability in definitions['abilities'] %}
+								{% if "hidden" not in ability or not ability["hidden"] %}
+									<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+						<dl id="abilities-battlefield"></dl>
+					</details>
+
+					<details>
+						<summary>Known</summary>
+						<input type="button" value="Add" onclick="Ability.learn('known')" />
+						<select id="learn-abilities-select-known">
+							{% for ability in definitions['abilities'] %}
+								{% if "hidden" not in ability or not ability["hidden"] %}
+									<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+						<dl id="abilities-known"></dl>
+					</details>
+				</div>
+			</details>
+
+			<details>
+				<summary class="entry-tab-title">
+					Combat Arts
+				</summary>
+				<div class="entry-tab-body">
+					<details>
+						<summary>Equipped</summary>
+						<dl id="combatarts-equipped"></dl>
+					</details>
+
+					<details>
+						<summary>Known</summary>
+						<input type="button" value="Add" onclick="CombatArt.learn('known')" />
+						<select id="learn-combatarts-select-known">
+							{% for art in definitions['combatarts'] %}
+								{% if "hidden" not in art or not art["hidden"] %}
+									<option value="{{ art['name'] }}">{{ art["name"] }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+						<dl id="combatarts-known"></dl>
+					</details>
+				</div>
+			</details>
+
+			<details>
+				<summary class="entry-tab-title">
+					Weapons & Spells
+				</summary>
+				<input type="button" value="Add" onclick="Weapon.learn('known')" />
+				<select id="learn-weapons-select-known">
+					{% for weapon in definitions['weapons'] %}
+						{% if "hidden" not in weapon or not weapon["hidden"] %}
+							<option value="{{ weapon['name'] }}">{{ weapon["name"] }}</option>
+						{% endif %}
 					{% endfor %}
-				</tbody>
-			</table> -->
+				</select>
+				<dl id="weapons-known"></dl>
+			</details>
+
+			<details>
+				<summary class="entry-tab-title">
+					Equipment
+				</summary>
+				<input type="button" value="Add" onclick="Equipment.learn('known')" />
+				<select id="learn-equipment-select-known">
+					{% for item in definitions['equipment'] %}
+						{% if "hidden" not in item or not item["hidden"] %}
+							<option value="{{ item['name'] }}">{{ item["name"] }}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				<dl id="equipment-known"></dl>
+			</details>
 		</div>
 	</div>
 
 	<script type="text/javascript">
 		definitions = {{ definition_literal }};
-		add_lookup(definitions, "classes", "class_by_name", "name");
-		add_lookup(definitions, "abilities", "ability_by_name", "name");
-		add_lookup(definitions, "weapons", "weapon_by_name", "name");
+
+		add_lookup(definitions, definitions["classes"], "class_by_name", "name");
+
+		for (each of [Ability, Weapon, CombatArt, Equipment]) {
+			each.set_lookup_by_name(definitions);
+		}
+		
 		refresh_sheet();
 
 		document
