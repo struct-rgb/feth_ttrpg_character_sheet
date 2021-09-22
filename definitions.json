@@ -3230,7 +3230,7 @@
 			"rank": "D",
 			"pmt": 0,
 			"mmt": 8,
-			"hit": 0,
+			"hit": 100,
 			"avo": 0,
 			"crit": 0,
 			"uses": 10,
@@ -3254,6 +3254,37 @@
 			"minrng": 1,
 			"maxrng": 5,
 			"healing": true
+		},
+		{
+			"name": "Physic",
+			"type": "Light Magic",
+			"description": "Restores HP to a distant ally.",
+			"rank": "C",
+			"pmt": 0,
+			"mmt": 8,
+			"hit": 100,
+			"avo": 0,
+			"crit": 0,
+			"uses": 5,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": "computed.statistics.mag/2",
+			"healing": true,
+		},
+		{
+			"name": "Guiding Bolt",
+			"type": "Light Magic",
+			"description": "On hit, attack rolls made against the target during its next combat have advantage. Cannot double.",
+			"rank": "C",
+			"pmt": 0,
+			"mmt": 5,
+			"hit": 90,
+			"avo": 0,
+			"crit": 10,
+			"uses": 8,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 3
 		},
 		{
 			"name": "Ethereal Javelin",
@@ -3298,7 +3329,7 @@
 			"maxrng": 1,
 			"uses": 0,
 			"cost": 0,
-			"hidden": false
+			"hidden": true
 		}
 	],
 
@@ -4266,11 +4297,12 @@
 			"mmt": 4,
 			"hit": 15,
 			"avo": 0,
-			"crit": 25,
+			"crit": 15,
 			"minrng": 1,
 			"maxrng": 1,
 			"cost": 5,
-			"scale": "spd"
+			"scale": "spd",
+			"hidden": true
 		},
 		{
 			"name": "Apocalyptic Flame",

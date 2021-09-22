@@ -153,7 +153,7 @@ function level_up() {
 	// statistics that increased from this level up
 	const increases  = new Set();
 	const stat_names = definitions.statistics.abbr.filter(
-		name => name != "mov"
+		name => name != "mov" // This ain't Jugdral.
 	);
 
 	// for each stat, if roll succeeds increase statistics
@@ -163,7 +163,7 @@ function level_up() {
 		}
 	}
 
-	// if onle of fewer statistics increased during level up,
+	// if only of fewer statistics increased during level up,
 	// then prompt user for stat to increase with popup
 	if (increases.size <= 1) {
 
@@ -206,18 +206,25 @@ function level_up() {
 	refresh_level();
 }
 
-var skill_grades = ["E", "E+", "D", "D+", "C", "C+", "B", "B+", "A", "A+", "S", "S+"];
-var grade_levels = [  0,    1,   2,    4,   8,   12,  18,   25,  32,   40,  50, 60];
+class Grade {
 
-function grade_for_points(skill_points) {
-	let grade = "S+";
-	for (let i = 0; i < grade_levels.length; ++i) {
-		if (grade_levels[i] > skill_points) {
-			grade = skill_grades[i - 1];
-			break;
-		}
+	static list = [
+		new Grade("E",  0), new Grade("E+",  1),
+		new Grade("D",  2), new Grade("D+",  4),
+		new Grade("C",  8), new Grade("C+", 12),
+		new Grade("B", 18), new Grade("B+", 25),
+		new Grade("A", 32), new Grade("A+", 40),
+		new Grade("S", 50), new Grade("S+", 60), 
+	];
+
+	static for(points) {
+		return Grade.list.reduce((a, b) => b.points > points ? a : b).name;
 	}
-	return grade;
+
+	constructor(name, points) {
+		this.name   = name;
+		this.points = points;
+	}
 }
 
 function add_lookup(object, source, destination, key) {
@@ -255,7 +262,7 @@ function refresh_description() {
 function refresh_grade(skill_name) {
 	let base   = "skill-" + skill_name;
 	let points = Number(document.getElementById(base).value);
-	let grade  = grade_for_points(points);
+	let grade  = Grade.for(points);
 
 	sheet.skills[skill_name] = points;
 
