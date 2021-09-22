@@ -389,7 +389,7 @@ const Feature = {
 
 			if (equip) {
 				const equip = document.getElementById(name + "-known-checkbox");
-    			equip.checked = true;
+				equip.checked = true;
 			}
 		}
 	},
@@ -927,33 +927,33 @@ function refresh_sheet() {
 }
 
 function export_sheet() {
-    const a    = document.createElement("a");
-    const char = JSON.parse(
-    	JSON.stringify(sheet) // dirty way to make a copy
-    );
+	const a    = document.createElement("a");
+	const char = JSON.parse(
+		JSON.stringify(sheet) // dirty way to make a copy
+	);
 
-    char.class  = char.class.name;
-    // char.weapon = char.weapon.name;
+	char.class  = char.class.name;
+	// char.weapon = char.weapon.name;
 
-    // these are trouble to persist so ignore them
-    delete char.mounted;
-    delete char.abilities.active;
-    delete char.triangle;
-    delete char.combatarts.active;
-    delete char.weapons.active;
-    delete char.equipment.active;
+	// these are trouble to persist so ignore them
+	delete char.mounted;
+	delete char.abilities.active;
+	delete char.triangle;
+	delete char.combatarts.active;
+	delete char.weapons.active;
+	delete char.equipment.active;
 
-    for (let kind of ["abilities", "combatarts", "weapons", "equipment"]) {
-    	for (let key in char[kind]) {
-    		char[kind][key] = Array.from(sheet[kind][key]);
-    	}
-    }
-    
-    const file = new Blob([JSON.stringify(char, null, 4)], {type: "application/json"});
-    a.href     = URL.createObjectURL(file);
-    a.download = sheet.name.replace(/ /g, "_") + ".json";
-    a.click();
-    URL.revokeObjectURL(a.href);
+	for (let kind of ["abilities", "combatarts", "weapons", "equipment"]) {
+		for (let key in char[kind]) {
+			char[kind][key] = Array.from(sheet[kind][key]);
+		}
+	}
+	
+	const file = new Blob([JSON.stringify(char, null, 4)], {type: "application/json"});
+	a.href     = URL.createObjectURL(file);
+	a.download = sheet.name.replace(/ /g, "_") + ".json";
+	a.click();
+	URL.revokeObjectURL(a.href);
 }
 
 function import_sheet(e) {
@@ -972,141 +972,141 @@ function import_sheet(e) {
 		char.mounted = false;
 
 		for (let key in char.abilities) {
-    		char.abilities[key] = new Set(char.abilities[key]);
-    	}
-    	char.abilities.active = new Set();
+			char.abilities[key] = new Set(char.abilities[key]);
+		}
+		char.abilities.active = new Set();
 
-    	char.class    = definitions.class_by_name[char.class];
-    	char.weapon   = Weapon.by_name[char.weapon];
-    	char.triangle = 0;
+		char.class    = definitions.class_by_name[char.class];
+		char.weapon   = Weapon.by_name[char.weapon];
+		char.triangle = 0;
 
-    	// backwards compatibility
-    	if ("combatarts" in char) {
-    		char.combatarts = {
-	    		active: null,
-	    		equipped: new Set(char.combatarts.equipped),
-	    		known: new Set(char.combatarts.known),
-	    	}
-    	} else {
-	    	char.combatarts =  {
-	    		active: null,
-	    		equipped: new Set(),
-	    		known: new Set(),
-	    	}
-	    }
+		// backwards compatibility
+		if ("combatarts" in char) {
+			char.combatarts = {
+				active: null,
+				equipped: new Set(char.combatarts.equipped),
+				known: new Set(char.combatarts.known),
+			}
+		} else {
+			char.combatarts =  {
+				active: null,
+				equipped: new Set(),
+				known: new Set(),
+			}
+		}
 
-	    // backwards compatibility
-	  	if ("weapons" in char) {
-    		char.weapons = {
-	    		active: null,
-	    		known: new Set(char.weapons.known),
-	    	}
-    	} else {
-	    	char.weapons =  {
-	    		active: null,
-	    		known: new Set(),
-	    	}
-	    }
+		// backwards compatibility
+		if ("weapons" in char) {
+			char.weapons = {
+				active: null,
+				known: new Set(char.weapons.known),
+			}
+		} else {
+			char.weapons =  {
+				active: null,
+				known: new Set(),
+			}
+		}
 
-	    // backwards compatibility
-	  	if ("equipment" in char) {
-    		char.equipment = {
-	    		active: null,
-	    		known: new Set(char.equipment.known),
-	    	}
-    	} else {
-	    	char.equipment =  {
-	    		active: null,
-	    		known: new Set(),
-	    	}
-	    }
+		// backwards compatibility
+		if ("equipment" in char) {
+			char.equipment = {
+				active: null,
+				known: new Set(char.equipment.known),
+			}
+		} else {
+			char.equipment =  {
+				active: null,
+				known: new Set(),
+			}
+		}
 
-    	// fill the statistics boxes
-    	for (let statistic of definitions.statistics.abbr) {
-    		document.getElementById(statistic + "-base").value =
-    			char.statistics[statistic];
+		// fill the statistics boxes
+		for (let statistic of definitions.statistics.abbr) {
+			document.getElementById(statistic + "-base").value =
+				char.statistics[statistic];
 
-    		if (statistic == "mov") continue;
-    		document.getElementById(statistic + "-growth-base").value =
-    			char.growths[statistic];
-    	}
+			if (statistic == "mov") continue;
+			document.getElementById(statistic + "-growth-base").value =
+				char.growths[statistic];
+		}
 
-    	// fill the skills boxes
-    	for (let skill of definitions.skills) {
-    		document.getElementById("skill-" + skill).value =
-    			char.skills[skill];
-    	}
+		// fill the skills boxes
+		for (let skill of definitions.skills) {
+			document.getElementById("skill-" + skill).value =
+				char.skills[skill];
+		}
 
-    	
-    	// fill the "character and backstory" section entries
-    	document.getElementById("character-name").value        = char.name;
-    	document.getElementById("character-homeland").value    = char.homeland;
-    	// document.getElementById("character-weapon").value      = char.weapon.name;
-    	document.getElementById("character-class").value       = char.class.name;
-    	document.getElementById("character-description").value = char.description;
-    	document.getElementById("hitpoints-input").value       = char.hitpoints;
-    	document.getElementById("level-input").value           = char.level;
+		
+		// fill the "character and backstory" section entries
+		document.getElementById("character-name").value        = char.name;
+		document.getElementById("character-homeland").value    = char.homeland;
+		// document.getElementById("character-weapon").value      = char.weapon.name;
+		document.getElementById("character-class").value       = char.class.name;
+		document.getElementById("character-description").value = char.description;
+		document.getElementById("hitpoints-input").value       = char.hitpoints;
+		document.getElementById("level-input").value           = char.level;
 
-    	// fill the known abilities
-    	Ability.import_features(
-    		char,
-    		"known",
-    		"equip_toggler",
-    		"forgetter"
-    	);
+		// fill the known abilities
+		Ability.import_features(
+			char,
+			"known",
+			"equip_toggler",
+			"forgetter"
+		);
 
-    	// fill the battlefield abilities
-    	Ability.import_features(
-    		char,
-    		"battlefield",
-    		"toggler",
-    		"forgetter",
-    	);
+		// fill the battlefield abilities
+		Ability.import_features(
+			char,
+			"battlefield",
+			"toggler",
+			"forgetter",
+		);
 
-    	// fill the equipped abilities
-    	Ability.import_features(
-    		char,
-    		"equipped",
-    		"toggler",
-    		"unequipper",
-    		true
-    	);
+		// fill the equipped abilities
+		Ability.import_features(
+			char,
+			"equipped",
+			"toggler",
+			"unequipper",
+			true
+		);
 
-    	// fill the known combat arts
-    	CombatArt.import_features(
-    		char,
-    		"known",
-    		"equip_toggler",
-    		"forgetter"
-    	)
+		// fill the known combat arts
+		CombatArt.import_features(
+			char,
+			"known",
+			"equip_toggler",
+			"forgetter"
+		)
 
-    	// fill the equipped combat arts
-    	CombatArt.import_features(
-    		char,
-    		"equipped",
-    		"toggler",
-    		"unequipper",
-    		true
-    	)
+		// fill the equipped combat arts
+		CombatArt.import_features(
+			char,
+			"equipped",
+			"toggler",
+			"unequipper",
+			true
+		)
 
-    	// fill the weapons and spells
-    	Weapon.import_features(
-    		char,
-    		"known",
-    		"toggler",
-    		"forgetter"
-    	);
+		// fill the weapons and spells
+		Weapon.import_features(
+			char,
+			"known",
+			"toggler",
+			"forgetter"
+		);
 
-    	// fill the equiptment
-    	Equipment.import_features(
-    		char,
-    		"known",
-    		"toggler",
-    		"forgetter"
-    	);
+		// fill the equiptment
+		Equipment.import_features(
+			char,
+			"known",
+			"toggler",
+			"forgetter"
+		);
 
-    	sheet = char;
-    	refresh_sheet();
+		sheet = char;
+		refresh_sheet();
 	}
 	reader.readAsText(file);
 }
