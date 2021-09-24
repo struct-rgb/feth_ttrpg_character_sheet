@@ -1,13 +1,16 @@
 {
-	"statistics": {
-		"abbr": ["hp", "str", "mag", "dex", "spd", "def", "res", "cha", "mov"],
+	"stats": {
+		"names": ["hp", "str", "mag", "dex", "spd", "def", "res", "cha", "mov"],
 		"linked": [
 			["str", "pmt"],
 			["mag", "mmt"],
 			["dex", "hit"],
+			["dex", "crit"],
 			["spd", "avo"],
 			["def", "pdr"],
-			["res", "mdr"]
+			["res", "mdr"],
+			[null, "minrng"],
+			[null, "maxrng"]
 		]
 	},
 
@@ -1302,11 +1305,11 @@
 		},
 		{
 			"name": "Summoner",
-			"abilities": ["Summon", "Heartseeker", "Bestowal"],
+			"abilities": ["Dark Magic Uses x2", "Seal Magic", "Summon"],
 			"growths": {
 				"hp" : 10,
 				"str": 0,
-				"mag": 0,
+				"mag": 10,
 				"dex": -5,
 				"spd": 0,
 				"def": 5,
@@ -1314,14 +1317,14 @@
 				"cha": 10
 			},
 			"modifiers": {
-				"hp":  3,
+				"hp":  1,
 				"str": 0,
 				"mag": 1,
 				"dex": 0,
 				"spd": 0,
 				"def": 2,
 				"res": 3,
-				"cha": 3,
+				"cha": 2,
 				"mov": 0
 			},
 			"hidden": false
@@ -2005,6 +2008,12 @@
 			"modifiers": {"res": -6}
 		},
 		{
+			"name": "Seal Magic",
+			"activation": "Passive",
+			"description": "If unit damages foe during combat, foe suffers Mag -6 for 1 turn after combat.",
+			"modifiers": {"mag": -6}
+		},
+		{
 			"name": "Heartseeker",
 			"activation": "Passive",
 			"description": "If foes is within a 1-space radius, grants foes Avoid -20",
@@ -2507,8 +2516,14 @@
 		{
 			"name": "Bestowal",
 			"activation": "Passive",
-			"description": "User's equipped abilities and combat arts, excluding personal and class abilities, are also equipped by any phantom the user summons. Phantom's skill levels are equal to summoner's skills levels, and phantoms are summoned equipped with a weapon usable at those skill levels. This weapon disappears when the phantom does.",
+			"description": "User's equipped abilities and combat arts, excluding personal and class abilities, are also equipped by any lesser phantom the user summons.",
 			"hidden": true
+		},
+		{
+			"name": "Innovacation",
+			"activation": "Passive",
+			"description": "Instead of moving normally, the user may choose to use their movement to warp to a space adjacent to a phantom they have summoned.",
+			"hidden": false
 		},
 		{
 			"name": "Immaterial",
@@ -3134,6 +3149,22 @@
 			"maxrng": 2
 		},
 		{
+			"name": "Summon",
+			"type": "Dark Magic",
+			"description": "Summon a lesser phantom at a level equivalent to the caster. See the Roll20 handout for detailed summoning rules.",
+			"rank": "B",
+			"pmt": 0,
+			"mmt": 0,
+			"hit": 100,
+			"avo": 0,
+			"crit": 0,
+			"uses": 5,
+			"cost": 0,
+			"minrng": 1,
+			"maxrng": 1,
+			"hidden": false
+		},
+		{
 			"name": "Wind",
 			"type": "Anima Magic",
 			"description": "No special effect.",
@@ -3269,7 +3300,7 @@
 			"cost": 0,
 			"minrng": 1,
 			"maxrng": "computed.statistics.mag/2",
-			"healing": true,
+			"healing": true
 		},
 		{
 			"name": "Guiding Bolt",

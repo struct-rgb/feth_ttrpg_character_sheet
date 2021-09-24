@@ -38,6 +38,7 @@ input {
 	border-width: 1px;
 	border-color: black;
 	border-style: solid;
+	margin: 3px;
 }
 
 .no-display {

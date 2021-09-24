@@ -27,7 +27,7 @@
 						<td>
 							<input
 								id="skill-{{ skill }}"
-								oninput="refresh_grade('{{ skill }}')"
+								oninput="sheet.refreshGrade('{{ skill }}')"
 								class="hidden-field"
 								type="number"
 								name="skill-{{ skill }}"
@@ -55,7 +55,7 @@
 							</label>
 							<input
 								id="level-input"
-								oninput="refresh_level()"
+								oninput="sheet.refreshLevel()"
 								type="number"
 								class="hidden-field"
 								name="level-input"
@@ -66,11 +66,11 @@
 							<input
 								type="button"
 								value="Up"
-								onclick="level_up()">
+								onclick="sheet.levelUp()">
 						</td>
 					</tr>
 
-					{% for statistic in definitions["statistics"]["abbr"] %}
+					{% for statistic in definitions["stats"]["names"] %}
 					<tr>
 						<th>
 							{{ statistic.upper() }}
@@ -84,7 +84,7 @@
 							</label>
 							<input
 								id="{{ statistic }}-base"
-								oninput="refresh_statistic('{{ statistic }}')"
+								oninput="sheet.refreshStat('{{ statistic }}')"
 								type="number"
 								name="{{ statistic }}-base"
 								class="hidden-field"
@@ -101,7 +101,7 @@
 								0%
 							</label><input
 								id="{{ statistic }}-growth-base"
-								oninput="refresh_growth('{{ statistic }}')"
+								oninput="sheet.refreshGrowth('{{ statistic }}')"
 								type="number"
 								class="hidden-field"
 								name="{{ statistic }}-growth-base"
@@ -148,10 +148,10 @@
 					<tr>
 						<th>Range</th>
 						<td>
-							≤<span id="rng-max-total" class="computed">0</span>
+							≤<span id="maxrng-total" class="computed">0</span>
 						</td>
 						<td>
-							≥<span id="rng-min-total" class="computed">0</span>
+							≥<span id="minrng-total" class="computed">0</span>
 						</td>
 					</tr>
 					<tr>
@@ -170,7 +170,7 @@
 				<input
 					type="button"
 					value="Fill"
-					onclick="fill_hitpoints()"> <br />
+					onclick="sheet.fillHealthBar()"> <br />
 
 				<label for="hitpoints-input">
 					<meter id="hitpoints" min="0" max="100" low="33" high="66" value="50">
@@ -180,7 +180,7 @@
 
 				<input
 					id="hitpoints-input"
-					oninput="refresh_hitpoints()"
+					oninput="sheet.refreshHealthBar()"
 					class="hidden-field"
 					type="number"
 					name="level-input"
@@ -192,13 +192,11 @@
 				<label for="character-name">Name</label> <br />
 				<input
 					id="character-name"
-					oninput="refresh_name()"
 					type="text"
 					name="character-name">
-				<!-- <input type="button" value="!" onclick="generate_summary()" /> <br /> -->
 				<br />
 				<label for="character-triangle">Triangle Effect</label> <br />
-				<select id="character-triangle" oninput="refresh_triangle()">
+				<select id="character-triangle" oninput="sheet.refreshSecondaryStats()">
 					<option value="15">
 						Advantage
 					</option>
@@ -209,21 +207,18 @@
 						Disadvantage
 					</option>
 				</select>
-				<!-- <input type="button" value="!" onclick="generate_macro()" /> <br /> -->
 			</div>
 				<label for="character-class">Class</label> <br />
-				<select id="character-class" name="character-class" oninput="refresh_class()">
+				<select id="character-class" name="character-class" oninput="sheet.refreshClass()">
 					{% for klass in definitions["classes"] %}
 						{% if "hidden" not in klass or not klass["hidden"] %}
 							<option value="{{ klass['name'] }}">{{ klass["name"] }}</option>
 						{% endif %}
 					{% endfor %}
 				</select>
-				<label>
-					<input id="character-mounted" onclick="refresh_mounted()" type="checkbox" /> Mounted?
-				</label><br />
+				<input id="character-mounted" onclick="sheet.refreshMounted()" type="checkbox" /> Mounted? <br />
 				<label for="character-homeland">Homeland</label> <br />
-				<select id="character-homeland" oninput="refresh_homeland()">
+				<select id="character-homeland">
 					<option value="adrestia">The Adrestian Empire</option>
 					<option value="almyra">Almyra</option>
 					<option value="brigid">Brigid Archipelago</option>
@@ -236,7 +231,6 @@
 				<textarea
 					id="character-description"
 					name="character-description"
-					oninput="refresh_description()"
 					>Write your character description here.</textarea>
 				<br />
 				<label for="import-sheet" class="custom-file-input">
@@ -246,7 +240,7 @@
 				<label for="export-sheet" class="custom-file-input">
 					Export
 				</label>
-				<input id="export-sheet" type="button" onclick="export_sheet()" class="no-display" />
+				<input id="export-sheet" type="button" onclick="sheet.export()" class="no-display" />
 			</div>
 		</div>
 		<div class="span-1-3"> <!-- ABILITIES -->
@@ -255,40 +249,20 @@
 					Abilities
 				</summary>
 				<div class="entry-tab-body">
-					<details>
+					<details id="abilities-class">
 						<summary>Class</summary>
-						<dl id="abilities-class"></dl>
 					</details>
 
-					<details>
+					<details id="abilities-equipped">
 						<summary>Equipped</summary>
-						<dl id="abilities-equipped"></dl>
 					</details>
 					
-					<details>
+					<details id="abilities-battlefield">
 						<summary>Battlefield</summary>
-						<input type="button" value="Add" onclick="Ability.learn('battlefield')" />
-						<select id="learn-abilities-select-battlefield">
-							{% for ability in definitions['abilities'] %}
-								{% if "hidden" not in ability or not ability["hidden"] %}
-									<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
-								{% endif %}
-							{% endfor %}
-						</select>
-						<dl id="abilities-battlefield"></dl>
 					</details>
 
-					<details>
+					<details id="abilities-known">
 						<summary>Known</summary>
-						<input type="button" value="Add" onclick="Ability.learn('known')" />
-						<select id="learn-abilities-select-known">
-							{% for ability in definitions['abilities'] %}
-								{% if "hidden" not in ability or not ability["hidden"] %}
-									<option value="{{ ability['name'] }}">{{ ability["name"] }}</option>
-								{% endif %}
-							{% endfor %}
-						</select>
-						<dl id="abilities-known"></dl>
 					</details>
 				</div>
 			</details>
@@ -298,72 +272,33 @@
 					Combat Arts
 				</summary>
 				<div class="entry-tab-body">
-					<details>
+					<details id="combatarts-equipped">
 						<summary>Equipped</summary>
-						<dl id="combatarts-equipped"></dl>
 					</details>
 
-					<details>
+					<details id="combatarts-known">
 						<summary>Known</summary>
-						<input type="button" value="Add" onclick="CombatArt.learn('known')" />
-						<select id="learn-combatarts-select-known">
-							{% for art in definitions['combatarts'] %}
-								{% if "hidden" not in art or not art["hidden"] %}
-									<option value="{{ art['name'] }}">{{ art["name"] }}</option>
-								{% endif %}
-							{% endfor %}
-						</select>
-						<dl id="combatarts-known"></dl>
 					</details>
 				</div>
 			</details>
 
-			<details>
+			<details id="weapons-known">
 				<summary class="entry-tab-title">
 					Weapons & Spells
 				</summary>
-				<input type="button" value="Add" onclick="Weapon.learn('known')" />
-				<select id="learn-weapons-select-known">
-					{% for weapon in definitions['weapons'] %}
-						{% if "hidden" not in weapon or not weapon["hidden"] %}
-							<option value="{{ weapon['name'] }}">{{ weapon["name"] }}</option>
-						{% endif %}
-					{% endfor %}
-				</select>
-				<dl id="weapons-known"></dl>
 			</details>
 
-			<details>
+			<details id="equipment-known">
 				<summary class="entry-tab-title">
 					Equipment
 				</summary>
-				<input type="button" value="Add" onclick="Equipment.learn('known')" />
-				<select id="learn-equipment-select-known">
-					{% for item in definitions['equipment'] %}
-						{% if "hidden" not in item or not item["hidden"] %}
-							<option value="{{ item['name'] }}">{{ item["name"] }}</option>
-						{% endif %}
-					{% endfor %}
-				</select>
-				<dl id="equipment-known"></dl>
 			</details>
 		</div>
 	</div>
 
 	<script type="text/javascript">
 		definitions = {{ definition_literal }};
-
-		add_lookup(definitions, definitions["classes"], "class_by_name", "name");
-
-		for (each of [Ability, Weapon, CombatArt, Equipment]) {
-			each.set_lookup_by_name(definitions);
-		}
-		
-		refresh_sheet();
-
-		document
-			.getElementById("import-sheet")
-			.addEventListener("change", import_sheet, false);
+		initialize(definitions);
 	</script>
 </body>
 </html>
