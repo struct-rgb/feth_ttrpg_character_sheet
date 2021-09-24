@@ -4,19 +4,6 @@
 var sheet, definitions;
 
 /**
- * Initializes the necessary data structures for the sheet to function
- * @param {Object} definitions - the json object defining the game data
- */
-function initialize(definitions) {
-
-	for (let each of [Ability, Weapon, CombatArt, Equipment, Class]) {
-		each.setLookupByName(definitions);
-	}
-
-	sheet = new Sheet(definitions);
-}
-
-/**
  * Used to cause an error whenever an abstract base method is invoked
  */
 function unimplemented() {
@@ -594,8 +581,8 @@ const Feature = {
 };
 
 /**
- * Sets {@link Feature} as the first object as the prootype of the second, adds a propery
- * "byName", that is a Map, and then freezes the second.
+ * Sets {@link Feature} as the prototype of the object and, adds a property
+ * "byName", that is a Map, and then freezes the object.
  * Used to make variations of the Feature namespace.
  * @param {Object} obj - the object to modify
  * @returns {Object} the second object
@@ -610,7 +597,7 @@ function inheritFeature(obj) {
  * A feature namespace for character classes
  * @namespace
  */
-const Class = inheritFeature(Feature, {kind: "classes"});
+const Class = {kind: "classes"};
 
 inheritFeature(Class);
 
@@ -1485,4 +1472,17 @@ class Sheet {
 		}
 		reader.readAsText(file);
 	}
+}
+
+/**
+ * Initializes the necessary data structures for the sheet to function
+ * @param {Object} definitions - the json object defining the game data
+ */
+function initialize(definitions) {
+
+	for (let each of [Ability, Weapon, CombatArt, Equipment, Class]) {
+		each.setLookupByName(definitions);
+	}
+
+	sheet = new Sheet(definitions);
 }
