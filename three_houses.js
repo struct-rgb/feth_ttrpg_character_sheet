@@ -24,11 +24,298 @@ function P(object, property, default_value) {
 }
 
 /**
- * Determine if a weapon or combat art deteals magic based damage from its stats
- * @param {Object} object - a json represented weapon or combat art
+ * A class to represent customization features that modify a unit's statistics.
+ * Instances of this class are immutable.
  */
-function isMagic(object) {
-	return P(object, "mmt", 0) > P(object, "pmt", 0);
+class Feature {
+
+	static byName;
+
+	/**
+	 * An "empty" feature instance, with completely default values
+	 */
+	static EMPTY;
+
+	static kind = "feature";
+
+	/**
+	 * @constant
+	 * @type {Object}
+	 * @default
+	 */
+	static EMPTY_OBJECT = {};
+
+	/**
+	 * Create a feature from a template object
+	 */
+	constructor(template) {
+		this.name        = template.name || "";
+		this.description = template.description || "";
+		this.type        = template.type || "";
+		this.modifiers   = Object.freeze(template.modifiers || Feature.EMPTY_OBJECT);
+		this.multipliers = Object.freeze(template.multipliers || Feature.EMPTY_OBJECT);
+		this.hidden      = template.hidden || false;
+		
+		// These objects are just references for value and as such should not
+		// be mutable. If this is not a super() call, freeze the object.
+		if (new.target === Feature) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Populate the lookup map for this class
+	 * @param {Object} defintions - json game data
+	 */
+	static setLookupByName(iterable) {
+
+		// initialize the "empty" feature on first invocation
+		if (this.EMPTY === undefined) {
+			this.EMPTY = new this(this.EMPTY_OBJECT);
+		}
+
+		// initialize the map on first invocation
+		if (this.byName === undefined) {
+			this.byName = new Map();
+		}
+
+		// clear existing values and refill map
+		this.byName.clear()
+		for (let template of iterable[this.kind]) {
+			const instance = new this(template);
+			this.byName.set(instance.name, instance);
+		}
+	}
+
+	/**
+	 * Returns an instance of this feature. If name is passed, attempts to find
+	 * a feature in the lookup table with that name. If one is not found, or
+	 * name is nullish, returns an "empty" feature instance.
+	 * @param {string} optional name of feature to get
+	 * @returns {Feature} a feature instance
+	 */
+	static get(name) {
+		return (
+			name && this.byName.has(name)
+				? this.byName.get(name)
+				: this.EMPTY
+		);
+	}
+
+	/**
+	 * Generate a feature's {@link CategoryElement} title
+	 * @return {string} title for this item's {@link CategoryElement}
+	 */
+	title() {
+		return this.name + " (" + this.type + ") ";
+	}
+
+	/**
+	 * Generate a feature's {@link CategoryElement} description
+	 * @return {string} description for this item's {@link CategoryElement}
+	 */
+	body() {
+		return this.description;
+	}
+
+	/**
+	 * Get the value of this feature's modifier for a statistic
+	 * @param {string} stat - name of the stat to get the modifier for
+	 * @returns {number} the modifier for the stat, or 0 if none exists
+	 */
+	modifier(stat) {
+		return this.modifiers[stat] || 0;
+	}
+
+	/**
+	 * Get the value of this feature's multipier for a statistic
+	 * @param {string} stat - name of the stat to get the multiplier for
+	 * @returns {number} the multiplier for the stat, or 1 if none exists
+	 */
+	multiplier(stat) {
+		return this.multipliers[stat] || 1;
+	}
+}
+
+/**
+ * A Feature subclass that heavily governs attack calculations.
+ */
+class AttackFeature extends Feature {
+
+	/**
+	 * Create an AttackFeature from a template object
+	 */
+	constructor(template) {
+		super(template);
+		this.rank  = template.rank || "";
+		this.tags  = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
+
+		// If this is not a super() call, freeze the object.
+		if (new.target === CombatArt) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Get the value of this feature's tag for a statistis. A "tag" in this case
+	 * is an optional property that isn't a direct modifier or multiplier
+	 * @param {string} name - the name of the tag
+	 * @returns {boolean} the value of the tag if it exists, null otherwise
+	 */
+	tag(name) {
+		return this.tags[name] || false;
+	}
+
+	/**
+	 * Generate a {@link CategoryElement} description
+	 * @return {string} description for this feature's {@link CategoryElement}
+	 */
+	body() {
+		return (
+			  (this.higherMight()
+			  	? "Might: " + this.higherMight() + ", "
+			  	: "")
+			+ (this.modifier("hit")
+				? "Hit: " + this.modifier("hit") + ", "
+				: "")
+			+ (this.modifier("avo") 
+				? "Avo: " + this.modifier("avo") + ", "
+				: "")
+			+ (this.modifier("crit")
+				? "Crit: " + this.modifier("crit") + ", " : "")
+			+ (this.modifier("cost")
+				? "Cost: " + this.modifier("cost") + ", " : "")
+			+ "Range: "
+				+ (this.modifier("minrng") == this.modifier("maxrng")
+					? this.modifier("minrng")
+					: this.modifier("minrng") + "-" + this.modifier("maxrng"))
+				+ "\n"
+			+ this.description
+		);
+	}
+
+	/**
+	 * Test whether this feature would deal magic-based damage using its
+	 * "mmt" and "pmt" statistic modifiers, if it has them.
+	 * @returns {boolean} true if it deals magic-based damage, false otherwise
+	 */
+	isMagicDamage() {
+		return this.modifier("mmt") > this.modifier("pmt");
+	}
+
+	/**
+	 * Access the higher might stat for the AttackFeature
+	 * @returns {number} the value of the higher might stat
+	 */
+	higherMight() {
+		return Math.max(this.modifier("pmt"), this.modifier("mmt"));
+	}
+}
+
+/**
+ * An extension of {@link Feature} that adds a skill rank attribute, additional
+ * optional damage scaling based off of a stat, and boolean tags.
+ */
+class CombatArt extends AttackFeature {
+
+	static kind = "combatarts";
+
+	/**
+	 * Generate a combat art's {@link CategoryElement} title
+	 * @return {string} title for this combat this's {@link CategoryElement}
+	 */
+	title() {
+		return " " + this.name + " (Rank " + this.rank + " " + this.type + " Art) ";
+	}
+}
+
+/**
+ * An extension of {@link Feature} that adds a skill rank attribute
+ */
+class Weapon extends AttackFeature {
+
+	static kind = "weapons";
+
+	/**
+	 * Generate a weapon's {@link CategoryElement} title
+	 * @return {string} title for this weapon's {@link CategoryElement}
+	 */
+	title() {
+		return " " + this.name + " (Rank " + this.rank + " " + this.type + ") ";
+	}
+}
+
+/**
+ * An extension of {@link Feature} that adds growths, abilities, and an optional
+ * internal {@link Feature} instance representing a mount.
+ */
+class Class extends Feature {
+
+	static kind = "classes";
+
+	/**
+	 * Create a class from a template object
+	 */
+	constructor(template) {
+		super(template);
+		this.abilities = template.abilities;
+		this.growths   = Object.freeze(template.growths);
+		this.mount     = template.mount ? new Feature(template.mount) : null;
+
+		if (new.target === CombatArt) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Get the value of this feature's modifier for a statistic, factoring in the
+	 * modifiers of the unit's mount, if they are mounted and have one.
+	 * @param {string} stat - name of the stat to get the modifier for
+	 * @returns {number} the modifier for the stat, or 0 if none exists
+	 */
+	modifier(stat, mounted=false) {
+		return (
+			super.modifier(stat)
+				+ (mounted && this.hasMount()
+					? this.mount.modifier(stat)
+					: 0)
+		);
+	}
+
+	/**
+	 * Get the value of this feature's growth modifier for a statistic
+	 * @param {string} stat - name of the stat to get the growth modifier for
+	 * @returns {number} the growth modifier for the stat, or 0 if none exists
+	 */
+	growth(stat) {
+		return this.growths[datum] || 0;
+	}
+
+	/**
+	 * Test whether this character class has an associate mount
+	 * @returns {boolean} true if there is a mount, false otherwise
+	 */
+	hasMount() {
+		return Boolean(this.mount);
+	}
+}
+
+/**
+ * A Feature subclass to represent abilities.
+ */
+class Ability extends Feature {
+
+	static kind = "abilities";
+
+}
+
+/**
+ * A Feature subclass to repersent equipment
+ */
+class Equipment extends Feature {
+
+	static kind = "equipment";
+
 }
 
 /**
@@ -74,35 +361,62 @@ class CategoryElement {
 
 	/**
 	 * Create an element
-	 * @param {string} - the text for the <dt>
-	 * @param {string} - the text for the <dd>
-	 * @param {CategoryElement~cb} check_fn - invoked on checkbox toggle
-	 * @param {CategoryElement~cb} remove_fn - invoked on remove button click, button not added if omitted
+	 * @param {Feature} feature - the feature for this element
+	 * @param {boolean} shiftable - whether to add buttons to allow reordering
+	 * @param {CategoryElement~cb} checkFn - invoked on checkbox toggle
+	 * @param {CategoryElement~cb} removeFn - invoked on remove button click, button not added if omitted
 	 */
-	constructor(title, description, check_fn, remove_fn) {
+	constructor(feature, shiftable, checkFn, removeFn) {
 
 		// assign attributes
-		this.title       = title;
-		this.description = description;
+		this.feature     = feature;
+		this.title       = feature.title();
+		this.description = feature.body();
 
 		// go about building the DOM nodes
-		this.dt          = document.createElement("dt");
+		this.dt = document.createElement("dt");
+		this.dt.setAttribute("data-feature-name", feature.name);
 
-		// add checkbox to apply any modifers/multipliers
+		// add checkbox to apply any modifiers/multipliers
 		this.checkbox         = document.createElement("input");
 		this.checkbox.type    = "checkbox";
-		this.checkbox.onclick = check_fn;
+		this.checkbox.onclick = checkFn;
 		this.dt.appendChild(this.checkbox);
 
 		// add entry title content
-		this.dt.appendChild(document.createTextNode(title));
+		this.dt.appendChild(document.createTextNode(this.title));
+
+		if (shiftable) {
+			const element = this;
+
+			this.shiftBeforeButton         = document.createElement("input");
+			this.shiftBeforeButton.value   = "↑";
+			this.shiftBeforeButton.type    = "button";
+			this.shiftBeforeButton.onclick = () => {
+				element.shiftBefore(1);
+			};
+			this.dt.appendChild(this.shiftBeforeButton);
+
+			this.shiftAfterButton         = document.createElement("input");
+			this.shiftAfterButton.value   = "↓";
+			this.shiftAfterButton.type    = "button";
+			this.shiftAfterButton.onclick = () => {
+				element.shiftAfter(1);
+			};
+			this.dt.appendChild(this.shiftAfterButton);
+
+		} else {
+			this.shiftAfterButton  = null;
+			this.shiftBeforeButton = null;
+		}
+
 
 		// if remove function is not, make a "remove" button
-		if (remove_fn != null) {
+		if (removeFn != null) {
 			this.removeButton         = document.createElement("input");
 			this.removeButton.value   = "✗";
 			this.removeButton.type    = "button";
-			this.removeButton.onclick = remove_fn;
+			this.removeButton.onclick = removeFn;
 			this.dt.appendChild(this.removeButton);
 		} else {
 			this.removeButton = null;
@@ -110,10 +424,46 @@ class CategoryElement {
 
 		// add entry content description
 		this.dd = document.createElement("dd");
-		this.dd.appendChild(document.createTextNode(description));
+		this.dd.appendChild(document.createTextNode(this.description));
 
 		// this belongs to no category by default
 		this.parent = null;
+	}
+
+	shiftBefore(offset) {
+		if (!this.parent) return;
+
+		offset *= 2;
+		for (let element of [this.dt, this.dd]) {
+			for (let i = 0; i < offset; ++i) {
+				const sibling = element.previousElementSibling;
+				
+				if (!sibling) {
+					offset = i;
+					break;
+				}
+
+				sibling.insertAdjacentElement("beforeBegin", element);
+			}
+		}
+	}
+
+	shiftAfter(offset) {
+		if (!this.parent) return;
+
+		offset *= 2;
+		for (let element of [this.dd, this.dt]) {
+			for (let i = 0; i < offset; ++i) {
+				const sibling = element.nextElementSibling;
+
+				if (!sibling) {
+					offset = i;
+					break;
+				}
+
+				sibling.insertAdjacentElement("afterEnd", element);
+			}
+		}
 	}
 
 	/**
@@ -153,13 +503,14 @@ class Category {
 
 	/**
 	 * Create a category
-	 * @param {Feature} feature - the feature to draw entries info from
+	 * @param {Function} feature - the feature class to draw entries info from
 	 * @param {string} name - a name to identify this category
 	 * @param {boolean} learnable - whether a select element should be included
+	 * @param {boolean} shiftable - whether elements should be able to be shifted up and down
 	 * @param {Category~cb} ontoggle - invoked when a {@link CategoryElement} is toggled
 	 * @param {Category~cb} onremove - invoked when a {@link CategoryElement}'s remove button is clicked, optional
 	 */
-	constructor(feature, name, learnable, ontoggle, onremove) {
+	constructor(feature, name, learnable, shiftable, ontoggle, onremove) {
 
 		const category = this;
 
@@ -171,6 +522,7 @@ class Category {
 		this.next      = null;
 		this.prev      = null;
 		this.elements  = new Map();
+		this.shiftable = shiftable;
 
 		// go about building the DOM nodes
 		if (!learnable) {
@@ -313,8 +665,6 @@ class Category {
 
 		const category    = this;
 		const item        = this.feature.byName.get(name);
-		const title       = this.feature.title(item);
-		const description = this.feature.description(item);
 		
 		const onremove    = !this.onremove ? null : (() => {
 			category.onremove(name, category);
@@ -325,7 +675,7 @@ class Category {
 		};
 
 		const element     = new CategoryElement(
-			title, description, ontoggle, onremove
+			item, this.shiftable, ontoggle, onremove, 
 		);
 
 		this.elements.set(name, element);
@@ -390,11 +740,40 @@ class Category {
 	/* iterable */
 
 	/**
+	 * Get an iterator of all of the names of the feature elements in this category in display order
+	 * @return iterator over the names of the feature elements of this category in display order
+	 */
+	*names() {
+		for (let child of this.dl.children) {
+			
+			const name = child.getAttribute("data-feature-name");
+
+			if (name) {
+				yield name;
+			} else {
+				continue;
+			}
+		}
+	}
+
+	/**
+	 * Get an iterator of all of the feature elements of this category in display order
+	 * @return iterator over the feature elements of this category in display order
+	 */
+	*values() {
+		for (let name of this.names()) {
+			yield this.feature.byName.get(name);
+		}
+	}
+
+	/**
 	 * Defines the iterable function of this object
 	 * @returns an iterator over the names of the elements
 	 */
-	[Symbol.iterator]() {
-		return this.elements.keys();
+	*[Symbol.iterator]() {
+		for (let value of this.values()) {
+			yield value;
+		}
 	}
 }
 
@@ -415,11 +794,12 @@ class SingleActiveCategory extends Category {
 	 * @param {Feature} feature - the feature to draw entries info from
 	 * @param {string} name - a name to identify this category
 	 * @param {boolean} learnable - whether a select element should be included
+	 * @param {boolean} shiftable - whether elements should be able to be shifted up and down
 	 * @param {Category~cb} ontoggle - invoked when a {@link CategoryElement} is toggled
 	 * @param {Category~cb} onremove - invoked when a {@link CategoryElement}'s remove button is clicked, optional
 	 */
-	constructor(name, feature, ontoggle, onremove, learnable) {
-		super(name, feature, ontoggle, onremove, learnable);
+	constructor(name, feature, learnable, shiftable, ontoggle, onremove) {
+		super(name, feature, learnable, shiftable, ontoggle, onremove);
 		this.active = null;
 	}
 
@@ -487,11 +867,12 @@ class MultiActiveCategory extends Category {
 	 * @param {Feature} feature - the feature to draw entries info from
 	 * @param {string} name - a name to identify this category
 	 * @param {boolean} learnable - whether a select element should be included
+	 * @param {boolean} shiftable - whether elements should be able to be shifted up and down
 	 * @param {Category~cb} ontoggle - invoked when a {@link CategoryElement} is toggled
 	 * @param {Category~cb} onremove - invoked when a {@link CategoryElement}'s remove button is clicked, optional
 	 */
-	constructor(name, feature, ontoggle, onremove, learnable) {
-		super(name, feature, ontoggle, onremove, learnable);
+	constructor(name, feature, learnable, shiftable, ontoggle, onremove) {
+		super(name, feature, learnable, shiftable, ontoggle, onremove);
 		this.active = new Set();
 	}
 
@@ -539,200 +920,6 @@ class MultiActiveCategory extends Category {
 		this.active.clear();
 	}
 }
-
-/**
- * The base namespace for all feature variants
- * @namespace
- */
-const Feature = {
-
-	kind: "none",
-
-	/**
-	 * Generate a item's {@link CategoryElement} title
-	 * @abstract
-	 * @param {Object} item - an item
-	 * @return {string} title for this item's {@link CategoryElement}
-	 */
-	title(item) {
-		unimplemented()
-	},
-
-	/**
-	 * Generate a item's {@link CategoryElement} description
-	 * @abstract
-	 * @param {Object} item - an item
-	 * @return {string} description for this item's {@link CategoryElement}
-	 */
-	 description(item) {
-	 	unimplemented()
-	 },
-
-	/**
-	 * Populate the lookup map for this namespace
-	 * @param {Object} defintions - json game data
-	 */
-	setLookupByName(definitions) {
-		this.byName.clear()
-		for (let item of definitions[this.kind]) {
-			this.byName.set(item.name, item);
-		}
-	},
-};
-
-/**
- * Sets {@link Feature} as the prototype of the object and, adds a property
- * "byName", that is a Map, and then freezes the object.
- * Used to make variations of the Feature namespace.
- * @param {Object} obj - the object to modify
- * @returns {Object} the second object
- */
-function inheritFeature(obj) {
-	obj.byName = new Map();
-	Object.setPrototypeOf(obj, Feature);
-	Object.freeze(obj);
-}
-
-/**
- * A feature namespace for character classes
- * @namespace
- */
-const Class = {kind: "classes"};
-
-inheritFeature(Class);
-
-/**
- * A feature namespace for abilities
- * @namespace
- */
-const Ability = {
-
-	kind: "abilities",
-
-	/**
-	 * Generate an ability's {@link CategoryElement} title
-	 * @param {Object} ability - an ability
-	 * @return {string} title for this ability's {@link CategoryElement}
-	 */
-	title(ability) {
-		return " " + ability.name + " (" + ability.activation + ") ";
-	},
-
-	/**
-	 * Generate an ability's {@link CategoryElement} description
-	 * @param {Object} ability - an ability
-	 * @return {string} description for this ability's {@link CategoryElement}
-	 */
-	description(ability) {
-		return ability.description;
-	},
-};
-
-inheritFeature(Ability);
-
-/**
- * A feature namespace for combat arts
- * @namespace
- */
-const CombatArt = {
-
-	kind: "combatarts",
-
-	/**
-	 * Generate a combat art's {@link CategoryElement} title
-	 * @param {Object} combat art - a combat art
-	 * @return {string} title for this combat art's {@link CategoryElement}
-	 */
-	title(art) {
-		return " " + art.name + " (Rank " + art.rank + " " + art.type + " Art) ";
-	},
-
-	/**
-	 * Generate a combat art's {@link CategoryElement} description
-	 * @param {Object} combat art - a combat art
-	 * @return {string} description for this combat art's {@link CategoryElement}
-	 */
-	description(art) {
-		const might = Math.max(art.pmt, art.mmt);
-		return (
-			  (might    ? "Might: " + might + ", "   : "")
-			+ (art.hit  ? "Hit: " + art.hit + ", "   : "")
-			+ (art.avo  ? "Avo: " + art.avo + ", "   : "")
-			+ (art.crit ? "Crit: " + art.crit + ", " : "")
-			+ (art.cost ? "Cost: " + art.cost + ", " : "")
-			+ "Range: " + (art.minrng == art.maxrng ? art.minrng : art.minrng + "-" + art.maxrng) + "\n"
-			+ art.description
-		);
-	},
-};
-
-inheritFeature(CombatArt);
-
-/**
- * A feature namespace for weapons and spells
- * @namespace
- */
-const Weapon = {
-
-	kind: "weapons",
-
-	/**
-	 * Generate a weapon's {@link CategoryElement} title
-	 * @param {Object} weapon - a weapon
-	 * @return {string} title for this weapon's {@link CategoryElement}
-	 */
-	title(weapon) {
-		return " " + weapon.name + " (Rank " + weapon.rank + " " + weapon.type + ") ";
-	},
-
-	/**
-	 * Generate a weapon's {@link CategoryElement} description
-	 * @param {Object} weapon - a weapon
-	 * @return {string} description for this weapon's {@link CategoryElement}
-	 */
-	description(weapon) {
-		const might = Math.max(weapon.pmt, weapon.mmt);
-		return (
-			  (might       ? "Might: " + might + ", "      : "")
-			+ (weapon.hit  ? "Hit: " + weapon.hit + ", "   : "")
-			+ (weapon.avo  ? "Avo: " + weapon.avo + ", "   : "")
-			+ (weapon.crit ? "Crit: " + weapon.crit + ", " : "")
-			+ "Range: " + (weapon.minrng == weapon.maxrng ? weapon.minrng : weapon.minrng + "-" + weapon.maxrng) + "\n"
-			+ weapon.description
-		);
-	},
-};
-
-inheritFeature(Weapon);
-
-/**
- * A feature namespace for equiptment
- * @namespace
- */
-const Equipment = {
-
-	kind: "equipment",
-
-	/**
-	 * Generate a piece of equipment's {@link CategoryElement} title
-	 * @param {Object} equipment - a piece of equipment
-	 * @return {string} title for this piece of equipment's {@link CategoryElement}
-	 */
-	title(equipment) {
-		return " " + equipment.name + " (" + equipment.type + ") ";
-	},
-
-	/**
-	 * Generate a piece of equipment's {@link CategoryElement} description
-	 * @param {Object} equipment - a piece of equipment
-	 * @return {string} description for this piece of equipment's {@link CategoryElement}
-	 */
-	description(equipment) {
-		return equipment.description;
-	},
-};
-
-inheritFeature(Equipment);
 
 /**
  * Class representing the main body of the sheet.
@@ -836,22 +1023,22 @@ class Sheet {
 		const SAC = SingleActiveCategory;
 
 		this.abilities = {};
-		this.addCat(new MAC(Ability , "class"       , false , refresh , null));
-		this.addCat(new MAC(Ability , "equipped"    , false , refresh , unequip));
-		this.addCat(new MAC(Ability , "battlefield" , true  , refresh , forget));
-		this.addCat(new MAC(Ability , "known"       , true  , equip   , forget));
+		this.addCat(new MAC(Ability , "class"       , false , false , refresh , null));
+		this.addCat(new MAC(Ability , "equipped"    , false , true  , refresh , unequip));
+		this.addCat(new MAC(Ability , "battlefield" , true  , true  , refresh , forget));
+		this.addCat(new MAC(Ability , "known"       , true  , true  , equip   , forget));
 		this.abilities.known.link(this.abilities.equipped);
 
 		this.combatarts = {};
-		this.addCat(new SAC(CombatArt , "equipped" , false , refresh , unequip));
-		this.addCat(new MAC(CombatArt , "known"    , true  , equip   , forget));
+		this.addCat(new SAC(CombatArt , "equipped" , false , true   , refresh , unequip));
+		this.addCat(new MAC(CombatArt , "known"    , true  , true   , equip   , forget));
 		this.combatarts.known.link(this.combatarts.equipped);
 
 		this.weapons = {};
-		this.addCat(new SAC(Weapon, "known", true, refresh, forget));
+		this.addCat(new SAC(Weapon, "known", true, true, refresh, forget));
 
 		this.equipment = {};
-		this.addCat(new SAC(Equipment, "known", true, refresh, forget));
+		this.addCat(new SAC(Equipment, "known", true, true, refresh, forget));
 
 		this.refresh();
 	}
@@ -1014,7 +1201,7 @@ class Sheet {
 	 * set to true for classes that do not have access to a mount.
 	 */
 	refreshMounted() {
-		if (this.mounted && !("mount" in this.class)) {
+		if (this.mounted && !this.class.hasMount()) {
 			// do not permit this box to be checked if there is no mount
 			this.mounted = false;
 		} else {
@@ -1033,7 +1220,7 @@ class Sheet {
 		);
 
 		// account for whether the character is mounted before stat calcs
-		this._input_mounted.checked = "mount" in this.class;
+		this._input_mounted.checked = this.class.hasMount();
 
 		this.abilities.class.clear();
 
@@ -1121,20 +1308,29 @@ class Sheet {
 
 		const display = document.getElementById(name + "-total");
 		const base    = Number(document.getElementById(name + "-base").value);
-		const value   = Math.max(
-			(
-				  (name == "mov" ? 4 : 0)
-				+ ( // TODO better validation for this
-					this.mounted && name in this.class.mount.modifiers
-						? this.class.mount.modifiers[name]
-						: 0
-				)
-				+ this.class.modifiers[name]
+		// const value   = Math.max(
+		// 	(
+		// 		  (name == "mov" ? 4 : 0)
+		// 		+ ( // TODO better validation for this
+		// 			this.mounted && name in this.class.mount.modifiers
+		// 				? this.class.mount.modifiers[name]
+		// 				: 0
+		// 		)
+		// 		+ this.class.modifiers[name]
+		// 		+ this.modifier(name)
+		// 		+ base
+		// 	) * this.multiplier(name),
+		// 	0,
+		// );
+
+		const value = Math.max(
+			((name == "mov" ? 4 : 0)
+				+ this.class.modifier(name, this.mounted)
 				+ this.modifier(name)
-				+ base
-			) * this.multiplier(name),
-			0,
-		);
+				+ base)
+			* this.multiplier(name),
+			0
+		); 
 
 		this.stats[name]       = base;
 		this.cache.stats[name] = value;
@@ -1173,31 +1369,38 @@ class Sheet {
 	}
 
 	/**
-	 * Preform a reduce operation on a single property of all active class,
+	 * Preform an accumulation on a single statistic of all active class,
 	 * equipped, and battlefield modifier or mulitplier objects, as if they
 	 * were a collection
-	 * @param {string} property - the stat to reduce on
-	 * @param {number} default_value - value to use if a property does not exist
-	 * @param {string} kind - either "modifiers" or "mulitpliers"
+	 * @param {string} stat - the stat to reduce on
+	 * @param {string} kind - either "modifier" or "mulitplier"
+	 * @param {number} base - value to use if a property does not exist
 	 * @param {function} func - the reduce function, takes two number arguments
 	 * @returns {number} the result of the reduction
 	 */
-	reduceAbilities(property, default_value, kind, func) {
+	accumulateAbilities(stat, kind, base, func) {
 
-		let acc = default_value;
+		let acc = base;
 
 		for (let category of ["class", "equipped", "battlefield"]) {
 			for (let name of this.abilities[category].getActive()) {
-				const item = Ability.byName.get(name)[kind];
-				acc = func(acc, P(item, property, default_value));
+				acc = func(acc, Ability.get(name)[kind](stat));
 			}
 		}
 
 		return acc;
 	}
 
+	abilityModifer(stat) {
+		return this.accumulateAbilities(stat, "modifier", 0, (x, y) => x + y);
+	}
+
+	abilityMultiplier(stat) {
+		return this.accumulateAbilities(stat, "multiplier", 1, (x, y) => x * y);
+	}
+
 	/**
-	 * Preform a reduce operation on a single property of all active abilities
+	 * Preform an accumulation on single state from all active features
 	 * weapons, equipment, and combat arts, as if they were a collection
 	 * @param {string} property - the stat to reduce on
 	 * @param {number} default_value - value to use if a property does not exist
@@ -1205,18 +1408,13 @@ class Sheet {
 	 * @param {function} func - the reduce function, takes two number arguments
 	 * @returns {number} the result of the reduction
 	 */
-	reduceStat(property, default_value, kind, func) {
+	accumulate(stat, kind, base, func) {
 
-		let acc = this.reduceAbilities(property, default_value, kind, func);
-		
-		const weapon = Weapon.byName.get(this.weapons.known.getActive());
-		acc = func(acc, P(weapon, property, default_value));
+		let acc = this.accumulateAbilities(stat, kind, base, func);
 
-		const equip  = Equipment.byName.get(this.equipment.known.getActive());
-		acc = func(acc, P(equip, property, default_value));
-
-		const art    = CombatArt.byName.get(this.combatarts.equipped.getActive());
-		acc = func(acc, P(art, property, default_value));
+		acc = func(acc, Weapon.get(this.weapons.known.getActive())[kind](stat));
+		acc = func(acc, Equipment.get(this.equipment.known.getActive())[kind](stat));
+		acc = func(acc, CombatArt.get(this.combatarts.equipped.getActive())[kind](stat));
 
 		return acc;
 	}
@@ -1225,10 +1423,10 @@ class Sheet {
 	 * Get the sum of the modifiers for a single property for all active
 	 * abilities, weapons, equiptment, and combat arts
 	 * @param {string} name - name of the stat property
-	 * @returns {number} the sum of all modifers
+	 * @returns {number} the sum of all modifiers
 	 */
 	modifier(name) {
-		return this.reduceStat(name, 0, "modifiers", (a, b) => a + b);
+		return this.accumulate(name, "modifier", 0, (x, y) => x + y);
 	}
 
 	/**
@@ -1238,7 +1436,7 @@ class Sheet {
 	 * @returns {number} the product of all multipliers
 	 */
 	multiplier(name) {
-		return this.reduceAbilities(name, 1, "multipliers", (a, b) => a * b);
+		return this.accumulate(name, "multiplier", 1, (a, b) => a * b);
 	}
 
 	/**
@@ -1250,9 +1448,9 @@ class Sheet {
 	 */
 	calcSecondaryStat(prime, second) {
 
-		const weapon = Weapon.byName.get(this.weapons.known.getActive());
-		const equip  = Equipment.byName.get(this.equipment.known.getActive());
-		const art    = CombatArt.byName.get(this.combatarts.equipped.getActive());
+		const weapon = Weapon.get(this.weapons.known.getActive());
+		const equip  = Equipment.get(this.equipment.known.getActive());
+		const art    = CombatArt.get(this.combatarts.equipped.getActive());
 
 		switch (second) {
 			case "pdr":
@@ -1275,49 +1473,45 @@ class Sheet {
 			);
 
 			case "pmt": {
-				const scale = P(art, "scale", 0);
+				const scale = art.multiplier("scale");
 				return Math.max(
 					Math.floor(
 						(this.cache.stats.str
-							+ (isMagic(art)
+							+ (art.isMagicDamage()
 								? 0
-								: P(weapon, second) + P(art, second))
-							+ (scale
+								: weapon.modifier(second) + art.modifier(second))
+							+ (scale != 1
 								? Math.floor(this.cache.stats[scale] * 0.3)
 								: 0)
-							+ (P(art, "vengeance")
+							+ (art.tag("vengeance")
 								? Math.floor(
 									(-this.hitpoints + this.cache.stats.hp) / 2)
 								: 0)
-							+ P(equip, second)
-							+ this.reduceAbilities(
-								second, 0, "modifiers", (a, b) => a + b
-							))
+							+ equip.modifier(second)
+							+ this.abilityModifer(second))
 						* this.multiplier(weapon)
-						* (P(art, "astra") ? 0.3 : 1.0)),
+						* (art.tag("astra") ? 0.3 : 1.0)),
 					0,
 				);
 			}
 
 			case "mmt": {
-				const scale = P(art, "scale", 0);
+				const scale = art.multiplier("scale");
 				return Math.max(
 					Math.floor(
 						((this.cache.stats.mag
-							* (P(weapon, "healing") ? 0.5 : 1))
-							+ (isMagic(art)
-								? Math.max(P(weapon, "pmt"), P(weapon, "mmt"))
-								: P(weapon, second))
-							+ (isMagic(weapon)
-								? Math.max(P(art, "pmt"), P(art, "mmt"))
-								: P(art, second))
-							+ (scale
+							* (weapon.tag("healing") ? 0.5 : 1))
+							+ (art.isMagicDamage()
+								? weapon.higherMight()
+								: weapon.modifier(second))
+							+ (weapon.isMagicDamage()
+								? art.higherMight()
+								: art.modifier(second))
+							+ (scale != 1
 								? Math.floor(this.cache.stats[scale] * 0.3)
 								: 0)
-							+ P(equip, second)
-							+ this.reduceAbilities(
-								second, 0, "modifiers", (a, b) => a + b
-							))
+							+ equip.modifier(second)
+							+ this.abilityModifer(second))
 						* this.multiplier(weapon)),
 					0,
 				);
@@ -1336,12 +1530,22 @@ class Sheet {
 			case "maxrng":
 			case "minrng":
 			return (
-				((P(art, second) || P(weapon, second))
-					+ P(equip, second)
-					+ this.reduceAbilities(
-						second, 0, "modifiers", (a, b) => a + b
-					))
+				((art.modifier(second) || weapon.modifier(second))
+					+ equip.modifier(second)
+					+ this.abilityModifer(second))
 				* this.multiplier(second)
+			);
+
+			case "uses":
+			return (
+				weapon.modifier(second)
+					* this.abilityMultiplier(weapon.name)
+					* this.abilityMultiplier(weapon.type)
+			);
+
+			case "cost":
+			return (
+				weapon.modifier(second) + art.modifier(second)
 			);
 
 			default:
@@ -1381,26 +1585,26 @@ class Sheet {
 			name        : this.name,
 			description : this.description,
 			class       : this.class.name,
-			home        : this.homeland,
+			homeland    : this.homeland,
 			hitpoints   : this.hitpoints,
 			level       : this.level,
 			growths     : this.growths,
 			statistics  : this.stats,
 			skills      : this.skills,
 			abilities   : {
-				equipped    : Array.from(this.abilities.equipped),
-				battlefield : Array.from(this.abilities.battlefield),
-				known       : Array.from(this.abilities.known)
+				equipped    : Array.from(this.abilities.equipped.names()),
+				battlefield : Array.from(this.abilities.battlefield.names()),
+				known       : Array.from(this.abilities.known.names())
 			},
 			combatarts  : {
-				equipped    : Array.from(this.combatarts.equipped),
-				known       : Array.from(this.combatarts.known)
+				equipped    : Array.from(this.combatarts.equipped.names()),
+				known       : Array.from(this.combatarts.known.names())
 			},
 			weapons     : {
-				known       : Array.from(this.weapons.known)
+				known       : Array.from(this.weapons.known.names())
 			},
 			equipment   : {
-				known       : Array.from(this.equipment.known)
+				known       : Array.from(this.equipment.known.names())
 			}
 		};
 		
@@ -1424,8 +1628,10 @@ class Sheet {
 		reader.onload = function (e) {
 			const char = JSON.parse(e.target.result);
 
+			console.log(char);
+
 			sheet.class = Class.byName.get(char.class);
-			if ("mount" in sheet.class) {
+			if (sheet.class.hasMount()) {
 				sheet._input_mounted.checked = true;
 			}
 
@@ -1465,7 +1671,7 @@ class Sheet {
 
 			// fill the "character and backstory" section entries
 			sheet.name        = char.name;
-			sheet.homeland    = char.homeland;
+			sheet.homeland    = char.homeland || char.home;
 			sheet.description = char.description;
 			sheet.hitpoints   = char.hitpoints;
 			sheet.level       = char.level;
