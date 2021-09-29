@@ -11,19 +11,6 @@ function unimplemented() {
 }
 
 /**
- * This is a convenience function to prevent certain calculations dealing with
- * a lot of nullable values from getting to unwieldy. It returns the value of a
- * property from an object if the object is not nullish and the property exists.
- * @param {Object} object - an object
- * @param {string} property - the property to access
- * @param {*} default_value - the default value to supply in case of failure
- */
-function P(object, property, default_value) {
-	default_value = default_value || 0;
-	return object && property in object ? object[property] : default_value;
-}
-
-/**
  * A class to represent customization features that modify a unit's statistics.
  * Instances of this class are immutable.
  */
@@ -363,12 +350,21 @@ class CategoryElement {
 	 * Create an element
 	 * @param {Feature} feature - the feature for this element
 	 * @param {boolean} shiftable - whether to add buttons to allow reordering
-	 * @param {CategoryElement~cb} checkFn - invoked on checkbox toggle
+	 * @param {CategoryElement~cb} toggleFn - invoked on element toggle
 	 * @param {CategoryElement~cb} removeFn - invoked on remove button click, button not added if omitted
 	 */
-	constructor(feature, shiftable, checkFn, removeFn) {
+	constructor(feature, shiftable, toggleFn, removeFn) {
+
+		const element = this;
+
+		const toggle  = () => {
+			element.active = !element.active;
+			if (this.updown) element.updown.focus();
+			toggleFn();
+		};
 
 		// assign attributes
+		this._active     = false;
 		this.feature     = feature;
 		this.title       = feature.title();
 		this.description = feature.body();
@@ -377,39 +373,51 @@ class CategoryElement {
 		this.dt = document.createElement("dt");
 		this.dt.setAttribute("data-feature-name", feature.name);
 
-		// add checkbox to apply any modifiers/multipliers
-		this.checkbox         = document.createElement("input");
-		this.checkbox.type    = "checkbox";
-		this.checkbox.onclick = checkFn;
-		this.dt.appendChild(this.checkbox);
-
-		// add entry title content
-		this.dt.appendChild(document.createTextNode(this.title));
+		// // add checkbox to apply any modifiers/multipliers
+		// this.checkbox         = document.createElement("input");
+		// this.checkbox.type    = "checkbox";
+		// this.checkbox.onclick = toggle;
+		// this.checkbox.classList.add("simple-border");
+		// this.dt.appendChild(this.checkbox);
 
 		if (shiftable) {
-			const element = this;
 
-			this.shiftBeforeButton         = document.createElement("input");
-			this.shiftBeforeButton.value   = "↑";
-			this.shiftBeforeButton.type    = "button";
-			this.shiftBeforeButton.onclick = () => {
-				element.shiftBefore(1);
+			const updown   = document.createElement("input");
+			updown.type    = "number";
+			updown.value   =  0;
+			updown.max     = +1;
+			updown.min     = -1;
+
+			const callback = (event) => {
+				switch (Number(updown.value)) {
+					case +1:
+						element.shiftBefore(1);
+						break;
+					case -1:
+						element.shiftAfter(1);
+						break;
+					default:
+						break;
+				}
+				updown.value = 0;
+				updown.focus();
 			};
-			this.dt.appendChild(this.shiftBeforeButton);
-
-			this.shiftAfterButton         = document.createElement("input");
-			this.shiftAfterButton.value   = "↓";
-			this.shiftAfterButton.type    = "button";
-			this.shiftAfterButton.onclick = () => {
-				element.shiftAfter(1);
-			};
-			this.dt.appendChild(this.shiftAfterButton);
-
+			
+			updown.onchange = callback;
+			updown.classList.add("updown-buttons");
+			this.dt.appendChild(updown);
+			this.updown = updown;
 		} else {
-			this.shiftAfterButton  = null;
-			this.shiftBeforeButton = null;
+			this.updown = null;
 		}
 
+		// add entry title content
+		const span = document.createElement("span");
+		span.appendChild(document.createTextNode(this.title));
+		span.classList.add("selectable");
+		span.onclick = toggle;
+		this.span = span;
+		this.dt.appendChild(span);
 
 		// if remove function is not, make a "remove" button
 		if (removeFn != null) {
@@ -417,6 +425,7 @@ class CategoryElement {
 			this.removeButton.value   = "✗";
 			this.removeButton.type    = "button";
 			this.removeButton.onclick = removeFn;
+			this.removeButton.classList.add("simple-border");
 			this.dt.appendChild(this.removeButton);
 		} else {
 			this.removeButton = null;
@@ -428,6 +437,24 @@ class CategoryElement {
 
 		// this belongs to no category by default
 		this.parent = null;
+	}
+
+	get active() {
+		return this._active;
+	}
+
+	set active(value) {
+		// nothing to do; no change occured
+		if (value == this.active) return;
+
+		if (value) {
+			this.span.classList.add("selected-text");
+		} else {
+			this.span.classList.remove("selected-text");
+		}
+
+		// this.checkbox.checked = value;
+		this._active          = value;
 	}
 
 	shiftBefore(offset) {
@@ -533,11 +560,15 @@ class Category {
 			this.addButton         = document.createElement("input");
 			this.addButton.value   = "Add";
 			this.addButton.type    = "button";
-			this.addButton.onclick = () => category.add(category.select.value);
+			this.addButton.onclick = () => {
+				category.add(category.select.value)
+			};
+			this.addButton.classList.add("simple-border");
 			// parent.appendChild(this.addButton);
 
 			// create a selector of valid values
 			this.select = document.createElement("select");
+			this.select.classList.add("simple-border");
 			for (let item of this.feature.byName.values()) {
 				if ("hidden" in item && item.hidden) continue;
 				const option = document.createElement("option");
@@ -828,7 +859,7 @@ class SingleActiveCategory extends Category {
 
 		if (this.active) {
 			if (this.active != name) {
-				this.elements.get(this.active).checkbox.checked = false;
+				this.elements.get(this.active).active = false;
 				this.active = name;
 			} else {
 				this.active = null;
@@ -895,14 +926,36 @@ class MultiActiveCategory extends Category {
 	toggleActive(name) {
 		// user cannot toggle an element that isn't present
 		if (!this.elements.has(name)) return false;
+		const element = this.elements.get(name);
 
 		if (this.isActive(name)) {
 			this.active.delete(name);
+			element.active = false;
 		} else {
 			this.active.add(name);
+			element.active = true;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Toggle whether a group of elements are active.
+	 * The names must exist in this Category's feature's lookup table, and be
+	 * present within the category, or else the operation does nothing.
+	 * @param {Array} names - the names of the elements to toggle
+	 * @returns {number} the number that were successful
+	 */
+	toggleAllActive(names) {
+
+		let successes = 0;
+		for (let name of names) {
+			if (this.toggleActive(name)) {
+				successes += 1;
+			}
+		}
+
+		return successes;
 	}
 
 	/**
@@ -980,13 +1033,13 @@ class Sheet {
 		/* initialize event listener for upload */
 		document
 			.getElementById("import-sheet")
-			.addEventListener("change", (e) => sheet.import(e), false);
+			.addEventListener("change", (e) => {sheet.import(e)}, false);
 
 		/* create callbacks for category events */
 		const refresh = (name, category) => {
 			category.toggleActive(name);
 			sheet.refreshAllStats();
-		}
+		};
 
 		const forget  = (name, category) => {
 			category.delete(name);
@@ -1012,7 +1065,7 @@ class Sheet {
 		
 		const unequip = (name, category) => {
 			if (!category.prev) return;
-			category.prev.elements.get(name).checkbox.checked = false;
+			category.prev.elements.get(name).active = false;
 			category.prev.toggleActive(name);
 			category.delete(name);
 			sheet.refreshAllStats();
@@ -1649,6 +1702,14 @@ class Sheet {
 					}
 				}
 			}
+
+			sheet.abilities.known.toggleAllActive(
+				sheet.abilities.equipped.names()
+			);
+
+			sheet.combatarts.known.toggleAllActive(
+				sheet.combatarts.equipped.names()
+			);
 
 			// fill the statistics boxes
 			for (let statistic of sheet.data.stats.names) {

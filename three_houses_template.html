@@ -28,7 +28,7 @@
 							<input
 								id="skill-{{ skill }}"
 								oninput="sheet.refreshGrade('{{ skill }}')"
-								class="hidden-field"
+								class="hidden-field simple-border"
 								type="number"
 								name="skill-{{ skill }}"
 								min="0"
@@ -57,7 +57,7 @@
 								id="level-input"
 								oninput="sheet.refreshLevel()"
 								type="number"
-								class="hidden-field"
+								class="hidden-field simple-border"
 								name="level-input"
 								min="0"
 								value="0"/>
@@ -65,6 +65,7 @@
 						<td>
 							<input
 								type="button"
+								class="simple-border"
 								value="Up"
 								onclick="sheet.levelUp()">
 						</td>
@@ -87,7 +88,7 @@
 								oninput="sheet.refreshStat('{{ statistic }}')"
 								type="number"
 								name="{{ statistic }}-base"
-								class="hidden-field"
+								class="hidden-field simple-border"
 								min="0"
 								max="100"
 								value="0"/>
@@ -103,7 +104,7 @@
 								id="{{ statistic }}-growth-base"
 								oninput="sheet.refreshGrowth('{{ statistic }}')"
 								type="number"
-								class="hidden-field"
+								class="hidden-field simple-border"
 								name="{{ statistic }}-growth-base"
 								min="-4"
 								max="100"
@@ -169,6 +170,7 @@
 
 				<input
 					type="button"
+					class="simple-border"
 					value="Fill"
 					onclick="sheet.fillHealthBar()"> <br />
 
@@ -181,7 +183,7 @@
 				<input
 					id="hitpoints-input"
 					oninput="sheet.refreshHealthBar()"
-					class="hidden-field"
+					class="hidden-field simple-border"
 					type="number"
 					name="level-input"
 					min="0"
@@ -192,11 +194,12 @@
 				<label for="character-name">Name</label> <br />
 				<input
 					id="character-name"
+					class="simple-border"
 					type="text"
 					name="character-name">
 				<br />
 				<label for="character-triangle">Triangle Effect</label> <br />
-				<select id="character-triangle" oninput="sheet.refreshSecondaryStats()">
+				<select id="character-triangle" class="simple-border" oninput="sheet.refreshSecondaryStats()">
 					<option value="15">
 						Advantage
 					</option>
@@ -209,16 +212,16 @@
 				</select>
 			</div>
 				<label for="character-class">Class</label> <br />
-				<select id="character-class" name="character-class" oninput="sheet.refreshClass()">
+				<select id="character-class" class="simple-border" name="character-class" oninput="sheet.refreshClass()">
 					{% for klass in definitions["classes"] %}
 						{% if "hidden" not in klass or not klass["hidden"] %}
 							<option value="{{ klass['name'] }}">{{ klass["name"] }}</option>
 						{% endif %}
 					{% endfor %}
 				</select>
-				<input id="character-mounted" onclick="sheet.refreshMounted()" type="checkbox" /> Mounted? <br />
+				<input id="character-mounted" class="simple-border" onclick="sheet.refreshMounted()" type="checkbox" /> Mounted? <br />
 				<label for="character-homeland">Homeland</label> <br />
-				<select id="character-homeland">
+				<select id="character-homeland" class="simple-border">
 					<option value="adrestia">The Adrestian Empire</option>
 					<option value="almyra">Almyra</option>
 					<option value="brigid">Brigid Archipelago</option>

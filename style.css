@@ -22,7 +22,29 @@
 	grid-column: 2 / 3;
 }
 
-select {
+input[type=number].updown-buttons {
+	border: none;
+	outline: none;
+	color: rgba(0, 0, 0, 0.0);
+	width: 3ch;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+input[type=number].updown-buttons:focus {
+	border: none;
+	outline: none;
+}
+
+input[type=number].updown-buttons:focus::-webkit-inner-spin-button {
+	background: red;
+}
+
+input[type=number].updown-buttons::-webkit-inner-spin-button {
+	opacity: 1;
+}
+
+select.simple-border {
 	outline: none;
 	background: white;
 	border-radius: 3px;
@@ -31,7 +53,7 @@ select {
 	border-style: solid;
 }
 
-input {
+input.simple-border {
 	outline: none;
 	background: white;
 	border-radius: 3px;
@@ -58,7 +80,7 @@ input {
 	margin-bottom: 3px;
 }
 
-textarea {
+textarea.simple-border {
 	outline: none;
 	background: white;
 	border-radius: 3px;
@@ -88,6 +110,15 @@ dd {
 	color: orange;
 	padding: 0px;
 	margin: 0px;
+}
+
+span.selectable:hover {
+	color: blue;	
+}
+
+.selected-text {
+	color: blue;
+	text-decoration: underline;
 }
 
 meter {
