@@ -44,23 +44,10 @@ input[type=number].updown-buttons::-webkit-inner-spin-button {
 	opacity: 1;
 }
 
-select.simple-border {
-	outline: none;
-	background: white;
-	border-radius: 3px;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
-}
-
-input.simple-border {
-	outline: none;
-	background: white;
-	border-radius: 3px;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
-	margin: 3px;
+input[type=button].remove-button:hover {
+	border-width: 3px;
+	border-color: red;
+	text-decoration: none;
 }
 
 .no-display {
@@ -68,25 +55,23 @@ input.simple-border {
 }
 
 .custom-file-input {
-	outline: none;
-	background: white;
-	border-radius: 3px;
-	border-width: 1px;
-	border-color: black;
-	border-style: solid;
 	display: inline-block;
 	padding: 3px 6px;
 	cursor: pointer;
 	margin-bottom: 3px;
 }
 
-textarea.simple-border {
+.simple-border {
 	outline: none;
 	background: white;
 	border-radius: 3px;
-	border-width: 1px;
+	border-width: 2px;
 	border-color: black;
-	border-style: solid;
+	border-style: ridge;
+}
+
+.simple-border:hover {
+	text-decoration: underline;
 }
 
 dt {
@@ -113,7 +98,7 @@ dd {
 }
 
 span.selectable:hover {
-	color: blue;	
+	text-decoration: underline;	
 }
 
 .selected-text {

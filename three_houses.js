@@ -125,7 +125,7 @@ class Feature {
 }
 
 /**
- * A Feature subclass that heavily governs attack calculations.
+ * A {@link Feature} subclass that heavily governs attack calculations.
  */
 class AttackFeature extends Feature {
 
@@ -373,13 +373,6 @@ class CategoryElement {
 		this.dt = document.createElement("dt");
 		this.dt.setAttribute("data-feature-name", feature.name);
 
-		// // add checkbox to apply any modifiers/multipliers
-		// this.checkbox         = document.createElement("input");
-		// this.checkbox.type    = "checkbox";
-		// this.checkbox.onclick = toggle;
-		// this.checkbox.classList.add("simple-border");
-		// this.dt.appendChild(this.checkbox);
-
 		if (shiftable) {
 
 			const updown   = document.createElement("input");
@@ -422,10 +415,11 @@ class CategoryElement {
 		// if remove function is not, make a "remove" button
 		if (removeFn != null) {
 			this.removeButton         = document.createElement("input");
-			this.removeButton.value   = "✗";
+			this.removeButton.value   = "❌";
 			this.removeButton.type    = "button";
 			this.removeButton.onclick = removeFn;
 			this.removeButton.classList.add("simple-border");
+			this.removeButton.classList.add("remove-button");
 			this.dt.appendChild(this.removeButton);
 		} else {
 			this.removeButton = null;
@@ -444,7 +438,7 @@ class CategoryElement {
 	}
 
 	set active(value) {
-		// nothing to do; no change occured
+		// nothing to do; no change occurred
 		if (value == this.active) return;
 
 		if (value) {
@@ -453,10 +447,14 @@ class CategoryElement {
 			this.span.classList.remove("selected-text");
 		}
 
-		// this.checkbox.checked = value;
 		this._active          = value;
 	}
 
+	/**
+	 * Shift this element toward the front of the {@link Category}
+	 * If the offset is too large, the element is placed at the front
+	 * @param {number} offset - number of places forward to shift
+	 */
 	shiftBefore(offset) {
 		if (!this.parent) return;
 
@@ -475,6 +473,11 @@ class CategoryElement {
 		}
 	}
 
+	/**
+	 * Shift this element toward the back of the {@link Category}
+	 * If the offset is too large, the element is placed at the back
+	 * @param {number} offset - number of places backward to shift
+	 */
 	shiftAfter(offset) {
 		if (!this.parent) return;
 
@@ -776,14 +779,8 @@ class Category {
 	 */
 	*names() {
 		for (let child of this.dl.children) {
-			
 			const name = child.getAttribute("data-feature-name");
-
-			if (name) {
-				yield name;
-			} else {
-				continue;
-			}
+			if (name) yield name;
 		}
 	}
 
@@ -985,8 +982,13 @@ class Sheet {
 	 */
 	constructor(data) {
 
+		// set the lookup tables for each feature class
+		for (let each of [Ability, Weapon, CombatArt, Equipment, Class]) {
+			each.setLookupByName(data);
+		}
+
 		// main definition data object
-		this.data        = data;
+		this.data = data;
 
 		/* define attributes for document elements */
 
@@ -1094,6 +1096,12 @@ class Sheet {
 		this.addCat(new SAC(Equipment, "known", true, true, refresh, forget));
 
 		this.refresh();
+	}
+
+	/* methods relating to adding definitions */
+
+	addDefinitions(definitions) {
+		
 	}
 
 	/* methods relating to initialization */
@@ -1747,9 +1755,6 @@ class Sheet {
  */
 function initialize(definitions) {
 
-	for (let each of [Ability, Weapon, CombatArt, Equipment, Class]) {
-		each.setLookupByName(definitions);
-	}
 
 	sheet = new Sheet(definitions);
 }

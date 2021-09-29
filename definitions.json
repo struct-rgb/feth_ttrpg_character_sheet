@@ -4578,7 +4578,7 @@
       "description": "Bless a friendly unit within range of 5. Until the start of your next turn, the blessed unit makes attack rolls twice, taking the better hit result of the two.",
       "rank": "D",
       "tags": {
-        "healing": true
+        "healing": false
       },
       "modifiers": {
         "pmt": 0,
@@ -4940,6 +4940,7 @@
   "combatarts": [
     {
       "name": "Standard Attack",
+      "type": "Generic",
       "description": "This is a combat art that represents not using a combat art. Serves as a template/placeholder",
       "rank": "E",
       "modifiers": {
@@ -4963,6 +4964,7 @@
     },
     {
       "name": "Healing Focus",
+      "type": "Generic",
       "description": "Restores 50% of the user’s HP.",
       "rank": "Unknown",
       "modifiers": {
@@ -4986,6 +4988,7 @@
     },
     {
       "name": "Swap",
+      "type": "Generic",
       "description": "User swaps places with the enemy.",
       "rank": "Myrmidon Mastery",
       "modifiers": {
@@ -5009,6 +5012,7 @@
     },
     {
       "name": "Shove",
+      "type": "Generic",
       "description": "User pushes ally forward 1 space.",
       "rank": "Fighter Mastery",
       "modifiers": {
@@ -5032,6 +5036,7 @@
     },
     {
       "name": "Reposition",
+      "type": "Generic",
       "description": "User moves ally to the space behind the user.",
       "rank": "Soldier Mastery",
       "modifiers": {
@@ -5055,6 +5060,7 @@
     },
     {
       "name": "Draw Back",
+      "type": "Generic",
       "description": "User moves 1 space backwards and ally is moved to where the user was previously.",
       "rank": "Monk Mastery",
       "modifiers": {
@@ -5078,6 +5084,7 @@
     },
     {
       "name": "Smite",
+      "type": "Generic",
       "description": "User pushes ally forward 2 spaces.",
       "rank": "B",
       "modifiers": {
@@ -5101,6 +5108,7 @@
     },
     {
       "name": "Triangle Attack",
+      "type": "Generic",
       "description": "Can only be triggered when 3 allied Flying units (including the user) are adjacent to the same enemy.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5124,6 +5132,7 @@
     },
     {
       "name": "Foul Play",
+      "type": "Generic",
       "description": "Unit swaps positions with an ally in range. Exclusive to the Trickster class.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5147,6 +5156,7 @@
     },
     {
       "name": "Super Juke",
+      "type": "Generic",
       "description": "Tactiball Trophy only; Once per combat, +2 move for a turn.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5170,6 +5180,7 @@
     },
     {
       "name": "Sunder",
+      "type": "Sword",
       "description": "No special effect.",
       "rank": "D",
       "modifiers": {
@@ -5193,6 +5204,7 @@
     },
     {
       "name": "Wrath Strike",
+      "type": "Sword",
       "description": "No special effect.",
       "rank": "D",
       "modifiers": {
@@ -5216,6 +5228,7 @@
     },
     {
       "name": "Grounder",
+      "type": "Sword",
       "description": "Effective against Flying foes.",
       "rank": "C-B",
       "modifiers": {
@@ -5239,6 +5252,7 @@
     },
     {
       "name": "Haze Slice",
+      "type": "Sword",
       "description": "No special effect.",
       "rank": "C-B",
       "modifiers": {
@@ -5262,6 +5276,7 @@
     },
     {
       "name": "Bane of Monsters",
+      "type": "Sword",
       "description": "Effective against Monster foes.",
       "rank": "C-B",
       "modifiers": {
@@ -5285,6 +5300,7 @@
     },
     {
       "name": "Soulblade",
+      "type": "Sword",
       "description": "Deals magic-based damage. Might increases based on user’s Resistance",
       "rank": "C-B",
       "modifiers": {
@@ -5308,6 +5324,7 @@
     },
     {
       "name": "Hexblade",
+      "type": "Sword",
       "description": "Deals magic-based damage.",
       "rank": "A",
       "modifiers": {
@@ -5331,6 +5348,7 @@
     },
     {
       "name": "Finesse Blade",
+      "type": "Sword",
       "description": "Might increases based on user’s Dexterity.",
       "rank": "A",
       "modifiers": {
@@ -5354,6 +5372,7 @@
     },
     {
       "name": "Windsweep",
+      "type": "Sword",
       "description": "Prevent enemy counter-attack.",
       "rank": "A",
       "modifiers": {
@@ -5377,6 +5396,7 @@
     },
     {
       "name": "Subdue",
+      "type": "Sword",
       "description": "Leaves foe with at least 1 HP.",
       "rank": "Lord Mastery",
       "modifiers": {
@@ -5400,6 +5420,7 @@
     },
     {
       "name": "Foudroyant Strike",
+      "type": "Sword",
       "description": "Thunderbrand only; effective against Armoured and Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5423,6 +5444,7 @@
     },
     {
       "name": "Beast Fang",
+      "type": "Sword",
       "description": "Blutgang only; effective against Cavalry and Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5446,6 +5468,7 @@
     },
     {
       "name": "Ruptured Heaven",
+      "type": "Sword",
       "description": "Sword of the Creator only; Might increases based on user’s Magic, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5469,6 +5492,7 @@
     },
     {
       "name": "Heaven’s Fall",
+      "type": "Sword",
       "description": "Dark Creator Sword only; Might increases based on user’s Magic.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5492,6 +5516,7 @@
     },
     {
       "name": "Assassinate",
+      "type": "Sword",
       "description": "Assassin only; Avoid +15, can kill enemies instantly.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5515,6 +5540,7 @@
     },
     {
       "name": "Astra",
+      "type": "Sword",
       "description": "Swordmaster only; triggers 5 consecutive hits at 30% Might.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5538,6 +5564,7 @@
     },
     {
       "name": "Sublime Heaven",
+      "type": "Sword",
       "description": "Sublime Creator Sword only; Might increases based on user’s Magic, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5561,6 +5588,7 @@
     },
     {
       "name": "Sword Dance",
+      "type": "Sword",
       "description": "Might increases based on user’s Charm.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5584,6 +5612,7 @@
     },
     {
       "name": "Tempest Lance",
+      "type": "Lance",
       "description": "No special effect.",
       "rank": "D",
       "modifiers": {
@@ -5607,6 +5636,7 @@
     },
     {
       "name": "Hit and Run",
+      "type": "Lance",
       "description": "After combat, user moves 1 space backwards.",
       "rank": "D",
       "modifiers": {
@@ -5630,6 +5660,7 @@
     },
     {
       "name": "Knight Kneeler",
+      "type": "Lance",
       "description": "Effective against Cavalry foes.",
       "rank": "C-B",
       "modifiers": {
@@ -5653,6 +5684,7 @@
     },
     {
       "name": "Shatter Slash",
+      "type": "Lance",
       "description": "After combat, inflicts Def -5 on foe for 1 turn.",
       "rank": "C-B",
       "modifiers": {
@@ -5676,6 +5708,7 @@
     },
     {
       "name": "Vengeance",
+      "type": "Lance",
       "description": "Damage increases in relation to the user’s missing HP.",
       "rank": "C-B",
       "modifiers": {
@@ -5699,6 +5732,7 @@
     },
     {
       "name": "Monster Piercer",
+      "type": "Lance",
       "description": "Effective against Monster foes.",
       "rank": "C-B",
       "modifiers": {
@@ -5722,6 +5756,7 @@
     },
     {
       "name": "Frozen Lance",
+      "type": "Lance",
       "description": "Deals magic-based damage. Might increases based on user’s Dexterity.",
       "rank": "C-B",
       "modifiers": {
@@ -5745,6 +5780,7 @@
     },
     {
       "name": "Hook",
+      "type": "Lance",
       "description": "On hit, draws the target one space closer to the user.",
       "rank": "C-B",
       "modifiers": {
@@ -5768,6 +5804,7 @@
     },
     {
       "name": "Swift Strikes",
+      "type": "Lance",
       "description": "Triggers 2 consecutive hits.",
       "rank": "A",
       "modifiers": {
@@ -5791,6 +5828,7 @@
     },
     {
       "name": "Lance Jab",
+      "type": "Lance",
       "description": "Might increases based on user’s Speed.",
       "rank": "A",
       "modifiers": {
@@ -5814,6 +5852,7 @@
     },
     {
       "name": "Glowing Ember",
+      "type": "Lance",
       "description": "Might increases based on user’s Defence.",
       "rank": "A",
       "modifiers": {
@@ -5837,6 +5876,7 @@
     },
     {
       "name": "Ruined Sky",
+      "type": "Lance",
       "description": "Lance of Ruin only; Avoid +10, effective against Flying and Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5860,6 +5900,7 @@
     },
     {
       "name": "Atrocity",
+      "type": "Lance",
       "description": "Areadbhar only; effective against all foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5883,6 +5924,7 @@
     },
     {
       "name": "Burning Quake",
+      "type": "Lance",
       "description": "Lúin only; Might increases based on user’s Speed, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5906,6 +5948,7 @@
     },
     {
       "name": "Paraselene",
+      "type": "Lance",
       "description": "Great Lord only; After combat, user moves 1 space backwards.",
       "rank": "Exclusive",
       "modifiers": {
@@ -5929,6 +5972,7 @@
     },
     {
       "name": "Smash",
+      "type": "Axe",
       "description": "No special effect.",
       "rank": "E",
       "modifiers": {
@@ -5952,6 +5996,7 @@
     },
     {
       "name": "Spike",
+      "type": "Axe",
       "description": "No special effect.",
       "rank": "E",
       "modifiers": {
@@ -5975,6 +6020,7 @@
     },
     {
       "name": "Helm Splitter",
+      "type": "Axe",
       "description": "Effective against Armoured foes.",
       "rank": "C-B",
       "modifiers": {
@@ -5998,6 +6044,7 @@
     },
     {
       "name": "Focused Strike",
+      "type": "Axe",
       "description": "No special effect.",
       "rank": "C-B",
       "modifiers": {
@@ -6021,6 +6068,7 @@
     },
     {
       "name": "Wild Abandon",
+      "type": "Axe",
       "description": "No special effect.",
       "rank": "C-B",
       "modifiers": {
@@ -6044,6 +6092,7 @@
     },
     {
       "name": "Lightning Axe",
+      "type": "Axe",
       "description": "Deals magic-based damage. Might increases based on user’s Resistance.",
       "rank": "C-B",
       "modifiers": {
@@ -6067,6 +6116,7 @@
     },
     {
       "name": "Monster Breaker",
+      "type": "Axe",
       "description": "Effective against Monster foes.",
       "rank": "C-B",
       "modifiers": {
@@ -6090,6 +6140,7 @@
     },
     {
       "name": "Armored Strike",
+      "type": "Axe",
       "description": "Might increases based on user’s Defence.",
       "rank": "A",
       "modifiers": {
@@ -6113,6 +6164,7 @@
     },
     {
       "name": "Diamond Axe",
+      "type": "Axe",
       "description": "No special effect.",
       "rank": "A",
       "modifiers": {
@@ -6136,6 +6188,7 @@
     },
     {
       "name": "Exhaustive Strike",
+      "type": "Axe",
       "description": "One use.",
       "rank": "A",
       "modifiers": {
@@ -6159,6 +6212,7 @@
     },
     {
       "name": "Nedler's Amputator",
+      "type": "Axe",
       "description": "Deals magic-based damage. Might increases based on user’s Speed",
       "rank": "A",
       "modifiers": {
@@ -6182,6 +6236,7 @@
     },
     {
       "name": "Apocalyptic Flame",
+      "type": "Axe",
       "description": "Freikugel only; inflicts Str -5 on foe for 1 turn, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6205,6 +6260,7 @@
     },
     {
       "name": "Dust",
+      "type": "Axe",
       "description": "Crusher only; inflicts Def -5 on foe for 1 turn, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6228,6 +6284,7 @@
     },
     {
       "name": "Raging Storm",
+      "type": "Axe",
       "description": "Aymr only; if attack lands, user can move again, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6251,6 +6308,7 @@
     },
     {
       "name": "Flickering Flower",
+      "type": "Axe",
       "description": "Emperor only; prevents foe from moving for 1 turn.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6274,6 +6332,7 @@
     },
     {
       "name": "War Hero’s Strike",
+      "type": "Axe",
       "description": "War Hero only; effective against all foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6297,6 +6356,7 @@
     },
     {
       "name": "Curved Shot",
+      "type": "Bow",
       "description": "No special effect.",
       "rank": "D",
       "modifiers": {
@@ -6320,6 +6380,7 @@
     },
     {
       "name": "Monster Blaster",
+      "type": "Bow",
       "description": "Effective against Monster foes.",
       "rank": "D",
       "modifiers": {
@@ -6343,6 +6404,7 @@
     },
     {
       "name": "Deadeye",
+      "type": "Bow",
       "description": "No special effect.",
       "rank": "C-B",
       "modifiers": {
@@ -6366,6 +6428,7 @@
     },
     {
       "name": "Waning Shot",
+      "type": "Bow",
       "description": "After combat, inflicts Str -5 on foe for 1 turn.",
       "rank": "C-B",
       "modifiers": {
@@ -6389,6 +6452,7 @@
     },
     {
       "name": "Break Shot",
+      "type": "Bow",
       "description": "After combat, inflicts Def -5 on foe for 1 turn.",
       "rank": "C-B",
       "modifiers": {
@@ -6412,6 +6476,7 @@
     },
     {
       "name": "Schism Shot",
+      "type": "Bow",
       "description": "After combat, inflicts Res -5 on foe for 1 turn.",
       "rank": "C-B",
       "modifiers": {
@@ -6435,6 +6500,7 @@
     },
     {
       "name": "Heavy Draw",
+      "type": "Bow",
       "description": "No special effect.",
       "rank": "C-B",
       "modifiers": {
@@ -6458,6 +6524,7 @@
     },
     {
       "name": "Point-Blank Volley",
+      "type": "Bow",
       "description": "Triggers 2 consecutive hits.",
       "rank": "A",
       "modifiers": {
@@ -6481,6 +6548,7 @@
     },
     {
       "name": "Encloser",
+      "type": "Bow",
       "description": "Prevents foe from moving for 1 turn.",
       "rank": "A",
       "modifiers": {
@@ -6504,6 +6572,7 @@
     },
     {
       "name": "Ward Arrow",
+      "type": "Bow",
       "description": "Prevents foe from using magic for 1 turn.",
       "rank": "A",
       "modifiers": {
@@ -6527,6 +6596,7 @@
     },
     {
       "name": "Fallen Star",
+      "type": "Bow",
       "description": "Failnaught only; avoids all attacks during the next round of combat; effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6550,6 +6620,7 @@
     },
     {
       "name": "Hunter’s Volley",
+      "type": "Bow",
       "description": "Sniper only; triggers 2 consecutive hits.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6573,6 +6644,7 @@
     },
     {
       "name": "Wind God",
+      "type": "Bow",
       "description": "Barbarossa only.",
       "rank": "Exclusive",
       "modifiers": {
@@ -6584,6 +6656,29 @@
         "minrng": 2,
         "maxrng": 5,
         "cost": 3
+      },
+      "multipliers": {
+        "scale": null
+      },
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": false
+    },
+    {
+      "name": "Conduit of Faith",
+      "description": "Deals magic-based damage. Expends a usage of a Light Magic spell and adds its might to the attack and 1/3 of its might to the cost.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 1,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 1
       },
       "multipliers": {
         "scale": null
