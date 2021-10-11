@@ -3831,6 +3831,42 @@
       "hidden": false
     },
     {
+      "name": "Training Sword",
+      "type": "Sword",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 3,
+        "mmt": 0,
+        "hit": 100,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Training Sword+",
+      "type": "Sword",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 3,
+        "mmt": 0,
+        "hit": 100,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Iron Sword",
       "type": "Sword",
       "description": "No special effect.",
@@ -4029,6 +4065,42 @@
       "hidden": false
     },
     {
+      "name": "Training Lance",
+      "type": "Lance",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 4,
+        "mmt": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Training Lance+",
+      "type": "Lance",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 4,
+        "mmt": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Iron Lance",
       "type": "Lance",
       "description": "No special effect.",
@@ -4199,6 +4271,42 @@
         "pmt": 19,
         "mmt": 0,
         "hit": 62,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Training Axe",
+      "type": "Axe",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 6,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Training Axe+",
+      "type": "Axe",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 6,
+        "mmt": 0,
+        "hit": 80,
         "avo": 0,
         "crit": 0,
         "minrng": 1,
@@ -4441,6 +4549,42 @@
         "uses": 0
       },
       "hidden": true
+    },
+    {
+      "name": "Training Bow",
+      "type": "Bow",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 3,
+        "mmt": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Training Bow+",
+      "type": "Bow",
+      "description": "No special effect.",
+      "rank": "E",
+      "modifiers": {
+        "pmt": 3,
+        "mmt": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
     },
     {
       "name": "Iron Bow",
