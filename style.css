@@ -45,7 +45,6 @@ input[type=number].updown-buttons::-webkit-inner-spin-button {
 }
 
 input[type=button].remove-button:hover {
-	border-width: 3px;
 	border-color: red;
 	text-decoration: none;
 }
@@ -68,6 +67,11 @@ input[type=button].remove-button:hover {
 	border-width: 2px;
 	border-color: black;
 	border-style: ridge;
+	margin: 3px;
+}
+
+textarea.simple-border:hover {
+	text-decoration: none;
 }
 
 .simple-border:hover {

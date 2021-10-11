@@ -1,13 +1,22 @@
 
 "use strict";
 
-var sheet, definitions;
-
 /**
  * Used to cause an error whenever an abstract base method is invoked
  */
 function unimplemented() {
 	throw new Error("Invocation of unimplemented function or method")
+}
+
+/**
+ * Create a compound iterator from a group of iterable values
+ */
+function* chain(...iterables) {
+	for (let iterable of iterables) {
+		for (let each of iterable) {
+			yield each;
+		}
+	}
 }
 
 /**
@@ -41,6 +50,7 @@ class Feature {
 		this.type        = template.type || "";
 		this.modifiers   = Object.freeze(template.modifiers || Feature.EMPTY_OBJECT);
 		this.multipliers = Object.freeze(template.multipliers || Feature.EMPTY_OBJECT);
+		this.tags        = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
 		this.hidden      = template.hidden || false;
 		
 		// These objects are just references for value and as such should not
@@ -122,6 +132,16 @@ class Feature {
 	multiplier(stat) {
 		return this.multipliers[stat] || 1;
 	}
+
+	/**
+	 * Get the value of this feature's tag for a statistic. A "tag" in this case
+	 * is an optional property that isn't a direct modifier or multiplier
+	 * @param {string} name - the name of the tag
+	 * @returns {boolean} the value of the tag if it exists, null otherwise
+	 */
+	tag(name) {
+		return this.tags[name] || false;
+	}
 }
 
 /**
@@ -135,22 +155,11 @@ class AttackFeature extends Feature {
 	constructor(template) {
 		super(template);
 		this.rank  = template.rank || "";
-		this.tags  = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
 
 		// If this is not a super() call, freeze the object.
 		if (new.target === CombatArt) {
 			Object.freeze(this);
 		}
-	}
-
-	/**
-	 * Get the value of this feature's tag for a statistis. A "tag" in this case
-	 * is an optional property that isn't a direct modifier or multiplier
-	 * @param {string} name - the name of the tag
-	 * @returns {boolean} the value of the tag if it exists, null otherwise
-	 */
-	tag(name) {
-		return this.tags[name] || false;
 	}
 
 	/**
@@ -230,6 +239,48 @@ class Weapon extends AttackFeature {
 	title() {
 		return " " + this.name + " (Rank " + this.rank + " " + this.type + ") ";
 	}
+
+	static PROWESS_CONVERSION = new Map([
+		["Axe"         , "Axe Prowess"],
+		["Sword"       , "Sword Prowess"],
+		["Lance"       , "Lance Prowess"],
+		["Bow"         , "Bow Prowess"],
+		["Light Magic" , "Faith"],
+		["Dark Magic"  , "Guile"],
+		["Anima"       , "Reason"],
+		["Other"       , "Other Prowess"],
+	]);
+
+	static PROWESS_REGEXP = new RegExp("(.+) Lv (\\d)");
+
+	/**
+	 * Get the best Prowess family ability to equip when using thiw weapon from
+	 * the provided iterable of abilties.
+	 * @param abilities - an iterable of abilties
+	 * @return the highest level compatible prowess, or null
+	 */
+	getBestProwessOf(abilities) {
+
+		let   best  = null;
+		let   maxlv = 0; 
+		const good  = Weapon.PROWESS_CONVERSION.get(this.type);
+
+		for (let ability of abilities) {
+			
+			const match = ability.name.match(Weapon.PROWESS_REGEXP);
+			if (!match) continue;
+
+			const [_, type, level] = match;
+			if (type != good) continue;
+
+			if (!best || Number(level) > maxlv) {
+				best  = ability;
+				maxlv = level;
+			}
+		}
+
+		return best;
+	}
 }
 
 /**
@@ -293,6 +344,29 @@ class Class extends Feature {
 class Ability extends Feature {
 
 	static kind = "abilities";
+
+	constructor(template) {
+		super(template);
+		this.weapon = template.weapon || "";
+
+		if (new.target === Ability) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Generate a feature's {@link CategoryElement} title
+	 * @return {string} title for this item's {@link CategoryElement}
+	 */
+	title() {
+		return (
+			  this.name
+			+ " ("
+			+ (this.weapon ? this.weapon + " " : "")
+			+ this.type
+			+ ") "
+		);
+	}
 
 }
 
@@ -584,6 +658,10 @@ class Category {
 
 		this.dl = document.createElement("dl");
 		// parent.appendChild(this.dl);
+	}
+
+	get size() {
+		return this.elements.size;
 	}
 
 	/* methods for attaching to the DOM */
@@ -1369,22 +1447,7 @@ class Sheet {
 
 		const display = document.getElementById(name + "-total");
 		const base    = Number(document.getElementById(name + "-base").value);
-		// const value   = Math.max(
-		// 	(
-		// 		  (name == "mov" ? 4 : 0)
-		// 		+ ( // TODO better validation for this
-		// 			this.mounted && name in this.class.mount.modifiers
-		// 				? this.class.mount.modifiers[name]
-		// 				: 0
-		// 		)
-		// 		+ this.class.modifiers[name]
-		// 		+ this.modifier(name)
-		// 		+ base
-		// 	) * this.multiplier(name),
-		// 	0,
-		// );
-
-		const value = Math.max(
+		const value   = Math.max(
 			((name == "mov" ? 4 : 0)
 				+ this.class.modifier(name, this.mounted)
 				+ this.modifier(name)
@@ -1429,6 +1492,14 @@ class Sheet {
 		}
 	}
 
+	abilityIter() {
+		return chain(
+			this.abilities.class,
+			this.abilities.equipped,
+			this.abilities.battlefield,
+		);	
+	}
+
 	/**
 	 * Preform an accumulation on a single statistic of all active class,
 	 * equipped, and battlefield modifier or mulitplier objects, as if they
@@ -1465,7 +1536,7 @@ class Sheet {
 	 * weapons, equipment, and combat arts, as if they were a collection
 	 * @param {string} property - the stat to reduce on
 	 * @param {number} default_value - value to use if a property does not exist
-	 * @param {string} kind - either "modifiers" or "mulitpliers" for abilties
+	 * @param {string} kind - either "modifiers" or "mulitpliers" for abilities
 	 * @param {function} func - the reduce function, takes two number arguments
 	 * @returns {number} the result of the reduction
 	 */
@@ -1637,6 +1708,276 @@ class Sheet {
 
 	/* methods relating to persisting the sheet */
 
+	blurb() {
+		const text = [];
+
+		text.push(this.name, "\n\n");
+		for (let name of this.data.stats.names) {
+			text.push(name.toUpperCase(), ": ", this.cache.stats[name], "\n");
+		}
+		text.push("\n");
+
+		function doPushFeatures(title, category) {
+
+			if (!category.size) return;
+
+			text.push(title, "\n\n");
+			for (let item of category) {
+				text.push(item.title(), "\n", item.body(), "\n\n");
+			}
+		}
+
+		doPushFeatures("Class Abilities", this.abilities.class);
+		doPushFeatures("Equipped Abilities", this.abilities.equipped);
+		doPushFeatures("Combat Arts", this.combatarts.equipped);
+		doPushFeatures("Weapons & Spells", this.weapons.known);
+		doPushFeatures("Equipment", this.equipment.known);
+
+		const blurb = text.join("");
+		// (navigator.clipboard.writeText(blurb)
+		// 	.then((value) => {
+		// 		alert("Character blurb copied to clipboard!");
+		// 		console.log(blurb);
+		// 	})
+		// 	.catch((error) => {
+		// 		alert(error);
+		// 		console.log(error);
+		// 	})
+		// );
+		
+		document.getElementById("generator-output").value = blurb;
+	}
+
+	macro() {
+		const myWeaponName = this.weapons.known.getActive();
+
+		if (!myWeaponName) {
+			alert("No weapon or spell selected.");
+			return;
+		}
+
+		const hardcode = confirm(
+			"Hardcode stats? (If yes, you need new macros every level)"
+		);
+
+		const m = new MacroBuilder(this.name);
+
+		const sheet     = this;
+		const weapon    = Weapon.get(myWeaponName);
+		const equip     = Equipment.get(this.equipment.known.getActive());
+		const art       = CombatArt.get(this.combatarts.equipped.getActive());
+		const isMagic   = weapon.isMagicDamage() || art.isMagicDamage();
+		const prowess   = weapon.getBestProwessOf(this.abilities.equipped);
+
+		const createPrompts = (...stats) => {
+			let prompts = [];
+
+			for (let stat of stats) {
+				for (let ability of sheet.abilityIter()) {
+
+					/* make sure there's even a modifier */
+					if (!ability.modifier(stat)) {
+						continue;
+					}
+
+					/* filter out dependant abilities for other weapons */
+					if (ability.weapon && ability.weapon != weapon.type) {
+						continue;
+					}
+
+					/* filter out non-prompt abilities */
+					if (ability.type != "Prompt") {
+						continue;
+					}
+
+					const text   = ability.name + " (" + stat + ")?";
+					const prompt = m.prompt(text,
+						"No"  ,                      0,
+						"Yes" , ability.modifier(stat),
+					);
+					prompts.push(prompt.join(""));
+				}
+			}
+
+			return prompts.length ? prompts.join("+") : null;
+		};
+
+		const createPassives = (...stats) => {
+			let passives = [];
+
+			for (let stat of stats) {
+				for (let ability of sheet.abilityIter()) {
+					/* make sure there's even a modifier */
+					if (!ability.modifier(stat)) {
+						continue;
+					}
+
+					/* filter out non-passive abilities */
+					if (ability.type != "Passive") {
+						continue;
+					}
+				
+					/* filter out dependant abilities for other weapons */
+					if (ability.weapon && ability.weapon != weapon.type) {
+						continue;
+					}
+					
+					/* filter out prowess abililities, which are handled separately */
+					if (ability.name.includes("Lv")) {
+						continue;
+					}
+
+					/* make sure heal status lines up */
+					if (weapon.tag("healing") != ability.tag("healing")) {
+						continue;
+					}
+					console.log(ability);
+
+					passives.push(ability.modifier(stat));
+				}
+			}
+
+			return passives.length ? passives.join("+") : null;
+		};
+
+		if (weapon.tag("healing")) {
+			/* this a healing effect */
+			(m
+				.me("(FLAVOR TEXT GOES HERE)")
+				.table()
+				.row("name", String(weapon.name))
+				.row("Healing",
+					m.sum(
+						(hardcode
+							? Math.floor(this.cache.stats.mag/2)
+							: m.call("floor", m.character("Mag") + "/2")),
+						weapon.modifier("mmt"),
+						createPassives("mmt"))));
+
+			confirm("Healing is experimental and may not be correct");
+
+		} else if (weapon.higherMight() == 0) {
+			/* this is another effect */
+			(m
+				.me("(FLAVOR TEXT GOES HERE)")
+				.table()
+				.row("name", String(weapon.name)));
+
+			confirm("Non-damaging spells are experimental and may not be correct");
+
+		} else {
+			/* this is an attack */
+			(m
+				.me("(FLAVOR TEXT GOES HERE)")
+				.table()
+				.row("name", String(weapon.name)
+					+ (art != CombatArt.EMPTY
+						? " w/ " + art.name
+						: ""))
+				.row("To Hit", m.sum("1d100"))
+				.row("Hit at or below",
+					m.sum(
+						(hardcode
+							? this.cache.stats.dex
+							: m.character("Dex")),
+						weapon.modifier("hit"),
+						(art != CombatArt.EMPTY
+							? art.modifier("hit")
+							: null),
+						(prowess
+							? prowess.modifier("hit")
+							: null),
+						createPassives("hit"),
+						createPrompts("hit", "dex"),
+						(weapon.type == "Bow"
+							? m.prompt("Range Penalty",
+								"One Extra",            0,
+								"Two Extra",          -20,
+								"Three Extra",        -30,
+								"Four or More Extra", -40)
+							: null),
+						m.prompt("Triangle Effect?",
+							"Neutral"      ,   0,
+							"Advantage"    ,  15,
+							"Disadvantage" , -15)))
+				.row("Damage is",
+					m.sum(
+						(hardcode
+							? (isMagic
+								? this.cache.stats.mag
+								: this.cache.stats.str)
+							: (isMagic
+								? m.character("Mag")
+								: m.character("Str"))),
+						weapon.higherMight(),
+						(art != CombatArt.EMPTY
+							? art.higherMight()
+							: null),
+						(isMagic
+							? createPassives("mmt")
+							: createPassives("pmt")),
+						(isMagic
+							? createPrompts("mag", "mmt")
+							: createPrompts("str", "pmt"))))
+				.row("To Crit", m.sum("1d100"))
+				.row("Crit at or below",
+					m.sum(
+						/** @TODO ingoring dex prompts for now */ 
+						(hardcode
+							? Math.floor(this.cache.stats.dex/2)
+							: m.call("floor", m.character("Dex") + "/2")),
+						weapon.modifier("crit"),
+						(art != CombatArt.EMPTY
+							? art.modifier("crit")
+							: null),
+						createPassives("crit"),
+						createPrompts("crit"))));
+		}
+
+		/* all actions need avoid and speed */
+		(m
+			.row("Avoid",
+				m.sum(
+					(hardcode
+						? this.cache.stats.spd
+						: m.character("Spd")),
+					weapon.modifier("avo"),
+					(art != CombatArt.EMPTY
+						? art.modifier("avo")
+						: null),
+					(prowess
+						? prowess.modifier("avo")
+						: null),
+					createPassives("avo"),
+					createPrompts("spd", "avo")))
+			// .row("Defense",
+			// 	m.sum(
+			// 		(hardcode
+			// 			? this.cache.stats.def
+			// 			: m.character("Def"),
+			// 		createPassives("pdr"),
+			// 		createPrompts("def", "pdr"))))
+			// .row("Resistance",
+			// 	m.sum(
+			// 		(hardcode
+			// 			? this.cache.stats.res
+			// 			: m.character("Res"),
+			// 		createPassives("mdr"),
+			// 		createPrompts("res", "mdr"))))
+			// .row("Speed",
+			// 	m.sum(
+			// 		(hardcode
+			// 			? this.cache.stats.spd
+			// 			: m.character("Spd"))))
+		);
+
+		console.log(this.cache.stats);
+		
+		const macro = m.macro();
+		console.log(macro);
+		document.getElementById("generator-output").value = macro;
+	}
+
 	/**
 	 * Create a download prompt for a .json file to persist sheet data
 	 */
@@ -1747,14 +2088,4 @@ class Sheet {
 		}
 		reader.readAsText(file);
 	}
-}
-
-/**
- * Initializes the necessary data structures for the sheet to function
- * @param {Object} definitions - the json object defining the game data
- */
-function initialize(definitions) {
-
-
-	sheet = new Sheet(definitions);
 }
