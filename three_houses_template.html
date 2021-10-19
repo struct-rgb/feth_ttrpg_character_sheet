@@ -7,7 +7,9 @@
 
 	<link href="./style.css" rel="stylesheet" />
 	<script type="text/javascript" src="./macro_builder.js"> </script>
-	<script type="text/javascript" src="./three_houses.js"> </script> 
+	<script type="text/javascript" src="./postfix.js"></script>
+	<script type="text/javascript" src="./three_houses.js"> </script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.1.0/ajv7.bundle.js" integrity="sha512-PuzkO+wOBh6m/Jux4nXgl2ItRzed77lFDidDX500DUNlvuzr4OrXtsFhN4q0CCxPoXjTFfiw1z4FmED9J/MMdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 </head>
 <body>
 
@@ -16,7 +18,7 @@
 			<table>
 				<tbody>
 					{% for skill in definitions["skills"] %}
-					<tr>
+					<tr id="skill-{{ skill }}-row">
 						<th>
 							{{ skill }}
 						</th>
@@ -222,7 +224,7 @@
 				<input id="character-mounted" class="simple-border" onclick="sheet.refreshMounted()" type="checkbox" /> Mounted? <br />
 				<label for="character-homeland">Homeland</label> <br />
 				<select id="character-homeland" class="simple-border">
-					<option value="adrestia">The Adrestian Empire</option>
+					<option value="adrestia">The Adrestian Republic</option>
 					<option value="almyra">Almyra</option>
 					<option value="brigid">Brigid Archipelago</option>
 					<option value="duscurr">Mountains of Duscurr</option>
@@ -335,6 +337,8 @@
 
 		// Show a "Leave site?" dialog */
 		window.onbeforeunload = () => true;
+		// hide this without removing it
+		document.getElementById("skill-Brawl-row").hidden = true;
 	</script>
 </body>
 </html>

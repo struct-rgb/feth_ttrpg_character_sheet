@@ -7,7 +7,9 @@
 
 	<link href="./style.css" rel="stylesheet" />
 	<script type="text/javascript" src="./macro_builder.js"> </script>
-	<script type="text/javascript" src="./three_houses.js"> </script> 
+	<script type="text/javascript" src="./postfix.js"></script>
+	<script type="text/javascript" src="./three_houses.js"> </script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.1.0/ajv7.bundle.js" integrity="sha512-PuzkO+wOBh6m/Jux4nXgl2ItRzed77lFDidDX500DUNlvuzr4OrXtsFhN4q0CCxPoXjTFfiw1z4FmED9J/MMdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 </head>
 <body>
 
@@ -16,7 +18,7 @@
 			<table>
 				<tbody>
 					
-					<tr>
+					<tr id="skill-Axes-row">
 						<th>
 							Axes
 						</th>
@@ -37,7 +39,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Swords-row">
 						<th>
 							Swords
 						</th>
@@ -58,7 +60,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Lances-row">
 						<th>
 							Lances
 						</th>
@@ -79,7 +81,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Brawl-row">
 						<th>
 							Brawl
 						</th>
@@ -100,7 +102,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Archery-row">
 						<th>
 							Archery
 						</th>
@@ -121,7 +123,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Reason-row">
 						<th>
 							Reason
 						</th>
@@ -142,7 +144,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Faith-row">
 						<th>
 							Faith
 						</th>
@@ -163,7 +165,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Guile-row">
 						<th>
 							Guile
 						</th>
@@ -184,7 +186,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Armor-row">
 						<th>
 							Armor
 						</th>
@@ -205,7 +207,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Riding-row">
 						<th>
 							Riding
 						</th>
@@ -226,7 +228,7 @@
 						</td>
 					</tr>
 					
-					<tr>
+					<tr id="skill-Flying-row">
 						<th>
 							Flying
 						</th>
@@ -797,6 +799,10 @@
 						
 					
 						
+							<option value="Brigand">Brigand</option>
+						
+					
+						
 							<option value="Archer">Archer</option>
 						
 					
@@ -857,8 +863,6 @@
 						
 					
 						
-							<option value="Grappler">Grappler</option>
-						
 					
 						
 							<option value="Warlock">Warlock</option>
@@ -917,8 +921,6 @@
 						
 					
 						
-							<option value="War Monk/War Cleric">War Monk/War Cleric</option>
-						
 					
 						
 							<option value="Dark Flier">Dark Flier</option>
@@ -942,11 +944,15 @@
 					
 						
 					
+						
+							<option value="Chess Piece">Chess Piece</option>
+						
+					
 				</select>
 				<input id="character-mounted" class="simple-border" onclick="sheet.refreshMounted()" type="checkbox" /> Mounted? <br />
 				<label for="character-homeland">Homeland</label> <br />
 				<select id="character-homeland" class="simple-border">
-					<option value="adrestia">The Adrestian Empire</option>
+					<option value="adrestia">The Adrestian Republic</option>
 					<option value="almyra">Almyra</option>
 					<option value="brigid">Brigid Archipelago</option>
 					<option value="duscurr">Mountains of Duscurr</option>
@@ -1119,32 +1125,6 @@
     "Riding",
     "Flying"
   ],
-  "prowess": {
-    "Axe": {
-      "hit": [],
-      "avo": []
-    },
-    "Lance": {
-      "hit": [],
-      "avo": []
-    },
-    "Sword": {
-      "hit": [],
-      "avo": []
-    },
-    "Anima Magic": {
-      "hit": [],
-      "avo": []
-    },
-    "Dark Magic": {
-      "hit": [],
-      "avo": []
-    },
-    "Light Magic": {
-      "hit": [],
-      "avo": []
-    }
-  },
   "classes": [
     {
       "name": "Commoner",
@@ -1461,6 +1441,31 @@
           "spd": -2,
           "mov": 3
         }
+      }
+    },
+    {
+      "name": "Brigand",
+      "abilities": [],
+      "growths": {
+        "hp": 30,
+        "str": 10,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": -5,
+        "cha": 5
+      },
+      "modifiers": {
+        "hp": 2,
+        "str": 2,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 1
       }
     },
     {
@@ -1954,7 +1959,8 @@
         "res": -1,
         "cha": 0,
         "mov": 2
-      }
+      },
+      "hidden": true
     },
     {
       "name": "Warlock",
@@ -2440,7 +2446,8 @@
         "res": 1,
         "cha": 0,
         "mov": 2
-      }
+      },
+      "hidden": true
     },
     {
       "name": "Dark Flier",
@@ -2593,20 +2600,20 @@
       ],
       "growths": {
         "hp": 0,
-        "str": 50,
+        "str": 0,
         "mag": 0,
-        "dex": 50,
-        "spd": 45,
+        "dex": 0,
+        "spd": 0,
         "def": 0,
         "res": 0,
         "cha": 0
       },
       "modifiers": {
         "hp": 1,
-        "str": 8,
+        "str": 0,
         "mag": 0,
-        "dex": 7,
-        "spd": 6,
+        "dex": 0,
+        "spd": 0,
         "def": 0,
         "res": 0,
         "cha": 0,
@@ -2644,6 +2651,36 @@
         "mov": 0
       },
       "hidden": true
+    },
+    {
+      "name": "Chess Piece",
+      "abilities": [
+        "Chess Piece",
+        "Mystical Bypass",
+        "Pass"
+      ],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 0
+      },
+      "hidden": false
     }
   ],
   "abilities": [
@@ -3339,7 +3376,7 @@
         "pmt": 5
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Anima Tomefaire",
@@ -3427,7 +3464,7 @@
         "crit": 10
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Anima Magic Critical +10",
@@ -3515,7 +3552,7 @@
         "avo": 20
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Anima Magic Avoid +20",
@@ -3873,7 +3910,7 @@
         "avo": 20
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Fire",
@@ -4751,7 +4788,7 @@
         "mmt": 5
       },
       "multipliers": null,
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Animal Affinity",
@@ -4778,6 +4815,17 @@
       "hidden": false
     },
     {
+      "name": "Dedicated Sniper",
+      "description": "Damage increases by 5 if this unit initiates combat and the foe cannot counterattack.",
+      "type": "Prompt",
+      "modifiers": {
+        "pmt": 5,
+        "mmt": 5
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
       "name": "Undying Bloodlust",
       "description": "Triples maximum HP and grants immunity to critical hits, but unit treats all others as foes.",
       "type": "Passive",
@@ -4788,16 +4836,16 @@
       "hidden": false
     },
     {
-      "name": "Game Piece",
-      "description": "Remains of the field after being defeated, creating an obstruction.",
+      "name": "Chess Piece",
+      "description": "This unit moves as though it were a chess piece. It is not removed from the board when defeated and may move after it is defeated, creating an obstruction until captured.",
       "type": "Passive",
       "modifiers": null,
       "multipliers": null,
       "hidden": false
     },
     {
-      "name": "Follow-Up Guard",
-      "description": "Activates Aegis or Pavise when a foe makes a follow-up attack.",
+      "name": "Mystical Bypass",
+      "description": "This unit ignores magically created obstructions.",
       "type": "Passive",
       "modifiers": null,
       "multipliers": {
@@ -5115,6 +5163,24 @@
         "crit": 0,
         "minrng": 1,
         "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Levin Sword+",
+      "type": "Sword",
+      "description": "Deals magic-based damage.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 3,
         "cost": 0,
         "uses": 0
       },
@@ -5805,14 +5871,86 @@
       "hidden": false
     },
     {
-      "name": "Summon",
+      "name": "Phase",
       "type": "Dark Magic",
-      "description": "Summon a lesser phantom at a level equivalent to the caster. See the Roll20 handout for detailed summoning rules.",
+      "description": "Enchant a friendly unit to gain the “Pass” feature for one turn, allowing them to move through enemy occupied spaces. Also grants +10 Avoid to the target for one turn.",
+      "rank": "D",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Hex",
+      "type": "Dark Magic",
+      "description": "Curse an enemy unit within range of 5. Until the start of your next turn, the cursed unit must make attack rolls twice, taking the highest Hit result of the two.",
+      "rank": "D",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Confusion",
+      "type": "Dark Magic",
+      "description": "Befuddle an enemy unit within range of 5. The unit must use all of its available movement to move in a randomly determined direction. Roll a 1d4. 1: up, 2: right, 3: down, 4: left.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "cost": 0,
+        "uses": -1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Invisibility",
+      "type": "Dark Magic",
+      "description": "Become untargetable until the start of your next turn. Still subject to area of effect attacks.",
       "rank": "B",
       "modifiers": {
         "pmt": 0,
         "mmt": 0,
-        "hit": 100,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "cost": 0,
+        "uses": -1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Summon",
+      "type": "Dark Magic",
+      "description": "Summon a lesser phantom at a level equivalent to the caster. See the Roll20 handout for detailed summoning rules.",
+      "rank": "B-A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
         "avo": 0,
         "crit": 0,
         "minrng": 1,
@@ -5895,10 +6033,28 @@
       "hidden": false
     },
     {
+      "name": "Ice Wall",
+      "type": "Anima Magic",
+      "description": "Create adjacent blocks of ice that prevent movement. Creates one block per 5pts of magic. Cannot be cast on occupied tiles. Blocks may be destroyed by one attack. Lasts until destroyed or dispelled as a free action on the user’s turn",
+      "rank": "D",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 5
+      },
+      "hidden": false
+    },
+    {
       "name": "Thoron",
       "type": "Anima Magic",
       "description": "No special effect.",
-      "rank": "C",
+      "rank": "C-B",
       "modifiers": {
         "pmt": 0,
         "mmt": 9,
@@ -5909,6 +6065,60 @@
         "maxrng": 3,
         "cost": 0,
         "uses": 4
+      },
+      "hidden": false
+    },
+    {
+      "name": "Fire Wall",
+      "type": "Anima Magic",
+      "description": "Create adjacent patches of fire that damage units that start their turn there. Additional patches per 5pts of magic. Deals damage equal to ½ of Magic, minus enemy’s Resistance.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": -1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Wind Wall",
+      "type": "Anima Magic",
+      "description": "Create adjacent torrents of wind. If cast on spaces with units in them, the caster may move the unit to an adjacent space. Ranged attacks cannot be made over wind tiles. It costs an extra point of movement to traverse wind tiles. Additional patches per 5pts of magic.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": -1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Lightning Wall",
+      "type": "Anima Magic",
+      "description": "Create adjacent patches of lightning. The first time a unit enters a patch of lightning, it loses all remaining movement until the end of its turn. Additional patches per 5pts of magic. Deals damage equal to ½ Magic, minus enemy’s Resistance. Cannot be cast on occupied tiles.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": -1
       },
       "hidden": false
     },
@@ -5941,7 +6151,7 @@
       "modifiers": {
         "pmt": 0,
         "mmt": 8,
-        "hit": 100,
+        "hit": 0,
         "avo": 0,
         "crit": 0,
         "minrng": 1,
@@ -5980,11 +6190,11 @@
       "modifiers": {
         "pmt": 0,
         "mmt": 8,
-        "hit": 100,
+        "hit": 0,
         "avo": 0,
         "crit": 0,
         "minrng": 1,
-        "maxrng": "computed.statistics.mag/2",
+        "maxrng": 5,
         "cost": 0,
         "uses": 5
       },
@@ -6005,6 +6215,81 @@
         "maxrng": 3,
         "cost": 0,
         "uses": 8
+      },
+      "hidden": false
+    },
+    {
+      "name": "Seraphim",
+      "type": "Light Magic",
+      "description": "Effective against monster foes.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 8,
+        "mmt": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 8
+      },
+      "hidden": false
+    },
+    {
+      "name": "Purge",
+      "type": "Light Magic",
+      "description": "Effective against units wielding dark magic. Enemy units only.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 8,
+        "mmt": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 8
+      },
+      "hidden": false
+    },
+    {
+      "name": "Silence",
+      "type": "Light Magic",
+      "description": "Prevents foe from using magic for 1 turn.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 100,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "cost": 0,
+        "uses": 3
+      },
+      "hidden": false
+    },
+    {
+      "name": "Sanctuary",
+      "type": "Light Magic",
+      "description": "Enchant a friendly unit. This unit can only be targeted by the enemy if an enemy unit has no other targets available to it.",
+      "rank": "B",
+      "tags": {
+        "healing": false
+      },
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "cost": 0,
+        "uses": 0
       },
       "hidden": false
     },
@@ -6369,7 +6654,7 @@
       "name": "Swap",
       "type": "Generic",
       "description": "User swaps places with the enemy.",
-      "rank": "Myrmidon Mastery",
+      "rank": "Class Mastery",
       "modifiers": {
         "pmt": 0,
         "mmt": 0,
@@ -6393,7 +6678,7 @@
       "name": "Shove",
       "type": "Generic",
       "description": "User pushes ally forward 1 space.",
-      "rank": "Fighter Mastery",
+      "rank": "Class Mastery",
       "modifiers": {
         "pmt": 0,
         "mmt": 0,
@@ -6417,7 +6702,7 @@
       "name": "Reposition",
       "type": "Generic",
       "description": "User moves ally to the space behind the user.",
-      "rank": "Soldier Mastery",
+      "rank": "Class Mastery",
       "modifiers": {
         "pmt": 0,
         "mmt": 0,
@@ -6441,7 +6726,7 @@
       "name": "Draw Back",
       "type": "Generic",
       "description": "User moves 1 space backwards and ally is moved to where the user was previously.",
-      "rank": "Monk Mastery",
+      "rank": "Class Mastery",
       "modifiers": {
         "pmt": 0,
         "mmt": 0,
@@ -6777,7 +7062,7 @@
       "name": "Subdue",
       "type": "Sword",
       "description": "Leaves foe with at least 1 HP.",
-      "rank": "Lord Mastery",
+      "rank": "Class Mastery",
       "modifiers": {
         "pmt": 0,
         "mmt": 0,
@@ -7092,6 +7377,7 @@
       "rank": "C-B",
       "modifiers": {
         "pmt": 2,
+        "dyn_pmt": "hp current_hp - 2 / floor 2 +",
         "mmt": 0,
         "hit": 0,
         "avo": 0,
@@ -7477,6 +7763,7 @@
       "modifiers": {
         "pmt": 0,
         "mmt": 4,
+        "dyn_mmt": "res 0.3 * floor 4 +",
         "hit": 0,
         "avo": 0,
         "crit": 0,
@@ -7741,8 +8028,8 @@
       "modifiers": {
         "pmt": 1,
         "mmt": 0,
-        "hit": 0,
-        "avo": 30,
+        "hit": 30,
+        "avo": 0,
         "crit": 0,
         "minrng": 2,
         "maxrng": 3,
@@ -8075,6 +8362,8 @@
 
 		// Show a "Leave site?" dialog */
 		window.onbeforeunload = () => true;
+		// hide this without removing it
+		document.getElementById("skill-Brawl-row").hidden = true;
 	</script>
 </body>
 </html>
