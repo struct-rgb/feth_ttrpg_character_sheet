@@ -170,7 +170,7 @@ class Sheet {
 		this.charID  = 0;
 
 		/** @todo MOVE THIS SOMEWHERE BETTER */
-		PFE_COMPILER = new PostfixCompiler(["current_hp", ...data.stats.names]);
+		// PFE_COMPILER = new PostfixCompiler(["current_hp", ...data.stats.names]);
 		CACHE = this.cache.stats;
 
 		// set the lookup tables for each feature class
