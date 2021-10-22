@@ -66,8 +66,10 @@ class Feature {
 				const value = stats[key];
 				if (typeof value == "string") {
 					// const pfe = PFE_COMPILER.compile(value, CACHE);
-					if (pfe instanceof Error) throw pfe;
-					stats[key] = pfe;
+					// if (pfe instanceof Error) throw pfe;
+					// stats[key] = pfe;
+					console.log(template);
+					break;
 				}
 			}
 
