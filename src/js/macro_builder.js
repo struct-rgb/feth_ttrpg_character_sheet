@@ -1,4 +1,9 @@
 
+/**
+ * A module that implements a builder for Roll20 Macros
+ * @module macro_builder
+ */
+
 class MacroBuilder {
 	
 	constructor(name) {
@@ -23,7 +28,7 @@ class MacroBuilder {
 
 	sum(...args) {
 		const level = [];
-		level.push("[[")
+		level.push("[[");
 
 		let first = true;
 		for (let arg of args) {
@@ -63,22 +68,21 @@ class MacroBuilder {
 		level.push(text);
 
 		switch (values.length) {
-			
-			case 0:
-				throw new Error("Must have at least 1 value");
-			
-			case 1:
-				level.push("|", values[0]);
-				break;
+		case 0:
+			throw new Error("Must have at least 1 value");
+		
+		case 1:
+			level.push("|", values[0]);
+			break;
 
-			default:
-				if (values.length % 2 != 0) {
-					throw new Error("Must have even number of pairs");
-				}
-				for (let i = 0; i < values.length; i += 2) {
-					level.push("|", values[i], ",", values[i + 1]);
-				}
-				break;
+		default:
+			if (values.length % 2 != 0) {
+				throw new Error("Must have even number of pairs");
+			}
+			for (let i = 0; i < values.length; i += 2) {
+				level.push("|", values[i], ",", values[i + 1]);
+			}
+			break;
 		}
 
 		level.push("}");
@@ -102,3 +106,5 @@ class MacroBuilder {
 	}
 
 }
+
+/* exported MacroBuilder */

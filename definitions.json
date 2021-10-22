@@ -407,31 +407,6 @@
       }
     },
     {
-      "name": "Brigand",
-      "abilities": [],
-      "growths": {
-        "hp": 30,
-        "str": 10,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": -5,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 2,
-        "str": 2,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 1
-      }
-    },
-    {
       "name": "Archer",
       "abilities": [
         "Bowrange +1"
@@ -5141,7 +5116,7 @@
     {
       "name": "Guiding Bolt",
       "type": "Light Magic",
-      "description": "On hit, attack rolls made against the target during its next combat have advantage. Cannot double.",
+      "description": "On hit, attack rolls made against the target during its next combat have advantage. Cannot trigger follow-up attacks.",
       "rank": "C",
       "modifiers": {
         "pmt": 0,
