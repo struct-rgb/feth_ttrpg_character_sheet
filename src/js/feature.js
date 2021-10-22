@@ -153,7 +153,7 @@ class Feature {
 		if (!this.modifiers[stat]) return 0;
 
 		const value = this.modifiers[stat];
-		if (value instanceof PostfixExpression) return value.result();
+		// if (value instanceof PostfixExpression) return value.result();
 		return value;
 	}
 
@@ -167,7 +167,7 @@ class Feature {
 		if (!this.multipliers[stat]) return 1;
 
 		const value = this.multipliers[stat];
-		if (value instanceof PostfixExpression) return value.result();
+		// if (value instanceof PostfixExpression) return value.result();
 		return value;
 	}
 
