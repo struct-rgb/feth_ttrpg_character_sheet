@@ -23,10 +23,11 @@ Currently, the main document must be generated from the [html template](https://
   * Brawl skill removed from main page; Brawl abilities removed from drop down
   * Added new spells, abilties, and weapons
 
-## Upcoming Changes
+## Planned Changes
 
 ### Version 2.0.0
 
   * Feature definition overhauled; introduced dynamic modifiers and multipliers
   * Support for importing custom features added (Classes, Abilities, etc...)
   * Improvements and bugfixes in the macro generation system
+
