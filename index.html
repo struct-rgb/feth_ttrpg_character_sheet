@@ -6,8 +6,9 @@
 	<title>Three Houses TTRPG Character Sheet</title>
 
 	<link href="./src/css/style.css" rel="stylesheet" />
-	<script type="text/javascript" src="./src/js/macro_builder.js"> </script>
+	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
 	<!-- <script type="text/javascript" src="./src/js/postfix.js"></script> -->
+	<script type="text/javascript" src="./src/js/notebook.js"></script>
 	<script type="text/javascript" src="./src/js/category.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
@@ -1014,56 +1015,8 @@
 			</div>
 		</div>
 		
-		<div class="span-1-3"> <!-- ABILITIES -->
-			<details>
-				<summary class="entry-tab-title">
-					Abilities
-				</summary>
-				<div class="entry-tab-body">
-					<details id="abilities-class">
-						<summary>Class</summary>
-					</details>
-
-					<details id="abilities-equipped">
-						<summary>Equipped</summary>
-					</details>
-					
-					<details id="abilities-battlefield">
-						<summary>Battlefield</summary>
-					</details>
-
-					<details id="abilities-known">
-						<summary>Known</summary>
-					</details>
-				</div>
-			</details>
-
-			<details>
-				<summary class="entry-tab-title">
-					Combat Arts
-				</summary>
-				<div class="entry-tab-body">
-					<details id="combatarts-equipped">
-						<summary>Equipped</summary>
-					</details>
-
-					<details id="combatarts-known">
-						<summary>Known</summary>
-					</details>
-				</div>
-			</details>
-
-			<details id="weapons-known">
-				<summary class="entry-tab-title">
-					Weapons & Spells
-				</summary>
-			</details>
-
-			<details id="equipment-known">
-				<summary class="entry-tab-title">
-					Equipment
-				</summary>
-			</details>
+		<div id="features" class="span-1-3"> <!-- FEATURES -->
+			
 		</div>
 	</div>
 
@@ -4556,7 +4509,7 @@
         "pmt": 2
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Amalia's Sibling Bond",
@@ -4567,7 +4520,7 @@
         "mdr": 2
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Wrathful Empathy",
@@ -4578,7 +4531,7 @@
         "dex": 4
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Hesitant Prodigy",
@@ -4631,7 +4584,7 @@
       "type": "Passive",
       "modifiers": null,
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Painless",
@@ -4662,7 +4615,7 @@
       "type": "Passive",
       "modifiers": null,
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Primed for Danger",
@@ -4678,6 +4631,17 @@
       "type": "Prompt",
       "modifiers": {
         "str": 4
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Indirect Aggression",
+      "description": "When this unit when heals an ally, that unit gains Str +4 and Mag +4 for one turn.",
+      "type": "Prompt",
+      "modifiers": {
+        "str": 4,
+        "mag": 4
       },
       "multipliers": null,
       "hidden": false
@@ -5152,6 +5116,42 @@
       "hidden": false
     },
     {
+      "name": "Killing Edge",
+      "type": "Sword",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 8,
+        "mmt": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 25,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Killing Edge+",
+      "type": "Sword",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 35,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Levin Sword+",
       "type": "Sword",
       "description": "Deals magic-based damage.",
@@ -5386,6 +5386,42 @@
       "hidden": false
     },
     {
+      "name": "Killer Lance",
+      "type": "Lance",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 25,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Killer Lance+",
+      "type": "Lance",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 10,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 35,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Training Axe",
       "type": "Axe",
       "description": "No special effect.",
@@ -5602,6 +5638,42 @@
       "hidden": false
     },
     {
+      "name": "Killer Axe",
+      "type": "Axe",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 11,
+        "mmt": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 25,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Killer Axe+",
+      "type": "Axe",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 12,
+        "mmt": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 35,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Bolt Axe",
       "type": "Axe",
       "description": "Deals magic-based damage.",
@@ -5630,24 +5702,6 @@
         "hit": 70,
         "avo": 0,
         "crit": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "cost": 0,
-        "uses": 0
-      },
-      "hidden": true
-    },
-    {
-      "name": "Killer Axe+",
-      "type": "Axe",
-      "description": "No special effect.",
-      "rank": "C",
-      "modifiers": {
-        "pmt": 12,
-        "mmt": 0,
-        "hit": 70,
-        "avo": 0,
-        "crit": 35,
         "minrng": 1,
         "maxrng": 1,
         "cost": 0,
@@ -5836,6 +5890,42 @@
       "hidden": false
     },
     {
+      "name": "Killer Bow",
+      "type": "Bow",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 25,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Killer Bow+",
+      "type": "Bow",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 10,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 35,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Miasma",
       "type": "Dark Magic",
       "description": "No special effect.",
@@ -5890,6 +5980,78 @@
       "hidden": false
     },
     {
+      "name": "Mire",
+      "type": "Dark Magic",
+      "description": "Inflicts Def -5 to foe for 1 turn.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 3,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 3,
+        "cost": 0,
+        "uses": 8
+      },
+      "hidden": false
+    },
+    {
+      "name": "Swarm",
+      "type": "Dark Magic",
+      "description": "Inflicts Spd -5 to foe for 1 turn.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 4,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 8
+      },
+      "hidden": false
+    },
+    {
+      "name": "Banshee",
+      "type": "Dark Magic",
+      "description": "Inflicts reduced Mov to foe for 1 turn.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 9,
+        "hit": 75,
+        "avo": 0,
+        "crit": 7,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 5
+      },
+      "hidden": false
+    },
+    {
+      "name": "Death",
+      "type": "Dark Magic",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 6,
+        "hit": 70,
+        "avo": 0,
+        "crit": 20,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 4
+      },
+      "hidden": false
+    },
+    {
       "name": "Confusion",
       "type": "Dark Magic",
       "description": "Befuddle an enemy unit within range of 5. The unit must use all of its available movement to move in a randomly determined direction. Roll a 1d4. 1: up, 2: right, 3: down, 4: left.",
@@ -5904,6 +6066,60 @@
         "maxrng": 5,
         "cost": 0,
         "uses": -1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Ethereal Weapon",
+      "type": "Dark Magic",
+      "description": "Summons an Ethereal weapon for the duration of the battle or until the caster dies. If the wielder of the weapon dies, weapon returns to caster's inventory.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 1
+      },
+      "hidden": true
+    },
+    {
+      "name": "Luna",
+      "type": "Dark Magic",
+      "description": "Ignores enemy’s Resistance; cannot trigger follow-up attacks.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 1,
+        "hit": 65,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": false
+    },
+    {
+      "name": "Dark Spikes",
+      "type": "Dark Magic",
+      "description": "Effective against Cavalry foes.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 13,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 3
       },
       "hidden": false
     },
@@ -5925,10 +6141,11 @@
       },
       "hidden": false
     },
+
     {
       "name": "Summon",
       "type": "Dark Magic",
-      "description": "Summon a lesser phantom at a level equivalent to the caster. See the Roll20 handout for detailed summoning rules.",
+      "description": "Summon a minor phantom at a level equivalent to the caster. See the Roll20 handout for detailed summoning rules.",
       "rank": "B-A",
       "modifiers": {
         "pmt": 0,
@@ -5942,6 +6159,78 @@
         "uses": 5
       },
       "hidden": false
+    },
+    {
+      "name": "Hades",
+      "type": "Dark Magic",
+      "description": "No special effect.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 18,
+        "hit": 65,
+        "avo": 0,
+        "crit": 10,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": false
+    },
+    {
+      "name": "Bohr",
+      "type": "Dark Magic",
+      "description": "Reduces foe’s HP to 1; cannot trigger follow-up attacks. Enemies only.",
+      "rank": "S",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 60,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "cost": 0,
+        "uses": 3
+      },
+      "hidden": false
+    },
+    {
+      "name": "Quake",
+      "type": "Dark Magic",
+      "description": "Damages all units except Flying; cannot trigger follow-up attacks. Enemies only.",
+      "rank": "S",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 8,
+        "hit": 50,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 99,
+        "cost": 0,
+        "uses": 1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Eurydice",
+      "type": "Dark Magic",
+      "description": "Summon a major phantom from the dead. Enemies only. See the Roll20 handout for detailed summoning rules.",
+      "rank": "S",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 1
+      },
+      "hidden": true
     },
     {
       "name": "Wind",
@@ -6034,6 +6323,42 @@
       "hidden": false
     },
     {
+      "name": "Bolganone",
+      "type": "Anima Magic",
+      "description": "No special effect.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 8,
+        "hit": 85,
+        "avo": 0,
+        "crit": 10,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 5
+      },
+      "hidden": false
+    },
+    {
+      "name": "Cutting Gale",
+      "type": "Anima Magic",
+      "description": "No special effect.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 7,
+        "hit": 95,
+        "avo": 0,
+        "crit": 10,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 6
+      },
+      "hidden": false
+    },
+    {
       "name": "Thoron",
       "type": "Anima Magic",
       "description": "No special effect.",
@@ -6048,6 +6373,24 @@
         "maxrng": 3,
         "cost": 0,
         "uses": 4
+      },
+      "hidden": false
+    },
+    {
+      "name": "Sagittae",
+      "type": "Anima Magic",
+      "description": "No special effect.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 7,
+        "hit": 90,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 10
       },
       "hidden": false
     },
@@ -6088,6 +6431,42 @@
       "hidden": false
     },
     {
+      "name": "Excalibur",
+      "type": "Anima Magic",
+      "description": "Effective against Flying foes.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 11,
+        "hit": 100,
+        "avo": 0,
+        "crit": 15,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 4
+      },
+      "hidden": false
+    },
+    {
+      "name": "Fimbulvetr",
+      "type": "Anima Magic",
+      "description": "No special effect.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 12,
+        "hit": 60,
+        "avo": 0,
+        "crit": 25,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 3
+      },
+      "hidden": false
+    },
+    {
       "name": "Lightning Wall",
       "type": "Anima Magic",
       "description": "Create adjacent patches of lightning. The first time a unit enters a patch of lightning, it loses all remaining movement until the end of its turn. Additional patches per 5pts of magic. Deals damage equal to ½ Magic, minus enemy’s Resistance. Cannot be cast on occupied tiles.",
@@ -6102,6 +6481,78 @@
         "maxrng": 2,
         "cost": 0,
         "uses": -1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Meteor",
+      "type": "Anima Magic",
+      "description": "Magic that also hits targets adjacent to the point of impact. Cannot trigger follow-up attacks.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 10,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "cost": 0,
+        "uses": 1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Bolting",
+      "type": "Anima Magic",
+      "description": "Cannot trigger follow-up attacks.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 12,
+        "hit": 65,
+        "avo": 0,
+        "crit": 15,
+        "minrng": 3,
+        "maxrng": 10,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": false
+    },
+    {
+      "name": "Ragnarok",
+      "type": "Anima Magic",
+      "description": "No special effect.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 15,
+        "hit": 80,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 3
+      },
+      "hidden": false
+    },
+    {
+      "name": "Agnea's Arrow",
+      "type": "Anima Magic",
+      "description": "No special effect.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 16,
+        "hit": 70,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 2
       },
       "hidden": false
     },
@@ -6166,6 +6617,27 @@
       "hidden": false
     },
     {
+      "name": "Recover",
+      "type": "Light Magic",
+      "description": "Restores HP to an ally.",
+      "rank": "C",
+      "tags": {
+        "healing": true
+      },
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 30,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 5
+      },
+      "hidden": false
+    },
+    {
       "name": "Physic",
       "type": "Light Magic",
       "description": "Restores HP to a distant ally.",
@@ -6177,7 +6649,7 @@
         "avo": 0,
         "crit": 0,
         "minrng": 1,
-        "maxrng": 5,
+        "maxrng": -1,
         "cost": 0,
         "uses": 5
       },
@@ -6198,6 +6670,66 @@
         "maxrng": 3,
         "cost": 0,
         "uses": 8
+      },
+      "hidden": false
+    },
+    {
+      "name": "Restore",
+      "type": "Light Magic",
+      "description": "Cures status effects on all allies in range.",
+      "rank": "C",
+      "tags": {
+        "healing": false
+      },
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": -1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Ward",
+      "type": "Light Magic",
+      "description": "Grants Res +7 to an ally; effect diminishes with each turn.",
+      "rank": "C",
+      "tags": {
+        "healing": false
+      },
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Silence",
+      "type": "Light Magic",
+      "description": "Prevents foe from using magic for 1 turn.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 100,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "cost": 0,
+        "uses": 3
       },
       "hidden": false
     },
@@ -6238,20 +6770,44 @@
       "hidden": false
     },
     {
-      "name": "Silence",
+      "name": "Rescue",
       "type": "Light Magic",
-      "description": "Prevents foe from using magic for 1 turn.",
+      "description": "Moves an ally to a space next to the user.",
       "rank": "B",
+      "tags": {
+        "healing": false
+      },
       "modifiers": {
         "pmt": 0,
         "mmt": 0,
-        "hit": 100,
+        "hit": 0,
         "avo": 0,
         "crit": 0,
-        "minrng": 3,
-        "maxrng": 10,
+        "minrng": 1,
+        "maxrng": -1,
         "cost": 0,
         "uses": 3
+      },
+      "hidden": false
+    },
+    {
+      "name": "Warp",
+      "type": "Light Magic",
+      "description": "Moves an ally to a specified tile within range.",
+      "rank": "B",
+      "tags": {
+        "healing": false
+      },
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": -1,
+        "cost": 0,
+        "uses": 1
       },
       "hidden": false
     },
@@ -6272,15 +6828,90 @@
         "minrng": 1,
         "maxrng": 5,
         "cost": 0,
-        "uses": 0
+        "uses": 1
       },
       "hidden": false
     },
     {
-      "name": "Ethereal Javelin",
+      "name": "Fortify",
+      "type": "Light Magic",
+      "description": "Restores HP for all allies in range.",
+      "rank": "A",
+      "tags": {
+        "healing": true
+      },
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 15,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": -1,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": false
+    },
+    {
+      "name": "Aura",
+      "type": "Light Magic",
+      "description": "No special effect.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 12,
+        "hit": 70,
+        "avo": 0,
+        "crit": 20,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 3
+      },
+      "hidden": false
+    },
+    {
+      "name": "Abraxas",
+      "type": "Light Magic",
+      "description": "No special effect.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 14,
+        "hit": 90,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": false
+    },
+    {
+      "name": "Flame Strike",
+      "type": "Light Magic",
+      "description": "(PENDING APPROVAL) Magic that also hits targets within two spaces of the point of impact. Cannot trigger follow-up attacks.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 8,
+        "hit": 70,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 3,
+        "maxrng": 10,
+        "cost": 0,
+        "uses": 1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Ethereal Spear (Opaque)",
       "type": "Lance",
-      "description": "Can only be wielded using the Ethereal Weapon spell; disappears upon caster's death. Enables the use of the Hook combat art.",
-      "rank": "E",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Enables the use of the Hook combat art.",
+      "rank": "B",
       "modifiers": {
         "pmt": 8,
         "mmt": 0,
@@ -6292,7 +6923,133 @@
         "cost": 0,
         "uses": 0
       },
-      "hidden": false
+      "hidden": true
+    },
+    {
+      "name": "Ethereal Edge (Opaque)",
+      "type": "Sword",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Enables the use of the Displaced Strike combat art.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Ethereal Lance (Opaque)",
+      "type": "Lance",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Enables the use of the Displaced Strike combat art.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 10,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Ethereal Axe (Opaque)",
+      "type": "Axe",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Enables the use of the Displaced Strike combat art.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 12,
+        "mmt": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Ethereal Spear (Translucent)",
+      "type": "Lance",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Deals magic-based damage. Enables the use of the Hook combat art.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 6,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Ethereal Edge (Translucent)",
+      "type": "Sword",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Deals magic-based damage. Enables the use of the Displaced Strike combat art.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 7,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Ethereal Lance (Translucent)",
+      "type": "Lance",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Deals magic-based damage. Enables the use of the Displaced Strike combat art.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 8,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Ethereal Axe (Translucent)",
+      "type": "Axe",
+      "description": "Can only be wielded using the Ethereal Weapon spell. Deals magic-based damage. Enables the use of the Displaced Strike combat art.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 10,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
     },
     {
       "name": "Balthraz",
@@ -6636,7 +7393,7 @@
     {
       "name": "Swap",
       "type": "Generic",
-      "description": "User swaps places with the enemy.",
+      "description": "User swaps places with the ally.",
       "rank": "Class Mastery",
       "modifiers": {
         "pmt": 0,
@@ -8336,7 +9093,30 @@
         "astra": null,
         "vengeance": null
       },
-      "hidden": false
+      "hidden": true
+    },
+    {
+      "name": "Displaced Strike",
+      "description": "Generic",
+      "rank": "Exclusive",
+      "modifiers": {
+        "pmt": 3,
+        "mmt": 0,
+        "hit": -5,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "cost": 3
+      },
+      "multipliers": {
+        "scale": null
+      },
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": true
     }
   ]
 }

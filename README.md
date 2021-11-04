@@ -11,6 +11,12 @@ Currently, the main document must be generated from the [html template](https://
 
 ## Changelog
 
+### Version 1.15.0
+
+  * New tab based user inferface for features (Abilities, Combat Arts, etc...) 
+  * Added in the remaining spells that were missing
+  * Added in Killer weapons
+
 ### Version 1.14.0
 
   * Added the ability to import and edit multiple sheets at once

@@ -157,3 +157,7 @@ meter {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+.notebook-tab {
+	width: 1fr;
+}

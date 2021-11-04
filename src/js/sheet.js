@@ -7,6 +7,8 @@
 
 /* global MacroBuilder */
 
+/* global Notebook */
+
 /* global Ability */
 /* global Class */
 /* global CombatArt */
@@ -17,7 +19,9 @@
 /* global MultiActiveCategory */
 /* global SingleActiveCategory */
 
-const VERSION = "1.14.0";
+/* global CACHE */
+
+const VERSION = "1.15.0";
 
 /**
  * Create a compound iterator from a group of iterable values
@@ -104,7 +108,7 @@ class LevelStamp {
 		
 		const block = new Uint32Array(data.length * 3);
 		for (let i = 0; i < data.length; ++i) {
-			LevelStamp.write(block, i * 3, array[i]);
+			LevelStamp.write(block, i * 3, data[i]);
 		}
 		return block;
 	}
@@ -291,123 +295,156 @@ class Sheet {
 		const myFeatureTitle = ((feature) => feature.title()); 
 		const myFeatureBody  = ((feature) => feature.body());
 
+		const notebook = new Notebook(document.getElementById("features"));
+		let   inner    = new Notebook();
+
 		/* Ability category */
 
-		const myAbilityModel = new CategoryModel(
+		let model = new CategoryModel(
 			Ability.kind, Ability.byName, myFeatureTitle, myFeatureBody 
 		);
 		
 		this.abilities = {};
 
-		this.addCategory(new MultiActiveCategory(myAbilityModel, {
+		this.addCategory(new MultiActiveCategory(model, {
 			name        : "class",
+			empty       : "This class has no class abilities",
 			selectable  : false,
 			reorderable : false,
 			removable   : false,
 			ontoggle    : refresh,
 			onremove    : null,
 		}));
+		inner.add("Class", this.abilities.class.root);
 
-		this.addCategory(new MultiActiveCategory(myAbilityModel, {
+		this.addCategory(new MultiActiveCategory(model, {
 			name        : "equipped",
+			empty       : "No abilities are equipped",
 			selectable  : false,
 			reorderable : true,
 			removable   : true,
 			ontoggle    : refresh,
 			onremove    : unequip,
 		}));
+		inner.add("Equipped", this.abilities.equipped.root);
 
-		this.addCategory(new MultiActiveCategory(myAbilityModel, {
+		this.addCategory(new MultiActiveCategory(model, {
 			name        : "battlefield",
+			empty       : "There are no battlefield abilities",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
 			ontoggle    : refresh,
 			onremove    : forget,
 		}));
+		inner.add("Battlefield", this.abilities.battlefield.root);
 
-		this.addCategory(new MultiActiveCategory(myAbilityModel, {
+		this.addCategory(new MultiActiveCategory(model, {
 			name        : "known",
+			empty       : "No abilities are known",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
 			ontoggle    : equip,
 			onremove    : forget,
 		}));
+		inner.add("Known", this.abilities.known.root);
 
 		this.abilities.known.link(this.abilities.equipped);
 
+		inner.add("(Hide)", document.createElement("div"));
+		inner.active = "(Hide)";
+
+		notebook.add("Abilities", inner.root);
+
 		/* CombatArt category */
 
-		const myCombatArtModel = new CategoryModel(
+		inner = new Notebook();
+		model = new CategoryModel(
 			CombatArt.kind, CombatArt.byName, myFeatureTitle, myFeatureBody
 		);
 
 		this.combatarts = {};
 
-		this.addCategory(new SingleActiveCategory(myCombatArtModel, {
+		this.addCategory(new SingleActiveCategory(model, {
 			name        : "equipped",
+			empty       : "No combat arts are equipped",
 			selectable  : false,
 			reorderable : true,
 			removable   : true,
 			ontoggle    : refresh,
 			onremove    : unequip,
 		}));
+		inner.add("Equipped", this.combatarts.equipped.root);
 
 
-		this.addCategory(new MultiActiveCategory(myCombatArtModel, {
+		this.addCategory(new MultiActiveCategory(model, {
 			name        : "known",
+			empty       : "No combat arts are known",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
 			ontoggle    : equip,
 			onremove    : forget,
 		}));
+		inner.add("Known", this.combatarts.known.root);
 
 		this.combatarts.known.link(this.combatarts.equipped);
 
+		inner.add("(Hide)", document.createElement("div"));
+		inner.active = "(Hide)";
+
+		notebook.add("Combat Arts", inner.root);
+
 		/* Weapon category */
 
-		const myWeaponModel = new CategoryModel(
+		model = new CategoryModel(
 			Weapon.kind, Weapon.byName, myFeatureTitle, myFeatureBody
 		);
 
 		this.weapons = {};
 
-		this.addCategory(new SingleActiveCategory(myWeaponModel, {
+		this.addCategory(new SingleActiveCategory(model, {
 			name        : "known",
+			empty       : "No weapons are owned nor any spells known",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
 			ontoggle    : refresh,
 			onremove    : forget,
 		}));
+		notebook.add("Weapons & Spells", this.weapons.known.root);
 
 		/* Equipment category */
 
-		const myEquipmentModel = new CategoryModel(
+		model = new CategoryModel(
 			Equipment.kind, Equipment.byName, myFeatureTitle, myFeatureBody
 		);
 
 		this.equipment = {};
 
-		this.addCategory(new SingleActiveCategory(myEquipmentModel, {
+		this.addCategory(new SingleActiveCategory(model, {
 			name        : "known",
+			empty       : "No equipment is owned",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
 			ontoggle    : refresh,
 			onremove    : forget,
 		}));
+		notebook.add("Equipment", this.equipment.known.root);
 
+		notebook.add("(Hide)", document.createElement("div"));
+		notebook.active = "(Hide)";
 
-		this.myCharMap       = new Map();
-		const characterModel = new CategoryModel(
+		this.myCharMap = new Map();
+		model          = new CategoryModel(
 			"characters", this.myCharMap, (x) => x.name, (x) => x.description 
 		);
 
-		this.characters = new SingleActiveCategory(characterModel, {
+		this.characters = new SingleActiveCategory(model, {
 			name        : "list",
+			empty       : "If you're reading this, something has gone wrong",
 			selectable  : false,
 			reorderable : true,
 			removable   : true,
@@ -458,11 +495,11 @@ class Sheet {
 	 * @param {Category} category - the category to add 
 	 */
 	addCategory(category) {
-		const identifier = category.model.name + "-" + category.name;
-		const parent     = document.getElementById(identifier);
+		// const identifier = category.model.name + "-" + category.name;
+		// const parent     = document.getElementById(identifier);
 
 		this[category.model.name][category.name] = category;
-		category.addTo(parent);
+		// category.addTo(parent);
 	}
 
 	/**

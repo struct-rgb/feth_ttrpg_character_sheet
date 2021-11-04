@@ -307,6 +307,7 @@ class CategoryModel {
  * Options for initializing a new Category
  * @typedef {object} CategoryOptions
  * @property {string} name - an identifer for this category
+ * @property {string} empty - text to display when there are no items
  * @property {boolean} selectable - whether a select input should be provided to insert elements
  * @property {boolean} reorderable - whether this category's elements should be reorderable
  * @property {boolean} removable - whether this category's elements should have a remove button
@@ -336,6 +337,7 @@ class Category {
 
 		this.model       = model;
 		this.name        = options.name     || "";
+		this.empty       = options.empty    || "";
 		this.ontoggle    = options.ontoggle || Category.succeed;
 		this.onremove    = options.onremove || Category.succeed;
 		this.reorderable = Boolean(options.reorderable);
@@ -345,6 +347,7 @@ class Category {
 		this.next        = null;
 		this.prev        = null;
 		this.elements    = new Map();
+		this.root        = document.createElement("div");
 
 		// go about building the DOM nodes
 		if (!this.selectable) {
@@ -359,7 +362,7 @@ class Category {
 				category.add(category.select.value);
 			};
 			this.addButton.classList.add("simple-border");
-			// parent.appendChild(this.addButton);
+			this.root.appendChild(this.addButton);
 
 			// create a selector of valid values
 			this.select = document.createElement("select");
@@ -371,11 +374,17 @@ class Category {
 				option.appendChild(document.createTextNode(item.name));
 				this.select.appendChild(option);
 			}
-			// parent.appendChild(this.select);
+			this.root.appendChild(this.select);
 		}
+
+		this._textnode  = document.createTextNode(this.empty);
+		const paragraph = document.createElement("p");
+		paragraph.appendChild(this._textnode);
+		this.root.appendChild(paragraph); 
 
 		this.dl = document.createElement("dl");
 		this.dl.classList.add("scrolls");
+		this.root.appendChild(this.dl);
 
 		if (options.parent) {
 			this.addTo(options.parent);
@@ -397,12 +406,7 @@ class Category {
 		if (this.parent) return;
 
 		this.parent = parent;
-
-		if (this.select) {
-			parent.appendChild(this.addButton);
-			parent.appendChild(this.select);
-		}
-		parent.appendChild(this.dl);
+		this.parent.appendChild(this.root);
 	}
 
 	/**
@@ -413,12 +417,7 @@ class Category {
 		if (!this.parent) return;
 
 		this.parent = null;
-
-		if (this.select) {
-			this.addButton.parentNode.removeChild(this.addButton);
-			this.select.parentNode.removeChild(this.select);
-		}
-		this.dl.parentNode.removeChild(this.dl);
+		this.root.parentNode.removeChild(this.root);
 	}
 
 	/* methods for managing active items*/
@@ -527,6 +526,10 @@ class Category {
 		// prevent the addition of duplicate items
 		if (this.elements.has(name)) return false;
 
+		if (this.size == 0) {
+			this._textnode.data = "";
+		}
+
 		const element = new CategoryElement({
 			key         : name,
 			title       : this.model.title(name),
@@ -568,6 +571,11 @@ class Category {
 
 		this.elements.get(name).remove();
 		this.elements.delete(name);
+
+		if (this.size == 0) {
+			this._textnode.data = this.empty;
+		}
+
 		return true;
 	}
 
@@ -599,6 +607,7 @@ class Category {
 		}
 		this.elements.clear();
 		this.clearActive();
+		this._textnode.data = this.empty;
 	}
 
 	/* iterable */

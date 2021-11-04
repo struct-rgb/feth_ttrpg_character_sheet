@@ -68,7 +68,7 @@ class Feature {
 					// const pfe = PFE_COMPILER.compile(value, CACHE);
 					// if (pfe instanceof Error) throw pfe;
 					// stats[key] = pfe;
-					console.log(template);
+					// console.log(template);
 					break;
 				}
 			}
