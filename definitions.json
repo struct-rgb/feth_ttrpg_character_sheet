@@ -67,6 +67,14 @@
     {
       "name": "Commoner",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "HP +5"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 0,
         "str": 0,
@@ -92,6 +100,14 @@
     {
       "name": "Noble",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "HP +5"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 0,
         "str": 0,
@@ -119,6 +135,14 @@
       "abilities": [
         "Dance"
       ],
+      "mastery": {
+        "abilities": [
+          "HP +5"
+        ],
+        "combatarts": [
+          "Special Dance"
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -144,6 +168,14 @@
     {
       "name": "Myrmidon",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Speed +2"
+        ],
+        "combatarts": [
+          "Swap"
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -169,6 +201,14 @@
     {
       "name": "Soldier",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Defense +2"
+        ],
+        "combatarts": [
+          "Reposition"
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -194,6 +234,14 @@
     {
       "name": "Fighter",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Strength +2"
+        ],
+        "combatarts": [
+          "Shove"
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 5,
@@ -219,6 +267,14 @@
     {
       "name": "Monk",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Magic +2"
+        ],
+        "combatarts": [
+          "Draw Back"
+        ]
+      },
       "growths": {
         "hp": 5,
         "str": 0,
@@ -246,6 +302,14 @@
       "abilities": [
         "Charm"
       ],
+      "mastery": {
+        "abilities": [
+          "Resistance +2"
+        ],
+        "combatarts": [
+          "Subdue"
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -271,6 +335,14 @@
     {
       "name": "Mercenary",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Vantage"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 5,
@@ -299,6 +371,14 @@
         "Steal",
         "Locktouch"
       ],
+      "mastery": {
+        "abilities": [
+          "Steal"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -324,6 +404,14 @@
     {
       "name": "Armored Knight",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Armored Blow"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -351,6 +439,14 @@
       "abilities": [
         "Canto"
       ],
+      "mastery": {
+        "abilities": [
+          "Desperation"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 5,
@@ -384,6 +480,14 @@
     {
       "name": "Brigand",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Death Blow"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 10,
@@ -411,6 +515,14 @@
       "abilities": [
         "Bowrange +1"
       ],
+      "mastery": {
+        "abilities": [
+          "Hit +20"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 5,
         "str": 0,
@@ -438,6 +550,14 @@
       "abilities": [
         "Unarmed Combat"
       ],
+      "mastery": {
+        "abilities": [
+          "Unarmed Combat"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 0,
@@ -458,13 +578,22 @@
         "res": -1,
         "cha": 0,
         "mov": 1
-      }
+      },
+      "hidden": true
     },
     {
       "name": "Mage",
       "abilities": [
         "Fire"
       ],
+      "mastery": {
+        "abilities": [
+          "Fiendish Blow"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 5,
         "str": -5,
@@ -493,6 +622,14 @@
         "Miasma",
         "Heartseeker"
       ],
+      "mastery": {
+        "abilities": [
+          "Poison Strike"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 5,
         "str": -5,
@@ -521,6 +658,14 @@
         "Heal",
         "Light Magic Heal +5"
       ],
+      "mastery": {
+        "abilities": [
+          "Miracle"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 5,
         "str": -5,
@@ -549,6 +694,14 @@
         "Canto",
         "Avoid +10"
       ],
+      "mastery": {
+        "abilities": [
+          "Darting Blow"
+        ],
+        "combatarts": [
+          "Triangle Attack"  
+        ]
+      },
       "growths": {
         "hp": 15,
         "str": 0,
@@ -582,6 +735,14 @@
     {
       "name": "Witch Hunter",
       "abilities": [],
+      "mastery": {
+        "abilities": [
+          "Tomebreaker"
+        ],
+        "combatarts": [
+          
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -610,6 +771,14 @@
         "Swordfaire",
         "Vantage"
       ],
+      "mastery": {
+        "abilities": [
+          "Defiant Strength"  
+        ],
+        "combatarts": [
+         
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 10,
@@ -638,6 +807,14 @@
         "Swordfaire",
         "Sword Critical +10"
       ],
+      "mastery": {
+        "abilities": [
+
+        ],
+        "combatarts": [
+          "Astra"  
+        ]
+      },
       "growths": {
         "hp": 25,
         "str": 10,
@@ -667,6 +844,14 @@
         "Locktouch",
         "Stealth"
       ],
+      "mastery": {
+        "abilities": [
+          "Lethality"
+        ],
+        "combatarts": [
+          "Assassinate"  
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -695,6 +880,14 @@
         "Axefaire",
         "Weight -5"
       ],
+      "mastery": {
+        "abilities": [
+          "Pavise"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 10,
@@ -724,6 +917,14 @@
         "Lancefaire",
         "Terrain Resistance"
       ],
+      "mastery": {
+        "abilities": [
+          "Aegis"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 10,
@@ -759,6 +960,14 @@
         "Canto",
         "Axefaire"
       ],
+      "mastery": {
+        "abilities": [
+          "Seal Defense"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 10,
@@ -796,6 +1005,14 @@
         "Axefaire",
         "Axe Critical +10"
       ],
+      "mastery": {
+        "abilities": [
+          "Wrath"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 40,
         "str": 15,
@@ -824,6 +1041,14 @@
         "Bowfaire",
         "Bowrange +1"
       ],
+      "mastery": {
+        "abilities": [
+
+        ],
+        "combatarts": [
+          "Hunter’s Volley"
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 5,
@@ -852,6 +1077,14 @@
         "Fistfaire",
         "Unarmed Combat"
       ],
+      "mastery": {
+        "abilities": [
+          "Tomebreaker"
+        ],
+        "combatarts": [
+          "Fierce Iron Fist"
+        ]
+      },
       "growths": {
         "hp": 40,
         "str": 10,
@@ -881,6 +1114,14 @@
         "Anima Tomefaire",
         "Anima Magic Uses x2"
       ],
+      "mastery": {
+        "abilities": [
+          "Bowbreaker"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -910,6 +1151,14 @@
         "Heartseeker",
         "Fiendish Blow"
       ],
+      "mastery": {
+        "abilities": [
+          "Lifetaker"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -939,6 +1188,14 @@
         "Light Magic Heal +10",
         "Terrain Resistance"
       ],
+      "mastery": {
+        "abilities": [
+          "Renewal"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -967,6 +1224,14 @@
         "Axefaire",
         "Light Magic Heal +5"
       ],
+      "mastery": {
+        "abilities": [
+          "Blessed Fortitude"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 5,
@@ -983,7 +1248,82 @@
         "mag": 2,
         "dex": 0,
         "spd": 0,
-        "def": 2,
+        "def": 4,
+        "res": 0,
+        "cha": 0,
+        "mov": 0
+      }
+    },
+    {
+      "name": "Monster Hunter",
+      "abilities": [
+        "Swordfaire",
+        "Bowfaire",
+        "Hide Piercer",
+        "Monster Wrangler"
+      ],
+      "mastery": {
+        "abilities": [
+          "Monster Slayer"
+        ],
+        "combatarts": [
+
+        ]
+      },
+      "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 0,
+        "dex": 5,
+        "spd": 0,
+        "def": 10,
+        "res": 5,
+        "cha": 10
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 0,
+        "mag": 0,
+        "dex": 3,
+        "spd": 2,
+        "def": 0,
+        "res": 3,
+        "cha": 0,
+        "mov": 0
+      }
+    },
+    {
+      "name": "Knight Captain",
+      "abilities": [
+        "Swordfaire",
+        "Lancefaire",
+        "Formation"
+      ],
+      "mastery": {
+        "abilities": [
+          "Plot Armor"
+        ],
+        "combatarts": [
+
+        ]
+      },
+      "growths": {
+        "hp": 30,
+        "str": 10,
+        "mag": 0,
+        "dex": 5,
+        "spd": 0,
+        "def": 10,
+        "res": -5,
+        "cha": 10
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 0,
+        "dex": 1,
+        "spd": 0,
+        "def": 3,
         "res": 0,
         "cha": 0,
         "mov": 0
@@ -996,6 +1336,14 @@
         "Lancefaire",
         "Avoid +10"
       ],
+      "mastery": {
+        "abilities": [
+          "Defiant Avoid"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 10,
@@ -1034,6 +1382,14 @@
         "Axefaire",
         "Avoid +10"
       ],
+      "mastery": {
+        "abilities": [
+          "Defiant Critical"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 15,
@@ -1071,6 +1427,14 @@
         "Swordfaire",
         "Anima Tomefaire"
       ],
+      "mastery": {
+        "abilities": [
+          "Warding Blow"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 10,
@@ -1100,6 +1464,14 @@
         "Lancefaire",
         "Axefaire"
       ],
+      "mastery": {
+        "abilities": [
+          "Defiant Defense"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 30,
         "str": 10,
@@ -1138,6 +1510,14 @@
         "Bowfaire",
         "Bowrange +2"
       ],
+      "mastery": {
+        "abilities": [
+          "Defiant Speed"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -1175,6 +1555,14 @@
         "Anima Tomefaire",
         "Dark Tomefaire"
       ],
+      "mastery": {
+        "abilities": [
+          "Seal Resistance"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 5,
@@ -1214,6 +1602,14 @@
         "Light Tomefaire",
         "Light Magic Heal +10"
       ],
+      "mastery": {
+        "abilities": [
+          "Defiant Resistance"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -1252,6 +1648,14 @@
         "Axefaire",
         "Critical +20"
       ],
+      "mastery": {
+        "abilities": [
+          "Quick Riposte"
+        ],
+        "combatarts": [
+          "War Hero’s Strike"
+        ]
+      },
       "growths": {
         "hp": 40,
         "str": 15,
@@ -1281,6 +1685,14 @@
         "Dark Magic Uses x2",
         "Light Magic Uses x2"
       ],
+      "mastery": {
+        "abilities": [
+          "Defiant Magic"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -1310,6 +1722,14 @@
         "Stealth",
         "Lucky Seven"
       ],
+      "mastery": {
+        "abilities": [
+          "Duelist's Blow"
+        ],
+        "combatarts": [
+          "Foul Play"
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -1339,6 +1759,14 @@
         "Unarmed Combat",
         "Heal"
       ],
+      "mastery": {
+        "abilities": [
+          "Brawl Avoid +20"
+        ],
+        "combatarts": [
+          "Pneuma Gale"
+        ]
+      },
       "growths": {
         "hp": 40,
         "str": 10,
@@ -1369,6 +1797,14 @@
         "Anima Tomefaire",
         "Transmute"
       ],
+      "mastery": {
+        "abilities": [
+          "Transmute"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 20,
         "str": 0,
@@ -1406,6 +1842,14 @@
         "Anime Magic Range +1",
         "Dark Magic Range +1"
       ],
+      "mastery": {
+        "abilities": [
+          "Uncanny Blow"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 5,
         "str": 0,
@@ -1480,8 +1924,16 @@
       "abilities": [
         "Dark Magic Uses x2",
         "Seal Magic",
-        "Summon"
+        "Bestowal"
       ],
+      "mastery": {
+        "abilities": [
+          "Invocation"
+        ],
+        "combatarts": [
+
+        ]
+      },
       "growths": {
         "hp": 10,
         "str": 0,
@@ -3634,6 +4086,17 @@
       "hidden": false
     },
     {
+      "name": "Defiant Protection",
+      "description": "When user’s HP is <25%, use your highest stat between DEF and RES to reduce damage from all attacks, regardless of if physical or magical damage",
+      "type": "Prompt",
+      "modifiers": {
+        "mdr": "if def > res then 0 else res - def",
+        "pdr": "if res > def then 0 else def - res"
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
       "name": "Weight -5",
       "description": "The combained Weight of equiptment is reduced by 5.",
       "type": "Passive",
@@ -3680,8 +4143,59 @@
       "hidden": true
     },
     {
-      "name": "Innovacation",
+      "name": "Invocation",
       "description": "Instead of moving normally, the user may choose to use their remaining movement to warp to a space adjacent to a phantom they have summoned. The user cannot warp to a space they would not normally be able to occupy.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Hide Piercer",
+      "description": "Monster shields do not mitigate the unit’s damage.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Monster Wrangler",
+      "description": "This unit gets +15% AVO against Monster attacks.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Monster Slayer",
+      "description": "Monster shields do not mitigate the unit’s damage and this unit gets +15% AVO against Monster attacks.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Formation",
+      "description": "Adjacent allied units take 3 less damage in combat.",
+      "type": "Battlefield",
+      "modifiers": {
+        "pdr": 3,
+        "mdr": 3
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Plot Armor",
+      "description": "This unit is immune to critical hits but for a roll of 1.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Master Theif",
+      "description": "Grants +1 skill proficiency or +1 skill expertise.",
       "type": "Passive",
       "modifiers": null,
       "multipliers": null,
@@ -6949,6 +7463,7 @@
       "description": "Sublime Creator Sword only; Might increases based on user’s Magic, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
+        "dyn_pmt": "10 + mag * 0.3",
         "pmt": 10,
         "mmt": 0,
         "hit": 10,
@@ -6973,6 +7488,7 @@
       "description": "Might increases based on user’s Charm.",
       "rank": "Exclusive",
       "modifiers": {
+        "dyn_pmt": "1 + cha * 0.3",
         "pmt": 1,
         "mmt": 0,
         "hit": 0,
@@ -6983,7 +7499,7 @@
         "cost": 2
       },
       "multipliers": {
-        "scale": "mag"
+        "scale": "cha"
       },
       "tags": {
         "astra": null,
@@ -7094,7 +7610,7 @@
       "rank": "C-B",
       "modifiers": {
         "pmt": 2,
-        "dyn_pmt": "hp current_hp - 2 / floor 2 +",
+        "dyn_pmt": "2 + floor(hp - current_hp)/2)",
         "mmt": 0,
         "hit": 0,
         "avo": 0,
@@ -7144,6 +7660,7 @@
       "modifiers": {
         "pmt": 0,
         "mmt": 3,
+        "dyn_mmt": "3 + dex * 0.3",
         "hit": 5,
         "avo": 0,
         "crit": 0,

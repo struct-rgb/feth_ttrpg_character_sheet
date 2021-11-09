@@ -224,7 +224,8 @@
 						{% endif %}
 					{% endfor %}
 				</select>
-				<input id="character-mounted" class="simple-border" onclick="sheet.refreshMounted()" type="checkbox" /> Mounted? <br />
+				<input class="simple-border" type="button" value="Master" onclick="sheet.masterClass()"> <br />
+				<input id="character-mounted" class="simple-border" onclick="sheet.refreshMounted()" type="checkbox" /> Is character mounted? <br />
 				<label for="character-homeland">Homeland</label> <br />
 				<select id="character-homeland" class="simple-border">
 					<option value="adrestia">The Adrestian Republic</option>
@@ -235,6 +236,14 @@
 					<option value="leicester">The Leicester Alliance</option>
 					<option value="other">Other</option>
 				</select> <br />
+				<label for="character-money">Gold Pieces</label> <br />
+				<input
+					id="character-money"
+					name="character-money"
+					class="simple-border"
+					type="number"
+					min="0"
+					value="0" /> <br />
 				<label for="character-description">Description</label> <br />
 				<textarea
 					id="character-description"

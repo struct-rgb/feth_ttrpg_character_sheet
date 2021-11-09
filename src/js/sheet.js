@@ -21,7 +21,7 @@
 
 /* global CACHE */
 
-const VERSION = "1.15.0";
+const VERSION = "1.16.0";
 
 /**
  * Create a compound iterator from a group of iterable values
@@ -32,6 +32,16 @@ function* chain(...iterables) {
 			yield each;
 		}
 	}
+}
+
+/**
+ * Create a shallow copy of an object
+ * @param {Object} original - object to copy
+ * @returns a shallow copy of the original object
+ */
+function copy_object(original) {
+	const copy = {...original};
+	return copy;
 }
 
 class LevelStamp {
@@ -203,6 +213,10 @@ class Sheet {
 
 		/* name */
 		this._input_name        = document.getElementById("character-name");
+
+
+		/* gold pieces */
+		this._input_money       = document.getElementById("character-money");
 
 		this._input_name.onchange = (() => {
 			const charID = this.characters.getActive();
@@ -731,11 +745,35 @@ class Sheet {
 	}
 
 	/**
+	 * Automatically add class mastery benefits to character
+	 */
+	masterClass() {
+		const added = [];
+		for (let key in this.class.mastery) {
+			for (let name of this.class.mastery[key]) {
+				added.push(name);
+				this[key].known.add(name);
+			}
+		}
+		alert("Added the following features:\n"+ added.join(", "));
+	}
+
+	/**
 	 * The character's current weapon triangle effect
 	 * @type {numberS}
 	 */
 	get triangle() {
 		return Number(this._select_triangle.value);
+	}
+
+	/* methods relating to money */
+
+	get money() {
+		return Number(this._input_money.value);
+	}
+
+	set money(value) {
+		this._input_money.value = Number(value);
 	}
 
 	/* methods relating to grades and skill levels */
@@ -1387,6 +1425,7 @@ class Sheet {
 		this.description = char.description;
 		this.hitpoints   = char.hitpoints;
 		this.level       = char.experience;
+		this.money       = char.money || 0;
 		// this.levelups    = char.progression;
 	}
 
@@ -1456,9 +1495,9 @@ class Sheet {
 			homeland    : this.homeland,
 			hitpoints   : this.hitpoints,
 			level       : this.level,
-			growths     : this.growths,
-			statistics  : this.stats,
-			skills      : this.skills,
+			growths     : copy_object(this.growths),
+			statistics  : copy_object(this.stats),
+			skills      : copy_object(this.skills),
 			abilities   : {
 				equipped    : Array.from(this.abilities.equipped.names()),
 				battlefield : Array.from(this.abilities.battlefield.names()),
@@ -1507,7 +1546,7 @@ class Sheet {
 	}
 
 	writeCharacter() {
-		return {
+		const char = {
 			version      : VERSION,
 			name         : this.name,
 			description  : this.description,
@@ -1515,10 +1554,12 @@ class Sheet {
 			homeland     : this.homeland,
 			hitpoints    : this.hitpoints,
 			experience   : this.level,
-			growths      : this.growths,
-			statistics   : this.stats,
-			skills       : this.skills,
+			growths      : copy_object(this.growths),
+			statistics   : copy_object(this.stats),
+			skills       : copy_object(this.skills),
 			// progression  : this.progression,
+
+			money        : this.money,
 
 			/*
 			 * don't save the actual state for class since this will be
@@ -1543,6 +1584,7 @@ class Sheet {
 				known       : this.equipment.known.getState()
 			}
 		};
+		return char;
 	}
 
 
@@ -1583,6 +1625,7 @@ class Sheet {
 		this.description = "Write your character description here.";
 		this.hitpoints   = 0;
 		this.level       = 0;
+		this.money       = 0;
 	}
 
 	fresh() {

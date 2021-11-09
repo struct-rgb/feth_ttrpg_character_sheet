@@ -69,6 +69,7 @@ class Feature {
 					// if (pfe instanceof Error) throw pfe;
 					// stats[key] = pfe;
 					// console.log(template);
+					stats[key] = 0;
 					break;
 				}
 			}
@@ -338,6 +339,11 @@ class Class extends Feature {
 		this.abilities = template.abilities;
 		this.growths   = Object.freeze(template.growths);
 		this.mount     = template.mount ? new Feature(template.mount) : null;
+		this.mastery   = template.mastery || {};
+
+		/* make sure mastery has all needed subattributes */
+		this.mastery.abilities  = this.mastery.abilities  || [];
+		this.mastery.combatarts = this.mastery.combatarts || [];
 
 		if (new.target === CombatArt) {
 			Object.freeze(this);

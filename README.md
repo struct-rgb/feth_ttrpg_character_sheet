@@ -11,6 +11,14 @@ Currently, the main document must be generated from the [html template](https://
 
 ## Changelog
 
+### Version 1.16.0
+
+  * Class mastery abilities can be automatically added with the "Master" button
+  * Added a field to the sheet to keep track of gold pieces
+  * Added Monster Hunter and Knight Captain classes
+  * Tweaked Cleric and Thief classes
+  * Fixed bug where stats, growth, and skills would stay when changing character
+
 ### Version 1.15.0
 
   * New tab based user inferface for features (Abilities, Combat Arts, etc...) 
