@@ -27,6 +27,7 @@ class MacroBuilder {
 	}
 
 	sum(...args) {
+		console.log(args);
 		const level = [];
 		level.push("[[");
 

@@ -21,7 +21,66 @@
 
 /* global CACHE */
 
-const VERSION = "1.16.0";
+class Version {
+
+	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
+	static CURRENT = new Version("1.17.0");
+
+	constructor(string) {
+		if (string == null) {
+			this.major = 0;
+			this.minor = 0;
+			this.patch = 0;
+		} else {
+			const match = string.match(Version.PATTERN);
+			if (!match) throw new Error("Invalid version string");
+
+			this.major = Number(match[1])
+			this.minor = Number(match[2])
+			this.patch = Number(match[3])
+		}
+	}
+
+	same(that) {
+		if (typeof that === "string") {
+			that = new Version(that);
+		}
+
+		return (
+			   this.major == that.major
+			&& this.minor == that.minor
+			&& this.patch == that.patch
+		);
+	}
+
+	newer(that) {
+		if (typeof that === "string") {
+			that = new Version(that);
+		}
+
+		return (
+			   this.major > that.major
+			|| this.minor > that.minor
+			|| this.patch > that.patch
+		);
+	}
+
+	older(that) {
+		if (typeof that === "string") {
+			that = new Version(that);
+		}
+
+		return (
+			   this.major < that.major
+			|| this.minor < that.minor
+			|| this.patch < that.patch
+		);
+	}
+
+	toString() {
+		return [this.major, this.minor, this.patch].join(".");
+	}
+}
 
 /**
  * Create a compound iterator from a group of iterable values
@@ -132,19 +191,52 @@ class LevelStamp {
 	}
 }
 
+class Cascade {
+
+	constructor(context, dependants, action) {
+		this.context    = context    || null;
+		this.dependants = dependants || [];
+		this.action     = action     || (() => void(0)); 
+	}
+
+	register(context, dependants, action) {
+		this.state      = state;
+		this.action     = action;
+		this.dependants = dependants;
+	}
+
+	cascade() {
+		this.action.call(this, this.state);
+		for (let dependant of this.dependants) {
+			dependant.cascade();
+		}
+	}
+}
+
+class CascadeManager {
+
+	constructor() {
+		
+	}
+
+}
+
 /**
  * Class representing a skill grade
  */
 class Grade {
 
 	static list = [
-		new Grade("E",  0), new Grade("E+",  1),
-		new Grade("D",  2), new Grade("D+",  4),
-		new Grade("C",  8), new Grade("C+", 12),
-		new Grade("B", 18), new Grade("B+", 25),
-		new Grade("A", 32), new Grade("A+", 40),
-		new Grade("S", 50), new Grade("S+", 60), 
+		new Grade("E",  0),  new Grade("E+",  1),
+		new Grade("D",  2),  new Grade("D+",  4),
+		new Grade("C",  8),  new Grade("C+", 16),
+		new Grade("B", 36),  new Grade("B+", 50),
+		new Grade("A", 64),  new Grade("A+", 80),
+		new Grade("S", 150), new Grade("S+", 200), 
 	];
+
+	static budThreshold     = 32;
+	static budThresholdWeak = 25;
 
 	/**
 	 * Converts a number of points to the corresponding letter grade
@@ -152,8 +244,27 @@ class Grade {
 	 * @param {number} points - number of points
 	 * @returns {string} the letter grade
 	 */
-	static for(points) {
-		return Grade.list.reduce((a, b) => b.points > points ? a : b).name;
+	static for(points, skill, aptitude) {
+		const final = points * Grade.muliplier(points, skill, aptitude)
+		return Grade.list.reduce((a, b) => b.points > final ? a : b).name;
+	}
+
+	static muliplier(points, skill, aptitude) {
+		return (
+			(skill == aptitude.budding
+				? (skill == aptitude.weakness
+					? (points >= Grade.budThresholdWeak
+						? 2.0
+						: 0.5)
+					: (points >= Grade.budThreshold
+						? 2.0
+						: 1.0))
+				: (skill == aptitude.talent
+					? 2.0
+					: (skill == aptitude.weakness
+						? 0.5
+						: 1.0)))
+		);
 	}
 
 	/**
@@ -179,23 +290,42 @@ class Sheet {
 	constructor(data) {
 
 		/** @todo MOVE THIS AFTER FIXING PFE COMPILER INIT */
-		this.cache   = {stats: {}, growths: {}};
+		this.cache   = {stats: {}, growths: {}, skills: {}, 
+			aptitude: {
+				budding: null,
+				talent: null,
+				weakness: null,
+			}
+		};
 		this._highID = 0;
 		this.charID  = 0;
 
 		/** @todo MOVE THIS SOMEWHERE BETTER */
 		// PFE_COMPILER = new PostfixCompiler(["current_hp", ...data.stats.names]);
-		CACHE = this.cache.stats;
+		// CACHE = this.cache.stats;
+
+		const compiler = new Expression.Compiler(this.cache.stats)
+		this.compiler  = compiler;
 
 		// set the lookup tables for each feature class
 		for (let each of [Ability, Weapon, CombatArt, Equipment, Class]) {
-			each.setLookupByName(data);
+			each.setLookupByName(data, compiler);
 		}
 
 		// main definition data object
 		this.data = data;
 
+		// console history
+		this.histidx = 0;
+		this.history = [];
+
 		/* define attributes for document elements */
+
+		/* skill points */
+		this._select_talent     = document.getElementById("character-talent");
+		this._select_weakness   = document.getElementById("character-weakness");
+		this._select_budding    = document.getElementById("character-budding");
+		this._skill_total       = document.getElementById("skill-total").firstChild;
 
 		/* level */
 		this._input_level       = document.getElementById("level-input");
@@ -213,7 +343,6 @@ class Sheet {
 
 		/* name */
 		this._input_name        = document.getElementById("character-name");
-
 
 		/* gold pieces */
 		this._input_money       = document.getElementById("character-money");
@@ -308,6 +437,7 @@ class Sheet {
 
 		const myFeatureTitle = ((feature) => feature.title()); 
 		const myFeatureBody  = ((feature) => feature.body());
+		const myTriggers     = ((feature) => feature.dependancies);
 
 		const notebook = new Notebook(document.getElementById("features"));
 		let   inner    = new Notebook();
@@ -315,7 +445,7 @@ class Sheet {
 		/* Ability category */
 
 		let model = new CategoryModel(
-			Ability.kind, Ability.byName, myFeatureTitle, myFeatureBody 
+			Ability.kind, Ability.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 		
 		this.abilities = {};
@@ -375,7 +505,7 @@ class Sheet {
 
 		inner = new Notebook();
 		model = new CategoryModel(
-			CombatArt.kind, CombatArt.byName, myFeatureTitle, myFeatureBody
+			CombatArt.kind, CombatArt.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
 		this.combatarts = {};
@@ -413,7 +543,7 @@ class Sheet {
 		/* Weapon category */
 
 		model = new CategoryModel(
-			Weapon.kind, Weapon.byName, myFeatureTitle, myFeatureBody
+			Weapon.kind, Weapon.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
 		this.weapons = {};
@@ -432,7 +562,7 @@ class Sheet {
 		/* Equipment category */
 
 		model = new CategoryModel(
-			Equipment.kind, Equipment.byName, myFeatureTitle, myFeatureBody
+			Equipment.kind, Equipment.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
 		this.equipment = {};
@@ -448,12 +578,17 @@ class Sheet {
 		}));
 		notebook.add("Equipment", this.equipment.known.root);
 
+		/* get the macro builder and shove it into a tab */
+		const builder = document.getElementById("macro-builder");
+		builder.remove();
+		notebook.add("Macros", builder);
+
 		notebook.add("(Hide)", document.createElement("div"));
 		notebook.active = "(Hide)";
 
 		this.myCharMap = new Map();
 		model          = new CategoryModel(
-			"characters", this.myCharMap, (x) => x.name, (x) => x.description 
+			"characters", this.myCharMap, (x) => x.name, (x) => x.description, () => []
 		);
 
 		this.characters = new SingleActiveCategory(model, {
@@ -470,6 +605,56 @@ class Sheet {
 
 		this.fresh();
 	}
+
+	console(event) {
+
+		if (event.keyCode == 13) {
+        	
+        	const inp  = document.getElementById("generator-console");
+        	const out  = document.getElementById("generator-output");
+
+        	try {
+
+				const expression = this.compiler.compile(inp.value);
+				console.log(expression);
+				out.value = [
+					"value: ", expression.exec(), "\n",
+					"input: ", expression.source, "\n",
+					"macro: ", expression.macro, "\n",
+				].join("");
+
+				this.history.push(inp.value);
+				this.histidx = this.history.length - 1;
+				inp.value    = "";
+
+			} catch (e) {
+				if (e instanceof Expression.CompilationError) {
+					console.error(inp.value, e);
+					out.value = [
+						inp.value, "\n", e
+					].join("");
+				} else {
+					throw e;
+				}
+			}
+
+        } else if (event.keyCode == 38) {
+        	
+        	const inp  = document.getElementById("generator-console");
+        	inp.value  = this.history[this.histidx];
+        	if (this.histidx > 0) --this.histidx;
+
+        } else if (event.keyCode == 40) {
+
+        	const inp  = document.getElementById("generator-console");
+        	inp.value  = this.history[this.histidx];
+        	if (this.histidx < this.history.length - 1) ++this.histidx;
+
+        } else {
+        	// do nothing
+        }
+
+    }	
 
 	/* methods relating to adding definitions */
 
@@ -680,6 +865,9 @@ class Sheet {
 			this._output_hitpoints.value = this.hitpoints;
 			this.cache.stats.current_hp  = this.hitpoints; 
 		}
+
+		this.combatarts.equipped.trigger("current_hp");
+		this.combatarts.known.trigger("current_hp");
 	}
 
 	/**
@@ -778,6 +966,30 @@ class Sheet {
 
 	/* methods relating to grades and skill levels */
 
+	get talent() {
+		return this._select_talent.value;
+	}
+
+	set talent(value) {
+		this._select_talent.value = value;
+	}
+
+	get weakness() {
+		return this._select_weakness.value;
+	}
+
+	set weakness(value) {
+		this._select_weakness.value = value;
+	}
+
+	get budding() {
+		return this._select_budding.value;
+	}
+
+	set budding(value) {
+		this._select_budding.value = value;
+	}
+
 	/**
 	 * Compute and display the letter grade for a single skill
 	 * @param {string} skill - name of the skill
@@ -785,7 +997,13 @@ class Sheet {
 	refreshGrade(name) {
 		const base   = "skill-" + name;
 		const points = Number(document.getElementById(base).value);
-		const grade  = Grade.for(points);
+		const cached = this.cache.skills[name] || 0;
+		const diff   = points - cached;
+		const grade  = Grade.for(points, name, this);
+
+		const total  = this._skill_total;
+		total.data   = Number(total.data) + diff 
+		this.cache.skills[name] = points;
 
 		this.skills[name] = points;
 		document.getElementById(base + "-grade").textContent = grade;
@@ -863,6 +1081,10 @@ class Sheet {
 			display.low     = Math.floor(this.cache.stats.hp / 4) + 1;
 			this.refreshHealthBar();
 		}
+
+		this.combatarts.equipped.trigger(name);
+		this.combatarts.known.trigger(name);
+		this.weapons.known.trigger(name);
 
 		this.refreshSecondaryStats();
 	}
@@ -1000,30 +1222,20 @@ class Sheet {
 			);
 
 		case "pmt": {
-			const scale = art.multiplier("scale");
 			return Math.max(
 				Math.floor(
 					(this.cache.stats.str
 						+ (art.isMagicDamage()
 							? 0
 							: weapon.modifier(second) + art.modifier(second))
-						+ (scale != 1
-							? Math.floor(this.cache.stats[scale] * 0.3)
-							: 0)
-						+ (art.tag("vengeance")
-							? Math.floor(
-								(-this.hitpoints + this.cache.stats.hp) / 2)
-							: 0)
 						+ equip.modifier(second)
 						+ this.abilityModifer(second))
-					* this.multiplier(weapon)
-					* (art.tag("astra") ? 0.3 : 1.0)),
+					* this.multiplier(weapon)),
 				0,
 			);
 		}
 
 		case "mmt": {
-			const scale = art.multiplier("scale");
 			return Math.max(
 				Math.floor(
 					((this.cache.stats.mag
@@ -1034,9 +1246,6 @@ class Sheet {
 						+ (weapon.isMagicDamage()
 							? art.higherMight()
 							: art.modifier(second))
-						+ (scale != 1
-							? Math.floor(this.cache.stats[scale] * 0.3)
-							: 0)
 						+ equip.modifier(second)
 						+ this.abilityModifer(second))
 					* this.multiplier(weapon)),
@@ -1151,9 +1360,10 @@ class Sheet {
 			return;
 		}
 
-		const hardcode = confirm(
-			"Hardcode stats? (If yes, you need new macros every level)"
-		);
+		// const hardcode = confirm(
+		// 	"Hardcode stats? (If yes, you need new macros every level)"
+		// );
+		const hardcode = document.getElementById("generator-hardcode").checked;
 
 		const m = new MacroBuilder(this.name);
 
@@ -1162,6 +1372,8 @@ class Sheet {
 		const art       = CombatArt.get(this.combatarts.equipped.getActive());
 		const isMagic   = weapon.isMagicDamage() || art.isMagicDamage();
 		const prowess   = weapon.getBestProwessOf(this.abilities.equipped);
+
+		// console.log(prowess);
 
 		const createPrompts = (...stats) => {
 			let prompts = [];
@@ -1225,7 +1437,7 @@ class Sheet {
 					if (weapon.tag("healing") != ability.tag("healing")) {
 						continue;
 					}
-					console.log(ability);
+					// console.log(ability);
 
 					passives.push(ability.modifier(stat));
 				}
@@ -1305,7 +1517,9 @@ class Sheet {
 								: m.character("Str"))),
 						weapon.higherMight(),
 						(art != CombatArt.EMPTY
-							? art.higherMight()
+							? (hardcode
+								? art.higherMight()
+								: art.higherMightMacro())
 							: null),
 						(isMagic
 							? createPassives("mmt")
@@ -1342,30 +1556,35 @@ class Sheet {
 					(prowess
 						? prowess.modifier("avo")
 						: null),
+					// m.prompt("Terrain Effect?",
+					// 		"Neutral",   0,
+					// 		"Forest",   15),
 					createPassives("avo"),
 					createPrompts("spd", "avo")))
-			// .row("Defense",
-			// 	m.sum(
-			// 		(hardcode
-			// 			? this.cache.stats.def
-			// 			: m.character("Def"),
-			// 		createPassives("pdr"),
-			// 		createPrompts("def", "pdr"))))
-			// .row("Resistance",
-			// 	m.sum(
-			// 		(hardcode
-			// 			? this.cache.stats.res
-			// 			: m.character("Res"),
-			// 		createPassives("mdr"),
-			// 		createPrompts("res", "mdr"))))
-			// .row("Speed",
-			// 	m.sum(
-			// 		(hardcode
-			// 			? this.cache.stats.spd
-			// 			: m.character("Spd"))))
+			.row("Defense",
+				m.sum(
+					(hardcode
+						? this.cache.stats.def
+						: m.character("Def")),
+					createPassives("pdr"),
+					createPrompts("def", "pdr")))
+			.row("Resistance",
+				m.sum(
+					(hardcode
+						? this.cache.stats.res
+						: m.character("Res")),
+					createPassives("mdr"),
+					createPrompts("res", "mdr")))
+			.row("Speed",
+				m.sum(
+					(hardcode
+						? this.cache.stats.spd
+						: m.character("Spd")),
+					createPassives("spd"),
+					createPrompts("spd")))
 		);
 
-		console.log(this.cache.stats);
+		// console.log(this.cache.stats);
 		
 		const macro = m.macro();
 		console.log(macro);
@@ -1375,10 +1594,72 @@ class Sheet {
 	readCharacter(char) {
 		// console.log(char);
 
-		if (!("version" in char) || char.version == "1.12.0") {
+		const version = new Version(char.version);
+
+		if (version.older("1.13.0")) {
 			this.readCharacter_v1_13_0(char);
 			return;
 		}
+
+		if (version.older("1.17.0")) {
+			this.readCharacter_v1_16_0(char);
+			return
+		}
+
+		this.class = Class.get(char.class);
+		if (this.class.hasMount()) {
+			this._input_mounted.checked = true;
+		}
+
+		document.getElementById("character-class").value = char.class;
+
+		// minor bookeeping and intialization of data structures
+		for (let feature of [Ability, CombatArt, Weapon, Equipment]) {
+			for (let category in this[feature.kind]) {
+				if (category == "class") continue;
+				this[feature.kind][category].setState(
+					char[feature.kind][category]
+				);
+			}
+		}
+
+		// fill the statistics boxes
+		for (let statistic of this.data.stats.names) {
+			document.getElementById(statistic + "-base").value =
+				char.statistics[statistic];
+
+			if (statistic == "mov") continue;
+
+			document.getElementById(statistic + "-growth-base").value =
+				char.growths[statistic];
+		}
+
+		// fill the skills boxes
+		for (let skill of this.data.skills) {
+			document.getElementById("skill-" + skill).value =
+				char.skills[skill];
+		}
+
+		this.talent   = char.talent   || "Axes";
+		this.weakness = char.weakness || "Axes";
+		this.budding  = char.budding  || "Axes";
+
+		this.refreshClass(char.class_active);
+		this.refreshAllStats();
+		this.refreshGrades();
+		this.refreshLevel();
+
+		// fill the "character and backstory" section entries
+		this.name        = char.name;
+		this.homeland    = char.homeland;
+		this.description = char.description;
+		this.hitpoints   = char.hitpoints;
+		this.level       = char.experience;
+		this.money       = char.money || 0;
+		// this.levelups    = char.progression;
+	}
+
+	readCharacter_v1_16_0(char) {
 
 		this.class = Class.get(char.class);
 		if (this.class.hasMount()) {
@@ -1486,36 +1767,6 @@ class Sheet {
 		this.level       = char.level;
 	}
 
-	/** @todo remove when version is finalized */
-	writeCharacter_v1_13_0() {
-		return {
-			name        : this.name,
-			description : this.description,
-			class       : this.class.name,
-			homeland    : this.homeland,
-			hitpoints   : this.hitpoints,
-			level       : this.level,
-			growths     : copy_object(this.growths),
-			statistics  : copy_object(this.stats),
-			skills      : copy_object(this.skills),
-			abilities   : {
-				equipped    : Array.from(this.abilities.equipped.names()),
-				battlefield : Array.from(this.abilities.battlefield.names()),
-				known       : Array.from(this.abilities.known.names())
-			},
-			combatarts  : {
-				equipped    : Array.from(this.combatarts.equipped.names()),
-				known       : Array.from(this.combatarts.known.names())
-			},
-			weapons     : {
-				known       : Array.from(this.weapons.known.names())
-			},
-			equipment   : {
-				known       : Array.from(this.equipment.known.names())
-			}
-		};
-	}
-
 	async getProgression() {
 		const buffer = LevelStamp.packBlock(this.levelups);
 		
@@ -1547,7 +1798,7 @@ class Sheet {
 
 	writeCharacter() {
 		const char = {
-			version      : VERSION,
+			version      : Version.CURRENT.toString(),
 			name         : this.name,
 			description  : this.description,
 			class        : this.class.name,
@@ -1557,6 +1808,9 @@ class Sheet {
 			growths      : copy_object(this.growths),
 			statistics   : copy_object(this.stats),
 			skills       : copy_object(this.skills),
+			talent       : this.talent,
+			weakness     : this.weakness,
+			budding      : this.budding,
 			// progression  : this.progression,
 
 			money        : this.money,
@@ -1626,6 +1880,10 @@ class Sheet {
 		this.hitpoints   = 0;
 		this.level       = 0;
 		this.money       = 0;
+
+		this.talent   = "Axes";
+		this.weakness = "Axes";
+		this.budding  = "Axes";
 	}
 
 	fresh() {

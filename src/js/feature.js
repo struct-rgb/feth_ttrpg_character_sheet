@@ -5,7 +5,53 @@
 
 /* global PostfixExpression */
 
-let CACHE, PFE_COMPILER;
+class FeatureStore {
+
+	constructor(compiler) {
+		this.compiler   = compiler;
+		this.namespaces = new Map();
+	}
+
+	has(namespace, name) {
+		return (
+			namespace
+				? this.namespace.has(namespace)
+					? name
+						? this.namespaces.get(namespace).has(name)
+						: true
+					: false
+				: false
+		);
+	}
+
+	set(namespace, population) {
+
+		if (!this.namespaces.has(namespace)) {
+			this.namespaces.set(namespace, {
+				type : type,
+				map  : new Map(),
+			});
+		}
+
+		const ns = this.namespaces.get(namespace);
+
+		ns.clear()
+		for (let template of population) {
+			const instance = new type(template, this.cache);
+			ns.set(instance.name, instance);
+		}
+	}
+
+	get(namespace, name) {
+		return (
+			namespace
+				? name
+					? this.namespaces.get(namespace).get(name)
+					: this.namespaces.get(namespace)
+				: null
+		);
+	}
+}
 
 /**
  * A class to represent customization features that modify a unit's statistics.
@@ -39,48 +85,73 @@ class Feature {
 	 * @default
 	 * @private
 	 */
-	static STATS_ATTRIBUTES = Object.freeze(["modifiers", "multipliers"]);
+	static STATS_ATTRIBUTES = Object.freeze([
+		Object.freeze({key: "modifiers", default: 0}),
+		Object.freeze({key: "multipliers", default: 1}),
+	]);
 
 	/**
 	 * Create a feature from a template object
 	 */
-	constructor(template) {
-		this.name        = template.name || "";
-		this.description = template.description || "";
-		this.type        = template.type || "";
-		// this.modifiers   = Object.freeze(template.modifiers || Feature.EMPTY_OBJECT);
-		// this.multipliers = Object.freeze(template.multipliers || Feature.EMPTY_OBJECT);
-		this.tags        = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
-		this.hidden      = template.hidden || false;
+	constructor(template, compiler) {
+		this.name         = template.name || "";
+		this.description  = template.description || "";
+		this.type         = template.type || "";
+		this.tags         = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
+		this.hidden       = template.hidden || false;
+		this.dependancies = new Set();
 
+		// compile dynamic expressions in the modifiers/multipliers
 		for (let attribute of Feature.STATS_ATTRIBUTES) {
 
-			if (!(attribute in template && template[attribute])) {
-				this[attribute] = Feature.EMPTY_OBJECT;
+			// skip modifiers/multipliers if not defined in the template
+			if (!(attribute.key in template && template[attribute.key])) {
+				this[attribute.key] = Feature.EMPTY_OBJECT;
 				continue;
 			}
 
-			const stats = template[attribute];
+			// either modifiers/multipliers
+			const stats = template[attribute.key];
 
+			// iterate through each element
 			for (let key in stats) {
+
 				const value = stats[key];
-				if (typeof value == "string") {
-					// const pfe = PFE_COMPILER.compile(value, CACHE);
-					// if (pfe instanceof Error) throw pfe;
-					// stats[key] = pfe;
-					// console.log(template);
-					stats[key] = 0;
-					break;
+
+				// see if we need to compile an expression
+				if (typeof value != "string") {
+					continue;
+				}
+
+				// try to compile the expression, if not error and assume default
+				try {
+
+					const expression = compiler.compile(value);
+
+					if (expression.symbols.has(key)) {
+						console.warn(expression, "Potential circular dependacy detected.")
+					}
+
+					stats[key] = expression;
+
+					// add any dependacies to this feature's dependancy list
+					for (let symbol of expression.symbols) {
+						this.dependancies.add(symbol);
+					}
+
+
+				} catch (e) {
+					if (e instanceof Expression.CompilationError) {
+						console.error(value, e);
+						stats[key] = attribute.default;
+					} else {
+						throw e;
+					}
 				}
 			}
 
-			this[attribute] = Object.freeze(stats);
+			this[attribute.key] = Object.freeze(stats);
 		}
-
-		if (!this.multipliers) {
-			console.log(this);
-		}
-
 		
 		// These objects are just references for value and as such should not
 		// be mutable. If this is not a super() call, freeze the object.
@@ -93,11 +164,11 @@ class Feature {
 	 * Populate the lookup map for this class
 	 * @param {Object} defintions - json game data
 	 */
-	static setLookupByName(iterable) {
+	static setLookupByName(iterable, compiler) {
 
 		// initialize the "empty" feature on first invocation
 		if (this.EMPTY === undefined) {
-			this.EMPTY = new this(this.EMPTY_OBJECT);
+			this.EMPTY = new this(this.EMPTY_OBJECT, compiler);
 		}
 
 		// initialize the map on first invocation
@@ -108,7 +179,7 @@ class Feature {
 		// clear existing values and refill map
 		this.byName.clear();
 		for (let template of iterable[this.kind]) {
-			const instance = new this(template);
+			const instance = new this(template, compiler);
 			this.byName.set(instance.name, instance);
 		}
 	}
@@ -150,12 +221,7 @@ class Feature {
 	 * @returns {number} the modifier for the stat, or 0 if none exists
 	 */
 	modifier(stat) {
-		// return this.modifiers[stat] || 0;
-		if (!this.modifiers[stat]) return 0;
-
-		const value = this.modifiers[stat];
-		// if (value instanceof PostfixExpression) return value.result();
-		return value;
+		return Expression.execute(this.modifiers[stat] || 0);
 	}
 
 	/**
@@ -164,12 +230,23 @@ class Feature {
 	 * @returns {number} the multiplier for the stat, or 1 if none exists
 	 */
 	multiplier(stat) {
-		// return this.multipliers[stat] || 1;
-		if (!this.multipliers[stat]) return 1;
+		return Expression.execute(this.multipliers[stat] || 1);
+	}
 
-		const value = this.multipliers[stat];
-		// if (value instanceof PostfixExpression) return value.result();
-		return value;
+	modifierForUI(stat) {
+		const value = String(this.modifier(stat));
+		if (typeof this.modifiers[stat] == "number") {
+			return value;
+		}
+		return value + "*";
+	}
+
+	multiplierForUI(stat) {
+		const value = String(this.multiplier(stat));
+		if (typeof this.multipliers[stat] == "number") {
+			return value;
+		}
+		return value + "*";
 	}
 
 	/**
@@ -191,8 +268,8 @@ class AttackFeature extends Feature {
 	/**
 	 * Create an AttackFeature from a template object
 	 */
-	constructor(template) {
-		super(template);
+	constructor(template, compiler) {
+		super(template, compiler);
 		this.rank  = template.rank || "";
 
 		// If this is not a super() call, freeze the object.
@@ -208,22 +285,27 @@ class AttackFeature extends Feature {
 	body() {
 		return (
 			(this.higherMight()
-				? "Might: " + this.higherMight() + ", "
+				? "Might: " + this.higherMightForUI() + ", "
+				: "")
+			+ (this.modifier("tiles")
+				? "Tiles: " + this.modifierForUI("tiles") + ", "
 				: "")
 			+ (this.modifier("hit")
-				? "Hit: " + this.modifier("hit") + ", "
+				? "Hit: " + this.modifierForUI("hit") + ", "
 				: "")
 			+ (this.modifier("avo") 
-				? "Avo: " + this.modifier("avo") + ", "
+				? "Avo: " + this.modifierForUI("avo") + ", "
 				: "")
 			+ (this.modifier("crit")
-				? "Crit: " + this.modifier("crit") + ", " : "")
+				? "Crit: " + this.modifierForUI("crit") + ", " : "")
 			+ (this.modifier("cost")
-				? "Cost: " + this.modifier("cost") + ", " : "")
+				? "Cost: " + this.modifierForUI("cost") + ", " : "")
+			+ (this.modifier("uses")
+				? "Uses: " + this.modifierForUI("uses") + ", " : "")
 			+ "Range: "
 				+ (this.modifier("minrng") == this.modifier("maxrng")
-					? this.modifier("minrng")
-					: this.modifier("minrng") + "-" + this.modifier("maxrng"))
+					? this.modifierForUI("minrng")
+					: this.modifierForUI("minrng") + "-" + this.modifierForUI("maxrng"))
 				+ "\n"
 			+ this.description
 		);
@@ -245,6 +327,25 @@ class AttackFeature extends Feature {
 	higherMight() {
 		return Math.max(this.modifier("pmt"), this.modifier("mmt"));
 	}
+
+	higherMightForUI() {
+		if (this.modifier("pmt") > this.modifier("mmt")) {
+			return this.modifierForUI("pmt");
+		}
+		return this.modifierForUI("mmt");
+	}
+
+	/**
+	 * Access the macro expression for the higher might stat for the AttackFeature
+	 * @returns
+	 */
+	 higherMightMacro() {
+	 	return "(" + Expression.macro(
+	 		(this.modifier("pmt") > this.modifier("mmt")
+	 			? this.modifiers.pmt
+	 			: this.modifiers.mmt)
+	 	) + ")";
+	 }
 }
 
 /**
@@ -286,7 +387,7 @@ class Weapon extends AttackFeature {
 		["Bow"         , "Bow Prowess"],
 		["Light Magic" , "Faith"],
 		["Dark Magic"  , "Guile"],
-		["Anima"       , "Reason"],
+		["Anima Magic" , "Reason"],
 		["Other"       , "Other Prowess"],
 	]);
 
@@ -345,7 +446,7 @@ class Class extends Feature {
 		this.mastery.abilities  = this.mastery.abilities  || [];
 		this.mastery.combatarts = this.mastery.combatarts || [];
 
-		if (new.target === CombatArt) {
+		if (new.target === Class) {
 			Object.freeze(this);
 		}
 	}
@@ -390,8 +491,8 @@ class Ability extends Feature {
 
 	static kind = "abilities";
 
-	constructor(template) {
-		super(template);
+	constructor(template, compiler) {
+		super(template, compiler);
 		this.weapon = template.weapon || "";
 
 		if (new.target === Ability) {

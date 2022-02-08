@@ -11,6 +11,31 @@ Currently, the main document must be generated from the [html template](https://
 
 ## Changelog
 
+### Version 1.17.0
+
+#### Skill System 
+
+  * Modified skill grade thresholds to suit new values
+  * Added Talent, Weakness, and Budding Talent options
+  * Skills now track total number of points
+
+#### Weapons
+
+  * Added more of the missing weapons from the base game
+  * Made some previously hidden options visible again
+  * Added O.B.R.'s Homebrew spells to the list
+
+#### Misc
+  * Overhauled the stat calculation system
+  * Dynamic values for combat arts and spells now display correctly
+  * Macros now show Def, Res, and Spd when attacking
+  * Moved macro builder into a different tab
+  * Added tiny calculator console into the macro tab
+
+#### Bugfixes
+  * Fixed bug where Reason Prowess was not added to Anima Magic macros
+  * Fixed bug where active weapon persisted invisibly when changing character
+
 ### Version 1.16.0
 
   * Class mastery abilities can be automatically added with the "Master" button

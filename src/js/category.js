@@ -260,14 +260,15 @@ class CategoryModel {
 	 * Create new model
 	 * @param {string} name - an identifer for this model
 	 * @param {Map} lookup - a map from ids to objects
-	 * @param {Function} makeTitle - function that produces a title string for a CategoryElement from an object
-	 * @param {Function} makeBody - function that produces a description string for a CategoryElement from an object
+	 * @param {Function} getTitle - function that produces a title string for a CategoryElement from an object
+	 * @param {Function} getBody - function that produces a description string for a CategoryElement from an object
 	 */
-	constructor (name, lookup, makeTitle, makeBody) {
-		this.name    = name;
-		this._lookup = lookup;
-		this._title  = makeTitle;
-		this._body   = makeBody;
+	constructor (name, lookup, getTitle, getBody, getTriggers) {
+		this.name      = name;
+		this._lookup   = lookup;
+		this._title    = getTitle;
+		this._body     = getBody;
+		this._triggers = getTriggers;
 	}
 
 	/* delegate access methods to map; only access ones though, Category should not mutate its model */
@@ -296,6 +297,10 @@ class CategoryModel {
 
 	description(key) {
 		return this._body.call(undefined, this._lookup.get(key));
+	}
+
+	triggers(key) {
+		return this._triggers.call(undefined, this._lookup.get(key));
 	}
 }
 
@@ -348,6 +353,7 @@ class Category {
 		this.prev        = null;
 		this.elements    = new Map();
 		this.root        = document.createElement("div");
+		this.triggers    = new Map();
 
 		// go about building the DOM nodes
 		if (!this.selectable) {
@@ -534,6 +540,7 @@ class Category {
 			key         : name,
 			title       : this.model.title(name),
 			description : this.model.description(name),
+			triggers    : this.model.triggers(name),
 			reorderable : this.reorderable,
 			removable   : this.removable,
 			onremove    : (() => {
@@ -546,6 +553,7 @@ class Category {
 
 		this.elements.set(name, element);
 		element.addTo(this.dl);
+		this._addTriggers(name);
 		return true;
 	}
 
@@ -571,9 +579,65 @@ class Category {
 
 		this.elements.get(name).remove();
 		this.elements.delete(name);
+		this._deleteTriggers(name);
 
 		if (this.size == 0) {
 			this._textnode.data = this.empty;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Refreshes the contents of an element with the given name, if present.
+	 * @param {string} name - the name of the element to refreshed
+	 * @returns {boolean} true if an element was refreshed, else false
+	 */
+	refresh(name) {
+
+		// can't refresh an element that isn't present
+		if (!this.elements.has(name)) return false;
+
+		const element       = this.elements.get(name);
+		// element.title       = this.model.title(name);
+		element.description = this.model.description(name);
+
+		return true;
+	}
+
+	_addTriggers(name) {
+		for (let trigger of this.model.triggers(name)) {
+
+			if (this.triggers.has(trigger)) {
+				this.triggers.get(trigger).add(name);
+			} else {
+				this.triggers.set(trigger, new Set([name]))
+			}
+
+		}
+	}
+
+	_deleteTriggers(name) {
+
+		for (let trigger of this.model.triggers(name)) {
+
+			if (!this.triggers.has(trigger)) continue;
+			const triggers = this.triggers.get(trigger);
+			triggers.delete(name);
+
+			if (triggers.size == 0) {
+				this.triggers.delete(trigger);
+			}
+			
+		}
+	}
+
+	trigger(trigger) {
+
+		if (!this.triggers.has(trigger)) return false;
+
+		for (let name of this.triggers.get(trigger)) {
+			this.refresh(name);
 		}
 
 		return true;
@@ -690,6 +754,7 @@ class SingleActiveCategory extends Category {
 				this.active    = null;
 			} else {
 				const previous = this.elements.get(this.active);
+				console.log(this.active, previous);
 				previous.active = false;
 				element.active = true;
 				this.active = name;
@@ -721,8 +786,9 @@ class SingleActiveCategory extends Category {
 
 	setState(state) {
 		const {added, active} = state;
-		super.setState(added);
+		this.clearActive()
 
+		super.setState(added);
 		if (active !== null && this.elements.has(active)) {
 			this.toggleActive(active, true);
 		}

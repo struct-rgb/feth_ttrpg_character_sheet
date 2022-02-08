@@ -7,7 +7,7 @@
 
 	<link href="./src/css/style.css" rel="stylesheet" />
 	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
-	<!-- <script type="text/javascript" src="./src/js/postfix.js"></script> -->
+	<script type="text/javascript" src="./src/js/expression.js"></script>
 	<script type="text/javascript" src="./src/js/notebook.js"></script>
 	<script type="text/javascript" src="./src/js/category.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
@@ -18,6 +18,10 @@
 
 	<div class="container">
 		<div class="span-1"> <!-- SKILL SECTION -->
+
+
+
+
 			<table>
 				<tbody>
 					
@@ -252,8 +256,96 @@
 						</td>
 					</tr>
 					
+
+					<tr>
+						<th>Total</th>
+						<td>
+							<span id="skill-total" class="computed">0</span>
+						</td>
+					</tr>
 				</tbody>
 			</table>
+
+			<label for="character-talent">Talent</label>
+			<select id="character-talent" class="simple-border" oninput="sheet.refreshGrades()">
+				
+				<option value="Axes">Axes</option>
+				
+				<option value="Swords">Swords</option>
+				
+				<option value="Lances">Lances</option>
+				
+				<option value="Brawl">Brawl</option>
+				
+				<option value="Archery">Archery</option>
+				
+				<option value="Reason">Reason</option>
+				
+				<option value="Faith">Faith</option>
+				
+				<option value="Guile">Guile</option>
+				
+				<option value="Armor">Armor</option>
+				
+				<option value="Riding">Riding</option>
+				
+				<option value="Flying">Flying</option>
+				
+			</select>
+
+			<label for="character-weakness">Weakness</label>
+			<select id="character-weakness" class="simple-border" oninput="sheet.refreshGrades()">
+				
+				<option value="Axes">Axes</option>
+				
+				<option value="Swords">Swords</option>
+				
+				<option value="Lances">Lances</option>
+				
+				<option value="Brawl">Brawl</option>
+				
+				<option value="Archery">Archery</option>
+				
+				<option value="Reason">Reason</option>
+				
+				<option value="Faith">Faith</option>
+				
+				<option value="Guile">Guile</option>
+				
+				<option value="Armor">Armor</option>
+				
+				<option value="Riding">Riding</option>
+				
+				<option value="Flying">Flying</option>
+				
+			</select>
+
+			<label for="character-budding">Budding</label>
+			<select id="character-budding" class="simple-border" oninput="sheet.refreshGrades()">
+				
+				<option value="Axes">Axes</option>
+				
+				<option value="Swords">Swords</option>
+				
+				<option value="Lances">Lances</option>
+				
+				<option value="Brawl">Brawl</option>
+				
+				<option value="Archery">Archery</option>
+				
+				<option value="Reason">Reason</option>
+				
+				<option value="Faith">Faith</option>
+				
+				<option value="Guile">Guile</option>
+				
+				<option value="Armor">Armor</option>
+				
+				<option value="Riding">Riding</option>
+				
+				<option value="Flying">Flying</option>
+				
+			</select>
 		</div>
 		<div class="span-2"> <!-- STATISTICS AND GROWTHS -->
 			<table>
@@ -980,28 +1072,6 @@
 					name="character-description"
 					class="simple-border"
 					>Write your character description here.</textarea>
-				<br />
-
-				<details>
-					<summary>Experimental Features</summary>
-					These features are experimental and may have bugs.
-					<br />
-					<input
-						type="button"
-						class="simple-border"
-						value="Create Blurb"
-						onclick="sheet.blurb()" />
-					<input
-						type="button"
-						class="simple-border"
-						value="Create Macro"
-						onclick="sheet.macro()" />
-
-					<br />
-					<textarea id="generator-output" class="simple-border">
-						
-					</textarea>
-				</details>
 			</div>
 			<div class="span-4"> <!-- LIST OF CHARACTERS -->
 
@@ -1032,6 +1102,46 @@
 		
 		<div id="features" class="span-1-3"> <!-- FEATURES -->
 			
+		</div>
+
+		<!-- This gets moved to a tab in the main script -->
+		<div id="macro-builder">
+			<input
+				type="button"
+				class="simple-border"
+				value="Create Blurb"
+				onclick="sheet.blurb()" />
+			<input
+				type="button"
+				class="simple-border"
+				value="Create Macro"
+				onclick="sheet.macro()" />
+
+			<br />
+
+			<input
+				id="generator-hardcode"
+				type="checkbox"
+				class="simple-border"
+				checked />
+
+			<label for="generator-hardcode">
+				Hardcode Stats? (If stats change you need to recreate the macros)
+			</label>
+
+			<br />
+
+			<textarea id="generator-output" class="simple-border">
+				
+			</textarea>
+
+			<br />
+
+			<input
+				id="generator-console"
+				class="simple-border"
+				onkeydown="sheet.console(event)"
+				type="text" />
 		</div>
 	</div>
 
@@ -1411,7 +1521,8 @@
       ],
       "mastery": {
         "abilities": [
-          "Steal"
+          "Steal",
+          "Master Thief"
         ],
         "combatarts": [
           
@@ -2877,7 +2988,7 @@
       "name": "Valkyrie",
       "abilities": [
         "Canto",
-        "Anime Magic Range +1",
+        "Anima Magic Range +1",
         "Dark Magic Range +1"
       ],
       "mastery": {
@@ -4206,7 +4317,7 @@
       "description": "If unit initiates combat, grants AS +6 during combat.",
       "type": "Prompt",
       "modifiers": {
-        "as": 6
+        "spd": 6
       },
       "multipliers": null,
       "hidden": false
@@ -4243,6 +4354,16 @@
       "hidden": false
     },
     {
+      "name": "Seal Strength",
+      "description": "If unit damages foe during combat, foe suffers Str -6 for 1 turn after combat.",
+      "type": "Battlefield",
+      "modifiers": {
+        "str": -6
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
       "name": "Seal Defense",
       "description": "If unit damages foe during combat, foe suffers Def -6 for 1 turn after combat.",
       "type": "Battlefield",
@@ -4268,6 +4389,16 @@
       "type": "Battlefield",
       "modifiers": {
         "mag": -6
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Seal Movement",
+      "description": "If unit damages foe during combat, foe suffers Mov -1 for 1 turn after combat.",
+      "type": "Battlefield",
+      "modifiers": {
+        "mov": -1
       },
       "multipliers": null,
       "hidden": false
@@ -4938,17 +5069,6 @@
       "hidden": false
     },
     {
-      "name": "Can't Keep Up?",
-      "description": "If the user hits with an attack, grants Spd +3 and Str +3 until damaged. Can only activate once per turn.",
-      "type": "Prompt",
-      "modifiers": {
-        "spd": 3,
-        "str": 3
-      },
-      "multipliers": null,
-      "hidden": false
-    },
-    {
       "name": "Try Your Best",
       "description": "Allies within 1 space are granted Str +3 and Def +3 during combat.",
       "type": "Battlefield",
@@ -4958,47 +5078,6 @@
       },
       "multipliers": null,
       "hidden": false
-    },
-    {
-      "name": "Dead Man's Hand",
-      "description": "Enemies within the user's movement range cannot target allies.",
-      "type": "Passive",
-      "modifiers": null,
-      "multipliers": null,
-      "hidden": false
-    },
-    {
-      "name": "Oskar's Sibling Bond",
-      "description": "While within 2 spaces of Amalia, user's attacks inflicts 2 extra damage",
-      "type": "Passive",
-      "modifiers": {
-        "mmt": 2,
-        "pmt": 2
-      },
-      "multipliers": null,
-      "hidden": true
-    },
-    {
-      "name": "Amalia's Sibling Bond",
-      "description": "While within 2 spaces of Oskar, user reduces damage taken by 2.",
-      "type": "Passive",
-      "modifiers": {
-        "pdr": 2,
-        "mdr": 2
-      },
-      "multipliers": null,
-      "hidden": true
-    },
-    {
-      "name": "Wrathful Empathy",
-      "description": "An any ally within 3 spaces has HP ≤ 50%, grants +4 Mag and +4 Dex",
-      "type": "Prompt",
-      "modifiers": {
-        "mag": 4,
-        "dex": 4
-      },
-      "multipliers": null,
-      "hidden": true
     },
     {
       "name": "Hesitant Prodigy",
@@ -5038,20 +5117,12 @@
       "description": "Inflicts Def -2 and Res -2 when attacked, but grants +4 Spd,",
       "type": "Prompt",
       "modifiers": {
-        "def": -2,
-        "res": -2,
+        "def": -4,
+        "res": -4,
         "spd": 4
       },
       "multipliers": null,
       "hidden": false
-    },
-    {
-      "name": "Zephyr",
-      "description": "This unit always attacks first, even when attacked.",
-      "type": "Passive",
-      "modifiers": null,
-      "multipliers": null,
-      "hidden": true
     },
     {
       "name": "Painless",
@@ -5077,14 +5148,6 @@
       "hidden": false
     },
     {
-      "name": "Bond of Silence",
-      "description": "(Ryan L.: I didn't know how to adapt this one. ThatBardBoi, PM me when you decide how this works.)",
-      "type": "Passive",
-      "modifiers": null,
-      "multipliers": null,
-      "hidden": true
-    },
-    {
       "name": "Primed for Danger",
       "description": "While Clara is at 80% HP or above, she attacks first in combat.",
       "type": "Passive",
@@ -5093,8 +5156,8 @@
       "hidden": false
     },
     {
-      "name": "Braced Blade",
-      "description": "If unit takes no action except Wait, grants Str +4 for 1 turn.",
+      "name": "Self Restraint",
+      "description": "When this unit does no make an attack on player phase, abilities that activate 'if unit initiates combat' instead activate 'if foe initiates combat' and grants +4 STR during combat for the following enemy phase.",
       "type": "Prompt",
       "modifiers": {
         "str": 4
@@ -5111,7 +5174,7 @@
         "mag": 4
       },
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Blessed Fortitude",
@@ -5135,14 +5198,24 @@
       "hidden": false
     },
     {
+      "name": "Weight -3",
+      "description": "The threshold to double this character is increased by 3.",
+      "type": "Passive",
+      "modifiers": {
+        "weight": -3
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
       "name": "Weight -5",
-      "description": "The combained Weight of equiptment is reduced by 5.",
+      "description": "The threshold to double this character is increased by 5.",
       "type": "Passive",
       "modifiers": {
         "weight": -5
       },
       "multipliers": null,
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Umbral Leech",
@@ -5232,7 +5305,7 @@
       "hidden": false
     },
     {
-      "name": "Master Theif",
+      "name": "Master Thief",
       "description": "Grants +1 skill proficiency or +1 skill expertise.",
       "type": "Passive",
       "modifiers": null,
@@ -5249,7 +5322,7 @@
     },
     {
       "name": "Infernal Chorus",
-      "description": "Enables user to summon and control more than one phantom at once.",
+      "description": "Enables user to summon and control more than one phantom at once, however only one can still benefit from Bestowal.",
       "type": "Passive",
       "modifiers": null,
       "multipliers": null,
@@ -5257,7 +5330,7 @@
     },
     {
       "name": "Hero Complex",
-      "description": "Increases Might of combat arts by +5 when targeted foe is adjacent to an ally.",
+      "description": "Increases Might of combat arts by +5 when targeted foe is in range to attack an ally.",
       "type": "Prompt",
       "modifiers": {
         "pmt": 5,
@@ -5291,12 +5364,41 @@
       "hidden": false
     },
     {
-      "name": "Dedicated Sniper",
+      "name": "Opportunist",
       "description": "Damage increases by 5 if this unit initiates combat and the foe cannot counterattack.",
       "type": "Prompt",
       "modifiers": {
         "pmt": 5,
         "mmt": 5
+      },
+      "multipliers": null,
+      "hidden": true
+    },
+    {
+      "name": "Eclipse",
+      "description": "At the start of every other turn, Unit and adjacent allies heal 10% of their Max HP. While Unit's HP => 50%, Unit and foe cannot make follow-up attacks during combat.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Reckless Charger",
+      "description": "If Willifort moves at least 4 spaces on his turn, he may attack as if he had Darting Blow (+6 SPD). In addition, he gets +1 MOVE, but the additional space must be used to make an attack. Willifort cannot use Reckless Charger on the same target more than once in succession.",
+      "type": "Passive",
+      "modifiers": {
+        "spd": 6,
+        "mov": 1
+      },
+      "multipliers": null,
+      "hidden": false
+    },
+    {
+      "name": "Spell Sink",
+      "description": "This unit gains +5 resistance against spells, and spells cast on this unit have their uses reduced by twice the normal amount.",
+      "type": "Prompt",
+      "modifiers": {
+        "res": 5
       },
       "multipliers": null,
       "hidden": false
@@ -5317,7 +5419,7 @@
       "type": "Passive",
       "modifiers": null,
       "multipliers": null,
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Mystical Bypass",
@@ -5328,7 +5430,7 @@
         "def": 2,
         "res": 2
       },
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Other Prowess Lv 1",
@@ -5340,7 +5442,7 @@
         "cravo": 5
       },
       "multipliers": null,
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Other Prowess Lv 2",
@@ -5352,7 +5454,7 @@
         "cravo": 6
       },
       "multipliers": null,
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Other Prowess Lv 3",
@@ -5364,7 +5466,7 @@
         "cravo": 7
       },
       "multipliers": null,
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Other Prowess Lv 4",
@@ -5376,7 +5478,7 @@
         "cravo": 8
       },
       "multipliers": null,
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Other Prowess Lv 5",
@@ -5388,7 +5490,7 @@
         "cravo": 10
       },
       "multipliers": null,
-      "hidden": true
+      "hidden": false
     }
   ],
   "weapons": [
@@ -5681,6 +5783,24 @@
       "hidden": false
     },
     {
+      "name": "Levin Sword",
+      "type": "Sword",
+      "description": "Deals magic-based damage.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Levin Sword+",
       "type": "Sword",
       "description": "Deals magic-based damage.",
@@ -5697,6 +5817,96 @@
         "uses": 0
       },
       "hidden": false
+    },
+    {
+      "name": "Armorslayer",
+      "type": "Sword",
+      "description": "Effective against Armoured foes.",
+      "rank": "D",
+      "modifiers": {
+        "pmt": 8,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Armorslayer+",
+      "type": "Sword",
+      "description": "Effective against Armoured foes.",
+      "rank": "D",
+      "modifiers": {
+        "pmt": 8,
+        "mmt": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 5,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Dagger",
+      "type": "Sword",
+      "description": "No special effect.",
+      "rank": "D",
+      "modifiers": {
+        "pmt": 1,
+        "mmt": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Fan Knife",
+      "type": "Sword",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 3,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Long Dagger",
+      "type": "Sword",
+      "description": "No special effect.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 6,
+        "mmt": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
     },
     {
       "name": "Training Lance",
@@ -5945,6 +6155,60 @@
         "crit": 35,
         "minrng": 1,
         "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Javelin",
+      "type": "Lance",
+      "description": "No special effect.",
+      "rank": "D",
+      "modifiers": {
+        "pmt": 2,
+        "mmt": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Short Spear",
+      "type": "Lance",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 5,
+        "mmt": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
+      "name": "Spear",
+      "type": "Lance",
+      "description": "No special effect.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 8,
+        "mmt": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "cost": 0,
         "uses": 0
       },
@@ -6218,7 +6482,7 @@
         "cost": 0,
         "uses": 0
       },
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Hand Axe",
@@ -6232,11 +6496,47 @@
         "avo": 0,
         "crit": 0,
         "minrng": 1,
-        "maxrng": 1,
+        "maxrng": 2,
         "cost": 0,
         "uses": 0
       },
-      "hidden": true
+      "hidden": false
+    },
+    {
+      "name": "Short Axe",
+      "type": "Axe",
+      "description": "No special effect.",
+      "rank": "C",
+      "modifiers": {
+        "pmt": 8,
+        "mmt": 0,
+        "hit": 65,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+      {
+      "name": "Tomahawk",
+      "type": "Axe",
+      "description": "No special effect.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 12,
+        "mmt": 0,
+        "hit": 60,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
     },
     {
       "name": "Training Bow",
@@ -6617,6 +6917,24 @@
       "hidden": true
     },
     {
+      "name": "Enshroud",
+      "type": "Dark Magic",
+      "description": "Grants Def +7 to the user; effect diminishes with each turn.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": true
+    },
+    {
       "name": "Luna",
       "type": "Dark Magic",
       "description": "Ignores enemy’s Resistance; cannot trigger follow-up attacks.",
@@ -6702,6 +7020,60 @@
         "crit": 10,
         "minrng": 1,
         "maxrng": 2,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": false
+    },
+    {
+      "name": "Vesper",
+      "type": "Dark Magic",
+      "description": "Inflicts Res -5 to foe for 1 turn.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 13,
+        "hit": 75,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 3
+      },
+      "hidden": false
+    },
+    {
+      "name": "Paradox",
+      "type": "Dark Magic",
+      "description": "Inflicts -3 to Dex and Spd to foe for 1 turn. Cannot follow-up.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 14,
+        "hit": 80,
+        "avo": 0,
+        "crit": 10,
+        "minrng": 1,
+        "maxrng": 3,
+        "cost": 0,
+        "uses": 2
+      },
+      "hidden": false
+    },
+    {
+      "name": "Severance",
+      "type": "Dark Magic",
+      "description": "On hit, reduces unit's max by one half, cannot follow up or crit. Can be cured using Restore. Spell can only be earned by players through RP.",
+      "rank": "S",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 60,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 3,
+        "maxrng": 10,
         "cost": 0,
         "uses": 2
       },
@@ -6847,7 +7219,8 @@
         "minrng": 1,
         "maxrng": 2,
         "cost": 0,
-        "uses": 5
+        "uses": 5,
+        "tiles": "floor(mag / 5)"
       },
       "hidden": false
     },
@@ -6884,6 +7257,24 @@
         "maxrng": 2,
         "cost": 0,
         "uses": 6
+      },
+      "hidden": false
+    },
+     {
+      "name": "Frostbite",
+      "type": "Anima Magic",
+      "description": "Inflicts Mov -1 to foe for 1 turn.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 4,
+        "hit": 70,
+        "avo": 0,
+        "crit": 15,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 5
       },
       "hidden": false
     },
@@ -6937,7 +7328,8 @@
         "minrng": 1,
         "maxrng": 2,
         "cost": 0,
-        "uses": -1
+        "uses": -1,
+        "tiles": "floor(mag / 5)"
       },
       "hidden": false
     },
@@ -6955,7 +7347,8 @@
         "minrng": 1,
         "maxrng": 2,
         "cost": 0,
-        "uses": -1
+        "uses": -1,
+        "tiles": "floor(mag / 5)"
       },
       "hidden": false
     },
@@ -7009,7 +7402,8 @@
         "minrng": 1,
         "maxrng": 2,
         "cost": 0,
-        "uses": -1
+        "uses": -1,
+        "tiles": "floor(mag / 5)"
       },
       "hidden": false
     },
@@ -7024,6 +7418,24 @@
         "hit": 80,
         "avo": 0,
         "crit": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "cost": 0,
+        "uses": 1
+      },
+      "hidden": false
+    },
+    {
+      "name": "Niflheim",
+      "type": "Anima Magic",
+      "description": "Magic that also hits targets adjacent to the point of impact. Inflicts Mov -1 to foes for 1 turn. Cannot trigger follow-up attacks.",
+      "rank": "A",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 9,
+        "hit": 65,
+        "avo": 0,
+        "crit": 20,
         "minrng": 3,
         "maxrng": 10,
         "cost": 0,
@@ -7219,7 +7631,7 @@
         "minrng": 1,
         "maxrng": -1,
         "cost": 0,
-        "uses": 0
+        "uses": 10
       },
       "hidden": false
     },
@@ -7240,7 +7652,7 @@
         "minrng": 1,
         "maxrng": 1,
         "cost": 0,
-        "uses": 0
+        "uses": 5
       },
       "hidden": false
     },
@@ -7313,7 +7725,7 @@
         "avo": 0,
         "crit": 0,
         "minrng": 1,
-        "maxrng": -1,
+        "maxrng": "floor(mag/4)",
         "cost": 0,
         "uses": 3
       },
@@ -7599,9 +8011,27 @@
       "hidden": true
     },
     {
-      "name": "Mistilaz",
+      "name": "Mistilaz_",
       "type": "Axe",
       "description": "Possesses a modified weapon triangle, is strong against Swords, Lances, and Axes, except for its twin, Balthraz and weak to all magic. Deals magic-based damage. Sacred weapon (Crest of the Watcher) that restores HP every turn. (Effect increased with Crest.)",
+      "rank": null,
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 12,
+        "hit": 80,
+        "avo": 0,
+        "crit": 10,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": true
+    },
+    {
+      "name": "Mistilaz",
+      "type": "Axe",
+      "description": "Deals magic-based damage. Sacred weapon (Crest of the Noa) blood bonded to Rosalie Nedler. (Effect increased with Crest or if Rosalie Nedler.)",
       "rank": null,
       "modifiers": {
         "pmt": 0,
@@ -8237,8 +8667,8 @@
       "description": "Deals magic-based damage. Might increases based on user’s Resistance",
       "rank": "C-B",
       "modifiers": {
-        "pmt": 2,
-        "mmt": 0,
+        "pmt": 0,
+        "mmt": "2 + floor(res * 0.3)",
         "hit": 10,
         "avo": 0,
         "crit": 0,
@@ -8249,6 +8679,50 @@
       "multipliers": {
         "scale": "res"
       },
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": false
+    },
+    {
+      "name": "Soulmonger",
+      "type": "Sword",
+      "description": "Deals magic-based damage. Might increases based on user's Dexterity. Earned through RP.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": "4 + floor(dex * 0.3)",
+        "hit": 0,
+        "avo": 0,
+        "crit": 15,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 4
+      },
+      "multipliers": null,
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": false
+    },
+    {
+      "name": "Flowing Blade",
+      "type": "Sword",
+      "description": "Activate to adopt a flowing stance, granting the user +30% AVO until the start of their next turn. In addition, in the next combat at range 1, the user may counter attack twice, regardless of speed.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 30,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 3
+      },
+      "multipliers": null,
       "tags": {
         "astra": null,
         "vengeance": null
@@ -8285,7 +8759,7 @@
       "description": "Might increases based on user’s Dexterity.",
       "rank": "A",
       "modifiers": {
-        "pmt": 2,
+        "pmt": "2 + floor(dex * 0.3)",
         "mmt": 0,
         "hit": 0,
         "avo": 10,
@@ -8405,7 +8879,7 @@
       "description": "Sword of the Creator only; Might increases based on user’s Magic, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
-        "pmt": 7,
+        "pmt": "7 + floor(mag * 0.3)",
         "mmt": 0,
         "hit": 10,
         "avo": 0,
@@ -8429,7 +8903,7 @@
       "description": "Dark Creator Sword only; Might increases based on user’s Magic.",
       "rank": "Exclusive",
       "modifiers": {
-        "pmt": 10,
+        "pmt": "10 + floor(mag * 0.3)",
         "mmt": 0,
         "hit": 10,
         "avo": 0,
@@ -8501,8 +8975,7 @@
       "description": "Sublime Creator Sword only; Might increases based on user’s Magic, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
-        "dyn_pmt": "10 + mag * 0.3",
-        "pmt": 10,
+        "pmt": "10 + floor(mag * 0.3)",
         "mmt": 0,
         "hit": 10,
         "avo": 0,
@@ -8526,8 +8999,7 @@
       "description": "Might increases based on user’s Charm.",
       "rank": "Exclusive",
       "modifiers": {
-        "dyn_pmt": "1 + cha * 0.3",
-        "pmt": 1,
+        "pmt": "1 + floor(cha * 0.3)",
         "mmt": 0,
         "hit": 0,
         "avo": 20,
@@ -8647,8 +9119,7 @@
       "description": "Damage increases in relation to the user’s missing HP.",
       "rank": "C-B",
       "modifiers": {
-        "pmt": 2,
-        "dyn_pmt": "2 + floor(hp - current_hp)/2)",
+        "pmt": "2 + floor((hp - current_hp)/2)",
         "mmt": 0,
         "hit": 0,
         "avo": 0,
@@ -8697,8 +9168,7 @@
       "rank": "C-B",
       "modifiers": {
         "pmt": 0,
-        "mmt": 3,
-        "dyn_mmt": "3 + dex * 0.3",
+        "mmt": "3 + floor(dex * 0.3)",
         "hit": 5,
         "avo": 0,
         "crit": 0,
@@ -8740,6 +9210,31 @@
       "hidden": false
     },
     {
+      "name": "Redirection",
+      "type": "Lance",
+      "description": "Until start of user’s next turn, the user is granted +5 RES. If the user takes any spell damage, they may apply their next attack as Magic damage.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 1,
+        "mmt": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 5,
+        "res": 4
+      },
+      "multipliers": {
+        "scale": null
+      },
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": false
+    },
+    {
       "name": "Swift Strikes",
       "type": "Lance",
       "description": "Triggers 2 consecutive hits.",
@@ -8769,7 +9264,7 @@
       "description": "Might increases based on user’s Speed.",
       "rank": "A",
       "modifiers": {
-        "pmt": 3,
+        "pmt": "3 + floor(spd * 0.3)",
         "mmt": 0,
         "hit": 0,
         "avo": 0,
@@ -8793,7 +9288,7 @@
       "description": "Might increases based on user’s Defence.",
       "rank": "A",
       "modifiers": {
-        "pmt": 2,
+        "pmt": "2 + floor(def * 0.3)",
         "mmt": 0,
         "hit": 0,
         "avo": 10,
@@ -8865,7 +9360,7 @@
       "description": "Lúin only; Might increases based on user’s Speed, effective against Dragon foes.",
       "rank": "Exclusive",
       "modifiers": {
-        "pmt": 8,
+        "pmt": "8 + floor(spd * 0.3)",
         "mmt": 0,
         "hit": 0,
         "avo": 10,
@@ -8911,7 +9406,7 @@
       "name": "Smash",
       "type": "Axe",
       "description": "No special effect.",
-      "rank": "E",
+      "rank": "D",
       "modifiers": {
         "pmt": 3,
         "mmt": 0,
@@ -8935,7 +9430,7 @@
       "name": "Spike",
       "type": "Axe",
       "description": "No special effect.",
-      "rank": "E",
+      "rank": "D",
       "modifiers": {
         "pmt": 5,
         "mmt": 0,
@@ -9034,8 +9529,7 @@
       "rank": "C-B",
       "modifiers": {
         "pmt": 0,
-        "mmt": 4,
-        "dyn_mmt": "res 0.3 * floor 4 +",
+        "mmt": "4 + floor(res * 0.3)",
         "hit": 0,
         "avo": 0,
         "crit": 0,
@@ -9077,12 +9571,36 @@
       "hidden": false
     },
     {
+      "name": "Shield Axe",
+      "type": "Axe",
+      "description": "The user makes a skilled attack while also using the broadside of the axe as a shield. The user is granted temporary HP equal to half of damage inflicted by this attack until the start of next turn.",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 1,
+        "mmt": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 5
+      },
+      "multipliers": {
+        "scale": null
+      },
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": false
+    },
+    {
       "name": "Armored Strike",
       "type": "Axe",
       "description": "Might increases based on user’s Defence.",
       "rank": "A",
       "modifiers": {
-        "pmt": 3,
+        "pmt": "3 + floor(def * 0.3)",
         "mmt": 0,
         "hit": 0,
         "avo": 0,
@@ -9461,6 +9979,30 @@
       "hidden": false
     },
     {
+      "name": "Covering Fire",
+      "type": "Bow",
+      "description": "Activate to adopt a stance providing suppressive fire. A friendly target within attack range of equipped bow is granted +5 DEF and RES against ranged attacks. In addition, the user may counter-attack units who attack the covered friendly target with ranged attacks, regardless of range. The user and the covered unit cannot both counter attack if they can, but must choose one to counter attack. ",
+      "rank": "C-B",
+      "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "cost": 5
+      },
+      "multipliers": {
+        "scale": null
+      },
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": false
+    },
+    {
       "name": "Point-Blank Volley",
       "type": "Bow",
       "description": "Triggers 2 consecutive hits.",
@@ -9606,6 +10148,7 @@
     },
     {
       "name": "Conduit of Faith",
+      "type": "Axe",
       "description": "Deals magic-based damage. Expends a usage of a Light Magic spell and adds its might to the attack and 1/3 of its might to the cost.",
       "rank": "C",
       "modifiers": {
@@ -9629,7 +10172,8 @@
     },
     {
       "name": "Displaced Strike",
-      "description": "Generic",
+      "type": "Generic",
+      "description": "Only usable with ethereal weapons.",
       "rank": "Exclusive",
       "modifiers": {
         "pmt": 3,
@@ -9640,6 +10184,30 @@
         "minrng": 2,
         "maxrng": 2,
         "cost": 3
+      },
+      "multipliers": {
+        "scale": null
+      },
+      "tags": {
+        "astra": null,
+        "vengeance": null
+      },
+      "hidden": true
+    },
+    {
+      "name": "Inspiration of Awe",
+      "type": "Generic",
+      "description": "Something that need not be seen.",
+      "rank": "Exclusive",
+      "modifiers": {
+        "pmt": "1 + floor(abs(level - cha) * 0.5)",
+        "mmt": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "cost": 0
       },
       "multipliers": {
         "scale": null

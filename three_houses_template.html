@@ -7,7 +7,7 @@
 
 	<link href="./src/css/style.css" rel="stylesheet" />
 	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
-	<!-- <script type="text/javascript" src="./src/js/postfix.js"></script> -->
+	<script type="text/javascript" src="./src/js/expression.js"></script>
 	<script type="text/javascript" src="./src/js/notebook.js"></script>
 	<script type="text/javascript" src="./src/js/category.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
@@ -18,6 +18,10 @@
 
 	<div class="container">
 		<div class="span-1"> <!-- SKILL SECTION -->
+
+
+
+
 			<table>
 				<tbody>
 					{% for skill in definitions["skills"] %}
@@ -42,8 +46,36 @@
 						</td>
 					</tr>
 					{% endfor %}
+
+					<tr>
+						<th>Total</th>
+						<td>
+							<span id="skill-total" class="computed">0</span>
+						</td>
+					</tr>
 				</tbody>
 			</table>
+
+			<label for="character-talent">Talent</label>
+			<select id="character-talent" class="simple-border" oninput="sheet.refreshGrades()">
+				{% for skill in definitions["skills"] %}
+				<option value="{{ skill }}">{{ skill }}</option>
+				{% endfor %}
+			</select>
+
+			<label for="character-weakness">Weakness</label>
+			<select id="character-weakness" class="simple-border" oninput="sheet.refreshGrades()">
+				{% for skill in definitions["skills"] %}
+				<option value="{{ skill }}">{{ skill }}</option>
+				{% endfor %}
+			</select>
+
+			<label for="character-budding">Budding</label>
+			<select id="character-budding" class="simple-border" oninput="sheet.refreshGrades()">
+				{% for skill in definitions["skills"] %}
+				<option value="{{ skill }}">{{ skill }}</option>
+				{% endfor %}
+			</select>
 		</div>
 		<div class="span-2"> <!-- STATISTICS AND GROWTHS -->
 			<table>
@@ -250,28 +282,6 @@
 					name="character-description"
 					class="simple-border"
 					>Write your character description here.</textarea>
-				<br />
-
-				<details>
-					<summary>Experimental Features</summary>
-					These features are experimental and may have bugs.
-					<br />
-					<input
-						type="button"
-						class="simple-border"
-						value="Create Blurb"
-						onclick="sheet.blurb()" />
-					<input
-						type="button"
-						class="simple-border"
-						value="Create Macro"
-						onclick="sheet.macro()" />
-
-					<br />
-					<textarea id="generator-output" class="simple-border">
-						
-					</textarea>
-				</details>
 			</div>
 			<div class="span-4"> <!-- LIST OF CHARACTERS -->
 
@@ -302,6 +312,46 @@
 		
 		<div id="features" class="span-1-3"> <!-- FEATURES -->
 			
+		</div>
+
+		<!-- This gets moved to a tab in the main script -->
+		<div id="macro-builder">
+			<input
+				type="button"
+				class="simple-border"
+				value="Create Blurb"
+				onclick="sheet.blurb()" />
+			<input
+				type="button"
+				class="simple-border"
+				value="Create Macro"
+				onclick="sheet.macro()" />
+
+			<br />
+
+			<input
+				id="generator-hardcode"
+				type="checkbox"
+				class="simple-border"
+				checked />
+
+			<label for="generator-hardcode">
+				Hardcode Stats? (If stats change you need to recreate the macros)
+			</label>
+
+			<br />
+
+			<textarea id="generator-output" class="simple-border">
+				
+			</textarea>
+
+			<br />
+
+			<input
+				id="generator-console"
+				class="simple-border"
+				onkeydown="sheet.console(event)"
+				type="text" />
 		</div>
 	</div>
 
