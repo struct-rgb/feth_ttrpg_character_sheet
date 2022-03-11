@@ -4343,6 +4343,14 @@
       },
       "multipliers": null,
       "hidden": false
+    },
+    {
+      "name": "Spectral Armor",
+      "description": "Unit can only be dmaged after it has been hit by both a physical and magical based attack. A critical hit nullifies this effect and deals damage as normal.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
     }
   ],
   "weapons": [
@@ -7149,6 +7157,14 @@
       "modifiers": {
         "cha": 1,
         "avo": 5
+      }
+    },
+    {
+      "name": "Hematurgic Vessel",
+      "description": "HP +5. When a unit is reduced to 0 HP by physical damage, stabilizes the unit, then permanently shatters.",
+      "type": "Accessory",
+      "modifiers": {
+        "hp": 5
       }
     }
   ],

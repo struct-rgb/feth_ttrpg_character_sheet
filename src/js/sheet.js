@@ -24,7 +24,7 @@
 class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("1.17.0");
+	static CURRENT = new Version("1.18.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -80,6 +80,23 @@ class Version {
 	toString() {
 		return [this.major, this.minor, this.patch].join(".");
 	}
+}
+
+class Theme {
+
+	static list = [
+		new Theme("Classic", "The classic look and feel.", "./src/css/light.css"),
+		new Theme("Dark", "The ever popular alternative.", "./src/css/dark.css"),
+		new Theme("Golden Deer", "A theme for the best house.", "./src/css/deer.css"),
+		new Theme("Boneless", "For when you want to play as the protagonist.", "./src/css/boneless.css"),
+	];
+
+	constructor(name, description, stylesheet) {
+		this.name        = name;
+		this.description = description;
+		this.stylesheet  = stylesheet;
+	}
+
 }
 
 /**
@@ -439,7 +456,7 @@ class Sheet {
 		const myFeatureBody  = ((feature) => feature.body());
 		const myTriggers     = ((feature) => feature.dependancies);
 
-		const notebook = new Notebook(document.getElementById("features"));
+		let   notebook = new Notebook(document.getElementById("features"));
 		let   inner    = new Notebook();
 
 		/* Ability category */
@@ -586,6 +603,10 @@ class Sheet {
 		notebook.add("(Hide)", document.createElement("div"));
 		notebook.active = "(Hide)";
 
+		/* set up the characters and themes tabs */
+
+		notebook = new Notebook(document.getElementById("right-pane"));
+
 		this.myCharMap = new Map();
 		model          = new CategoryModel(
 			"characters", this.myCharMap, (x) => x.name, (x) => x.description, () => []
@@ -602,8 +623,65 @@ class Sheet {
 		});
 
 		this.characters.addTo(document.getElementById("character-list"));
+		
+		const characters = document.getElementById("characters");
+		characters.remove();
 
+		notebook.add("Characters", characters);
+
+		this.myThemeMap = new Map();
+		model           = new CategoryModel(
+			"themes", this.myThemeMap, (x) => x.name, (x) => x.description, () => []
+		);
+
+		const themes = document.getElementById("themes");
+		
+		const toggleTheme = ((category , key) => {
+			// do not turn off theme if it is reselected
+			if (key ==category.active) {
+				category.toggleActive(key);
+			}
+
+			// reapply theme either way to make debug easier
+			this.theme(key);
+		});
+
+		this.themes     = new SingleActiveCategory(model, {
+			name        : "themes",
+			empty       : "If you're reading this, there is no theme",
+			selectable  : false,
+			reorderable : false,
+			removable   : false,
+			ontoggle    : toggleTheme,
+		});
+
+		for (let theme of Theme.list) {
+			this.myThemeMap.set(theme.name, theme);
+			this.themes.add(theme.name);
+		}
+
+		this.themes.toggleActive("Classic");
+		this.themes.addTo(themes);
+		
+		themes.remove();
+
+		notebook.add("Themes", themes);
+
+		notebook.active = "Characters";
+
+		/* refresh sheet */
 		this.fresh();
+
+		/* set theme */
+		this.theme();
+
+		/* prompt user to reload last session */
+		if (localStorage.hasOwnProperty("session")) {
+			this.autoload();
+		}
+
+		/* autosave current sheet every five minutes */
+		setInterval(() => void this.autosave(), 300000);
 	}
 
 	console(event) {
@@ -1841,6 +1919,58 @@ class Sheet {
 		return char;
 	}
 
+	writeCharacters() {
+		const active = this.characters.getActive();
+		const data   = {active: active, characters: []};
+		
+		for (let name of this.characters.names()) {
+			const number    = Number(name);
+			const character = (
+				name == active
+					? this.writeCharacter()
+					: this.myCharMap.get(number)
+			);
+
+			data.characters.push(character);
+		}
+
+		return data;
+	}
+
+	readCharacters(data) {
+
+		const {active, characters} = data;
+
+		let charID = 0;
+		this.myCharMap.clear();
+		this.characters.clear();
+
+		for (let character of characters) {
+			this.myCharMap.set(charID, character);
+			this.characters.add(charID);
+			charID += 1;
+		}
+
+		const selected = 0 < active && active < characters.length ? active : 0;
+		this.changeCharacter(selected);
+		this.characters.toggleActive(selected);
+		this._highID = charID;
+	}
+
+	autoload() {
+		const session = localStorage.getItem("session");
+
+		if (session == null) return false;
+
+		this.readCharacters(JSON.parse(session));
+
+		return true;
+	}
+
+	autosave() {
+		const session = this.writeCharacters();
+		localStorage.setItem("session", JSON.stringify(session));
+	}
 
 	clear() {
 		this.class = Class.get("Commoner");
@@ -1939,6 +2069,25 @@ class Sheet {
 			this.changeCharacter(charID);
 		};
 		reader.readAsText(file);
+	}
+
+	theme(name) {
+
+		if (name == null) {
+			name = localStorage.getItem("theme");
+			if (name == null) return false;
+		}
+
+		if (!this.myThemeMap.has(name)) return false;
+
+		const theme      = this.myThemeMap.get(name);
+		const stylesheet = document.getElementById("theme-link");
+		stylesheet.setAttribute('href', theme.stylesheet);
+		this.themes.toggleActive(name);
+
+		localStorage.setItem("theme", name);
+
+		return true;
 	}
 }
 

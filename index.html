@@ -6,6 +6,7 @@
 	<title>Three Houses TTRPG Character Sheet</title>
 
 	<link href="./src/css/style.css" rel="stylesheet" />
+	<link id="theme-link" href="./src/css/light.css" rel="stylesheet" />
 	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
 	<script type="text/javascript" src="./src/js/expression.js"></script>
 	<script type="text/javascript" src="./src/js/notebook.js"></script>
@@ -14,14 +15,10 @@
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.1.0/ajv7.bundle.js" integrity="sha512-PuzkO+wOBh6m/Jux4nXgl2ItRzed77lFDidDX500DUNlvuzr4OrXtsFhN4q0CCxPoXjTFfiw1z4FmED9J/MMdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 </head>
-<body>
+<body class="base">
 
 	<div class="container">
 		<div class="span-1"> <!-- SKILL SECTION -->
-
-
-
-
 			<table>
 				<tbody>
 					
@@ -31,8 +28,6 @@
 						</th>
 						<td>
 							<label for="skill-Axes" id="skill-Axes-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Axes"
 								oninput="sheet.refreshGrade('Axes')"
@@ -52,8 +47,6 @@
 						</th>
 						<td>
 							<label for="skill-Swords" id="skill-Swords-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Swords"
 								oninput="sheet.refreshGrade('Swords')"
@@ -73,8 +66,6 @@
 						</th>
 						<td>
 							<label for="skill-Lances" id="skill-Lances-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Lances"
 								oninput="sheet.refreshGrade('Lances')"
@@ -94,8 +85,6 @@
 						</th>
 						<td>
 							<label for="skill-Brawl" id="skill-Brawl-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Brawl"
 								oninput="sheet.refreshGrade('Brawl')"
@@ -115,8 +104,6 @@
 						</th>
 						<td>
 							<label for="skill-Archery" id="skill-Archery-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Archery"
 								oninput="sheet.refreshGrade('Archery')"
@@ -136,8 +123,6 @@
 						</th>
 						<td>
 							<label for="skill-Reason" id="skill-Reason-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Reason"
 								oninput="sheet.refreshGrade('Reason')"
@@ -157,8 +142,6 @@
 						</th>
 						<td>
 							<label for="skill-Faith" id="skill-Faith-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Faith"
 								oninput="sheet.refreshGrade('Faith')"
@@ -178,8 +161,6 @@
 						</th>
 						<td>
 							<label for="skill-Guile" id="skill-Guile-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Guile"
 								oninput="sheet.refreshGrade('Guile')"
@@ -199,8 +180,6 @@
 						</th>
 						<td>
 							<label for="skill-Armor" id="skill-Armor-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Armor"
 								oninput="sheet.refreshGrade('Armor')"
@@ -220,8 +199,6 @@
 						</th>
 						<td>
 							<label for="skill-Riding" id="skill-Riding-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Riding"
 								oninput="sheet.refreshGrade('Riding')"
@@ -241,8 +218,6 @@
 						</th>
 						<td>
 							<label for="skill-Flying" id="skill-Flying-grade" class="datum">E&nbsp;</label>
-						</td>
-						<td>
 							<input
 								id="skill-Flying"
 								oninput="sheet.refreshGrade('Flying')"
@@ -401,7 +376,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="hp-growth-total"
 								for="hp-growth-base"
 								class="datum">
@@ -415,7 +390,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -443,7 +418,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="str-growth-total"
 								for="str-growth-base"
 								class="datum">
@@ -457,7 +432,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -485,7 +460,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="mag-growth-total"
 								for="mag-growth-base"
 								class="datum">
@@ -499,7 +474,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -527,7 +502,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="dex-growth-total"
 								for="dex-growth-base"
 								class="datum">
@@ -541,7 +516,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -569,7 +544,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="spd-growth-total"
 								for="spd-growth-base"
 								class="datum">
@@ -583,7 +558,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -611,7 +586,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="def-growth-total"
 								for="def-growth-base"
 								class="datum">
@@ -625,7 +600,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -653,7 +628,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="res-growth-total"
 								for="res-growth-base"
 								class="datum">
@@ -667,7 +642,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -695,7 +670,7 @@
 						</td>
 						<td>
 							
-							(<label
+							<span class="parenthesis">(</span><label
 								id="cha-growth-total"
 								for="cha-growth-base"
 								class="datum">
@@ -709,7 +684,7 @@
 								min="-4"
 								max="100"
 								step="1"
-								value="0"/>)
+								value="0"/><span class="parenthesis">)</span>
 							
 						</td>
 					</tr>
@@ -748,37 +723,37 @@
 					<tr>
 						<th>Physical</th>
 						<td>
-							+<span id="pmt-total" class="computed">0</span>
+							<span class="punctuation">+</span><span id="pmt-total" class="computed">0</span>
 						</td>
 						<td>
-							-<span id="pdr-total" class="computed">0</span>
+							<span class="punctuation">-</span><span id="pdr-total" class="computed">0</span>
 						</td>
 					</tr>
 					<tr>
 						<th>Magical</th>
 						<td>
-							+<span id="mmt-total" class="computed">0</span>
+							<span class="punctuation">+</span><span id="mmt-total" class="computed">0</span>
 						</td>
 						<td>
-							-<span id="mdr-total" class="computed">0</span>
+							<span class="punctuation">-</span><span id="mdr-total" class="computed">0</span>
 						</td>
 					</tr>
 					<tr>
 						<th>Hit/Avoid</th>
 						<td>
-							+<span id="hit-total" class="computed">0</span>
+							<span class="punctuation">+</span><span id="hit-total" class="computed">0</span>
 						</td>
 						<td>
-							-<span id="avo-total" class="computed">0</span>
+							<span class="punctuation">-</span><span id="avo-total" class="computed">0</span>
 						</td>
 					</tr>
 					<tr>
 						<th>Range</th>
 						<td>
-							≤<span id="maxrng-total" class="computed">0</span>
+							<span class="punctuation">≤</span><span id="maxrng-total" class="computed">0</span>
 						</td>
 						<td>
-							≥<span id="minrng-total" class="computed">0</span>
+							<span class="punctuation">≥</span><span id="minrng-total" class="computed">0</span>
 						</td>
 					</tr>
 					<tr>
@@ -823,7 +798,7 @@
 					id="character-name"
 					class="simple-border"
 					type="text"
-					name="character-name">
+					name="character-name" />
 				<br />
 				<label for="character-triangle">Triangle Effect</label> <br />
 				<select id="character-triangle" class="simple-border" oninput="sheet.refreshSecondaryStats()">
@@ -1073,27 +1048,34 @@
 					class="simple-border"
 					>Write your character description here.</textarea>
 			</div>
-			<div class="span-4"> <!-- LIST OF CHARACTERS -->
+			<div id="right-pane" class="span-4"> <!-- LIST OF CHARACTERS -->
 
-				<label for="import-sheet" class="custom-file-input simple-border">
-					Import
-				</label>
-				<input id="import-sheet" type="file" accept=".json" class="no-display" />
+				<div id="characters">
+					
+					<input type="button" class="simple-border" value="New Character" onclick="sheet.fresh()" />
+					
+					<input type="button" class="simple-border" value="Clear Character" onclick="sheet.clear()" />
 
-				<label for="export-sheet" class="custom-file-input simple-border">
-					Export
-				</label>
-				<input id="export-sheet" type="button" onclick="sheet.export()" class="no-display" />
+					<br />
 
-				<br />
+					<label for="import-sheet" class="custom-file-input simple-border">
+						Import
+					</label>
+					<input id="import-sheet" type="file" accept=".json" class="no-display" />
 
-				<input type="button" class="simple-border" value="New Character" onclick="sheet.fresh()" />
-				
-				<input type="button" class="simple-border" value="Clear Character" onclick="sheet.clear()" />
-				
-				<br />
+					<label for="export-sheet" class="custom-file-input simple-border">
+						Export
+					</label>
+					<input id="export-sheet" type="button" onclick="sheet.export()" class="no-display" />
+					
+					<br />
 
-				<div id="character-list">
+					<div id="character-list">
+						
+					</div>
+				</div>
+
+				<div id="themes">
 					
 				</div>
 				
@@ -1116,8 +1098,6 @@
 				class="simple-border"
 				value="Create Macro"
 				onclick="sheet.macro()" />
-
-			<br />
 
 			<input
 				id="generator-hardcode"
@@ -5491,6 +5471,14 @@
       },
       "multipliers": null,
       "hidden": false
+    },
+    {
+      "name": "Spectral Armor",
+      "description": "Unit can only be dmaged after it has been hit by both a physical and magical based attack. A critical hit nullifies this effect and deals damage as normal.",
+      "type": "Passive",
+      "modifiers": null,
+      "multipliers": null,
+      "hidden": false
     }
   ],
   "weapons": [
@@ -8297,6 +8285,14 @@
       "modifiers": {
         "cha": 1,
         "avo": 5
+      }
+    },
+    {
+      "name": "Hematurgic Vessel",
+      "description": "HP +5. When a unit is reduced to 0 HP by physical damage, stabilizes the unit, then permanently shatters.",
+      "type": "Accessory",
+      "modifiers": {
+        "hp": 5
       }
     }
   ],

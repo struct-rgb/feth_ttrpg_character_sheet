@@ -1,7 +1,7 @@
 
 .container {
 	display: grid;
-	grid-template-columns: 80px 130px 250px 1fr;
+	grid-template-columns: 95px 130px 250px 1fr;
 	/*grid-template-columns: 1fr 1fr 2fr 2fr;*/
 	grid-auto-rows: repeat(2, 1fr);
 	grid-column-gap: 10px;
@@ -39,6 +39,7 @@ input[type=number].updown-buttons {
 	width: 3ch;
 	margin-left: 3px;
 	margin-right: 3px;
+	background: rgba(0, 0, 0, 0.0);
 }
 
 input[type=number].updown-buttons:focus {
@@ -70,16 +71,6 @@ input[type=button].remove-button:hover {
 	margin-bottom: 3px;
 }
 
-.simple-border {
-	outline: none;
-	background: white;
-	border-radius: 3px;
-	border-width: 2px;
-	border-color: black;
-	border-style: ridge;
-	margin: 3px;
-}
-
 textarea.simple-border:hover {
 	text-decoration: none;
 }
@@ -97,27 +88,8 @@ dd {
 	text-indent: 0em;
 }
 
-.datum {
-	font-weight: bold;
-	color: blue;
-	padding: 0px;
-	margin: 0px;
-}
-
-.computed {
-	font-weight: bold;
-	color: orange;
-	padding: 0px;
-	margin: 0px;
-}
-
 span.selectable:hover {
 	text-decoration: underline;	
-}
-
-.selected-text {
-	color: blue;
-	text-decoration: underline;
 }
 
 meter {

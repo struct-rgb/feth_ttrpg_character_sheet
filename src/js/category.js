@@ -49,7 +49,7 @@ class CategoryElement {
 		// go about building the DOM nodes
 		this.dt = document.createElement("dt");
 
-		if (typeof options.key == "string") {
+		if (typeof options.key == "string" || typeof options.key == "number") {
 			this.dt.setAttribute("data-key", options.key);
 		}
 

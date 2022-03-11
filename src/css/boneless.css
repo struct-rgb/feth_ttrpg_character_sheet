@@ -1,0 +1,83 @@
+.base {
+	color: #DDDDDD;;
+	background: black
+}
+
+.simple-border {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: #880000;
+	border-style: ridge;
+	margin: 3px;
+}
+
+.selected-text {
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.datum {
+	font-weight: bold;
+	color: #DD0000;
+	padding: 0px;
+	margin: 0px;
+}
+
+.computed {
+	font-style: italic;
+	font-weight: bold;
+	color: #DD0000;
+	padding: 0px;
+	margin: 0px;
+}
+
+.parenthesis {
+	color: #880000;
+}
+
+.punctuation {
+	color: #880000;
+	font-style: italic;
+	font-weight: bold;
+}
+
+input[type=checkbox] {
+	color: #DD0000;
+}
+
+hr {
+	background-color: #880000;
+	border-color: #880000;
+}
+
+dt {
+	color: #AAAAAA;
+}
+
+dd {
+	color: #AAAAAA;
+}
+
+meter::-webkit-meter-bar {
+	background: black;
+}
+
+meter::-webkit-meter-optimum-value {
+	background: #DD0000;
+}
+
+meter::-webkit-meter-suboptimum-value {
+	background: #880000;
+}
+
+meter::-webkit-meter-even-less-good-value {
+	background: #660000;
+}
+
+input[type="checkbox"]:checked {
+	color: #222222;
+}

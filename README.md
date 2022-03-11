@@ -11,6 +11,19 @@ Currently, the main document must be generated from the [html template](https://
 
 ## Changelog
 
+### Version 1.18.0
+
+#### Themes
+
+  * Added the ability to chance the UI theme of the builder
+  * Old default appearance has become the "Classic" theme
+  * Added the "Dark", "Golden Deer", and "Boneless" themes
+
+#### Autosave
+
+  * The builder now saves your progress to the browser every five minutes
+  * I added this feature because roll20 crashes my browser a lot
+
 ### Version 1.17.0
 
 #### Skill System 

@@ -1,0 +1,91 @@
+.base {
+	color: #ceba08;
+	background: #fcfaed;
+}
+
+.simple-border {
+	color: #ceba08;
+	outline: none;
+	background: #544b00;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: #ceba08;
+	border-style: ridge;
+	margin: 3px;
+}
+
+.selected-text {
+	color: #fce114;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.datum {
+	font-weight: bold;
+	color: #fce114;
+	padding: 0px;
+	margin: 0px;
+}
+
+.computed {
+	font-weight: bold;
+	color: #fce114;
+	padding: 0px;
+	margin: 0px;
+}
+
+.parenthesis {
+	color: #a39000;
+}
+
+.punctuation {
+	color: #ceba08;
+	font-style: italic;
+	font-weight: bold;
+}
+
+input[type=checkbox] {
+	color: #DD0000;
+}
+
+hr {
+	background-color: #ceba08;
+	border-color: #ceba08;
+}
+
+dt {
+	color: #ceba08;
+}
+
+dd {
+	color: #ccc166;
+}
+
+table {
+	background: #544b00;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: #ceba08;
+	border-style: ridge;
+	margin: 3px;
+}
+
+meter::-webkit-meter-bar {
+	background: #544b00;
+}
+
+meter::-webkit-meter-optimum-value {
+	background: #fce114;
+}
+
+meter::-webkit-meter-suboptimum-value {
+	background: #ceba08;
+}
+
+meter::-webkit-meter-even-less-good-value {
+	background: #ccc166;
+}
+
+input[type="checkbox"]:checked {
+	color: #222222;
+}

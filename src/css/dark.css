@@ -1,0 +1,38 @@
+.base {
+	color: white;
+	background: black;
+}
+
+.simple-border {
+	color: white;
+	outline: none;
+	background: black;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: white;
+	border-style: ridge;
+	margin: 3px;
+}
+
+.selected-text {
+	color: cyan;
+	text-decoration: underline;
+}
+
+.datum {
+	font-weight: bold;
+	color: cyan;
+	padding: 0px;
+	margin: 0px;
+}
+
+.computed {
+	font-weight: bold;
+	color: orange;
+	padding: 0px;
+	margin: 0px;
+}
+
+meter::-webkit-meter-bar {
+	background: black;
+}

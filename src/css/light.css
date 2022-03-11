@@ -1,0 +1,34 @@
+.base {
+	color: black;
+	background: white;
+}
+
+.simple-border {
+	color: black;
+	outline: none;
+	background: white;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: black;
+	border-style: ridge;
+	margin: 3px;
+}
+
+.selected-text {
+	color: blue;
+	text-decoration: underline;
+}
+
+.datum {
+	font-weight: bold;
+	color: blue;
+	padding: 0px;
+	margin: 0px;
+}
+
+.computed {
+	font-weight: bold;
+	color: orange;
+	padding: 0px;
+	margin: 0px;
+}
