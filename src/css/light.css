@@ -1,7 +1,12 @@
+
+/* This class is on the body element. */
+
 .base {
 	color: black;
 	background: white;
 }
+
+/* This is on the input elements like buttons and text inputs */
 
 .simple-border {
 	color: black;
@@ -14,10 +19,14 @@
 	margin: 3px;
 }
 
+/* This is a selected item in a list. Like your selected weapon or character. */
+
 .selected-text {
 	color: blue;
 	text-decoration: underline;
 }
+
+/* These are blue edittable stat numbers in the default theme. */
 
 .datum {
 	font-weight: bold;
@@ -25,6 +34,8 @@
 	padding: 0px;
 	margin: 0px;
 }
+
+/* These are the orange not-editable numbers in the default theme. */
 
 .computed {
 	font-weight: bold;
