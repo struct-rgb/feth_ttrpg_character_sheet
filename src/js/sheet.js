@@ -24,7 +24,7 @@
 class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("1.18.0");
+	static CURRENT = new Version("1.19.0");
 
 	constructor(string) {
 		if (string == null) {
