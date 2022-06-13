@@ -337,7 +337,7 @@ class AttackFeature extends Feature {
 
 	/**
 	 * Access the macro expression for the higher might stat for the AttackFeature
-	 * @returns
+	 * @returns {number} the higher might value between physical and magical
 	 */
 	 higherMightMacro() {
 	 	return "(" + Expression.macro(

@@ -629,6 +629,14 @@ class Sheet {
 
 		notebook.add("Characters", characters);
 
+		const pbdiv = document.getElementById("point-buy");
+		pbdiv.remove()
+
+		this.myPointBuy = new PointBuy();
+		pbdiv.appendChild(this.myPointBuy.root);
+
+		notebook.add("Point Buy", pbdiv);
+
 		this.myThemeMap = new Map();
 		model           = new CategoryModel(
 			"themes", this.myThemeMap, (x) => x.name, (x) => x.description, () => []
@@ -1145,10 +1153,11 @@ class Sheet {
 				+ base)
 			* this.multiplier(name),
 			0
-		); 
+		);
 
 		this.stats[name]       = base;
 		this.cache.stats[name] = value;
+		this.cache.stats["base_" + name] = base;
 		display.textContent    = value;
 
 		if (name == "hp") {
@@ -1334,10 +1343,29 @@ class Sheet {
 		case "crit":
 			return Math.max(
 				Math.floor(
-					(this.cache.stats[prime] / 2
+					(this.cache.stats["dex"] / 2
 						+ this.modifier(second))
 					* this.multiplier(second)
 				),
+				0
+			);
+
+		case "newcrit":
+			return Math.max(
+				Math.floor(
+					(this.cache.stats["dex"] / 2
+						+ this.cache.stats["cha"]
+						+ this.modifier("crit"))
+					* this.multiplier("crit")
+				),
+				0
+			);
+
+		case "cravo":
+			return Math.max(
+				(this.cache.stats["cha"]
+					+ this.modifier(second))
+				* this.multiplier(second),
 				0
 			);
 
@@ -1558,32 +1586,6 @@ class Sheet {
 					+ (art != CombatArt.EMPTY
 						? " w/ " + art.name
 						: ""))
-				.row("To Hit", m.sum("1d100"))
-				.row("Hit at or below",
-					m.sum(
-						(hardcode
-							? this.cache.stats.dex
-							: m.character("Dex")),
-						weapon.modifier("hit"),
-						(art != CombatArt.EMPTY
-							? art.modifier("hit")
-							: null),
-						(prowess
-							? prowess.modifier("hit")
-							: null),
-						createPassives("hit"),
-						createPrompts("hit", "dex"),
-						(weapon.type == "Bow"
-							? m.prompt("Range Penalty",
-								"One Extra",            0,
-								"Two Extra",          -20,
-								"Three Extra",        -30,
-								"Four or More Extra", -40)
-							: null),
-						m.prompt("Triangle Effect?",
-							"Neutral"      ,   0,
-							"Advantage"    ,  15,
-							"Disadvantage" , -15)))
 				.row("Damage is",
 					m.sum(
 						(hardcode
@@ -1605,54 +1607,114 @@ class Sheet {
 						(isMagic
 							? createPrompts("mag", "mmt")
 							: createPrompts("str", "pmt"))))
-				.row("To Crit", m.sum("1d100"))
-				.row("Crit at or below",
-					m.sum(
-						/** @TODO ingoring dex prompts for now */ 
-						(hardcode
-							? Math.floor(this.cache.stats.dex/2)
-							: m.call("floor", m.character("Dex") + "/2")),
-						weapon.modifier("crit"),
-						(art != CombatArt.EMPTY
-							? art.modifier("crit")
-							: null),
-						createPassives("crit"),
-						createPrompts("crit"))));
+				.row("To Hit",
+					m.merge(
+						m.sum("1d100"),
+						"≤",
+						m.sum(
+							(hardcode
+								? this.cache.stats.dex
+								: m.character("Dex")),
+							weapon.modifier("hit"),
+							(art != CombatArt.EMPTY
+								? art.modifier("hit")
+								: null),
+							(prowess
+								? prowess.modifier("hit")
+								: null),
+							createPassives("hit"),
+							createPrompts("hit", "dex"),
+							(weapon.type == "Bow"
+								? m.prompt("Range Penalty",
+									"One Extra",            0,
+									"Two Extra",          -20,
+									"Three Extra",        -30,
+									"Four or More Extra", -40)
+								: null),
+							m.prompt("Triangle Effect?",
+								"Neutral"      ,   0,
+								"Advantage"    ,  15,
+								"Disadvantage" , -15))))
+				
+				.row("To Crit",
+					m.merge(
+						m.sum("1d100"),
+						"≤",
+						m.sum(
+							/** @TODO ignoring dex and cha prompts for now */ 
+							(hardcode
+								? Math.floor(this.cache.stats.dex/2)
+								: m.call("floor", m.character("Dex") + "/2")),
+							weapon.modifier("crit"),
+							(art != CombatArt.EMPTY
+								? art.modifier("crit")
+								: null),
+							createPassives("crit"),
+							createPrompts("crit")),
+						" or ",
+						m.sum(
+							/** @TODO ignoring dex and cha prompts for now */ 
+							(hardcode
+								? Math.floor(this.cache.stats.dex/2) + this.cache.stats.cha
+								: m.call("floor", m.character("Dex") + "/2 + " + m.character("Cha"))),
+							weapon.modifier("crit"),
+							(art != CombatArt.EMPTY
+								? art.modifier("crit")
+								: null),
+							createPassives("crit"),
+							createPrompts("crit")))));
 		}
 
-		/* all actions need avoid and speed */
+		/* all actions need these stats visible */
+
 		(m
-			.row("Avoid",
-				m.sum(
-					(hardcode
-						? this.cache.stats.spd
-						: m.character("Spd")),
-					weapon.modifier("avo"),
-					(art != CombatArt.EMPTY
-						? art.modifier("avo")
-						: null),
-					(prowess
-						? prowess.modifier("avo")
-						: null),
-					// m.prompt("Terrain Effect?",
-					// 		"Neutral",   0,
-					// 		"Forest",   15),
-					createPassives("avo"),
-					createPrompts("spd", "avo")))
-			.row("Defense",
-				m.sum(
-					(hardcode
-						? this.cache.stats.def
-						: m.character("Def")),
-					createPassives("pdr"),
-					createPrompts("def", "pdr")))
-			.row("Resistance",
-				m.sum(
-					(hardcode
-						? this.cache.stats.res
-						: m.character("Res")),
-					createPassives("mdr"),
-					createPrompts("res", "mdr")))
+			.row("Hit/Crit Avoid",
+				m.merge(
+					m.sum(
+						(hardcode
+							? this.cache.stats.spd
+							: m.character("Spd")),
+						weapon.modifier("avo"),
+						(art != CombatArt.EMPTY
+							? art.modifier("avo")
+							: null),
+						(prowess
+							? prowess.modifier("avo")
+							: null),
+						// m.prompt("Terrain Effect?",
+						// 		"Neutral",   0,
+						// 		"Forest",   15),
+						createPassives("avo"),
+						createPrompts("spd", "avo")),
+					"/",
+					m.sum(
+						(hardcode
+							? this.cache.stats.cha
+							: m.character("Cha")),
+						weapon.modifier("cravo"),
+						(art != CombatArt.EMPTY
+							? art.modifier("cravo")
+							: null),
+						(prowess
+							? prowess.modifier("cravo")
+							: null),
+						createPassives("cravo"),
+						createPrompts("cha", "cravo"))))
+			.row("Def/Res",
+				m.merge(
+					m.sum(
+						(hardcode
+							? this.cache.stats.def
+							: m.character("Def")),
+						createPassives("pdr"),
+						createPrompts("def", "pdr")),
+					"/",
+					m.sum(
+						(hardcode
+							? this.cache.stats.res
+							: m.character("Res")),
+						createPassives("mdr"),
+						createPrompts("res", "mdr"))))
 			.row("Speed",
 				m.sum(
 					(hardcode
@@ -1968,6 +2030,7 @@ class Sheet {
 	}
 
 	autosave() {
+		console.log("Autosaving...");
 		const session = this.writeCharacters();
 		localStorage.setItem("session", JSON.stringify(session));
 	}
@@ -2088,6 +2151,26 @@ class Sheet {
 		localStorage.setItem("theme", name);
 
 		return true;
+	}
+
+	/* Methods relating to Point Buy */
+
+	clear_point_buy() {
+		this.myPointBuy.clear();
+	}
+
+	copy_point_buy() {
+		for (let [name, value] of this.myPointBuy.column("value")) {
+			document.getElementById(name + "-base").value = value;
+			this.refreshStat(name);
+		}
+
+		for (let [name, value] of this.myPointBuy.column("growth")) {
+			document.getElementById(name + "-growth-base").value = value * 5;
+			this.refreshGrowth(name);
+		}
+
+		this.level = 0;
 	}
 }
 

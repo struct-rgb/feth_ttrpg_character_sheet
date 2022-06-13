@@ -11,6 +11,32 @@ Currently, the main document must be generated from the [html template](https://
 
 ## Changelog
 
+### Version 1.19.0
+
+#### General
+
+  * Added in new critical hit and critical avoid to computed stats
+
+#### Macro Generation
+
+  * Macro design was changed to be more compact
+  * Add in Prompt generation for the Battlefield ability type
+  * Some abilities were changed from Passive to Prompt
+  * Add in some help text to explain how to use the macro tool
+  * Added a link to a document on how the macro console works
+
+#### Point Buy
+
+  * Added in an experimental point buy calculator for character creation
+  * Stats from point buy tab can be copied to the main sheet with a button
+
+#### Misc
+
+  * Added in new abilities and combat arts for Armor, Riding, and Flying
+  * Added in more powerful ranged swords (knives)
+  * Added Wanderer class
+  * Various other small new content I forgot
+
 ### Version 1.18.0
 
 #### Themes

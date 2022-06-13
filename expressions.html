@@ -1,0 +1,84 @@
+<h1>Expressions</h1>
+<p>These work more or less how you would expect math expressions to. They allow
+for easy creation of abilities or combat arts with dynamic attributes that are
+computed based off of the character's statistics. Any expression can be
+surrounded with parentheses to adjust the order of evaluation.</p>
+<h2>Arithmetic Operators</h2>
+<p>The typical basic arithmetic operations are supported.</p>
+<ul>
+<li>Addition is <code>+</code></li>
+<li>Subtraction is <code>-</code></li>
+<li>Multiplication is <code>*</code></li>
+<li>Division is <code>/</code></li>
+</ul>
+<p>Division does floating-point/real number division. In addition to these,
+negation is supported with the unary <code>-</code> operator, and a unary <code>+</code> operator is
+included for the sake of completeness but doesn't do anything.</p>
+<h2>Math Functions</h2>
+<p>The following math functions are supported.</p>
+<ul>
+<li>Round to the next lowest whole number using <code>floor()</code></li>
+<li>Round to the next highest whole number using <code>ceil()</code></li>
+<li>Round to the nearest whole number using <code>round()</code></li>
+<li>Get the positive magnitude of any value using <code>abs()</code></li>
+</ul>
+<h2>Variables</h2>
+<p>The values of your characters different stats can be read out using variables.
+The following variables are supported:</p>
+<ul>
+<li><code>hp</code>  is the character's maximum hitpoint total (after modifiers)</li>
+<li><code>str</code> is the character's Strength statisitic (after modifiers)</li>
+<li><code>mag</code> is the character's Magic statisitic (after modifiers)</li>
+<li><code>dex</code> is the character's Dexterity statisitic (after modifiers)</li>
+<li><code>spd</code> is the character's Speed statisitic (after modifiers)</li>
+<li><code>def</code> is the character's Defense statisitic (after modifiers)</li>
+<li><code>res</code> is the character's Resistance statisitic (after modifiers)</li>
+<li><code>cha</code> is the character's Charm statisitic (after modifiers)</li>
+<li><code>current_hp</code> is the character's current hitpoint total (before modifiers)</li>
+<li><code>base_hp</code>  is the character's maximum hitpoint total (before modifiers)</li>
+<li><code>base_str</code> is the character's Strength statisitic (before modifiers)</li>
+<li><code>base_mag</code> is the character's Magic statisitic (before modifiers)</li>
+<li><code>base_dex</code> is the character's Dexterity statisitic (before modifiers)</li>
+<li><code>base_spd</code> is the character's Speed statisitic (before modifiers)</li>
+<li><code>base_def</code> is the character's Defense statisitic (before modifiers)</li>
+<li><code>base_res</code> is the character's Resistance statisitic (before modifiers)</li>
+<li><code>base_cha</code> is the character's Charm statisitic (before modifiers)</li>
+<li><code>pmt</code> is the physical might from weapons (after modifiers)</li>
+<li><code>mmt</code> is the magical might from easpons (after modifiers)</li>
+<li><code>pdr</code> is physical damage reduction (after modifiers)</li>
+<li><code>mdr</code> is magical damage reduction (after modifiers)</li>
+<li><code>hit</code> is the character's Hit statistic (after modifiers)</li>
+<li><code>avo</code> is the character's Avoid statisitic (after modifiers)</li>
+<li><code>crit</code> is the character's Critical statisitic (after modifiers)</li>
+<li><code>newcrit</code> is the character's Critcal statistic (accounding for Charm, after modifiers)</li>
+<li><code>cravo</code> is the character's Critical Avoid statisitic (after modifiers)</li>
+<li><code>mov</code> is the character's Movement statisitic (after modifiers)</li>
+<li><code>maxrng</code> is the character's maximum attack range (after modifiers)</li>
+<li><code>minrng</code> is the character's minimum attack range (after modifiers)</li>
+</ul>
+<h2>Conditional Expressions</h2>
+<p>A conditional expression allows you to pick one of two values based on the
+result of a comparision using a relative operator. They take the form:</p>
+<p><code>if &lt;expr&gt; &lt;relative operator&gt; &lt;expr&gt; then &lt;expr&gt; else &lt;expr&gt;</code></p>
+<p>The expression after the <code>then</code> keyword is selected when the condition after
+the <code>if</code> keyword is true, and the expression after the <code>else</code> keyword is
+selected if the condition is false. For example, say we want to make an
+expression that returns the higher of our defensive stats:</p>
+<p><code>if res &gt; def then res else def</code></p>
+<p>The result will be <code>res</code> if the condition <code>res &gt; def</code> is true, otherwise the
+result will be <code>def</code>.</p>
+<p>Be advised that conditionals generate a lot of very, very unreadable code when
+expressions containing them are converted into Roll20 macros. This is especially
+true for nested conditionals.</p>
+<h3>Relative Operators</h3>
+<p>These are the supported comparison operators</p>
+<ul>
+<li>"is equal to" is <code>==</code></li>
+<li>"is not equal to" is <code>&lt;&gt;</code></li>
+<li>"is less than" is <code>&lt;</code></li>
+<li>"is greater than" is <code>&gt;</code></li>
+<li>"is less than or equal to" is <code>&lt;=</code></li>
+<li>"is greater than or equal to" is <code>&gt;=</code></li>
+</ul>
+<p>There can be only one of these per conditional, and they cannot be chained
+together in a sequence.</p>

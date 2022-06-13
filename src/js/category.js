@@ -754,8 +754,14 @@ class SingleActiveCategory extends Category {
 				this.active    = null;
 			} else {
 				const previous = this.elements.get(this.active);
+				
 				console.log(this.active, previous);
-				previous.active = false;
+				
+				/*@TODO this is a hack to cover an issue, figure out what causes it */
+				if (previous != null) {
+					previous.active = false;
+				}
+				
 				element.active = true;
 				this.active = name;
 			}

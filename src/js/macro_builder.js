@@ -43,6 +43,21 @@ class MacroBuilder {
 		return level;
 	}
 
+	merge(...args) {
+		const flat = [];
+		for (let arg of args) {
+			if (arg == null) continue;
+			if (arg instanceof Array) {
+				for (let element of arg) {
+					flat.push(element);
+				}
+			} else {
+				flat.push(arg);
+			}
+		}
+		return flat;
+	}
+
 	attribute(character, attribute) {
 		return "@{" + character + "|" + attribute + "}";
 	}

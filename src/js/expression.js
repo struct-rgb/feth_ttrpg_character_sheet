@@ -2,7 +2,7 @@
 /**
  * A module implementing facilities for compiling, transforming, and executing
  * simple mathematical expressions written in infix notation
- * @module postfix
+ * @module expression
  */
 
 /* we're going to go for a different pattern with this one */
@@ -779,12 +779,15 @@ const Expression = (function() {
 	/**
 	 * A class representing an executable expression
 	 */
-	class Expression {
+	class CompiledExpression {
 		
 		/**
 		 * Create an instance. Should not be called directly, instead create a
-		 * {@link PostfixCompiler} instance and invoke its
-		 * [compile]{@link PostfixCompiler#compile} method.
+		 * {@link Compiler} instance and invoke its
+		 * [compile]{@link Compiler#compile} method.
+		 * @param {string} source - the source code for the expression
+		 * @param {Object} context - a map-like object for variable values
+		 * @param {Set?} symbols - a set of defined symbols for this expression
 		 */
 		constructor(source, context={}, symbols=null) {
 			this.stack   = [];
@@ -818,15 +821,31 @@ const Expression = (function() {
 		}
 	}
 
+	/**
+	 * A class that produces Expressions instances that all share a single
+	 * enduring context of variables and set of defined symbols.
+	 */
 	class Compiler {
 		
+		/**
+		 * Create an instance.
+		 * @param {object} - a map-like object for variable values
+		 * @param {Set} - a set of defined symbols
+		 */
 		constructor(context, symbols) {
 			this.context = context;
 			this.symbols = symbols;
 		}
 
+		/**
+		 * Compile to provided source string into an expressions that executes
+		 * with the provided context. (Defaults to internal.)
+		 * @param {string} source - source code the expression
+		 * @param {object} context - a map-like object for variable values
+		 * @returns {CompiledExpression} - an executable expression object
+		 */
 		compile(source, context=this.context) {
-			return new Expression(source, context);
+			return new CompiledExpression(source, context);
 		}
 	
 	}
@@ -849,7 +868,7 @@ const Expression = (function() {
 
 		/* convenience function to execute easily */
 		execute: function(expression) {
-			if (expression instanceof Expression) {
+			if (expression instanceof CompiledExpression) {
 				return expression.exec();
 			}
 			if (typeof expression === "number") {
@@ -862,7 +881,7 @@ const Expression = (function() {
 
 		/* convenience function to produce a macro */
 		macro: function(expression) {
-			if (expression instanceof Expression) {
+			if (expression instanceof CompiledExpression) {
 				return expression.macro;
 			}
 			if (typeof expression === "number") {
@@ -875,7 +894,7 @@ const Expression = (function() {
 
 		/* convenience function to produce source */
 		source: function(expression) {
-			if (expression instanceof Expression) {
+			if (expression instanceof CompiledExpression) {
 				return expression.source;
 			}
 			if (typeof expression === "number") {

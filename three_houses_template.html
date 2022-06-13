@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="./src/js/category.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
+	<script type="text/javascript" src="./src/js/pointbuy.js"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.1.0/ajv7.bundle.js" integrity="sha512-PuzkO+wOBh6m/Jux4nXgl2ItRzed77lFDidDX500DUNlvuzr4OrXtsFhN4q0CCxPoXjTFfiw1z4FmED9J/MMdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 </head>
 <body class="base">
@@ -187,11 +188,19 @@
 						</td>
 					</tr>
 					<tr>
+						<th>Crit/Avoid</th>
+						<td>
+							<span class="punctuation">+</span><span id="newcrit-total" class="computed">0</span>
+						</td>
+						<td>
+							<span class="punctuation">-</span><span id="cravo-total" class="computed">0</span>
+						</td>
+					</tr>
+					<tr>
 						<th>Critical</th>
 						<td>
 							<span id="crit-total" class="computed">0</span>
 						</td>
-					</tr>
 				</tbody>
 			</table>
 		</div> 
@@ -308,6 +317,16 @@
 				<div id="themes">
 					
 				</div>
+
+				<div id="point-buy">
+
+					<input type="button" class="simple-border" value="Copy to Sheet" onclick="sheet.copy_point_buy()" />
+					
+					<input type="button" class="simple-border" value="Clear Points" onclick="sheet.clear_point_buy()" />
+
+					<br />
+
+				</div>
 				
 			</div>
 		</div>
@@ -352,6 +371,20 @@
 				class="simple-border"
 				onkeydown="sheet.console(event)"
 				type="text" />
+
+			<br />
+
+			<details>
+				<summary>Macro Tips & Tricks</summary>
+				<p>
+					To make a macro, first, make sure to select a weapon form the "Weapons & Spells" tab. If you don't a dialogue box will pop up to remind you. Once you do this, make sure any equippable abilities you want to use in the macro are present in the "Abilities"->"Equipped" tab. Make sure to select those that have the text "(Passive)" after their name in BOTH the "Abilities"->"Equipped" and the "Abilities"->"Class" tabs, or they will not be applied. This DOES NOT apply to skills that have "(X Passive)" after their name, where X is "Sword", "Lance", "Reason", etc, such as the "Prowess" and "-faire" skills. As long as these are present in the "Abilities"->"Equipped" and the "Abilities"->"Class" tabs the builder will recognize whether these apply to your selected weapon and apply them automatically. Do NOT select those that have "(Prompt)" in their name, as doing so will cause it to be applied as if it were a passive, and will ALSO generate a prompt box each time the macro is rolled, possibly causing them to be applied twice. For COMBAT ARTS, make sure the combat art you want to use is present and selected in the "Combat Arts"->"Equipped" tab.
+				</p>
+				<p>
+					Also, you can type math into the little box beneath the macro output to do math on the fly. More on that can be found <a href="./expressions.html"> here</a>.
+				</p>
+
+			</details>
+
 		</div>
 	</div>
 
