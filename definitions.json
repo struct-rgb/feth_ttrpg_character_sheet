@@ -5118,6 +5118,24 @@
       "hidden": false
     },
     {
+      "name": "Cursed Ashiya Sword",
+      "type": "Sword",
+      "description": "Deals 5 damage to user after combat.",
+      "rank": "B",
+      "modifiers": {
+        "pmt": 13,
+        "mmt": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 40,
+        "minrng": 1,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+      },
+      "hidden": false
+    },
+    {
       "name": "Training Lance",
       "type": "Lance",
       "description": "No special effect.",

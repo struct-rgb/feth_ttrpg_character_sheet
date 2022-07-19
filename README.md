@@ -11,6 +11,12 @@ Currently, the main document must be generated from the [html template](https://
 
 ## Changelog
 
+### Version 1.19.1
+
+### Bugfixes
+
+  * Macro builder did not account for hit, crit, etc... boosts from equipment
+
 ### Version 1.19.0
 
 #### General

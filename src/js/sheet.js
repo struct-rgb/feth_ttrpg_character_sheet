@@ -24,7 +24,7 @@
 class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("1.19.0");
+	static CURRENT = new Version("1.19.1");
 
 	constructor(string) {
 		if (string == null) {
@@ -1564,6 +1564,7 @@ class Sheet {
 							? Math.floor(this.cache.stats.mag/2)
 							: m.call("floor", m.character("Mag") + "/2")),
 						weapon.modifier("mmt"),
+						equip.modifier("mmt"),
 						createPassives("mmt"))));
 
 			confirm("Healing is experimental and may not be correct");
@@ -1606,7 +1607,10 @@ class Sheet {
 							: createPassives("pmt")),
 						(isMagic
 							? createPrompts("mag", "mmt")
-							: createPrompts("str", "pmt"))))
+							: createPrompts("str", "pmt")),
+						(isMagic
+							? equip.modifier("mmt")
+							: equip.modifier("pmt"))))
 				.row("To Hit",
 					m.merge(
 						m.sum("1d100"),
@@ -1616,6 +1620,7 @@ class Sheet {
 								? this.cache.stats.dex
 								: m.character("Dex")),
 							weapon.modifier("hit"),
+							equip.modifier("hit"),
 							(art != CombatArt.EMPTY
 								? art.modifier("hit")
 								: null),
@@ -1646,6 +1651,7 @@ class Sheet {
 								? Math.floor(this.cache.stats.dex/2)
 								: m.call("floor", m.character("Dex") + "/2")),
 							weapon.modifier("crit"),
+							equip.modifier("crit"),
 							(art != CombatArt.EMPTY
 								? art.modifier("crit")
 								: null),
@@ -1658,6 +1664,7 @@ class Sheet {
 								? Math.floor(this.cache.stats.dex/2) + this.cache.stats.cha
 								: m.call("floor", m.character("Dex") + "/2 + " + m.character("Cha"))),
 							weapon.modifier("crit"),
+							equip.modifier("crit"),
 							(art != CombatArt.EMPTY
 								? art.modifier("crit")
 								: null),
@@ -1675,6 +1682,7 @@ class Sheet {
 							? this.cache.stats.spd
 							: m.character("Spd")),
 						weapon.modifier("avo"),
+						equip.modifier("avo"),
 						(art != CombatArt.EMPTY
 							? art.modifier("avo")
 							: null),
@@ -1692,6 +1700,7 @@ class Sheet {
 							? this.cache.stats.cha
 							: m.character("Cha")),
 						weapon.modifier("cravo"),
+						equip.modifier("cravo"),
 						(art != CombatArt.EMPTY
 							? art.modifier("cravo")
 							: null),
@@ -1706,6 +1715,7 @@ class Sheet {
 						(hardcode
 							? this.cache.stats.def
 							: m.character("Def")),
+						equip.modifier("pdr"),
 						createPassives("pdr"),
 						createPrompts("def", "pdr")),
 					"/",
@@ -1713,6 +1723,7 @@ class Sheet {
 						(hardcode
 							? this.cache.stats.res
 							: m.character("Res")),
+						equip.modifier("mdr"),
 						createPassives("mdr"),
 						createPrompts("res", "mdr"))))
 			.row("Speed",
