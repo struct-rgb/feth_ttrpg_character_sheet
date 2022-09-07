@@ -208,36 +208,6 @@ class LevelStamp {
 	}
 }
 
-class Cascade {
-
-	constructor(context, dependants, action) {
-		this.context    = context    || null;
-		this.dependants = dependants || [];
-		this.action     = action     || (() => void(0)); 
-	}
-
-	register(context, dependants, action) {
-		this.state      = state;
-		this.action     = action;
-		this.dependants = dependants;
-	}
-
-	cascade() {
-		this.action.call(this, this.state);
-		for (let dependant of this.dependants) {
-			dependant.cascade();
-		}
-	}
-}
-
-class CascadeManager {
-
-	constructor() {
-		
-	}
-
-}
-
 /**
  * Class representing a skill grade
  */
@@ -249,7 +219,7 @@ class Grade {
 		new Grade("C",  8),  new Grade("C+", 16),
 		new Grade("B", 36),  new Grade("B+", 50),
 		new Grade("A", 64),  new Grade("A+", 80),
-		new Grade("S", 150), new Grade("S+", 200), 
+		new Grade("S", 150), new Grade("S+", 200),
 	];
 
 	static budThreshold     = 32;
@@ -295,6 +265,266 @@ class Grade {
 	}
 }
 
+class SkillSectionRow {
+
+	constructor(name) {
+		this.name      = name;
+		this.root      = document.createElement("tr");
+		this.root.id   = `skill-${name}-row`;
+
+		const th       = document.createElement("th");
+		th.textContent = name;
+		this.root.appendChild(th);
+
+		const td      = document.createElement("td");
+		const label   = document.createElement("label");
+		label.htmlFor = `skill-${name}`;
+		label.id      = `skill-${name}-grade`;
+		label.classList.add("datum");
+		label.appendChild(document.createTextNode("E "));
+
+		this.input   = document.createElement("input");
+		this.input.id      = `skill-${name}`;
+		this.input.name    = `skill-${name}`;
+		this.input.oninput = (() => {sheet.refreshGrade(this.name)});
+		this.input.type    = "number";
+		this.input.min     = 0;
+		this.input.max     = 100;
+		this.input.step    = 1;
+		this.input.value   = 0;
+		this.input.classList.add("hidden-field","simple-border");
+
+		td.appendChild(label);
+		td.appendChild(this.input);
+		this.root.appendChild(td);
+	}
+
+}
+
+class SkillSectionSelect {
+	constructor(name, skills) {
+		this.name           = name;
+		this.root           = document.createElement("div");
+		this.identifier     = name.toLowerCase()
+
+		const label         = document.createElement("label");
+		label.htmlFor       = `character-${this.identifier}`;
+		label.textContent   = this.name;
+		this.root.appendChild(label);
+
+		this.select         = document.createElement("select");
+		this.select.id      = `character-${this.identifier}`;
+		this.select.oninput = (() => {sheet.refreshGrades()});
+		this.select.classList.add("simple-border");
+
+		for (let skill of skills) {
+			const option       = document.createElement("option");
+			option.value       = skill;
+			option.textContent = skill;
+			this.select.appendChild(option);
+		}
+
+		this.root.append(this.select);
+	} 
+}
+
+class SkillSection {
+
+	/**
+	 * Initialize the skill section
+	 * @param {Array} skills - names of skills to add
+	 */
+	constructor(skills) {
+		const tbody = document.createElement("tbody");
+		const table = document.createElement("table");
+		this.root   = document.createElement("div");
+
+		table.appendChild(tbody);
+		this.root.appendChild(table);
+
+		for (let skill of skills) {
+			const row = new SkillSectionRow(skill);
+			tbody.appendChild(row.root);
+		}
+
+		const tr       = document.createElement("tr");
+		const th       = document.createElement("th");
+		th.textContent = "Total";
+		tr.appendChild(th);
+
+		const td   = document.createElement("td");
+		const span = document.createElement("span");
+		span.id    = "skill-total";
+		span.classList.add("computed");
+		span.textContent = "0";
+		td.appendChild(span);
+		tr.appendChild(td);
+		tbody.appendChild(tr);
+
+		for (let aptitude of ["Talent", "Weakness", "Budding"]) {
+			const selector = new SkillSectionSelect(aptitude, skills);
+			this.root.appendChild(selector.root);
+		}
+	}
+}
+
+class StatsSection {
+
+	constructor(stats) {
+		this.root   = document.createElement("div");
+		{
+			const tbody = document.createElement("tbody");
+			const table = document.createElement("table");
+
+			{
+				const tr      = document.createElement("tr");
+				const th      = document.createElement("th");
+				th.appendChild(document.createTextNode("Level"));
+				tr.appendChild(th);
+
+				let   td      = document.createElement("td");
+				const label   = document.createElement("label");
+				label.id      = "level";
+				label.htmlFor = "level-input";
+				label.classList.add("datum");
+				label.appendChild(document.createTextNode("1"));
+				td.appendChild(label);
+
+				let   input   = document.createElement("input");
+				input.id      = "level-input";
+				input.name    = "level-input";
+				input.oninput = (() => {sheet.refreshLevel()});
+				input.type    = "number";
+				input.min     = 0;
+				input.value   = 0;
+				input.classList.add("hidden-field", "simple-border");
+				td.appendChild(input);
+				tr.appendChild(td);
+
+				td            = document.createElement("td");
+				input         = document.createElement("input");
+				input.type    = "button";
+				input.value   = "Up";
+				input.onclick = (() => {sheet.levelUp()});
+				input.classList.add("simple-border");
+				td.appendChild(input);
+				tr.appendChild(td);
+				tbody.appendChild(tr);
+			}
+
+			for (let item of stats) {
+				const stat    = item;
+				const tr      = document.createElement("tr");
+				const th      = document.createElement("th");
+				th.appendChild(document.createTextNode(stat.toUpperCase()));
+				tr.appendChild(th);
+
+				let td = document.createElement("td");
+
+				this._labeledInput(td, stat, 1, () => {
+					sheet.refreshStat(stat);
+				});
+
+				tr.appendChild(td);
+
+				td = document.createElement("td");
+
+				if (stat != "mov") {
+					td.appendChild(this._span("(", "parenthesis"));
+
+					this._labeledInput(td, `${stat}-growth`, 5, () => {
+						sheet.refreshGrowth(stat);
+					});
+
+					td.appendChild(this._span(")", "parenthesis"));
+				}
+
+				tr.appendChild(td);
+				tbody.appendChild(tr);
+			}
+
+			table.appendChild(tbody);
+			this.root.appendChild(table);
+		}
+
+		const hr = document.createElement("hr");
+		this.root.appendChild(hr);
+
+		{
+			const tbody = document.createElement("tbody");
+			const table = document.createElement("table");
+
+			const data  = [
+				["Physical", "+", "pmt", "-", "pdr"],
+				["Magical", "+", "mmt", "-", "mdr"],
+				["Hit/Avoid", "+", "hit", "-", "avo"],
+				["Range", "≤", "maxrng", "≥", "minrng"],
+				["Crit/Avoid", "+", "newcrit", "-", "cravo"],
+				["Critical", "+", "crit", null, null],
+			];
+
+			for (let row of data) {
+				tbody.appendChild(this._computedRow(...row));
+			}
+
+			table.appendChild(tbody);
+			this.root.appendChild(table);
+		}
+	}
+
+	_computedRow(name, pleft, left, pright, right) {
+
+		const tr       = document.createElement("tr");
+		const th       = document.createElement("th");
+		th.textContent = name;
+		tr.appendChild(th);
+
+		for (let [n, p] of [[left, pleft], [right, pright]]) {
+
+			const td = document.createElement("td");
+			tr.appendChild(td);
+
+			if (n == null) continue;
+
+			td.appendChild(this._span(p, "punctuation"));
+			const nspan = this._span("0", "computed");
+			nspan.id    = `${n}-total`;
+			td.appendChild(nspan);
+		}
+
+		return tr;
+	}
+
+	_span(text, ...classes) {
+		const span = document.createElement("span");
+		span.textContent = text;
+		span.classList.add(...classes);
+		return span;
+	}
+
+	_labeledInput(root, name, step, callback) {
+
+		const label       = document.createElement("label");
+		label.id          = `${name}-total`;
+		label.htmlFor     = `${name}-base`;
+		label.textContent = "0";
+		label.classList.add("datum");
+		root.appendChild(label);
+
+		const input = document.createElement("input");
+		input.id      = `${name}-base`;
+		input.name    = `${name}-base`;
+		input.oninput = callback;
+		input.type    = "number";
+		input.min     = 0;
+		input.max     = 100;
+		input.value   = 0;
+		input.step    = step;
+		input.classList.add("hidden-field", "simple-border");
+		root.appendChild(input);
+	}
+}
+
 /**
  * Class representing the main body of the sheet.
  */
@@ -306,8 +536,21 @@ class Sheet {
 	 */
 	constructor(data) {
 
+		/** @todo FIND A BETTER PLACE FOR THIS */
+		{
+			const select = document.getElementById("character-class");
+			
+			for (let klass of data.classes) {
+				if ("hidden" in klass || klass.hidden) continue;
+				const option       = document.createElement("option");
+				option.value       = klass.name;
+				option.textContent = klass.name;
+				select.appendChild(option);
+			}
+		}
+
 		/** @todo MOVE THIS AFTER FIXING PFE COMPILER INIT */
-		this.cache   = {stats: {}, growths: {}, skills: {}, 
+		this.cache   = {stats: {}, growths: {}, skills: {},
 			aptitude: {
 				budding: null,
 				talent: null,
@@ -328,6 +571,14 @@ class Sheet {
 		for (let each of [Ability, Weapon, CombatArt, Equipment, Class]) {
 			each.setLookupByName(data, compiler);
 		}
+
+		const ss  = new SkillSection(data.skills);
+		const ssp = document.getElementById("skill-section");
+		ssp.appendChild(ss.root);
+
+		const sts  = new StatsSection(data.stats.names);
+		const stsp = document.getElementById("stats-section");
+		stsp.appendChild(sts.root);
 
 		// main definition data object
 		this.data = data;
