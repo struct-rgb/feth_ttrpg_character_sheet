@@ -1,0 +1,75 @@
+{
+  "stats": {
+    "names": [
+      "hp",
+      "str",
+      "mag",
+      "dex",
+      "spd",
+      "def",
+      "res",
+      "cha",
+      "mov"
+    ],
+    "linked": [
+      [
+        "str",
+        "pmt"
+      ],
+      [
+        "mag",
+        "mmt"
+      ],
+      [
+        "dex",
+        "hit"
+      ],
+      [
+        "dex",
+        "crit"
+      ],
+      [
+        "cha",
+        "cravo"
+      ],
+      [
+        "cha",
+        "newcrit"
+      ],
+      [
+        "spd",
+        "avo"
+      ],
+      [
+        "def",
+        "pdr"
+      ],
+      [
+        "res",
+        "mdr"
+      ],
+      [
+        null,
+        "minrng"
+      ],
+      [
+        null,
+        "maxrng"
+      ]
+    ]
+  },
+  "skills": [
+    "Axes",
+    "Swords",
+    "Lances",
+    "Brawl",
+    "Archery",
+    "Reason",
+    "Faith",
+    "Guile",
+    "Authority",
+    "Armor",
+    "Riding",
+    "Flying"
+  ]
+}

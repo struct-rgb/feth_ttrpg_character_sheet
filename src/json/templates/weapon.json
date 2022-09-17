@@ -1,0 +1,27 @@
+{
+    "name": "Template Weapon",
+    "type": "Swords Lances Axes Reason Guile Faith Bows Other",
+    "description": "This is a template weapon and should not be used.",
+    "requires": "",
+    "price": 0,
+
+    "modifiers": {
+        "pmt": 0,
+        "mmt": 0,
+        "pdr": 0,
+        "mdr": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+    },
+    "magical": false,
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}
