@@ -1,35 +1,57 @@
 
-function uniqueID(object) {
-	return object.constructor.name + performance.now();
+function uniqueID() {
+	const  base = '00000000-0000-4000-0000-000000000000';
+	return base.replace(/0/g, character => {
+		const randomByte = crypto.getRandomValues(new Uint8Array(1))[0];
+		const randomChar = character ^ randomByte & 0xF >> character / 4;
+		return randomChar.toString(16);
+	});
+}
+
+function element(type, content, ...classes) {
+
+	const element = document.createElement(type);
+
+	if (content) {
+		const ctype = typeof content;
+		switch (ctype) {
+			case "object":
+				element.appendChild(content);
+				break;
+			case "string":
+				element.textContent = content;
+				break;
+			default:
+				throw Error(`type '${ctype}' invalid for key "content"`);
+		}
+	}
+
+	if (classes && classes.length > 0) {
+		element.classList.add(...classes);
+	}
+
+	return element;
 }
 
 class AttributeCell {
 
-	constructor(total, punctuation, oninput) {
-		this.root  = document.createElement("td");
-		this.text  = document.createTextNode("");
-		this._comp = total;
+	constructor(options, trigger) {
+		this.root     = document.createElement("td");
+		this.text     = document.createTextNode("");
+		this._trigger = trigger || (x => x);
 
-		const input = document.createElement("input");
-		this.input = input;
+		const input   = document.createElement("input");
+		this.input    = input;
 
-		if (punctuation && "before" in punctuation) {
-			const span = document.createElement("span");
-			span.appendChild(document.createTextNode(punctuation.before));
-			span.classList.add("punctuation");
+		if (options && "before" in options) {
+			const span = element("span", options.before, "punctuation");
 			this.root.appendChild(span);
 		}
 
-		if (!oninput) {
-			const span = document.createElement("span");
-			span.appendChild(this.text);
-			span.classList.add("computed");
-			this.root.appendChild(span);
-		} else {
-
+		if ((!options.style) || options.style == "datum") {
 			const input = document.createElement("input");
 			const idstr = uniqueID(input);
-			console.log(idstr);
+			// console.log(idstr);
 
 			input.id      = idstr;
 			input.name    = idstr;
@@ -39,8 +61,7 @@ class AttributeCell {
 			input.max     = 100;
 			input.value   = 0;
 			input.oninput = (() => {
-				this.base = this.input.value;
-				if (oninput) oninput();
+				this.value = this.input.value;
 			});
 
 			this.input = input;
@@ -53,25 +74,51 @@ class AttributeCell {
 			label.appendChild(this.text);
 			this.root.appendChild(label);
 			this.root.appendChild(input);
-		}
-
-		if (punctuation && "after" in punctuation) {
-			const span = document.createElement("span");
-			span.appendChild(document.createTextNode(punctuation.after));
-			span.classList.add("punctuation");
+		} else if (options.style && options.style == "computed") {
+			const span = element("span", this.text, "computed");
 			this.root.appendChild(span);
+		} else {
+			throw Error(`'${style}' is not a valid AttributeCell style`);
 		}
 
-		this.base = 0;
+		if (options) {
+
+			if ("after" in options) {
+				const span = element("span", options.after, "punctuation");
+				this.root.appendChild(span);
+			}
+
+			if ("shown" in options) {
+				this.setShown(options.shown);
+				this.setValue(options.value || 0);
+			} else {
+				this.value = (options.value || 0);
+			}
+
+		} else {
+			this.value = 0;
+		}
 	}
 
-	get base() {
+	refresh() {
+		this.text.data = String(this.shown());
+	}
+
+	get value() {
 		return Number(this.input.value);
 	}
 
-	set base(value) {
-		this.input.value      = value;
-		this.text.textContent = String(this.display);
+	set value(value) {
+		this.input.value = value;
+		this.refresh();
+	}
+
+	setValue(value) {
+		this.input.value = value;
+	}
+
+	setShown(text) {
+		this.text.data = text; 
 	}
 
 	get minimum() {
@@ -85,19 +132,34 @@ class AttributeCell {
 		}
 	}
 
-	get display() {
-		return this._comp(this.base);
+	get maximum() {
+		return thus.input.max;
+	}
+
+	set maximum(value) {
+		this.input.max = value;
+		if (this.input.value > value) {
+			this.input.value = value;
+		}
+	}
+
+	shown() {
+		return this._trigger(this.value);
 	}
 }
 
+
 class AttributePair {
 
-	constructor(name, totalA, totalB, oninput) {
+	constructor(name, totalA, totalB, edit) {
 		this.name  = name;
-		this.value = new AttributeCell(totalA, null, oninput ? oninput : null);
-		this.cattr = new AttributeCell(totalB, {before: "( ", after: " )"});
-		this.roots = [this.value.root, this.cattr.root];
-		this.costs = [];
+		const style = (edit || edit == null ? "datum" : "computed");
+		const vopts = {style: style, shown: "0"};
+		this.value  = new AttributeCell(vopts, totalA)
+		const copts = {style: "computed", before: "( ", after: " )", shown: "0"};
+		this.cattr  = new AttributeCell(copts, totalB);
+		this.roots  = [this.value.root, this.cattr.root];
+		this.costs  = [];
 	}
 
 	costSum() {
@@ -116,19 +178,37 @@ class StatisticRow {
 		header.appendChild(this.headerText);
 		this.root.appendChild(header);
 
-		this._value  = new AttributePair(name, x => x, x => "$" + x, () => oninput("value"));
+		this._value = new AttributePair(name, 
+			function (x) {
+				oninput("value");
+				return x;
+			},
+			function (x)  {
+				return "$" + x;
+			}
+		);
+
 		this._value.roots.forEach(root => this.root.appendChild(root));
-		
-		this._growth = new AttributePair(name, x => (x * 5) + "%", x => "$" + x, () => oninput("growth"));
+
+		this._growth = new AttributePair(name,
+			function (x) {
+				oninput("growth");
+				return (x * 5) + "%";
+			},
+			function (x) {
+				return "$" + x;
+			}
+		);
+
 		this._growth.roots.forEach(root => this.root.appendChild(root));
 	}
 
 	get value() {
-		return Number(this._value.value.base);
+		return Number(this._value.value.value);
 	}
 
 	get growth() {
-		return Number(this._growth.value.base);
+		return Number(this._growth.value.value);
 	}
 }
 
@@ -165,42 +245,40 @@ class PointBuy {
 		this.root   = table;
 		this.rows   = new Map();
 
-		for (let name of PointBuy.STATISTICS) {
-			const row = new StatisticRow(name, (pair) => this.update(pair));
+		this.totalValue  = new AttributePair("ValueTotal", x => x, x => "$" + x, false);
+		this.totalGrowth = new AttributePair("GrowthTotal", x => (x * 5) + "%", x => "$" + x, false);
+		this.pairs = {value: this.totalValue, growth: this.totalGrowth};
+		this.combined = document.createTextNode("$0");
+
+		for (let statistic of PointBuy.STATISTICS) {
+			const name = statistic;
+			const row  = new StatisticRow(name, (pair) => {
+				this.update(pair);
+			});
 			this.rows.set(name, row);
 			table.appendChild(row.root);
 		}
 
-		const row            = document.createElement("tr");
-		const header         = document.createElement("th");
-		header.textContent   = "Sum";
-		row.appendChild(header);
+		const row = document.createElement("tr");
+		row.appendChild(element("th", "Sum"));
 
-		this.totalValue  = new AttributePair("ValueTotal", x => x, x => "$" + x);
+		
 		this.totalValue.roots.forEach(root => row.appendChild(root));
-
-		this.totalGrowth = new AttributePair("GrowthTotal", x => (x * 5) + "%", x => "$" + x);
 		this.totalGrowth.roots.forEach(root => row.appendChild(root));
-
-		this.pairs = {value: this.totalValue, growth: this.totalGrowth};
 
 		table.appendChild(row);
 
 		this.rows.get("HP")._value.value.minimum = 20
 
-		this.combined = document.createTextNode("$0");
-		const span = document.createElement("span");
-		span.appendChild(this.combined);
-		span.classList.add("computed");
+		const span = element("span", this.combined, "computed");
 
-		const th = document.createElement("th");
-		th.appendChild(document.createTextNode("Total"));
-		table.appendChild(th);
+		table.appendChild(element("th", "Total"));
 
 		const td = document.createElement("td");
 		td.rowspan = 4;
 		td.appendChild(span);
 		table.appendChild(td);
+		this.clear();
 	}
 
 	static COST_SCALE = 60;
@@ -221,12 +299,14 @@ class PointBuy {
 		const field = "_" + column;
 
 		for (let [key, row] of this.rows.entries()) {
-			row[field].value.base = row[field].value.minimum;
-			row[field].cattr.base = row[field].cattr.minimum;
+			const value = row[field].value;
+			value.value = value.minimum;
+			const cattr = row[field].cattr;
+			cattr.value = cattr.minimum;
 		}
 
-		this.pairs[column].value.base = 0;
-		this.pairs[column].cattr.base = 0;
+		this.pairs[column].value.value = 0;
+		this.pairs[column].cattr.value = 0;
 		this.total();
 	}
 
@@ -244,22 +324,22 @@ class PointBuy {
 		let baseSum = 0;
 		for (let [key, row] of this.rows.entries()) {
 			const cost = costfunctions[column][row.name](getter);
-			row[privacy].cattr.base = Math.floor(cost / PointBuy.COST_SCALE);
+			row[privacy].cattr.value = Math.floor(cost / PointBuy.COST_SCALE);
 			costSum += Math.floor(cost / PointBuy.COST_SCALE);
-			baseSum += row[privacy].value.base;
+			baseSum += row[privacy].value.value;
 		}
-		this.pairs[column].value.base = baseSum - (column == "value" ? 20 : 0);
-		this.pairs[column].cattr.base = costSum;
+		this.pairs[column].value.value = baseSum - (column == "value" ? 20 : 0);
+		this.pairs[column].cattr.value = costSum;
 		this.total();
 	}
 
 	total() {
-		this.combined.textContent = "$" + (this.pairs.value.cattr.base + this.pairs.growth.cattr.base);
+		this.combined.textContent = "$" + (this.pairs.value.cattr.value + this.pairs.growth.cattr.value);
 	}
 
 	*column(column) {
 		for (let [name, row] of this.rows.entries()) {
-			yield [name.toLowerCase(), row["_" + column].value.base];
+			yield [name.toLowerCase(), row["_" + column].value.value];
 		}
 	}
 }

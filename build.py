@@ -1,24 +1,40 @@
+#!/usr/bin/env python3
 
 import json
 
 from pathlib import Path
-from jinja2 import Template
 
-json_template_string = Path("definitions.json").read_text()
-definitions_literal  = json_template_string
-definitions          = json.loads(definitions_literal);
+def compile_definitions():
 
-# html_template_string = Path("three_houses_template.html").read_text()
-# html_template        = Template(html_template_string)
+	compiled = json.loads(Path("./src/json/template.json").read_text())
 
+	# compile all of the json data into a monolithic file
+	for file in Path("./src/json").iterdir():
+		
+		if not file.is_dir():
+			continue
 
-# Path("index.html").write_text(
-# 	html_template.render(
-# 		definitions=definitions,
-# 		definition_literal=definitions_literal,
-# 	)
-# )
+		definitions = []
 
-Path("definitions.js").write_text(
-	f"const definitions = {json_template_string};"
-)
+		for definition in file.iterdir():
+			definitions.append(json.loads(definition.read_text()))
+
+		compiled[file.name] = definitions
+
+	print(json.dumps(compiled, indent=2))
+	return compiled
+
+def main():
+
+	json_template_string = Path("definitions.json").read_text()
+	definitions_literal  = json_template_string
+	definitions          = json.loads(definitions_literal);
+
+	compile_definitions()
+
+	Path("definitions.js").write_text(
+		f"const definitions = {json_template_string};"
+	)
+
+if __name__ == "__main__":
+	main()

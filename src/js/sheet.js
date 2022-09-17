@@ -120,94 +120,6 @@ function copy_object(original) {
 	return copy;
 }
 
-class LevelStamp {
-
-	static NAMES = [
-		"hp",
-		"str",
-		"mag",
-		"dex",
-		"spd",
-		"def",
-		"res",
-		"cha",
-	];
-
-	static SHIFT = BigInt(32);
-
-	static MASK  = BigInt(0xFFFFFFFF);
-
-	constructor(level, increases, date) {
-		this.level     = level;
-		this.increases = increases;
-		this.date      = date;
-	}
-
-	*words() {
-		let word = 0;
-		for (let i = 0; i < 8; ++i) {
-			const name       = LevelStamp.NAMES[i];
-			const increased  = this.increases.has(name);
-			word            |= increased << i;
-		}
-		word |= this.level << 8;
-		yield word;
-		
-		const integer = BigInt(this.date.getTime());
-
-		yield Number(integer >> LevelStamp.SHIFT);
-		yield Number(integer &  LevelStamp.MASK);
-	}
-
-	pack() {
-		return LevelStamp.pack(this);
-	}
-
-	static read(block, start) {
-		const level     = block[start] >> 8;
-		const increases = new Set();
-		for (let i = 0; i < 8; ++i) {
-			if (block[start] & (1 << i)) {
-				increases.add(LevelStamp.NAMES[i]);
-			}
-		}
-		const timestamp = Number(
-			(BigInt(block[start + 1])
-				<< LevelStamp.SHIFT) | BigInt(block[start + 2])
-		);
-		return new LevelStamp(level, increases, new Date(timestamp));
-	}
-
-	static write(block, sub, stamp) {
-		const iter     = stamp.words();
-		block[sub]     = iter.next().value;
-		block[sub + 1] = iter.next().value;
-		block[sub + 2] = iter.next().value;
-		return block;
-	}
-
-	static pack(data) {
-
-		if (data instanceof LevelStamp) {
-			return LevelStamp.write(new Uint32Array(3), 0, data);
-		}
-		
-		const block = new Uint32Array(data.length * 3);
-		for (let i = 0; i < data.length; ++i) {
-			LevelStamp.write(block, i * 3, data[i]);
-		}
-		return block;
-	}
-
-	static unpack(block) {
-		const array = [];
-		for (let i = 0; i < block.length; i += 3) {
-			array.push(LevelStamp.unpackTriple(block, i));
-		}
-		return array;
-	}
-}
-
 /**
  * Class representing a skill grade
  */
@@ -232,11 +144,11 @@ class Grade {
 	 * @returns {string} the letter grade
 	 */
 	static for(points, skill, aptitude) {
-		const final = points * Grade.muliplier(points, skill, aptitude)
+		const final = points * Grade.multiplier(points, skill, aptitude)
 		return Grade.list.reduce((a, b) => b.points > final ? a : b).name;
 	}
 
-	static muliplier(points, skill, aptitude) {
+	static multiplier(points, skill, aptitude) {
 		return (
 			(skill == aptitude.budding
 				? (skill == aptitude.weakness
@@ -265,266 +177,6 @@ class Grade {
 	}
 }
 
-class SkillSectionRow {
-
-	constructor(name) {
-		this.name      = name;
-		this.root      = document.createElement("tr");
-		this.root.id   = `skill-${name}-row`;
-
-		const th       = document.createElement("th");
-		th.textContent = name;
-		this.root.appendChild(th);
-
-		const td      = document.createElement("td");
-		const label   = document.createElement("label");
-		label.htmlFor = `skill-${name}`;
-		label.id      = `skill-${name}-grade`;
-		label.classList.add("datum");
-		label.appendChild(document.createTextNode("E "));
-
-		this.input   = document.createElement("input");
-		this.input.id      = `skill-${name}`;
-		this.input.name    = `skill-${name}`;
-		this.input.oninput = (() => {sheet.refreshGrade(this.name)});
-		this.input.type    = "number";
-		this.input.min     = 0;
-		this.input.max     = 100;
-		this.input.step    = 1;
-		this.input.value   = 0;
-		this.input.classList.add("hidden-field","simple-border");
-
-		td.appendChild(label);
-		td.appendChild(this.input);
-		this.root.appendChild(td);
-	}
-
-}
-
-class SkillSectionSelect {
-	constructor(name, skills) {
-		this.name           = name;
-		this.root           = document.createElement("div");
-		this.identifier     = name.toLowerCase()
-
-		const label         = document.createElement("label");
-		label.htmlFor       = `character-${this.identifier}`;
-		label.textContent   = this.name;
-		this.root.appendChild(label);
-
-		this.select         = document.createElement("select");
-		this.select.id      = `character-${this.identifier}`;
-		this.select.oninput = (() => {sheet.refreshGrades()});
-		this.select.classList.add("simple-border");
-
-		for (let skill of skills) {
-			const option       = document.createElement("option");
-			option.value       = skill;
-			option.textContent = skill;
-			this.select.appendChild(option);
-		}
-
-		this.root.append(this.select);
-	} 
-}
-
-class SkillSection {
-
-	/**
-	 * Initialize the skill section
-	 * @param {Array} skills - names of skills to add
-	 */
-	constructor(skills) {
-		const tbody = document.createElement("tbody");
-		const table = document.createElement("table");
-		this.root   = document.createElement("div");
-
-		table.appendChild(tbody);
-		this.root.appendChild(table);
-
-		for (let skill of skills) {
-			const row = new SkillSectionRow(skill);
-			tbody.appendChild(row.root);
-		}
-
-		const tr       = document.createElement("tr");
-		const th       = document.createElement("th");
-		th.textContent = "Total";
-		tr.appendChild(th);
-
-		const td   = document.createElement("td");
-		const span = document.createElement("span");
-		span.id    = "skill-total";
-		span.classList.add("computed");
-		span.textContent = "0";
-		td.appendChild(span);
-		tr.appendChild(td);
-		tbody.appendChild(tr);
-
-		for (let aptitude of ["Talent", "Weakness", "Budding"]) {
-			const selector = new SkillSectionSelect(aptitude, skills);
-			this.root.appendChild(selector.root);
-		}
-	}
-}
-
-class StatsSection {
-
-	constructor(stats) {
-		this.root   = document.createElement("div");
-		{
-			const tbody = document.createElement("tbody");
-			const table = document.createElement("table");
-
-			{
-				const tr      = document.createElement("tr");
-				const th      = document.createElement("th");
-				th.appendChild(document.createTextNode("Level"));
-				tr.appendChild(th);
-
-				let   td      = document.createElement("td");
-				const label   = document.createElement("label");
-				label.id      = "level";
-				label.htmlFor = "level-input";
-				label.classList.add("datum");
-				label.appendChild(document.createTextNode("1"));
-				td.appendChild(label);
-
-				let   input   = document.createElement("input");
-				input.id      = "level-input";
-				input.name    = "level-input";
-				input.oninput = (() => {sheet.refreshLevel()});
-				input.type    = "number";
-				input.min     = 0;
-				input.value   = 0;
-				input.classList.add("hidden-field", "simple-border");
-				td.appendChild(input);
-				tr.appendChild(td);
-
-				td            = document.createElement("td");
-				input         = document.createElement("input");
-				input.type    = "button";
-				input.value   = "Up";
-				input.onclick = (() => {sheet.levelUp()});
-				input.classList.add("simple-border");
-				td.appendChild(input);
-				tr.appendChild(td);
-				tbody.appendChild(tr);
-			}
-
-			for (let item of stats) {
-				const stat    = item;
-				const tr      = document.createElement("tr");
-				const th      = document.createElement("th");
-				th.appendChild(document.createTextNode(stat.toUpperCase()));
-				tr.appendChild(th);
-
-				let td = document.createElement("td");
-
-				this._labeledInput(td, stat, 1, () => {
-					sheet.refreshStat(stat);
-				});
-
-				tr.appendChild(td);
-
-				td = document.createElement("td");
-
-				if (stat != "mov") {
-					td.appendChild(this._span("(", "parenthesis"));
-
-					this._labeledInput(td, `${stat}-growth`, 5, () => {
-						sheet.refreshGrowth(stat);
-					});
-
-					td.appendChild(this._span(")", "parenthesis"));
-				}
-
-				tr.appendChild(td);
-				tbody.appendChild(tr);
-			}
-
-			table.appendChild(tbody);
-			this.root.appendChild(table);
-		}
-
-		const hr = document.createElement("hr");
-		this.root.appendChild(hr);
-
-		{
-			const tbody = document.createElement("tbody");
-			const table = document.createElement("table");
-
-			const data  = [
-				["Physical", "+", "pmt", "-", "pdr"],
-				["Magical", "+", "mmt", "-", "mdr"],
-				["Hit/Avoid", "+", "hit", "-", "avo"],
-				["Range", "≤", "maxrng", "≥", "minrng"],
-				["Crit/Avoid", "+", "newcrit", "-", "cravo"],
-				["Critical", "+", "crit", null, null],
-			];
-
-			for (let row of data) {
-				tbody.appendChild(this._computedRow(...row));
-			}
-
-			table.appendChild(tbody);
-			this.root.appendChild(table);
-		}
-	}
-
-	_computedRow(name, pleft, left, pright, right) {
-
-		const tr       = document.createElement("tr");
-		const th       = document.createElement("th");
-		th.textContent = name;
-		tr.appendChild(th);
-
-		for (let [n, p] of [[left, pleft], [right, pright]]) {
-
-			const td = document.createElement("td");
-			tr.appendChild(td);
-
-			if (n == null) continue;
-
-			td.appendChild(this._span(p, "punctuation"));
-			const nspan = this._span("0", "computed");
-			nspan.id    = `${n}-total`;
-			td.appendChild(nspan);
-		}
-
-		return tr;
-	}
-
-	_span(text, ...classes) {
-		const span = document.createElement("span");
-		span.textContent = text;
-		span.classList.add(...classes);
-		return span;
-	}
-
-	_labeledInput(root, name, step, callback) {
-
-		const label       = document.createElement("label");
-		label.id          = `${name}-total`;
-		label.htmlFor     = `${name}-base`;
-		label.textContent = "0";
-		label.classList.add("datum");
-		root.appendChild(label);
-
-		const input = document.createElement("input");
-		input.id      = `${name}-base`;
-		input.name    = `${name}-base`;
-		input.oninput = callback;
-		input.type    = "number";
-		input.min     = 0;
-		input.max     = 100;
-		input.value   = 0;
-		input.step    = step;
-		input.classList.add("hidden-field", "simple-border");
-		root.appendChild(input);
-	}
-}
-
 /**
  * Class representing the main body of the sheet.
  */
@@ -550,13 +202,7 @@ class Sheet {
 		}
 
 		/** @todo MOVE THIS AFTER FIXING PFE COMPILER INIT */
-		this.cache   = {stats: {}, growths: {}, skills: {},
-			aptitude: {
-				budding: null,
-				talent: null,
-				weakness: null,
-			}
-		};
+		this.cache   = {stats: {}, growths: {}};
 		this._highID = 0;
 		this.charID  = 0;
 
@@ -572,13 +218,9 @@ class Sheet {
 			each.setLookupByName(data, compiler);
 		}
 
-		const ss  = new SkillSection(data.skills);
-		const ssp = document.getElementById("skill-section");
-		ssp.appendChild(ss.root);
-
-		const sts  = new StatsSection(data.stats.names);
-		const stsp = document.getElementById("stats-section");
-		stsp.appendChild(sts.root);
+		/* populate skills, stats, and growths */
+		this.stats = new Stats(data.stats.names, this);
+		document.getElementById("stats-section").appendChild(this.stats.root);
 
 		// main definition data object
 		this.data = data;
@@ -588,16 +230,6 @@ class Sheet {
 		this.history = [];
 
 		/* define attributes for document elements */
-
-		/* skill points */
-		this._select_talent     = document.getElementById("character-talent");
-		this._select_weakness   = document.getElementById("character-weakness");
-		this._select_budding    = document.getElementById("character-budding");
-		this._skill_total       = document.getElementById("skill-total").firstChild;
-
-		/* level */
-		this._input_level       = document.getElementById("level-input");
-		this._output_level      = document.getElementById("level");
 
 		/* hitpoints */
 		this._input_hitpoints   = document.getElementById("hitpoints-input");
@@ -642,22 +274,8 @@ class Sheet {
 		/* set default class name */
 		this.class = "Commoner";
 
-		/* set levelup tracking array */
-		this.levelups = [];
-
-		/* populate skills, stats, and growths */
-		this.stats   = {};
-		this.growths = {};
-		for (let name of this.data.stats.names) {
-			this.stats[name]   = 0;
-			if (name == "mov") continue;
-			this.growths[name] = 0;
-		}
-
-		this.skills  = {};
-		for (let name of this.data.skills) {
-			this.skills[name] = 0;
-		}
+		this.skills = new Skills(data.skills);
+		document.getElementById("skill-section").appendChild(this.skills.root);
 
 		/* initialize event listener for upload */
 		document
@@ -668,13 +286,13 @@ class Sheet {
 		const refresh = (category, key) => {
 			console.log("refresh", key);
 			category.toggleActive(key);
-			this.refreshAllStats();
+			this.stats.refresh();
 		};
 
 		const forget  = (category, key) => {
 			console.log("forget", key);
 			category.delete(key);
-			this.refreshAllStats();
+			this.stats.refresh();
 		};
 
 		const equip   = (category, key) => {
@@ -690,7 +308,7 @@ class Sheet {
 			}
 
 			category.toggleActive(key);
-			this.refreshAllStats();
+			this.stats.refresh();
 		};
 		
 		const unequip = (category, key) => {
@@ -700,7 +318,7 @@ class Sheet {
 			console.assert(category.prev.has(key));
 			category.prev.toggleActive(key);
 			category.delete(key);
-			this.refreshAllStats();
+			this.stats.refresh();
 		};
 
 		const myFeatureTitle = ((feature) => feature.title()); 
@@ -995,10 +613,6 @@ class Sheet {
 
 	/* methods relating to adding definitions */
 
-	// addDefinitions(definitions) {
-		
-	// }
-
 	createID() {
 		const value   = this._highID;
 		this._highID += 1;
@@ -1031,11 +645,7 @@ class Sheet {
 	 * @param {Category} category - the category to add 
 	 */
 	addCategory(category) {
-		// const identifier = category.model.name + "-" + category.name;
-		// const parent     = document.getElementById(identifier);
-
 		this[category.model.name][category.name] = category;
-		// category.addTo(parent);
 	}
 
 	/**
@@ -1091,90 +701,6 @@ class Sheet {
 		element.description = value;
 	}
 
-	/**
-	 * The number of experience points this character has
-	 * @type {number}
-	 */
-	get level() {
-		return Number(this._input_level.value);
-	}
-
-	set level(value) {
-		this._input_level.value = value;
-		this.refreshLevel();
-	}
-
-	/**
-	 * Set the level displayed to be 1/100 of the number of experience points
-	 */
-	refreshLevel() {
-		this._output_level.textContent = 1 + Math.floor(this.level / 100);
-	}
-
-	/**
-	 * Increase the character's level by 1, with a probability for each stat to
-	 * increase by 1 equal to the growth rate of that stat. If one or fewer stats
-	 * increase, allow the user to choose one stat to increase by one instead.
-	 */
-	levelUp() {
-		// statistics that increased from this level up
-		const increases = new Set();
-		const names     = this.data.stats.names.filter(
-			name => name != "mov" // This ain't Jugdral, we don't do mov growth.
-		);
-
-		// for each stat, if roll succeeds increase statistic
-		for (let name of names) {
-			if (Math.random() * 100 <= this.cache.growths[name]) {
-				increases.add(name);
-			}
-		}
-
-		// if only of fewer statistics increased during level up,
-		// then prompt user for stat to increase with popup
-		if (increases.size <= 1) {
-
-			let   choosen     = null;
-			const prompt_text = (
-				"Enter one of: " + names.join(" ")
-			);
-
-			while (!names.includes(choosen)) {
-
-				choosen = prompt(prompt_text);
-
-				if (choosen === null) {
-					break;
-				} else {
-					choosen = choosen.toLowerCase();
-				}
-			}
-
-			if (choosen !== null) {
-				increases.clear();
-				increases.add(choosen);
-			}
-		}
-
-		// show user summary of levelup
-		const myIncreaseString = Array.from(increases).join(" ");
-		alert("Increases: " + myIncreaseString);
-
-		// update and refresh the sheet
-		for (let name of increases) {
-			const input = document.getElementById(name + "-base");
-			input.value = Number(input.value) + 1;
-		}
-
-		this.refreshAllStats();
-		this.level = this.level + 100; // this.level stores exp points
-		
-		// store the levelup record for later
-		const level= Math.floor(this.level / 100) + 1;
-		this.levelups.push(new LevelStamp(level, increases, new Date()));
-	}
-
-	
 	/**
 	 * The number of hitpoints this character has; not the hitpoint total
 	 * @type {number}
@@ -1239,7 +765,7 @@ class Sheet {
 			this.mounted = false;
 		} else {
 			// otherwise the state has changed an stats need recalculated
-			this.refreshAllStats();
+			this.stats.refresh();
 		}
 	}
 
@@ -1261,12 +787,7 @@ class Sheet {
 			active: active
 		});
 
-		for (let stat of this.data.stats.names) {
-			this.refreshStat(stat);
-			this.refreshGrowth(stat);
-		}
-
-		this.refreshSecondaryStats();
+		this.stats.refreshSecondary();
 	}
 
 	/**
@@ -1299,152 +820,6 @@ class Sheet {
 
 	set money(value) {
 		this._input_money.value = Number(value);
-	}
-
-	/* methods relating to grades and skill levels */
-
-	get talent() {
-		return this._select_talent.value;
-	}
-
-	set talent(value) {
-		this._select_talent.value = value;
-	}
-
-	get weakness() {
-		return this._select_weakness.value;
-	}
-
-	set weakness(value) {
-		this._select_weakness.value = value;
-	}
-
-	get budding() {
-		return this._select_budding.value;
-	}
-
-	set budding(value) {
-		this._select_budding.value = value;
-	}
-
-	/**
-	 * Compute and display the letter grade for a single skill
-	 * @param {string} skill - name of the skill
-	 */
-	refreshGrade(name) {
-		const base   = "skill-" + name;
-		const points = Number(document.getElementById(base).value);
-		const cached = this.cache.skills[name] || 0;
-		const diff   = points - cached;
-		const grade  = Grade.for(points, name, this);
-
-		const total  = this._skill_total;
-		total.data   = Number(total.data) + diff 
-		this.cache.skills[name] = points;
-
-		this.skills[name] = points;
-		document.getElementById(base + "-grade").textContent = grade;
-	}
-
-	/**
-	 * Compute and display the letter grades for all skills
-	 */
-	refreshGrades() {
-		for (let name of this.data.skills) {
-			this.refreshGrade(name);
-		}
-	}
-
-	/* methods relating to stats and growths */
-
-	/**
-	 * Recompute and display the growth rate for a single stat
-	 * @param {string} name - name of the stat
-	 */
-	refreshGrowth(name) {
-		// TODO figure out a way to replace this with a set
-		if (!this.data.stats.names.includes(name)) {
-			console.log("Tried to refresh invalid growth \"" + name + "\"");
-			return;
-		}
-
-		if (name == "mov") return; // We don't do movement growth here.
-
-		const display = document.getElementById(name + "-growth-total");
-		const base    = Number(document.getElementById(name + "-growth-base").value);
-		
-		this.growths[name] = base;
-
-		const growth = Math.max(
-			base + Number(this.class.growths[name]),
-			0,
-		);
-
-		this.cache.growths[name] = growth;
-		display.textContent      = growth + "%";
-	}
-
-	/**
-	 * Recompute and display a single primary stat
-	 * @param {string} name - name of the stat
-	 */
-	refreshStat(name) {
-		// TODO figure out a way to replace this with a set
-		if (!this.data.stats.names.includes(name)) {
-			console.log("Tried to refresh invalid statistic \"" + name + "\"");
-			return;
-		}
-
-		const display = document.getElementById(name + "-total");
-		const base    = Number(document.getElementById(name + "-base").value);
-		const value   = Math.max(
-			((name == "mov" ? 4 : 0)
-				+ this.class.modifier(name, this.mounted)
-				+ this.modifier(name)
-				+ base)
-			* this.multiplier(name),
-			0
-		);
-
-		this.stats[name]       = base;
-		this.cache.stats[name] = value;
-		this.cache.stats["base_" + name] = base;
-		display.textContent    = value;
-
-		if (name == "hp") {
-			const display   = document.getElementById("hitpoints");
-			display.max     = this.cache.stats.hp;
-			display.optimum = this.cache.stats.hp;
-			display.high    = Math.floor(this.cache.stats.hp / 2);
-			display.low     = Math.floor(this.cache.stats.hp / 4) + 1;
-			this.refreshHealthBar();
-		}
-
-		this.combatarts.equipped.trigger(name);
-		this.combatarts.known.trigger(name);
-		this.weapons.known.trigger(name);
-
-		this.refreshSecondaryStats();
-	}
-
-	/**
-	 * Recompute and display a all primary stats
-	 */
-	refreshPrimaryStats() {
-		for (let name of this.data.stats.names) {
-			this.refreshStat(name);
-		}
-	}
-
-	/**
-	 * Recompute and display all secondary stats
-	 */
-	refreshSecondaryStats() {
-		for (let [base, mod] of this.data.stats.linked) {
-			const value = this.calcSecondaryStat(base, mod, this.cache);
-			this.cache.stats[mod] = value;
-			document.getElementById(mod + "-total").textContent = value;
-		}
 	}
 
 	abilityIter() {
@@ -1647,14 +1022,6 @@ class Sheet {
 		}
 	}
 
-	/**
-	 * Recompute and redisplay all primary and secondary stats
-	 */
-	refreshAllStats() {
-		this.refreshPrimaryStats();
-		this.refreshSecondaryStats();
-	}
-
 	/* catch all refresh method */
 
 	/**
@@ -1662,9 +1029,8 @@ class Sheet {
 	 */
 	refresh() {
 		this.refreshClass();
-		this.refreshAllStats();
-		this.refreshGrades();
-		this.refreshLevel();
+		this.stats.refresh();
+		this.skills.refresh();
 	}
 
 	/* methods relating to persisting the sheet */
@@ -1673,7 +1039,7 @@ class Sheet {
 		const text = [];
 
 		text.push(this.name, "\n\n");
-		for (let name of this.data.stats.names) {
+		for (let name of this.stats.names) {
 			text.push(name.toUpperCase(), ": ", this.cache.stats[name], "\n");
 		}
 		text.push("\n");
@@ -1717,9 +1083,6 @@ class Sheet {
 			return;
 		}
 
-		// const hardcode = confirm(
-		// 	"Hardcode stats? (If yes, you need new macros every level)"
-		// );
 		const hardcode = document.getElementById("generator-hardcode").checked;
 
 		const m = new MacroBuilder(this.name);
@@ -2025,39 +1388,26 @@ class Sheet {
 			}
 		}
 
-		// fill the statistics boxes
-		for (let statistic of this.data.stats.names) {
-			document.getElementById(statistic + "-base").value =
-				char.statistics[statistic];
-
-			if (statistic == "mov") continue;
-
-			document.getElementById(statistic + "-growth-base").value =
-				char.growths[statistic];
-		}
+		this.stats.import(char);
 
 		// fill the skills boxes
-		for (let skill of this.data.skills) {
-			document.getElementById("skill-" + skill).value =
-				char.skills[skill];
-		}
+		this.skills.import(char.skills);
 
-		this.talent   = char.talent   || "Axes";
-		this.weakness = char.weakness || "Axes";
-		this.budding  = char.budding  || "Axes";
+		this.skills.talent   = char.talent   || "Axes";
+		this.skills.weakness = char.weakness || "Axes";
+		this.skills.budding  = char.budding  || "Axes";
 
 		this.refreshClass(char.class_active);
-		this.refreshAllStats();
-		this.refreshGrades();
-		this.refreshLevel();
+		this.stats.refresh();
+		this.skills.refresh();
 
 		// fill the "character and backstory" section entries
-		this.name        = char.name;
-		this.homeland    = char.homeland;
-		this.description = char.description;
-		this.hitpoints   = char.hitpoints;
-		this.level       = char.experience;
-		this.money       = char.money || 0;
+		this.name         = char.name;
+		this.homeland     = char.homeland;
+		this.description  = char.description;
+		this.hitpoints    = char.hitpoints;
+		this.stats.level  = char.experience;
+		this.money        = char.money || 0;
 		// this.levelups    = char.progression;
 	}
 
@@ -2080,35 +1430,21 @@ class Sheet {
 			}
 		}
 
-		// fill the statistics boxes
-		for (let statistic of this.data.stats.names) {
-			document.getElementById(statistic + "-base").value =
-				char.statistics[statistic];
+		this.stats.import(char);
 
-			if (statistic == "mov") continue;
-
-			document.getElementById(statistic + "-growth-base").value =
-				char.growths[statistic];
-		}
-
-		// fill the skills boxes
-		for (let skill of this.data.skills) {
-			document.getElementById("skill-" + skill).value =
-				char.skills[skill];
-		}
+		this.skills.import(char.skills);
 
 		this.refreshClass(char.class_active);
-		this.refreshAllStats();
-		this.refreshGrades();
-		this.refreshLevel();
+		this.stats.refresh();
+		this.skills.refresh();
 
 		// fill the "character and backstory" section entries
-		this.name        = char.name;
-		this.homeland    = char.homeland;
-		this.description = char.description;
-		this.hitpoints   = char.hitpoints;
-		this.level       = char.experience;
-		this.money       = char.money || 0;
+		this.name         = char.name;
+		this.homeland     = char.homeland;
+		this.description  = char.description;
+		this.hitpoints    = char.hitpoints;
+		this.stats.level  = char.experience;
+		this.money        = char.money || 0;
 		// this.levelups    = char.progression;
 	}
 
@@ -2142,77 +1478,37 @@ class Sheet {
 		toggleAllActive(this.abilities.known, this.abilities.equipped.names());
 		toggleAllActive(this.combatarts.known, this.combatarts.equipped.names());
 
-		// fill the statistics boxes
-		for (let statistic of this.data.stats.names) {
-			document.getElementById(statistic + "-base").value =
-				char.statistics[statistic];
+		this.stats.import(char);
 
-			if (statistic == "mov") continue;
-
-			document.getElementById(statistic + "-growth-base").value =
-				char.growths[statistic];
-		}
-
-		// fill the skills boxes
-		for (let skill of this.data.skills) {
-			document.getElementById("skill-" + skill).value =
-				char.skills[skill];
-		}
+		this.skills.import(char.skills);
 
 		this.refresh();
 
 		// fill the "character and backstory" section entries
-		this.name        = char.name;
-		this.homeland    = char.homeland || char.home; // used to be home
-		this.description = char.description;
-		this.hitpoints   = char.hitpoints;
-		this.level       = char.level;
-	}
-
-	async getProgression() {
-		const buffer = LevelStamp.packBlock(this.levelups);
-		
-		let raw = await window.crypto.subtle.digest("SHA-256", buffer);
-
-		return {
-			value: btoa(buffer),
-			digest: btoa(raw),
-		};
-	}
-
-	async setProgression(value) {
-		
-		const buffer = new Uint32Array(
-			atob(value.value).split(",").map(Number)
-		);
-
-		const raw    = await window.crypto.subtle.digest("SHA-256", buffer);
-		const digest = btoa(raw);
-
-		console.log(digest, value.digest);
-
-		if (value.digest && digest != value.digest) {
-			alert("The progression data has been compromised.");
-		}
-
-		this.levelups = LevelStamp.unpackBlock(buffer);
+		this.name         = char.name;
+		this.homeland     = char.homeland || char.home; // used to be home
+		this.description  = char.description;
+		this.hitpoints    = char.hitpoints;
+		this.stats.level  = char.level;
 	}
 
 	writeCharacter() {
-		const char = {
+		const stats = this.stats.export();
+
+		const  char = {
 			version      : Version.CURRENT.toString(),
 			name         : this.name,
 			description  : this.description,
 			class        : this.class.name,
 			homeland     : this.homeland,
 			hitpoints    : this.hitpoints,
-			experience   : this.level,
-			growths      : copy_object(this.growths),
-			statistics   : copy_object(this.stats),
-			skills       : copy_object(this.skills),
-			talent       : this.talent,
-			weakness     : this.weakness,
-			budding      : this.budding,
+			experience   : this.stats.level,
+			growths      : stats.growths,
+			statistics   : stats.statistics,
+			skills       : this.skills.export(),
+			talent       : this.skills.talent,
+			weakness     : this.skills.weakness,
+			budding      : this.skills.budding,
 			// progression  : this.progression,
 
 			money        : this.money,
@@ -2314,31 +1610,23 @@ class Sheet {
 			}
 		}
 
-		// fill the statistics boxes
-		for (let statistic of this.data.stats.names) {
-			document.getElementById(statistic + "-base").value = 0;
-			if (statistic == "mov") continue;
-			document.getElementById(statistic + "-growth-base").value = 0;
-		}
+		this.stats.clear();
 
-		// fill the skills boxes
-		for (let skill of this.data.skills) {
-			document.getElementById("skill-" + skill).value = 0;
-		}
+		this.skills.clear();
 
 		this.refresh();
 
 		// fill the "character and backstory" section entries
-		this.name        = "Blank Sheet";
-		this.homeland    = "adrestia";
-		this.description = "Write your character description here.";
-		this.hitpoints   = 0;
-		this.level       = 0;
-		this.money       = 0;
+		this.name         = "Blank Sheet";
+		this.homeland     = "adrestia";
+		this.description  = "Write your character description here.";
+		this.hitpoints    = 0;
+		this.stats.level  = 0;
+		this.money        = 0;
 
-		this.talent   = "Axes";
-		this.weakness = "Axes";
-		this.budding  = "Axes";
+		this.skills.talent   = "Axes";
+		this.skills.weakness = "Axes";
+		this.skills.budding  = "Axes";
 	}
 
 	fresh() {
@@ -2423,16 +1711,15 @@ class Sheet {
 
 	copy_point_buy() {
 		for (let [name, value] of this.myPointBuy.column("value")) {
-			document.getElementById(name + "-base").value = value;
-			this.refreshStat(name);
+			this.stats.stats[statistic] = value;
+			this.stats.stats[name].refresh();
 		}
 
 		for (let [name, value] of this.myPointBuy.column("growth")) {
-			document.getElementById(name + "-growth-base").value = value * 5;
-			this.refreshGrowth(name);
+			this.stats.growths[statistic] = value * 5;
 		}
 
-		this.level = 0;
+		this.stats.level = 0;
 	}
 }
 
