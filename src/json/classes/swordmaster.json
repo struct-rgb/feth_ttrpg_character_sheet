@@ -1,0 +1,43 @@
+{
+  "name": "Swordmaster",
+  "description": "These Sword fighters prefer Strong, quick, Strikes",
+  "type": "Martial",
+  "tier": "Advanced",
+  "requires": "B Rank Swords",
+  "abilities": [ "Swordfaire", "+10 Crit", "+15 Stamina" ],
+  "growths": {
+    "hp": 20,
+    "str": 15,
+    "mag": 15,
+    "dex": 15,
+    "spd": 25,
+    "def": 15,
+    "res": 10,
+    "cha": 10
+  },
+  "modifiers": {
+    "hp": 4,
+    "str": 4,
+    "mag": 0,
+    "dex": 1,
+    "spd": 1,
+    "def": 4,
+    "res": 1,
+    "cha": 0,
+    "mov": 1
+  },
+  "mount": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0
+  },
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}
