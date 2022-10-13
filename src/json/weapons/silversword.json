@@ -1,0 +1,27 @@
+{
+    "name": "Silver Sword",
+    "type": "Swords",
+    "description": "A weapon that is costly but powerful.",
+    "requires": "B Rank Swords",
+    "price": 2115,
+
+    "modifiers": {
+        "pmt": 11,
+        "mmt": 0,
+        "pdr": 0,
+        "mdr": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+    },
+    "magical": false,
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}
