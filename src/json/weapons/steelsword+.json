@@ -1,0 +1,27 @@
+{
+    "name": "Steel Sword+",
+    "type": "Swords",
+    "description": "A heavier sword, but still reliable.",
+    "requires": "D Rank Swords",
+    "price": 2190,
+
+    "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "pdr": 0,
+        "mdr": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "cost": 0,
+        "uses": 0
+    },
+    "magical": false,
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}

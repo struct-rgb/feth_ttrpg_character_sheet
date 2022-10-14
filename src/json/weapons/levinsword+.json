@@ -1,0 +1,27 @@
+{
+    "name": "Levin Sword+",
+    "type": "Swords",
+    "description": "Uses Magic instead of Strength.",
+    "requires": "C Rank Swords",
+    "price": 3840,
+
+    "modifiers": {
+        "pmt": 9,
+        "mmt": 0,
+        "pdr": 0,
+        "mdr": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 3,
+        "cost": 0,
+        "uses": 0
+    },
+    "magical": true,
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}
