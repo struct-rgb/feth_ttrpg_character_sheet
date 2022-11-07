@@ -1,0 +1,27 @@
+{
+  "name": "Heal",
+  "type": "Faith",
+  "description": "Restores HP to an ally = The spell’s Mt + the user’s Mag/2. Can be used with Healing Metamagic.",
+  "requires": "D Rank Faith",
+  "price": 780,
+
+  "modifiers": {
+    "pmt": 0,
+    "mmt": 8,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tp": 1,
+    "cost": 0,
+    "uses": 0
+  },
+
+  "comment": "Incompatible with all Attributes.",
+  "tags": [],
+  "hidden": false
+}

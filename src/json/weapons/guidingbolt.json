@@ -1,0 +1,28 @@
+{
+  "name": "Guiding Bolt",
+  "type": "Faith",
+  "description": "On hit, apply [Marked] to target foe for 1 turn. ",
+  "requires": "C Rank Faith",
+  "price": 1400,
+
+  "modifiers": {
+    "pmt": 0,
+    "mmt": 5,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 90,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 3,
+    "tp": 3,
+    "cost": 0,
+    "uses": 0
+  },
+  "magical": true,
+
+  "comment": "Incompatible with all Attributes.",
+  "tags": [],
+  "hidden": false
+}

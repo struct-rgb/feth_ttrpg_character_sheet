@@ -1,0 +1,43 @@
+{
+  "name": "War Cleric/Priest",
+  "description": "An advanced class that uses Axes and Faith.",
+  "type": "Martial",
+  "tier": "Advanced",
+  "requires": "Rank C+ Faith and Axes.",
+  "abilities": [ "Axefaire", "Faith Tomefaire", "Faith Consumption 1" ],
+  "growths": {
+    "hp": 25,
+    "str": 20,
+    "mag": 15,
+    "dex": 15,
+    "spd": 0,
+    "def": 15,
+    "res": 25,
+    "cha": 20
+  },
+  "modifiers": {
+    "hp": 4,
+    "str": 4,
+    "mag": 3,
+    "dex": 2,
+    "spd": 0,
+    "def": 2,
+    "res": 5,
+    "cha": 4,
+    "mov": 2
+  },
+  "mount": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0
+  },
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

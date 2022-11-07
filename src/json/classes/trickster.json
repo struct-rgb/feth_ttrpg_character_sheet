@@ -1,0 +1,43 @@
+{
+  "name": "Trickster",
+  "description": "An advanced class that uses Swords and Faith.",
+  "type": "Martial",
+  "tier": "Advanced",
+  "requires": "Rank C+ Faith and Swords.",
+  "abilities": [ "Locktouch", "Stealth", "Lucky Seven" ],
+  "growths": {
+    "hp": 20,
+    "str": 15,
+    "mag": 20,
+    "dex": 20,
+    "spd": 20,
+    "def": 5,
+    "res": 20,
+    "cha": 15
+  },
+  "modifiers": {
+    "hp": 5,
+    "str": 3,
+    "mag": 3,
+    "dex": 3,
+    "spd": 5,
+    "def": 0,
+    "res": 3,
+    "cha": 2,
+    "mov": 1
+  },
+  "mount": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0
+  },
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}
