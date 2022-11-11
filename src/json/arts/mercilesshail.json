@@ -1,7 +1,7 @@
 {
   "name": "Merciless Hail",
   "type": "Other",
-  "description": "When casting an Ice Spell, create an immovable 3x3 area centered on your target that heavily hinders movement for 1 turn. Units that start their turn in those squares suffer -2 Mov, and cannot benefit from movement bonuses from Abilities or Personals.",
+  "description": "When casting an Ice Spell, create an immovable 3x3 area centered on your target. Units that start their turn in those squares suffer [Chilled] for 1 turn.",
   "requires": "Rank B Reason.",
   "modifiers": {
     "pmt": 0,
