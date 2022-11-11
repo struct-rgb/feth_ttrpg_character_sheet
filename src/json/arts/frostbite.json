@@ -1,7 +1,7 @@
 {
   "name": "Frostbite",
   "type": "Other",
-  "description": "When casting an Ice Spell, inflict a lingering chill on your foe and surrounding enemies. After initiating combat, foes adjacent to your target (Including your target.) suffers -5 Spd and -1 Mov for 1 turn.",
+  "description": "When casting an Ice Spell, After initiating combat, your target and adjecent foes suffer [Frostbitten] for 1 turn.",
   "requires": "Rank D Reason.",
   "modifiers": {
     "pmt": 0,
