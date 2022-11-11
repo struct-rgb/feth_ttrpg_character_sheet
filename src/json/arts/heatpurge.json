@@ -1,7 +1,7 @@
 {
   "name": "Heat Purge",
   "type": "Other",
-  "description": "When casting a Fire Spell, disable conditional stat bonuses (Ex. Blow/Stance Skills, Personals, etc.) on your target and halve their healing received for 1 turn. Ragnarok Variant: All foes within 2 spaces of the target receive the same effect.",
+  "description": "When casting a Fire Spell, inflict [Purged] on your target. Ragnarok Variant: All foes within 2 spaces of the target receive the same effect.",
   "requires": "Rank D Reason.",
   "modifiers": {
     "pmt": 0,
