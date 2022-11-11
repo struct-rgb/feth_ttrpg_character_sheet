@@ -1,7 +1,7 @@
 {
   "name": "Surge",
   "type": "Other",
-  "description": "When casting a Lightning Spell, temporarily interrupt your target for 1 turn. If your target makes an attack with a weapon, they cannot make follow-up attacks. If your target is Armored, they cannot make any follow-up attacks for the duration.",
+  "description": "When casting a Lightning Spell, inflict [Static] on your target for 1 turn.",
   "requires": "Rank D Reason.",
   "modifiers": {
     "pmt": 0,
