@@ -1,7 +1,7 @@
 {
   "name": "Daylight",
   "type": "Other",
-  "description": "When casting a Fire Spell that deals damage, deal effective damage against Undead units. If the spell infused with Daylight successfully deals damage, foes within 2 spaces of the target (Including the target.) cannot benefit from Stealth abilities for 1 turn.",
+  "description": "When casting a Fire Spell that deals damage, deal effective damage against Undead units. If the spell infused with Daylight successfully deals damage, foes within 2 spaces of the target (Including the target.) are inflicted with [Exposed] 1 turn.",
   "requires": "Rank D Reason.",
   "modifiers": {
     "pmt": 0,
