@@ -1,7 +1,7 @@
 {
   "name": "Disruption",
   "type": "Other",
-  "description": "When casting a Wind Spell, surround your target in a chaotic distortion of wind for 2 turns. If that target casts a spell, they have to roll a 1d100. Below a 50, their spell’s Mt is ignored.",
+  "description": "When casting a Wind Spell, inflict your target with [Distorted] for 2 turns.",
   "requires": "Rank C Reason.",
   "modifiers": {
     "pmt": 0,
