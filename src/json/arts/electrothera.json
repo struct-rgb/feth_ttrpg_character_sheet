@@ -1,7 +1,7 @@
 {
   "name": "Electroshock Therapy",
   "type": "Other",
-  "description": "When casting a Lightning Spell, greatly affect the psychology of your target and their mount. After combat, your target suffers -6 Mag/Cha and halves any healing they receive for 1 turn. Additionally, if your target is mounted, they cannot benefit from the Canto skill. Thoron Variant: Any foes between you and Thoron’s target are also affected by Electroshock Therapy.",
+  "description": "When casting a Lightning Spell, inflict [Shocked] for 1 turn.",
   "requires": "Rank B Reason.",
   "modifiers": {
     "pmt": 0,
