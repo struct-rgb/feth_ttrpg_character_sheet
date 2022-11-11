@@ -1,7 +1,7 @@
 {
   "name": "Zephyr",
   "type": "Other",
-  "description": "When casting a Wind Spell, grant you and allies within 2 spaces of you [Zephyr] for 1 turn. Excalibur Variant: The ally closest to the caster recovers HP equal to 50% of the damage dealt.",
+  "description": "When casting a Wind Spell, grant you and allies within 2 spaces of you gain [Zephyr] for 1 turn. Excalibur Variant: The ally closest to the caster recovers HP equal to 50% of the damage dealt.",
   "requires": "Rank B Reason.",
   "modifiers": {
     "pmt": 0,
