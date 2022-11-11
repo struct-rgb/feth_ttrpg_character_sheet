@@ -1,7 +1,7 @@
 {
   "name": "Overcharge",
   "type": "Other",
-  "description": "When casting a Lightning Spell, give yourself an aura of plasma that exposes the weakness of your foes for 2 turns. All foes within 2 spaces of you always take effective damage if they are a Flying, Riding, or Armored Unit. If there are foes within 2 spaces that are Infantry, they suffer -20 Avo instead.",
+  "description": "When casting a Lightning Spell, for 2 turns, all foes within 2 spaces of you suffer from [Overcharged].",
   "requires": "Rank A Reason.",
   "modifiers": {
     "pmt": 0,
