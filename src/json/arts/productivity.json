@@ -1,7 +1,7 @@
 {
   "name": "Productivity",
   "type": "Other",
-  "description": "When casting a Lightning Spell, reinvigorate you or an ally for 2 turns. Choose yourself or one ally within 2 spaces. Whenever that Unit ends their turn, they regain 2 TP. Lightning Wall Variant: Any ally that starts their turn adjacent to any Lightning Wall regains 1 Stamina.",
+  "description": "When casting a Lightning Spell, choose you or an ally within 2 spaces. That unit gains the [Productive] condition for 2 turns. Lightning Wall Variant: Any ally that starts their turn adjacent to any Lightning Wall regains 1 Stamina.",
   "requires": "Rank C Reason.",
   "modifiers": {
     "pmt": 0,
