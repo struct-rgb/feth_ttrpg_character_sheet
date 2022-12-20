@@ -1,0 +1,27 @@
+{
+    "name": "Silver Bow+",
+    "type": "Bows",
+    "description": "No special effect.",
+    "requires": "B Rank Bows",
+    "price": 3750,
+
+    "modifiers": {
+        "pmt": 13,
+        "mmt": 0,
+        "pdr": 0,
+        "mdr": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "cost": 0,
+        "uses": 0
+    },
+    "magical": false,
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}
