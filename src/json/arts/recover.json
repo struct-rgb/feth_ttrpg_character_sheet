@@ -1,0 +1,27 @@
+{
+  "name": "Recover",
+  "type": "Faith",
+  "description": "Restores HP to an ally = The spell’s Mt + the user’s Mag/2.",
+  "requires": "C Rank Faith.",
+  "modifiers": {
+    "pmt": 0,
+    "mmt": 30,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+
+    "sp": 5,
+    "uses": 0,
+    "charges": 0,
+    "tokens": 0
+  },
+
+  "comment": "",
+  "tags": [],
+  "hidden": false
+}

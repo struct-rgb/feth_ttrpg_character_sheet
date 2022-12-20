@@ -1,0 +1,27 @@
+{
+  "name": "Ward",
+  "type": "Faith",
+  "description": "Apply [Warded] to target ally.",
+  "requires": "C Rank Faith.",
+  "modifiers": {
+    "pmt": 0,
+    "mmt": 0,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+
+    "sp": 3,
+    "uses": 0,
+    "charges": 0,
+    "tokens": 0
+  },
+
+  "comment": "",
+  "tags": [],
+  "hidden": false
+}

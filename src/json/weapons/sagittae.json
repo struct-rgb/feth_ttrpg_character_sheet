@@ -1,0 +1,28 @@
+{
+  "name": "Sagittae",
+  "type": "Reason",
+  "description": "A force spell; no special effects.",
+  "requires": "C Rank Reason",
+  "price": 1425,
+
+  "modifiers": {
+    "pmt": 0,
+    "mmt": 7,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 90,
+    "avo": 0,
+    "crit": 5,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tp": 2,
+    "cost": 0,
+    "uses": 0
+  },
+  "magical": true,
+
+  "comment": "Incompatible with all Attributes.",
+  "tags": [],
+  "hidden": false
+}

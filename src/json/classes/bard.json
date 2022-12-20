@@ -1,0 +1,43 @@
+{
+  "name": "Bard",
+  "description": "An advanced class that uses Authority.",
+  "type": "Other",
+  "tier": "Advanced",
+  "requires": "Rank B Authority.",
+  "abilities": [ "Calm Spirit", "Positioning" ],
+  "growths": {
+    "hp": 20,
+    "str": 15,
+    "mag": 20,
+    "dex": 30,
+    "spd": 20,
+    "def": 0,
+    "res": 10,
+    "cha": 25
+  },
+  "modifiers": {
+    "hp": 3,
+    "str": 3,
+    "mag": 4,
+    "dex": 6,
+    "spd": 3,
+    "def": 0,
+    "res": 2,
+    "cha": 5,
+    "mov": 1
+  },
+  "mount": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0
+  },
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

@@ -1,0 +1,36 @@
+{
+  "name": "Faith Prowess 4",
+  "description": "Grants +8 Hit and +16 Avo, and +4 Crit Avo when using Faith.",
+  "type": "Passive",
+  "weapon": "Faith",
+  "requires": "B+ Rank Faith. (Level 15)",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0,
+
+    "pmt": 0,
+    "mmt": 0,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 8,
+    "avo": 16,
+    "crit": 4,
+    "cravo": 2,
+
+    "minrng": 0,
+    "maxrng": 0,
+
+    "mov": 0
+  },
+
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [],
+  "hidden": false
+}

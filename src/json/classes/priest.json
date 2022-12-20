@@ -1,0 +1,43 @@
+{
+  "name": "Priest",
+  "description": "A class that uses Faith.",
+  "type": "Other",
+  "tier": "Starting",
+  "requires": "Rank D Faith.",
+  "abilities": [ "Faith Consumption 1" ],
+  "growths": {
+    "hp": 10,
+    "str": 10,
+    "mag": 15,
+    "dex": 10,
+    "spd": 5,
+    "def": 0,
+    "res": 30,
+    "cha": 20
+  },
+  "modifiers": {
+    "hp": 0,
+    "str": 0,
+    "mag": 4,
+    "dex": 2,
+    "spd": 1,
+    "def": 0,
+    "res": 5,
+    "cha": 3,
+    "mov": 0
+  },
+  "mount": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0
+  },
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

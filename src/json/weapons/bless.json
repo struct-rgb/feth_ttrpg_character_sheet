@@ -1,0 +1,28 @@
+{
+  "name": "Bless (Counter-Command)",
+  "type": "Faith",
+  "description": "Apply [Blessed] to target ally for one turn. Wielder can pay 1 TP to cast this spell as a counter-command with trigger: ally in range enters combat.",
+  "requires": "D Rank Faith",
+  "price": 780,
+
+  "modifiers": {
+    "pmt": 0,
+    "mmt": 0,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 5,
+    "tp": 0,
+    "cost": 0,
+    "uses": 0
+  },
+  "magical": true,
+
+  "comment": "Can Counter-Command. Incompatible with all Attributes.",
+  "tags": [],
+  "hidden": false
+}

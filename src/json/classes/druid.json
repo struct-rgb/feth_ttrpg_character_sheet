@@ -1,0 +1,43 @@
+{
+  "name": "Druid",
+  "description": "An advanced class that uses Guile.",
+  "type": "Other",
+  "tier": "Advanced",
+  "requires": "Rank B Guile.",
+  "abilities": [ "Heartseeker", "Guile Consumption 2", "Fiendish Blow" ],
+  "growths": {
+    "hp": 15,
+    "str": 15,
+    "mag": 20,
+    "dex": 15,
+    "spd": 10,
+    "def": 15,
+    "res": 15,
+    "cha": 20
+  },
+  "modifiers": {
+    "hp": 5,
+    "str": 0,
+    "mag": 5,
+    "dex": 1,
+    "spd": 1,
+    "def": 0,
+    "res": 3,
+    "cha": 2,
+    "mov": 0
+  },
+  "mount": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0
+  },
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

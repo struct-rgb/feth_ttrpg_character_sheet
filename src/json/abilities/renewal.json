@@ -1,0 +1,36 @@
+{
+  "name": "Renewal",
+  "description": "Unit recovers up to 20% of max HP at the start of each turn.",
+  "type": "Passive",
+  "weapon": "",
+  "requires": "Rank B+ Faith. (Level 20)",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "cha": 0,
+
+    "pmt": 0,
+    "mmt": 0,
+    "pdr": 0,
+    "mdr": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+
+    "minrng": 0,
+    "maxrng": 0,
+
+    "mov": 0
+  },
+
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [],
+  "hidden": false
+}
