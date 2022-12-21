@@ -7549,7 +7549,7 @@
       }
     },
     {
-      "name": "Cadeuseus Staff",
+      "name": "Caduceus Staff",
       "description": "Sacred staff (Crest of Cethleann). Range +1 for offensive magic, restores hp each turn.",
       "type": "Staff",
       "modifiers": {
@@ -7557,8 +7557,16 @@
       }
     },
     {
+      "name": "Asclepius",
+      "description": "Grants +3 Protection, restores hp each turn.",
+      "type": "Staff",
+      "modifiers": {
+        "pdr": 3
+      }
+    },
+    {
       "name": "Thyrsus",
-      "description": "Relic staff (Crest of Gloucester). Range +2 for offensive magic, may halve damage receives.",
+      "description": "Relic staff (Crest of Gloucester). Range +2 for offensive magic, may halve damage received.",
       "type": "Staff",
       "modifiers": {
         "maxrng": 2
@@ -7568,6 +7576,14 @@
       "name": "Rafail Gem",
       "description": "Relic gem (Crest of Lamine). Nullifies user’s class type weaknesses, prevents foe’s critical hits, and may halve damage received.",
       "type": "Gem"
+    },
+    {
+      "name": "Fetters of Dromi",
+      "description": "Relic ring (Crest of Aubin). Movement +1, user can continue moving after taking certain actions, and may halve damage received.",
+      "type": "Ring",
+      "modifiers": {
+        "mov": 1
+      }
     },
     {
       "name": "Black Eagle Pendant",
@@ -7599,14 +7615,6 @@
       "type": "Accessory",
       "modifiers": {
         "cha": 2
-      }
-    },
-    {
-      "name": "Fetters of Dromi",
-      "description": "Relic ring (Crest of Aubin). Movement +1, user can continue moving after taking certain actions, and may halve damage received.",
-      "type": "Ring",
-      "modifiers": {
-        "mov": 1
       }
     },
     {
