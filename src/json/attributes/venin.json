@@ -1,0 +1,28 @@
+{
+    "name": "Venin",
+    "type": "Prompt",
+    "description": "On hit, apply [Poison] to target foe. Consumes 3 TP when dealing damage. Disabled while user has 0 TP and on spells.\n\nDecreases Max TP by 2 when placed in the Unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)",
+    "rank": 2,
+    "price": 2800,
+
+    "base": "else",
+    "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": -2,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}

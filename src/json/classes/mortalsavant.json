@@ -1,0 +1,34 @@
+{
+  "name": "Mortal Savant",
+  "description": "One who has mastered both magic and the blade",
+  "type": "Martial",
+  "tier": "Advanced",
+  "requires": "All (Swords C+) (Any (Reason C+) (Guile C+)) (Required (Level 15))",
+  "abilities": ["Swordfaire", "Warding Stance", "Stamina +10" ],
+  "growths": {
+    "hp": 25,
+    "str": 20,
+    "mag": 20,
+    "dex": 20,
+    "spd": 15,
+    "def": 15,
+    "res": 10,
+    "cha": 5
+  },
+  "modifiers": {
+    "hp": 3,
+    "str": 3,
+    "mag": 2,
+    "dex": 4,
+    "spd": 3,
+    "def": 3,
+    "res": 4,
+    "cha": 2,
+    "mov": 1
+  },
+  "mount": null,
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

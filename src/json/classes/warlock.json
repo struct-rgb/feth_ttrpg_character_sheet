@@ -3,7 +3,7 @@
   "description": "An advanced class that uses Reason.",
   "type": "Other",
   "tier": "Advanced",
-  "requires": "Rank B Reason.",
+  "requires": "All (Reason B) (Required (Level 15))",
   "abilities": [ "Reason Tomefaire", "Reason Consumption 2" ],
   "growths": {
     "hp": 15,

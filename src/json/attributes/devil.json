@@ -1,0 +1,27 @@
+{
+    "name": "Devil",
+    "description": "Grants weapon +9 Mt. Inflicts 10 damage to wielder and consumes 3 TP after combat. Decreases Max TP by 2 when placed in the Unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)\n\nDisabled while wielder has 0 TP, on spells, and on weapons with Range > 1.",
+    "rank": 1,
+    "price": 330,
+
+    "base": "else",
+    "modifiers": {
+        "mt": "(ask [Devil?], No = 0; Yes = 9)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": -2,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}

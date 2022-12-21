@@ -1,0 +1,27 @@
+{
+  "name": "Static Shock",
+  "type": "Reason",
+  "description": "A lightning spell; no special effects. Costs 550G to upgrade from Thunder.",
+  "requires": "Reason C",
+  "rank": "C",
+  "price": 1390,
+  "base": "mag",
+  "modifiers": {
+    "mt": 9,
+    "prot": 0,
+    "resl": 0,
+    "hit": 75,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 2,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": [],
+  "hidden": false
+}

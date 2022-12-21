@@ -3,7 +3,7 @@
   "description": "An advanced class that uses Guile.",
   "type": "Other",
   "tier": "Advanced",
-  "requires": "Rank B Guile.",
+  "requires": "All (Guile B) (Required (Level 15))",
   "abilities": [ "Heartseeker", "Guile Consumption 2", "Fiendish Blow" ],
   "growths": {
     "hp": 15,
@@ -26,16 +26,7 @@
     "cha": 2,
     "mov": 0
   },
-  "mount": {
-    "hp": 0,
-    "str": 0,
-    "mag": 0,
-    "dex": 0,
-    "spd": 0,
-    "def": 0,
-    "res": 0,
-    "cha": 0
-  },
+  "mount": null,
 
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],

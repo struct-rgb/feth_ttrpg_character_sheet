@@ -1,0 +1,28 @@
+{
+    "name": "Curse of Ashiya",
+    "type": "Swords",
+    "description": "Grants weapon +40 Crit. Inflicts 5 damage to wielder after combat. Decreases Max TP by 4 when placed in the Unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on non-Swords and on weapons with Range > 1.",
+    "rank": 4,
+    "price": 2400,
+
+    "base": "else",
+    "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 40,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": -4,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}

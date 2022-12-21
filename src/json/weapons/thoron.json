@@ -1,0 +1,27 @@
+{
+  "name": "Thoron",
+  "type": "Reason",
+  "description": "A lightning spell; no special effects.",
+  "requires": "Reason B",
+  "rank": "B",
+  "price": 2700,
+  "base": "mag",
+  "modifiers": {
+    "mt": 7,
+    "prot": 0,
+    "resl": 0,
+    "hit": 75,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 3,
+    "tpcost": 4,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": [],
+  "hidden": false
+}

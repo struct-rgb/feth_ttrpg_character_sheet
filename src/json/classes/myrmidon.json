@@ -1,0 +1,34 @@
+{
+    "name": "Myrmidon",
+    "description": "A nimble Sword fighter.",
+    "type": "Martial",
+    "tier": "Starting",
+    "requires": "Swords D",
+    "abilities": ["Zeal"],
+    "growths": {
+        "hp": 15,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 20,
+        "def": 10,
+        "res": 10,
+        "cha": 10
+      },
+    "modifiers": {
+        "hp": 1,
+        "str": 3,
+        "mag": 0,
+        "dex": 3,
+        "spd": 4,
+        "def": 1,
+        "res": 1,
+        "cha": 2,
+        "mov": 0
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

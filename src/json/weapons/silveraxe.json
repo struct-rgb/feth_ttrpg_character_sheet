@@ -1,0 +1,27 @@
+{
+  "name": "Silver Axe",
+  "type": "Axes",
+  "description": "No special effect. Costs 725G to upgrade from Steel Axe.",
+  "requires": "Axes C",
+  "rank": "C",
+  "price": 2175,
+  "base": "str",
+  "modifiers": {
+    "mt": 16,
+    "prot": 0,
+    "resl": 0,
+    "hit": 70,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [],
+  "hidden": false
+}

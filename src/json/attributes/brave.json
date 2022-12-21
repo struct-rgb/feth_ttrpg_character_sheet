@@ -1,0 +1,28 @@
+{
+    "name": "Brave",
+    "type": "Any",
+    "description": "When initiating combat, wielder makes two consecutive hits per normal attack and consumes 3 TP when dealing damage. Disabled on spells.",
+    "rank": 2,
+    "price": 750,
+
+    "base": "else",
+    "modifiers": {
+        "mt": -3,
+        "prot": 0,
+        "resl": 0,
+        "hit": -15,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": true
+}

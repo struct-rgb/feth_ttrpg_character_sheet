@@ -2,26 +2,25 @@
   "name": "Excalibur",
   "type": "Reason",
   "description": "A wind spell; Effective against flying foes.",
-  "requires": "B Rank Reason",
+  "requires": "Reason B",
+  "rank": "B",
   "price": 2600,
-
+  "base": "mag",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 11,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 11,
+    "prot": 0,
+    "resl": 0,
     "hit": 100,
     "avo": 0,
     "crit": 15,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
-    "tp": 6,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 6,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes.",
   "tags": [],
   "hidden": false

@@ -27,6 +27,9 @@
         "minrng": 0,
         "maxrng": 0,
 
+        "tp": 0,
+        "sp": 0,
+
         "mov": 0
     },
 

@@ -1,0 +1,34 @@
+{
+    "name": "Summoner/Invoker",
+    "description": "A mystic who calls on spirits to aid in battle",
+    "type": "Other",
+    "tier": "Advanced",
+    "requires": "All (Guile C+) (Faith C+) (Required (Level 15))",
+    "abilities": ["Group Lull Def/Cha", "Invocation", "Consumption 1"],
+    "growths": {
+        "hp": 15,
+        "str": 15,
+        "mag": 20,
+        "dex": 15,
+        "spd": 5,
+        "def": 0,
+        "res": 30,
+        "cha": 30
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 0,
+        "mag": 4,
+        "dex": 2,
+        "spd": 0,
+        "def": 0,
+        "res": 5,
+        "cha": 4,
+        "mov": 1
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

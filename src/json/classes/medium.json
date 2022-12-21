@@ -1,0 +1,34 @@
+{
+    "name": "Medium",
+    "description": "A mystic who specializes in protective wards",
+    "type": "Armor",
+    "tier": "Starting",
+    "requires": "Armor D",
+    "abilities": ["Consumption 1"],
+    "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 15,
+        "dex": 0,
+        "spd": 5,
+        "def": 15,
+        "res": 20,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 0,
+        "mag": 2,
+        "dex": 3,
+        "spd": 2,
+        "def": 1,
+        "res": 2,
+        "cha": 3,
+        "mov": 0
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

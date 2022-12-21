@@ -1,0 +1,34 @@
+{
+    "name": "None",
+    "description": "An starting point for homebrew.",
+    "type": "Other",
+    "tier": "Starting",
+    "requires": "None",
+    "abilities": [],
+    "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0
+      },
+    "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 0
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": ["first"],
+    "hidden": false
+}

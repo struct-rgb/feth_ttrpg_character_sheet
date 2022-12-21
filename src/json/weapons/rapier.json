@@ -1,27 +1,27 @@
 {
-    "name": "Rapier",
-    "type": "Swords",
-    "description": "Strong against Armored and Cavalry Units.",
-    "requires": "E Rank Swords",
-    "price": 0,
-
-    "modifiers": {
-        "pmt": 7,
-        "mmt": 0,
-        "pdr": 0,
-        "mdr": 0,
-        "hit": 95,
-        "avo": 0,
-        "crit": 10,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "cost": 0,
-        "uses": 0
-    },
-    "magical": false,
-
-    "comment": "Items in modifers should be integers",
-    "tags": [],
-    "hidden": false
+  "name": "Rapier",
+  "type": "Swords",
+  "description": "Effective against Armor and Cavalry units.",
+  "requires": "Swords E",
+  "rank": "E",
+  "price": 0,
+  "base": "str",
+  "modifiers": {
+    "mt": 7,
+    "prot": 0,
+    "resl": 0,
+    "hit": 95,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [],
+  "hidden": false
 }

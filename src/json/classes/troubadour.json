@@ -1,0 +1,44 @@
+{
+    "name": "Troubadour",
+    "description": "A mage who fights from horseback",
+    "type": "Cavalry",
+    "tier": "Starting",
+    "requires": "Riding D",
+    "abilities": ["Tactician", "Canto"],
+    "growths": {
+        "hp": 15,
+        "str": 10,
+        "mag": 15,
+        "dex": 10,
+        "spd": 10,
+        "def": 10,
+        "res": 20,
+        "cha": 20
+      },
+    "modifiers": {
+        "hp": 1,
+        "str": 0,
+        "mag": 3,
+        "dex": 2,
+        "spd": 2,
+        "def": 2,
+        "res": 2,
+        "cha": 3,
+        "mov": 0
+    },
+    "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 3
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

@@ -3,8 +3,8 @@
   "description": "These Sword fighters prefer Strong, quick, Strikes",
   "type": "Martial",
   "tier": "Advanced",
-  "requires": "B Rank Swords",
-  "abilities": [ "Swordfaire", "+10 Crit", "+15 Stamina" ],
+  "requires": "All (Swords B) (Required (Level 15))",
+  "abilities": [ "Swordfaire", "Crit +10", "Stamina +15" ],
   "growths": {
     "hp": 20,
     "str": 15,
@@ -26,16 +26,7 @@
     "cha": 0,
     "mov": 1
   },
-  "mount": {
-    "hp": 0,
-    "str": 0,
-    "mag": 0,
-    "dex": 0,
-    "spd": 0,
-    "def": 0,
-    "res": 0,
-    "cha": 0
-  },
+  "mount": null,
 
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],

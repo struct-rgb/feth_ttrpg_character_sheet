@@ -3,7 +3,7 @@
   "description": "An advanced class that uses Axes and Faith.",
   "type": "Martial",
   "tier": "Advanced",
-  "requires": "Rank C+ Faith and Axes.",
+  "requires": "All (Axes C+) (Faith C+) (Required (Level 15))",
   "abilities": [ "Axefaire", "Faith Tomefaire", "Faith Consumption 1" ],
   "growths": {
     "hp": 25,

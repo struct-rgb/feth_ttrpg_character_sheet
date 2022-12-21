@@ -3,7 +3,7 @@
   "description": "An advanced class that uses Authority.",
   "type": "Other",
   "tier": "Advanced",
-  "requires": "Rank B Authority.",
+  "requires": "Authority B",
   "abilities": [ "Calm Spirit", "Positioning" ],
   "growths": {
     "hp": 20,
@@ -26,16 +26,7 @@
     "cha": 5,
     "mov": 1
   },
-  "mount": {
-    "hp": 0,
-    "str": 0,
-    "mag": 0,
-    "dex": 0,
-    "spd": 0,
-    "def": 0,
-    "res": 0,
-    "cha": 0
-  },
+  "mount": null,
 
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],

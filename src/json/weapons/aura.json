@@ -2,26 +2,25 @@
   "name": "Aura",
   "type": "Faith",
   "description": "No special effects.",
-  "requires": "A Rank Faith",
+  "requires": "Faith A",
+  "rank": "A",
   "price": 3650,
-
+  "base": "mag",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 12,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 12,
+    "prot": 0,
+    "resl": 0,
     "hit": 90,
     "avo": 0,
     "crit": 20,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
-    "tp": 6,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 6,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes.",
   "tags": [],
   "hidden": false

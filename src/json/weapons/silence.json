@@ -2,27 +2,28 @@
   "name": "Silence",
   "type": "Faith",
   "description": "On hit, apply [Silence] to target foe for 1 turn.",
-  "requires": "C Rank Faith",
+  "requires": "Faith C",
+  "rank": "C",
   "price": 2150,
-
+  "base": "n/a",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 90,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 3,
     "maxrng": 10,
-    "tp": 8,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 8,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": [
+    "no might",
+    "no triangle"
+  ],
   "hidden": false
 }

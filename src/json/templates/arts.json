@@ -3,6 +3,7 @@
     "type": "Swords Lances Axes Reason Guile Faith Bows Movement Other",
     "description": "This is a art represents not using an art. Serves as a template/placeholder",
     "requires": "",
+    "rank": "",
     "modifiers": {
         "pmt": 0,
         "mmt": 0,
@@ -15,10 +16,10 @@
         "minrng": 1,
         "maxrng": 1,
 
-        "sp": 0,
-        "uses": 0,
-        "charges": 0,
-        "tokens": 0
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
     },
 
     "comment": "Items in modifers can either be integers or string expressions",

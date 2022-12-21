@@ -2,26 +2,25 @@
   "name": "Ragnarok",
   "type": "Reason",
   "description": "A fire spell; no special effects.",
-  "requires": "A Rank Reason",
+  "requires": "Reason A",
+  "rank": "A",
   "price": 3740,
-
+  "base": "mag",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 15,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 15,
+    "prot": 0,
+    "resl": 0,
     "hit": 80,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
-    "tp": 9,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 9,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes.",
   "tags": [],
   "hidden": false

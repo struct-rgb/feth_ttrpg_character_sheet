@@ -1,0 +1,44 @@
+{
+    "name": "Falcon Knight",
+    "description": "A pegasus knight who descends upon foes with the speed of a falcon",
+    "type": "Flying",
+    "tier": "Advanced",
+    "requires": "All (Any (Swords C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
+    "abilities": ["Swordfaire", "Lancefaire", "Avo +10", "Canto"],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 15,
+        "dex": 20,
+        "spd": 30,
+        "def": 10,
+        "res": 20,
+        "cha": 5
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 0,
+        "dex": 3,
+        "spd": 5,
+        "def": 2,
+        "res": 6,
+        "cha": 1,
+        "mov": 2
+    },
+    "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

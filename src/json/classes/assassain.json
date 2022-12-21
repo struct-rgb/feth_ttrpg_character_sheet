@@ -1,0 +1,34 @@
+{
+    "name": "Assassain",
+    "description": "Bow and Sword martial class focused on damage, stealth, and untility.",
+    "type": "Martial",
+    "tier": "Advanced",
+    "requires": "All (Swords C+) (Bows C+) (Required (Level 15))",
+    "abilities": ["Bowfaire", "Swordfaire", "Stealth", "Locktouch"],
+    "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 25,
+        "spd": 25,
+        "def": 0,
+        "res": 15,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 2,
+        "str": 2,
+        "mag": 0,
+        "dex": 5,
+        "spd": 7,
+        "def": 1,
+        "res": 2,
+        "cha": 1,
+        "mov": 2
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

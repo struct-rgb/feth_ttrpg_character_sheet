@@ -1,0 +1,44 @@
+{
+    "name": "Gryphon Rider",
+    "description": "A flyier who specializes in ferrying allies around the battlefield",
+    "type": "Flying",
+    "tier": "Advanced",
+    "requires": "All (Axes C+) (Required (Flying C+)) (Required (Level 15))",
+    "abilities": ["Deliverer", "Avo +10", "Canto"],
+    "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 15,
+        "dex": 20,
+        "spd": 20,
+        "def": 15,
+        "res": 15,
+        "cha": 10
+      },
+    "modifiers": {
+        "hp": 4,
+        "str": 3,
+        "mag": 0,
+        "dex": 4,
+        "spd": 3,
+        "def": 3,
+        "res": 3,
+        "cha": 4,
+        "mov": 2
+    },
+    "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

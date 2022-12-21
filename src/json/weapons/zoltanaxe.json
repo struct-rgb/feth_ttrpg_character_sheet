@@ -1,0 +1,27 @@
+{
+  "name": "Axe of Zoltan",
+  "type": "Axes",
+  "description": "Effective against Armor units. Costs 2330G and a Manual of Zoltan to upgrade from Silver Axe.",
+  "requires": "Axes A",
+  "rank": "A",
+  "price": 4290,
+  "base": "str",
+  "modifiers": {
+    "mt": 17,
+    "prot": 0,
+    "resl": 0,
+    "hit": 70,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [],
+  "hidden": false
+}

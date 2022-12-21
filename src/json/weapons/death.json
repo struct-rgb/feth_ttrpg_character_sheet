@@ -2,26 +2,25 @@
   "name": "Death",
   "type": "Guile",
   "description": "No special effects.",
-  "requires": "C Rank Guile",
+  "requires": "Guile C",
+  "rank": "C",
   "price": 1250,
-
+  "base": "mag",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 6,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 6,
+    "prot": 0,
+    "resl": 0,
     "hit": 70,
     "avo": 0,
     "crit": 20,
     "cravo": 0,
     "minrng": 2,
     "maxrng": 3,
-    "tp": 4,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 4,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes.",
   "tags": [],
   "hidden": false

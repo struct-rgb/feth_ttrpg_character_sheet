@@ -1,0 +1,34 @@
+{
+    "name": "Thief",
+    "description": "A scoundrel versed in the Bow and Sword; can unlock doors and chests",
+    "type": "Martial",
+    "tier": "Starting",
+    "requires": "Any (Swords D) (Bows D)",
+    "abilities": ["Locktouch", "Stealth"],
+    "growths": {
+        "hp": 10,
+        "str": 10,
+        "mag": 10,
+        "dex": 20,
+        "spd": 20,
+        "def": 5,
+        "res": 15,
+        "cha": 20
+      },
+    "modifiers": {
+        "hp": 1,
+        "str": 1,
+        "mag": 0,
+        "dex": 3,
+        "spd": 5,
+        "def": 1,
+        "res": 2,
+        "cha": 0,
+        "mov": 0
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

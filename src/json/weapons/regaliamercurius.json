@@ -1,0 +1,27 @@
+{
+  "name": "Mercurius",
+  "type": "Swords",
+  "description": "Increases Max SP/TP by 1 when placed in the User’s inventory before the start of battle. Costs 4725G and a Lost Meteorite to upgrade from Sword of Zoltan.",
+  "requires": "Swords A",
+  "rank": "A",
+  "price": 8895,
+  "base": "str",
+  "modifiers": {
+    "mt": 15,
+    "prot": 0,
+    "resl": 0,
+    "hit": 110,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 1,
+    "sp": 1
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [],
+  "hidden": false
+}
