@@ -3,7 +3,7 @@
   "description": "Grants +7 Hit and +5 Avo when using Reason.",
   "type": "Passive",
   "weapon": "Reason",
-  "requires": "E+ Rank Reason.",
+  "requires": "Reason E+",
   "modifiers": {
     "hp": 0,
     "sp": 0,
@@ -14,22 +14,18 @@
     "def": 0,
     "res": 0,
     "cha": 0,
-
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 7,
     "avo": 5,
     "crit": 0,
     "cravo": 0,
-
     "minrng": 0,
     "maxrng": 0,
-
+    "tp": 0,
     "mov": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [],
   "hidden": false

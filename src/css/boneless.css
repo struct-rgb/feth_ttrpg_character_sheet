@@ -1,5 +1,5 @@
 .base {
-	color: #DDDDDD;;
+	color: #DDDDDD;
 	background: black
 }
 
@@ -62,6 +62,31 @@ dd {
 	color: #AAAAAA;
 }
 
+.tts {
+	border-bottom: 1px dotted #880000;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.ttts {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 3px;
+	/*border-width: 2px;*/
+	/*border-color: #880000;*/
+	/*border-style: ridge;*/
+	margin: 3px;
+}
+
+.attempt-enabled {
+
+}
+
+.attempt-disabled {
+	color: darkgrey;
+}
+
 meter::-webkit-meter-bar {
 	background: black;
 }
@@ -80,4 +105,24 @@ meter::-webkit-meter-even-less-good-value {
 
 input[type="checkbox"]:checked {
 	color: #222222;
+}
+
+.level-table th.incr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #DD0000;
+	border-style: outset;
+	background: #DD0000;
+	color: #222222;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #222222;
+	border-style: outset;
+	background: #222222;
+	color: #DD0000;
+	font-weight: bolder;
 }

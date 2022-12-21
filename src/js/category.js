@@ -4,6 +4,8 @@
  * @module category
  */
 
+/* global SwapText */
+
 /**
  * @typedef {function() : boolean} CategoryElementCallback
  */
@@ -118,7 +120,7 @@ class CategoryElement {
 
 		// add entry content description
 		this.dd = document.createElement("dd");
-		this.dd.appendChild(this._description);
+		this.dd.appendChild((new SwapText([this._description, "(Click for More)"])).root);//, this._description]);
 
 		// this belongs to no category by default
 		this.parent = null;
@@ -348,6 +350,7 @@ class Category {
 		this.reorderable = Boolean(options.reorderable);
 		this.removable   = Boolean(options.removable);
 		this.selectable  = Boolean(options.selectable);
+		this.addActive   = Boolean(options.addActive || false);
 		this.parent      = null;
 		this.next        = null;
 		this.prev        = null;
@@ -365,7 +368,14 @@ class Category {
 			this.addButton.value   = "Add";
 			this.addButton.type    = "button";
 			this.addButton.onclick = () => {
-				category.add(category.select.value);
+				
+				const name = category.select.value;
+
+				category.add(name);
+
+				if (this.addActive) {
+					this.ontoggle.call(undefined, this, name);
+				}
 			};
 			this.addButton.classList.add("simple-border");
 			this.root.appendChild(this.addButton);
@@ -554,6 +564,7 @@ class Category {
 		this.elements.set(name, element);
 		element.addTo(this.dl);
 		this._addTriggers(name);
+
 		return true;
 	}
 
@@ -611,7 +622,7 @@ class Category {
 			if (this.triggers.has(trigger)) {
 				this.triggers.get(trigger).add(name);
 			} else {
-				this.triggers.set(trigger, new Set([name]))
+				this.triggers.set(trigger, new Set([name]));
 			}
 
 		}
@@ -644,33 +655,14 @@ class Category {
 	}
 
 	/**
-	 * Clears the current elements and adds new ones from the given iterable.
-	 * The names must exist in this Category's feature's lookup table.
-	 * @todo remove this function
-	 * @param names - an iterable collection of strings
-	 * @returns {number} the number of elements added
-	 */
-	fill_from(names) {
-
-		let added = 0;
-
-		this.clear();
-		for (let name of names) {
-			added += this.add(name) ? 1 : 0;
-		}
-
-		return added;
-	}
-
-	/**
 	 * Clears the current elements
 	 */
 	clear() {
+		this.clearActive();
 		for (let element of this.elements.values()) {
 			element.remove();
 		}
 		this.elements.clear();
-		this.clearActive();
 		this._textnode.data = this.empty;
 	}
 
@@ -792,7 +784,7 @@ class SingleActiveCategory extends Category {
 
 	setState(state) {
 		const {added, active} = state;
-		this.clearActive()
+		this.clearActive();
 
 		super.setState(added);
 		if (active !== null && this.elements.has(active)) {

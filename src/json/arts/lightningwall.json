@@ -2,26 +2,27 @@
   "name": "Lightning Wall",
   "type": "Reason",
   "description": "Starting from target empty tile, create one or more lightning patches (at most Mag / 5) in connecting empty tiles. Patches last 1 turn. Once per turn, a unit that enters a patch takes 20% nonlethal damage and can't move for the rest of the phase.",
-  "requires": "B Rank Reason.",
+  "requires": "Reason B",
+  "base": "else",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 0,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
+    "tiles": 0,
 
-    "sp": 7,
-    "uses": 0,
-    "charges": 0,
-    "tokens": 0
+    "spcost": 7,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
   },
 
   "comment": "",
-  "tags": [],
+  "tags": ["tactical"],
   "hidden": false
 }

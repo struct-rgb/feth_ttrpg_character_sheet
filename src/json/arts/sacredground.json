@@ -2,23 +2,24 @@
   "name": "Sacred Ground",
   "type": "Other",
   "description": "When casting Restore, affect 2 additional allies within 2 spaces of any allies previously affected.",
-  "requires": "Rank C Faith.",
+  "requires": "Faith C",
+  "base": "else",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 0,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 0,
     "maxrng": 0,
+    "tiles": 0,
 
-    "sp": 2,
-    "uses": 0,
-    "charges": 0,
-    "tokens": 0
+    "spcost": 2,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
   },
 
   "comment": "Items in modifers can either be integers or string expressions",

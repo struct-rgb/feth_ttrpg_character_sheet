@@ -3,55 +3,8 @@
  * @module feature
  */
 
-/* global PostfixExpression */
-
-class FeatureStore {
-
-	constructor(compiler) {
-		this.compiler   = compiler;
-		this.namespaces = new Map();
-	}
-
-	has(namespace, name) {
-		return (
-			namespace
-				? this.namespace.has(namespace)
-					? name
-						? this.namespaces.get(namespace).has(name)
-						: true
-					: false
-				: false
-		);
-	}
-
-	set(namespace, population) {
-
-		if (!this.namespaces.has(namespace)) {
-			this.namespaces.set(namespace, {
-				type : type,
-				map  : new Map(),
-			});
-		}
-
-		const ns = this.namespaces.get(namespace);
-
-		ns.clear()
-		for (let template of population) {
-			const instance = new type(template, this.cache);
-			ns.set(instance.name, instance);
-		}
-	}
-
-	get(namespace, name) {
-		return (
-			namespace
-				? name
-					? this.namespaces.get(namespace).get(name)
-					: this.namespaces.get(namespace)
-				: null
-		);
-	}
-}
+/* global Expression */
+/* global ConfigEnum */
 
 /**
  * A class to represent customization features that modify a unit's statistics.
@@ -98,7 +51,10 @@ class Feature {
 		this.description  = template.description || "";
 		this.type         = template.type || "";
 		this.tags         = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
+		this.comment      = template.comment || "No comment.";
 		this.hidden       = template.hidden || false;
+		this.requires     = template.requires || "";
+		this.tags         = new Set(template.tags || []);
 		this.dependancies = new Set();
 
 		// compile dynamic expressions in the modifiers/multipliers
@@ -116,7 +72,12 @@ class Feature {
 			// iterate through each element
 			for (let key in stats) {
 
-				const value = stats[key];
+				let value = stats[key];
+
+				// join an array into a tring
+				if (value instanceof Array) {
+					value = value.join(" ");
+				}
 
 				// see if we need to compile an expression
 				if (typeof value != "string") {
@@ -129,7 +90,7 @@ class Feature {
 					const expression = compiler.compile(value);
 
 					if (expression.symbols.has(key)) {
-						console.warn(expression, "Potential circular dependacy detected.")
+						console.warn(expression, "Potential circular dependacy detected.");
 					}
 
 					stats[key] = expression;
@@ -220,17 +181,8 @@ class Feature {
 	 * @param {string} stat - name of the stat to get the modifier for
 	 * @returns {number} the modifier for the stat, or 0 if none exists
 	 */
-	modifier(stat) {
-		return Expression.execute(this.modifiers[stat] || 0);
-	}
-
-	/**
-	 * Get the value of this feature's multipier for a statistic
-	 * @param {string} stat - name of the stat to get the multiplier for
-	 * @returns {number} the multiplier for the stat, or 1 if none exists
-	 */
-	multiplier(stat) {
-		return Expression.execute(this.multipliers[stat] || 1);
+	modifier(stat, env) {
+		return Expression.evaluate(this.modifiers[stat] || 0, env);
 	}
 
 	modifierForUI(stat) {
@@ -255,8 +207,8 @@ class Feature {
 	 * @param {string} name - the name of the tag
 	 * @returns {boolean} the value of the tag if it exists, null otherwise
 	 */
-	tag(name) {
-		return this.tags[name] || false;
+	tagged(name) {
+		return this.tags.has(name);
 	}
 }
 
@@ -271,6 +223,7 @@ class AttackFeature extends Feature {
 	constructor(template, compiler) {
 		super(template, compiler);
 		this.rank  = template.rank || "";
+		this.base  = template.base || 0;
 
 		// If this is not a super() call, freeze the object.
 		if (new.target === CombatArt) {
@@ -278,14 +231,22 @@ class AttackFeature extends Feature {
 		}
 	}
 
+	static ACTION = new ConfigEnum(0, "else", ["else", "atk", "heal"]);
+
+	static BASE = new ConfigEnum(0, "else", ["else", "str", "mag", "n/a"]); 
+
 	/**
 	 * Generate a {@link CategoryElement} description
 	 * @return {string} description for this feature's {@link CategoryElement}
 	 */
 	body() {
+
 		return (
-			(this.higherMight()
-				? "Might: " + this.higherMightForUI() + ", "
+			(this.price != null && this.price > 0 /* TODO fix condition */
+				? "Price: " + this.price + ", "
+				: "")
+			+ (this.modifier("mt")
+				? "Might: " + this.modifierForUI("mt") + ", "
 				: "")
 			+ (this.modifier("tiles")
 				? "Tiles: " + this.modifierForUI("tiles") + ", "
@@ -310,42 +271,6 @@ class AttackFeature extends Feature {
 			+ this.description
 		);
 	}
-
-	/**
-	 * Test whether this feature would deal magic-based damage using its
-	 * "mmt" and "pmt" statistic modifiers, if it has them.
-	 * @returns {boolean} true if it deals magic-based damage, false otherwise
-	 */
-	isMagicDamage() {
-		return this.modifier("mmt") > this.modifier("pmt");
-	}
-
-	/**
-	 * Access the higher might stat for the AttackFeature
-	 * @returns {number} the value of the higher might stat
-	 */
-	higherMight() {
-		return Math.max(this.modifier("pmt"), this.modifier("mmt"));
-	}
-
-	higherMightForUI() {
-		if (this.modifier("pmt") > this.modifier("mmt")) {
-			return this.modifierForUI("pmt");
-		}
-		return this.modifierForUI("mmt");
-	}
-
-	/**
-	 * Access the macro expression for the higher might stat for the AttackFeature
-	 * @returns {number} the higher might value between physical and magical
-	 */
-	 higherMightMacro() {
-	 	return "(" + Expression.macro(
-	 		(this.modifier("pmt") > this.modifier("mmt")
-	 			? this.modifiers.pmt
-	 			: this.modifiers.mmt)
-	 	) + ")";
-	 }
 }
 
 /**
@@ -377,8 +302,12 @@ class Weapon extends AttackFeature {
 	 * @return {string} title for this weapon's {@link CategoryElement}
 	 */
 	title() {
-		return " " + this.name + " (Rank " + this.rank + " " + this.type + ") ";
+		return " " + this.name + " (" + this.type + " " + this.rank + ") ";
 	}
+
+	static TYPE = new ConfigEnum(
+		0, "Other", ["Other"].concat(definitions.skills)
+	);
 
 	static PROWESS_CONVERSION = new Map([
 		["Axe"         , "Axe Prowess"],
@@ -439,12 +368,14 @@ class Class extends Feature {
 		super(template);
 		this.abilities = template.abilities;
 		this.growths   = Object.freeze(template.growths);
-		this.mount     = template.mount ? new Feature(template.mount) : null;
-		this.mastery   = template.mastery || {};
+		this.tier      = template.tier    || "Starting";
 
-		/* make sure mastery has all needed subattributes */
-		this.mastery.abilities  = this.mastery.abilities  || [];
-		this.mastery.combatarts = this.mastery.combatarts || [];
+		this.mount = (template.mount
+			? ("name" in template.mount
+				? new Feature(template.mount)
+				: new Feature({name: "new", modifiers: template.mount}))
+			: null
+		);
 
 		if (new.target === Class) {
 			Object.freeze(this);
@@ -525,8 +456,83 @@ class Equipment extends Feature {
 
 }
 
+// class Gambit extends AttackFeature {
+
+// 	static kind = "gambit";
+
+// 	constructor(template) {
+// 		super(template);
+
+// 		this.type    = "Gambit";
+// 		this.shape   = template.shape || "1x1 Square.";
+// 		this.magical = template.magical || false;
+
+// 		if (new.target === Battalion) {
+// 			Object.freeze(this);
+// 		}
+// 	}
+
+// }
+
+// class Battalion extends Feature {
+
+// 	static kind = "battalions";
+
+// 	constructor(template) {
+// 		super(template);
+
+// 		this.rarity = template.rarity || "Bronze";
+// 		this.price  = template.price  || 0;
+
+// 		this.gambit = template.gambit ? new Gambit(template.gambit) : null;
+
+// 		if (new.target === Battalion) {
+// 			Object.freeze(this);
+// 		}
+// 	}
+
+// 	body() {
+		
+// 		const b = this;
+// 		const g = this.gambit;
+
+// 		return (
+// 			`${b.rarity} Battalion [${b.type}]<br />`
+// 				+ `(${b.requires} - Costs ${b.price})\n`
+// 				+ `${g.title()}:\n${g.body()}`
+// 		);
+// 	}
+
+// }
+
+class Attribute extends AttackFeature {
+
+	static kind = "attributes";
+
+	constructor(template, compiler) {
+		super(template, compiler);
+
+		this.price  = template.price || 0;
+		this.rank   = template.rank  || 0;
+
+		if (new.target === Ability) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Generate a feature's {@link CategoryElement} title
+	 * @return {string} title for this item's {@link CategoryElement}
+	 */
+	title() {
+		return this.name + " (Rank +" + this.rank + ") ";
+	}
+
+}
+
 /* exported Ability */
 /* exported Class */
 /* exported CombartArt */
 /* exported Weapon */ 
 /* exported Equipment */
+/* exported Attribute */

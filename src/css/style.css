@@ -1,7 +1,7 @@
 
 .container {
 	display: grid;
-	grid-template-columns: 95px 130px 250px 1fr;
+	grid-template-columns: 95px 150px 280px 1fr;
 	/*grid-template-columns: 1fr 1fr 2fr 2fr;*/
 	grid-auto-rows: repeat(2, 1fr);
 	grid-column-gap: 10px;
@@ -75,7 +75,15 @@ textarea.simple-border:hover {
 	text-decoration: none;
 }
 
-.simple-border:hover {
+input.simple-border:hover {
+	text-decoration: underline;
+}
+
+select.simple-border:hover {
+	text-decoration: underline;
+}
+
+label.simple-border:hover {
 	text-decoration: underline;
 }
 
@@ -124,7 +132,7 @@ meter {
 }
 
 .scrolls {
-	max-width: 50%;
+	/*max-width: 50%;*/
 	max-height: 30%;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -133,3 +141,116 @@ meter {
 .notebook-tab {
 	width: 1fr;
 }
+
+.short-meter {
+	width: 3em;
+}
+
+h1 {
+	font-size: 1em;
+}
+
+.battalion-table {
+  margin-left: 3em;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.center-pane dd {
+	margin-left: 1em;
+}
+
+.center-pane ul {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.padded-cell {
+	padding-right: 0.2em;
+	padding-left: 0.2em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
+.padded-cell-left {
+	/*padding-right: 0.05em;*/
+	padding-left: 0.5em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
+.padded-cell-right {
+	padding-right: 0.5em;
+	/*padding-left: 0.1em;*/
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
+.center {
+	align-content: center;
+	text-align: center;
+}
+
+.level-table {
+	/*border-spacing: 0px;*/
+}
+
+.level-table td {
+	border: 3px solid transparent;
+	align-content: center;
+	text-align: center;
+}
+
+.level-table th {
+	border-width: 3px;
+	border-style: inset;
+	border-color: transparent;
+	align-content: center;
+	text-align: center;
+}
+
+/* tooltips */
+
+.tt {
+	position: relative;
+	display: inline-block;
+}
+
+.ttt {
+	visibility: hidden;
+	text-align: center;
+	padding: 5px 0;
+
+	position: absolute;
+	z-index: 1;
+}
+
+.tt .ttt {
+	width: 240px;
+	top: 100%;
+	left: 50%;
+	margin-left: -30px;
+}
+
+.tt:hover .ttt {
+	visibility: visible;
+}
+
+input[disabled=true] {
+	background-color: red;
+}
+
+ol.arglist {
+	margin: 2px;
+	padding-left: 20px;
+	list-style: none;
+}
+
+.calculator {
+	width: 80%;
+}
+
+.calculator-out {
+	height: 200px;
+}
+

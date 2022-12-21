@@ -2,23 +2,24 @@
   "name": "Puff of Smoke",
   "type": "Other",
   "description": "When casting a Wind Spell, create a 2x2 area of smoke for 2 turns. Attacks against Units occupying those spaces suffer -30 Hit and abilities that only work when a foe initiates combat, such as [Vantage], are disabled for the Units outside those spaces.",
-  "requires": "Rank D Reason.",
+  "requires": "Reason D",
+  "base": "else",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 0,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 0,
     "maxrng": 0,
+    "tiles": 0,
 
-    "sp": 5,
-    "uses": 0,
-    "charges": 0,
-    "tokens": 0
+    "spcost": 5,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
   },
 
   "comment": "Items in modifers can either be integers or string expressions",

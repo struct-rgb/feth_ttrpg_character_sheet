@@ -19,6 +19,22 @@
 	margin: 3px;
 }
 
+/* This can be on the input elements in tables */
+
+.datum-border {
+	outline: none;
+	background: transparent;
+	border-radius: 0px;
+	border-width: 0px;
+	border-color: transparent;
+	border-style: none;
+
+	font-weight: bold;
+	color: blue;
+	padding: 0px;
+	margin: 0px;
+}
+
 /* This is a selected item in a list. Like your selected weapon or character. */
 
 .selected-text {
@@ -54,4 +70,61 @@
 
 .punctuation {
 
+}
+
+/* tool tip style (the element the tooltip pops up over) */
+
+.tts {
+	border-bottom: 1px dotted;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+/* tool tip text style (the tooltip bit that pops up itself) */
+
+.ttts {
+	background-color: black;
+	color: white;
+	border-radius: 6px;
+}
+
+/* these are the enabled rows on the level up table */
+
+.attempt-enabled {
+
+}
+
+/* these are the disabled rows on the level up table */
+
+.attempt-disabled {
+	color: lightgrey;
+	font-style: italic;
+}
+
+/* these are the colored titles for the level up animation */
+
+.level-table th.incr-bell {
+
+	/* this is the stat increase one */
+
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: blue;
+	border-style: outset;
+	background: blue;
+	color: white;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+
+	/* this is the stat decrease one*/
+
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: orange;
+	border-style: outset;
+	background: orange;
+	color: white;
+	font-weight: bolder;
 }

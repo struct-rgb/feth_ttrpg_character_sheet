@@ -3,7 +3,7 @@
   "description": "Grants +13 Hit, +7 Avo, and +2 Crit Avo when using Guile.",
   "type": "Passive",
   "weapon": "Guile",
-  "requires": "C+ Rank Guile. (Level 5)",
+  "requires": "All (Guile C+) (Level 5)",
   "modifiers": {
     "hp": 0,
     "sp": 0,
@@ -14,22 +14,18 @@
     "def": 0,
     "res": 0,
     "cha": 0,
-
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 13,
     "avo": 7,
     "crit": 0,
     "cravo": 2,
-
     "minrng": 0,
     "maxrng": 0,
-
+    "tp": 0,
     "mov": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [],
   "hidden": false
