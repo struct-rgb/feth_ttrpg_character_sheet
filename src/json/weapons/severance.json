@@ -1,28 +1,31 @@
 {
   "name": "Severance",
   "type": "Guile",
-  "description": "Cannot target foes affected by [Severed -X]. On hit, apply [Severed -X] to target foe, where X is half of target foe’s max HP.",
-  "requires": "S Rank Guile",
+  "description": "Cannot target foes affected by @{condition:Severed:[Severed X]}. On hit, apply @{condition:Severed:[Severed X]} to target foe, where X is half of target foe's max HP.",
+  "requires": "Guile S",
+  "rank": "S",
   "price": 0,
-
+  "mttype": "none",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 60,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 3,
     "maxrng": 10,
-    "tp": 10,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 10,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes. Cannot be obtained normally.",
-  "tags": [],
+  "tags": [
+    "no might",
+    "no triangle",
+    "condition"
+  ],
   "hidden": false
 }

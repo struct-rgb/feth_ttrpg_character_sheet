@@ -1,0 +1,45 @@
+{
+    "name": "Wyvern Lord",
+    "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern",
+    "type": ["Flying", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Any (Axes C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
+    "abilities": ["Axe Advantage", "Lance Advantage", "Avo +10", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 25,
+        "mag": 15,
+        "dex": 15,
+        "spd": 15,
+        "def": 25,
+        "res": 0,
+        "cha": 5
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 4,
+        "mag": 0,
+        "dex": 3,
+        "spd": 2,
+        "def": 5,
+        "res": 0,
+        "cha": 2,
+        "mov": 6
+    },
+    "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

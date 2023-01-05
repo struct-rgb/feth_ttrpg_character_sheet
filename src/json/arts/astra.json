@@ -1,0 +1,24 @@
+{
+  "name": "Astra",
+  "description": "Halves might; user makes 5 consecutive attacks.",
+  "requires": "Swords A+",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "(-(weapon|total|mt + abilities|mt + equipment|mt) / 2)",
+    "prot": 0,
+    "resl": 0,
+    "hit": -10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 7
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "A+"
+}

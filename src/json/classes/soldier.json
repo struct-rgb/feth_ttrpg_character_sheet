@@ -1,0 +1,35 @@
+{
+    "name": "Soldier",
+    "description": "An foot-soldier who bears a lance into battle",
+    "type": ["Infantry", "Martial"],
+    "tier": "Starting",
+    "requires": "Lances D",
+    "abilities": ["Heavy Blade", "Level 10 Mov +1"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 10,
+        "dex": 10,
+        "spd": 5,
+        "def": 15,
+        "res": 10,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 4,
+        "str": 4,
+        "mag": 0,
+        "dex": 1,
+        "spd": 1,
+        "def": 4,
+        "res": 1,
+        "cha": 0,
+        "mov": 4
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

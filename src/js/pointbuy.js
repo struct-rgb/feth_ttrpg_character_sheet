@@ -1,162 +1,14 @@
 
-function uniqueID() {
-	const  base = '00000000-0000-4000-0000-000000000000';
-	return base.replace(/0/g, character => {
-		const randomByte = crypto.getRandomValues(new Uint8Array(1))[0];
-		const randomChar = character ^ randomByte & 0xF >> character / 4;
-		return randomChar.toString(16);
-	});
-}
-
-function element(type, content, ...classes) {
-
-	const element = document.createElement(type);
-
-	if (content) {
-		const ctype = typeof content;
-		switch (ctype) {
-			case "object":
-				element.appendChild(content);
-				break;
-			case "string":
-				element.textContent = content;
-				break;
-			default:
-				throw Error(`type '${ctype}' invalid for key "content"`);
-		}
-	}
-
-	if (classes && classes.length > 0) {
-		element.classList.add(...classes);
-	}
-
-	return element;
-}
-
-class AttributeCell {
-
-	constructor(options, trigger) {
-		this.root     = document.createElement("td");
-		this.text     = document.createTextNode("");
-		this._trigger = trigger || (x => x);
-
-		const input   = document.createElement("input");
-		this.input    = input;
-
-		if (options && "before" in options) {
-			const span = element("span", options.before, "punctuation");
-			this.root.appendChild(span);
-		}
-
-		if ((!options.style) || options.style == "datum") {
-			const input = document.createElement("input");
-			const idstr = uniqueID(input);
-			// console.log(idstr);
-
-			input.id      = idstr;
-			input.name    = idstr;
-			input.type    = "number";
-			input.classList.add("hidden-field", "simple-border");
-			input.min     = 0;
-			input.max     = 100;
-			input.value   = 0;
-			input.oninput = (() => {
-				this.value = this.input.value;
-			});
-
-			this.input = input;
-
-			const label = document.createElement("label");
-			label.appendChild(this.text);
-			label.classList.add("datum");
-			label.htmlFor = idstr;
-
-			label.appendChild(this.text);
-			this.root.appendChild(label);
-			this.root.appendChild(input);
-		} else if (options.style && options.style == "computed") {
-			const span = element("span", this.text, "computed");
-			this.root.appendChild(span);
-		} else {
-			throw Error(`'${style}' is not a valid AttributeCell style`);
-		}
-
-		if (options) {
-
-			if ("after" in options) {
-				const span = element("span", options.after, "punctuation");
-				this.root.appendChild(span);
-			}
-
-			if ("shown" in options) {
-				this.setShown(options.shown);
-				this.setValue(options.value || 0);
-			} else {
-				this.value = (options.value || 0);
-			}
-
-		} else {
-			this.value = 0;
-		}
-	}
-
-	refresh() {
-		this.text.data = String(this.shown());
-	}
-
-	get value() {
-		return Number(this.input.value);
-	}
-
-	set value(value) {
-		this.input.value = value;
-		this.refresh();
-	}
-
-	setValue(value) {
-		this.input.value = value;
-	}
-
-	setShown(text) {
-		this.text.data = text; 
-	}
-
-	get minimum() {
-		return this.input.min;
-	}
-
-	set minimum(value) {
-		this.input.min = value;
-		if (this.input.value < value) {
-			this.input.value = value;
-		}
-	}
-
-	get maximum() {
-		return thus.input.max;
-	}
-
-	set maximum(value) {
-		this.input.max = value;
-		if (this.input.value > value) {
-			this.input.value = value;
-		}
-	}
-
-	shown() {
-		return this._trigger(this.value);
-	}
-}
-
+/* global element */
+/* global AttributeCell */
 
 class AttributePair {
 
 	constructor(name, totalA, totalB, edit) {
 		this.name  = name;
-		const style = (edit || edit == null ? "datum" : "computed");
-		const vopts = {style: style, shown: "0"};
-		this.value  = new AttributeCell(vopts, totalA)
-		const copts = {style: "computed", before: "( ", after: " )", shown: "0"};
+		const vopts = {edit: (edit || edit == null), shown: "0"};
+		this.value  = new AttributeCell(vopts, totalA);
+		const copts = {edit: false, before: "( ", after: " )", shown: "0"};
 		this.cattr  = new AttributeCell(copts, totalB);
 		this.roots  = [this.value.root, this.cattr.root];
 		this.costs  = [];
@@ -234,13 +86,13 @@ const costfunctions = {
 		RES : (s) => Math.round(Math.max(s("RES") + (s("RES"))/4 + (s("DEF"))/4, 0)),
 		CHA : (s) => Math.round(Math.max(s("CHA") + (s("CHA"))/4 + (s("DEX"))/8, 0)),
 	},
-}
+};
 
 class PointBuy {
 
 	static STATISTICS = ["HP", "STR", "MAG", "DEX", "SPD", "DEF", "RES", "CHA"];
 
-	constructor(names) {
+	constructor() {
 		const table = document.createElement("table");
 		this.root   = table;
 		this.rows   = new Map();
@@ -268,7 +120,7 @@ class PointBuy {
 
 		table.appendChild(row);
 
-		this.rows.get("HP")._value.value.minimum = 20
+		this.rows.get("HP")._value.value.minimum = 20;
 
 		const span = element("span", this.combined, "computed");
 
@@ -298,7 +150,7 @@ class PointBuy {
 
 		const field = "_" + column;
 
-		for (let [key, row] of this.rows.entries()) {
+		for (let [_key, row] of this.rows.entries()) {
 			const value = row[field].value;
 			value.value = value.minimum;
 			const cattr = row[field].cattr;
@@ -322,7 +174,7 @@ class PointBuy {
 
 		let costSum = 0;
 		let baseSum = 0;
-		for (let [key, row] of this.rows.entries()) {
+		for (let [_key, row] of this.rows.entries()) {
 			const cost = costfunctions[column][row.name](getter);
 			row[privacy].cattr.value = Math.floor(cost / PointBuy.COST_SCALE);
 			costSum += Math.floor(cost / PointBuy.COST_SCALE);

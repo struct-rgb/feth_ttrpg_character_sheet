@@ -1,0 +1,31 @@
+{
+  "name": "Exhaustive Strike",
+  "description": "Expends all remaining SP; might increases by half of expended SP.",
+  "requires": "Axes A",
+  "mttype": "else",
+  "modifiers": {
+    "mt": [
+      "metaif builtins|macrogen == 1",
+      "  then floor(ask [Remaining SP?] end / 2)",
+      "  else floor(unit|total|sp / 2)",
+      "end"
+    ],
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 35,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": "unit|total|sp"
+  },
+  "comment": "",
+  "tags": [
+    "scales"
+  ],
+  "hidden": false,
+  "type": "Axes",
+  "rank": "A"
+}

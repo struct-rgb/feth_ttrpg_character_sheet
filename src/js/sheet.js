@@ -5,82 +5,43 @@
  * @module sheet
  */
 
-/* global MacroBuilder */
+/* global capitalize */
+/* global wrap */
+/* global uniqueID */
+/* global tooltip */
+/* global element */
+/* global Version */
+/* global hilight */
+/* global SwapText */
+
+/* global Expression */
+
+/* global Macros */
 
 /* global Notebook */
+
+/* global PointBuy */
 
 /* global Ability */
 /* global Class */
 /* global CombatArt */
 /* global Weapon */
 /* global Equipment */
+/* global Attribute */
+/* global AttackFeature */
+/* global Condition */
+/* global Tile */
+
+/* global Legacy */
+
+/* global Skills */
+/* global Stats */
+/* global Weapons */
+/* global Characters */
 
 /* global CategoryModel */
 /* global MultiActiveCategory */
 /* global SingleActiveCategory */
-
-/* global CACHE */
-
-class Version {
-
-	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("1.19.1");
-
-	constructor(string) {
-		if (string == null) {
-			this.major = 0;
-			this.minor = 0;
-			this.patch = 0;
-		} else {
-			const match = string.match(Version.PATTERN);
-			if (!match) throw new Error("Invalid version string");
-
-			this.major = Number(match[1])
-			this.minor = Number(match[2])
-			this.patch = Number(match[3])
-		}
-	}
-
-	same(that) {
-		if (typeof that === "string") {
-			that = new Version(that);
-		}
-
-		return (
-			   this.major == that.major
-			&& this.minor == that.minor
-			&& this.patch == that.patch
-		);
-	}
-
-	newer(that) {
-		if (typeof that === "string") {
-			that = new Version(that);
-		}
-
-		return (
-			   this.major > that.major
-			|| this.minor > that.minor
-			|| this.patch > that.patch
-		);
-	}
-
-	older(that) {
-		if (typeof that === "string") {
-			that = new Version(that);
-		}
-
-		return (
-			   this.major < that.major
-			|| this.minor < that.minor
-			|| this.patch < that.patch
-		);
-	}
-
-	toString() {
-		return [this.major, this.minor, this.patch].join(".");
-	}
-}
 
 class Theme {
 
@@ -99,25 +60,285 @@ class Theme {
 
 }
 
-/**
- * Create a compound iterator from a group of iterable values
- */
-function* chain(...iterables) {
-	for (let iterable of iterables) {
-		for (let each of iterable) {
-			yield each;
-		}
+class BigButton {
+
+	constructor(text, onclick) {
+
+		onclick = onclick || (() => console.log(`BigButton ${text} clicked!`));
+		this.onclick = onclick;
+
+		this.idno          = uniqueID();
+		this.label         = element("label", text);
+		this.label.htmlFor = this.idno;
+		this.label.classList.add("custom-file-input", "simple-border");
+
+		this.input         = element("input");
+		this.input.id      = this.idno;
+		this.input.type    = "button";
+		this.input.onclick = onclick;
+		this.input.classList.add("no-display");
 	}
+
 }
 
-/**
- * Create a shallow copy of an object
- * @param {Object} original - object to copy
- * @returns a shallow copy of the original object
- */
-function copy_object(original) {
-	const copy = {...original};
-	return copy;
+class Buildables {
+
+	constructor(options) {
+
+		this._updatefn = options.update || (x => x);
+
+		options    = options || {name: "NO NAME", templates: []};
+		this.root  = element("div");
+		this.model = options.model;
+
+		let button = undefined;
+
+		// /* Clear button */
+		// button         = element("input");
+		// button.type    = "button";
+		// button.value   = "Clear";
+		// button.onclick = options.clear || voidfn;
+		// button.classList.add("simple-border");
+		// this._clear      = button;
+
+		/* Save button */
+		this._save     = new BigButton("Save", () => void this.save());
+		this.root.appendChild(tooltip(this._save.label,
+			"Save all sheet data to this web browser's local storage."
+		));
+		this.root.appendChild(this._save.input);
+
+		/* Copy button */
+		this._copy     = new BigButton("Copy", () => void this.copy());
+		this.root.appendChild(tooltip(this._copy.label,
+			"Create a copy of the selected item."
+		));
+		this.root.appendChild(this._copy.input);
+
+		/* Import button */
+		this._import     = new BigButton("Import");
+		this.root.appendChild(tooltip(this._import.label,
+			"Upload a file from the disk to edit."
+		));
+
+		this._import.input.type   = "file";
+		this._import.input.accept = ".json";
+		this._import.input.addEventListener("change", (e) => {this.import(e);}, false);
+
+		this.root.appendChild(this._import.input);
+
+		/* Export button */
+		this._export     = new BigButton("Export", () => void this.export());
+		this.root.appendChild(tooltip(this._export.label,
+			"Download the selected item as a file."
+		));
+		this.root.appendChild(this._export.input);
+
+		/* Can't use the category select since those must be predefined */
+		this.root.appendChild(element("br"));
+
+		/* Add button */
+		button         = element("input");
+		button.type    = "button";
+		button.value   = "Add";
+		button.onclick = () => void this.add();
+		button.classList.add("simple-border");
+		this._add      = button;
+
+		this.root.appendChild(this._add);
+
+		/* Template select */
+
+		if (options.sortfilter) {
+			this._sf    = options.sortfilter;
+			this.select = this._sf._select;
+			this.root.appendChild(this._sf.root); 
+		} else {
+			const select = element("select");
+			select.classList.add("simple-border");
+
+			for (let template of options.templates) {
+				const option       = element("option");
+				option.value       = template;
+				option.textContent = template;
+				select.appendChild(option);
+			}
+
+			this.select = select;
+			this.root.appendChild(this.select);
+		}
+
+		const getTitle = ((x) => {
+			return this.model.getTitle(x);
+		});
+
+		const getBody = ((x) => {
+			return this.model.getBody(x);
+		});
+
+		this.map      = new Map();
+		const model   = new CategoryModel(options.name, this.map, getTitle, getBody, () => []);
+		this.category = new SingleActiveCategory(model, {
+			name        : options.name,
+			empty       : options.empty || "If you're reading this, something has gone wrong",
+			selectable  : false,
+			reorderable : true,
+			removable   : true,
+			ontoggle    : ((category, key) => {
+			
+				if (key == category.active) {
+					return false;
+				}
+
+				this.change(key);
+			}),
+			onremove    : ((category, key) => void this.remove(key)),
+			parent      : this.root,
+		});
+
+	}
+
+	add() {
+		if (this.category.size > 0) {
+			this.map.set(this.activeID, this.model.export());
+		}
+
+		const activeID = uniqueID();
+
+		this.map.set(activeID, {
+			name        : this.model.name,
+			description : this.model.description,
+		});
+
+		this.category.add(activeID);
+		this.category.toggleActive(activeID);
+
+		this.activeID = activeID;
+
+		this.model.clear(this.select.value);
+
+		// this._new.onclick.call();
+	}
+
+	get active() {
+		return this.map.get(this.activeID);
+	}
+
+	change(key) {
+		this.map.set(this.activeID, this.model.export());
+		this.activeID = key;
+		this.category.toggleActive(key);
+
+		this.model.import(this.map.get(key));
+
+		return key;
+	}
+
+	remove(key) {
+		if (key == this.activeID) {
+			alert("You cannot delete the active item.");
+			return;
+		}
+
+		this.category.delete(key);
+		this.map.delete(key);
+	}
+
+	save() {
+		/* global sheet */
+		sheet.save();
+	}
+
+	copy(key) {
+
+		key = key || this.activeID;
+
+		const activeID = uniqueID();
+
+		const item = (key == this.activeID
+			? this.model.export()
+			: JSON.parse(JSON.stringify(this.map.get(key)))
+		);
+
+		this.map.set(activeID, item);
+		this.category.add(activeID);
+
+		return this.change(activeID);
+	}
+
+	clear() {
+		this.category.clear();
+		this.model.clear();
+	}
+
+	exportAll() {
+		const active = this.category.getActive();
+		const data   = {active: active, elements: {}};
+		
+		for (let name of this.category.names()) {
+			const category = (
+				name == active
+					? this.model.export()
+					: this.map.get(name)
+			);
+
+			data.elements[name] = category;
+		}
+
+		return data;
+	}
+
+	importAll(data) {
+		
+		const {active, elements} = data;
+
+		this.map.clear();
+		this.category.clear();
+
+		for (let element in elements) {
+			this.map.set(element, elements[element]);
+			this.category.add(element);
+		}
+
+		if (active) this.change(active);
+	}
+
+	exportObject() {
+		return this.model.export();
+	}
+
+	export() {
+		const a    = element("a");
+		const item = this.model.export();
+		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
+		a.href     = URL.createObjectURL(file);
+		a.download = this.model.name.replace(/ /g, "_") + ".json";
+		a.click();
+		URL.revokeObjectURL(a.href);
+		// this._export.onclick.call();
+	}
+
+	importObject(object) {
+		const activeID = uniqueID();
+		this.map.set(activeID, object);
+		this.category.add(activeID);
+		this.change(activeID);
+	}
+
+	import(e) {
+		const file = e.target.files[0];
+		if (!file) return;
+
+		const reader = new FileReader();
+
+		reader.onload = (e) => {
+			const item     = JSON.parse(e.target.result);
+			this.importObject(this._updatefn(item));
+		};
+		
+		reader.readAsText(file);
+	}
+
 }
 
 /**
@@ -126,13 +347,24 @@ function copy_object(original) {
 class Grade {
 
 	static list = [
-		new Grade("E",  0),  new Grade("E+",  1),
-		new Grade("D",  2),  new Grade("D+",  4),
-		new Grade("C",  8),  new Grade("C+", 16),
-		new Grade("B", 36),  new Grade("B+", 50),
-		new Grade("A", 64),  new Grade("A+", 80),
-		new Grade("S", 150), new Grade("S+", 200),
+		new Grade("E",  0,   0), new Grade("E+",  1,   1),
+		new Grade("D",  2,   2), new Grade("D+",  3,   4),
+		new Grade("C",  4,   8), new Grade("C+",  5,  16),
+		new Grade("B",  6,  36), new Grade("B+",  7,  50),
+		new Grade("A",  8,  64), new Grade("A+",  9,  80),
+		new Grade("S", 10, 150), new Grade("S+", 11, 200),
+		new Grade("X", 12, 201),
 	];
+
+	static toNumber = (function () {
+		const map = new Map(Grade.list.map((grade) => [grade.name, grade.number]));
+		return (name) => map.get(name);
+	})();
+
+	static fromNumber = (function () {
+		const map = new Map(Grade.list.map((grade) => [grade.number, grade.name]));
+		return (number) => map.get(number);
+	})();
 
 	static budThreshold     = 32;
 	static budThresholdWeak = 25;
@@ -144,7 +376,7 @@ class Grade {
 	 * @returns {string} the letter grade
 	 */
 	static for(points, skill, aptitude) {
-		const final = points * Grade.multiplier(points, skill, aptitude)
+		const final = points * Grade.multiplier(points, skill, aptitude);
 		return Grade.list.reduce((a, b) => b.points > final ? a : b).name;
 	}
 
@@ -166,13 +398,20 @@ class Grade {
 		);
 	}
 
+	static TPTABLE = [
+		[15, 0, 0, 1, 2, 1, 2, 1, 2, 1, 10, 9],
+		[ 0, 0, 0, 0, 0, 1, 2, 1, 2, 1,  2, 1],
+		[ 0, 0, 0, 0, 0, 0, 0, 1, 2, 1,  2, 1],
+	];
+
 	/**
 	 * Create a grade
 	 * @param {string} name - letter for the grade
 	 * @param {number} points - minimum number of points to acheive the grade
 	 */
-	constructor(name, points) {
+	constructor(name, number, points) {
 		this.name   = name;
+		this.number = number;
 		this.points = points;
 	}
 }
@@ -188,33 +427,69 @@ class Sheet {
 	 */
 	constructor(data) {
 
-		/** @todo FIND A BETTER PLACE FOR THIS */
-		{
-			const select = document.getElementById("character-class");
-			
-			for (let klass of data.classes) {
-				if ("hidden" in klass || klass.hidden) continue;
-				const option       = document.createElement("option");
-				option.value       = klass.name;
-				option.textContent = klass.name;
-				select.appendChild(option);
+		// main definition data object
+		this.data = data;
+
+		this.macros = new Macros.UserInterface(this);
+		document.getElementById("macro-builder").appendChild(this.macros.root);
+
+		/* prominently display the version data */
+		const version = document.getElementById("version");
+		version.textContent = "Version " + Version.CURRENT.toString();
+
+		const context  = {};
+
+		const macros   = (function(templates) {
+
+			const defs = {};
+
+			function argist(tmp, head, ...args) {
+				return element("div", [
+					element("span", hilight(head)),
+					element("ol", {
+						class   : ["arglist"],
+						content : args.map((a, i) => (
+							element("li", [
+								element("span", `${tmp.args[i]}`, "datum"),
+								": ",
+								a,
+							])
+						)),
+					})
+				]);
 			}
-		}
 
-		/** @todo MOVE THIS AFTER FIXING PFE COMPILER INIT */
-		this.cache   = {stats: {}, growths: {}};
-		this._highID = 0;
-		this.charID  = 0;
+			for (let each of templates) {
+				const string      = each.define.join("\n");
+				const [name, tmp] = Expression.Template.parse(string, defs);
+				defs[name]        = tmp;
 
-		/** @todo MOVE THIS SOMEWHERE BETTER */
-		// PFE_COMPILER = new PostfixCompiler(["current_hp", ...data.stats.names]);
-		// CACHE = this.cache.stats;
+				/* help and referencelookup stuff */
+				const args = tmp.args.map(arg => `[${arg}]`).join(", ");
+				tmp.called = tooltip(
+					hilight(`Template: fill ${name}(${args})`),
+					wrap(
+						"Click on the text below to switch between showing a ",
+						"description and the definition."
+					)
+				);
+				tmp.about  = new SwapText([
+					argist(tmp, wrap(...each.about), ...each.args),
+					element("div", Expression.highlight(string), "calc-code"),
+				]).root;
+			}
 
-		const compiler = new Expression.Compiler(this.cache.stats)
+			return defs;
+
+		})(data.macros);
+
+		const compiler = new Expression.Compiler(context, macros);
 		this.compiler  = compiler;
+		this.context(context);
+		this.definez   = context;
 
 		// set the lookup tables for each feature class
-		for (let each of [Ability, Weapon, CombatArt, Equipment, Class]) {
+		for (let each of [Ability, Weapon, CombatArt, Equipment, Class, Attribute, Condition, Tile]) {
 			each.setLookupByName(data, compiler);
 		}
 
@@ -222,65 +497,8 @@ class Sheet {
 		this.stats = new Stats(data.stats.names, this);
 		document.getElementById("stats-section").appendChild(this.stats.root);
 
-		// main definition data object
-		this.data = data;
-
-		// console history
-		this.histidx = 0;
-		this.history = [];
-
-		/* define attributes for document elements */
-
-		/* hitpoints */
-		this._input_hitpoints   = document.getElementById("hitpoints-input");
-		this._output_hitpoints  = document.getElementById("hitpoints");
-
-		/* mounted */
-		this._input_mounted     = document.getElementById("character-mounted");
-
-		/* triangle */
-		this._select_triangle   = document.getElementById("character-triangle");
-
-		/* name */
-		this._input_name        = document.getElementById("character-name");
-
-		/* gold pieces */
-		this._input_money       = document.getElementById("character-money");
-
-		this._input_name.onchange = (() => {
-			const charID = this.characters.getActive();
-			if (charID === null) return;
-
-			const element = this.characters.elements.get(charID);
-			element.title = this._input_name.value;
-		});
-
-		/* description */
-		this._input_description = document.getElementById("character-description");
-
-		this._input_description.onchange = (() => {
-			const charID = this.characters.getActive();
-			if (charID === null) return;
-
-			const element       = this.characters.elements.get(charID);
-			element.description = this._input_description.value;
-		});
-
-		/* autogenerate properties for inputs with not special refresh effect */
-		// this.makePropertyForInput("name", "character-name", String);
-		this.makePropertyForInput("homeland", "character-homeland", String);
-		// this.makePropertyForInput("description", "character-description", String);
-
-		/* set default class name */
-		this.class = "Commoner";
-
-		this.skills = new Skills(data.skills);
+		this.skills = new Skills.UserInterface(data.skills, this);
 		document.getElementById("skill-section").appendChild(this.skills.root);
-
-		/* initialize event listener for upload */
-		document
-			.getElementById("import-sheet")
-			.addEventListener("change", (e) => {this.import(e);}, false);
 
 		/* create callbacks for category events */
 		const refresh = (category, key) => {
@@ -295,38 +513,20 @@ class Sheet {
 			this.stats.refresh();
 		};
 
-		const equip   = (category, key) => {
-			console.log("equip", key);
-			const next = category.next;
-			if (!category.next) return;
-
-			if (category.isActive(key)) {
-				/* active elements are automaticall toggled off when deleted */
-				category.next.delete(key);
-			} else {
-				next.add(key);
-			}
-
-			category.toggleActive(key);
-			this.stats.refresh();
-		};
-		
-		const unequip = (category, key) => {
-			console.log("unequip", key);
-			if (!category.prev) return;
-			/* key WILL implicitly be present and active in .prev */
-			console.assert(category.prev.has(key));
-			category.prev.toggleActive(key);
-			category.delete(key);
-			this.stats.refresh();
-		};
+		this.tabs = {};
 
 		const myFeatureTitle = ((feature) => feature.title()); 
 		const myFeatureBody  = ((feature) => feature.body());
 		const myTriggers     = ((feature) => feature.dependancies);
 
-		let   notebook = new Notebook(document.getElementById("features"));
+		let   sidebook = new Notebook(document.getElementById("equip-pane"));
 		let   inner    = new Notebook();
+
+		this.tabs.assign = sidebook;
+
+		/* Level Ups tab */
+
+		sidebook.add("Level Ups", this.stats.levelups.root);
 
 		/* Ability category */
 
@@ -342,19 +542,22 @@ class Sheet {
 			selectable  : false,
 			reorderable : false,
 			removable   : false,
+			hideable    : true,
 			ontoggle    : refresh,
 			onremove    : null,
 		}));
-		inner.add("Class", this.abilities.class.root);
+		inner.add("From Class", this.abilities.class.root);
 
 		this.addCategory(new MultiActiveCategory(model, {
 			name        : "equipped",
 			empty       : "No abilities are equipped",
-			selectable  : false,
+			selectable  : true,
 			reorderable : true,
 			removable   : true,
+			hideable    : true,
 			ontoggle    : refresh,
-			onremove    : unequip,
+			onremove    : forget,
+			select      : Ability.select(),
 		}));
 		inner.add("Equipped", this.abilities.equipped.root);
 
@@ -364,28 +567,18 @@ class Sheet {
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
+			hideable    : true,
 			ontoggle    : refresh,
 			onremove    : forget,
+			select      : Ability.select(),
 		}));
-		inner.add("Battlefield", this.abilities.battlefield.root);
+		inner.add("On Battlefield", this.abilities.battlefield.root);
 
-		this.addCategory(new MultiActiveCategory(model, {
-			name        : "known",
-			empty       : "No abilities are known",
-			selectable  : true,
-			reorderable : true,
-			removable   : true,
-			ontoggle    : equip,
-			onremove    : forget,
-		}));
-		inner.add("Known", this.abilities.known.root);
+		inner.active = "From Class";
 
-		this.abilities.known.link(this.abilities.equipped);
+		this.tabs.abilities = inner;
 
-		inner.add("(Hide)", document.createElement("div"));
-		inner.active = "(Hide)";
-
-		notebook.add("Abilities", inner.root);
+		sidebook.add("Abilities", inner.root);
 
 		/* CombatArt category */
 
@@ -394,56 +587,54 @@ class Sheet {
 			CombatArt.kind, CombatArt.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this.combatarts = {};
+		this.arts = {};
+
+		this.addCategory(new SingleActiveCategory(model, {
+			name        : "class",
+			empty       : "No arts are equipped",
+			selectable  : false,
+			reorderable : false,
+			removable   : false,
+			hideable    : true,
+			ontoggle    : ((category, key) => {
+
+				/* only one art can be active at a time */
+				this.arts.equipped.clearActive();
+
+				console.log("refresh", key);
+				category.toggleActive(key);
+				this.stats.refresh();
+			}),
+			onremove    : null,
+		}));
+		inner.add("From Class", this.arts.class.root);
 
 		this.addCategory(new SingleActiveCategory(model, {
 			name        : "equipped",
-			empty       : "No combat arts are equipped",
-			selectable  : false,
-			reorderable : true,
-			removable   : true,
-			ontoggle    : refresh,
-			onremove    : unequip,
-		}));
-		inner.add("Equipped", this.combatarts.equipped.root);
-
-
-		this.addCategory(new MultiActiveCategory(model, {
-			name        : "known",
-			empty       : "No combat arts are known",
+			empty       : "No arts are equipped",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
-			ontoggle    : equip,
+			hideable    : true,
+			ontoggle    : ((category, key) => {
+
+				/* only one art can be active at a time */
+				this.arts.class.clearActive();
+
+				console.log("refresh", key);
+				category.toggleActive(key);
+				this.stats.refresh();
+			}),
 			onremove    : forget,
+			select      : CombatArt.select(),
 		}));
-		inner.add("Known", this.combatarts.known.root);
+		inner.add("Equipped", this.arts.equipped.root);
 
-		this.combatarts.known.link(this.combatarts.equipped);
+		inner.active = "From Class";
 
-		inner.add("(Hide)", document.createElement("div"));
-		inner.active = "(Hide)";
+		this.tabs.arts = inner;
 
-		notebook.add("Combat Arts", inner.root);
-
-		/* Weapon category */
-
-		model = new CategoryModel(
-			Weapon.kind, Weapon.byName, myFeatureTitle, myFeatureBody, myTriggers
-		);
-
-		this.weapons = {};
-
-		this.addCategory(new SingleActiveCategory(model, {
-			name        : "known",
-			empty       : "No weapons are owned nor any spells known",
-			selectable  : true,
-			reorderable : true,
-			removable   : true,
-			ontoggle    : refresh,
-			onremove    : forget,
-		}));
-		notebook.add("Weapons & Spells", this.weapons.known.root);
+		sidebook.add("Arts", inner.root);
 
 		/* Equipment category */
 
@@ -459,52 +650,228 @@ class Sheet {
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
+			hideable    : true,
 			ontoggle    : refresh,
 			onremove    : forget,
+			select      : Equipment.select(),
 		}));
-		notebook.add("Equipment", this.equipment.known.root);
+
+		sidebook.add("Equipment", this.equipment.known.root);
+
+		/* battalions tab for test */
+		this.battalion  = this.stats.battalion;
+
+		sidebook.active = "Abilities";
+
+		/* set up the characters and themes tabs */
+
+		let notebook = new Notebook(document.getElementById("right-pane"));
+		this.tabs.main = notebook;
+
+		const buildnb = new Notebook([notebook.root, document.getElementById("main-tabs")]);
+		
+		this.character = new Characters(this);
+
+		const character_bb = new Buildables({
+			name      : "characters",
+			empty     : "If you're reading this, something has gone wrong",
+			templates : data.presets.map(x => x.name),
+			model     : this.character,
+			update    : Legacy.convert,
+		});
+
+		this.cb = character_bb;
+
+		buildnb.add("Characters", [character_bb.root, this.character.root]);
+
+		// const battalion_bb = new Buildables({
+		// 	name      : "battalions",
+		// 	empty     : "Not leading a battalion",
+		// 	templates : data.battalions.filter(x => !x.hidden).map(x => x.name),
+		// 	model     : this.battalion,
+		// });
+
+		// this.bb = battalion_bb;
+
+		/* TODO figure out what to do with battalions for patch #5 */
+		// buildnb.add("Battalions", [battalion_bb.root, btl]);
+
+		this.weaponz = new Weapons(this);
+
+		const weapon_bb = new Buildables({
+			name       : "weapons",
+			empty      : "No weapons or spells",
+			// templates : data.weapons.filter(x => !x.hidden).map(x => x.name),
+			model      : this.weaponz,
+			sortfilter : Weapon.select(),
+		});
+
+		this.wb = weapon_bb;
+
+		buildnb.add("Spells & Weapons", [weapon_bb.root, this.weaponz.root]);
+
+		buildnb.active = "Characters";
+
+		this.tabs.create = buildnb;
+
+		notebook.add("Create", buildnb.root);
+
+		const eqdiv = document.getElementById("equip-pane");
+		eqdiv.remove();
+
+		eqdiv.append(sidebook.root);
+
+		notebook.add("Assign", eqdiv);
+
+		const gloss = new Notebook();
+
+		this.conditions = {};
+
+		model = new CategoryModel(
+			Condition.kind, Condition.byName, myFeatureTitle, myFeatureBody, myTriggers
+		);
+
+		this.addCategory(new MultiActiveCategory(model, {
+			name        : "unit",
+			empty       : "No conditions",
+			selectable  : true,
+			reorderable : true,
+			removable   : true,
+			hideable    : true,
+			ontoggle    : (() => void(0)),
+			onremove    : forget,
+			select      : Condition.select(),
+		}));
+		gloss.add("Conditions", this.conditions.unit.root);
+
+		this.tiles = {};
+
+		model = new CategoryModel(
+			Tile.kind, Tile.byName, myFeatureTitle, myFeatureBody, myTriggers
+		);
+
+		this.addCategory(new MultiActiveCategory(model, {
+			name        : "map",
+			empty       : "No tiles",
+			selectable  : true,
+			reorderable : true,
+			removable   : true,
+			hideable    : true,
+			ontoggle    : (() => void(0)),
+			onremove    : forget,
+			select      : Tile.select(),
+		}));
+		gloss.add("Tiles", this.tiles.map.root);
+
+		gloss.active = "Conditions";
+
+		this.tabs.gloss = gloss;
+
+		notebook.add("Glossary", gloss.root);
+
+		const tools = new Notebook();
 
 		/* get the macro builder and shove it into a tab */
 		const builder = document.getElementById("macro-builder");
 		builder.remove();
-		notebook.add("Macros", builder);
-
-		notebook.add("(Hide)", document.createElement("div"));
-		notebook.active = "(Hide)";
-
-		/* set up the characters and themes tabs */
-
-		notebook = new Notebook(document.getElementById("right-pane"));
-
-		this.myCharMap = new Map();
-		model          = new CategoryModel(
-			"characters", this.myCharMap, (x) => x.name, (x) => x.description, () => []
-		);
-
-		this.characters = new SingleActiveCategory(model, {
-			name        : "list",
-			empty       : "If you're reading this, something has gone wrong",
-			selectable  : false,
-			reorderable : true,
-			removable   : true,
-			ontoggle    : ((category, key) => void this.changeCharacter(key)),
-			onremove    : ((category, key) => void this.removeCharacter(key)),
-		});
-
-		this.characters.addTo(document.getElementById("character-list"));
-		
-		const characters = document.getElementById("characters");
-		characters.remove();
-
-		notebook.add("Characters", characters);
+		tools.add("Macros", builder);
 
 		const pbdiv = document.getElementById("point-buy");
-		pbdiv.remove()
+		pbdiv.remove();
 
 		this.myPointBuy = new PointBuy();
 		pbdiv.appendChild(this.myPointBuy.root);
 
-		notebook.add("Point Buy", pbdiv);
+		tools.add("Point Buy", pbdiv);
+
+		const legacy_bb  = new Buildables({
+			name      : "legacy",
+			empty     : "No Version 1.9.1 or earlier character sheets.",
+			templates : ["Everything but export is disabled."],
+			model     : (function () {
+
+				const model_data = {
+					name        : "None",
+					description : "None",
+				};
+
+				return {
+					name   : model_data.name,
+					data   : model_data,
+
+					// body   : (function() {
+					// 	return element("span", model_data.description);
+					// }),
+
+					/* builtable display */
+
+					getTitle: (function(object) {
+						return object.name;
+					}),
+
+					getBody: (function(object) {
+						return element("span", object.description, "trunc");
+					}),
+					
+					import : (function(object) {
+						this.name = object.name;
+						this.data = object;
+
+						// console.log(object);
+					}),
+
+					export : (function() {
+						return this.data;
+					}),
+					
+					clear  : (function() {
+						this.name = model_data.name;
+						this.data = model_data;
+					}),
+				};
+			})(),
+		});
+
+		/* don't want users adding any new sheets here */
+		legacy_bb._add.disabled          = true;
+		legacy_bb._copy.input.disabled   = true;
+		legacy_bb._save.input.disabled   = true;
+		legacy_bb._import.input.disabled = true;
+		legacy_bb.category.removable     = false;
+
+		/* fill the legacy buildables if there's data for it */
+		const legacy_storage = localStorage.getItem("session");
+
+		if (legacy_storage !== null) {
+			const legacy = JSON.parse(legacy_storage);
+			const modern = {active: "0", elements: {}};
+
+			for (let i = 0; i < legacy.characters.length; ++i) {
+				modern.elements[String(i)] = legacy.characters[i];
+			}
+
+			legacy_bb.importAll(modern);
+		}
+
+		this.lb = legacy_bb;
+
+		const legacy_button = element("input", {
+			class : ["simple-border"],
+			attrs : {
+				type    : "button", 
+				value   : "Convert & Import Legacy Characters",
+				onclick : (() => {
+					this.legacy();
+					this.tabs.main.active   = "Create";
+					this.tabs.create.active = "Characters";
+				}),
+			},
+		});
+
+		tools.add("Legacy", element("div", [
+			legacy_button,
+			legacy_bb.root,
+		]));
 
 		this.myThemeMap = new Map();
 		model           = new CategoryModel(
@@ -512,24 +879,22 @@ class Sheet {
 		);
 
 		const themes = document.getElementById("themes");
-		
-		const toggleTheme = ((category , key) => {
-			// do not turn off theme if it is reselected
-			if (key ==category.active) {
-				category.toggleActive(key);
-			}
 
-			// reapply theme either way to make debug easier
-			this.theme(key);
-		});
-
-		this.themes     = new SingleActiveCategory(model, {
+		this.themes  = new SingleActiveCategory(model, {
 			name        : "themes",
 			empty       : "If you're reading this, there is no theme",
 			selectable  : false,
 			reorderable : false,
 			removable   : false,
-			ontoggle    : toggleTheme,
+			ontoggle    : ((category , key) => {
+				// do not turn off theme if it is reselected
+				if (key == category.active) {
+					category.toggleActive(key);
+				}
+
+				// reapply theme either way to make debug easier
+				this.theme(key);
+			}),
 		});
 
 		for (let theme of Theme.list) {
@@ -542,100 +907,1246 @@ class Sheet {
 		
 		themes.remove();
 
-		notebook.add("Themes", themes);
+		tools.add("Themes", themes);
 
-		notebook.active = "Characters";
+		tools.active = "Themes";
 
-		/* refresh sheet */
-		this.fresh();
+		this.tabs.tools = tools;
+
+		notebook.add("Tools", tools.root);
+
+		notebook.active = "Create";
 
 		/* set theme */
 		this.theme();
 
 		/* prompt user to reload last session */
-		if (localStorage.hasOwnProperty("session")) {
-			this.autoload();
-		}
+		Object.prototype.hasOwnProperty.call(localStorage, "v2session")
+			? this.autoload()
+			: this.cb.add();
 
 		/* autosave current sheet every five minutes */
-		setInterval(() => void this.autosave(), 300000);
+		// setInterval(() => void this.autosave(), 300000);
 	}
 
-	console(event) {
+	/* this was a workaround the fact two arts cats weren't expected */
+	getActiveArt() {
 
-		if (event.keyCode == 13) {
-        	
-        	const inp  = document.getElementById("generator-console");
-        	const out  = document.getElementById("generator-output");
+		const fromclass = this.arts.class.getActive();
 
-        	try {
+		if (fromclass) return fromclass;
 
-				const expression = this.compiler.compile(inp.value);
-				console.log(expression);
-				out.value = [
-					"value: ", expression.exec(), "\n",
-					"input: ", expression.source, "\n",
-					"macro: ", expression.macro, "\n",
-				].join("");
+		const equipped = this.arts.equipped.getActive();
 
-				this.history.push(inp.value);
-				this.histidx = this.history.length - 1;
-				inp.value    = "";
+		if (equipped) return equipped;
 
-			} catch (e) {
-				if (e instanceof Expression.CompilationError) {
-					console.error(inp.value, e);
-					out.value = [
-						inp.value, "\n", e
-					].join("");
-				} else {
-					throw e;
-				}
-			}
-
-        } else if (event.keyCode == 38) {
-        	
-        	const inp  = document.getElementById("generator-console");
-        	inp.value  = this.history[this.histidx];
-        	if (this.histidx > 0) --this.histidx;
-
-        } else if (event.keyCode == 40) {
-
-        	const inp  = document.getElementById("generator-console");
-        	inp.value  = this.history[this.histidx];
-        	if (this.histidx < this.history.length - 1) ++this.histidx;
-
-        } else {
-        	// do nothing
-        }
-
-    }	
-
-	/* methods relating to adding definitions */
-
-	createID() {
-		const value   = this._highID;
-		this._highID += 1;
-		return value;
+		return null;
 	}
 
-	changeCharacter(key) {
-		this.myCharMap.set(this.charID, this.writeCharacter());
-		this.charID = key;
-		this.characters.toggleActive(key);
-		/* this must go after the character is toggled */
-		/* side effects on syncing the name field with the sidebar */ 
-		this.readCharacter(this.myCharMap.get(key));
-	}
+	context(base) {
 
-	removeCharacter(key) {
-		if (key == this.charID) {
-			alert("You cannot delete the active character.");
-			return;
+		if (this._context) return this._context;
+
+		function sum(env, ...args) {
+			return (
+				env.runtime
+					? args.reduce((a, b) => a + b, 0)
+					: args.reduce((a, b) => 
+						a != 0
+							? (b != 0 
+								? `${a} + ${b}`
+								: a) 
+							: b,
+					0)
+			);
 		}
 
-		this.characters.delete(key);
-		this.myCharMap.delete(key);
+		/*
+		 * v/ level
+		 * v/ triangle
+		 *
+		 * v/ unit.modifier.<prime>
+		 * v/ unit.total.<prime>
+		 * v/ <prime.base>
+		 * v/ class.<prime>
+		 * v/ class.mount.<prime>
+		 *
+		 * v/ unit.total.<second>
+		 * v/ unit.modifier.<second>
+		 * v/ weapon.<second>
+		 * v/ weapon.base.<second>
+		 * v/ weapon.template.<second>
+		 * v/ weapon.attributes.<second>
+		 * v/ equipment.<second>
+		 * v/ arts.<second>
+		 * v/ battalion.gambit.<second>
+		 *
+		 * v/ abilities.<prime>
+		 * v/ abilities.<second>
+		 *
+		 * v/ battalion.<batstat>
+		 * v/ battalion.base.<batstat>
+		 * v/ battalion.template.<batstat>
+		 */
+
+		const vardiv = document.getElementById("var-options");
+		const varsen = [];
+		const ctx    = base || {};
+
+		const add = (template) => {
+
+			let fn = undefined;
+
+			const source = (
+				template.expr.toString()
+					/* remove indentation from source */
+					.replace(/\t{3,4}/g, "")
+					/* convert remaining into spaces */
+					.replace(/\t/g, "  ")
+			);
+
+			if (typeof template.expr == "string") {
+				const e = this.compiler.compile(template.expr);
+				fn   = ((env) => Expression.evaluate(e, env));
+				fn.e = e;
+				fn.s = element("div", [
+					"=== Calculator Expression ===", element("br"),
+					element("div", Expression.highlight(source), "calc-code"),
+				]);
+			} else {
+				fn   = template.expr;
+				fn.s = element("div", [
+					"=== JavaScript Function ===", element("br"),
+					element("pre", source)
+				]); 
+			}
+
+			fn.called      = template.name;
+			fn.header      = tooltip(
+				element("span", [
+					"Variable: ",
+					element("span", template.name, "datum")
+				]),
+				wrap(
+					"Click on the text below to switch between showing a ",
+					"description and the definition."
+				)
+			);
+
+			fn.about       = new SwapText([
+				hilight(template.about),
+				element("pre", fn.s),
+			]).root;
+			ctx[fn.called] = fn;
+			varsen.push(fn.called);
+			return fn.called;
+		};
+
+		function funcsum(...names) {
+
+			const funcs = names.map(name => ctx[name]);
+
+			// if (funcs.some(func => func === undefined)) {
+			// 	debugger;
+			// }
+
+			return (env) => {
+
+				let a = 0;
+				for (let func of funcs) {
+					a = sum(env, a, func(env));
+				}
+
+				return a;
+			};
+		}
+
+		const abilityfunc = (desig) => {
+			const name = desig;
+
+			return ((env) => {
+
+				let a = 0;
+				const cats = ["class", "equipped", "battlefield"];
+
+				for (let cat of cats) {
+					for (let each of this.abilities[cat].getActive()) {
+
+						const ability  = Ability.get(each);
+						const modifier = ability.modifier(name, env);
+						if (modifier == 0) continue;
+
+						a = sum(env, a, label(env, ability.name, modifier));
+					}
+				}
+
+				return a;
+			});
+		};
+
+		function label(env, text, value) {
+			if (!env.runtime && env.label && value != "0") {
+				if (typeof value == "string" && value.includes(" ")) {
+					return `(${value}) [${text}]`;
+				}
+				return `${value} [${text}]`;
+			}
+			return value;
+		}
+		
+		// .88b  d88. d888888b .d8888.  .o88b.
+		// 88'YbdP`88   `88'   88'  YP d8P  Y8
+		// 88  88  88    88    `8bo.   8P
+		// 88  88  88    88      `Y8b. 8b
+		// 88  88  88   .88.   db   8D Y8b  d8
+		// YP  YP  YP Y888888P `8888Y'  `Y88P'
+
+		add({
+			name  : "unit|level",
+			about : "This unit's level",
+			expr  : ((env) => this.stats.level)
+		});
+
+
+		add({
+			name  : "other|recursion",
+			about : "If the interpreter is broken this will freeze the page.",
+			expr  : "other|recursion",
+		});
+
+		add({
+			name  : "other|martial|mov",
+			about : wrap(
+				"This is the Martial Starting class movement bonus that ",
+				"those get after level 10. Evaluates to 1 if the state of ",
+				"the sheet meets those circumstances and to 0 otherwise.",
+			),
+			expr  : ((env) => {
+				const cls = this.character.class;
+
+				return label(env, "lvl 10 martial", Number(
+					cls.type == "Martial"
+					&& cls.tier == "Starting"
+					&& this.stats.level >= 10
+				));
+			}),
+		});
+
+		add({
+			name  : "other|range_penalty|prompt",
+			about : wrap(
+				"The hit penalty for attacking past maximum bow range. This ",
+				"isn't available in the builder proper, but you can used it ",
+				"in a macro to prompt for values.",
+			),
+			expr  : `
+				ask [Range Penalty?]
+					; [Range +0] {+ 0}
+					, [Range +1] {-20}
+					, [Range +2] {-40}
+					, [Further]  {-60}
+				end
+			`,
+		});
+
+		// d888888b d8888b. d888888b  .d8b.  d8b   db  d888b  db      d88888b
+		// `~~88~~' 88  `8D   `88'   d8' `8b 888o  88 88' Y8b 88      88'
+		//    88    88oobY'    88    88ooo88 88V8o 88 88      88      88ooooo
+		//    88    88`8b      88    88~~~88 88 V8o88 88  ooo 88      88~~~~~
+		//    88    88 `88.   .88.   88   88 88  V888 88. ~8~ 88booo. 88.
+		//    YP    88   YD Y888888P YP   YP VP   V8P  Y888P  Y88888P Y88888P
+
+		add({
+			name  : "other|triangle",
+			about : wrap(
+				"The numerical value of the selected option of the Triangle ",
+				"Effect select widget in the Create => Characters tab of the ",
+				"unit builder.",
+			),
+			expr  : ((env) => this.character.triangle)
+		});
+
+		add({
+			name  : "other|triangle|advantage",
+			about : "Weapon triangle advantage value.",
+			expr  : "+15",
+		});
+
+		add({
+			name  : "other|triangle|neutral",
+			about : "Weapon triangle neutral value.",
+			expr  : "0",
+		});
+
+		add({
+			name  : "other|triangle|disadvantage",
+			about : "Weapon triangle disadvantage value.",
+			expr  : "-15",
+		});
+
+		add({
+			name  : "other|triangle|prompt",
+			about : wrap(
+				"Code that generates a prompt asking for the user to select ",
+				"a Triangle Effect value when converted into a Roll20 macro. ",
+				"Evaluates to 0 in the character builder.",
+			),
+			expr  : `
+				ask [Triangle Effect?]
+					; Neutral      {0}
+					, Advantage    {+15}
+					, Disadvantage {-15}
+				end
+			`,
+		});
+
+		add({
+			name  : "other|triangle|conditional",
+			about : wrap(
+				"Takes into account whether this is codegen, in which case it ",
+				"evaluates to other|triangle, or macrogen, in which cast it ",
+				"evaluates to other|triangle|prompt. Additionally, if a ",
+				"weapon that has the 'no triangle' tag is equipped, instead ",
+				"evaluates to 0."
+			),
+			expr  : `
+				metaif builtins|macrogen == 1 then
+					metaif weapon|tagged|no_triangle == 0 then
+						other|triangle|prompt
+					else
+						0
+					end
+				else
+					if weapon|tagged|no_triangle == 0 then
+						other|triangle
+					else
+						0
+					end
+				end
+			`,
+		});
+
+		// d8888b. d8888b. d888888b .88b  d88.  .d8b.  d8888b. db    db
+		// 88  `8D 88  `8D   `88'   88'YbdP`88 d8' `8b 88  `8D `8b  d8'
+		// 88oodD' 88oobY'    88    88  88  88 88ooo88 88oobY'  `8bd8'
+		// 88~~~   88`8b      88    88  88  88 88~~~88 88`8b      88
+		// 88      88 `88.   .88.   88  88  88 88   88 88 `88.    88
+		// 88      88   YD Y888888P YP  YP  YP YP   YP 88   YD    YP
+
+		for (let each of this.data.stats.first) {
+
+			const name = each;
+
+			const prime = [];
+
+			add({
+				name  : `unit|base|${name}`,
+				about : 
+					`The unit's base ${name} statistic before modifiers.`
+				,
+				expr  : ((env) => {
+					const value =  this.stats.stats[name].value;
+					return label(env, `base ${name}`, value);
+				}),
+			});
+
+			add({
+				name  : `unit|growth|${name}`,
+				about : `The unit's base ${name} growth before modifiers.`,
+				expr  : ((env) => {
+					return this.stats.growths[name].value;
+				})
+			});
+
+			prime.push(add({
+				name  : `unit|var_base|${name}`,
+				about : wrap(
+					"The unit's base ${name} statistic before modifiers, but",
+					"gets replaced with a Roll20 variable name when used ",
+					"to generate a Roll20 macro."
+				),
+				expr  : `${capitalize(name)} {unit|base|${name}}`,
+			}));
+
+			prime.push(add({
+				name  : `class|base|${name}`,
+				about : `The unit's class's ${name} modifier.`,
+				expr  : ((env) => {
+					const value = this.character.class.modifier(name, env);
+					return label(env, "cls", value);
+				}),
+			}));
+
+			add({
+				name  : `class|growth|${name}`,
+				about : `The unit's class's ${name} growth modifier.`,
+				expr  : ((env) => {
+					return this.character.class.growth(name);
+				})
+			});
+
+			add({
+				name  : `unit|total|growth|${name}`,
+				about : `The unit's total ${name} growth after modifiers.`,
+				expr  : ((env) => {
+
+					// read out components
+					const unit = env.read(`unit|growth|${name}`);
+					const cls  = env.read(`class|growth|${name}`);
+
+					// the normal sum of the growths
+					const sum  = Math.max(0, unit + cls);
+
+					// anything above 60% is halved, create limiter
+					const raw  = Math.floor((60 - sum) / 10) * 5;
+
+					// change a positive limiter to no effect (zero)
+					const cap  = Math.min(raw, 0);
+
+					// add limiter (negative) to sum growth to get final
+					const grow = sum + cap;
+
+					return grow;
+				}),
+			});
+
+			add({
+				name  : `class|mounted|${name}`,
+				about : wrap(
+					`Evaluates to the unit's class's mount's ${name} `,
+					"modifier if the 'Mounted?' checkbox under Create => ",
+					"Characters is checked, otherwise always evaluates to 0.",
+				),
+				expr  : ((env) => {
+					const cls = this.character.class;
+					return label(env, "mnt",
+						cls.hasMount() && this.character.mounted
+							? cls.mount.modifier(name, env)
+							: 0
+					);
+				}),
+			});
+
+			add({ /* not added to prime because we want it conditional */
+				name  : `class|mount|${name}`,
+				about : wrap(
+					`The unit's class's mount's ${name} modifier. If `,
+					"the unit's class has not mount, evaluates to 0.",
+				),
+				expr  : ((env) => {
+					const cls = this.character.class;
+					return label(env, "mount",
+						cls.hasMount()
+							? cls.mount.modifier(name, env)
+							: 0
+					);
+				}),
+			});
+
+			prime.push(add({
+				name  : `class|ask_mounted|${name}`,
+				about : wrap(
+					`Evaluates to class|mounted|${name} in the character `,
+					"builder, but creates a prompt in the generated Roll20 ",
+					`macro for class|mount|${name}, so long as the value `,
+					`of class|mount|${name} is not 0.`,
+				),
+				expr  : `
+					metaif builtins|macrogen == 1 then
+						metaif class|mount|${name} <> 0 then 
+							ask [Mounted?]
+								; Yes {class|mount|${name}}
+								, No  {0}
+							end
+						else
+							0
+						end
+					else
+						class|mounted|${name}
+					end
+				`,
+			}));
+
+			prime.push(add({
+				name  : `abilities|${name}`,
+				about : 
+					`The sum of all ${name} modifiers from active abilities.`
+				,
+				expr  : abilityfunc(name),
+			}));
+
+			prime.push(add({
+				name  : `equipment|${name}`,
+				about : wrap(
+					`The total ${name} modifier provided by the equipped `,
+					"equipment. If none is equipped then evaluates to 0.",
+				),
+				expr  : ((env) => {
+					const key   = this.equipment.known.getActive();
+					if (key == null) return 0;
+					const equip = Equipment.get(key); 
+					return label(env, equip.name, equip.modifier(name, env));
+				}),
+			}));
+
+			add({
+				name  : `unit|modifier|${name}`,
+				about : `The sum of all ${name} modifiers.`,
+				expr  : funcsum(...prime),
+			});
+
+			// if (name == "mov") {
+			// 	/* mov has a special calculation the others don't */
+			// 	add({
+			// 		name  : "unit|total|mov",
+			// 		about : 
+			// 			"The unit's total mov statistic after modifiers."
+			// 		,
+			// 		expr  : (() => {
+			// 			const mpri = prime.concat(["other|martial|mov"]);
+			// 			const fsum = funcsum(...mpri);
+
+			// 			return (env) => sum(env, 4, fsum(env));
+			// 		})(),
+			// 	});
+			// } else {
+			// 	add({
+			// 		name  : `unit|total|${name}`,
+			// 		about : wrap(
+			// 			`The unit's total ${name} statistic after `,
+			// 			"modifiers.",
+			// 		),
+			// 		expr  : funcsum(...prime),
+			// 	});
+			// }
+
+			add({
+				name  : `unit|total|${name}`,
+				about : wrap(
+					`The unit's total ${name} statistic after `,
+					"modifiers.",
+				),
+				expr  : funcsum(...prime),
+			});
+		}
+
+		// d888888b  .d8b.   d888b   d888b  d88888b d8888b.
+		// `~~88~~' d8' `8b 88' Y8b 88' Y8b 88'     88  `8D
+		//    88    88ooo88 88      88      88ooooo 88   88
+		//    88    88~~~88 88  ooo 88  ooo 88~~~~~ 88   88
+		//    88    88   88 88. ~8~ 88. ~8~ 88.     88  .8D
+		//    YP    YP   YP  Y888P   Y888P  Y88888P Y8888D'		
+
+		add({
+			name  : "weapon|tagged|healing",
+			about : wrap(
+				"A flag; 1 if weapon is tagged with 'healing' and 0 if ",
+				"weapon is not tagged with 'healing'. The 'healing' tag ",
+				"indicates whether the weapon's might is applied as healing ",
+				"or as damage. Used in the macro builder.",
+			),
+			expr  : ((env) => {
+				return Number(this.weaponz.template.tagged("healing"));
+			}),
+		});
+
+		add({
+			name  : "art|tagged|healing",
+			about : wrap(
+				"A flag; 1 if art is tagged with 'healing' and 0 if ",
+				"art is not tagged with 'healing'. The 'healing' tag ",
+				"indicates whether the art's might is applied as healing ",
+				"or as damage. Used in the macro builder.",
+			),
+			expr  : ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+				
+				return CombatArt.get(key).tagged("healing");
+			}),
+		});
+
+
+		add({
+			name  : "art|tagged|tactical",
+			about : wrap(
+				"A flag; 1 if art is tagged with 'tactical' and 0 if ",
+				"art is not tagged with 'tactical'. The 'tactical' tag ",
+				"indicates whether the art's might is applied as healing ",
+				"or as damage. Used in the macro builder.",
+			),
+			expr  : ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+				
+				return CombatArt.get(key).tagged("tactical");
+			}),
+		});
+		
+		add({
+			name  : "unit|tagged|healing",
+			about : wrap(
+				"A flag; 1 if art is tagged with 'healing' and 0 if ",
+				"art is not tagged with 'healing'. The 'healing' tag ",
+				"indicates whether the art's might is applied as healing ",
+				"or as damage. Used in the macro builder.",
+			),
+			expr  : ((env) => 
+				env.read("weapon|tagged|healing")
+					||
+				env.read("art|tagged|healing")
+			),
+		});
+
+		add({
+			name  : "weapon|tagged|no_triangle",
+			about : wrap(
+				"A flag; 1 if weapon is tagged with 'no triangle' and 0 if ",
+				"weapon is not tagged with 'no triangle'. The 'no triangle' ",
+				"tag indicates whether the weapon is subject to the weapon ",
+				"triangle system or not. Used in the macro builder."
+			),
+			expr  : ((env) => {
+				return Number(this.weaponz.template.tagged("no triangle"));
+			}),
+		});
+
+		add({
+			name  : "weapon|tagged|no_hit",
+			about : wrap(
+				"A flag; 1 if weapon is tagged with 'no hit' and 0 if ",
+				"weapon is not tagged with 'no hit'. The 'no hit' ",
+				"tag indicates whether the weapon rolls to hit or not. ",
+				"Used in the macro builder.",
+			),
+			expr  : ((env) => {
+				return Number(this.weaponz.template.tagged("no hit"));
+			}),
+		});
+
+		add({
+			name  : "weapon|tagged|no_might",
+			about : wrap(
+				"A flag; 1 if weapon is tagged with 'no might' and 0 if ",
+				"weapon is not tagged with 'no might'. The 'no might' ",
+				"tag indicates whether the weapon uses the might stat or ",
+				"only applies an effect (e.g. buff spells). ",
+				"Used in the macro builder."
+			),
+			expr  : ((env) => {
+				return Number(this.weaponz.template.tagged("no might"));
+			}),
+		});
+
+		add({
+			name  : "weapon|multiplier|healing",
+			about : wrap(
+				"Used to halve base magic for healing spell might; value is ",
+				"0.5 if weapon is tagged with 'healing' and is 1.0 if not."
+			),
+			expr  : ((env) => {
+				return this.weaponz.template.tagged("healing") ? 0.5 : 1.0;
+			}),
+		});
+
+		// d88888b db       .d8b.   d888b  .d8888.
+		// 88'     88      d8' `8b 88' Y8b 88'  YP
+		// 88ooo   88      88ooo88 88      `8bo.
+		// 88~~~   88      88~~~88 88  ooo   `Y8b.
+		// 88      88booo. 88   88 88. ~8~ db   8D
+		// YP      Y88888P YP   YP  Y888P  `8888Y'
+
+		for (let each of Weapon.TYPE.strings.entries()) {
+
+			const [num, str] = each;
+
+			add({
+				name  : `weapon|type|${str.toLowerCase()}`,
+				about : wrap(
+					`Evaluates to 1 if weapon type is ${str}, and otherwise `,
+					"evaluates to 0."
+				),
+				expr  : ((env) => {
+					const string = this.weaponz.template.type;
+					const number = Weapon.TYPE.asNumber(string);
+					return number == num;
+				}),
+			});
+		}
+
+		add({
+			name  : "weapon|type|weapon",
+			about : wrap(
+				"Evaluates to 1 if weapon type is Axes, Swords, Lances, ",
+				"Brawling, or Bows, and otherwise evaluates to 0.",
+			),
+			expr  : ((env) => {
+				const string = this.weaponz.template.type;
+				const number = Weapon.TYPE.asNumber(string);
+				return 1 <= number && number <= 5;
+			}),
+		});
+
+		add({
+			name  : "weapon|type|spell",
+			about : wrap(
+				"Evaluates to 1 if weapon type is Faith, Guile, or Reason, ",
+				"and otherwise evaluates to 0.",
+			),
+			expr  : ((env) => {
+				const string = this.weaponz.template.type;
+				const number = Weapon.TYPE.asNumber(string);
+				return 6 <= number && number <= 8;
+			}),
+		});
+
+		// add({
+		// 	name  : "",
+		// 	about : wrap(
+		// 		""
+		// 	),
+		// 	expr  : ((calc) => {
+
+		// 	}),
+		// });
+		
+		// d8888b. .88b  d88.  d888b    d8888b.  .d8b.  .d8888. d88888b
+		// 88  `8D 88'YbdP`88 88' Y8b   88  `8D d8' `8b 88'  YP 88'
+		// 88   88 88  88  88 88        88oooY' 88ooo88 `8bo.   88ooooo
+		// 88   88 88  88  88 88  ooo   88~~~b. 88~~~88   `Y8b. 88~~~~~
+		// 88  .8D 88  88  88 88. ~8~   88   8D 88   88 db   8D 88.
+		// Y8888D' YP  YP  YP  Y888P    Y8888P' YP   YP `8888Y' Y88888P
+
+		add({
+			name  : "weapon|attributes|mttype",
+			about : wrap(
+				"What statistic this weapon's might is based off of; either ",
+				"unit|total|str or unit|total|mag or none. If multiple ",
+				"have this effect, on the first listed active one is used. ",
+				"Overrides weapon|template|mttype.",
+			),
+			expr  : ((env) => {
+				let a = 0;
+				for (let attr of this.weaponz.attributes.getActive()) {
+					const attribute = Attribute.get(attr);
+					const flag      = (
+						AttackFeature.MTTYPE.asNumber(attribute.mttype)
+					);
+
+					/* take the first one that's true */
+					a = a || flag;
+				}
+
+				return a;
+			}),
+		});
+
+		add({
+			name  : "weapon|template|mttype",
+			about : wrap(
+				"What statistic this weapon's might is based off of; either ",
+				"unit|total|str or unit|total|mag or none. This is the ",
+				"base might type variable, every other overrides it.",
+			),
+			expr  : ((env) => {
+				return  (
+					AttackFeature.MTTYPE.asNumber(this.weaponz.template.mttype)
+				);
+			}),
+		});
+
+		add({
+			name  : "weapon|base|mttype",
+			about : wrap(
+				"What statistic this weapon's might is based off of; either ",
+				"unit|total|str or unit|total|mag or none. Overrides both ",
+				"weapon|template|mttype and weapon|attributes|mttype.",
+			),
+			expr  : ((env) => {
+				return this.weaponz.mttype;
+			}),
+		});
+
+		add({
+			name  : "weapon|total|mttype",
+			about : wrap(
+				"What statistic this weapon's might is based off of; either ",
+				"unit|total|str or unit|total|mag or none.",
+			),
+			expr  : ((env) => {
+				return  (
+					/* manual entry overrides all others */
+					env.read("weapon|base|mttype")
+						||
+					/* attributes override template */
+					env.read("weapon|attributes|mttype")
+						||
+					/* fallback value is template value */
+					env.read("weapon|template|mttype")
+				);
+			}),
+		});
+
+		add({
+			name  : "art|equipped",
+			about : wrap(
+				"Evaluates to 1 if an Art is equipped; otherwise 0."
+			),
+			expr  : ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+
+				return 1;				
+			}),
+		});
+
+		add({
+			name  : "art|mttype",
+			about : wrap(
+				"What statistic this art's might is based off of; either ",
+				"unit|total|str or unit|total|mag or none. Overrides ",
+				"weapon|total|mttype.",
+			),
+			expr  : ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+				
+				return AttackFeature.MTTYPE.asNumber(CombatArt.get(key).base);
+			}),
+		});
+
+		add({
+			name  : "unit|total|mttype",
+			about : wrap(
+				"What statistic this unit's might is based off of; either ",
+				"unit|total|str or unit|total|mag or none. Defaults to ",
+				"none if nothing overrides it with another option.",
+			),
+			expr  : ((env) => {
+				return (
+					/* art overrides weapon value */
+					env.read("art|mttype")
+						||
+					/* weapon value serves as fallback */
+					env.read("weapon|total|mttype")
+						||
+					/* fallback is not to assume N/A */
+					3 
+				);
+			}),
+		});
+
+		for (let each of AttackFeature.MTTYPE.strings.entries()) {
+
+			const [num, str] = each;
+
+			add({
+				name  : `unit|total|mttype|${str}`,
+				about : wrap(
+					`Evaluates to 1 if unit|total|mttype is ${str}, and `,
+					"evaluates to 0 otherwise."
+				),
+				expr  : ((env) => {
+					return env.read("unit|total|mttype") == num;
+				}),
+			});
+		}
+
+		// .d8888. d88888b  .o88b.  .d88b.  d8b   db d8888b.  .d8b.  d8888b. db    db
+		// 88'  YP 88'     d8P  Y8 .8P  Y8. 888o  88 88  `8D d8' `8b 88  `8D `8b  d8'
+		// `8bo.   88ooooo 8P      88    88 88V8o 88 88   88 88ooo88 88oobY'  `8bd8'
+		//   `Y8b. 88~~~~~ 8b      88    88 88 V8o88 88   88 88~~~88 88`8b      88
+		// db   8D 88.     Y8b  d8 `8b  d8' 88  V888 88  .8D 88   88 88 `88.    88
+		// `8888Y' Y88888P  `Y88P'  `Y88P'  VP   V8P Y8888D' YP   YP 88   YD    YP
+
+
+		for (let each of this.data.stats.second) {
+			const name   = each;
+			const second = [];
+
+			second.push(add({
+				name  : `weapon|base|${name}`,
+				about : wrap(
+					`The equipped weapon/spells's base ${name} statistic `,
+					"value entered into the table under Create => Spells & ",
+					"Weapons before modifiers. If none is equipped then ",
+					"evaluates to 0."
+				),
+				expr  : ((env) => {
+					return label(env, 
+						`${this.weaponz.name} base`,
+						this.weaponz.stats[name].value,
+					);
+				}),
+			}));
+
+			second.push(add({
+				name  : `weapon|template|${name}`,
+				about : wrap(
+					`The equipped weapon/spells's base ${name} statistic `,
+					"value from the template weapon/spell it's based on.",
+					"If none is equipped then evaluates to 0.",
+				),
+				expr  : ((env) => {
+					return label(env, 
+						this.weaponz.name,
+						this.weaponz.template.modifier(name, env),
+					);
+				}),
+			}));
+
+			add({
+				name  : `weapon|noattr|${name}`,
+				about : wrap(
+					`The equipped weapon/spells's ${name} statistic without `,
+					"attributes taken into account. If none is equipped then ",
+					"evaluates to 0.",
+				),
+				expr  : `weapon|template|${name} + weapon|base|${name}`,
+			});
+
+			second.push(add({
+				name  : `weapon|attributes|${name}`,
+				about : wrap(
+					`The sum of all ${name} modifiers from the equipped `,
+					"weapon/spell's active attributes. If none are active ",
+					"then evaluates to 0."
+				),
+				expr  : ((env) => {
+					let a = 0;
+					for (let attr of this.weaponz.attributes.getActive()) {
+
+						const attribute = Attribute.get(attr);
+						const modifier  = attribute.modifier(name, env);
+						if (modifier == 0) continue;
+
+						a = sum(env, a, label(env, attribute.name, modifier));
+					}
+
+					return a;
+				}),
+			}));
+
+			add({
+				name  : `weapon|total|${name}`,
+				about : wrap(
+					`The total ${name} modifier provided by the equipped `,
+					"weapon/spell. If none is equipped then evaluates to 0.",
+				),
+				expr  : funcsum(...second),
+			});
+
+			second.push(add({
+				name  : `equipment|${name}`,
+				about : wrap(
+					`The total ${name} modifier provided by the equipped `,
+					"equipment. If none is equipped then evaluates to 0.",
+				),
+				expr  : ((env) => {
+					const key   = this.equipment.known.getActive();
+					if (key == null) return 0;
+					const equip = Equipment.get(key); 
+					return label(env, equip.name, equip.modifier(name, env));
+				}),
+			}));
+
+			second.push(add({
+				name  : `art|${name}`,
+				about : wrap(
+					`The total ${name} modifier provided by the active `,
+					"combat art/tactical art/metamagic. If none is active, ",
+					"then evaluates to 0."
+				),
+				expr  : ((env) => {
+					const key = this.getActiveArt();
+
+					if (key == null) return 0;
+
+					const art = CombatArt.get(key);
+
+					return label(env, art.name, art.modifier(name, env));
+				}),
+			}));
+
+			second.push(add({
+				name  : `abilities|${name}`,
+				about : 
+					`The sum of all ${name} modifiers from active abilities.`
+				,
+				expr  : abilityfunc(name),
+			}));
+
+			add({
+				name  : `unit|modifier|${name}`,
+				about : `The sum of all ${name} modifiers.`,
+				expr  : funcsum(...second),
+			});
+		}
+
+		add({
+			name  : "unit|total|mt",
+			about : wrap(
+				"The amount of damage an attack does before it is reduced by",
+				"a foe's unit|total|prot or their unit|total|resl, as ",
+				"determined by unit|total|mttype",
+			),
+			expr  : `
+				floor(
+					metaif builtins|macrogen == 1 then
+						metaif unit|total|mttype|mag == 1
+							then unit|total|mag
+						elseif unit|total|mttype|str == 1
+							then unit|total|str
+							else 0
+						end
+					else
+						if     unit|total|mttype|mag == 1
+							then unit|total|mag
+						elseif unit|total|mttype|str == 1
+							then unit|total|str
+							else 0
+						end
+					end
+					
+					* weapon|multiplier|healing
+				)
+					+ weapon|total|mt
+					+ abilities|mt
+					+ art|mt
+					+ equipment|mt
+			`,
+		});
+
+		add({
+			name  : "unit|damage",
+			about : wrap(
+				"Evaluates to unit|total|mt if unit|total|mttype is not equal ",
+				"to other|base|none, which is the enum value used for when a ",
+				"feature does not heal or do damage and to 0 if it is equal.",
+			),
+			expr  : `
+				metaif builtins|macrogen == 1
+					then metaif unit|total|mttype|none == 1
+						then 0
+						else unit|total|mt
+					end
+					else     if unit|total|mttype|none == 1
+						then 0
+						else unit|total|mt
+					end
+				end
+			`,
+		});
+
+		add({
+			name  : "unit|total|prot",
+			about : wrap(
+				"Reduces incoming 'strength-based' damage before it is ",
+				"applied to the unit's hit points.",
+			),
+			expr  : funcsum("unit|total|def", "unit|modifier|prot"),
+		});
+
+		add({
+			name  : "unit|total|resl",
+			about : wrap(
+				"Reduces incoming 'magic-based' damage before it is ",
+				"applied to the unit's hit points.",
+			),
+			expr  : funcsum("unit|total|res", "unit|modifier|resl"),
+		});
+
+		add({
+			name  : "unit|total|crit",
+			about : wrap(
+				"The unit's chance to score a critical hit."
+			),
+			expr  : `
+				(floor((unit|total|dex) / 2)
+					+ unit|total|cha
+					+ unit|modifier|crit)
+			`,
+		});
+
+		add({
+			name  : "unit|total|cravo",
+			about : wrap(
+				"Reduces foe's chance to score a critical hit on this unit."
+			),
+			expr  : "unit|total|cha + unit|modifier|cravo",
+		});
+
+		add({
+			name  : "unit|total|hit",
+			about : wrap(
+				"The unit's chance to score a hit."
+			),
+			expr  : `
+				(unit|total|dex
+					+ unit|modifier|hit
+					+ other|triangle|conditional)
+			`,
+		});
+
+		add({
+			name  : "unit|total|avo",
+			about : wrap(
+				"Reduces foe's chance to score a hit on this unit."
+			),
+			expr  : `
+				(unit|total|spd
+					+ unit|modifier|avo
+					+ metaif builtins|codegen == 1
+						then other|triangle
+						else 0
+					end)
+			`,
+		});
+
+		add({
+			name  : "unit|base|maxrng",
+			about : wrap(
+				"The base maximum range at which this unit can use a weapon ",
+				"or art. This defaults to the maximum range of the weapon, ",
+				"but if an art is used, the art's maximum range supercedes it.",
+			),
+			expr  : ((env) => {
+				return (
+					env.read("art|maxrng") || env.read("weapon|total|maxrng")
+				);
+			}),
+		});
+
+		add({
+			name  : "unit|total|maxrng",
+			about : wrap(
+				"The maximum range at which this unit can use a weapon or art."
+			),
+			expr  : `
+				unit|base|maxrng
+					+ abilities|maxrng
+					+ equipment|maxrng
+			`,
+		});
+
+		add({
+			name  : "unit|base|minrng",
+			about : wrap(
+				"The base minimum range at which this unit can use a weapon ",
+				"or art. This defaults to the minimum range of the weapon, ",
+				"but if an art is used, the art's minimum range supercedes it.",
+			),
+			expr  : ((env) => {
+				return (
+					env.read("art|minrng") || env.read("weapon|total|minrng")
+				);
+			}),
+		});
+
+		add({
+			name  : "unit|total|minrng",
+			about : wrap(
+				"The minimum range at which this unit can use a weapon or art."
+			),
+			expr  : `
+				unit|base|minrng
+					+ abilities|minrng
+					+ equipment|minrng
+			`,
+		});
+
+		add({
+			name  : "unit|base|sp",
+			about : wrap(
+				"The base stamina points available ",
+				"to this unit (i.e. from levels)."
+			),
+			expr  : ((env) => {
+				return 10 * Math.floor(this.stats.level / 10) + 15;
+			}),
+		});
+
+		add({
+			name  : "unit|total|sp",
+			about : "The total stamina points available to this unit.",
+			expr  : funcsum("unit|base|sp", "unit|modifier|sp"),
+		});
+
+		add({
+			name  : "unit|total|spcost",
+			about : "The total cost in stamina points to use an art.",
+			expr  : "unit|modifier|spcost",
+		});
+
+		add({
+			name  : "unit|base|tp",
+			about : wrap(
+				"The base technique points available ",
+				"to this unit (i.e. from skill ranks)."
+			),
+			expr  : ((env) => {
+
+				const skills = this.skills;
+				const grades = (
+					/* for each skill */
+					Array.from(skills.names)
+						/* convert letter grade into number grade */
+						.map((name) => Grade.toNumber(skills[name].grade))
+						/* sort descending order*/
+						.sort((a, b) => b - a)
+				);
+
+				let sum = 0;
+				/* we only want the highest three; ignore the rest */
+				for (let i = 0; i < 3; ++i) {
+					/* start from the grade and sum each rank down */
+					for (let j = grades[i]; j >= 0; --j) {
+						sum += Grade.TPTABLE[i][j];
+					}
+				}
+
+				return sum;
+			}),
+		});
+
+		add({
+			name  : "unit|total|tp",
+			about : "The total technique points available to this unit.",
+			expr  : funcsum("unit|base|tp", "unit|modifier|tp"),
+		});
+
+		add({
+			name  : "unit|total|tpcost",
+			about : "The total cost in technique points to use a weapon/spell.",
+			expr  : "unit|modifier|tpcost",
+		});
+
+		const uid = uniqueID();
+
+		vardiv.append(
+			element("datalist", {
+				attrs   : {id: uid},
+				content : varsen.sort().map(e => {
+					return element("option", {
+						attrs: {
+							value   : e,
+							onclick : () => alert(e),
+						},
+					});
+				})
+			})
+		);
+
+		document
+			.getElementById("generator-console")
+			.setAttribute("list", uid);
+
+		this._context = ctx;
+		return ctx;
 	}
 
 	/* methods relating to initialization */
@@ -648,1040 +2159,74 @@ class Sheet {
 		this[category.model.name][category.name] = category;
 	}
 
-	/**
-	 * Create a getter/setter pair to access the an input element as a property
-	 * @param {string} name - the name of the property
-	 * @param {string} id - the identifer of the input element
-	 * @param {Function} type - the type to convert to return the getter output as
-	 */
-	makePropertyForInput(name, id, type) {
-		Object.defineProperty(this, name, {
-			get: function () {
-				return type(document.getElementById(id).value);
-			},
-			set: function (value) {
-				document.getElementById(id).value = value;
-			}
-		});
-	}
-
-	/**
-	 * This character's name
-	 * @type {string}
-	 */
-	get name() {
-		return this._input_name.value;
-	}
-
-	set name(value) {
-		this._input_name.value = value;
-
-		const charID = this.characters.getActive();
-		if (charID === null) return;
-
-		const element = this.characters.elements.get(charID);
-		element.title = value;
-	}
-
-	/**
-	 * A description of the character
-	 * @type {string}
-	 */
-	get description() {
-		return this._input_description.value;
-	}
-
-	set description(value) {
-		this._input_description.value = value;
-
-		const charID = this.characters.getActive();
-		if (charID === null) return;
-
-		const element       = this.characters.elements.get(charID);
-		element.description = value;
-	}
-
-	/**
-	 * The number of hitpoints this character has; not the hitpoint total
-	 * @type {number}
-	 */
-	get hitpoints() {
-		return Number(this._input_hitpoints.value);
-	}
-
-	set hitpoints(value) {
-		this._input_hitpoints.value = value;
-		this.refreshHealthBar();
-	}
-
-	/**
-	 * Update the hitpoint display, ensuring the value set is between 0 and the
-	 * maximum hitpoint value determined by the character's hp stat.
-	 */
-	refreshHealthBar() {
-		if (this.hitpoints > this.cache.stats.hp) {
-			this.hitpoints = this.cache.stats.hp;
-		} else if (this.hitpoints < 0) {
-			this.hitpoints = 0;
-		} else {
-			// due to recursive setters, this gets once regarless of the result
-			this._output_hitpoints.value = this.hitpoints;
-			this.cache.stats.current_hp  = this.hitpoints; 
-		}
-
-		this.combatarts.equipped.trigger("current_hp");
-		this.combatarts.known.trigger("current_hp");
-	}
-
-	/**
-	 * Fill the current hitpoints to a maximum hitpoint value determined by the
-	 * character's hp stat.
-	 */
-	fillHealthBar() {
-		this.hitpoints = this.cache.stats.hp;
-		this.refreshHealthBar();
-	}
-
-	/**
-	 * Whether or not this character is mounted
-	 * @type {boolean}
-	 */
-	get mounted() {
-		return this._input_mounted.checked;
-	}
-
-	set mounted(value) {
-		this._input_mounted.checked = value;
-		this.refreshMounted();
-	}
-
-	/**
-	 * Recalculate stats when mounted status changes; prevent mounted from being
-	 * set to true for classes that do not have access to a mount.
-	 */
-	refreshMounted() {
-		if (this.mounted && !this.class.hasMount()) {
-			// do not permit this box to be checked if there is no mount
-			this.mounted = false;
-		} else {
-			// otherwise the state has changed an stats need recalculated
-			this.stats.refresh();
-		}
-	}
-
-	/**
-	 * When class is changed, change class abilities and reculculate stats
-	 * @param {array} active - an array of active abilities 
-	 */
-	refreshClass(active=[]) {
-
-		this.class = Class.byName.get(
-			document.getElementById("character-class").value
-		);
-
-		// account for whether the character is mounted before stat calcs
-		this._input_mounted.checked = this.class.hasMount();
-
-		this.abilities.class.setState({
-			added: this.class.abilities,
-			active: active
-		});
-
-		this.stats.refreshSecondary();
-	}
-
-	/**
-	 * Automatically add class mastery benefits to character
-	 */
-	masterClass() {
-		const added = [];
-		for (let key in this.class.mastery) {
-			for (let name of this.class.mastery[key]) {
-				added.push(name);
-				this[key].known.add(name);
-			}
-		}
-		alert("Added the following features:\n"+ added.join(", "));
-	}
-
-	/**
-	 * The character's current weapon triangle effect
-	 * @type {numberS}
-	 */
-	get triangle() {
-		return Number(this._select_triangle.value);
-	}
-
-	/* methods relating to money */
-
-	get money() {
-		return Number(this._input_money.value);
-	}
-
-	set money(value) {
-		this._input_money.value = Number(value);
-	}
-
-	abilityIter() {
-		return chain(
-			this.abilities.class,
-			this.abilities.equipped,
-			this.abilities.battlefield,
-		);	
-	}
-
-	/**
-	 * Preform an accumulation on a single statistic of all active class,
-	 * equipped, and battlefield modifier or mulitplier objects, as if they
-	 * were a collection
-	 * @param {string} stat - the stat to reduce on
-	 * @param {string} kind - either "modifier" or "mulitplier"
-	 * @param {number} base - value to use if a property does not exist
-	 * @param {function} func - the reduce function, takes two number arguments
-	 * @returns {number} the result of the reduction
-	 */
-	accumulateAbilities(stat, kind, base, func) {
-
-		let acc = base;
-
-		for (let category of ["class", "equipped", "battlefield"]) {
-			for (let name of this.abilities[category].getActive()) {
-				acc = func(acc, Ability.get(name)[kind](stat));
-			}
-		}
-
-		return acc;
-	}
-
-	abilityModifer(stat) {
-		return this.accumulateAbilities(stat, "modifier", 0, (x, y) => x + y);
-	}
-
-	abilityMultiplier(stat) {
-		return this.accumulateAbilities(stat, "multiplier", 1, (x, y) => x * y);
-	}
-
-	/**
-	 * Preform an accumulation on single state from all active features
-	 * weapons, equipment, and combat arts, as if they were a collection
-	 * @param {string} property - the stat to reduce on
-	 * @param {number} default_value - value to use if a property does not exist
-	 * @param {string} kind - either "modifiers" or "mulitpliers" for abilities
-	 * @param {function} func - the reduce function, takes two number arguments
-	 * @returns {number} the result of the reduction
-	 */
-	accumulate(stat, kind, base, func) {
-
-		let acc = this.accumulateAbilities(stat, kind, base, func);
-
-		acc = func(acc, Weapon.get(this.weapons.known.getActive())[kind](stat));
-		acc = func(acc, Equipment.get(this.equipment.known.getActive())[kind](stat));
-		acc = func(acc, CombatArt.get(this.combatarts.equipped.getActive())[kind](stat));
-
-		return acc;
-	}
-
-	/**
-	 * Get the sum of the modifiers for a single property for all active
-	 * abilities, weapons, equiptment, and combat arts
-	 * @param {string} name - name of the stat property
-	 * @returns {number} the sum of all modifiers
-	 */
-	modifier(name) {
-		return this.accumulate(name, "modifier", 0, (x, y) => x + y);
-	}
-
-	/**
-	 * Get the product of the multipliers for a single property for all active
-	 * abilities
-	 * @param {string} name - name of the stat property
-	 * @returns {number} the product of all multipliers
-	 */
-	multiplier(name) {
-		return this.accumulate(name, "multiplier", 1, (a, b) => a * b);
-	}
-
-	/**
+	/** todo check if uneeded remove this if uneeded
 	 * Compute the value of a secondary stat using the cached value of a primary
 	 * stat and the values of all active modifiers and mulitpliers that apply
 	 * @param {string} prime - name of a primary stat
 	 * @param {string} second - name of a secondary stat
 	 * @returns {number} the value of the secondary stat
 	 */
-	calcSecondaryStat(prime, second) {
+	calcSecondaryStat(second) {
 
-		const weapon = Weapon.get(this.weapons.known.getActive());
-		const equip  = Equipment.get(this.equipment.known.getActive());
-		const art    = CombatArt.get(this.combatarts.equipped.getActive());
+		const env    = new Expression.Env(
+			Expression.Env.RUNTIME, this.definez
+		);
 
-		switch (second) {
-		case "pdr":
-		case "mdr":
-			return Math.max(
-				(this.cache.stats[prime]
-					+ this.modifier(second))
-				* this.multiplier(second),
-				0,
-			);
-
-		case "hit":
-		case "avo":
-			return Math.max( 
-				(this.cache.stats[prime]
-					+ this.modifier(second))
-				* this.multiplier(second)
-					+  this.triangle,
-				0,
-			);
-
-		case "pmt": {
-			return Math.max(
-				Math.floor(
-					(this.cache.stats.str
-						+ (art.isMagicDamage()
-							? 0
-							: weapon.modifier(second) + art.modifier(second))
-						+ equip.modifier(second)
-						+ this.abilityModifer(second))
-					* this.multiplier(weapon)),
-				0,
-			);
-		}
-
-		case "mmt": {
-			return Math.max(
-				Math.floor(
-					((this.cache.stats.mag
-						* (weapon.tag("healing") ? 0.5 : 1))
-						+ (art.isMagicDamage()
-							? weapon.higherMight()
-							: weapon.modifier(second))
-						+ (weapon.isMagicDamage()
-							? art.higherMight()
-							: art.modifier(second))
-						+ equip.modifier(second)
-						+ this.abilityModifer(second))
-					* this.multiplier(weapon)),
-				0,
-			);
-		}
-
-		case "crit":
-			return Math.max(
-				Math.floor(
-					(this.cache.stats["dex"] / 2
-						+ this.modifier(second))
-					* this.multiplier(second)
-				),
-				0
-			);
-
-		case "newcrit":
-			return Math.max(
-				Math.floor(
-					(this.cache.stats["dex"] / 2
-						+ this.cache.stats["cha"]
-						+ this.modifier("crit"))
-					* this.multiplier("crit")
-				),
-				0
-			);
-
-		case "cravo":
-			return Math.max(
-				(this.cache.stats["cha"]
-					+ this.modifier(second))
-				* this.multiplier(second),
-				0
-			);
-
-		case "maxrng":
-		case "minrng":
-			return (
-				((art.modifier(second) || weapon.modifier(second))
-					+ equip.modifier(second)
-					+ this.abilityModifer(second))
-				* this.multiplier(second)
-			);
-
-		case "uses":
-			return (
-				weapon.modifier(second)
-					* this.abilityMultiplier(weapon.name)
-					* this.abilityMultiplier(weapon.type)
-			);
-
-		case "cost":
-			return (
-				weapon.modifier(second) + art.modifier(second)
-			);
-
-		default:
-			console.log("Invalid weapon '" + second + "'for computed statistic");
-			return;
-		}
-	}
-
-	/* catch all refresh method */
-
-	/**
-	 * Recompute all parts of the sheet that don't automatically update
-	 */
-	refresh() {
-		this.refreshClass();
-		this.stats.refresh();
-		this.skills.refresh();
+		return env.read(`unit|total|${second}`);
 	}
 
 	/* methods relating to persisting the sheet */
 
 	blurb() {
-		const text = [];
-
-		text.push(this.name, "\n\n");
-		for (let name of this.stats.names) {
-			text.push(name.toUpperCase(), ": ", this.cache.stats[name], "\n");
-		}
-		text.push("\n");
-
-		function doPushFeatures(title, category) {
-
-			if (!category.size) return;
-
-			text.push(title, "\n\n");
-			for (let item of category) {
-				text.push(item.title(), "\n", item.body(), "\n\n");
-			}
-		}
-
-		doPushFeatures("Class Abilities", this.abilities.class);
-		doPushFeatures("Equipped Abilities", this.abilities.equipped);
-		doPushFeatures("Combat Arts", this.combatarts.equipped);
-		doPushFeatures("Weapons & Spells", this.weapons.known);
-		doPushFeatures("Equipment", this.equipment.known);
-
-		const blurb = text.join("");
-		// (navigator.clipboard.writeText(blurb)
-		// 	.then((value) => {
-		// 		alert("Character blurb copied to clipboard!");
-		// 		console.log(blurb);
-		// 	})
-		// 	.catch((error) => {
-		// 		alert(error);
-		// 		console.log(error);
-		// 	})
-		// );
-		
-		document.getElementById("generator-output").value = blurb;
+		this.macros.blurb();
 	}
 
 	macro() {
-		const myWeaponName = this.weapons.known.getActive();
+		this.macros.macro();
+	}
 
-		if (!myWeaponName) {
-			alert("No weapon or spell selected.");
-			return;
-		}
+	legacy() {
 
-		const hardcode = document.getElementById("generator-hardcode").checked;
-
-		const m = new MacroBuilder(this.name);
-
-		const weapon    = Weapon.get(myWeaponName);
-		const equip     = Equipment.get(this.equipment.known.getActive());
-		const art       = CombatArt.get(this.combatarts.equipped.getActive());
-		const isMagic   = weapon.isMagicDamage() || art.isMagicDamage();
-		const prowess   = weapon.getBestProwessOf(this.abilities.equipped);
-
-		// console.log(prowess);
-
-		const createPrompts = (...stats) => {
-			let prompts = [];
-
-			for (let stat of stats) {
-				for (let ability of this.abilityIter()) {
-
-					/* make sure there's even a modifier */
-					if (!ability.modifier(stat)) {
-						continue;
-					}
-
-					/* filter out dependant abilities for other weapons */
-					if (ability.weapon && ability.weapon != weapon.type) {
-						continue;
-					}
-
-					/* filter out non-prompt abilities */
-					if (ability.type != "Prompt") {
-						continue;
-					}
-
-					const text   = ability.name + " (" + stat + ")?";
-					const prompt = m.prompt(text,
-						"No"  ,                      0,
-						"Yes" , ability.modifier(stat),
-					);
-					prompts.push(prompt.join(""));
-				}
-			}
-
-			return prompts.length ? prompts.join("+") : null;
-		};
-
-		const createPassives = (...stats) => {
-			let passives = [];
-
-			for (let stat of stats) {
-				for (let ability of this.abilityIter()) {
-					/* make sure there's even a modifier */
-					if (!ability.modifier(stat)) {
-						continue;
-					}
-
-					/* filter out non-passive abilities */
-					if (ability.type != "Passive") {
-						continue;
-					}
-				
-					/* filter out dependant abilities for other weapons */
-					if (ability.weapon && ability.weapon != weapon.type) {
-						continue;
-					}
-					
-					/* filter out prowess abililities, which are handled separately */
-					if (ability.name.includes("Lv")) {
-						continue;
-					}
-
-					/* make sure heal status lines up */
-					if (weapon.tag("healing") != ability.tag("healing")) {
-						continue;
-					}
-					// console.log(ability);
-
-					passives.push(ability.modifier(stat));
-				}
-			}
-
-			return passives.length ? passives.join("+") : null;
-		};
-
-		if (weapon.tag("healing")) {
-			/* this a healing effect */
-			(m
-				.me("(FLAVOR TEXT GOES HERE)")
-				.table()
-				.row("name", String(weapon.name))
-				.row("Healing",
-					m.sum(
-						(hardcode
-							? Math.floor(this.cache.stats.mag/2)
-							: m.call("floor", m.character("Mag") + "/2")),
-						weapon.modifier("mmt"),
-						equip.modifier("mmt"),
-						createPassives("mmt"))));
-
-			confirm("Healing is experimental and may not be correct");
-
-		} else if (weapon.higherMight() == 0) {
-			/* this is another effect */
-			(m
-				.me("(FLAVOR TEXT GOES HERE)")
-				.table()
-				.row("name", String(weapon.name)));
-
-			confirm("Non-damaging spells are experimental and may not be correct");
-
-		} else {
-			/* this is an attack */
-			(m
-				.me("(FLAVOR TEXT GOES HERE)")
-				.table()
-				.row("name", String(weapon.name)
-					+ (art != CombatArt.EMPTY
-						? " w/ " + art.name
-						: ""))
-				.row("Damage is",
-					m.sum(
-						(hardcode
-							? (isMagic
-								? this.cache.stats.mag
-								: this.cache.stats.str)
-							: (isMagic
-								? m.character("Mag")
-								: m.character("Str"))),
-						weapon.higherMight(),
-						(art != CombatArt.EMPTY
-							? (hardcode
-								? art.higherMight()
-								: art.higherMightMacro())
-							: null),
-						(isMagic
-							? createPassives("mmt")
-							: createPassives("pmt")),
-						(isMagic
-							? createPrompts("mag", "mmt")
-							: createPrompts("str", "pmt")),
-						(isMagic
-							? equip.modifier("mmt")
-							: equip.modifier("pmt"))))
-				.row("To Hit",
-					m.merge(
-						m.sum("1d100"),
-						"≤",
-						m.sum(
-							(hardcode
-								? this.cache.stats.dex
-								: m.character("Dex")),
-							weapon.modifier("hit"),
-							equip.modifier("hit"),
-							(art != CombatArt.EMPTY
-								? art.modifier("hit")
-								: null),
-							(prowess
-								? prowess.modifier("hit")
-								: null),
-							createPassives("hit"),
-							createPrompts("hit", "dex"),
-							(weapon.type == "Bow"
-								? m.prompt("Range Penalty",
-									"One Extra",            0,
-									"Two Extra",          -20,
-									"Three Extra",        -30,
-									"Four or More Extra", -40)
-								: null),
-							m.prompt("Triangle Effect?",
-								"Neutral"      ,   0,
-								"Advantage"    ,  15,
-								"Disadvantage" , -15))))
-				
-				.row("To Crit",
-					m.merge(
-						m.sum("1d100"),
-						"≤",
-						m.sum(
-							/** @TODO ignoring dex and cha prompts for now */ 
-							(hardcode
-								? Math.floor(this.cache.stats.dex/2)
-								: m.call("floor", m.character("Dex") + "/2")),
-							weapon.modifier("crit"),
-							equip.modifier("crit"),
-							(art != CombatArt.EMPTY
-								? art.modifier("crit")
-								: null),
-							createPassives("crit"),
-							createPrompts("crit")),
-						" or ",
-						m.sum(
-							/** @TODO ignoring dex and cha prompts for now */ 
-							(hardcode
-								? Math.floor(this.cache.stats.dex/2) + this.cache.stats.cha
-								: m.call("floor", m.character("Dex") + "/2 + " + m.character("Cha"))),
-							weapon.modifier("crit"),
-							equip.modifier("crit"),
-							(art != CombatArt.EMPTY
-								? art.modifier("crit")
-								: null),
-							createPassives("crit"),
-							createPrompts("crit")))));
-		}
-
-		/* all actions need these stats visible */
-
-		(m
-			.row("Hit/Crit Avoid",
-				m.merge(
-					m.sum(
-						(hardcode
-							? this.cache.stats.spd
-							: m.character("Spd")),
-						weapon.modifier("avo"),
-						equip.modifier("avo"),
-						(art != CombatArt.EMPTY
-							? art.modifier("avo")
-							: null),
-						(prowess
-							? prowess.modifier("avo")
-							: null),
-						// m.prompt("Terrain Effect?",
-						// 		"Neutral",   0,
-						// 		"Forest",   15),
-						createPassives("avo"),
-						createPrompts("spd", "avo")),
-					"/",
-					m.sum(
-						(hardcode
-							? this.cache.stats.cha
-							: m.character("Cha")),
-						weapon.modifier("cravo"),
-						equip.modifier("cravo"),
-						(art != CombatArt.EMPTY
-							? art.modifier("cravo")
-							: null),
-						(prowess
-							? prowess.modifier("cravo")
-							: null),
-						createPassives("cravo"),
-						createPrompts("cha", "cravo"))))
-			.row("Def/Res",
-				m.merge(
-					m.sum(
-						(hardcode
-							? this.cache.stats.def
-							: m.character("Def")),
-						equip.modifier("pdr"),
-						createPassives("pdr"),
-						createPrompts("def", "pdr")),
-					"/",
-					m.sum(
-						(hardcode
-							? this.cache.stats.res
-							: m.character("Res")),
-						equip.modifier("mdr"),
-						createPassives("mdr"),
-						createPrompts("res", "mdr"))))
-			.row("Speed",
-				m.sum(
-					(hardcode
-						? this.cache.stats.spd
-						: m.character("Spd")),
-					createPassives("spd"),
-					createPrompts("spd")))
+		const message = wrap(
+			"Trying to convert legacy characters may not produce totally ",
+			"equivalent sheets; some manual conversion is still necessary."
 		);
 
-		// console.log(this.cache.stats);
-		
-		const macro = m.macro();
-		console.log(macro);
-		document.getElementById("generator-output").value = macro;
-	}
+		if (!confirm(message)) return;
 
-	readCharacter(char) {
-		// console.log(char);
-
-		const version = new Version(char.version);
-
-		if (version.older("1.13.0")) {
-			this.readCharacter_v1_13_0(char);
-			return;
+		for (let old of this.lb.category) {
+			const char = Legacy.convert(old, Version.CURRENT);
+			this.cb.importObject(char);
 		}
-
-		if (version.older("1.17.0")) {
-			this.readCharacter_v1_16_0(char);
-			return
-		}
-
-		this.class = Class.get(char.class);
-		if (this.class.hasMount()) {
-			this._input_mounted.checked = true;
-		}
-
-		document.getElementById("character-class").value = char.class;
-
-		// minor bookeeping and intialization of data structures
-		for (let feature of [Ability, CombatArt, Weapon, Equipment]) {
-			for (let category in this[feature.kind]) {
-				if (category == "class") continue;
-				this[feature.kind][category].setState(
-					char[feature.kind][category]
-				);
-			}
-		}
-
-		this.stats.import(char);
-
-		// fill the skills boxes
-		this.skills.import(char.skills);
-
-		this.skills.talent   = char.talent   || "Axes";
-		this.skills.weakness = char.weakness || "Axes";
-		this.skills.budding  = char.budding  || "Axes";
-
-		this.refreshClass(char.class_active);
-		this.stats.refresh();
-		this.skills.refresh();
-
-		// fill the "character and backstory" section entries
-		this.name         = char.name;
-		this.homeland     = char.homeland;
-		this.description  = char.description;
-		this.hitpoints    = char.hitpoints;
-		this.stats.level  = char.experience;
-		this.money        = char.money || 0;
-		// this.levelups    = char.progression;
-	}
-
-	readCharacter_v1_16_0(char) {
-
-		this.class = Class.get(char.class);
-		if (this.class.hasMount()) {
-			this._input_mounted.checked = true;
-		}
-
-		document.getElementById("character-class").value = char.class;
-
-		// minor bookeeping and intialization of data structures
-		for (let feature of [Ability, CombatArt, Weapon, Equipment]) {
-			for (let category in this[feature.kind]) {
-				if (category == "class") continue;
-				this[feature.kind][category].setState(
-					char[feature.kind][category]
-				);
-			}
-		}
-
-		this.stats.import(char);
-
-		this.skills.import(char.skills);
-
-		this.refreshClass(char.class_active);
-		this.stats.refresh();
-		this.skills.refresh();
-
-		// fill the "character and backstory" section entries
-		this.name         = char.name;
-		this.homeland     = char.homeland;
-		this.description  = char.description;
-		this.hitpoints    = char.hitpoints;
-		this.stats.level  = char.experience;
-		this.money        = char.money || 0;
-		// this.levelups    = char.progression;
-	}
-
-	readCharacter_v1_13_0(char) {
-		this.class = Class.byName.get(char.class);
-		if (this.class.hasMount()) {
-			this._input_mounted.checked = true;
-		}
-
-		document.getElementById("character-class").value = char.class;
-
-		// minor bookeeping and intialization of data structures
-		for (let feature of [Ability, CombatArt, Weapon, Equipment]) {
-			for (let category in this[feature.kind]) {
-				if (feature.kind in char && category != "class") {
-					this[feature.kind][category].fill_from(
-						char[feature.kind][category]
-					);
-				} else {
-					this[feature.kind][category].clear();
-				}
-			}
-		}
-
-		const toggleAllActive = ((category, names) => {
-			for (let name of names) {
-				category.toggleActive(name);
-			}
-		});
-
-		toggleAllActive(this.abilities.known, this.abilities.equipped.names());
-		toggleAllActive(this.combatarts.known, this.combatarts.equipped.names());
-
-		this.stats.import(char);
-
-		this.skills.import(char.skills);
-
-		this.refresh();
-
-		// fill the "character and backstory" section entries
-		this.name         = char.name;
-		this.homeland     = char.homeland || char.home; // used to be home
-		this.description  = char.description;
-		this.hitpoints    = char.hitpoints;
-		this.stats.level  = char.level;
-	}
-
-	writeCharacter() {
-		const stats = this.stats.export();
-
-		const  char = {
-			version      : Version.CURRENT.toString(),
-			name         : this.name,
-			description  : this.description,
-			class        : this.class.name,
-			homeland     : this.homeland,
-			hitpoints    : this.hitpoints,
-			experience   : this.stats.level,
-			growths      : stats.growths,
-			statistics   : stats.statistics,
-			skills       : this.skills.export(),
-			talent       : this.skills.talent,
-			weakness     : this.skills.weakness,
-			budding      : this.skills.budding,
-			// progression  : this.progression,
-
-			money        : this.money,
-
-			/*
-			 * don't save the actual state for class since this will be
-			 * loaded when the class is assigned; only save active abilites
-			 * yes, I realize it's a little clunky but that's how it is
-			 */
-			class_active : Array.from(this.abilities.class.getActive()),
-
-			abilities    : {
-				equipped    : this.abilities.equipped.getState(),
-				battlefield : this.abilities.battlefield.getState(),
-				known       : this.abilities.known.getState()
-			},
-			combatarts  : {
-				equipped    : this.combatarts.equipped.getState(),
-				known       : this.combatarts.known.getState()
-			},
-			weapons     : {
-				known       : this.weapons.known.getState()
-			},
-			equipment   : {
-				known       : this.equipment.known.getState()
-			}
-		};
-		return char;
-	}
-
-	writeCharacters() {
-		const active = this.characters.getActive();
-		const data   = {active: active, characters: []};
-		
-		for (let name of this.characters.names()) {
-			const number    = Number(name);
-			const character = (
-				name == active
-					? this.writeCharacter()
-					: this.myCharMap.get(number)
-			);
-
-			data.characters.push(character);
-		}
-
-		return data;
-	}
-
-	readCharacters(data) {
-
-		const {active, characters} = data;
-
-		let charID = 0;
-		this.myCharMap.clear();
-		this.characters.clear();
-
-		for (let character of characters) {
-			this.myCharMap.set(charID, character);
-			this.characters.add(charID);
-			charID += 1;
-		}
-
-		const selected = 0 < active && active < characters.length ? active : 0;
-		this.changeCharacter(selected);
-		this.characters.toggleActive(selected);
-		this._highID = charID;
 	}
 
 	autoload() {
-		const session = localStorage.getItem("session");
+
+		const session = localStorage.getItem("v2session");
 
 		if (session == null) return false;
 
-		this.readCharacters(JSON.parse(session));
-
+		this.cb.importAll(JSON.parse(session));
+		
 		return true;
 	}
 
 	autosave() {
-		console.log("Autosaving...");
-		const session = this.writeCharacters();
-		localStorage.setItem("session", JSON.stringify(session));
+		console.log("Saving...");
+		const session = this.cb.exportAll();
+		localStorage.setItem("v2session", JSON.stringify(session));
 	}
 
-	clear() {
-		this.class = Class.get("Commoner");
-
-		if (this.class.hasMount()) {
-			this._input_mounted.checked = true;
-		}
-
-		document.getElementById("character-class").value = this.class.name;
-
-		// minor bookeeping and intialization of data structures
-		for (let feature of [Ability, CombatArt, Weapon, Equipment]) {
-			for (let category in this[feature.kind]) {
-				if (category == "class") continue;
-				this[feature.kind][category].clear();
-			}
-		}
-
-		this.stats.clear();
-
-		this.skills.clear();
-
-		this.refresh();
-
-		// fill the "character and backstory" section entries
-		this.name         = "Blank Sheet";
-		this.homeland     = "adrestia";
-		this.description  = "Write your character description here.";
-		this.hitpoints    = 0;
-		this.stats.level  = 0;
-		this.money        = 0;
-
-		this.skills.talent   = "Axes";
-		this.skills.weakness = "Axes";
-		this.skills.budding  = "Axes";
-	}
-
-	fresh() {
-		if (this.characters.size > 0) {
-			this.myCharMap.set(this.charID, this.writeCharacter());
-		}
+	/**
+	 * Make a save the contents of the sheet in the browser session
+	 */
+	save() {
+		this.autosave();
 		
-		/* new character must be created before clearing the sheet */
-		const charID = this.createID();
-
-		/* add in a stub until the form is filled out */
-		this.myCharMap.set(charID, {
-			name: this.name,
-			description: this.description
-		});
-
-		this.characters.add(charID);
-		this.characters.toggleActive(charID);
-
-		this.charID  = charID;
-
-		/* side effects on syncing the name field with the sidebar */
-		this.clear();
-	}
-
-	/**
-	 * Create a download prompt for a .json file to persist sheet data
-	 */
-	export() {
-		const a    = document.createElement("a");
-		const char = this.writeCharacter();
-		const file = new Blob([JSON.stringify(char, null, 4)], {type: "application/json"});
-		a.href     = URL.createObjectURL(file);
-		a.download = this.name.replace(/ /g, "_") + ".json";
-		a.click();
-		URL.revokeObjectURL(a.href);
-	}
-
-	/**
-	 * Fill out the sheet with the data from a user uploaded .json file
-	 * @param {Event} e - upload event containing sheet data
-	 */
-	import(e) {
-		const file = e.target.files[0];
-		if (!file) return;
-
-		const reader = new FileReader();
-		reader.onload = (e) => {
-			const char   = JSON.parse(e.target.result);
-			const charID = this.createID();
-			this.myCharMap.set(charID, char);
-			this.characters.add(charID);
-			this.changeCharacter(charID);
-		};
-		reader.readAsText(file);
+		alert(
+			"Sheet data has been successfully saved to browser storage. " +
+			"Autosave also occurs automatically every five minutes."
+		);
 	}
 
 	theme(name) {
@@ -1695,7 +2240,7 @@ class Sheet {
 
 		const theme      = this.myThemeMap.get(name);
 		const stylesheet = document.getElementById("theme-link");
-		stylesheet.setAttribute('href', theme.stylesheet);
+		stylesheet.setAttribute("href", theme.stylesheet);
 		this.themes.toggleActive(name);
 
 		localStorage.setItem("theme", name);
@@ -1711,12 +2256,12 @@ class Sheet {
 
 	copy_point_buy() {
 		for (let [name, value] of this.myPointBuy.column("value")) {
-			this.stats.stats[statistic] = value;
+			this.stats.stats[name].value = value;
 			this.stats.stats[name].refresh();
 		}
 
 		for (let [name, value] of this.myPointBuy.column("growth")) {
-			this.stats.growths[statistic] = value * 5;
+			this.stats.growths[name].value = value * 5;
 		}
 
 		this.stats.level = 0;

@@ -1,5 +1,5 @@
 .base {
-	color: #DDDDDD;;
+	color: #DDDDDD;
 	background: black
 }
 
@@ -62,6 +62,30 @@ dd {
 	color: #AAAAAA;
 }
 
+.tts {
+	border-bottom: 1px dotted #880000;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.ttts {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 6px;
+	/*border-width: 2px;*/
+	/*border-color: #880000;*/
+	/*border-style: ridge;*/
+}
+
+.attempt-enabled {
+
+}
+
+.attempt-disabled {
+	color: darkgrey;
+}
+
 meter::-webkit-meter-bar {
 	background: black;
 }
@@ -80,4 +104,56 @@ meter::-webkit-meter-even-less-good-value {
 
 input[type="checkbox"]:checked {
 	color: #222222;
+}
+
+.level-table th.incr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #DD0000;
+	border-style: outset;
+	background: #DD0000;
+	color: #222222;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #222222;
+	border-style: outset;
+	background: #222222;
+	color: #DD0000;
+	font-weight: bolder;
+}
+
+button.toggle-on {
+	border-radius: 5px;
+	border-color: #222222;
+	background: #DD0000;
+	border-style: solid;
+	color: #222222;
+}
+
+button.toggle-off {
+	border-radius: 5px;
+	border-color: #222222;
+	background: black;
+	border-style: solid;
+	color: #DD0000;
+}
+
+.hl-identifier {
+	color: lightgrey;
+}
+
+.hl-reserved {
+	/*color: #880000;*/
+}
+
+.hl-operator {
+	color: #880000;
+}
+
+.hl-literal {
+	color: #DD0000;
 }

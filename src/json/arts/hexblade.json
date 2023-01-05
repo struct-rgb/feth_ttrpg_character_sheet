@@ -1,0 +1,24 @@
+{
+  "name": "Hexblade",
+  "description": "Deals magic-based damage.",
+  "requires": "Swords A",
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 7,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "A"
+}

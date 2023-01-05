@@ -1,0 +1,24 @@
+{
+  "name": "Haze Slice",
+  "description": "No special effect.",
+  "requires": "Any (Sword C) (Swords B)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 2,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 30,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "B"
+}

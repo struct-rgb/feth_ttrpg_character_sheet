@@ -1,0 +1,35 @@
+{
+    "name": "Warrior",
+    "description": "This axe expert is not just a warrior, but THE warrior",
+    "type": ["Infantry", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Axes B) (Required (Level 15))",
+    "abilities": ["Axe Advantage", "Axe Crit +10", "Stamina +15"],
+    "arts": [],
+    "growths": {
+        "hp": 35,
+        "str": 35,
+        "mag": 15,
+        "dex": 10,
+        "spd": 10,
+        "def": 10,
+        "res": 0,
+        "cha": 10
+      },
+    "modifiers": {
+        "hp": 7,
+        "str": 6,
+        "mag": 0,
+        "dex": 3,
+        "spd": 3,
+        "def": 2,
+        "res": 0,
+        "cha": 3,
+        "mov": 5
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

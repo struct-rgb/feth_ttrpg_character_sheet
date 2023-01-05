@@ -1,0 +1,26 @@
+{
+  "name": "Lance Jab",
+  "description": "Mt +30% of user's Spd.",
+  "requires": "Lances A",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "fill scale(3, [Spd], unit|total|spd)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [
+    "scales"
+  ],
+  "hidden": false,
+  "type": "Lances",
+  "rank": "A"
+}

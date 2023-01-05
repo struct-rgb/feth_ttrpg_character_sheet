@@ -70,6 +70,35 @@ table {
 	margin: 3px;
 }
 
+.tts {
+	border-bottom: 1px dotted #544b00;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.ttts {
+	color: #ceba08;
+	outline: none;
+	background: #544b00;
+	border-radius: 6px;
+	border-width: 2px;
+	border-color: #ceba08;
+	border-style: ridge;
+}
+
+.attempt-enabled .tts {
+	border-bottom: 1px dotted #fce114;
+}
+
+.attempt-enabled {
+	color: #fce114;
+}
+
+.attempt-disabled {
+
+}
+
+
 meter::-webkit-meter-bar {
 	background: #544b00;
 }
@@ -88,4 +117,58 @@ meter::-webkit-meter-even-less-good-value {
 
 input[type="checkbox"]:checked {
 	color: #222222;
+}
+
+.level-table th.incr-bell {
+	border-radius: 5px 5px 15px 15px;
+	border-width: 3px;
+	border-color: #fce114;
+	border-style: inset;
+	background: #fce114;
+	color: #544b00;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+	border-radius: 5px 5px 15px 15px;
+	border-width: 3px;
+	border-color: #ceba08;
+	border-style: inset;
+	background: #ceba08;
+	color: #fcfaed;
+	font-weight: bolder;
+}
+
+button.toggle-on {
+	background: #fce114;
+	color: #544b00;
+	border-radius: 5px;
+	border-width: 3px;
+	border-color: #fce114;
+	border-style: inset;
+}
+
+button.toggle-off {
+	background: #ceba08;
+	color: #fcfaed;
+	border-radius: 5px;
+	border-width: 3px;
+	border-color: #ceba08;
+	border-style: inset;
+}
+
+.hl-identifier {
+	/*color: white;*/
+}
+
+.hl-reserved {
+	color: #ceba08;
+}
+
+.hl-operator {
+	color: #ceba08;
+}
+
+.hl-literal {
+	color: #fce114;
 }

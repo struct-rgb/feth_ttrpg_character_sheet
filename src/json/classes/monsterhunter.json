@@ -1,0 +1,35 @@
+{
+    "name": "Monster Hunter",
+    "description": "Anti-Monster infantry class.",
+    "type": ["Infantry", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Any (Swords C+) (Bows C+)) (Required (Level 15))",
+    "abilities": ["Bow Advantage", "Sword Advantage", "Hide Piercer", "Stamina +10"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 15,
+        "dex": 25,
+        "spd": 10,
+        "def": 10,
+        "res": 25,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 4,
+        "str": 3,
+        "mag": 2,
+        "dex": 4,
+        "spd": 3,
+        "def": 3,
+        "res": 4,
+        "cha": 1,
+        "mov": 5
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": ["rework"],
+    "hidden": false
+}

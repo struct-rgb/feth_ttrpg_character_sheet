@@ -1,0 +1,35 @@
+{
+    "name": "Sorcerer",
+    "description": "I don't understand why this is a Reason only class.",
+    "type": ["Armor", "Caster"],
+    "tier": "Advanced",
+    "requires": "All (Reason C+) (Required (Armor C+))  (Required (Level 15))",
+    "abilities": ["Reason Magic Spectrum", "Consumption 2"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 20,
+        "dex": 0,
+        "spd": 5,
+        "def": 15,
+        "res": 25,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 0,
+        "mag": 4,
+        "dex": 3,
+        "spd": 3,
+        "def": 3,
+        "res": 5,
+        "cha": 2,
+        "mov": 4
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": ["rework"],
+    "hidden": false
+}

@@ -2,27 +2,26 @@
   "name": "Meteor",
   "type": "Reason",
   "description": "A fire spell; hits foes adjacent to target.",
-  "requires": "A Rank Reason",
+  "requires": "Reason A",
+  "rank": "A",
   "price": 3820,
-
+  "mttype": "mag",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 10,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 10,
+    "prot": 0,
+    "resl": 0,
     "hit": 80,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 3,
     "maxrng": 10,
-    "tp": 13,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 13,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": ["aoe", "fire"],
   "hidden": false
 }

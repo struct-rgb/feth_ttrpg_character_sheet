@@ -1,0 +1,45 @@
+{
+    "name": "Cavalier",
+    "description": "A warrior who fights from horseback",
+    "type": ["Cavalry", "Martial"],
+    "tier": "Starting",
+    "requires": "Riding D",
+    "abilities": ["Flashing Blade", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 10,
+        "dex": 15,
+        "spd": 5,
+        "def": 15,
+        "res": 10,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 3,
+        "mag": 0,
+        "dex": 2,
+        "spd": 3,
+        "def": 2,
+        "res": 1,
+        "cha": 1,
+        "mov": 4
+    },
+    "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 3
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

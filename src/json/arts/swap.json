@@ -1,0 +1,24 @@
+{
+  "name": "Swap",
+  "description": "User swaps places with target adjacent ally.",
+  "requires": "Level 5",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "",
+  "tags": ["movement", "tactical"],
+  "hidden": false,
+  "type": null,
+  "rank": ""
+}

@@ -1,0 +1,28 @@
+{
+    "name": "Refined",
+    "type": "Any",
+    "description": "Grants weapon +1 Mt, +10 Hit and +5 Crit. @{tooltip:Disabled:It doesn't say this in Patch #4, but logically, Refined should be able to apply to the upgraded versions of the upgradable Reason spells, right?} on spells except for Fire, Thunder, Wind, Blizzard, Banish, Miasma, Frostbite, Cutting Gale, Bolganone and Static Shock.",
+    "rank": 1,
+    "price": 650,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}

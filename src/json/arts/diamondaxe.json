@@ -1,0 +1,24 @@
+{
+  "name": "Diamond Axe",
+  "description": "No special effect.",
+  "requires": "Axes A",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 14,
+    "prot": 0,
+    "resl": 0,
+    "hit": -20,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 7
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Axes",
+  "rank": "A"
+}

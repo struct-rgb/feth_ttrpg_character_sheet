@@ -1,0 +1,45 @@
+{
+    "name": "Paladin",
+    "description": "A veteran warrior who commands the battlefield from horseback",
+    "type": ["Cavalry", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
+    "abilities": ["Sword Advantage", "Lance Advantage", "Canto", "Terrain Resistance"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 15,
+        "dex": 15,
+        "spd": 10,
+        "def": 20,
+        "res": 10,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 5,
+        "mag": 1,
+        "dex": 2,
+        "spd": 1,
+        "def": 4,
+        "res": 3,
+        "cha": 3,
+        "mov": 6
+    },
+    "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

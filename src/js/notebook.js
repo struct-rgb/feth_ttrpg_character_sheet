@@ -3,6 +3,8 @@
  * @module notebook
  */
 
+/* global element */
+
 /**
  * A class representing a page in the {@link Notebook} class
  */
@@ -11,11 +13,11 @@ class NotebookPage {
 	/**
 	 * Create a new page
 	 * @param {string} title - title of the page
-	 * @param {HTMLElement} element - element the page displays
+	 * @param {Array} elements - elements the page displays
 	 */
-	constructor(title, element, onclick) {
+	constructor(title, elements, onclick) {
 		this.title     = title;
-		this.element   = element;
+		this.elements   = elements;
 
 		const button   = document.createElement("input");
 		button.value   = title;
@@ -50,6 +52,25 @@ class NotebookPage {
 	}
 }
 
+class Note {
+
+	constructor(parent) {
+
+		this.tabs   = element("div");
+		this.body   = element("div");
+		this.parent = parent;
+		this.root   = element("div", [
+			this.tabs, this.body
+		]);
+
+		/* external DOM */
+		if (parent) {
+			parent.appendChild(this.root);
+		}
+	}
+
+}
+
 /**
  * An element that allows switching between content using tabs
  */
@@ -59,25 +80,25 @@ class Notebook {
 	 * Create a new notebook
 	 * @param {HTMLElement} parent - an optional parent element
 	 */
-	constructor(parent) {
+	constructor(parents) {
+
+		if (parents == null) {
+			parents = element("div");
+		}
+
+		if (!Array.isArray(parents)) {
+			parents = [parents];
+		}
 
 		/* internal state */
 		this._active = null;
 		this.pages   = new Map();
 
 		/* create main elements of notebook */
-		this.root = document.createElement("div");
-
-		this.tabs = document.createElement("div");
-		this.root.appendChild(this.tabs);
-		
-		this.body = document.createElement("div");
-		this.root.appendChild(this.body);
-
-		/* external DOM */
-		if (parent) {
-			parent.appendChild(this.root);
-		}
+		// this.root  = document.createElement("div");
+		this.notes = parents.map(parent => new Note(parent));
+		this.first = this.notes[0]; 
+		this.root  = this.first.root;
 	}
 
 	/**
@@ -86,15 +107,24 @@ class Notebook {
 	 * @param {HTMLElement} element - element to display when the page is active
 	 * @returns {boolean} true if the page is successfully added, otherwise false
 	 */
-	add(title, element) {
+	add(title, elements) {
+		// debugger;
 		if (this.pages.has(title)) return false;
+
+		if (!Array.isArray(elements)) {
+			elements = [elements];
+		}
+
+		if (elements.length != this.notes.length) {
+			throw new Error(`${elements} is not length ${this.notes.length}`);
+		}
 		
-		const page = new NotebookPage(title, element, () => {
+		const page = new NotebookPage(title, elements, () => {
 			this.active = title;
 		});
 
 		this.pages.set(page.title, page);
-		this.tabs.appendChild(page.button);
+		this.first.tabs.appendChild(page.button);
 		
 		if (this.active === null) {
 			this.active = page.name;
@@ -115,7 +145,9 @@ class Notebook {
 		page.button.remove();
 
 		if (this.active == page.title) {
-			this.page.element.remove();
+			for (let element of this.page.elements){
+				element.remove();
+			}
 		}
 
 		this.pages.delete(title);
@@ -137,7 +169,10 @@ class Notebook {
 		if (this._active) {
 			const oldPage  = this.pages.get(this._active);
 			oldPage.active = false;
-			oldPage.element.remove();
+
+			for (let element of oldPage.elements) {
+				element.remove();
+			}
 
 			if (title === null) return;
 		}
@@ -145,8 +180,12 @@ class Notebook {
 		this._active   = title;
 		const newPage  = this.pages.get(this._active);
 		newPage.active = true;
-		this.body.appendChild(newPage.element);
+
+		for (let i = 0; i < this.notes.length; ++i) {
+			this.notes[i].body.appendChild(newPage.elements[i]);
+		}
 	}
 }
+
 
 /* exported Notebook */

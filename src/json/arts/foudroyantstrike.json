@@ -1,0 +1,27 @@
+{
+  "name": "Foudroyant Strike",
+  "description": "Thunderbrand only; effective against Armor and Dragon foes.",
+  "requires": "All (Weapon Thunderbrand) (Crest Charon) (Swords E)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 6,
+    "prot": 0,
+    "resl": 0,
+    "hit": 30,
+    "avo": 0,
+    "crit": 30,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "effective",
+    "relic"
+  ],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "E"
+}

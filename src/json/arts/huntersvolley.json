@@ -1,0 +1,26 @@
+{
+  "name": "Hunter’s Volley",
+  "description": "Sniper only; triggers 2 consecutive hits.",
+  "requires": "All (Bows B+) (Level 20)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 15,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 3,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [
+    "rework"
+  ],
+  "hidden": false,
+  "type": "Bows",
+  "rank": "B+"
+}

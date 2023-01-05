@@ -1,0 +1,28 @@
+{
+  "name": "Raging Storm",
+  "description": "@{weapon::Aymr} only; if attack lands, user can move again, effective against Dragon units.",
+  "requires": "All (Weapon Aymr) (Crest Seiros) (Axes E)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 14,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "effective",
+    "movement",
+    "relic"
+  ],
+  "hidden": false,
+  "type": "Axes",
+  "rank": "E"
+}

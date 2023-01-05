@@ -1,28 +1,27 @@
 {
-	"name": "Ectoplasm",
-	"type": "Guile",
-	"description": "Deals strength-based damage. Can apply the (Refined) Attribute on this weapon.",
-	"requires": "D Rank Guile",
-	"price": 0,
-
-	"modifiers": {
-		"pmt": 0,
-		"mmt": 9,
-		"pdr": 0,
-		"mdr": 0,
-		"hit": 75,
-		"avo": 0,
-		"crit": 0,
-		"cravo": 0,
-		"minrng": 1,
-		"maxrng": 2,
-		"tp": 0,
-		"cost": 0,
-		"uses": 0
-	},
-	"magical": true,
-
-	"comment": "Incompatible with all Attributes except Refined. Summon Only unless obtained elsewhere.",
-	"tags": [],
-	"hidden": false
+  "name": "Ectoplasm",
+  "type": "Guile",
+  "description": "Deals strength-based damage. This weapon cannot be purchased.",
+  "requires": "Guile D",
+  "rank": "D",
+  "price": 0,
+  "mttype": "str",
+  "modifiers": {
+    "mt": 9,
+    "prot": 0,
+    "resl": 0,
+    "hit": 75,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined. Summon Only unless obtained elsewhere.",
+  "tags": [],
+  "hidden": false
 }

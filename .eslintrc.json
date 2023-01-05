@@ -1,0 +1,51 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 13
+    },
+    "rules": {
+        "indent": [
+            "error",
+            "tab",
+            {"outerIIFEBody": 0}
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-warning-comments": [
+            "warn",
+            {
+                "terms": ["todo"],
+                "location": "anywhere"
+            }
+        ],
+        "no-unused-vars": [
+            "error",
+            {
+                "args": "none",
+                "destructuredArrayIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
+        ],
+        "block-scoped-var": "error",
+        "default-case": "error",
+        "default-param-last": "error",
+        "grouped-accessor-pairs": ["error", "getBeforeSet"],
+        "init-declarations": ["error", "always"],
+        "no-implicit-coercion": "error",
+        "no-implied-eval": "error"
+    }
+}

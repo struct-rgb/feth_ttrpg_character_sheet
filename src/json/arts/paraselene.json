@@ -1,0 +1,26 @@
+{
+  "name": "Paraselene",
+  "description": "Great Lord only; after combat, user moves 1 space away from target foe in the same row/column as target foe.",
+  "requires": "Class `Great Lord`",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 10,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 10,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "movement"
+  ],
+  "hidden": false,
+  "type": null,
+  "rank": ""
+}

@@ -1,0 +1,45 @@
+{
+    "name": "Wyvern Rider",
+    "description": "A warrior who pursues from above upon the back of a wyvern",
+    "type": ["Flying"],
+    "tier": "Starting",
+    "requires": "Flying D",
+    "abilities": ["Avo +10", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 10,
+        "dex": 15,
+        "spd": 10,
+        "def": 20,
+        "res": 0,
+        "cha": 10
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 3,
+        "mag": 0,
+        "dex": 1,
+        "spd": 1,
+        "def": 5,
+        "res": 0,
+        "cha": 1,
+        "mov": 4
+    },
+    "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Triangle Attack",
+  "description": "Usable by a Flying unit without needing to be equipped. Can only be used when 3 allied Flying units (including the user) are adjacent to the same enemy.",
+  "requires": "All (Any (Class `Pegasus Knight`) (Class `Falcon Knight`)) (Lances E)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 8,
+    "prot": 0,
+    "resl": 0,
+    "hit": 30,
+    "avo": 0,
+    "crit": 40,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Lances",
+  "rank": "E"
+}

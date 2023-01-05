@@ -1,0 +1,35 @@
+{
+    "name": "Fortress Knight",
+    "description": "An knight versed in embattlement with expertise in armored combat",
+    "type": ["Armor", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Any (Axes C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
+    "abilities": ["Axe Advantage", "Lance Advantage", "Weight -5"],
+    "arts": ["Barricade"],
+    "growths": {
+        "hp": 35,
+        "str": 25,
+        "mag": 15,
+        "dex": 10,
+        "spd": 0,
+        "def": 30,
+        "res": 20,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 7,
+        "str": 6,
+        "mag": 0,
+        "dex": 3,
+        "spd": 0,
+        "def": 7,
+        "res": 3,
+        "cha": 1,
+        "mov": 4
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

@@ -1,27 +1,31 @@
 {
-    "name": "Ice Wall",
-    "type": "Reason",
-    "description": "Starting from target empty tile, create one or more ice blocks (at most Mag / 5) in connecting empty tiles. Each has 1 HP, lasts until reduced to 0 HP, and prevents non-Flying units from entering the tile it occupies.",
-    "requires": "D Rank Reason.",
-    "modifiers": {
-        "pmt": 0,
-        "mmt": 0,
-        "pdr": 0,
-        "mdr": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 2,
-
-        "sp": 2,
-        "uses": 0,
-        "charges": 0,
-        "tokens": 0
-    },
-
-    "comment": "",
-    "tags": [],
-    "hidden": false
+  "name": "Ice Wall",
+  "description": "Starting from target empty tile, create one or more @{tile:Ice Block:Ice Blocks} (at most 1 per 5 Mag) in connecting empty tiles.",
+  "requires": "Reason D",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tiles": "fill wall()",
+    "spcost": 2,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "tactical",
+    "wall",
+    "ice"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

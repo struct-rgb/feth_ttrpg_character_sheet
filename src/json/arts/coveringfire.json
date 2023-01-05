@@ -1,0 +1,28 @@
+{
+  "name": "Covering Fire",
+  "description": "Do not attack. On this unit’s phase, target ally within this unit’s normal bow range. The following reaction can be used for one turn, at the cost of 3 SP per use.\n\nTrigger: foe initiates combat with target ally at Range > 1. Target that foe (apply range penalty if needed) and initiate combat against target foe. On hit, apply @{const:gbp:[Mt -5]} to target foe until the end of target foe’s next combat. Cannot make follow-up attacks.",
+  "requires": "Any (Bows C) (Bows B)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "weapon|total|minrng",
+    "maxrng": "weapon|total|maxrng",
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "reaction",
+    "condition",
+    "rework"
+  ],
+  "hidden": false,
+  "type": "Bows",
+  "rank": "C-B"
+}

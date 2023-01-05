@@ -1,0 +1,28 @@
+{
+    "name": "Wide Blade",
+    "type": "Any",
+    "description": "Grants weapon +4 Mt, -35 Hit and +10 Crit.\n\nDisabled on spells and on weapons with Range > 1.",
+    "rank": 1,
+    "price": 550,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 4,
+        "prot": 0,
+        "resl": 0,
+        "hit": -25,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["effective"],
+    "hidden": false
+}

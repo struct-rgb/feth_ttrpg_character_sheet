@@ -1,0 +1,26 @@
+{
+  "name": "Monster Blaster",
+  "description": "Effective against Monster units.",
+  "requires": "Bows D",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 5,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "effective"
+  ],
+  "hidden": false,
+  "type": "Bows",
+  "rank": "D"
+}

@@ -1,0 +1,38 @@
+{
+    "name": "Swordbreaker+",
+    "description": "Grants Hit +30 and Avo +30 in combat against Swords. A unit may only equip one \"Swordbreaker\" ability at a time",
+    "requires": "Lances A",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "ask [vs Swords?], No {0}; Yes {30} end",
+        "avo": "ask [vs Swords?], No {0}; Yes {30} end",
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["breaker", "in combat"],
+    "hidden": false
+}

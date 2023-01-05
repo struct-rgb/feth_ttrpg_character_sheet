@@ -1,27 +1,30 @@
 {
   "name": "Taunt",
-  "type": "Armor",
-  "description": "Apply [Taunted] to target foe for 1 turn.",
-  "requires": "C Rank Armor.",
+  "description": "Apply @{condition:Taunted:[Taunted]} to target foe for 1 turn.",
+  "requires": "Armor C",
+  "mttype": "else",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 0,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
     "hit": 0,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 5,
-
+    "tiles": 0,
+    "spcost": 0,
+    "tpcost": 0,
     "sp": 0,
-    "uses": 0,
-    "charges": 0,
-    "tokens": 0
+    "tp": 0
   },
-
   "comment": "",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Armor",
+  "rank": "C"
 }

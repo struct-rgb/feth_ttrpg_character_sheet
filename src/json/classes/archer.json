@@ -1,0 +1,35 @@
+{
+    "name": "Archer",
+    "description": "Bow focused martial class.",
+    "type": ["Infantry", "Martial"],
+    "tier": "Starting",
+    "requires": "Bows D",
+    "abilities": ["Bow Range +1", "Level 10 Mov +1"],
+    "arts": [],
+    "growths": {
+        "hp": 10,
+        "str": 10,
+        "mag": 10,
+        "dex": 25,
+        "spd": 15,
+        "def": 5,
+        "res": 15,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 1,
+        "str": 2,
+        "mag": 1,
+        "dex": 4,
+        "spd": 2,
+        "def": 1,
+        "res": 2,
+        "cha": 3,
+        "mov": 4
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

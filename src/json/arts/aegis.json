@@ -1,0 +1,27 @@
+{
+  "name": "Aegis",
+  "description": "Applies @{condition:Aegis:[Aegis]} to unit for one turn.",
+  "requires": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "rank": "",
+  "type": ""
+}

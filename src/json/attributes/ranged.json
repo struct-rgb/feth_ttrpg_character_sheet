@@ -1,0 +1,42 @@
+{
+    "name": "Ranged",
+    "type": "Any",
+    "description": "Grants weapon Range +1, -3 Mt, -10 Hit.\n\nIf the weapon already has Range > 1 without Attributes, ignore Mt penalty. Disabled on spells.",
+    "rank": 0,
+    "price": 1500,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": [
+            "metaif builtins|macrogen == 1 then",
+                "metaif weapon|noattr|maxrng < 2 then",
+                    "-3",
+                "else",
+                    "+0",
+                "end",
+            "else",
+                "if     weapon|noattr|maxrng < 2 then",
+                    "-3",
+                "else",
+                    "+0",
+                "end",
+            "end"
+        ],
+        "prot": 0,
+        "resl": 0,
+        "hit": -10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["penalty"],
+    "hidden": false
+}

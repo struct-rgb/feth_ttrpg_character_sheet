@@ -1,0 +1,35 @@
+{
+    "name": "Gremory/Guru",
+    "description": "A generalist mage who dabbles in multiple varieties of magic",
+    "type": ["Infantry", "Caster"],
+    "tier": "Advanced",
+    "requires": "All (Any (Faith C+) (Guile C+)) (Any (Guile C+) (Reason C+)) (Any (Reason C+) (Faith C+)) (Required (Level 15))",
+    "abilities": ["Metamagician", "Consumption 2"],
+    "arts": [],
+    "growths": {
+        "hp": 15,
+        "str": 15,
+        "mag": 25,
+        "dex": 20,
+        "spd": 10,
+        "def": 0,
+        "res": 20,
+        "cha": 20
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 0,
+        "mag": 6,
+        "dex": 5,
+        "spd": 0,
+        "def": 0,
+        "res": 1,
+        "cha": 2,
+        "mov": 5
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

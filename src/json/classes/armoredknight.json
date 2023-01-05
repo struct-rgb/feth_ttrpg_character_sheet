@@ -1,0 +1,35 @@
+{
+    "name": "Armored Knight",
+    "description": "A knight who specializes in armored combat",
+    "type": ["Armor", "Martial"],
+    "tier": "Starting",
+    "requires": "Armor D",
+    "abilities": ["Weight -3"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 10,
+        "dex": 0,
+        "spd": 0,
+        "def": 25,
+        "res": 15,
+        "cha": 10
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 3,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 5,
+        "res": 3,
+        "cha": 2,
+        "mov": 4
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

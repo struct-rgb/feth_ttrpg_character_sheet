@@ -2,27 +2,26 @@
   "name": "Dark Spikes",
   "type": "Guile",
   "description": "Effective against Cavalry foes.",
-  "requires": "B Rank Guile",
+  "requires": "Guile B",
+  "rank": "B",
   "price": 3750,
-
+  "mttype": "mag",
   "modifiers": {
-    "pmt": 0,
-    "mmt": 13,
-    "pdr": 0,
-    "mdr": 0,
+    "mt": 13,
+    "prot": 0,
+    "resl": 0,
     "hit": 80,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
-    "tp": 8,
-    "cost": 0,
-    "uses": 0
+    "tpcost": 8,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
   },
-  "magical": true,
-
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": ["effective"],
   "hidden": false
 }

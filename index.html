@@ -8,14 +8,19 @@
 	<link href="./src/css/style.css" rel="stylesheet" />
 	<link id="theme-link" href="./src/css/light.css" rel="stylesheet" />
 	<script type="text/javascript" src="./definitions.js"></script>
+	<script type="text/javascript" src="./src/js/common.js"></script>
+	<script type="text/javascript" src="./src/js/notebook.js"></script>
 	<script type="text/javascript" src="./src/js/pointbuy.js"></script>
+	<script type="text/javascript" src="./src/js/battalion.js"></script>
+	<script type="text/javascript" src="./src/js/characters.js"></script>
+	<script type="text/javascript" src="./src/js/weapons.js"></script>
 	<script type="text/javascript" src="./src/js/stats.js"></script>
 	<script type="text/javascript" src="./src/js/skills.js"></script>
 	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
 	<script type="text/javascript" src="./src/js/expression.js"></script>
-	<script type="text/javascript" src="./src/js/notebook.js"></script>
 	<script type="text/javascript" src="./src/js/category.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
+	<script type="text/javascript" src="./src/js/legacy.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.1.0/ajv7.bundle.js" integrity="sha512-PuzkO+wOBh6m/Jux4nXgl2ItRzed77lFDidDX500DUNlvuzr4OrXtsFhN4q0CCxPoXjTFfiw1z4FmED9J/MMdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 </head>
@@ -25,181 +30,41 @@
 		<div id="skill-section" class="span-1"> </div>
 		<div id="stats-section" class="span-2"> </div> 
 		<div class="span-3"> <!-- BACKGROUND AND PERSONALITY -->
-			<div>
+			<div id="main-tabs"> </div>
+		</div>
+		<div id="right-pane" class="span-4"> <!-- LIST OF CHARACTERS -->
 
-				<label for="hitpoints">Health</label>
+			<strong>
+				<span id="version"></span> (<a href="./README.html">Changelog</a>)
+			</strong>
 
-				<input
-					type="button"
-					class="simple-border"
-					value="Fill"
-					onclick="sheet.fillHealthBar()"> <br />
+			<div id="themes">
+				
+			</div>
 
-				<label for="hitpoints-input">
-					<meter id="hitpoints" min="0" max="100" low="33" high="66" value="50">
-						Current Hitpoints
-					</meter>
-				</label>
+			<div id="point-buy">
 
-				<input
-					id="hitpoints-input"
-					oninput="sheet.refreshHealthBar()"
-					class="hidden-field simple-border"
-					type="number"
-					name="level-input"
-					min="0"
-					value="0"/>
+				<input type="button" class="simple-border" value="Copy to Sheet" onclick="sheet.copy_point_buy()" />
+				
+				<input type="button" class="simple-border" value="Clear Points" onclick="sheet.clear_point_buy()" />
 
 				<br />
 
-				<label for="character-name">Name</label> <br />
-				<input
-					id="character-name"
-					class="simple-border"
-					type="text"
-					name="character-name" />
-				<br />
-				<label for="character-triangle">Triangle Effect</label> <br />
-				<select id="character-triangle" class="simple-border" oninput="sheet.refreshSecondaryStats()">
-					<option value="15">
-						Advantage
-					</option>
-					<option value="0" selected="">
-						Normal
-					</option>
-					<option value="-15">
-						Disadvantage
-					</option>
-				</select>
 			</div>
-				<label for="character-class">Class</label> <br />
-				<select id="character-class" class="simple-border" name="character-class" oninput="sheet.refreshClass()"> </select>
-				<input class="simple-border" type="button" value="Master" onclick="sheet.masterClass()"> <br />
-				<input id="character-mounted" class="simple-border" onclick="sheet.refreshMounted()" type="checkbox" /> Is character mounted? <br />
-				<label for="character-homeland">Homeland</label> <br />
-				<select id="character-homeland" class="simple-border">
-					<option value="adrestia">The Adrestian Republic</option>
-					<option value="almyra">Almyra</option>
-					<option value="brigid">Brigid Archipelago</option>
-					<option value="duscurr">Mountains of Duscur</option>
-					<option value="fearghus">The Kingdom of Fearghus</option>
-					<option value="leicester">The Leicester Alliance</option>
-					<option value="other">Other</option>
-				</select> <br />
-				<label for="character-money">Gold Pieces</label> <br />
-				<input
-					id="character-money"
-					name="character-money"
-					class="simple-border"
-					type="number"
-					min="0"
-					value="0" /> <br />
-				<label for="character-description">Description</label> <br />
-				<textarea
-					id="character-description"
-					name="character-description"
-					class="simple-border"
-					>Write your character description here.</textarea>
-			</div>
-			<div id="right-pane" class="span-4"> <!-- LIST OF CHARACTERS -->
 
-				<div id="characters">
-					
-					<input type="button" class="simple-border" value="New Character" onclick="sheet.fresh()" />
-					
-					<input type="button" class="simple-border" value="Clear Character" onclick="sheet.clear()" />
-
-					<br />
-
-					<label for="import-sheet" class="custom-file-input simple-border">
-						Import
-					</label>
-					<input id="import-sheet" type="file" accept=".json" class="no-display" />
-
-					<label for="export-sheet" class="custom-file-input simple-border">
-						Export
-					</label>
-					<input id="export-sheet" type="button" onclick="sheet.export()" class="no-display" />
-					
-					<br />
-
-					<div id="character-list">
-						
-					</div>
-				</div>
-
-				<div id="themes">
-					
-				</div>
-
-				<div id="point-buy">
-
-					<input type="button" class="simple-border" value="Copy to Sheet" onclick="sheet.copy_point_buy()" />
-					
-					<input type="button" class="simple-border" value="Clear Points" onclick="sheet.clear_point_buy()" />
-
-					<br />
-
-				</div>
+			<div id="equip-pane">
 				
 			</div>
 		</div>
+	</div>
 		
-		<div id="features" class="span-1-3"> <!-- FEATURES -->
-			
-		</div>
+	<div id="features" class="span-1-3"> <!-- FEATURES -->
+		
+	</div>
 
-		<!-- This gets moved to a tab in the main script -->
-		<div id="macro-builder">
-			<input
-				type="button"
-				class="simple-border"
-				value="Create Blurb"
-				onclick="sheet.blurb()" />
-			<input
-				type="button"
-				class="simple-border"
-				value="Create Macro"
-				onclick="sheet.macro()" />
+	<!-- This gets moved to a tab in the main script -->
+	<div id="macro-builder">
 
-			<input
-				id="generator-hardcode"
-				type="checkbox"
-				class="simple-border"
-				checked />
-
-			<label for="generator-hardcode">
-				Hardcode Stats? (If stats change you need to recreate the macros)
-			</label>
-
-			<br />
-
-			<textarea id="generator-output" class="simple-border">
-				
-			</textarea>
-
-			<br />
-
-			<input
-				id="generator-console"
-				class="simple-border"
-				onkeydown="sheet.console(event)"
-				type="text" />
-
-			<br />
-
-			<details>
-				<summary>Macro Tips & Tricks</summary>
-				<p>
-					To make a macro, first, make sure to select a weapon form the "Weapons & Spells" tab. If you don't a dialogue box will pop up to remind you. Once you do this, make sure any equippable abilities you want to use in the macro are present in the "Abilities"->"Equipped" tab. Make sure to select those that have the text "(Passive)" after their name in BOTH the "Abilities"->"Equipped" and the "Abilities"->"Class" tabs, or they will not be applied. This DOES NOT apply to skills that have "(X Passive)" after their name, where X is "Sword", "Lance", "Reason", etc, such as the "Prowess" and "-faire" skills. As long as these are present in the "Abilities"->"Equipped" and the "Abilities"->"Class" tabs the builder will recognize whether these apply to your selected weapon and apply them automatically. Do NOT select those that have "(Prompt)" in their name, as doing so will cause it to be applied as if it were a passive, and will ALSO generate a prompt box each time the macro is rolled, possibly causing them to be applied twice. For COMBAT ARTS, make sure the combat art you want to use is present and selected in the "Combat Arts"->"Equipped" tab.
-				</p>
-				<p>
-					Also, you can type math into the little box beneath the macro output to do math on the fly. More on that can be found <a href="./expressions.html"> here</a>.
-				</p>
-
-			</details>
-
-		</div>
 	</div>
 
 	<script type="text/javascript">
@@ -207,7 +72,11 @@
 		const sheet       = new Sheet(definitions);
 
 		// Show a "Leave site?" dialog */
-		window.onbeforeunload = () => true;
+		window.onbeforeunload = () => {
+			sheet.macros.historySave();
+			return true;
+		};
+		
 		// hide this without removing it
 		document.getElementById("skill-Brawl-row").hidden = true;
 	</script>

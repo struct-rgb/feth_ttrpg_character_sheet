@@ -1,0 +1,45 @@
+{
+    "name": "Dark Wyvernian",
+    "description": "A mage who rains death from above upon the back of a wyvern",
+    "type": ["Flying", "Caster"],
+    "tier": "Advanced",
+    "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
+    "abilities": ["Reason Advantage", "Guile Advantage", "Canto", "Savage Blow"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 15,
+        "dex": 15,
+        "spd": 20,
+        "def": 20,
+        "res": 0,
+        "cha": 15
+    },
+    "modifiers": {
+        "hp": 6,
+        "str": 2,
+        "mag": 4,
+        "dex": 1,
+        "spd": 1,
+        "def": 4,
+        "res": 0,
+        "cha": 2,
+        "mov": 5
+    },
+    "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

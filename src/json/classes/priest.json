@@ -1,10 +1,11 @@
 {
   "name": "Priest",
-  "description": "A class that uses Faith.",
-  "type": "Other",
+  "description": "A Faith mage with high Resistance",
+  "type": ["Infantry", "Caster"],
   "tier": "Starting",
-  "requires": "Rank D Faith.",
+  "requires": "Faith D",
   "abilities": [ "Faith Consumption 1" ],
+    "arts": [],
   "growths": {
     "hp": 10,
     "str": 10,
@@ -24,18 +25,9 @@
     "def": 0,
     "res": 5,
     "cha": 3,
-    "mov": 0
+    "mov": 4
   },
-  "mount": {
-    "hp": 0,
-    "str": 0,
-    "mag": 0,
-    "dex": 0,
-    "spd": 0,
-    "def": 0,
-    "res": 0,
-    "cha": 0
-  },
+  "mount": null,
 
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],

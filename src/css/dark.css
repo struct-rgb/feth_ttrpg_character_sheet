@@ -36,3 +36,79 @@
 meter::-webkit-meter-bar {
 	background: black;
 }
+
+.tts {
+	border-bottom: 1px dotted;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.ttts {
+	background-color: white;
+	color: black;
+	border-radius: 6px;
+}
+
+.attempt-enabled {
+
+}
+
+.attempt-disabled {
+	color: darkgrey;
+}
+
+.level-table th.incr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: cyan;
+	border-style: outset;
+	background: cyan;
+	color: black;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: orange;
+	border-style: outset;
+	background: orange;
+	color: black;
+	font-weight: bolder;
+}
+
+button.toggle-on {
+	color: black;
+	background: cyan;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+}
+
+button.toggle-off {
+	color: white;
+	background: black;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+}
+
+.hl-identifier {
+	/*color: ;*/
+}
+
+.hl-reserved {
+	color: blue;
+}
+
+.hl-operator {
+	color: #DC582A;
+}
+
+.hl-literal {
+	color: orange;
+}
+
+.punctuation {
+	color: grey;
+}

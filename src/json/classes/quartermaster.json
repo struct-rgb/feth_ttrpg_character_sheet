@@ -1,0 +1,35 @@
+{
+  "name": "Quartermaster",
+  "description": "An advanced class that uses weapons and commands troops.",
+  "type": ["Infantry", "Martial"],
+  "tier": "Advanced",
+  "requires": "All (Any (Swords C+) (Lances C+) (Axes C+)) (Authority C+) (Required (Level 15))",
+  "abilities": ["Calm Spirit"],
+    "arts": ["Emergency Invigoration"],
+  "growths": {
+    "hp": 35,
+    "str": 20,
+    "mag": 15,
+    "dex": 25,
+    "spd": 0,
+    "def": 15,
+    "res": 10,
+    "cha": 20
+  },
+  "modifiers": {
+    "hp": 5,
+    "str": 4,
+    "mag": 2,
+    "dex": 4,
+    "spd": 0,
+    "def": 1,
+    "res": 0,
+    "cha": 4,
+    "mov": 6
+  },
+  "mount": null,
+
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

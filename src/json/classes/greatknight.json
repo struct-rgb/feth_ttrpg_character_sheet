@@ -1,0 +1,45 @@
+{
+    "name": "Great Knight",
+    "description": "A armored knight who fights from horseback",
+    "type": ["Armor", "Cavalry", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
+    "abilities": ["Sword Advantage", "Lance Advantage", "Axe Advantage", "Weight -3", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 25,
+        "mag": 15,
+        "dex": 15,
+        "spd": 10,
+        "def": 20,
+        "res": 20,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 7,
+        "mag": 0,
+        "dex": 3,
+        "spd": 2,
+        "def": 5,
+        "res": 4,
+        "cha": 2,
+        "mov": 4
+    },
+    "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 3
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

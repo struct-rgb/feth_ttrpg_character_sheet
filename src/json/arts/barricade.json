@@ -1,0 +1,30 @@
+{
+  "name": "Barricade",
+  "description": "Create one @{tile::Barricade} in target empty tile.",
+  "requires": "Any (Class `Fortress Knight`) (Class `Knight Captain`)",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tiles": 1,
+    "spcost": 0,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "tactical",
+    "wall"
+  ],
+  "hidden": false,
+  "type": "",
+  "rank": ""
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Warp",
+  "type": "Faith",
+  "description": "Move target adjacent ally to target space.",
+  "requires": "Faith B",
+  "rank": "B",
+  "price": 4120,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": "ceil((unit|total|mag) / 4)",
+    "tpcost": 9,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": [
+    "no hit", "no might", "no triangle"
+  ],
+  "hidden": false
+}
