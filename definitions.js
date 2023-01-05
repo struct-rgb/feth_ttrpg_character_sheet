@@ -21379,7 +21379,7 @@ const definitions = {
     {
       "name": "Paradox",
       "type": "Guile",
-      "description": "On hit, apply @{const:gbp:[Dex -3]} and @{const:gbp:[Spd -3]} to target foe after combat for 1 turn.",
+      "description": "On hit, apply @{const:gbp:[Dex -3]} and @{const:gbp:[Spd -3]} to target foe after combat for 1 turn. Cannot make follow-up attacks.",
       "requires": "Guile A",
       "rank": "A",
       "price": 4220,
@@ -22027,7 +22027,7 @@ const definitions = {
       "price": 0,
       "mttype": "mag",
       "modifiers": {
-        "mt": 7,
+        "mt": 9,
         "prot": 0,
         "resl": 0,
         "hit": 75,
