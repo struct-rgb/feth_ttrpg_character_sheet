@@ -15633,7 +15633,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Caduseus Staff",
+      "name": "Caduceus Staff",
       "description": "Range +1 to damaging spells. Restores 10% (20% with Crest of @{ability:Major Crest of Cethleann:Cethleann}) of Max HP at the start of wielders phase.",
       "requires": "None",
       "price": 0,
@@ -19646,7 +19646,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Areadbar",
+      "name": "Areadbhar",
       "type": "Lances",
       "description": "If wielder has the Crest of @{ability:Major Crest of Blaiddyd:Blaiddyd}, enables use of Atrocity. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Lances E",
