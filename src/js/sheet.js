@@ -926,7 +926,7 @@ class Sheet {
 			: this.cb.add();
 
 		/* autosave current sheet every five minutes */
-		// setInterval(() => void this.autosave(), 300000);
+		setInterval(() => void this.autosave(), 300000);
 	}
 
 	/* this was a workaround the fact two arts cats weren't expected */
