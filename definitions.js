@@ -15544,7 +15544,7 @@ const definitions = {
         "res": 0,
         "cha": 0,
         "mt": 0,
-        "prot": 2,
+        "prot": 3,
         "resl": 0,
         "hit": 0,
         "avo": 0,
@@ -15633,7 +15633,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Caduseus Staff",
+      "name": "Caduceus Staff",
       "description": "Range +1 to damaging spells. Restores 10% (20% with Crest of @{ability:Major Crest of Cethleann:Cethleann}) of Max HP at the start of wielders phase.",
       "requires": "None",
       "price": 0,
@@ -19646,7 +19646,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Areadbar",
+      "name": "Areadbhar",
       "type": "Lances",
       "description": "If wielder has the Crest of @{ability:Major Crest of Blaiddyd:Blaiddyd}, enables use of Atrocity. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Lances E",
@@ -21393,7 +21393,7 @@ const definitions = {
         "crit": 10,
         "cravo": 0,
         "minrng": 2,
-        "maxrng": 2,
+        "maxrng": 3,
         "tpcost": 7,
         "spcost": 0,
         "tp": 0,
@@ -21791,7 +21791,7 @@ const definitions = {
       "price": 2700,
       "mttype": "mag",
       "modifiers": {
-        "mt": 7,
+        "mt": 9,
         "prot": 0,
         "resl": 0,
         "hit": 75,
