@@ -1,11 +1,11 @@
 {
   "name": "Suttungr's Mystery",
   "type": "Guile",
-  "description": "If wielder has the Crest of Charon, enables use of {PLACEHOLDER: halves cost of guile metamagic/can be used with other}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "If wielder has the Crest of @{ability:Major Crest of Charon:Charon}, enables use of @{art::Relentless Magic}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Guile E",
   "rank": "E",
   "price": 0,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 20,
     "prot": 0,

@@ -1,9 +1,8 @@
 {
   "name": "Productivity",
-  "type": "Other",
-  "description": "When casting a Lightning Spell, choose you or an ally within 2 spaces. That unit gains the [Productive] condition for 2 turns. Lightning Wall Variant: Any ally that starts their turn adjacent to any Lightning Wall regains 1 Stamina.",
+  "description": "Lighting metamagic; apply @{condition:Productive:[Productive]} to this unit or target ally within 2 spacesnfor 2 turns. @{art::Lightning Wall} @{const:variant:Variant}: for one turn, allies that end any phase adjacent to a @{tile:Lightning Arc:Lightning Arcs} regain 1 TP. @{tooltip:(note):I changed the timing of this variant because it didn't work with the lightning wall rework.}",
   "requires": "Reason C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 9,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "wall",
+    "lightning"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C"
 }

@@ -1,0 +1,27 @@
+{
+  "name": "Apocalyptic Flame",
+  "description": "@{weapon::Freikugel} only; apply @{const:gbp:[Str -5]} to target foe for one turn, effective against Dragon units.",
+  "requires": "All (Weapon Freikugel) (Crest Goneril) (Axes E)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 15,
+    "prot": 0,
+    "resl": 0,
+    "hit": 20,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "relic",
+    "effective"
+  ],
+  "hidden": false,
+  "rank": "E",
+  "type": "Axes"
+}

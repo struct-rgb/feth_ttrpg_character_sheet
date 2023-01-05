@@ -1,12 +1,13 @@
 {
   "name": "Summon",
   "type": "Guile",
-  "description": "All summon tomes must have one and only one of the attributes listed in the Phantoms table. Create an allied phantom unit of the same level as this unit in an empty space within range (template is determined by the attribute on the Summon tome that is used) and roll 1d100 to determine which Weapons, Arts, and Abilities it possesses. Apply [Summoning Sickness] to that unit for one turn. All weapons a phantom is created with have the Bound attribute, any other items in a phantom�s inventory go to the convoy when it is defeated. If this unit uses Summon again while that unit is not defeated, apply the following effect instead: Do not pay TP for this use of Summon; move that allied unit to an empty space within range.",
+  "description": "Allows wielder to cast @{art::Summon} for the cost of 4 TP; this weapon must possess one \"Conjure\" attribute.",
   "requires": "Guile B",
   "rank": "B",
   "price": 0,
-  "base": "n/a",
+  "mttype": "none",
   "modifiers": {
+    "mt": 0,
     "prot": 0,
     "resl": 0,
     "hit": 0,

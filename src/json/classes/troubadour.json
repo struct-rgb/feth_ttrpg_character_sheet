@@ -1,10 +1,11 @@
 {
     "name": "Troubadour",
     "description": "A mage who fights from horseback",
-    "type": "Cavalry",
+    "type": ["Cavalry", "Other"],
     "tier": "Starting",
     "requires": "Riding D",
     "abilities": ["Tactician", "Canto"],
+    "arts": [],
     "growths": {
         "hp": 15,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 2,
         "res": 2,
         "cha": 3,
-        "mov": 0
+        "mov": 4
     },
     "mount": {
         "hp": 0,

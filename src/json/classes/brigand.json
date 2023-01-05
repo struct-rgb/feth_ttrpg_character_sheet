@@ -1,10 +1,11 @@
 {
     "name": "Brigand",
     "description": "A powerful, axe-wielding foot-soldier",
-    "type": "Martial",
+    "type": ["Infantry", "Martial"],
     "tier": "Starting",
     "requires": "Axes D",
-    "abilities": ["Critical Blow"],
+    "abilities": ["Critical Blow", "Level 10 Mov +1"],
+    "arts": [],
     "growths": {
         "hp": 30,
         "str": 25,
@@ -24,7 +25,7 @@
         "def": 1,
         "res": 0,
         "cha": 2,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

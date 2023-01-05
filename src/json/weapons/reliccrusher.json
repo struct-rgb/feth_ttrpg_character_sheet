@@ -1,11 +1,11 @@
 {
   "name": "Crusher",
   "type": "Axes",
-  "description": "Deals magic-based damage. If wielder has the Crest of Dominic, enables use of Dust. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "Deals magic-based damage. If wielder has the Crest of @{ability:Major Crest of Dominic:Dominic}, enables use of @{art::Dust}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Axes E",
   "rank": "E",
   "price": 0,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 18,
     "prot": 0,

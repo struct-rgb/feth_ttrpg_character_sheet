@@ -1,9 +1,8 @@
 {
   "name": "Daylight",
-  "type": "Other",
-  "description": "When casting a Fire Spell that deals damage, deal effective damage against Undead units. If the spell infused with Daylight successfully deals damage, foes within 2 spaces of the target (Including the target.) are inflicted with [Exposed] 1 turn.",
+  "description": "Fire metamagic; effective against @{tooltip:Monster:Originally said Undead units, but tbh, Undead creatures are traditionally Monster units, and specifying only Undead creates an unneccesary unit type and makes a niche art even more niche.} units. On hit, apply @{condition:Exposed:[Exposed]} to target foe and foes within 2 spaces of target foe for one turn.",
   "requires": "Reason D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,20 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "effective",
+    "condition",
+    "fire",
+    "aoe",
+    "rework"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

@@ -1,9 +1,8 @@
 {
   "name": "Overcharge",
-  "type": "Other",
-  "description": "When casting a Lightning Spell, for 2 turns, all foes within 2 spaces of you suffer from [Overcharged].",
+  "description": "When casting a Lightning Spell, for 2 turns, all foes within 2 spaces of you suffer from @{condition:Overcharged:[Overcharged]}.",
   "requires": "Reason A",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,19 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 15,
     "tpcost": 5,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "aoe",
+    "condition",
+    "rework",
+    "lightning"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "A"
 }

@@ -1,9 +1,8 @@
 {
   "name": "Phase",
-  "type": "Guile",
-  "description": "Apply [Pass] and [Avo +10] to target ally for one turn.",
+  "description": "Apply @{condition:Pass:[Pass]} and @{const:gbp:[Avo +10]} to target ally for one turn.",
   "requires": "Guile D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 1,
     "maxrng": 1,
     "tiles": 0,
-
     "spcost": 2,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "D"
 }

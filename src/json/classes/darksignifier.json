@@ -1,0 +1,45 @@
+{
+    "name": "Dark Signifier",
+    "description": "A armored knight who fights from horseback (I assume no canot was a mistake)",
+    "type": ["Armor", "Cavalry", "Caster", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
+    "abilities": ["Mask of the Signifier", "Group Lull Def/Cha", "Weight -3", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 20,
+        "dex": 20,
+        "spd": 5,
+        "def": 15,
+        "res": 20,
+        "cha": 20
+      },
+    "modifiers": {
+        "hp": 7,
+        "str": 4,
+        "mag": 4,
+        "dex": 2,
+        "spd": 1,
+        "def": 3,
+        "res": 4,
+        "cha": 3,
+        "mov": 4
+    },
+    "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 3
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": ["rework"],
+    "hidden": false
+}

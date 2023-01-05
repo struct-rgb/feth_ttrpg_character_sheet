@@ -1,11 +1,11 @@
 {
   "name": "Swarm",
   "type": "Guile",
-  "description": "On hit, apply [Spd -5] to target foe after combat for 1 turn.",
+  "description": "On hit, apply @{const:gbp:[Spd -5]} to target foe after combat for 1 turn.",
   "requires": "Guile C",
   "rank": "C",
   "price": 2000,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 4,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": ["condition"],
   "hidden": false
 }

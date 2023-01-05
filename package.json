@@ -1,0 +1,25 @@
+{
+  "name": "feth_ttrpg_character_sheet",
+  "version": "2.0.0",
+  "description": "A character builder for Bradley B.'s FE:3H TTRPG",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/struct-rgb/feth_ttrpg_character_sheet.git"
+  },
+  "author": "Ryan Luchs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/struct-rgb/feth_ttrpg_character_sheet/issues"
+  },
+  "homepage": "https://github.com/struct-rgb/feth_ttrpg_character_sheet#readme",
+  "dependencies": {
+    "@babel/eslint-parser": "^7.15.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.29.0"
+  }
+}

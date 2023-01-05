@@ -1,9 +1,8 @@
 {
   "name": "Beacon of Light",
-  "type": "Other",
-  "description": "Grants [Divine Ward] to affected allies for 2 turns.",
+  "description": "When casting @{art::Restore}, apply @{condition:Divine Ward:[Divine Ward]} to affected allies for 2 turns.",
   "requires": "Faith C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 2,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "combo",
+    "rework"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "C"
 }

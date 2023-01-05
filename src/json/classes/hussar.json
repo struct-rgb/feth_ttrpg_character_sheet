@@ -1,10 +1,11 @@
 {
     "name": "Hussar",
     "description": "A veteran light cavalier who focuses on teamwork",
-    "type": "Cavalry",
+    "type": ["Cavalry", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Swordfaire", "Lancefaire", "Canto", "Flanking Maneuver"],
+    "abilities": ["Sword Advantage", "Lance Advantage", "Canto", "Flanking Maneuver"],
+    "arts": [],
     "growths": {
         "hp": 25,
         "str": 20,
@@ -24,7 +25,7 @@
         "def": 3,
         "res": 2,
         "cha": 3,
-        "mov": 2
+        "mov": 6
     },
     "mount": {
         "hp": 0,

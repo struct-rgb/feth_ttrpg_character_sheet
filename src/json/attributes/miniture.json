@@ -5,7 +5,7 @@
     "rank": 2,
     "price": 680,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": -2,
         "prot": 0,

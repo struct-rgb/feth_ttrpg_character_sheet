@@ -5,7 +5,7 @@
   "requires": "Swords A",
   "rank": "A",
   "price": 8895,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 15,
     "prot": 0,

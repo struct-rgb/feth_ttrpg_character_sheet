@@ -1,9 +1,8 @@
 {
   "name": "Virulent",
-  "type": "Other",
   "description": "Apply stat changes and conditions to adjacent allies of target.",
   "requires": "Guile D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,16 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 2,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "aoe"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "D"
 }

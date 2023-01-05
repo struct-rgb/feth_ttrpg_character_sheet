@@ -72,11 +72,10 @@ dd {
 	color: #AAAAAA;
 	outline: none;
 	background: #222222;
-	border-radius: 3px;
+	border-radius: 6px;
 	/*border-width: 2px;*/
 	/*border-color: #880000;*/
 	/*border-style: ridge;*/
-	margin: 3px;
 }
 
 .attempt-enabled {
@@ -125,4 +124,36 @@ input[type="checkbox"]:checked {
 	background: #222222;
 	color: #DD0000;
 	font-weight: bolder;
+}
+
+button.toggle-on {
+	border-radius: 5px;
+	border-color: #222222;
+	background: #DD0000;
+	border-style: solid;
+	color: #222222;
+}
+
+button.toggle-off {
+	border-radius: 5px;
+	border-color: #222222;
+	background: black;
+	border-style: solid;
+	color: #DD0000;
+}
+
+.hl-identifier {
+	color: lightgrey;
+}
+
+.hl-reserved {
+	/*color: #880000;*/
+}
+
+.hl-operator {
+	color: #880000;
+}
+
+.hl-literal {
+	color: #DD0000;
 }

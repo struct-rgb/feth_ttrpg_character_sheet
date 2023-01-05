@@ -1,10 +1,11 @@
 {
     "name": "Pegasus Knight",
     "description": "A warrior who nimbly soars upon the back of a pegasus",
-    "type": "Flying",
+    "type": ["Flying", "Martial"],
     "tier": "Starting",
     "requires": "Flying D",
-    "abilities": ["Avoid +10", "Canto"],
+    "abilities": ["Avo +10", "Canto"],
+    "arts": [],
     "growths": {
         "hp": 20,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 1,
         "res": 3,
         "cha": 1,
-        "mov": 0
+        "mov": 4
     },
     "mount": {
         "hp": 0,

@@ -1,9 +1,8 @@
 {
   "name": "Heat Purge",
-  "type": "Other",
-  "description": "When casting a Fire Spell, inflict [Purged] on your target. Ragnarok Variant: All foes within 2 spaces of the target receive the same effect.",
+  "description": "Fire metamagic; after combat, apply @{condition:Purged:[Purged]} to target foe for one turn. @{weapon::Ragnarok} @{const:variant:Variant}: after combat, apply @{condition:Purged:[Purged]} to target foe and all foes within 2 spaces of target foe for one turn.",
   "requires": "Reason D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,19 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "variant",
+    "aoe",
+    "fire"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

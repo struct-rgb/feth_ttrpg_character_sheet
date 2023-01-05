@@ -1,9 +1,8 @@
 {
   "name": "Puff of Smoke",
-  "type": "Other",
-  "description": "When casting a Wind Spell, create a 2x2 area of smoke for 2 turns. Attacks against Units occupying those spaces suffer -30 Hit and abilities that only work when a foe initiates combat, such as [Vantage], are disabled for the Units outside those spaces.",
+  "description": "Wind metamagic; after combat, create a 2x2 area of @{tile:Smoke Screen:Smoke Screens} connecting to a space at Range ≤ 2 for 2 turns.",
   "requires": "Reason D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "wall",
+    "wind"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

@@ -1,11 +1,11 @@
 {
   "name": "Heal",
   "type": "Faith",
-  "description": "Restores HP to an ally = The spell�s Mt + the user�s Mag/2. Can be used with Healing Metamagic.",
+  "description": "Restore (Mt + Mag / 2) HP to target ally.",
   "requires": "Faith D",
   "rank": "D",
   "price": 780,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 8,
     "prot": 0,

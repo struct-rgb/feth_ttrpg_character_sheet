@@ -2,10 +2,10 @@
   "name": "Iron Axe",
   "type": "Axes",
   "description": "No special effects. Costs 450G to upgrade from Training Axe.",
-  "requires": "Axes E",
-  "rank": "E",
+  "requires": "Axes D",
+  "rank": "D",
   "price": 900,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 8,
     "prot": 0,

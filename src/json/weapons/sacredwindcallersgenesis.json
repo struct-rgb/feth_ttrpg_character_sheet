@@ -1,11 +1,11 @@
 {
   "name": "Wind Caller's Genesis",
   "type": "Reason",
-  "description": "A wind spell; restores 10% (20% with Crest of Macuil) of Max HP at the start of wielders phase.",
+  "description": "A wind spell; restores 10% (20% with Crest of @{ability:Major Crest of Macuil:Macuil}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Macuil:Macuil}.",
   "requires": "Reason A",
   "rank": "A",
   "price": 0,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 16,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Items in modifers should be integers",
-  "tags": ["sacred"],
+  "tags": ["sacred", "wind"],
   "hidden": false
 }

@@ -1,10 +1,11 @@
 {
     "name": "Witch Hunter",
     "description": "A fighter that uses Swords and Bows to defeat mages",
-    "type": "Martial",
+    "type": ["Infantry", "Martial"],
     "tier": "Starting",
     "requires": "Any (Swords D) (Bows D)",
-    "abilities": ["Hit/Avoid +10"],
+    "abilities": ["Hit/Avo +10", "Level 10 Mov +1"],
+    "arts": [],
     "growths": {
         "hp": 20,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 1,
         "res": 3,
         "cha": 1,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

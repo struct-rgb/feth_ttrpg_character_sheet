@@ -1,9 +1,8 @@
 {
   "name": "Invoked",
-  "type": "Other",
-  "description": "If target foe is defeated this combat, cast Summon after combat (as per a Summon tome with Conjure Lemure) targeting the foe’s space. [Summoning Sickness] is not applied to the created unit.",
+  "description": "If target foe is defeated this combat, cast @{art::Summon} after combat (always creates a Lemure) targeting the foeâ€™s space. @{condition:Summoning Sickness:[Summoning Sickness]} is not applied to the created unit.",
   "requires": "Guile B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,14 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 12,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [],
-  "hidden": false
+  "hidden": false,
+  "type": "Guile",
+  "rank": "B"
 }

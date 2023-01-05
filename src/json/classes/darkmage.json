@@ -1,10 +1,11 @@
 {
     "name": "Dark Mage",
     "description": "A class that uses Guile.",
-    "type": "Other",
+    "type": ["Infantry", "Caster"],
     "tier": "Starting",
     "requires": "Guile D",
     "abilities": ["Guile Consumption 1"],
+    "arts": [],
     "growths": {
         "hp": 20,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 2,
         "res": 1,
         "cha": 1,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

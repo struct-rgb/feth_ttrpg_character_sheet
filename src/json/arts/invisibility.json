@@ -1,9 +1,8 @@
 {
   "name": "Invisibility",
-  "type": "Guile",
   "description": "Unit can't be targeted for 1 turn.",
   "requires": "Guile B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 9,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "B"
 }

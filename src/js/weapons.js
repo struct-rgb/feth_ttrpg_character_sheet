@@ -2,6 +2,8 @@
 /* global element */
 /* global AttributeCell */
 /* global uniqueLabel */
+/* global tooltip */
+/* global Version */
 
 /* global CategoryModel */
 /* global MultiActiveCategory */
@@ -17,8 +19,6 @@
 
 class Weapons {
 
-	static DEFAULT = "Unarmed";
-
 	static DESCRIPTION = "Write any additional information here.";
 
 	constructor(sheet) {
@@ -29,33 +29,41 @@ class Weapons {
 			class : ["simple-border"],
 			attrs : {
 				type     : "text", 
-				value    : Weapons.DEFAULT,
+				value    : Weapon.DEFAULT,
 				onchange : (() => {
 					const activeID = this.sheet.wb.category.getActive();
 					if (activeID === null) return;
 
 					const element = this.sheet.wb.category.elements.get(activeID);
-					element.title = this.name;
+					element.title       = this.name;
+					element.description = this.body();
 				}),
 			},
 		});
 
-		this._select = element("select", {
-			class: ["simple-border"],
-			attrs: {
-				value   : Weapons.DEFAULT,
-				oninput : (() => {this.template = this._select.value;}),
-			},
+		this._sf = Weapon.select(() => {
+			this.template = this._select.value;
+			this.refresh();
 		});
 
-		this._template = Weapon.get(Weapons.DEFAULT);
+		this._inInventory = element("input", {
+			class: ["simple-border"],
+			attrs: {
+				type     : "checkbox",
+				onchange : (() => {
+					const activeID = this.sheet.wb.category.getActive();
+					if (activeID === null) return;
 
-		for (let template of definitions.weapons) {
-			const option       = element("option");
-			option.value       = template.name;
-			option.textContent = template.name;
-			this._select.appendChild(option);
-		}
+					const element = this.sheet.wb.category.elements.get(activeID);
+					element.description = this.body();
+				})
+			}
+		});
+
+
+		this._select = this._sf._select;
+
+		this._template = Weapon.get(Weapon.DEFAULT);
 
 		const model = new CategoryModel(
 			Attribute.kind,
@@ -71,6 +79,7 @@ class Weapons {
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
+			hideable    : true,
 			addActive   : true,
 			ontoggle    : ((category, key) => {
 				category.toggleActive(key);
@@ -82,6 +91,7 @@ class Weapons {
 
 				if (wasActive) this.refresh();
 			}),
+			select      : Attribute.select(),
 		});
 
 		this._description = element("textarea", {
@@ -89,8 +99,8 @@ class Weapons {
 			content : Weapons.DESCRIPTION,
 		});
 
-		this._dt = document.createTextNode(this._template.title());
-		this._dd = document.createTextNode(this._template.body());
+		this._dt = element("dt", element("span", this._template.title()));
+		this._dd = element("dd", element("span", this._template.body()));
 
 		this.stats = {};
 
@@ -160,7 +170,7 @@ class Weapons {
 
 		this._price = new AttributeCell({
 			edit    : true,
-			after   : " GP",
+			after   : element("sub", "G"),
 			value   : 0,
 			shown   : "0",
 			min     : 0,
@@ -182,13 +192,13 @@ class Weapons {
 			edit    : true,
 			value   : 0,
 			shown   : "ELSE",
-			min     : AttackFeature.BASE.min,
-			max     : AttackFeature.BASE.max,
+			min     : AttackFeature.MTTYPE.min,
+			max     : AttackFeature.MTTYPE.max,
 			step    : 1,
 			root    : "span",
 			trigger : ((base) => {
 				const value = baseFunction();
-				const text  = AttackFeature.BASE.asString(value);
+				const text  = AttackFeature.MTTYPE.asString(value);
 				this.sheet.stats.refreshSecondary();
 				return text.toUpperCase();
 			}),
@@ -196,7 +206,7 @@ class Weapons {
 
 		const baseFunction = new Expression.Env(
 			Expression.Env.RUNTIME, this.sheet.definez
-		).func("weapon|total|base");
+		).func("weapon|total|mttype");
 
 		const second = element("tbody", [
 			wide("Might", "mt", makefn("mt")),
@@ -249,11 +259,17 @@ class Weapons {
 			this._name, element("br"),
 
 			uniqueLabel("Template", this._select), element("br"),
-			this._select, element("br"), element("br"),
+			this._sf.root, element("br"), element("br"),
 
-			element("dt", this._dt), element("dd", this._dd),
+			element("dl", [this._dt, this._dd]),
 
 			element("br"),
+
+			tooltip([this._inInventory, "Is Weapon in Inventory?"], [
+				"This only really affects what gets put into the blurb for ",
+				"now, but in the future it might affect weapons with ",
+				"attributes that give you penalties for holding them."
+			].join("")),
 
 			element("details", [
 				element("summary", element("label", "Attributes")),
@@ -269,6 +285,7 @@ class Weapons {
 				element("summary", element("label", "Other Statistics")),
 				element("table", second, "battalion-table"),
 			]),
+
 		], "center-pane");
 	}
 
@@ -308,11 +325,11 @@ class Weapons {
 		this._description.value = value;
 	}
 
-	get base() {
+	get mttype() {
 		return this._base.value;
 	}
 
-	set base(value) {
+	set mttype(value) {
 		this._base.value = value;
 	}
 
@@ -325,8 +342,14 @@ class Weapons {
 		this._template     = Weapon.get(value);
 		this._select.value = value;
 
-		this._dt.data = this._template.title();
-		this._dd.data = this._template.body();
+		this._dt.lastChild.remove();
+		this._dd.lastChild.remove();
+
+		this._dt.appendChild(element("span", this._template.title()));
+		this._dd.appendChild(element("span", this._template.body()));
+
+		// this._dt.data = this._template.title();
+		// this._dd.data = this._template.body();
 
 		this.refresh();
 
@@ -334,7 +357,7 @@ class Weapons {
 		if (activeID === null) return;
 
 		const elemenn       = this.sheet.wb.category.elements.get(activeID);
-		elemenn.description = this.description;
+		elemenn.description = this.body();
 	}
 
 	get price() {
@@ -353,6 +376,14 @@ class Weapons {
 		this._rank.value = value;
 	}
 
+	get inInventory() {
+		return this._inInventory.checked;
+	}
+
+	set inInventory(value) {
+		this._inInventory.checked = value;
+	}
+
 	refresh() {
 		this._rank.refresh();
 		this._price.refresh();
@@ -363,17 +394,21 @@ class Weapons {
 
 	import(weapon) {
 
-		this.name        = weapon.name     || Weapons.DEFAULT;
+		this.name        = weapon.name     || Weapon.DEFAULT;
 		this.rank        = weapon.rank     || 0;
-		this.base        = weapon.base     || 0;
+		this.base        = weapon.base || weapon.mttype  || 0;
 		this.price       = weapon.price    || 0;
-		this.template    = weapon.template || Weapons.DEFAULT;
+		this.inInventory = weapon.inventory || false;
+		this.template    = weapon.template || Weapon.DEFAULT;
 		this.attributes.setState(weapon.attributes);
 		this.information = weapon.description || Weapons.DESCRIPTION;
 
-		for (let stat in weapon.statistics) {
-			if (!(stat in this.stats)) continue; // todo remove after refactor
-			this.stats[stat].value = weapon.statistics[stat];
+		for (let stat in weapon.modifiers) {
+			
+			/* guard against malformed input */
+			if (!(stat in this.stats)) continue;
+
+			this.stats[stat].value = weapon.modifiers[stat];
 		}
 
 		this.refresh();
@@ -388,22 +423,25 @@ class Weapons {
 		}
 
 		return {
+			version     : Version.CURRENT.toString(),
 			name        : this.name,
 			rank        : this.rank,
 			base        : this.base,
 			price       : this.price,
 			template    : this.template.name,
 			attributes  : this.attributes.getState(),
-			statistics  : stats,
+			modifiers   : stats,
 			description : this.information,
+			inventory   : this.inInventory,
 		};
 	}
 
 	clear(preset) {
 
 		this.attributes.clear();
-		this.name        = preset || Weapons.DEFAULT;
-		this.template    = preset || Weapons.DEFAULT;
+		this.inInventory = false;
+		this.name        = preset || Weapon.DEFAULT;
+		this.template    = preset || Weapon.DEFAULT;
 		this.information = Weapons.DESCRIPTION;
 		this.rank        = 0;
 		this.price       = 0;
@@ -411,6 +449,30 @@ class Weapons {
 		for (let stat in this.stats) {
 			this.stats[stat].value = 0;
 		}
+	}
+
+	/* builtable display */
+
+	getTitle(object) {
+		return object.name;
+	}
+
+	getBody(object) {
+		return element("span", [
+			object.template || object.description,
+			object.inventory
+				? element("em", " (Inventory)", "punctuation")
+				: ""
+		]);
+	}
+
+	body() {
+		return element("span", [
+			this._template.name,
+			this.inInventory
+				? element("em", " (Inventory)", "punctuation")
+				: ""
+		]);
 	}
 
 }

@@ -1,0 +1,27 @@
+{
+  "name": "Naturebender",
+  "description": "@{weapon::Hrotti} only; calculates damage using the @{tooltip:higher:The builder can't do this automatically, but you can set it up manually in the weapon stats.} of user's Str or Mag, effective against Cavalry and Dragon units.",
+  "requires": "All (Weapon Hrotti) (Crest Timotheos) (Guile E)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "relic",
+    "effective"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "E"
+}

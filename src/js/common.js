@@ -5,7 +5,7 @@
  */
 
 class SwapText {
-	constructor(modes) {
+	constructor(modes, hidden=false) {
 
 		this.root = element("div");
 
@@ -21,9 +21,11 @@ class SwapText {
 			});
 		});
 
-		this.root.onclick = (() => {
-			this.next();
-		});
+		if (!hidden) {
+			this.root.onclick = (() => {
+				this.next();
+			});
+		}
 
 		this.root.appendChild(this.modes[0]);
 	}
@@ -173,6 +175,10 @@ const element = (function () {
  * @param {object} content - content to add to child nodes
  */
 function content_action(element, content) {
+
+	// if (content === undefined) {
+	// 	debugger;
+	// }
 
 	if (content === null) {
 		// console.warn("make sure null content is intented behavior");
@@ -401,8 +407,6 @@ class AttributeCell {
 	}
 }
 
-
-
 const hilight = (function() {
 
 const BILREGEX = new RegExp([
@@ -428,6 +432,189 @@ return function(string) {
 
 })();
 
+const Filter = (function() {
+
+class Toggle {
+
+	constructor(title, value, check) {
+
+		this._input = element("button", {
+			attrs   : {
+				onclick: () => {
+					this.checked = !this.checked;
+					this.refresh();
+				},
+			},
+			content : title,
+			class   : ["tight"],
+		});
+
+		this._original = value;
+		this.checked   = value;
+
+		this.root = this._input;
+		this.fn   = check;
+	}
+
+	refresh() {
+
+	}
+
+	get checked() {
+		return this._checked;
+	}
+
+	set checked(value) {
+		this._checked = value;
+
+		if (this._checked) {
+			this._input.classList.add("toggle-on");
+			this._input.classList.remove("toggle-off");
+		} else {
+			this._input.classList.add("toggle-off");
+			this._input.classList.remove("toggle-on");
+		}
+	}
+
+	reset() {
+		this.checked = this._original;
+	}
+
+	apply(feature) {
+		return this.fn(feature, this);
+	}
+
+}
+
+class Group extends Array {
+
+	static AND(a, b) {
+		return a && b;
+	}
+
+	static OR(a, b) {
+		return a || b;
+	}
+
+	static END = null;
+
+	static NONE = null;
+
+	constructor(func, start, ...args) {
+		super(...args);
+		this._func  = func;
+		this._start = start;
+	}
+
+	apply(feature) {
+		let value = this._start;
+		for (let item of this) {
+			if (!item.checked) continue;
+			value = this._func(value, item.apply(feature));
+		}
+		return value;
+	}
+
+	get checked() {
+		return this.reduce((a, b) => a || b.checked, false);
+	}
+
+}
+
+/**
+ * Options for initializing a new SortFilter
+ * @typedef {object} SortFilterOptions
+ * @property {string} value - the default value
+ * @property {function} trigger - function to execute on select input
+ * @property {Feature} model - model type this selects from
+ * @property {array.<string>} name - names to add and the order to add them
+ * @property {array} content - the contents of this element
+ */
+
+class Select {
+
+	constructor(template) {
+
+		this._options = template.options;
+		this._select  = element("select", {
+			class : ["simple-border"],
+			attrs : {
+				value   : template.value,
+				oninput : template.trigger,
+			},
+		});
+
+		this._filters  = new Group(Group.AND, true);
+		this._model    = template.model;
+
+		let   group   = Group.NONE;
+		const content = [];
+		for (let item of template.content) {
+
+			if (item === Group.END) {
+				if (group !== Group.NONE) {
+					this._filters.push(group);
+				}
+				group = Group.NONE;
+			}
+			else
+			if (item instanceof Toggle) {
+				item.refresh = (() =>{
+					this.filter();
+				});
+
+				content.push(item.root);
+
+				if (group !== Group.NONE) {
+					group.push(item);
+				} else {
+					this._filters.push(item);
+				}
+			} 
+			else
+			if (item instanceof Group) {
+				group = item;
+			} else {
+				content.push(item);
+			}
+		}
+
+		this.root = element("span", [
+			tooltip(this._select, content), 
+		]);
+	
+		this.filter();
+	}
+
+	reset() {
+		for (let filter of this._filters) {
+			filter.reset();
+		}
+		this.filter();
+	}
+
+	filter() {
+		while (this._select.lastChild) {
+			this._select.lastChild.remove();
+		}
+
+		for (let option of this._options) {
+			const feature = this._model.get(option.value);
+			if (this._filters.apply(feature)) {
+				this._select.appendChild(option);
+			}
+		} 
+	}
+}
+
+return {
+	Toggle: Toggle,
+	Group: Group,
+	Select: Select,
+};
+
+})();
+
 /* exported wrap */
 /* exported capitalize */
 /* exported uniqueID */
@@ -441,3 +628,5 @@ return function(string) {
 /* exported template_object */
 /* exported ConfigEnum */
 /* exported SwapText */
+/* exported Updater */
+/* exported Filter */

@@ -5,7 +5,7 @@
   "requires": "Lances E",
   "rank": "E",
   "price": 420,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 4,
     "prot": 0,

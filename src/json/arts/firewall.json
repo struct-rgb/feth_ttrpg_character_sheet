@@ -1,28 +1,32 @@
 {
-	"name": "Fire Wall",
-	"type": "Reason",
-	"description": "Starting from target tile, create one or more fire patches (at most Mag / 5) in connecting tiles. Each has 1 HP and lasts until reduced to 0 HP. A non-Flying unit that begins its phase in a patch takes 20% nonlethal damage.",
-	"requires": "Any (Reason C) (Reason B)",
-  "base": "else",
-	"modifiers": {
-		"mt": 0,
-		"prot": 0,
-		"resl": 0,
-		"hit": 0,
-		"avo": 0,
-		"crit": 0,
-		"cravo": 0,
-		"minrng": 1,
-		"maxrng": 2,
-    "tiles": 0,
-
-		"spcost": 5,
-		"tpcost": 0,
-		"sp": 0,
-		"tp": 0
-	},
-
-	"comment": "",
-	"tags": ["tactical"],
-	"hidden": false
+  "name": "Fire Wall",
+  "description": "Starting from target tile, create one or more @{tile:Fire Patch:Fire Patches} (at most 1 per 5 Mag) in connecting tiles.",
+  "requires": "Any (Reason C) (Reason B)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tiles": "fill wall()",
+    "spcost": 5,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "tactical",
+    "wall",
+    "condition",
+    "fire"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C-B"
 }

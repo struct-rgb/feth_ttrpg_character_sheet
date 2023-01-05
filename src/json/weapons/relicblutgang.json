@@ -1,11 +1,11 @@
 {
   "name": "Blutgang",
   "type": "Swords",
-  "description": "Deal magic-based damage. If wielder has the Crest of the Beast, enables use of Beast Fang. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "Deal magic-based damage. If wielder has the Crest of the @{ability:Major Crest of the Beast:Beast}, enables use of @{art::Beast Fang}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Swords E",
   "rank": "E",
   "price": 0,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 13,
     "prot": 0,

@@ -1,11 +1,11 @@
 {
     "name": "Refined",
     "type": "Any",
-    "description": "Grants weapon +1 Mt, +10 Hit and +5 Crit. Disabled on spells except for Fire, Thunder, Wind, Blizzard, Banish, Miasma, Frostbite, Cutting Gale, Bolganone and Static Shock.",
+    "description": "Grants weapon +1 Mt, +10 Hit and +5 Crit. @{tooltip:Disabled:It doesn't say this in Patch #4, but logically, Refined should be able to apply to the upgraded versions of the upgradable Reason spells, right?} on spells except for Fire, Thunder, Wind, Blizzard, Banish, Miasma, Frostbite, Cutting Gale, Bolganone and Static Shock.",
     "rank": 1,
     "price": 650,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": 1,
         "prot": 0,

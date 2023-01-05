@@ -1,10 +1,11 @@
 {
     "name": "Myrmidon",
     "description": "A nimble Sword fighter.",
-    "type": "Martial",
+    "type": ["Infantry", "Martial"],
     "tier": "Starting",
     "requires": "Swords D",
-    "abilities": ["Zeal"],
+    "abilities": ["Zeal", "Level 10 Mov +1"],
+    "arts": [],
     "growths": {
         "hp": 15,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 1,
         "res": 1,
         "cha": 2,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

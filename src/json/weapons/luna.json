@@ -1,11 +1,11 @@
 {
   "name": "Luna",
   "type": "Guile",
-  "description": "Treat target foe's Resistance as 0 during damage calculation. (Resilience still applies.) Cannot make follow-up attacks.",
+  "description": "Target foe's Res is 0 during damage calculation (other sources of Resl apply as normal).  Cannot make follow-up attacks.",
   "requires": "Guile C",
   "rank": "C",
   "price": 4120,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 1,
     "prot": 0,

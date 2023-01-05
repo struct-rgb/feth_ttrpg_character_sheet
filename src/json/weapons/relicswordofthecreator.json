@@ -1,11 +1,11 @@
 {
   "name": "Sword of the Creator",
   "type": "Swords",
-  "description": "If wielder has the Crest of Flames, enables use of Heaven's Fall. If wielded by anyone other than Byleth, has Range = 1 and cannot make follow-up attacks.",
+  "description": "If wielder has the Crest of @{ability:Major Crest of Flames:Flames}, enables use of @{art::Ruptured Heaven}. If wielded by anyone other than Byleth, has Range = 1 and cannot make follow-up attacks.",
   "requires": "Swords E",
   "rank": "E",
   "price": 0,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 7,
     "prot": 0,

@@ -1,10 +1,11 @@
 {
     "name": "Archer",
     "description": "Bow focused martial class.",
-    "type": "Martial",
+    "type": ["Infantry", "Martial"],
     "tier": "Starting",
     "requires": "Bows D",
-    "abilities": ["Bow Range +1"],
+    "abilities": ["Bow Range +1", "Level 10 Mov +1"],
+    "arts": [],
     "growths": {
         "hp": 10,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 1,
         "res": 2,
         "cha": 3,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

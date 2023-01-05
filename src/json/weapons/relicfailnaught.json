@@ -1,11 +1,11 @@
 {
   "name": "Failnaught",
   "type": "Bows",
-  "description": "If wielder has the Crest of Riegan, enables use of Falling Star. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "Effective against Flying units. If wielder has the Crest of @{ability:Major Crest of Riegan:Riegan}, enables use of @{art::Fallen Star}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Bows E",
   "rank": "E",
   "price": 0,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 18,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Items in modifers should be integers",
-  "tags": ["relic"],
+  "tags": ["relic", "effective"],
   "hidden": false
 }

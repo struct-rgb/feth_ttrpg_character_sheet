@@ -2,10 +2,10 @@
   "name": "Iron Lance",
   "type": "Lances",
   "description": "No special effects. Costs 420G to upgrade from Training Lance.",
-  "requires": "Lances E",
-  "rank": "E",
+  "requires": "Lances D",
+  "rank": "D",
   "price": 840,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 6,
     "prot": 0,

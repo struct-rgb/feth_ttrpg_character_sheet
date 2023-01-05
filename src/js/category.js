@@ -5,6 +5,7 @@
  */
 
 /* global SwapText */
+/* global element */
 
 /**
  * @typedef {function() : boolean} CategoryElementCallback
@@ -44,7 +45,7 @@ class CategoryElement {
 		// assign attributes
 		this._active      = false;
 		this._title       = document.createTextNode(options.title || "");
-		this._description = document.createTextNode(options.description || "");
+		this._description = element("span", options.description || "");
 		this.onremove     = options.onremove || CategoryElement.pass;
 		this.ontoggle     = options.ontoggle || CategoryElement.pass;
 
@@ -107,20 +108,51 @@ class CategoryElement {
 				this.onremove.call();
 			});
 
-			this.removeButton         = document.createElement("input");
-			this.removeButton.value   = "❌";
-			this.removeButton.type    = "button";
-			this.removeButton.onclick = this.doRemoveEvent;
-			this.removeButton.classList.add("simple-border");
-			this.removeButton.classList.add("remove-button");
+			this.removeButton = element("button",  {
+				class   : ["toggle-off", "smol"],
+				content : "Delete",//"❌",
+				attrs   : {
+					onclick: this.doRemoveEvent,
+				}
+			});
+
 			this.dt.appendChild(this.removeButton);
 		} else {
 			this.removeButton = null;
 		}
 
+		const hidden = element("span", "\xA0", "punctuation");
+		this.swap    = new SwapText([this._description, hidden], true);
+
+
+		if (options.hideable) {
+			this.hideButton = element("button",  {
+				class   : ["toggle-off", "smol"],
+				content : "Hide",//"👁️",
+				attrs   : {
+					onclick : (() => {
+						this.swap.next();
+
+						const list = this.hideButton.classList;
+						if (list.contains("toggle-on")) {
+							list.remove("toggle-on");
+							list.add("toggle-off");
+						} else {
+							list.remove("toggle-off");
+							list.add("toggle-on");
+						}
+					}),
+				}
+			});
+
+			this.dt.appendChild(this.hideButton);
+		} else {
+			this.hideable = null;
+		}
+
 		// add entry content description
 		this.dd = document.createElement("dd");
-		this.dd.appendChild((new SwapText([this._description, "(Click for More)"])).root);//, this._description]);
+		this.dd.appendChild(this.swap.root);
 
 		// this belongs to no category by default
 		this.parent = null;
@@ -145,11 +177,21 @@ class CategoryElement {
 	 * @type {string}
 	 */
 	get description() {
-		return this._description.data;
+		// return this._description.data;
+		return this._description.lastChild;
 	}
 
 	set description(value) {
-		this._description.data = value;
+
+		if (typeof value == "string") {
+			value = element("span", value);
+		}
+
+		const last = this._description.lastChild;
+		if (last) last.remove();
+
+		this._description.appendChild(value);
+		// this._description.data = value;
 	}
 
 	/**
@@ -321,6 +363,7 @@ class CategoryModel {
  * @property {CategoryCallback} ontoggle - called when an element is toggled; action canceled if falsy value returned
  * @property {CategoryCallback} onremove - called when an element is removed; action canceled if falsy value returned
  * @property {HTMLElement} parent - parent element to add this item to
+ * @property {Filter.Select?} select - an optional Filter.Select
  */
 
 /**
@@ -349,6 +392,7 @@ class Category {
 		this.onremove    = options.onremove || Category.succeed;
 		this.reorderable = Boolean(options.reorderable);
 		this.removable   = Boolean(options.removable);
+		this.hideable    = Boolean(options.hideable);
 		this.selectable  = Boolean(options.selectable);
 		this.addActive   = Boolean(options.addActive || false);
 		this.parent      = null;
@@ -380,17 +424,23 @@ class Category {
 			this.addButton.classList.add("simple-border");
 			this.root.appendChild(this.addButton);
 
-			// create a selector of valid values
-			this.select = document.createElement("select");
-			this.select.classList.add("simple-border");
-			for (let item of this.model.values()) {
-				if ("hidden" in item && item.hidden) continue;
-				const option = document.createElement("option");
-				option.value = item.name;
-				option.appendChild(document.createTextNode(item.name));
-				this.select.appendChild(option);
-			}
-			this.root.appendChild(this.select);
+			if (options.select) {
+				this._sf    = options.select;
+				this.select = this._sf._select;
+				this.root.appendChild(this._sf.root);
+			} else {
+				// create a selector of valid values
+				this.select = document.createElement("select");
+				this.select.classList.add("simple-border");
+				for (let item of this.model.values()) {
+					if ("hidden" in item && item.hidden) continue;
+					const option = document.createElement("option");
+					option.value = item.name;
+					option.appendChild(document.createTextNode(item.name));
+					this.select.appendChild(option);
+				}
+				this.root.appendChild(this.select);
+			}	
 		}
 
 		this._textnode  = document.createTextNode(this.empty);
@@ -537,7 +587,10 @@ class Category {
 	 */
 	add(name) {
 		// prevent adding illegal items
-		if (!this.model.has(name)) return false;
+		if (!this.model.has(name)) {
+			console.error(name);
+			return false;
+		}
 
 		// prevent the addition of duplicate items
 		if (this.elements.has(name)) return false;
@@ -553,6 +606,7 @@ class Category {
 			triggers    : this.model.triggers(name),
 			reorderable : this.reorderable,
 			removable   : this.removable,
+			hideable    : this.hideable,
 			onremove    : (() => {
 				return this.onremove.call(undefined, this, name);
 			}),

@@ -1,11 +1,11 @@
 {
   "name": "Wo Dao",
   "type": "Swords",
-  "description": "This weapon has increased crit.",
+  "description": "Consumes 3 TP when dealing damage. Cannot be equipped while wielder has 0 TP.",
   "requires": "Swords B",
   "rank": "B",
   "price": 3825,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 8,
     "prot": 0,

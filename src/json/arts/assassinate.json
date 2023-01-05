@@ -1,0 +1,24 @@
+{
+  "name": "Assassinate",
+  "description": "Target foe's Def and Res are 0 during damage calculation (other sources of Prot and Resl apply as normal).",
+  "requires": "All (Swords A) (Bows A) (Level 25)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 15,
+    "avo": 15,
+    "crit": 0,
+    "cravo": 15,
+    "minrng": 1,
+    "maxrng": 3,
+    "tpcost": 0,
+    "spcost": 10
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Swords-Bows",
+  "rank": "A-A"
+}

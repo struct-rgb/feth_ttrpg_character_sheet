@@ -1,11 +1,11 @@
 {
   "name": "Niflheim",
   "type": "Reason",
-  "description": "An ice spell; hits foes adjacent to target. On hit, apply [Mov -1] to target and adjacent foes after combat for 1 turn.",
+  "description": "An ice spell; hits foes adjacent to target. On hit, apply @{const:gbp:[Mov -1]} to target and adjacent foes after combat for 1 turn.",
   "requires": "Reason A",
   "rank": "A",
   "price": 3960,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 9,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": ["condition", "aoe", "ice"],
   "hidden": false
 }

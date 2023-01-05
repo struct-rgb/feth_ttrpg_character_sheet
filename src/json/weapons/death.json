@@ -5,7 +5,7 @@
   "requires": "Guile C",
   "rank": "C",
   "price": 1250,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 6,
     "prot": 0,

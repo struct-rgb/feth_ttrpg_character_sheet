@@ -1,9 +1,8 @@
 {
   "name": "Lightning Wall",
-  "type": "Reason",
-  "description": "Starting from target empty tile, create one or more lightning patches (at most Mag / 5) in connecting empty tiles. Patches last 1 turn. Once per turn, a unit that enters a patch takes 20% nonlethal damage and can't move for the rest of the phase.",
+  "description": "Starting from target empty tile, create one or more @{tile:Lightning Arc:Lightning Arcs} (at most 1 per 5 Mag) in connecting empty tiles for one turn.",
   "requires": "Reason B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -14,15 +13,20 @@
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
-    "tiles": 0,
-
+    "tiles": "fill wall()",
     "spcost": 7,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "wall",
+    "condition",
+    "lightning"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "B"
 }

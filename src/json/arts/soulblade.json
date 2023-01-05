@@ -1,0 +1,26 @@
+{
+  "name": "Soulblade",
+  "description": "Deals magic-based damage. Mt +30% of user’s Res.",
+  "requires": "Any (Swords C) (Swords B)",
+  "mttype": "mag",
+  "modifiers": {
+    "mt": "fill scale(2, [Res], unit|total|res)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "scales"
+  ],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "C-B"
+}

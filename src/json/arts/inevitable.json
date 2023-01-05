@@ -1,9 +1,8 @@
 {
   "name": "Inevitable",
-  "type": "Other",
   "description": "Hit +20. This metamagic ability can be used with another one.",
   "requires": "Guile D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,16 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "combo"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "D"
 }

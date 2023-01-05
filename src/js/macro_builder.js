@@ -9,6 +9,7 @@
 /* global Expression */
 
 /* global CombatArt */
+/* global hitip */
 
 /**
  * A module that implements a builder for Roll20 Macros
@@ -231,14 +232,21 @@ class UserInterface {
 				}
 			}),
 
-			element("input", {
-				class: ["simple-border"],
-				attrs: {
-					type    : "button",
-					value   : "Create Macro",
-					onclick : (() => this.sheet.macro()),
-				}
-			}),
+			tooltip(
+				element("input", {
+					class: ["simple-border"],
+					attrs: {
+						type    : "button",
+						value   : "Create Macro",
+						onclick : (() => this.sheet.macro()),
+					}
+				}),
+				wrap(
+					"In order to generate correct macros for tactical arts ",
+					"make sure your select weapon is \"Blank Weapon\" in the ",
+					"Create > Weapons & Spells tab. (It's Other E Rank.)"
+				),
+			),
 
 			element("br"),
 			
@@ -403,6 +411,13 @@ class UserInterface {
 					this._defs.appendChild(element("dd", fn.about));
 				}
 
+				const macros = this.sheet.compiler.macros;
+				if (token in macros) {
+					const template = macros[token];
+					this._defs.appendChild(element("dt", template.called));
+					this._defs.appendChild(element("dd", template.about));
+				}
+
 				seen.add(token);
 			}
 		} catch (e) {
@@ -414,7 +429,7 @@ class UserInterface {
 
 		const m   = new Builder();
 		const wpn = this.sheet.weaponz;
-		const art = CombatArt.get(this.sheet.combatarts.equipped.getActive());
+		const art = CombatArt.get(this.sheet.arts.equipped.getActive());
 
 		const env = new Expression.Env(
 			Expression.Env.MACROGEN
@@ -449,7 +464,7 @@ class UserInterface {
 			);
 		}
 
-		if (!wpn.template.tagged("no hit")) {
+		if (!wpn.template.tagged("no hit") && !art.tagged("no hit")) {
 			(m
 				.row("To Hit",
 					m.merge(
@@ -485,20 +500,69 @@ class UserInterface {
 			.row("Speed",
 				m.sum(env.read("unit|total|spd")))
 			.line("")
-			.line(m.italic(
-				`${this.sheet.weaponz.name}: ${this.sheet.weaponz.fullInfo()}`
-			))
+			// .line(m.italic(
+			// 	`${this.sheet.weaponz.name}: ${this.sheet.weaponz.fullInfo()}`
+			// ))
 		);
 
-		if (this.sheet.combatarts.equipped.getActive()) {
-			m.line(m.italic(
-				`${art.name}: ${art.description}`
-			));
+		const set = new Set([wpn.name]);
+
+		for (let line of hitip.text(wpn, set, false)) {
+			m.line(m.italic(line));
+		}
+
+		if (this.sheet.arts.equipped.getActive()) {
+			for (let line of hitip.text(art, set, false)) {
+				m.line(m.italic(line));
+			}
 		}
 
 		const macro = m.macro();
 		console.log(macro);
 		this._display.value = macro;
+	}
+
+
+
+	/* todo make this work */
+	blurb() {
+
+		alert("This feature is incomplete and may give incorrect or incomplete results");
+
+		const text  = [];
+		const sheet = this.sheet;
+		const env   = new Expression.Env(Expression.Env.RUNTIME, sheet.definez);
+
+		text.push(sheet.character.name, "\n\n");
+		for (let name of sheet.stats.names) {
+			text.push(
+				name.toUpperCase(), ": ",
+				env.read(`unit|total|${name}`), "\n"
+			);
+		}
+		text.push("\n");
+
+		const active = sheet.wb.activeID;
+
+		for (let uid of sheet.wb.category.names()) {
+			sheet.wb.change(uid);
+			if (sheet.wb.model.inInventory) {
+				text.push(sheet.wb.model.template.blurb(), "\n\n");
+			}
+		}
+
+		sheet.wb.change(active);
+
+		/*
+		 * Weapons & Spells
+		 * Equipment
+		 * Class Abilites
+		 * Equipped Abilities
+		 * Class Arts
+		 * Equipped Arts
+		 */
+
+		this._display.value = text.join("");
 	}
 }
 

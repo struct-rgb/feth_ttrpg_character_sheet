@@ -1,9 +1,8 @@
 {
   "name": "Wind Wall",
-  "type": "Reason",
-  "description": "Starting from target tile, create one or more wind torrents (at most Mag / 5) in connecting tiles. Torrents last 1 turn. Creating a torrent in a tile with a unit moves that unit to an adjacent empty tile, if possible. Flying units cannot enter torrent tiles; torrent tiles cost other units 2 movement to enter. Units can’t target other units through torrents except at 1 Range.",
-  "requires": "Any (Reason B) (Reason C)",
-  "base": "else",
+  "description": "Starting from target tile, create one or more @{tile:Wind Torrent:Wind Torrents} (at most 1 per 5 Mag) in connecting tiles for one turn.",
+  "requires": "Any (Reason C) (Reason B)",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -14,15 +13,19 @@
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
-    "tiles": 0,
-
+    "tiles": "fill wall()",
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "wall",
+    "wind"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C-B"
 }

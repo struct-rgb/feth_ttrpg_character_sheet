@@ -660,10 +660,10 @@ class LevelHistory {
 							this.sheet.stats.stats[name].value = value;
 						}
 
-						this.sheet.stats.level = (
-							Math.floor(this.level()) - 1
-						) * 100;
-
+						// this.sheet.stats.level = (
+						// 	Math.floor(this.level()) - 1
+						// ) * 100;
+						this.sheet.stats.level = this.level();
 					})
 				},
 			}),
@@ -1591,13 +1591,13 @@ class Stats {
 
 		const baseFunction = new Expression.Env(
 			Expression.Env.RUNTIME, this.sheet.definez
-		).func("weapon|total|base");
+		).func("unit|total|mttype");
 
 		const second = element("tbody", [
 			wide("Might", "mt"),
-			wide("Based on", "base", (base) => {
+			wide("Based on", "mttype", (base) => {
 				const value = baseFunction();
-				const text  = AttackFeature.BASE.asString(value);
+				const text  = AttackFeature.MTTYPE.asString(value);
 				return text.toUpperCase();
 			}),
 			dual("Prot/Resl", "prot", "resl"),

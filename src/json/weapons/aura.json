@@ -5,7 +5,7 @@
   "requires": "Faith A",
   "rank": "A",
   "price": 3650,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 12,
     "prot": 0,

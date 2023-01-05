@@ -1,9 +1,8 @@
 {
   "name": "Mass Rally",
-  "type": "Other",
-  "description": "Costs 2 Stamina Points to use out of combat. If this Unit has any Rally Skills equipped, they can use this Combat Art to grant their Rally ability bonuses and Movement +1 to all allies within 2 spaces. If this Unit has no Rally Skills equipped, they grant Movement +1 to all allies within 2 spaces instead.",
-  "requires": "All (Axes B+) (Faith B+)",
-  "base": "else",
+  "description": "Apply @{const:gbp:[Mov +1]} and the conditions applied by all other equipped \"Rally\" arts to all allies within 2 spaces for one turn.",
+  "requires": "All (Axes B+) (Faith B+) (Level 25)",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 1,
     "maxrng": 2,
     "tiles": 0,
-
     "spcost": 2,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "condition",
+    "rally"
+  ],
+  "hidden": false,
+  "type": "Axes-Faith",
+  "rank": "B+-B+"
 }

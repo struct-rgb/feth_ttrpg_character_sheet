@@ -1,10 +1,11 @@
 {
   "name": "Bishop",
   "description": "An advanced class that uses Faith.",
-  "type": "Other",
+  "type": ["Infantry", "Caster"],
   "tier": "Advanced",
   "requires": "All (Faith B) (Required (Level 15))",
   "abilities": [ "Faith Magic Heal +10", "Faith Consumption 2", "Terrain Resistance" ],
+    "arts": [],
   "growths": {
     "hp": 15,
     "str": 15,
@@ -24,7 +25,7 @@
     "def": 0,
     "res": 7,
     "cha": 2,
-    "mov": 0
+    "mov": 4
   },
   "mount": null,
 

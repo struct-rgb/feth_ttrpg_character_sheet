@@ -76,3 +76,39 @@ meter::-webkit-meter-bar {
 	color: black;
 	font-weight: bolder;
 }
+
+button.toggle-on {
+	color: black;
+	background: cyan;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+}
+
+button.toggle-off {
+	color: white;
+	background: black;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+}
+
+.hl-identifier {
+	/*color: ;*/
+}
+
+.hl-reserved {
+	color: blue;
+}
+
+.hl-operator {
+	color: #DC582A;
+}
+
+.hl-literal {
+	color: orange;
+}
+
+.punctuation {
+	color: grey;
+}

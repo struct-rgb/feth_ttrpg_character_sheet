@@ -1,10 +1,11 @@
 {
     "name": "Great Knight",
     "description": "A armored knight who fights from horseback",
-    "type": ["Armor", "Cavalry"],
+    "type": ["Armor", "Cavalry", "Martial"],
     "tier": "Advanced",
     "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Swordfaire", "Lancefaire", "Axefaire", "Weight -3", "Canto"],
+    "abilities": ["Sword Advantage", "Lance Advantage", "Axe Advantage", "Weight -3", "Canto"],
+    "arts": [],
     "growths": {
         "hp": 30,
         "str": 25,
@@ -24,7 +25,7 @@
         "def": 5,
         "res": 4,
         "cha": 2,
-        "mov": 0
+        "mov": 4
     },
     "mount": {
         "hp": 0,

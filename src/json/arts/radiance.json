@@ -1,0 +1,27 @@
+{
+  "name": "Radiance",
+  "description": "@{weapon::Ichor Scroll} only; restores HP equal to 50% of damage dealt, effective against Dragon units.",
+  "requires": "All (Weapon `Ichor Scroll`) (Crest Lamine) (Faith E)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "relic",
+    "effective"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "E"
+}

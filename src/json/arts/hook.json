@@ -1,0 +1,26 @@
+{
+  "name": "Hook",
+  "description": "On hit, moves target foe one space closer to user.",
+  "requires": "Any (Lances C) (Lances B)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 20,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "movement"
+  ],
+  "hidden": false,
+  "type": "Lances",
+  "rank": "C-B"
+}

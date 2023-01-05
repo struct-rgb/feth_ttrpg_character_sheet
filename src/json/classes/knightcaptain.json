@@ -1,10 +1,11 @@
 {
     "name": "Knight Captain",
     "description": "An knight versed in armored combat with expertise in embattlement",
-    "type": "Armor",
+    "type": ["Armor", "Martial"], 
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
-    "abilities": ["Swordfaire", "Lancefaire", "Weight -3", "Barricade +5"],
+    "abilities": ["Sword Advantage", "Lance Advantage", "Weight -3"],
+    "arts": ["Barricade"],
     "growths": {
         "hp": 30,
         "str": 20,
@@ -24,7 +25,7 @@
         "def": 5,
         "res": 3,
         "cha": 3,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

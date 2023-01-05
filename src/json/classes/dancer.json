@@ -1,10 +1,11 @@
 {
     "name": "Dancer",
     "description": "A performer who raises morale, allowing allies to act again",
-    "type": "Martial",
+    "type": ["Infantry", "Martial", "Caster"],
     "tier": "Starting",
     "requires": "Required (Permission `Did they dance at the White Heron Cup?`)",
-    "abilities": ["Dance", "Avoid +20"],
+    "abilities": ["Avo +20", "Level 10 Mov +1"],
+    "arts": ["Dance", "Martial Dance"],
     "growths": {
         "hp": 20,
         "str": 15,
@@ -24,7 +25,7 @@
         "def": 0,
         "res": 0,
         "cha": 5,
-        "mov": 1
+        "mov": 5
     },
     "mount": null,
 

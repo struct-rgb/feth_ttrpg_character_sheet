@@ -1,9 +1,8 @@
 {
   "name": "Lunar Chill",
-  "type": "Other",
-  "description": "When casting an Ice Spell, create a 2x2 area within 2 spaces of you surrounded by a refreshing, cold aura. Any Unit that ends their turn within those spaces recovers HP equal to your spell’s Mt + 6.",
+  "description": "Ice metamagic; after combat, create a 2x2 area of @{tile:Heal Tile:Heal Tiles}, where X is 6 + the spell's Mt, within 2 spaces of this unit. (Specify end condition.)",
   "requires": "Reason B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,20 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 8,
     "tpcost": 5,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "aoe",
+    "wall",
+    "ice",
+    "rework",
+    "healing"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "B"
 }

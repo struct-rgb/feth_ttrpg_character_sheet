@@ -1,12 +1,13 @@
 {
   "name": "Silence",
   "type": "Faith",
-  "description": "On hit, apply [Silence] to target foe for 1 turn.",
+  "description": "On hit, apply @{condition:Silence:[Silence]} to target foe for 1 turn.",
   "requires": "Faith C",
   "rank": "C",
   "price": 2150,
-  "base": "n/a",
+  "mttype": "none",
   "modifiers": {
+    "mt": 0,
     "prot": 0,
     "resl": 0,
     "hit": 90,
@@ -23,7 +24,8 @@
   "comment": "Incompatible with all Attributes.",
   "tags": [
     "no might",
-    "no triangle"
+    "no triangle",
+    "condition"
   ],
   "hidden": false
 }

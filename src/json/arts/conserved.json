@@ -1,9 +1,8 @@
 {
   "name": "Conserved",
-  "type": "Other",
   "description": "Reduce the SP cost of your healing spell by 3 (minimum of 1). A spell performed this way has a 25% chance of being lost.",
   "requires": "Faith C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 0,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "rework",
+    "combo"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "C"
 }

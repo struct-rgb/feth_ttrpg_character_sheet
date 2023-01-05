@@ -5,7 +5,7 @@
     "rank": 2,
     "price": 1100,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["cost"],
     "hidden": true
 }

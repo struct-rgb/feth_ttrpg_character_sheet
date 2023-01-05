@@ -1,10 +1,11 @@
 {
     "name": "Valkyrie",
     "description": "A veteran mage who commands the battlefield from horseback",
-    "type": "Cavalry",
+    "type": ["Cavalry", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Faith C+)) (Required (Riding C+)) (Required (Level 15))",
     "abilities": ["Reason Range +1", "Faith Range +1", "Canto", "Tactician"],
+    "arts": [],
     "growths": {
         "hp": 20,
         "str": 15,
@@ -24,7 +25,7 @@
         "def": 2,
         "res": 1,
         "cha": 1,
-        "mov": 0
+        "mov": 4
     },
     "mount": {
         "hp": 0,

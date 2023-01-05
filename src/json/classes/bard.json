@@ -1,10 +1,11 @@
 {
   "name": "Bard",
   "description": "An advanced class that uses Authority.",
-  "type": "Other",
+  "type": ["Infantry", "Other"],
   "tier": "Advanced",
   "requires": "Authority B",
   "abilities": [ "Calm Spirit", "Positioning" ],
+    "arts": [],
   "growths": {
     "hp": 20,
     "str": 15,
@@ -24,7 +25,7 @@
     "def": 0,
     "res": 2,
     "cha": 5,
-    "mov": 1
+    "mov": 5
   },
   "mount": null,
 

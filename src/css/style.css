@@ -1,7 +1,12 @@
 
+dl {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
 .container {
 	display: grid;
-	grid-template-columns: 95px 150px 280px 1fr;
+	grid-template-columns: 110px 180px 320px 1fr;
 	/*grid-template-columns: 1fr 1fr 2fr 2fr;*/
 	grid-auto-rows: repeat(2, 1fr);
 	grid-column-gap: 10px;
@@ -133,9 +138,9 @@ meter {
 
 .scrolls {
 	/*max-width: 50%;*/
-	max-height: 30%;
-	overflow-y: auto;
-	overflow-x: hidden;
+	/*max-height: 30%;*/
+	/*overflow-y: auto;*/
+	/*overflow-x: hidden;*/
 }
 
 .notebook-tab {
@@ -160,7 +165,13 @@ h1 {
 	margin-left: 1em;
 }
 
+/* todo make this use ul.compact-list */
 .center-pane ul {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+ul.compact-list {
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
@@ -254,3 +265,51 @@ ol.arglist {
 	height: 200px;
 }
 
+select {
+	min-width: 100px;
+}
+
+/* scrollbar stuff for chrome */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: grey; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: darkgrey; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: lightgrey; 
+}
+
+.cost {
+	font-weight: bold;
+	padding: 0px;
+	margin: 0px;
+}
+
+div.calc-code {
+	/*font-size: 0.75em;*/
+	font-family: monospace, monospace;
+	/*text-align: left;*/
+	white-space: pre;
+	overflow-x: auto;
+	overflow-y: hidden;
+	margin: 3px;
+}
+
+button.smol {
+	font-size: 0.5em;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+button.tight {
+	margin: 0;
+}

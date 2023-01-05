@@ -1,9 +1,8 @@
 {
   "name": "Ward",
-  "type": "Faith",
-  "description": "Apply [Warded] to target ally.",
+  "description": "Apply @{condition:Warded:[Warded]} to target ally.",
   "requires": "Faith C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 1,
     "maxrng": 1,
     "tiles": 0,
-
     "spcost": 3,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "C"
 }

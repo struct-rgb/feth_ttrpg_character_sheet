@@ -1,11 +1,11 @@
 {
   "name": "Rapier",
   "type": "Swords",
-  "description": "Effective against Armor and Cavalry units.",
+  "description": "Effective against Armor and Cavalry units. Consumes 3 TP when dealing damage. Cannot be equipped while wielder has 0 TP.",
   "requires": "Swords E",
   "rank": "E",
   "price": 0,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 7,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Items in modifers should be integers",
-  "tags": [],
+  "tags": ["effective"],
   "hidden": false
 }

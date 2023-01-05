@@ -5,7 +5,7 @@
   "requires": "Guile D",
   "rank": "D",
   "price": 0,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 9,
     "prot": 0,

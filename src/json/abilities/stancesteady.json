@@ -1,0 +1,38 @@
+{
+    "name": "Steady Stance",
+    "description": "Grants Hit +30 in combat when foe initiates combat.",
+    "requires": "All (Lances E) (Level 0)",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill stance(30)",
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["stance", "in combat", "rework"],
+    "hidden": false
+}

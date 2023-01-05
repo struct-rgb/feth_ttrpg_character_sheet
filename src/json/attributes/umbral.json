@@ -5,7 +5,7 @@
     "rank": 0,
     "price": 0,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": "ask [Times Crit?] end",
         "prot": 0,

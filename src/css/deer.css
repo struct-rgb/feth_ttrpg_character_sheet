@@ -80,11 +80,10 @@ table {
 	color: #ceba08;
 	outline: none;
 	background: #544b00;
-	border-radius: 3px;
+	border-radius: 6px;
 	border-width: 2px;
 	border-color: #ceba08;
 	border-style: ridge;
-	margin: 3px;
 }
 
 .attempt-enabled .tts {
@@ -138,4 +137,38 @@ input[type="checkbox"]:checked {
 	background: #ceba08;
 	color: #fcfaed;
 	font-weight: bolder;
+}
+
+button.toggle-on {
+	background: #fce114;
+	color: #544b00;
+	border-radius: 5px;
+	border-width: 3px;
+	border-color: #fce114;
+	border-style: inset;
+}
+
+button.toggle-off {
+	background: #ceba08;
+	color: #fcfaed;
+	border-radius: 5px;
+	border-width: 3px;
+	border-color: #ceba08;
+	border-style: inset;
+}
+
+.hl-identifier {
+	/*color: white;*/
+}
+
+.hl-reserved {
+	color: #ceba08;
+}
+
+.hl-operator {
+	color: #ceba08;
+}
+
+.hl-literal {
+	color: #fce114;
 }

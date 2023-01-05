@@ -2,10 +2,10 @@
   "name": "Iron Sword",
   "type": "Swords",
   "description": "No special effects. Costs 390G to upgrade from Training Sword.",
-  "requires": "Swords E",
-  "rank": "E",
+  "requires": "Swords D",
+  "rank": "D",
   "price": 780,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 4,
     "prot": 0,

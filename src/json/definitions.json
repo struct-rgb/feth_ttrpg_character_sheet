@@ -11,51 +11,41 @@
       "cha",
       "mov"
     ],
-    "linked": [
-      [
-        "str",
-        "pmt"
-      ],
-      [
-        "mag",
-        "mmt"
-      ],
-      [
-        "dex",
-        "hit"
-      ],
-      [
-        "dex",
-        "crit"
-      ],
-      [
-        "cha",
-        "cravo"
-      ],
-      [
-        "cha",
-        "newcrit"
-      ],
-      [
-        "spd",
-        "avo"
-      ],
-      [
-        "def",
-        "pdr"
-      ],
-      [
-        "res",
-        "mdr"
-      ],
-      [
-        null,
-        "minrng"
-      ],
-      [
-        null,
-        "maxrng"
-      ]
+    "first": [
+      "hp",
+      "str",
+      "mag",
+      "dex",
+      "spd",
+      "def",
+      "res",
+      "cha",
+      "mov"
+    ],
+    "second": [
+      "mt",
+      "prot",
+      "resl",
+      "hit",
+      "avo",
+      "crit",
+      "cravo",
+      "minrng",
+      "maxrng",
+      "sp",
+      "tp",
+      "spcost",
+      "tpcost"
+    ],
+    "battalion": [
+      "str",
+      "mag",
+      "def",
+      "res",
+      "hit",
+      "avo",
+      "crit",
+      "cha"
     ]
   },
   "skills": [
@@ -63,7 +53,7 @@
     "Swords",
     "Lances",
     "Brawl",
-    "Archery",
+    "Bows",
     "Reason",
     "Faith",
     "Guile",
@@ -71,5 +61,228 @@
     "Armor",
     "Riding",
     "Flying"
-  ]
+  ],
+  "macros": [
+    {
+      "define": [
+        "template bothif(condition, true, false)",
+        "  metaif builtins|macrogen == 1 then",
+        "    metaif condition <> 0",
+        "      then true",
+        "      else false",
+        "    end",
+        "  else",
+        "    if     condition <> 0",
+        "      then true",
+        "      else false",
+        "    end",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Generates an compound conditional expression that evaluates as a ",
+        "[metaif] expression during Roll20 macro generation and as a normal ",
+        "[if] expression during runtime in the character builder. The values ",
+        "provided by the [condition] argument are tested to see whether ",
+        "[condition] [<>] 0 in the embedded conditionals."
+      ],
+      "args": [
+        "expression for condtion to test",
+        "expression to insert if condtion is true",
+        "expression to insert if condtion is false"
+      ]
+    },
+    {
+      "define": [
+        "template affirm(title, yes, no)",
+        "  ask [title]",
+        "    , No  { no  }",
+        "    ; Yes { yes }",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Creates a Yes/No prompt that defaults to the Yes option in the ",
+        "character builder and the No option in the generated Roll20 macro. "
+      ],
+      "args": [
+        "[bracketed text] that the prompt should display",
+        "an expression for if user selects Yes",
+        "an expression for if user selects No"
+      ]
+    },
+    {
+      "define": [
+        "template deny(title, yes, no)",
+        "  ask [title]",
+        "    ; Yes { yes }",
+        "    , No  { no  }",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Creates a Yes/No prompt that defaults to the Yes option in the ",
+        "character builder and the Yes option in the generated Roll20 macro. "
+      ],
+      "args": [
+        "[bracketed text] that the prompt should display",
+        "an expression for if user selects Yes",
+        "an expression for if user selects No"
+      ]
+    },
+    {
+      "define": [
+        "template blow(modifier)",
+        "  fill affirm([Unit Initiated?], modifier, 0)",
+        "end"
+      ],
+      "about": [
+        "Macro for the *blow family of skills that give in-combat bonuses ",
+        "when unit initiates combat."
+      ],
+      "args": [
+        "an expression for the bonus granted"
+      ]
+    },
+    {
+      "define": [
+        "template bowhit(base)",
+        "  base + other|range_penalty|prompt",
+        "end"
+      ],
+      "about": [
+        "Applies the range penalty prompt to a bow's hit formula"
+      ],
+      "args": [
+        "an expression for the bow's base hit"
+      ]
+    },
+    {
+      "define": [
+        "template stance(modifier)",
+        "  fill affirm([Foe Initiated?], modifier, 0)",
+        "end"
+      ],
+      "about": [
+        "Macro for the * stance family of skills that give in-combat bonuses ",
+        "when a foe initiates combat."
+      ],
+      "args": [
+        "an expression for the bonus granted"
+      ]
+    },
+    {
+      "define": [
+        "template advantage(variable)",
+        "  fill bothif(",
+        "    variable,",
+        "    ask [Triangle Effect?]",
+        "      ; Neutral      {0}",
+        "      , Advantage    {5}",
+        "      , Disadvantage {0}",
+        "    end,",
+        "    0",
+        "  )",
+        "end"
+      ],
+      "about": [
+        "Macro for the * advantage family of skills that give Mt +5 in ",
+        "combat when unit has weapon triangle advantage."
+      ],
+      "args": [
+        "a variable to test for the weapon type"
+      ]
+    },
+    {
+      "define": [
+        "template defiant(bonus)",
+        "  ask [HP ≤ 25%?]",
+        "    , No     {0}",
+        "    ; Yes    {bonus}",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Macro for the Defiant *  family of skills that give stat bonuses in ",
+        "combat when unit is at ≤ 25% HP."
+      ],
+      "args": [
+        "an expression for the bonus to give"
+      ]
+    },
+    {
+      "define": [
+        "template faire(variable)",
+        "  fill bothif(variable, 5, 0)",
+        "end"
+      ],
+      "about": [
+        "Macro for the * advantage family of skills that give Mt +5 in ",
+        "combat when unit uses associate weapon type."
+      ],
+      "args": [
+        "a variable to test for the weapon type"
+      ]
+    },
+    {
+      "define": [
+        "template simplify(expression)",
+        "  metaif builtins|macrogen == 1",
+        "    then meta(expression)",
+        "    else expression",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Simplifies expressions in generated Roll20 macros by using [meta] ",
+        "to evaluate them at compile time. Using this is safer than using ",
+        "meta directly, since it includes a [metaif] guard to evaluate ",
+        "the expression normally during runtime."
+      ],
+      "args": [
+        "an expression to evaluate/simplify"
+      ]
+    },
+    {
+      "define": [
+        "template scale(base, title, variable)",
+        "  base + floor(([title] {fill simplify(variable)}) * 0.3)",
+        "end"
+      ],
+      "about": [
+        "Implements those combat arts that scale based off of a specific ",
+        "statistic. This is a standart template so that if the way they're ",
+        "computed ever changes it can be changed everywhere easily."
+      ],
+      "args": [
+        "minimum number of points to add",
+        "Roll20 variable name as [bracketed text] to read if configured",
+        "character builder variable to base additional scaled might on"
+      ]
+    },
+    {
+      "define": [
+        "template wall()",
+        "  floor((Mag {unit|total|mag}) / 5)",
+        "end"
+      ],
+      "about": [
+        "Generates the appriate tile number scaling for the Reason wall spells."
+      ],
+      "args": []
+    }
+  ],
+  "tooltips" : {
+    "gbp": [
+      "Conditions of the forms @{::[Stat +X]} and @{::[Stat -X]} apply a modifier equal ",
+      "to X to the listed Stat. When multiple such conditions sharing the same ",
+      "Stat and sign (+ or -) are applied to a unit, they merge together into ",
+      "one condition, taking the larger magnitude and the longer remaining ",
+      "duration of the two."
+    ],
+    "variant": [
+      "Reason metamagic variants are alternate effects that activate instead ",
+      "of the normal effects when used with a specific spell."
+    ]
+  }
 }

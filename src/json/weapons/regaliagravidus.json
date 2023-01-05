@@ -5,7 +5,7 @@
   "requires": "Lances A+",
   "rank": "A+",
   "price": 9015,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 17,
     "prot": 0,

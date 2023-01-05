@@ -1,11 +1,11 @@
 {
   "name": "Hrotti",
   "type": "Guile",
-  "description": "If wielder has the Crest of Timotheos, enables use of {PLACEHOLDER: effective against cavs and targets lower of def or resl}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "If wielder has the Crest of @{ability:Major Crest of Timotheos:Timotheos}, enables use of @{art::Naturebender}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Guile E",
   "rank": "E",
   "price": 0,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 23,
     "prot": 0,

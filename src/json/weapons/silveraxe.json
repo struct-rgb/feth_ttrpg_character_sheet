@@ -5,7 +5,7 @@
   "requires": "Axes C",
   "rank": "C",
   "price": 2175,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 16,
     "prot": 0,

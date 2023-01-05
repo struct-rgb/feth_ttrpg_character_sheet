@@ -1,10 +1,11 @@
 {
     "name": "Cavalier",
     "description": "A warrior who fights from horseback",
-    "type": "Cavalry",
+    "type": ["Cavalry", "Martial"],
     "tier": "Starting",
     "requires": "Riding D",
     "abilities": ["Flashing Blade", "Canto"],
+    "arts": [],
     "growths": {
         "hp": 25,
         "str": 15,
@@ -24,7 +25,7 @@
         "def": 2,
         "res": 1,
         "cha": 1,
-        "mov": 0
+        "mov": 4
     },
     "mount": {
         "hp": 0,

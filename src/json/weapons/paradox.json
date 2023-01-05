@@ -1,11 +1,11 @@
 {
   "name": "Paradox",
   "type": "Guile",
-  "description": "On hit, apply [Dex/Spd -3] to target foe after combat for 1 turn.",
+  "description": "On hit, apply @{const:gbp:[Dex -3]} and @{const:gbp:[Spd -3]} to target foe after combat for 1 turn.",
   "requires": "Guile A",
   "rank": "A",
   "price": 4220,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 14,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": ["condition"],
   "hidden": false
 }

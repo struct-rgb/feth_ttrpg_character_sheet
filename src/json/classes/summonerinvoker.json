@@ -1,10 +1,11 @@
 {
     "name": "Summoner/Invoker",
     "description": "A mystic who calls on spirits to aid in battle",
-    "type": "Other",
+    "type": ["Infantry", "Caster"],
     "tier": "Advanced",
     "requires": "All (Guile C+) (Faith C+) (Required (Level 15))",
     "abilities": ["Group Lull Def/Cha", "Invocation", "Consumption 1"],
+    "arts": ["Summon"],
     "growths": {
         "hp": 15,
         "str": 15,
@@ -24,7 +25,7 @@
         "def": 0,
         "res": 5,
         "cha": 4,
-        "mov": 1
+        "mov": 4
     },
     "mount": null,
 

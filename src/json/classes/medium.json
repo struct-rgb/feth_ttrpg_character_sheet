@@ -1,10 +1,11 @@
 {
     "name": "Medium",
     "description": "A mystic who specializes in protective wards",
-    "type": "Armor",
+    "type": ["Armor", "Caster"],
     "tier": "Starting",
     "requires": "Armor D",
     "abilities": ["Consumption 1"],
+    "arts": [],
     "growths": {
         "hp": 25,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 1,
         "res": 2,
         "cha": 3,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

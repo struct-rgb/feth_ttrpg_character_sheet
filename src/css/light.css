@@ -69,7 +69,7 @@
 /* These are the math operators on the lower part of the stat tables */
 
 .punctuation {
-
+	color: grey;
 }
 
 /* tool tip style (the element the tooltip pops up over) */
@@ -127,4 +127,40 @@
 	background: orange;
 	color: white;
 	font-weight: bolder;
+}
+
+/* these control the toggle buttons in the filters */
+
+button.toggle-on {
+	color: white;
+	background: blue;
+	border-radius: 5px;
+	border-color: black;
+	border-style: solid;
+}
+
+button.toggle-off {
+	color: black;
+	background: white;
+	border-radius: 5px;
+	border-color: black;
+	border-style: solid;
+}
+
+/* these control calculator expression syntaxt highlighting */
+
+.hl-identifier {
+	/*color: ;*/
+}
+
+.hl-reserved {
+	color: blue;
+}
+
+.hl-operator {
+	color: #DC582A;
+}
+
+.hl-literal {
+	color: orange;
 }

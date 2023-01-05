@@ -1,0 +1,45 @@
+{
+    "name": "Holy Knight",
+    "description": "A mounted knight versed in both weapons and magic",
+    "type": ["Cavalry", "Martial", "Caster"],
+    "tier": "Advanced",
+    "requires": "All (Faith C+) (Required (Riding C+)) (Required (Level 15))",
+    "abilities": ["Sword Advantage", "Lance Advantage", "Faith Advantage", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 20,
+        "dex": 10,
+        "spd": 5,
+        "def": 5,
+        "res": 30,
+        "cha": 20
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 4,
+        "dex": 2,
+        "spd": 0,
+        "def": 2,
+        "res": 6,
+        "cha": 4,
+        "mov": 5
+    },
+    "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

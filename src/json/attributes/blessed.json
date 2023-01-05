@@ -1,10 +1,10 @@
 {
     "name": "Blessed",
-    "description": "Grants weapon [Effective against Monsters]. While Equipped, wielder regains 3⅌10 max HP at the start of their phase. Disabled on with spells.",
+    "description": "Grants weapon [Effective against Monsters]. While Equipped, wielder regains 10% max HP at the start of their phase. Disabled on spells.",
     "rank": 2,
     "price": 750,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": 0,
         "prot": 0,

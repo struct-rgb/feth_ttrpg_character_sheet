@@ -1,11 +1,11 @@
 {
   "name": "Sword of Seiros",
   "type": "Swords",
-  "description": "Heals 50% of damage dealt. Restores 10% (20% with Crest of Seiros) of Max HP at the start of wielders phase.",
+  "description": "Heals 50% of damage dealt. Restores 10% (20% with Crest of @{ability:Major Crest of Seiros:Seiros}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Seiros:Seiros}.",
   "requires": "Swords A",
   "rank": "A",
   "price": 0,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 11,
     "prot": 0,

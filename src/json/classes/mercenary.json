@@ -1,10 +1,11 @@
 {
     "name": "Mercenary",
     "description": "Well rounded Sword fighter.",
-    "type": "Martial",
+    "type": ["Infantry", "Martial"],
     "tier": "Starting",
     "requires": "Any (Swords D) (Axes D)",
-    "abilities": ["Heavy Blade"],
+    "abilities": ["Heavy Blade", "Level 10 Mov +1"],
+    "arts": [],
     "growths": {
         "hp": 20,
         "str": 15,
@@ -24,7 +25,7 @@
         "def": 2,
         "res": 1,
         "cha": 1,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

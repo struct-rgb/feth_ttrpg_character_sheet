@@ -30,37 +30,8 @@ The following math functions are supported.
 ## Variables
 
 The values of your characters different stats can be read out using variables.
-The following variables are supported:
-
-   * `hp`  is the character's maximum hitpoint total (after modifiers)
-   * `str` is the character's Strength statisitic (after modifiers)
-   * `mag` is the character's Magic statisitic (after modifiers)
-   * `dex` is the character's Dexterity statisitic (after modifiers)
-   * `spd` is the character's Speed statisitic (after modifiers)
-   * `def` is the character's Defense statisitic (after modifiers)
-   * `res` is the character's Resistance statisitic (after modifiers)
-   * `cha` is the character's Charm statisitic (after modifiers)
-   * `current_hp` is the character's current hitpoint total (before modifiers)
-   * `base_hp`  is the character's maximum hitpoint total (before modifiers)
-   * `base_str` is the character's Strength statisitic (before modifiers)
-   * `base_mag` is the character's Magic statisitic (before modifiers)
-   * `base_dex` is the character's Dexterity statisitic (before modifiers)
-   * `base_spd` is the character's Speed statisitic (before modifiers)
-   * `base_def` is the character's Defense statisitic (before modifiers)
-   * `base_res` is the character's Resistance statisitic (before modifiers)
-   * `base_cha` is the character's Charm statisitic (before modifiers)
-   * `pmt` is the physical might from weapons (after modifiers)
-   * `mmt` is the magical might from easpons (after modifiers)
-   * `pdr` is physical damage reduction (after modifiers)
-   * `mdr` is magical damage reduction (after modifiers)
-   * `hit` is the character's Hit statistic (after modifiers)
-   * `avo` is the character's Avoid statisitic (after modifiers)
-   * `crit` is the character's Critical statisitic (after modifiers)
-   * `newcrit` is the character's Critcal statistic (accounding for Charm, after modifiers)
-   * `cravo` is the character's Critical Avoid statisitic (after modifiers)
-   * `mov` is the character's Movement statisitic (after modifiers)
-   * `maxrng` is the character's maximum attack range (after modifiers)
-   * `minrng` is the character's minimum attack range (after modifiers)
+A number of different variables are supported; the full list of available
+variables are listed as suggestions when typing in the empty console entry.
 
 ## Conditional Expressions
 
@@ -97,5 +68,106 @@ These are the supported comparison operators
 There can be only one of these per conditional, and they cannot be chained
 together in a sequence.
 
+### Use inside Prompt Expressions
 
+Due to the limitations of the Roll20 macro language, into which this language of expressions needs to be able to translate, conditional expressions cannot be
+used inside of prompt expressions, but the opposite is not true. Prompt
+expressions *can* be used inside of conditional expressions.
 
+## Translation Hint Expression Types
+
+Sometimes when writing expressions we want a bit of the expression to have
+different behavior when it is evaluated in the character builder vs when it
+is converted into a Roll20 Macro. These following expression types are used
+for those situations:
+
+   * Quoted Text
+   * Alias Expressions
+   * Prompt Expressions
+
+## Quoted Text
+
+Some expression types use text as part of the process of translation into
+Roll20 macros. Normally, these bits of text need to resemble variable names,
+being on word without spaces, however, surrounding a multiword bit of text in
+backquote characters allows it to all be interpreted as one item:
+
+\``This is an example of quoted text.`\`
+
+Quoted text cannot contain backquote characters inside of it.
+
+## Alias Expressions
+
+Alias expressions allow for an expression to evaluate to a value inside of the
+character builder, but to instead reference a variable when transformed into a
+Roll20 macro. They take on the following form:
+
+`<identifier | quoted text> as <expression>`
+
+As an example, say that I want to create a Combat Art that scales its might off
+of my character's charm statistic. The name of the relevant variable for my 
+character's charm in the builder is `char|total|cha` but the name of the one in
+my character's Roll20 sheet is `Cha` instead. I can make a an expression that
+works in both using the following bit of code:
+
+`2 + floor((Cha as char|total|cha) * 0.3)`
+
+This will make a Combat Art with a base might of two that add additional might
+equal to 30% of my character's charm statistic (rounded down). The character
+builder can execute this directly to get the correct total might, and it can
+also translate this into a Roll20 macro that does the same thing.
+
+If I wanted to specify my character's name, I could write it as:
+
+`2 + floor((`\``Cha as char|total|cha`\``) * 0.3)`
+
+## Prompt Expressions
+
+A prompt expression creates a dialogue box prompting input when it the outer
+expression it is part of is translated into a Roll20 macro. When evaluated
+inside of the character builder, it instead chooses a default option without
+prompting the user (this is to allow for automatic calculations).
+
+They begin with the form:
+
+`ask <identifier | quoted text>`
+
+This by itself will turn into a prompt asking for a number in Roll20 and in the
+character builder will turn into the number 0.
+
+A number of options can be specified afterward, each with this forms:
+
+`if <expression | alias expression>`
+
+Theis will cause the prompt in Roll20 to instead display a list of these each
+of these options and selecting an option will evaluate to the result of the 
+corresponding expression. If you provide an alias expression instead of just a
+normal one, the option in the select will display the alias text instead.
+
+When this is evaluated in the character builder, it will evaluate to the result
+of the expression in the first provided option. If you want it to evaluate to a
+later option instead, replace the `if` at the beginning as a `do`.
+
+Putting this all together, here is a sample prompt for **Death Blow**, which
+grants Strength +6 to the user when the user initiates combat:
+
+`ask `\``Initiating Combat?`\``if No as 0 do Yes as 6`
+
+In Roll20 this will make a dialogue box that prompts us with the question,
+`Initiating Combat?` and the options `No` and `Yes` in that order. If we select
+`No`, the prompt return 0 as a result, and if we select `Yes` it returns 6.
+
+In the character builder, this just returns 6, since abilities can each be
+individually toggled on and off on their respective panes.
+
+### Use inside Conditional Expressions
+
+Due to the limitations of the Roll20 macro language, into which this language of expressions needs to be able to translate, conditional expressions cannot be
+used inside of prompt expressions, but the opposite is not true. Prompt
+expressions *can* be used inside of conditional expressions.
+
+### Use inside Prompt Expressions
+
+Due to the limitations of the Roll20 macro language, into which this language 
+of expressions needs to be able to translate, prompt expressions cannot be used 
+inside of other prompt expressions.

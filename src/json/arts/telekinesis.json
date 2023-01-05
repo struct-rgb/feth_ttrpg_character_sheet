@@ -1,9 +1,8 @@
 {
   "name": "Telekinesis",
-  "type": "Other",
-  "description": "When casting a Force Spell, force your target to move up to 2 spaces in any cardinal direction. If that space is occupied, the target is not pushed back and takes damage equal to your Mag - the target’s Def.",
+  "description": "When casting a Force Spell, force your target to move up to 2 spaces in any cardinal direction. If that space is occupied, the target is not pushed back and takes damage equal to your Mag - the targetâ€™s Def.",
   "requires": "Reason C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 8,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "movement",
+    "force"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C"
 }

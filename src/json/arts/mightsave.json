@@ -1,9 +1,8 @@
 {
   "name": "Might Save",
-  "type": "Armor",
-  "description": "Can only be equipped by Armored units. Trigger: ally in range targeted with a strength-based attack. Change the target to this unit instead; grants Prot +5 in that combat. Target attacking foe for attack regardless of range; combat occurs as though this unit were located at that ally’s tile.",
+  "description": "Can only be equipped by Armored units. Trigger: ally in range targeted with a strength-based attack. Change the target to this unit instead; grants Prot +5 in that combat. Target attacking foe for attack regardless of range; combat occurs as though this unit were located at that allyâ€™s tile.",
   "requires": "Armor B+",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 1,
     "maxrng": 2,
     "tiles": 0,
-
     "spcost": 0,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Counter-Command",
-  "tags": ["tactical", "reaction"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "reaction"
+  ],
+  "hidden": false,
+  "type": "Armor",
+  "rank": "B+"
 }

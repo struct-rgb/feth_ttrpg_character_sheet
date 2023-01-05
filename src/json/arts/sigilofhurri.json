@@ -1,9 +1,8 @@
 {
   "name": "Sigil of Hurricane",
-  "type": "Other",
-  "description": "After initiating combat with a target using a Wind spell, leave a 3x3 area centered on the target (The area moves with them.) and inflict [Cursed] on that target for 2 turns.",
+  "description": "After initiating combat with a target using a Wind spell, leave a 3x3 area centered on the target (The area moves with them.) and inflict @{condition:Cursed:[Cursed]} on that target for 2 turns.",
   "requires": "Reason B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 12,
     "tpcost": 5,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "wall",
+    "wind"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "B"
 }

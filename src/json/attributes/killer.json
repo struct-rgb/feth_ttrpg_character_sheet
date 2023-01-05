@@ -4,14 +4,14 @@
     "rank": 2,
     "price": 1100,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
         "avo": 0,
-        "crit": "(ask [Killer?], No = 0; Yes = 25)",
+        "crit": "ask [Killer?], No {0}; Yes {25} end",
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
@@ -22,6 +22,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["cost"],
     "hidden": false
 }

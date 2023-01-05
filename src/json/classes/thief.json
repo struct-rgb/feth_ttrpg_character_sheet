@@ -1,10 +1,11 @@
 {
     "name": "Thief",
     "description": "A scoundrel versed in the Bow and Sword; can unlock doors and chests",
-    "type": "Martial",
+    "type": ["Infantry", "Martial"],
     "tier": "Starting",
     "requires": "Any (Swords D) (Bows D)",
-    "abilities": ["Locktouch", "Stealth"],
+    "abilities": ["Locktouch", "Stealth", "Level 10 Mov +1"],
+    "arts": [],
     "growths": {
         "hp": 10,
         "str": 10,
@@ -24,7 +25,7 @@
         "def": 1,
         "res": 2,
         "cha": 0,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

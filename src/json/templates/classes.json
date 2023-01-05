@@ -5,6 +5,7 @@
     "tier": "Starting Advanced",
     "requires": "",
     "abilities": [],
+    "arts": [],
     "growths": {
         "hp": 0,
         "str": 0,

@@ -1,0 +1,38 @@
+{
+    "name": "Measured Retaliation",
+    "description": "This unit always has weapon triangle advantage over Monster units. If this unit did not initiate combat during the previous phase, then the first time a foe initiates combat against this unit this phase, grants unit Might +4, Prot +4, and Resl +4 in-combat.",
+    "requires": "Innate",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": "fill affirm([Measured Retaliation?], 4, 0)",
+        "prot": "fill affirm([Measured Retaliation?], 4, 0)",
+        "resl": "fill affirm([Measured Retaliation?], 4, 0)",
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["personal"],
+    "hidden": false
+}

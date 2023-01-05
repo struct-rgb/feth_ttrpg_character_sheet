@@ -1,0 +1,41 @@
+{
+  "name": "Martial Dance",
+  "description": "Might increases based on user's Charm. Mt +3 if weapon has Max Range = 1.",
+  "requires": "All (Class Dancer) (Any (Axes E) (Lances E) (Swords E) (Bows E))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": [
+      "metaif builtins|macrogen == 1 then",
+      "  metaif weapon|total|maxrng == 1",
+      "    then 4 + floor(Cha {unit|total|cha} * 0.3)",
+      "    else 1 + floor(Cha {unit|total|cha} * 0.3)",
+      "  end",
+      "else",
+      "  if     weapon|total|maxrng == 1",
+      "    then 4 + floor(Cha {unit|total|cha} * 0.3)",
+      "    else 1 + floor(Cha {unit|total|cha} * 0.3)",
+      "  end",
+      "end"
+    ],
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 20,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "weapon|total|minrng",
+    "maxrng": "weapon|total|maxrng",
+    "tiles": 0,
+    "spcost": 2,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "scales"
+  ],
+  "hidden": false,
+  "type": "Axes-Lances-Swords-Bows",
+  "rank": "E"
+}

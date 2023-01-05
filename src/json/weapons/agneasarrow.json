@@ -1,11 +1,11 @@
 {
-  "name": "Agnea's Arrow'",
+  "name": "Agnea's Arrow",
   "type": "Reason",
   "description": "A force spell; no special effects.",
   "requires": "Reason A",
   "rank": "A",
   "price": 4125,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 16,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": ["force"],
   "hidden": false
 }

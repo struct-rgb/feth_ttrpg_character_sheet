@@ -5,7 +5,7 @@
     "rank": 4,
     "price": 2400,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["weapons", "melee"],
     "hidden": false
 }

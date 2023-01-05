@@ -1,9 +1,8 @@
 {
   "name": "Sanctuary",
-  "type": "Faith",
-  "description": "Apply [Stealth] to target ally for 1 turn.",
+  "description": "Apply @{condition:Stealth:[Stealth]} to target ally for 1 turn.",
   "requires": "Faith B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,16 @@
     "minrng": 1,
     "maxrng": 5,
     "tiles": 0,
-
     "spcost": 8,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "B"
 }

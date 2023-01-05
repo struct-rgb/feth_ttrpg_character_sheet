@@ -1,10 +1,11 @@
 {
     "name": "Dark Flier",
     "description": "A mage who slings spells from upon the back of a pegasus",
-    "type": "Flying",
+    "type": ["Flying", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": ["Reason Tomefaire", "Guile Tomefaire", "Canto", "Transmute"],
+    "abilities": ["Reason Advantage", "Guile Advantage", "Canto", "Transmute"],
+    "arts": [],
     "growths": {
         "hp": 20,
         "str": 20,
@@ -24,7 +25,7 @@
         "def": 0,
         "res": 6,
         "cha": 0,
-        "mov": 1
+        "mov": 5
     },
     "mount": {
         "hp": 0,

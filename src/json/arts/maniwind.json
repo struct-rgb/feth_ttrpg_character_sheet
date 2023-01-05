@@ -1,9 +1,8 @@
 {
   "name": "Manifest: Wind",
-  "type": "Other",
-  "description": "When casting a Wind Spell, surround yourself or an ally within 2 spaces with protective wind magic for 2 turns. Any damage taken from at least 2 spaces away while Manifest: Wind is active is reduced by the spell’s Mt + 1. Wind Wall Variant: The damage reduction of Manifest: Wind is 5 instead of the normal calculation. In addition, whenever an ally ends their turn adjacent to any Wind Wall, they gain the effects of Manifest: Wind until the start of their next turn. This consumes any and all uses of the Wind Wall spell. All Units can only gain the effects of Manifest: Wind once per casting.",
+  "description": "Wind metamagic; after combat, apply @{condition:Distant Guard:[Distant Guard X]} to this unit or an ally within 2 spaces for one turn, where X = 1 + the spellâ€™'s Mt. @{art::Wind Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{condition:Distant Guard:[Distant Guard 5]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Wind Torrent} for one turn.",
   "requires": "Reason D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 6,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "wall",
+    "wind"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

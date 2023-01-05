@@ -5,9 +5,9 @@
   "requires": "Guile C",
   "rank": "C",
   "price": 0,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
-    "mt": "4 + ask [vs. Crest Bearer?]; No = 0, Yes = 7 end",
+    "mt": "4 + ask [vs. Crest Bearer?]; No {0}, Yes {7} end",
     "prot": 0,
     "resl": 0,
     "hit": 80,

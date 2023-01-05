@@ -1,10 +1,11 @@
 {
   "name": "Priest",
   "description": "A Faith mage with high Resistance",
-  "type": "Other",
+  "type": ["Infantry", "Caster"],
   "tier": "Starting",
   "requires": "Faith D",
   "abilities": [ "Faith Consumption 1" ],
+    "arts": [],
   "growths": {
     "hp": 10,
     "str": 10,
@@ -24,7 +25,7 @@
     "def": 0,
     "res": 5,
     "cha": 3,
-    "mov": 0
+    "mov": 4
   },
   "mount": null,
 

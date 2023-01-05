@@ -1,9 +1,8 @@
 {
   "name": "Manifest: Force",
-  "type": "Other",
-  "description": "When casting a Force Spell, surround yourself or an ally within 2 spaces with pressurized kinetic energy that can absorb the brunt of damage for 1 turn. When taking damage from an attack that utilizes your or your ally’s Def, the damage is reduced by your spell’s Mt +4. Force Wall Variant: The damage reduction from Manifest: Force is 10 instead of the normal calculation. In addition, whenever an ally ends their turn adjacent to any Anima Wall, they gain the effects of Manifest: Force until the start of their next phase. All Units can only gain the effects of Manifest: Force once per casting.",
+  "description": "Force metamagic; after combat, apply @{const:gbp:[Prot +X]} to this unit or an ally within 2 spaces for one turn, where X = 4 + the spellâ€™'s Mt. @{art::Force Wall} @{const:variant:Variant}: after combat, apply @{const:gbp:[Prot +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to any a tile created by a @{tooltip:Reason \"Wall\" spell:Specifically, an Ice Block, Fire Patch, Wind Torrent, Lightning Arc, or Force Wall} for one turn.",
   "requires": "Reason C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 6,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "wall",
+    "force"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C"
 }

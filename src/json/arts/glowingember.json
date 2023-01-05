@@ -1,0 +1,26 @@
+{
+  "name": "Glowing Ember",
+  "description": "Mt +30% of user's Def.",
+  "requires": "Lances A",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "fill scale(2, [Def], unit|total|def)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 10,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "scales"
+  ],
+  "hidden": false,
+  "type": "Lances",
+  "rank": "A"
+}

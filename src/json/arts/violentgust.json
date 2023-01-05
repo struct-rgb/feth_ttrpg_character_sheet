@@ -1,9 +1,8 @@
 {
   "name": "Violent Gust",
-  "type": "Other",
-  "description": "When casting a Wind Spell, push your target back 1 space. If that space is occupied, the target is not pushed back and takes damage equal to ½ your Mag - the target’s Def. Cutting Gale Variant: The target is moved back 2 additional spaces. If the target happens to collide with another foe or an object with HP, they both take the same damage from the impact.",
+  "description": "When casting a Wind Spell, push your target back 1 space. If that space is occupied, the target is not pushed back and takes damage equal to Â½ your Mag - the targetâ€™s Def. Cutting Gale Variant: The target is moved back 2 additional spaces. If the target happens to collide with another foe or an object with HP, they both take the same damage from the impact.",
   "requires": "Reason D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "movement",
+    "wind"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

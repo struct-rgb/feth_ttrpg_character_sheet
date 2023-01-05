@@ -5,7 +5,7 @@
   "requires": "Axes A",
   "rank": "A",
   "price": 4290,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 17,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Items in modifers should be integers",
-  "tags": [],
+  "tags": ["effective"],
   "hidden": false
 }

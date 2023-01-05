@@ -1,10 +1,11 @@
 {
     "name": "Dark Knight",
     "description": "A mounted knight versed in both weapons and magic",
-    "type": "Cavalry",
+    "type": ["Cavalry", "Martial", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Guile C+) (Reason C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Reason Tomefaire", "Guile Tomefaire", "Swordfaire", "Lancefaire", "Canto"],
+    "abilities": ["Reason Advantage", "Guile Advantage", "Sword Advantage", "Lance Advantage", "Canto"],
+    "arts": [],
     "growths": {
         "hp": 30,
         "str": 15,
@@ -24,7 +25,7 @@
         "def": 3,
         "res": 5,
         "cha": 4,
-        "mov": 1
+        "mov": 5
     },
     "mount": {
         "hp": 0,

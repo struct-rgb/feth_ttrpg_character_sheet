@@ -5,21 +5,21 @@
     "rank": 0,
     "price": 1500,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
         "mt": [
-            "metaif builtins|macrogen == 1 then"
-                "metaif weapon|noattr|maxrng < 2 then"
-                    "-3"
-                "else"
-                    "+0"
-                "end"
-            "else"
-                "if     weapon|noattr|maxrng < 2 then"
-                    "-3"
-                "else"
-                    "+0"
-                "end"
+            "metaif builtins|macrogen == 1 then",
+                "metaif weapon|noattr|maxrng < 2 then",
+                    "-3",
+                "else",
+                    "+0",
+                "end",
+            "else",
+                "if     weapon|noattr|maxrng < 2 then",
+                    "-3",
+                "else",
+                    "+0",
+                "end",
             "end"
         ],
         "prot": 0,
@@ -37,6 +37,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["penalty"],
     "hidden": false
 }

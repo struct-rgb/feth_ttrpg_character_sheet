@@ -1,0 +1,24 @@
+{
+  "name": "Smite",
+  "description": "Move target adjacent ally 2 spaces away from this unit in the direction target ally is from this unit.",
+  "requires": "Armor B",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "movement",
+  "tags": ["movement", "tactical"],
+  "hidden": false,
+  "type": null,
+  "rank": ""
+}

@@ -1,28 +1,30 @@
 {
   "name": "Confusion",
-  "type": "Guile",
-  "description": "On hit, apply [Confused] to target foe for one turn.",
+  "description": "On hit, apply @{condition:Confused:[Confused]} to target foe for one turn.",
   "requires": "Guile C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
     "resl": 0,
-    "hit": 0,
+    "hit": 70,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 5,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "C"
 }

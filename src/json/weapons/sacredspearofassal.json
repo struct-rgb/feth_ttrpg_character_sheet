@@ -1,11 +1,11 @@
 {
   "name": "Spear of Assal",
   "type": "Lances",
-  "description": "Effective against Cavalry units. Restores 10% (20% with Crest of Cichol) of Max HP at the start of wielders phase.",
+  "description": "Effective against Cavalry units. Restores 10% (20% with Crest of @{ability:Major Crest of Cichol:Cichol}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Cichol:Cichol}.",
   "requires": "Lances A",
   "rank": "A",
   "price": 0,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 14,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Items in modifers should be integers",
-  "tags": ["sacred"],
+  "tags": ["sacred", "effective"],
   "hidden": false
 }

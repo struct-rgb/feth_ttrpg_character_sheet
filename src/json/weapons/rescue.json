@@ -5,7 +5,7 @@
   "requires": "Faith B",
   "rank": "B",
   "price": 3500,
-  "base": "n/a",
+  "mttype": "none",
   "modifiers": {
     "mt": 0,
     "prot": 0,

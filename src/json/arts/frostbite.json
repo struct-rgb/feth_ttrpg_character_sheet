@@ -1,9 +1,8 @@
 {
   "name": "Frostbite",
-  "type": "Other",
-  "description": "When casting an Ice Spell, After initiating combat, your target and adjecent foes suffer [Frostbitten] for 1 turn.",
+  "description": "Ice metamagic; after combat, apply @{condition:Frostbitten:[Frostbitten]} to target foe and foes adjacent to target foe for one turn. @{tooltip:(note):Original text said, \"After initiating combat, your target and adjecent foes suffer...\", not sure what it meant by \"after initiating combat\"}",
   "requires": "Reason D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "aoe",
+    "condition",
+    "ice"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

@@ -1,9 +1,8 @@
 {
   "name": "Recover",
-  "type": "Faith",
-  "description": "Restores HP to an ally = The spell’s Mt + the user’s Mag/2.",
+  "description": "Restore (Mt + Mag / 2) HP to target ally.",
   "requires": "Faith C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 30,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 1,
     "maxrng": 1,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": ["tactical"],
-  "hidden": false
+  "tags": [
+    "tactical",
+    "healing"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "C"
 }

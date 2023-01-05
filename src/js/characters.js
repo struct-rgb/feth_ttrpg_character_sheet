@@ -10,8 +10,6 @@
 /* global CombatArt */
 /* global Equipment */
 
-/* global Polish */
-
 class Characters {
 
 	static DEFAULT = "Blank Sheet";
@@ -81,28 +79,17 @@ class Characters {
 					if (activeID === null) return;
 
 					const element = sheet.cb.category.elements.get(activeID);
-					element.description = this.description;
+					element.description = this.body();
 				}),
 			},
 		});
 
-		this._class = element("select", {
-			class : ["simple-border"],
-			attrs : {
-				value   : Characters.DEFAULT_CLASS,
-				oninput : (() => {
-					this.class = this._class.value;
-					this.refresh();
-				}),
-			},
+		this._sf    = Class.select(() => {
+			this.class = this._class.value;
+			this.refresh();
 		});
 
-		for (let template of definitions.classes) {
-			const option       = element("option");
-			option.value       = template.name;
-			option.textContent = template.name;
-			this._class.appendChild(option);
-		}
+		this._class = this._sf._select;
 
 		this._mounted = element("input", {
 			class: ["simple-border"],
@@ -134,9 +121,8 @@ class Characters {
 			this._description, element("br"),
 
 			uniqueLabel("Class", this._class), element("br"),
-			// this._class, this._mounted, element("span", "Mounted?"), element("br"),
-			this._class, 
-
+			this._sf.root,
+			
 			tooltip([this._mounted, "Mounted?"], [
 				"Flying and Cavalry classes can ride mounts for increased ",
 				"stats. When not mounted, they lose that class-type.",
@@ -174,7 +160,7 @@ class Characters {
 		if (activeID === null) return;
 
 		const element = this.sheet.cb.category.elements.get(activeID);
-		element.description = this.description;
+		element.description = this.body();
 	}
 
 	get money() {
@@ -221,11 +207,16 @@ class Characters {
 		this._advantage.value = value;
 	}
 
-	refresh(active=[]) {
+	refresh(active=[], clart=null) {
 
 		this.sheet.abilities.class.setState({
 			added: this.class.abilities,
 			active: active
+		});
+
+		this.sheet.arts.class.setState({
+			added: this.class.arts,
+			active: clart
 		});
 
 		// this.sheet.skills.refresh()
@@ -236,7 +227,7 @@ class Characters {
 
 		const c = Class.get(this._class.value);
 
-		const list = Characters.listize(Polish.parse(c.requires));
+		const list = Characters.listize(c.requires.ast);
 		const pass = this.sheet.skills.validate(c.requires).boolean;
 
 		const p = element("div", {
@@ -311,7 +302,12 @@ class Characters {
 		this.sheet.stats.import(object.statistics);
 		this.sheet.skills.import(object.skills);
 
-		this.class       = object.class       || Characters.DEFAULT_CLASS;
+		this.class = (
+			Class.has(object.class)
+				? object.class
+				: Characters.DEFAULT_CLASS
+		);
+
 		this.name        = object.name        || Characters.DEFAULT;
 		this.description = object.description || Characters.DESCRIPTION;
 		this.money       = object.money       || 0;
@@ -319,13 +315,14 @@ class Characters {
 		this.sheet.wb.importAll(object.weapons);
 
 		this.sheet.abilities.equipped.setState(object.abilities.equipped);
-		this.sheet.combatarts.equipped.setState(object.combatarts.equipped);
+		
+		this.sheet.arts.equipped.setState(object.arts.equipped);
 
-		/** TODO fill the rest of these in **/
+		this.sheet.equipment.known.setState(object.equipment.known);
 
 		this.triangle = 0;
 
-		this.refresh();
+		this.refresh(object.class_active, object.clart_active);
 	}
 
 	export() {
@@ -345,6 +342,8 @@ class Characters {
 			 */
 			class_active : Array.from(this.sheet.abilities.class.getActive()),
 
+			clart_active : this.sheet.arts.class.getActive(),
+
 			weapons    : this.sheet.wb.exportAll(),
 			// battalions : this.sheet.bb.exportAll(),
 
@@ -352,8 +351,8 @@ class Characters {
 				equipped    : this.sheet.abilities.equipped.getState(),
 				battlefield : this.sheet.abilities.battlefield.getState(),
 			},
-			combatarts  : {
-				equipped    : this.sheet.combatarts.equipped.getState(),
+			arts  : {
+				equipped    : this.sheet.arts.equipped.getState(),
 			},
 
 			equipment   : {
@@ -387,13 +386,34 @@ class Characters {
 		// this.sheet.battalion.clear();
 
 		this.sheet.abilities.equipped.clear();
-		this.sheet.combatarts.equipped.clear();
+		// this.sheet.abilities.battlefield.clear();
+		this.sheet.arts.equipped.clear();
+		this.sheet.equipment.known.clear();
 
 		this.sheet.stats.levelups.clear();
 
 		this.refresh();
 		this.sheet.skills.refresh();
 	}
+
+	/* builtable display */
+
+	getTitle(object) {
+		return object.name;
+	}
+
+	getBody(object) {
+		const string  = object.description;
+		const display = string.length > 50 ? string.slice(0, 50) + "..." : string;
+		return element("span", display);
+	}
+
+	body() {
+		const string  = this.description;
+		const display = string.length > 50 ? string.slice(0, 50) + "..." : string;
+		return element("span", display);
+	}
+
 }
 
 /* exported Characters */

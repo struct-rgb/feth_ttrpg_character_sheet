@@ -4,7 +4,7 @@
     "rank": 0,
     "price": 0,
 
-    "base": 0,
+    "mttype": "else str mag none",
     "modifiers": {
         "mt": 0, 
         "prot": 0,

@@ -1,9 +1,8 @@
 {
   "name": "Restore",
-  "type": "Faith",
   "description": "End one or more status conditions applied to target adjacent ally(s). (You may choose which conditions to end.)",
   "requires": "Faith C",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,16 @@
     "minrng": 1,
     "maxrng": 1,
     "tiles": 0,
-
     "spcost": 2,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "tactical"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "C"
 }

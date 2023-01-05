@@ -1,9 +1,8 @@
 {
   "name": "Multipled",
-  "type": "Other",
   "description": "When casting Heal, allies adjacent to you are also affected.",
   "requires": "Faith D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,16 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 3,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "aoe"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "D"
 }

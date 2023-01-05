@@ -1,9 +1,8 @@
 {
   "name": "Surge",
-  "type": "Other",
-  "description": "When casting a Lightning Spell, inflict [Static] on your target for 1 turn.",
+  "description": "When casting a Lightning Spell, inflict @{condition:Static:[Static]} on your target for 1 turn.",
   "requires": "Reason D",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 7,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "lightning"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
 }

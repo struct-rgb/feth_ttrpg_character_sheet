@@ -1,11 +1,11 @@
 {
   "name": "Areadbar",
   "type": "Lances",
-  "description": "If wielder has the Crest of Blaiddyd, enables use of Atrocity. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "If wielder has the Crest of @{ability:Major Crest of Blaiddyd:Blaiddyd}, enables use of Atrocity. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Lances E",
   "rank": "E",
   "price": 0,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 19,
     "prot": 0,

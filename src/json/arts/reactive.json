@@ -1,9 +1,8 @@
 {
   "name": "Reactive",
-  "type": "Other",
-  "description": "Trigger: Before an attack on Enemy Phase. Cast Heal on an ally within range.",
+  "description": "Trigger: Before an attack on Enemy Phase. Cast @{weapon::Heal} on an ally within range.",
   "requires": "Faith B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,16 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Counter-Command",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "reaction"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "B"
 }

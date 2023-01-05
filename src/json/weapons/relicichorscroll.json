@@ -1,11 +1,11 @@
 {
   "name": "Ichor Scroll",
   "type": "Faith",
-  "description": "If wielder has the Crest of Lamine, enables use of {PLACEHOLDER: Combat art that has nosferatu's effect}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "If wielder has the Crest of @{ability:Major Crest of Lamine:Lamine}, enables use of @{art::Radiance}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Faith E",
   "rank": "E",
   "price": 0,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 21,
     "prot": 0,

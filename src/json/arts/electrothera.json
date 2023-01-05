@@ -1,9 +1,8 @@
 {
   "name": "Electroshock Therapy",
-  "type": "Other",
-  "description": "When casting a Lightning Spell, inflict [Shocked] for 1 turn.",
+  "description": "Lightning metamagic; on hit, apply @{condition:Shocked:[Shocked]} to target foe for one turn. @{weapon::Thoron} @{const:variant:Variant}: apply @{condition:Shocked:[Shocked]} to target foe and all foes between this unit and target foe for one turn.",
   "requires": "Reason B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,17 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 11,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "lightning"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "B"
 }

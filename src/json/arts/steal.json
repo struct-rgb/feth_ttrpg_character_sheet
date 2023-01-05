@@ -1,0 +1,24 @@
+{
+  "name": "Steal",
+  "description": "Steal a non-weapon item from inventory of target foe with Spd < unit's Spd.",
+  "requires": "All (Any (Swords C+) (Bows C+)) (Level 15)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "movement",
+  "tags": ["tactical"],
+  "hidden": false,
+  "type": null,
+  "rank": ""
+}

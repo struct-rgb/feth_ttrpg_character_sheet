@@ -1,10 +1,11 @@
 {
     "name": "Armored Knight",
     "description": "A knight who specializes in armored combat",
-    "type": "Armor",
+    "type": ["Armor", "Martial"],
     "tier": "Starting",
     "requires": "Armor D",
     "abilities": ["Weight -3"],
+    "arts": [],
     "growths": {
         "hp": 30,
         "str": 20,
@@ -24,7 +25,7 @@
         "def": 5,
         "res": 3,
         "cha": 2,
-        "mov": 0
+        "mov": 4
     },
     "mount": null,
 

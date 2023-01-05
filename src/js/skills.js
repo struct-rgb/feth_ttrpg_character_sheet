@@ -10,8 +10,6 @@
 /* global uniqueLabel */
 /* global AttributeCell */
 
-/* global Polish */
-
 /* global Grade */
 
 
@@ -95,7 +93,7 @@ class Select {
 
 		this.root = element("div", [
 			tooltip([
-				uniqueLabel(name, this.select),
+				uniqueLabel(name, this.select), element("br"),
 				this.select,
 			], description),
 		]);
@@ -190,7 +188,7 @@ class SkillUserInterface {
 
 		this.context = {
 			
-			"All": ((...args) => args.reduce((x, y) => ({
+			"All": ((op, ...args) => args.reduce((x, y) => ({
 				require: x.require || y.require,
 				succeed: false,
 				boolean: (
@@ -200,30 +198,31 @@ class SkillUserInterface {
 				),
 			}))),
 
-			"Any": ((...args) => args.reduce((x, y) => ({
+			"Any": ((op, ...args) => args.reduce((x, y) => ({
 				require: x.require || y.require,
 				succeed: x.succeed || y.succeed,
 				boolean: x.boolean || y.boolean,
 			}))),
 
-			"Required": ((x) => {
+			"Required": ((op, x) => {
 				x.require = true;
 				return x;
 			}),
 
-			"Permission": ((text) => ({
+			"Permission": ((op, text) => ({
 				require: false,
 				succeed: false,
-				boolean: confirm(text),
+				boolean: true,
+				// boolean: confirm(text),
 			})),
 
-			"None": (() => ({
+			"None": ((op) => ({
 				require: false,
 				succeed: false,
 				boolean: true
 			})),
 
-			"Level": ((level) => ({
+			"Level": ((op, level) => ({
 				require: false,
 				succeed: false,
 				boolean: this.sheet.stats.level >= level
@@ -250,7 +249,8 @@ class SkillUserInterface {
 	}
 
 	validate(expression) {
-		return Polish.execute(Polish.compile(expression, this.context));
+		// return Polish.execute(expression, this.context);
+		return expression.exec(this.context);
 	}
 
 	refresh() {

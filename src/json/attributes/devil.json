@@ -4,9 +4,9 @@
     "rank": 1,
     "price": 330,
 
-    "base": "else",
+    "mttype": "else",
     "modifiers": {
-        "mt": "(ask [Devil?], No = 0; Yes = 9)",
+        "mt": "ask [Devil?], No {0}; Yes {9} end",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -22,6 +22,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["penalty", "cost"],
     "hidden": false
 }

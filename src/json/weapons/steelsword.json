@@ -2,10 +2,10 @@
   "name": "Steel Sword",
   "type": "Swords",
   "description": "No special effect. Costs 550G to upgrade from Iron Sword.",
-  "requires": "Swords D",
-  "rank": "D",
+  "requires": "Swords C",
+  "rank": "C",
   "price": 1330,
-  "base": "str",
+  "mttype": "str",
   "modifiers": {
     "mt": 7,
     "prot": 0,

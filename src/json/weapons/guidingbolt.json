@@ -1,11 +1,11 @@
 {
   "name": "Guiding Bolt",
   "type": "Faith",
-  "description": "On hit, apply [Marked] to target foe for 1 turn. Cannot make follow-up attacks.",
+  "description": "On hit, apply @{condition:Marked:[Marked]} to target foe for 1 turn. Cannot make follow-up attacks.",
   "requires": "Faith C",
   "rank": "C",
   "price": 1400,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 5,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": [],
+  "tags": ["condition"],
   "hidden": false
 }

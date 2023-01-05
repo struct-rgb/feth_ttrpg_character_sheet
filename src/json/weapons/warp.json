@@ -5,7 +5,7 @@
   "requires": "Faith B",
   "rank": "B",
   "price": 4120,
-  "base": "n/a",
+  "mttype": "none",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,7 +15,7 @@
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
-    "maxrng": "ceil(unit|total|mag / 4)",
+    "maxrng": "ceil((unit|total|mag) / 4)",
     "tpcost": 9,
     "spcost": 0,
     "tp": 0,

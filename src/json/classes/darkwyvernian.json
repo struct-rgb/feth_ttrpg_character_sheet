@@ -1,10 +1,11 @@
 {
     "name": "Dark Wyvernian",
     "description": "A mage who rains death from above upon the back of a wyvern",
-    "type": "Flying",
+    "type": ["Flying", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": ["Reason Tomefaire", "Guile Tomefaire", "Canto", "Savage Blow"],
+    "abilities": ["Reason Advantage", "Guile Advantage", "Canto", "Savage Blow"],
+    "arts": [],
     "growths": {
         "hp": 25,
         "str": 20,
@@ -24,7 +25,7 @@
         "def": 4,
         "res": 0,
         "cha": 2,
-        "mov": 1
+        "mov": 5
     },
     "mount": {
         "hp": 0,

@@ -9,6 +9,7 @@
 /* global wrap */
 /* global hilight */
 /* global uniqueID */
+/* global delimit */
 
 /* we're going to go for a different pattern with this one */
 const Expression = (function() {
@@ -49,7 +50,7 @@ const _GRAMMAR = (`
 <alias>     ::= <text> "=" <expr>
 
 <call>      ::= <func-name> "(" <expr> ")"
-<func-name> ::= "abs" | "ceil" | "floor" | "round" | "sign" | "meta" | "inspect"
+<func-name> ::= "not" | "abs" | "ceil" | "floor" | "round" | "sign" | "meta" | "inspect"
 `);
 
 class CompilationError extends Error {
@@ -93,42 +94,47 @@ const Tokens = (function() {
 	};
 
 	const TERMINALS = {
-		PERIOD  : "}",
-		STOP    : "end",
-		MIN     : "less",
-		MAX     : "more",
-		PROMPT  : "ask",
-		OPTION  : ",",
-		DEFAULT : ";",
-		ALIAS   : "{",
-		IF      : "if",
-		THEN    : "then",
-		ELSE    : "else",
-		GT      : ">",
-		LT      : "<",
-		GE      : ">=",
-		LE      : "<=",
-		EQ      : "==",
-		NE      : "<>",
-		ADD     : "+",
-		SUB     : "-",
-		MUL     : "*",
-		DIV     : "/",
-		MOD     : "%",
-		BEGIN   : "(",
-		END     : ")",
-		ABS     : "abs",
-		CEIL    : "ceil",
-		FLOOR   : "floor",
-		ROUND   : "round",
-		UMINUS  : "-",
-		UPLUS   : "+",
-		SIGN    : "sign",
-		LABEL   : "label",
-		META    : "meta",
-		METAIF  : "metaif",
-		INSPECT : "inspect",
-		ELSEIF  : "elseif",
+		PERIOD   : "}",
+		STOP     : "end",
+		MIN      : "less",
+		MAX      : "more",
+		PROMPT   : "ask",
+		OPTION   : ",",
+		DEFAULT  : ";",
+		ALIAS    : "{",
+		IF       : "if",
+		THEN     : "then",
+		ELSE     : "else",
+		GT       : ">",
+		LT       : "<",
+		GE       : ">=",
+		LE       : "<=",
+		EQ       : "==",
+		NE       : "<>",
+		ADD      : "+",
+		SUB      : "-",
+		MUL      : "*",
+		DIV      : "/",
+		MOD      : "%",
+		BEGIN    : "(",
+		END      : ")",
+		ABS      : "abs",
+		CEIL     : "ceil",
+		FLOOR    : "floor",
+		ROUND    : "round",
+		UMINUS   : "-",
+		UPLUS    : "+",
+		SIGN     : "sign",
+		LABEL    : "label",
+		META     : "meta",
+		METAIF   : "metaif",
+		INSPECT  : "inspect",
+		ELSEIF   : "elseif",
+		NOT      : "not",
+		DIE      : "die",
+		MACRO    : "fill",
+		TEMPLATE : "template",
+		// IN       : "in",
 
 		/* builtin variables */
 		BUILTIN_CODEGEN     : "builtins|codegen",
@@ -160,6 +166,29 @@ const Tokens = (function() {
 			TERMINALS.MUL,
 			TERMINALS.DIV,
 			TERMINALS.MOD,
+			TERMINALS.DIE,
+		]),
+
+		OPERATOR: new Set([
+			TERMINALS.GT,
+			TERMINALS.LT,
+			TERMINALS.LE,
+			TERMINALS.GE,
+			TERMINALS.EQ,
+			TERMINALS.NE,
+			TERMINALS.ADD,
+			TERMINALS.SUB,
+			TERMINALS.MUL,
+			TERMINALS.DIV,
+			TERMINALS.MOD,
+			TERMINALS.DIE,
+			TERMINALS.PERIOD,
+			TERMINALS.ALIAS,
+			TERMINALS.OPTION,
+			TERMINALS.DEFAULT,
+			TERMINALS.ALIAS,
+			TERMINALS.BEGIN,
+			TERMINALS.END,
 		]),
 
 		CALL: new Set([
@@ -170,6 +199,7 @@ const Tokens = (function() {
 			TERMINALS.SIGN,
 			TERMINALS.META,
 			TERMINALS.INSPECT,
+			TERMINALS.NOT,
 		]),
 
 		UNARY: new Set([
@@ -190,6 +220,7 @@ const Tokens = (function() {
 		]),
 
 		RESERVED: new Set([
+			TERMINALS.ELSE,
 			TERMINALS.ELSEIF,
 			TERMINALS.STOP,
 			TERMINALS.IF,
@@ -199,8 +230,8 @@ const Tokens = (function() {
 			TERMINALS.FLOOR,
 			TERMINALS.ROUND,
 			TERMINALS.PROMPT,
-			TERMINALS.OPTION,
-			TERMINALS.DEFAULT,
+			// TERMINALS.OPTION,
+			// TERMINALS.DEFAULT,
 			TERMINALS.MIN,
 			TERMINALS.MAX,
 			TERMINALS.SIGN,
@@ -212,6 +243,11 @@ const Tokens = (function() {
 			TERMINALS.BUILTIN_MACROGEN,
 			TERMINALS.BUILTIN_COMPTIME,
 			TERMINALS.BUILTIN_RUNTIME,
+			TERMINALS.NOT,
+			TERMINALS.DIE,
+			TERMINALS.MACRO,
+			TERMINALS.TEMPLATE,
+			// TERMINALS.IN,
 		]),
 	};
 
@@ -584,8 +620,9 @@ const Tokens = (function() {
 				TERMINALS.SIGN,
 				"sign({1})",
 				wrap(
-					"Returns 1 if {1} is positive, -1 if {1} is ",
-					"negative, and 0 if {1} is 0."
+					"Returns 1 if {1} is positive, -1 if {1} is negative, ",
+					"and 0 if {1} is 0. Use with caution inside of Roll20 ",
+					"macro generation; creates a lot of text.",
 				),
 				"any expression",
 			],
@@ -606,6 +643,37 @@ const Tokens = (function() {
 				const [_opcode, argument] = node;
 				const v = recurse(argument);
 				return `(${v} / ((0 ** abs(${v})) + abs(${v})))`;
+			},
+		}),
+
+		[TERMINALS.NOT]: new Operator(0, {
+
+			help: [
+				TERMINALS.NOT,
+				"not({1})",
+				wrap(
+					"Returns 1 if {1} == 0 and 0 if {1} <> 0. Use with ",
+					"caution inside of Roll20 macro generation; creates a ",
+					"lot of text.",
+				),
+				"any expression",
+			],
+
+			opcode: function(env) {
+				env.push(!env.pop());
+				return 1;
+			},
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, argument] = node;
+				recurse(argument);
+				code.instructions.push(this.opcode);
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				const x = recurse(argument);
+				return `(ceil((abs(${x})/(abs(${x}) + 1)) + 1) % 2)`;
 			},
 		}),
 
@@ -681,7 +749,8 @@ const Tokens = (function() {
 				"inspect({1})",
 				wrap(
 					"Prints the value of {1}, the compilation options, and ",
-					"the associate position in the AST to the browser console.",
+					"the associate position in the AST to the browser ",
+					"console. Used for debugging calculator internals.",
 				),
 				"any expression",
 			],
@@ -773,7 +842,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.LABEL,
-				"label {1} {2}",
+				"label {1} {{2}}",
 				wrap(
 					"Labels {2}'s result with {1} in the generated ",
 					"Roll20 macro",
@@ -794,7 +863,7 @@ const Tokens = (function() {
 					return recurse(argB);
 				}
 
-				return `${recurse(argB)} [${argA}]`;
+				return `${recurse(argB)} [${argA[1]}]`;
 			},
 		}),
 
@@ -802,12 +871,12 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.ALIAS,
-				"{1} = {2}",
+				"{1} {{2}}",
 				wrap(
 					"Evaluates to {2} but writes {1} in the ",
 					"generated Roll20 macro as a variable name.",
 				),
-				"identifier or [bracketed text]",
+				"any identifier or [bracketed text]",
 				"any expression",
 			],
 
@@ -823,7 +892,7 @@ const Tokens = (function() {
 					return recurse(argB);
 				}
 
-				return `@{${argA}}`;
+				return `@{${argA[1]}}`;
 			},
 		}),
 
@@ -1035,6 +1104,149 @@ const Tokens = (function() {
 			],
 			fn: ((x, y) => x % y),
 		}),
+
+		[TERMINALS.DIE] : new Operator(0, {
+			help: [
+				TERMINALS.DIE,
+				"{1} die {2}",
+				wrap(
+					"Roll {1} die {2}s. In Roll20 macro generation this ",
+					"creates a macro that actually rolls the dice, but in ",
+					"the character builder it takes the average roll.",
+				),
+				"any expression",
+				"any expression",
+			],
+			
+			opcode: function(env) {
+				const x = env.pop();
+				const y = env.pop();
+
+				if (x == 0) {
+					env.push(0);
+					return 1;
+				}
+
+				let avg = 0;
+				for (let i = x; i > 0; --i) avg += i;
+				env.push(y * (avg / x));
+				return 1;
+			},
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, argA, argB] = node;
+				recurse(argA);
+				recurse(argB);
+				code.instructions.push(this.opcode);
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+
+				const quoteA = quote(recurse, node, argA);
+				const quoteB = quote(recurse, node, argB);
+
+				return `${quoteA}d${quoteB}`;
+			},
+		}),
+
+		[TERMINALS.MACRO] : new Operator(0, {
+			help: [
+				TERMINALS.MACRO,
+				"fill {1}({2})",
+				wrap(
+					"Instantiate a character builder macro (not Roll20 macro) ",
+					"with the name {1}, and arguments {2}. This replaces the ",
+					"expression with whatever {1} was defined as at compile ",
+					"time, with specified variables replaced with each of {2}."
+				),
+				"any identifier or [bracketed text]",
+				"comma separated list of [bracketed text] or any expressions",
+			],
+			
+			opcode: function(env) {
+				env.push(0);
+				return 1;
+			},
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, title, args] = node;
+				const text = title[1];
+
+				try {
+					const macro = env.instantiate(text, args);
+					console.log(`Expansion of ${text}`, macro);
+					recurse(macro);
+				} catch (error) {
+					if (error instanceof CompilationError) {
+						error.message = (
+							`In expansion of template '${text}'; `
+								+ error.message
+						);
+					}
+					throw error;
+				}
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, title, args] = node;
+				const text = title[1];
+
+				try {
+					const macro = env.instantiate(title[1], args);
+					console.log(`Expansion of ${text}`, macro);
+					return recurse(macro);
+				} catch (error) {
+					if (error instanceof CompilationError) {
+						error.message = (
+							`In expansion of template '${text}'; `
+								+ error.message
+						);
+					}
+					throw error;
+				}
+			},
+		}),
+
+		[TERMINALS.TEMPLATE] : new Operator(0, {
+			help: [
+				TERMINALS.TEMPLATE,
+				"template {1}({2}) {3} end",
+				wrap(
+					"Define a character builder macro (not Roll20 macro) ",
+					"with the name {1}, and arguments {2} that evaluates to ",
+					"the expression {3} during compile time. During runtime ",
+					"and during Roll20 macro generation, evaluates to 1 if ",
+					"the template was already defined, and to 0 otherwise."
+				),
+				"any identifier or [bracketed text]",
+				"comma separated list of any identifiers or [bracketed text]",
+				"any expression",
+			],
+			
+			opcode: function(env) {
+				env.push(0);
+				return 1;
+			},
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, title, instance] = node;
+
+				const defined = env.template(title[1], instance);
+
+				code.instructions.push(function(env) {
+					env.push(defined);
+					return 1;
+				});
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, title, instance] = node;
+
+				return env.template(title, instance);
+			},
+		}),
+
 	};
 
 	namespace.OPERATORS[3] =  {
@@ -1048,7 +1260,8 @@ const Tokens = (function() {
 					"Compare {1} and {3} using relative operator {2}, ",
 					"if the result is true, then return {4} otherwise ",
 					"return {5}, instead. Cannot appear inside of ",
-					"[ask] options."
+					"[ask] options. Use with caution in inside of Roll20 ",
+					"macro generation; creates a lot of text.",
 				),
 				"any expression",
 				"one of <, >, <=, >=, ==, or <>",
@@ -1184,13 +1397,13 @@ const Tokens = (function() {
 				const options = args.map(node => {
 					
 					if (node[0] == TERMINALS.ALIAS) {
-						return `${node[1]},${recurse(node[2])}`;
+						return `${node[1][1]},${recurse(node[2])}`;
 					}
 
 					return recurse(node);
 				}).join("|");
 
-				return `?{${title}|${options}}`;
+				return `?{${title[1]}|${options}}`;
 			}
 		}),
 
@@ -1243,7 +1456,7 @@ const Tokens = (function() {
 
 			macrogen: function(recurse, node, env) {
 				const [_opcode, argX, argY, argZ] = node;
-				
+
 				try {
 					const cnv   = env.clone(Env.CODEGEN);
 					const cdg   = codegen(cnv, argX);
@@ -1264,7 +1477,7 @@ const Tokens = (function() {
 	return Object.freeze(namespace);
 })(); 
 
-function tokenize(source) {
+function tokenize(source, strip=true) {
 	/* regular expressions are one of the best things invented */
 	const tokens = Array.from(source.matchAll(Tokens.REGEXP.TOKENS));
 
@@ -1283,7 +1496,7 @@ function tokenize(source) {
 
 		/* strip whitespace */
 
-		if (!token[0].match(Tokens.REGEXP.BLANKSPACE)) {
+		if (!strip || !token[0].match(Tokens.REGEXP.BLANKSPACE)) {
 			output.push(token);
 		}
 
@@ -1299,17 +1512,64 @@ function tokenize(source) {
 	return output;
 }
 
+function highlight(source, strip=false) {
+
+	const process = strip ? source.replaceAll(/\s+/g, " ") : source;
+	const tokens  = tokenize(process, false);
+	const output  = [];
+
+	for (let token of tokens) {
+
+		const text = token[0];
+	
+		if (text.match(Tokens.REGEXP.BLANKSPACE)) {
+			output.push(element("span", text));
+			continue;
+		}
+
+		if (Tokens.SET.OPERATOR.has(text) || Tokens.SET.CALL.has(text)) {
+			output.push(element("span", text, "hl-operator"));
+			continue;
+		}
+
+		if (Tokens.SET.BUILTINS.has(text)) {
+			output.push(element("span", text, "hl-identifier"));
+			continue;
+		}
+
+		if (Tokens.SET.RESERVED.has(text)) {
+			output.push(element("span", text, "hl-reserved"));
+			continue;
+		}
+
+		if (text.match(Tokens.REGEXP.LITERAL) || text.match(Tokens.REGEXP.STRING)) {
+			output.push(element("span", text, "hl-literal"));
+			continue;
+		}
+	
+		if (text.match(Tokens.REGEXP.IDENTIFIER)) {
+			output.push(element("span", text, "hl-identifier"));
+			continue;
+		}
+
+		output.push(element("span", text));
+	}
+
+	return delimit("", output);
+}
+
 class Parser {
 
-	constructor(symbols) {
+	constructor(macros={}) {
 
 		this._index   = 0;
 		this._tokens  = null;
 		this._length  = 0;
 		this._depth   = 0;
 		this._prompt  = false;
+		this._macros  = macros;
 
-		this.symbols = symbols;
+		// this.symbols = symbols;
 	}
 
 	_sink() {
@@ -1397,29 +1657,231 @@ class Parser {
 		let out  = null;
 		let save = this._index;
 
-		// this._index = save;
-		// out = this._parseLabelExpression();
-		// if (out != null) return out;
+		this._index = save;
+		out = this._parseAdditiveExpression();
+		return out;
+	}
 
-		// this._index = save;
-		// out = this._parseMetaIfExpression();
-		// if (out != null) return out;
+	_parseMacro() {
 
-		// this._index = save;
-		// out = this._parsePromptExpression();
-		// if (out != null) return out;
+		if (this.token != Tokens.TERMINALS.MACRO) {
+			return null;
+		}
 
-		// this._index = save;
-		// out = this._parseConditionalExpression();
-		// if (out != null) return out;
+		const macro = this._parseMacroExpression();
 
-		// this._index = save;
-		// out = this._parseMinMaxExpression();
-		// if (out != null) return out;
+		if (macro == null) {
+			this._toPrev();
+			throw new CompilationError(
+				"This should never throw.", this.position
+			);
+		}
+
+		// return macro;
+
+		const [_m, title, args] = macro;
+		const name = title[1];
+
+		if (!(name in this._macros)) {
+			throw new CompilationError(
+				`Macro '${name}' is not defined.`, this.position
+			);
+		}
+
+		const defined  = this._macros[name];
+		const instance = defined.instantiate(args);
+
+		// return [Tokens.TERMINALS.MACRO, name, instance];
+		return instance;
+	}
+
+	_parseTemplateDefinition() {
+
+		if (this.token != Tokens.TERMINALS.TEMPLATE) {
+			return null;
+		}
+		this._toNext();
+
+		const title = this._parseText();
+
+		if (title == null) {
+			this._toPrev();
+			throw new CompilationError(
+				`Expected identifier or [bracketed text] after '${this.token}'`,
+				this.position
+			);
+		}
+		this._toNext();
+
+		if (this.token != Tokens.TERMINALS.BEGIN) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.BEGIN}'`,
+				this.position || -1
+			);
+		}
+		this._toNext();
+
+
+		let   first = true;
+		const args  = [];
+
+		for (;;) {
+
+			const out  = this._parseText();
+
+			if (first && out === null) {
+				break;
+			}
+
+			if (out === null) {
+				
+				if (first) break;
+
+				throw new CompilationError(
+					`Expected identifier after '${Tokens.TERMINALS.OPTION}'`,
+					this.position,
+				);
+			}
+			this._toNext();
+			first = false;	
+
+			args.push(out);
+
+			if (this.token != Tokens.TERMINALS.OPTION) {
+				break;
+			}
+			this._toNext();
+		}
+
+		if (this.token != Tokens.TERMINALS.END) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.END}'`,
+				this.position || -1
+			);
+		}
+		this._toNext();
+
+		const body = this._parseExpression();
+
+		if (body == null) {
+			this._toPrev();
+			throw new CompilationError(
+				`Expected expression after '${this.token}'`,
+				this.position
+			);
+		}
+
+		if (this.token != Tokens.TERMINALS.STOP) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.STOP}'`,
+				this.position || -1
+			);
+		}
+		this._toNext();
+
+		const instance = new Template(args.map(node => node[1]), body);
+
+		return [Tokens.TERMINALS.TEMPLATE, title, instance];
+	}
+
+	_parseMacroArgument() {
+		let out  = null;
+		let save = this._index;
+
+		out = this._parseString();
+		if (out) {
+			this._toNext();
+			return out;
+		}
 
 		this._index = save;
 		out = this._parseAdditiveExpression();
 		return out;
+	}
+
+	_parseMacroExpression() {
+
+		if (this.token != Tokens.TERMINALS.MACRO) {
+			return null;
+		}
+		this._toNext();
+
+		const title = this._parseText();
+
+		if (title == null) {
+			this._toPrev();
+			throw new CompilationError(
+				`Expected identifier or [bracketed text] after '${this.token}'`,
+				this.position
+			);
+		}
+		this._toNext();
+
+		if (this.token != Tokens.TERMINALS.BEGIN) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.BEGIN}'`,
+				this.position || -1
+			);
+		}
+		this._sink();
+		this._toNext();
+
+		let   first   = true; 
+		const options = [];
+		
+		for (;;) {
+
+			const out  = this._parseMacroArgument();
+
+			if (first && out === null) {
+				break;
+			}
+
+			if (out === null) {
+				
+				if (first) break;
+
+				throw new CompilationError(
+					"Expected expression or [bracketed text] after ",
+					`'${Tokens.TERMINALS.OPTION}'`,
+					this.position,
+				);
+			}
+			first = false;		
+
+			options.push(out);
+
+			if (this.token != Tokens.TERMINALS.OPTION) {
+				break;
+			}
+			this._toNext();
+		}
+
+		if (this.token != Tokens.TERMINALS.END) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.END}'`,
+				this.position || -1
+			);
+		}
+		this._swim();
+		this._toNext();
+
+		return [Tokens.TERMINALS.MACRO, title, options];
+	}
+
+	_parseString() {
+
+		if (this.token == null) {
+			return null;
+		}
+
+		if (!this.token.match(Tokens.REGEXP.STRING)) {
+			return null;
+		}
+
+		const string = this.token.replaceAll(/[[\]]/g, () => "");
+
+		return ["text", string];
 	}
 
 	_parseText() {
@@ -1428,19 +1890,15 @@ class Parser {
 			return null;
 		}
 
-		if (this.token.match(Tokens.REGEXP.STRING)) {
-			return this.token
-				.replaceAll("[", () => "")
-				.replaceAll("]", () => "");
-		}
+		const string = this._parseString();
+		if (string != null) return string; 
 
 		const token = this.token.match(Tokens.REGEXP.IDENTIFIER);
+		if (!token) return null;
 
-		if (token && !Tokens.SET.RESERVED.has(token[0])) {
-			return token[0];
-		}
+		if (Tokens.SET.RESERVED.has(token[0])) return null;
 
-		return null;
+		return ["text", token[0]];
 	}
 
 	_parseLabelExpression() {
@@ -1461,6 +1919,14 @@ class Parser {
 		}
 		this._toNext();
 
+		if (this.token != Tokens.TERMINALS.ALIAS) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.ALIAS}'`,
+				this.position || -1
+			);
+		}
+		this._toNext();
+
 		const expr = this._parseExpression();
 
 		if (expr == null) {
@@ -1471,9 +1937,9 @@ class Parser {
 			);
 		}
 
-		if (this.token != Tokens.TERMINALS.STOP) {
+		if (this.token != Tokens.TERMINALS.PERIOD) {
 			throw new CompilationError(
-				`Expected token '${Tokens.TERMINALS.STOP}'`,
+				`Expected token '${Tokens.TERMINALS.PERIOD}'`,
 				this.position || -1
 			);
 		}
@@ -1989,6 +2455,22 @@ class Parser {
 			if (out != null) return out;
 			this._index = save;
 
+		} else if (token == Tokens.TERMINALS.MACRO) {
+
+			/* check whether this is a macro instantiation */
+			const save  = this._index;
+			const out   = this._parseMacro();
+			if (out != null) return out;
+			this._index = save;
+
+		} else if (token == Tokens.TERMINALS.TEMPLATE) {
+
+			/* check whether this is a macro definition */
+			const save  = this._index;
+			const out   = this._parseTemplateDefinition();
+			if (out != null) return out;
+			this._index = save;
+
 		} else if (Tokens.SET.CALL.has(token)) {
 
 			/* check whether this is a function operator */
@@ -2065,9 +2547,105 @@ class Parser {
 	}
 }
 
-function parse(source, context={}, symbols=null) {
-	const parser = new Parser(context);
+function parse(source, macros={}) {
+	const parser = new Parser(macros);
 	return parser.parseSource(source);
+}
+
+class Template {
+
+	constructor(args, body) {
+		// this.name = name;
+		this.args = args;
+
+		if (body instanceof Array) {
+			this.body = body;
+		}
+		else
+		if (typeof body == "string") {
+			this.body = parse(body);
+		}
+		else {
+			throw new Error("Template body must be string or AST");
+		}
+		
+	}
+
+	instantiate(values) {
+
+		if (values.length != this.args.length) {
+			console.error(values);
+			throw new CompilationError(
+				wrap(
+					`expected ${this.args.length} arguments but recieved `,
+					`${values.length} instead.`,
+				)
+			);
+		}
+
+		const map = new Map();
+		for (let i = 0; i < values.length; ++i) {
+			map.set(this.args[i], values[i]);
+		}
+
+		function clone(map, node) {
+
+			const list = [];
+
+			/* substitute expression */
+			if (node[0] == "$" && map.has(node[1])) {
+
+				const value = map.get(node[1]);
+
+				if (value[0] == "text") {
+					throw new CompilationError(
+						wrap(
+							"cannot substitute [bracketed text] for template ",
+							`argument '${node[1]}'. Expected an expression.`,
+						)
+					);
+				}
+
+				return map.get(node[1]);
+			}
+
+			/* substitute some text feature */
+			if (node[0] == "text" && map.has(node[1])) {
+
+				const value = map.get(node[1]);
+
+				if (value[0] != "text") {
+					throw new CompilationError(
+						wrap(
+							"cannot substitute expression for template ",
+							`argument '${node[1]}'. Expected [bracketed text].`,
+						)
+					);
+				}
+
+				return map.get(node[1]);
+			}
+
+			/* copy the ast node as is */
+			for (let element of node) {
+				if (element instanceof Array) {
+					list.push(clone(map, element));
+				} else {
+					list.push(element);
+				}
+			}
+
+			return list;
+		}
+
+		return clone(map, this.body);
+	}
+
+	static parse(source, macros={}) {
+		const [_op, title, template] = parse(source, macros);
+		return [title[1], template];
+	}
+
 }
 
 /**
@@ -2078,7 +2656,7 @@ function parse(source, context={}, symbols=null) {
  */
 class Env {
 
-	constructor(flags, variables) {
+	constructor(flags, variables, macros) {
 
 		if (flags === undefined) {
 			throw TypeError("flags is a required argument");
@@ -2093,6 +2671,25 @@ class Env {
 		this.variables = variables;
 		this.calls     = new Set();
 		this.uid       = uniqueID();
+		this.macros    = macros || new Map();
+	}
+
+	template(title, template) {
+		
+		const replace = this.macros.has(title);
+		this.macros.set(title, template);
+
+		return Number(replace);
+	}
+
+	instantiate(title, args) {
+		if (!this.macros.has(title)) {
+			throw new CompilationError(
+				`Template ${title} is undefined in this environment.`
+			);
+		}
+
+		return this.macros.get(title).instantiate(args);
 	}
 
 	static flagset(flags) {
@@ -2167,7 +2764,7 @@ class Env {
 	}
 
 	clone(flags) {
-		return new Env(this.flags | flags, this.variables);
+		return new Env(this.flags | flags, this.variables, this.macros);
 	}
 
 	push(value) {
@@ -2262,11 +2859,11 @@ class CompiledExpression {
 	 * @param {Object} context - a map-like object for variable values
 	 * @param {Set?} symbols - a set of defined symbols for this expression
 	 */
-	constructor(source, context={}, symbols=null) {
+	constructor(source, context={}, macros={}) {
 		this.source  = source;
 
 		try {
-			const ast      = parse(source, context);
+			const ast      = parse(source, macros);
 			const env      = new Env(Env.CODEGEN, context);
 			const cdg      = codegen(env, ast);
 
@@ -2300,6 +2897,8 @@ class CompiledExpression {
 	macrogen(env) {
 
 		env = env || this.env.with(Env.MACROGEN);
+
+		// if (!(env instanceof Env)) debugger;
 
 		const walk = (node) => {
 			const operator = Tokens.OPERATORS[node.length - 1][node[0]];
@@ -2337,9 +2936,9 @@ class Compiler {
 	 * @param {object} - a map-like object for variable values
 	 * @param {Set} - a set of defined symbols
 	 */
-	constructor(context, symbols) {
+	constructor(context={}, macros={}) {
 		this.context = context;
-		this.symbols = symbols;
+		this.macros  = macros;
 	}
 
 	/**
@@ -2349,8 +2948,8 @@ class Compiler {
 	 * @param {object} context - a map-like object for variable values
 	 * @returns {CompiledExpression} - an executable expression object
 	 */
-	compile(source, context=this.context) {
-		return new CompiledExpression(source, context);
+	compile(source, context=this.context, macros=this.macros) {
+		return new CompiledExpression(source, context, macros);
 	}
 
 }
@@ -2367,7 +2966,11 @@ return Object.freeze({
 	/* execution environment for compile expressions */
 	Env: Env,
 
+	Template: Template,
+
 	tokenize: tokenize,
+
+	highlight: highlight,
 
 	HELP: Tokens.HELP,
 
@@ -2447,16 +3050,6 @@ return Object.freeze({
 });
 
 })();
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2717,6 +3310,8 @@ class Parser {
 		const token = this.token;
 		this._toNext();
 
+		this.symbols.add(token);
+
 		return token;
 	}
 
@@ -2730,9 +3325,47 @@ class Parser {
 	}
 }
 
-function parse(source, context={}, symbols=null) {
-	const parser = new Parser(context);
+function parse(source, symbols=new Set()) {
+	const parser = new Parser(symbols);
 	return parser.parseSource(source);
+}
+
+function highlight(source) {
+	
+	const ast = parse(source);
+
+	function walk(node, top=true) {
+
+		const out = [];
+
+		if (!top) out.push("(");
+
+		for (let i = 0; i < node.length; ++i) {
+
+			if (i) out.push(" ");
+
+			const item = node[i];
+
+			if (item instanceof Array) {
+				out.push(walk(item, false));
+			}
+			else
+			if (typeof item == "string") {
+				out.push(element("span", item, i ? "computed" : "datum"));
+			}
+			else {
+				throw new TypeError(
+					"Invalid type in ast."
+				);
+			}
+		}
+
+		if (!top) out.push(")");
+
+		return element("span", out);
+	}
+
+	return walk(ast);
 }
 
 // class Engine {
@@ -2831,10 +3464,15 @@ class CompiledExpression {
 	 * @param {Object} context - a map-like object for variable values
 	 * @param {Set?} symbols - a set of defined symbols for this expression
 	 */
-	constructor(source, context={}, symbols=null) {
+	constructor(source, context={}) {
 		this.source  = source;
 		this.context = context;
-		this.ast     = parse(source, context);
+		this.symbols = new Set();
+		this.ast     = parse(source, this.symbols);
+	}
+
+	search() {
+
 	}
 
 	/**
@@ -2858,14 +3496,44 @@ class CompiledExpression {
 				);
 			}
 
-			return this.call(context, ...args);
+			return this.apply(context, args);
 		};
 
 		return walk(this.ast);
 	}
 
-	call(context, name, ...args) {
-		return context[name](...args);
+	apply(context, node) {
+		return context[node[0]](...node);
+	}
+
+	*[Symbol.iterator]() {
+		let index = 0;
+		let stack = [];
+		let node  = this.ast;
+
+		yield node;
+		for (;;) {
+
+			if (index == node.length) {
+				if (stack.lengt == 0) {
+					break;
+				}
+				node  = stack.pop();
+				index = stack.pop();
+				continue;
+			}
+
+			if (node[index] instanceof Array) {
+				stack.push(index + 1);
+				stack.push(node);
+
+				node  = node[index];
+				index = 0;
+				yield node;
+			} else {
+				++index;
+			}
+		}
 	}
 }
 
@@ -2900,22 +3568,38 @@ class Compiler {
 /* create and return namespace */
 return Object.freeze({
 
+	fallback: function(context) {
+		return new Proxy(context, {
+			get: function(object, field, fallback) {
+				return (
+					Object.prototype.hasOwnProperty.call(object, field)
+						? object[field]
+						: fallback
+				);
+			},
+		});
+	},
+
+	highlight: highlight,
+
+	// toul: toul,
+
 	context: {
 		"True": (() => true),
 
 		"False": (() => false),
 
-		"All": ((...args) => args.reduce((x, y) => x && y)),
+		"All": ((op, ...args) => args.reduce((x, y) => x && y)),
 
-		"Any": ((...args) => args.reduce((x, y) => x || y)),
+		"Any": ((op, ...args) => args.reduce((x, y) => x || y)),
 
-		"Yield": ((...args) => args.length == 1 ? args[0] : args.length == 0 ? null : args),
+		"Yield": ((op, ...args) => args.length == 1 ? args[0] : args.length == 0 ? null : args),
 
-		"List": ((...args) => args),
+		"List": ((op, ...args) => args),
 
-		"Do": ((...args) => args[args.length - 1]),
+		"Do": ((op, ...args) => args[args.length - 1]),
 
-		"If": ((ask, yes, no) => ask ? yes : no),
+		"If": ((op, ask, yes, no) => ask ? yes : no),
 	},
 	
 	/* this has to be exposed to be catchable */

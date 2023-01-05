@@ -5,7 +5,7 @@
     "rank": 3,
     "price": 1200,
 
-    "base": "mag",
+    "mttype": "mag",
     "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["cost"],
     "hidden": false
 }

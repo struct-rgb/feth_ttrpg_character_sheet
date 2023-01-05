@@ -1,0 +1,26 @@
+{
+  "name": "Monster Piercer",
+  "description": "Effective against Monster units.",
+  "requires": "Any (Lances C) (Lances B)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 7,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 10,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "effective"
+  ],
+  "hidden": false,
+  "type": "Lances",
+  "rank": "C-B"
+}

@@ -1,9 +1,8 @@
 {
   "name": "Severing",
-  "type": "Other",
-  "description": "Do not pay TP this phase, instead apply [Severed -X] to this unit after combat, where X is the TP that would be paid. This metamagic ability can be used with another one.",
+  "description": "Do not pay TP this phase, instead apply @{condition:Severed:[Severed]} to this unit after combat, where X is the TP that would be paid. This metamagic ability can be used with another one.",
   "requires": "Guile B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 3,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "condition",
+    "scales",
+    "combo"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "B"
 }

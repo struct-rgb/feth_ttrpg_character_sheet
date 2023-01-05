@@ -1,9 +1,8 @@
 {
   "name": "Merciless Hail",
-  "type": "Other",
-  "description": "When casting an Ice Spell, create an immovable 3x3 area centered on your target. Units that start their turn in those squares suffer [Chilled] for 1 turn.",
+  "description": "Ice metamagic; create a 3x3 area of @{tile:Hail Storm:Hail Storms} centered on target foe. @{art::Fire Wall} @{const:variant:Variant}: create a 3x3 area of @{tile:Hail Storm:Hail Storms} centered on target foe; conditions applied by created @{tile:Hail Storm:Hail Storms} last for two turns which also apply @{const:gbp:[Str -3]}, @{const:gbp:[Mag -3]}, @{const:gbp:[Spd -3]}, and @{const:gbp:[Def -3]}.",
   "requires": "Reason B",
-  "base": "else",
+  "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -15,14 +14,18 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-
     "spcost": 9,
     "tpcost": 5,
     "sp": 0,
     "tp": 0
   },
-
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
-  "hidden": false
+  "tags": [
+    "wall",
+    "condition",
+    "variant"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "B"
 }

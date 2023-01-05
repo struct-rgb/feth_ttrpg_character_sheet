@@ -1,0 +1,35 @@
+{
+    "name": "Sniper",
+    "description": "Bow focused infantry class.",
+    "type": ["Infantry", "Martial"],
+    "tier": "Advanced",
+    "requires": "All (Bows B) (Required (Level 15))",
+    "abilities": ["Bow Advantage", "Bow Crit +10", "Bow Range +1", "Stamina +10"],
+    "arts": [],
+    "growths": {
+        "hp": 15,
+        "str": 20,
+        "mag": 20,
+        "dex": 30,
+        "spd": 15,
+        "def": 10,
+        "res": 15,
+        "cha": 15
+      },
+    "modifiers": {
+        "hp": 2,
+        "str": 3,
+        "mag": 2,
+        "dex": 6,
+        "spd": 3,
+        "def": 2,
+        "res": 4,
+        "cha": 4,
+        "mov": 5
+    },
+    "mount": null,
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": ["rework"],
+    "hidden": false
+}

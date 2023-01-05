@@ -5,7 +5,7 @@
   "requires": "Reason D",
   "rank": "D",
   "price": 840,
-  "base": "mag",
+  "mttype": "mag",
   "modifiers": {
     "mt": 3,
     "prot": 0,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes except Refined.",
-  "tags": [],
+  "tags": ["fire"],
   "hidden": false
 }
