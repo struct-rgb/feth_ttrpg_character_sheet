@@ -1896,7 +1896,7 @@ class Sheet {
 			),
 			expr  : `
 				floor(
-					metaif builtins|macrogen == 1 then
+					(metaif builtins|macrogen == 1 then
 						metaif unit|total|mttype|mag == 1
 							then unit|total|mag
 						elseif unit|total|mttype|str == 1
@@ -1910,7 +1910,7 @@ class Sheet {
 							then unit|total|str
 							else 0
 						end
-					end
+					end)
 					
 					* weapon|multiplier|healing
 				)
