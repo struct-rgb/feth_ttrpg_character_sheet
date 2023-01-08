@@ -1500,7 +1500,7 @@ const definitions = {
       "requires": "Any (Swords C) (Swords B)",
       "mttype": "mag",
       "modifiers": {
-        "mt": "fill scale(2, [Res], unit|total|res)",
+        "mt": "fill scale(5, [Res], unit|total|res)",
         "prot": 0,
         "resl": 0,
         "hit": 10,
