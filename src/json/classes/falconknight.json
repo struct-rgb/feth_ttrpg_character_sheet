@@ -1,6 +1,6 @@
 {
     "name": "Falcon Knight",
-    "description": "A pegasus knight who descends upon foes with the speed of a falcon",
+    "description": "A pegasus knight who descends upon foes with the speed of a falcon. Choose one Advantage skill on reclass.",
     "type": ["Flying", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",

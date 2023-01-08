@@ -1,7 +1,7 @@
 {
     "name": "Faith Consumption 1",
     "description": "Restores 1 TP after unit uses a Faith weapon.",
-    "requires": "",
+    "requires": "Any (Class Priest) (Class `War Cleric/Priest`)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

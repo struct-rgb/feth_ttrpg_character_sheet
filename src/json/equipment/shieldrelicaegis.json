@@ -1,6 +1,6 @@
 {
     "name": "Aegis Shield",
-    "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius:Fraldarius}, grants wielder @{ability::Aegis} and @{ability::Pavis}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+    "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}, grants wielder @{ability::Aegis} and @{ability::Pavis}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
     "requires": "None",
     "price": 0,
     "type": "Shield",

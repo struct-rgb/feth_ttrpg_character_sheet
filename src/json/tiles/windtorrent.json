@@ -1,7 +1,7 @@
 {
     "name": "Wind Torrent",
     "description": "A unit occupying this tile when it is created is moved to an adjacent tile, if possible (unit chooses). This tile is not traversable by Flying units; costs non-Flying units 2 movement to enter. Units can't target other units across this tile at Range > 1.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 0,
         "prot": 0,

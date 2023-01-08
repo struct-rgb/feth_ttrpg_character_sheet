@@ -1,6 +1,6 @@
 {
     "name": "Wyvern Lord",
-    "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern",
+    "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern. Choose one Advantage skill on reclass.",
     "type": ["Flying", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Axes C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",

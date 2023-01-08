@@ -1,6 +1,6 @@
 {
     "name": "Paladin",
-    "description": "A veteran warrior who commands the battlefield from horseback",
+    "description": "A veteran warrior who commands the battlefield from horseback. Choose one Advantage skill on reclass.",
     "type": ["Cavalry", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",

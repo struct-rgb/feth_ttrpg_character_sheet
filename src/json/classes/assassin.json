@@ -1,6 +1,6 @@
 {
     "name": "Assassin",
-    "description": "Bow and Sword martial class focused on damage, stealth, and untility.",
+    "description": "Bow and Sword martial class focused on damage, stealth, and untility. Choose one Advantage skill on reclass.",
     "type": ["Infantry", "Martial"],
     "tier": "Advanced",
     "requires": "All (Swords C+) (Bows C+) (Required (Level 15))",

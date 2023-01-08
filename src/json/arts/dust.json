@@ -1,6 +1,6 @@
 {
   "name": "Dust",
-  "description": "@{weapon::Crusher} only; applies [Def -5] to target for 1 turn and effective against Dragon units.",
+  "description": "@{weapon::Crusher} only; applies @{const:gbp:[Def -5]} to target for 1 turn and effective against Dragon units.",
   "requires": "All (Weapon Crusher) (Crest Dominic) (Axes E)",
   "mttype": "else",
   "modifiers": {

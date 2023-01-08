@@ -1,6 +1,6 @@
 {
     "name": "Dark Wyvernian",
-    "description": "A mage who rains death from above upon the back of a wyvern",
+    "description": "A mage who rains death from above upon the back of a wyvern. Choose one Advantage skill on reclass.",
     "type": ["Flying", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",

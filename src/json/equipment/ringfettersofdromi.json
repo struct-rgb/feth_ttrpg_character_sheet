@@ -1,6 +1,6 @@
 {
     "name": "Fetters of Dromi",
-    "description": "If wielder has the Crest of @{ability:Major Crest of Aubin:Aubin}, grants wielder Movement +1, @{ability::Aegis}, @{ability::Pavis}, and @{ability::Canto}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
+    "description": "If wielder has the Crest of @{ability:Major Crest of Aubin||Minor Crest of Aubin:Aubin}, grants wielder Movement +1, @{ability::Aegis}, @{ability::Pavis}, and @{ability::Canto}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
     "requires": "None",
     "price": 0,
     "type": "Ring",

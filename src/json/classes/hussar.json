@@ -1,6 +1,6 @@
 {
     "name": "Hussar",
-    "description": "A veteran light cavalier who focuses on teamwork",
+    "description": "A veteran light cavalier who focuses on teamwork. Choose one Advantage skill on reclass.",
     "type": ["Cavalry", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",

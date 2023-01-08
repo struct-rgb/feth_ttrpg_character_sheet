@@ -1,6 +1,6 @@
 {
     "name": "Major Crest of Dominic",
-    "description": "20% chance to grant reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
+    "description": "20% chance to reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

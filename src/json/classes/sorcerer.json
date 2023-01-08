@@ -1,10 +1,10 @@
 {
     "name": "Sorcerer",
-    "description": "I don't understand why this is a Reason only class.",
+    "description": "Armored spellcaster. Choose one Spectrum skill on reclass.",
     "type": ["Armor", "Caster"],
     "tier": "Advanced",
-    "requires": "All (Reason C+) (Required (Armor C+))  (Required (Level 15))",
-    "abilities": ["Reason Magic Spectrum", "Consumption 2"],
+    "requires": "All (Any (Faith C+) (Guile C+) (Reason C+)) (Required (Armor C+))  (Required (Level 15))",
+    "abilities": ["Faith Magic Spectrum", "Guile Magic Spectrum", "Reason Magic Spectrum", "Consumption 2"],
     "arts": [],
     "growths": {
         "hp": 25,

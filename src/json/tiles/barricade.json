@@ -1,7 +1,7 @@
 {
     "name": "Barricade",
     "description": "Cannot be traversed by non-Flying units.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 10,
         "prot": 15,

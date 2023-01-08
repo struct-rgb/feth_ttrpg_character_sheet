@@ -1,7 +1,7 @@
 {
   "name": "Labraunda",
   "type": "Axes",
-  "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Seiros:Seiros}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Seiros:Seiros}.",
+  "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}.",
   "requires": "Axes A",
   "rank": "A",
   "price": 0,

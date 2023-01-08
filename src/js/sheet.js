@@ -48,8 +48,11 @@ class Theme {
 	static list = [
 		new Theme("Classic", "The classic look and feel.", "./src/css/light.css"),
 		new Theme("Dark", "The ever popular alternative.", "./src/css/dark.css"),
-		new Theme("Golden Deer", "A theme for the best house.", "./src/css/deer.css"),
+		new Theme("Golden Deer", "A bad theme for the best house.", "./src/css/deer.css"),
 		new Theme("Boneless", "For when you want to play as the protagonist.", "./src/css/boneless.css"),
+		new Theme("Golden Fear", "Boneless mode but yellow.", "./src/css/golden_fear.css"),
+		new Theme("Golden Egg", "Serious attempt at a gold theme.", "./src/css/golden_egg.css"),
+		new Theme("Document", "The most minimal theme.", "./src/css/document.css")
 	];
 
 	constructor(name, description, stylesheet) {
@@ -79,6 +82,137 @@ class BigButton {
 		this.input.classList.add("no-display");
 	}
 
+}
+
+class AutosaveConfiguration {
+
+	static MODES = new Map([
+		["Minutes", 6e4],
+		["Seconds", 1e3],
+		["Off", 0]
+	]);
+
+	constructor(sheet) {
+
+		this.sheet       = sheet;
+		this._radios     = [];
+		this._interval   = null;
+		this._multiplier = 6e4;
+
+		this._countdown   = document.createTextNode("Never");
+
+		this._input       = element("input", {
+			class : ["simple-border"],
+			attrs : {
+				type  : "number",
+				value : 5,
+				min   : 0,
+			}
+		});
+
+		this._set = element("button", {
+			class   : ["simple-border"],
+			content : "Set",
+			attrs   : {
+				onclick: (() => {
+					localStorage.setItem("autosave",
+						JSON.stringify(this.export())
+					);
+					this.setInterval(this.value);
+				}),
+			}
+		});
+
+		const els = [
+			element("legend", [
+				element("strong", "Autosave in "),
+				element("span", this._countdown, "computed")
+			]),
+			this._set, this._input, element("br"),
+		];
+
+		for (let each of AutosaveConfiguration.MODES.entries()) {
+
+			const [value, mult] = each;
+
+			const radio = element("input", {
+				attrs : {
+					type     : "radio",
+					value    : value,
+					name     : this._radio_group,
+					checked  : value == "Minutes",
+					onchange : (() => {
+						this._multiplier = mult;
+					})
+				}
+			});
+
+			this._radios.push(radio);
+			els.push(radio, uniqueLabel(value, radio));
+		}
+
+		this.root = element("fieldset", els);
+	}
+
+	import(object) {
+
+		this._input.value = object.number || 5;
+
+
+		let multiplier = object.multiplier || "Minutes";
+
+		for (let radio of this._radios) {
+			radio.checked = false;
+			if (radio.value == multiplier) {
+				radio.checked    = true;
+				this._multiplier = AutosaveConfiguration.MODES.get(multiplier);
+			}
+		}
+
+		this.setInterval(this.value);
+	}
+
+	export() {
+		return {
+			number     : Number(this._input.value),  
+			multiplier : (
+				this._radios
+					.filter(radio => radio.checked)[0]
+					.value
+			)
+		};
+	}
+
+	get value() {
+		return this._multiplier * Number(this._input.value);
+	}
+
+	setInterval(value=this.value) {
+
+		if (this._interval != null) {
+			clearInterval(this._interval);
+			this._interval = null;
+		}
+
+		if (value == 0) {
+			this._countdown.data = "Never";
+			return;
+		}
+
+		let seconds  = value / 1e3;
+
+		this._interval = setInterval(() => {
+
+			const minutes        = Math.floor(seconds / 60);
+			const justSecs       = seconds - (minutes * 60);
+			const partSecs       = justSecs < 10 ? "0" + justSecs : justSecs;
+			this._countdown.data = `${minutes}:${partSecs}`;
+			if (seconds--) return;
+
+			this.sheet.autosave();
+			seconds = value / 1e3;
+		}, 1e3);
+	}
 }
 
 class Buildables {
@@ -663,7 +797,7 @@ class Sheet {
 
 		sidebook.active = "Abilities";
 
-		/* set up the characters and themes tabs */
+		/* set up the characters and options tabs */
 
 		let notebook = new Notebook(document.getElementById("right-pane"));
 		this.tabs.main = notebook;
@@ -708,7 +842,7 @@ class Sheet {
 
 		this.wb = weapon_bb;
 
-		buildnb.add("Spells & Weapons", [weapon_bb.root, this.weaponz.root]);
+		buildnb.add("Weapons & Spells", [weapon_bb.root, this.weaponz.root]);
 
 		buildnb.active = "Characters";
 
@@ -880,6 +1014,10 @@ class Sheet {
 
 		const themes = document.getElementById("themes");
 
+		this._autosave_conf = new AutosaveConfiguration(this);
+
+		themes.appendChild(this._autosave_conf.root);
+
 		this.themes  = new SingleActiveCategory(model, {
 			name        : "themes",
 			empty       : "If you're reading this, there is no theme",
@@ -903,13 +1041,20 @@ class Sheet {
 		}
 
 		this.themes.toggleActive("Classic");
-		this.themes.addTo(themes);
+		// this.themes.addTo(themes);
 		
+		themes.appendChild(
+			element("fieldset", [
+				element("legend", element("strong", "Themes")),
+				this.themes.root,
+			])
+		);
+
 		themes.remove();
 
-		tools.add("Themes", themes);
+		tools.add("Configure", themes);
 
-		tools.active = "Themes";
+		tools.active = "Configure";
 
 		this.tabs.tools = tools;
 
@@ -925,8 +1070,14 @@ class Sheet {
 			? this.autoload()
 			: this.cb.add();
 
+		Object.prototype.hasOwnProperty.call(localStorage, "autosave")
+			? this._autosave_conf.import(
+				JSON.parse(localStorage.getItem("autosave"))
+			)
+			: void(0);
+
 		/* autosave current sheet every five minutes */
-		// setInterval(() => void this.autosave(), 300000);
+		this._autosave_conf.setInterval();
 	}
 
 	/* this was a workaround the fact two arts cats weren't expected */
@@ -1354,7 +1505,7 @@ class Sheet {
 				expr  : `
 					metaif builtins|macrogen == 1 then
 						metaif class|mount|${name} <> 0 then 
-							ask [Mounted?]
+							ask cat([Mounted? #], class|mount|${name})
 								; Yes {class|mount|${name}}
 								, No  {0}
 							end
@@ -1602,6 +1753,50 @@ class Sheet {
 			}),
 		});
 
+		for (let each of Weapon.TYPE.strings.entries()) {
+
+			const [num, str] = each;
+
+			add({
+				name  : `art|type|${str.toLowerCase()}`,
+				about : wrap(
+					`Evaluates to 1 if art type is ${str}, and otherwise `,
+					"evaluates to 0."
+				),
+				expr  : ((env) => {
+					const string = this.weaponz.template.type;
+					const number = Weapon.TYPE.asNumber(string);
+					return number == num;
+				}),
+			});
+		}
+
+		add({
+			name  : "art|type|weapon",
+			about : wrap(
+				"Evaluates to 1 if weapon type is Axes, Swords, Lances, ",
+				"Brawling, or Bows, and otherwise evaluates to 0.",
+			),
+			expr  : ((env) => {
+				const string = this.weaponz.template.type;
+				const number = Weapon.TYPE.asNumber(string);
+				return 1 <= number && number <= 5;
+			}),
+		});
+
+		add({
+			name  : "art|type|spell",
+			about : wrap(
+				"Evaluates to 1 if weapon type is Faith, Guile, or Reason, ",
+				"and otherwise evaluates to 0.",
+			),
+			expr  : ((env) => {
+				const string = this.weaponz.template.type;
+				const number = Weapon.TYPE.asNumber(string);
+				return 6 <= number && number <= 8;
+			}),
+		});
+
 		// add({
 		// 	name  : "",
 		// 	about : wrap(
@@ -1772,8 +1967,8 @@ class Sheet {
 				name  : `weapon|base|${name}`,
 				about : wrap(
 					`The equipped weapon/spells's base ${name} statistic `,
-					"value entered into the table under Create => Spells & ",
-					"Weapons before modifiers. If none is equipped then ",
+					"value entered into the table under Create => Weapons & ",
+					"Spells before modifiers. If none is equipped then ",
 					"evaluates to 0."
 				),
 				expr  : ((env) => {
@@ -1840,6 +2035,31 @@ class Sheet {
 				expr  : funcsum(...second),
 			});
 
+			add({
+				name  : `weapon|dynamic|${name}`,
+				about : wrap(
+					`Evaluates to 1 if weapon's ${name} has any dynamic `,
+					"components and to 0 otherwise.",
+				),
+				expr  : ((env) => {
+
+					let a = false;
+					for (let attr of this.weaponz.attributes.getActive()) {
+
+						const attribute = Attribute.get(attr);
+						const modifier  = (
+							typeof attribute.modifiers[name] != "number"
+						);
+
+						a = a || modifier;
+					}
+
+					return a || (
+						typeof this.weaponz.template.modifiers[name] != "number"
+					);
+				}),
+			});
+
 			second.push(add({
 				name  : `equipment|${name}`,
 				about : wrap(
@@ -1896,23 +2116,25 @@ class Sheet {
 			),
 			expr  : `
 				floor(
-					metaif builtins|macrogen == 1 then
-						metaif unit|total|mttype|mag == 1
-							then unit|total|mag
-						elseif unit|total|mttype|str == 1
-							then unit|total|str
-							else 0
+					(
+						metaif builtins|macrogen == 1 then
+							metaif unit|total|mttype|mag == 1
+								then unit|total|mag
+							elseif unit|total|mttype|str == 1
+								then unit|total|str
+								else 0
+							end
+						else
+							if     unit|total|mttype|mag == 1
+								then unit|total|mag
+							elseif unit|total|mttype|str == 1
+								then unit|total|str
+								else 0
+							end
 						end
-					else
-						if     unit|total|mttype|mag == 1
-							then unit|total|mag
-						elseif unit|total|mttype|str == 1
-							then unit|total|str
-							else 0
-						end
-					end
-					
-					* weapon|multiplier|healing
+					)
+						*
+					weapon|multiplier|healing
 				)
 					+ weapon|total|mt
 					+ abilities|mt

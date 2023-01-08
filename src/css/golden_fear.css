@@ -1,0 +1,169 @@
+:root {
+	--green:#00a385;
+	--gold:#897736;
+	--navy:#4d4856;
+	--blue:#3a5192;
+	--wash:#989eb5;
+	--egg:#fff6e6;
+	--goldl:#f1e5ac;
+}
+
+.base {
+	color: #DDDDDD;
+	background: black
+}
+
+.simple-border {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: var(--gold);
+	border-style: ridge;
+	margin: 3px;
+}
+
+.selected-text {
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.datum {
+	font-weight: bold;
+	color: var(--goldl);
+	padding: 0px;
+	margin: 0px;
+}
+
+.computed {
+	font-style: italic;
+	font-weight: bold;
+	color: var(--goldl);
+	padding: 0px;
+	margin: 0px;
+}
+
+.parenthesis {
+	color: var(--gold);
+}
+
+.punctuation {
+	color: var(--gold);
+	font-style: italic;
+	font-weight: bold;
+}
+
+input[type=checkbox] {
+	color: var(--goldl);
+}
+
+hr {
+	background-color: var(--gold);
+	border-color: var(--gold);
+}
+
+dt {
+	color: #AAAAAA;
+}
+
+dd {
+	color: #AAAAAA;
+}
+
+.tts {
+	border-bottom: 1px dotted var(--gold);
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.ttts {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 6px;
+	/*border-width: 2px;*/
+	/*border-color: var(--gold);*/
+	/*border-style: ridge;*/
+}
+
+.attempt-enabled {
+
+}
+
+.attempt-disabled {
+	color: darkgrey;
+}
+
+meter::-webkit-meter-bar {
+	background: black;
+}
+
+meter::-webkit-meter-optimum-value {
+	background: var(--goldl);
+}
+
+meter::-webkit-meter-suboptimum-value {
+	background: var(--gold);
+}
+
+meter::-webkit-meter-even-less-good-value {
+	background: #660000;
+}
+
+input[type="checkbox"]:checked {
+	color: #222222;
+}
+
+.level-table th.incr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: var(--goldl);
+	border-style: outset;
+	background: var(--goldl);
+	color: #222222;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #222222;
+	border-style: outset;
+	background: #222222;
+	color: var(--goldl);
+	font-weight: bolder;
+}
+
+button.toggle-on {
+	border-radius: 5px;
+	border-color: #222222;
+	background: var(--goldl);
+	border-style: solid;
+	color: #222222;
+}
+
+button.toggle-off {
+	border-radius: 5px;
+	border-color: #222222;
+	background: black;
+	border-style: solid;
+	color: var(--goldl);
+}
+
+.hl-identifier {
+	color: lightgrey;
+}
+
+.hl-reserved {
+	/*color: var(--gold);*/
+}
+
+.hl-operator {
+	color: var(--gold);
+}
+
+.hl-literal {
+	color: var(--goldl);
+}

@@ -1,6 +1,6 @@
 {
     "name": "Seiros Shield",
-    "description": "Wielder takes half damage from Monster units. Restores 10% (20% with Crest of @{ability:Major Crest of Seiros:Seiros}) of Max HP at the start of wielders phase.",
+    "description": "Wielder takes half damage from Monster units. Restores 10% (20% with Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}) of Max HP at the start of wielders phase.",
     "requires": "None",
     "price": 0,
     "type": "Shield",

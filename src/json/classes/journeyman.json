@@ -1,6 +1,6 @@
 {
   "name": "Journeyman",
-  "description": "An advanced class fights with swords or bows in heavy armor.",
+  "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
   "type": ["Armor", "Martial"],
   "tier": "Advanced",
   "requires": "All (Any (Swords C+) (Swords C+)) (Required (Armor C+)) (Required (Level 15))",

@@ -16,8 +16,8 @@
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Lances?], No {0}; Yes {30} end",
-        "avo": "ask [vs Lances?], No {0}; Yes {30} end",
+        "hit": "ask [Lancebreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Lancebreaker?], No {0}; Yes {30} end",
         "crit": 0,
         "cravo": 0,
 

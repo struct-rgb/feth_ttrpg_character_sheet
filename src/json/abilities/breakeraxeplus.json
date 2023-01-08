@@ -16,8 +16,8 @@
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Axes?], No {0}; Yes {30} end",
-        "avo": "ask [vs Axes?], No {0}; Yes {30} end",
+        "hit": "ask [Axebreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Axebreaker?], No {0}; Yes {30} end",
         "crit": 0,
         "cravo": 0,
 

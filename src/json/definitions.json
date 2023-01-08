@@ -133,7 +133,12 @@
     {
       "define": [
         "template blow(modifier)",
-        "  fill affirm([Unit Initiated?], modifier, 0)",
+        "  fill bothif(not(unit|tagged|healing),",
+        "    fill affirm(",
+        "      cat([Unit Initiated? #], modifier), modifier, 0",
+        "    ),",
+        "    0",
+        "  )",
         "end"
       ],
       "about": [
@@ -160,7 +165,7 @@
     {
       "define": [
         "template stance(modifier)",
-        "  fill affirm([Foe Initiated?], modifier, 0)",
+        "  fill affirm(cat([Foe Initiated? #], modifier), modifier, 0)",
         "end"
       ],
       "about": [
@@ -176,11 +181,11 @@
         "template advantage(variable)",
         "  fill bothif(",
         "    variable,",
-        "    ask [Triangle Effect?]",
-        "      ; Neutral      {0}",
-        "      , Advantage    {5}",
-        "      , Disadvantage {0}",
-        "    end,",
+        "    (more",
+        "      other|triangle|prompt",
+        "    else",
+        "      0",
+        "    end / 3),",
         "    0",
         "  )",
         "end"
@@ -196,7 +201,7 @@
     {
       "define": [
         "template defiant(bonus)",
-        "  ask [HP ≤ 25%?]",
+        "  ask cat([HP ≤ 25%? #], bonus)",
         "    , No     {0}",
         "    ; Yes    {bonus}",
         "  end",
@@ -273,16 +278,22 @@
     }
   ],
   "tooltips" : {
-    "gbp": [
-      "Conditions of the forms @{::[Stat +X]} and @{::[Stat -X]} apply a modifier equal ",
-      "to X to the listed Stat. When multiple such conditions sharing the same ",
-      "Stat and sign (+ or -) are applied to a unit, they merge together into ",
-      "one condition, taking the larger magnitude and the longer remaining ",
-      "duration of the two."
-    ],
-    "variant": [
-      "Reason metamagic variants are alternate effects that activate instead ",
-      "of the normal effects when used with a specific spell."
-    ]
+    "gbp": {
+      "name": "Generic Bonus/Penalty",
+      "description": [
+        "Conditions of the forms @{::[Stat +X]} and @{::[Stat -X]} apply a ",
+        "modifier equal to X to the listed Stat. When multiple such ",
+        "conditions sharing the same Stat and sign (+ or -) are applied to a ",
+        "unit, they merge together into one condition, taking the larger ",
+        "magnitude and the longer remaining duration of the two."
+      ]
+    },
+    "variant": {
+      "name": "Reason Metamagic Variants",
+      "description": [
+        "Reason metamagic variants are alternate effects that activate ",
+        "instead of the normal effects when used with a specific spell."
+      ]
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
     "name": "Force Wall",
     "description": "This tile cannot be traversed.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 50,
         "prot": 0,

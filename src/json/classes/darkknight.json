@@ -1,6 +1,6 @@
 {
     "name": "Dark Knight",
-    "description": "A mounted knight versed in both weapons and magic",
+    "description": "A mounted knight versed in both weapons and magic. Choose one weapon and one spell Advantage skill on reclass.",
     "type": ["Cavalry", "Martial", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Guile C+) (Reason C+)) (Required (Riding C+)) (Required (Level 15))",

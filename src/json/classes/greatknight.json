@@ -3,7 +3,7 @@
     "description": "A armored knight who fights from horseback",
     "type": ["Armor", "Cavalry", "Martial"],
     "tier": "Advanced",
-    "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
+    "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15)). Choose one Advantage skill on reclass.",
     "abilities": ["Sword Advantage", "Lance Advantage", "Axe Advantage", "Weight -3", "Canto"],
     "arts": [],
     "growths": {

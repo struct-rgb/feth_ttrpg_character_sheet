@@ -1,7 +1,7 @@
 {
     "name": "Guile Consumption 1",
     "description": "Restores 1 TP after unit uses a Guile weapon.",
-    "requires": "",
+    "requires": "Class `Dark Mage`",
     "modifiers": {
         "hp": 0,
         "sp": 0,

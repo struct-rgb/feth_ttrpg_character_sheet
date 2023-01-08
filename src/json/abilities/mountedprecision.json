@@ -5,9 +5,9 @@
     "modifiers": {
         "hp": 0,
         "sp": 0,
-        "str": "ask [Mounted?], 0; 4 end",
+        "str": "ask [Mounted Precision?], 0; 4 end",
         "mag": 0,
-        "dex": "ask [Mounted?], 0; 4 end",
+        "dex": "ask [Mounted Precision?], 0; 4 end",
         "spd": 0,
         "def": 0,
         "res": 0,

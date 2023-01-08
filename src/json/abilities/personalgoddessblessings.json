@@ -6,11 +6,11 @@
         "hp": 0,
         "sp": 0,
         "str": 0,
-        "mag": "ask [Blessing?]; None {0}, Mag {5}, Res {0} end",
+        "mag": "fill affirm([50% Blessing?], 5, 0)",
         "dex": 0,
         "spd": 0,
         "def": 0,
-        "res": "ask [Blessing?]; None {0}, Mag {0}, Res {5} end",
+        "res": "fill affirm([100% Blessing?], 5, 0)",
         "cha": 0,
 
         "mt": 0,

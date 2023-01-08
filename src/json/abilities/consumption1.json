@@ -1,7 +1,7 @@
 {
     "name": "Consumption 1",
     "description": "Restores 1 TP after unit uses a Faith, Guile, or Reason weapon.",
-    "requires": "",
+    "requires": "Any (Class Medium) (Class Summoner/Invoker)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -24,7 +24,7 @@
         "minrng": 0,
         "maxrng": 0,
 
-        "tpcost": "fill bothif((weapon|type|faith + weapon|type|guile + weapon|type|reason), -1, 0)",
+        "tpcost": "fill bothif(weapon|type|spell, -1, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0,

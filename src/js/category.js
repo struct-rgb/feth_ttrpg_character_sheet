@@ -110,7 +110,7 @@ class CategoryElement {
 
 			this.removeButton = element("button",  {
 				class   : ["toggle-off", "smol"],
-				content : "Delete",//"❌",
+				content : "Delete",
 				attrs   : {
 					onclick: this.doRemoveEvent,
 				}
@@ -126,9 +126,12 @@ class CategoryElement {
 
 
 		if (options.hideable) {
+
+			const content = document.createTextNode("Hide");
+
 			this.hideButton = element("button",  {
 				class   : ["toggle-off", "smol"],
-				content : "Hide",//"👁️",
+				content : content,
 				attrs   : {
 					onclick : (() => {
 						this.swap.next();
@@ -137,9 +140,11 @@ class CategoryElement {
 						if (list.contains("toggle-on")) {
 							list.remove("toggle-on");
 							list.add("toggle-off");
+							content.data = "Hide";
 						} else {
 							list.remove("toggle-off");
 							list.add("toggle-on");
+							content.data = "Show";
 						}
 					}),
 				}

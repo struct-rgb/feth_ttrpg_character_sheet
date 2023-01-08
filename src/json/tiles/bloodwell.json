@@ -1,7 +1,7 @@
 {
     "name": "Blood Well",
     "description": "Cannot be targetted by crestless units. Once per unit per turn, a crestless unit that begins its phase adjacent to the a tile of this type takes 10 lethal damage.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 1,
         "prot": 0,

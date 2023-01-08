@@ -134,7 +134,12 @@ const definitions = {
     {
       "define": [
         "template blow(modifier)",
-        "  fill affirm([Unit Initiated?], modifier, 0)",
+        "  fill bothif(not(unit|tagged|healing),",
+        "    fill affirm(",
+        "      cat([Unit Initiated? #], modifier), modifier, 0",
+        "    ),",
+        "    0",
+        "  )",
         "end"
       ],
       "about": [
@@ -161,7 +166,7 @@ const definitions = {
     {
       "define": [
         "template stance(modifier)",
-        "  fill affirm([Foe Initiated?], modifier, 0)",
+        "  fill affirm(cat([Foe Initiated? #], modifier), modifier, 0)",
         "end"
       ],
       "about": [
@@ -177,11 +182,11 @@ const definitions = {
         "template advantage(variable)",
         "  fill bothif(",
         "    variable,",
-        "    ask [Triangle Effect?]",
-        "      ; Neutral      {0}",
-        "      , Advantage    {5}",
-        "      , Disadvantage {0}",
-        "    end,",
+        "    (more",
+        "      other|triangle|prompt",
+        "    else",
+        "      0",
+        "    end / 3),",
         "    0",
         "  )",
         "end"
@@ -197,7 +202,7 @@ const definitions = {
     {
       "define": [
         "template defiant(bonus)",
-        "  ask [HP \u2264 25%?]",
+        "  ask cat([HP \u2264 25%? #], bonus)",
         "    , No     {0}",
         "    ; Yes    {bonus}",
         "  end",
@@ -274,17 +279,23 @@ const definitions = {
     }
   ],
   "tooltips": {
-    "gbp": [
-      "Conditions of the forms @{::[Stat +X]} and @{::[Stat -X]} apply a modifier equal ",
-      "to X to the listed Stat. When multiple such conditions sharing the same ",
-      "Stat and sign (+ or -) are applied to a unit, they merge together into ",
-      "one condition, taking the larger magnitude and the longer remaining ",
-      "duration of the two."
-    ],
-    "variant": [
-      "Reason metamagic variants are alternate effects that activate instead ",
-      "of the normal effects when used with a specific spell."
-    ]
+    "gbp": {
+      "name": "Generic Bonus/Penalty",
+      "description": [
+        "Conditions of the forms @{::[Stat +X]} and @{::[Stat -X]} apply a ",
+        "modifier equal to X to the listed Stat. When multiple such ",
+        "conditions sharing the same Stat and sign (+ or -) are applied to a ",
+        "unit, they merge together into one condition, taking the larger ",
+        "magnitude and the longer remaining duration of the two."
+      ]
+    },
+    "variant": {
+      "name": "Reason Metamagic Variants",
+      "description": [
+        "Reason metamagic variants are alternate effects that activate ",
+        "instead of the normal effects when used with a specific spell."
+      ]
+    }
   },
   "arts": [
     {
@@ -360,6 +371,36 @@ const definitions = {
       "hidden": true,
       "type": "Axes",
       "rank": "C"
+    },
+    {
+      "name": "Battle Frenzy",
+      "description": "Apply @{condition:Berserk:[Berserk]} to this unit for four turns.",
+      "requires": "Axes B",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "tiles": 0,
+        "spcost": 2,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Axes",
+      "rank": "B"
     },
     {
       "name": "Diamond Axe",
@@ -680,7 +721,7 @@ const definitions = {
     },
     {
       "name": "Dust",
-      "description": "@{weapon::Crusher} only; applies [Def -5] to target for 1 turn and effective against Dragon units.",
+      "description": "@{weapon::Crusher} only; applies @{const:gbp:[Def -5]} to target for 1 turn and effective against Dragon units.",
       "requires": "All (Weapon Crusher) (Crest Dominic) (Axes E)",
       "mttype": "else",
       "modifiers": {
@@ -2967,6 +3008,36 @@ const definitions = {
       "rank": "A"
     },
     {
+      "name": "Special",
+      "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Cha (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one (including itself).",
+      "requires": "Guile A",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": "1 + ask [Special Modifer?], 1, 2, 3, 4; 5 end",
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "combo"
+      ],
+      "hidden": false,
+      "type": "Guile",
+      "rank": "A"
+    },
+    {
       "name": "Relentless Magic",
       "description": "@{weapon::Suttungr's Mystery} only; halves the cost of user's Guile metamagic this combat, effective against Dragon units. This metamagic ability can be used with one other one.",
       "requires": "All (Weapon `Suttungr's Mystery`) (Crest Charon) (Guile E)",
@@ -4866,6 +4937,36 @@ const definitions = {
       "rank": ""
     },
     {
+      "name": "Opening",
+      "description": "Can only be equipped by Armor units. Reaction with trigger: once per phase, foe uses movement to leave the range of this unit\u2019s equipped weapon. Initiate combat against that foe.",
+      "requires": "All (Armor C+) (ClassType Armor)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "tiles": 0,
+        "spcost": 2,
+        "tpcost": 0,
+        "sp": 6,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "tactical",
+        "reaction"
+      ],
+      "hidden": false,
+      "type": "Armor",
+      "rank": "C+"
+    },
+    {
       "name": "Nedler's Amputator",
       "description": "Deals magic-based damage. Might increases based on user\u2019s Speed",
       "requires": "Axe A",
@@ -5761,8 +5862,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Axes?], No {0}; Yes {20} end",
-        "avo": "ask [vs Axes?], No {0}; Yes {20} end",
+        "hit": "ask [Axebreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Axebreaker?], No {0}; Yes {20} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -5796,8 +5897,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Axes?], No {0}; Yes {30} end",
-        "avo": "ask [vs Axes?], No {0}; Yes {30} end",
+        "hit": "ask [Axebreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Axebreaker?], No {0}; Yes {30} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -6056,6 +6157,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Book & Chain",
+      "description": "Grants Mt +4 to and negates TP cost of unit's Guile, Faith, and Reason attacks made at Range = 1. Unit's Guile, Faith, and Reason attacks deal strength-based damage.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": "fill bothif(weapon|type|spell, ask [Book & Chain?], No {0}; Yes {4} end, 0)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Bow Advantage",
       "description": "Grants Mt +5 in combat when unit has range penalty applied.",
       "requires": "None",
@@ -6072,12 +6207,11 @@ const definitions = {
         "mt": [
           "fill bothif(",
           "  weapon|type|bows,",
-          "  ask [Range Penalty?]",
-          "      ; [Range +0] {0}",
-          "      , [Range +1] {5}",
-          "      , [Range +2] {5}",
-          "      , [Further]  {5}",
-          "  end,",
+          "  -more",
+          "    other|range_penalty|prompt",
+          "  else",
+          "    -1",
+          "  end * 5,",
           "  0",
           ")"
         ],
@@ -6362,8 +6496,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Bows?], No {0}; Yes {20} end",
-        "avo": "ask [vs Bows?], No {0}; Yes {20} end",
+        "hit": "ask [Bowbreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Bowbreaker?], No {0}; Yes {20} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -6705,7 +6839,7 @@ const definitions = {
     {
       "name": "Consumption 1",
       "description": "Restores 1 TP after unit uses a Faith, Guile, or Reason weapon.",
-      "requires": "",
+      "requires": "Any (Class Medium) (Class Summoner/Invoker)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6725,7 +6859,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill bothif((weapon|type|faith + weapon|type|guile + weapon|type|reason), -1, 0)",
+        "tpcost": "fill bothif(weapon|type|spell, -1, 0)",
         "spcost": 0,
         "tp": 0,
         "mov": 0
@@ -6739,7 +6873,7 @@ const definitions = {
     {
       "name": "Consumption 2",
       "description": "Restores 1 TP after unit uses a Faith, Guile, or Reason weapon and restores 1 TP after unit uses Faith, Guile, or Reason metamagic.",
-      "requires": "",
+      "requires": "Any (Class Gremory/Guru) (Class Sorcerer)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6759,7 +6893,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill bothif((weapon|type|faith + weapon|type|guile + weapon|type|reason), -1, 0)",
+        "tpcost": "fill bothif(weapon|type|spell, -1, 0)",
         "spcost": 0,
         "tp": 0,
         "mov": 0
@@ -7121,7 +7255,7 @@ const definitions = {
     {
       "name": "Deliverer",
       "description": "Mov +2 while an ally with @{condition:Shelter:[Shelter]} is in the same space (can apply mid phase; increases maximum movement).",
-      "requires": "",
+      "requires": "Class `Gryphon Rider`",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7389,7 +7523,7 @@ const definitions = {
     {
       "name": "Faith Consumption 1",
       "description": "Restores 1 TP after unit uses a Faith weapon.",
-      "requires": "",
+      "requires": "Any (Class Priest) (Class `War Cleric/Priest`)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7423,7 +7557,7 @@ const definitions = {
     {
       "name": "Faith Consumption 2",
       "description": "Restores 1 TP after unit uses a Faith weapon and restores 1 TP after unit uses Faith metamagic.",
-      "requires": "",
+      "requires": "Class Bishop",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7559,7 +7693,7 @@ const definitions = {
     {
       "name": "Faith Metamagic Adept",
       "description": "Reduces SP consumed when using Faith metamagic by 50% (round up).",
-      "requires": "",
+      "requires": "Faith A+",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7922,7 +8056,7 @@ const definitions = {
         "hit": [
           "fill bothif(",
           "  not(unit|total|maxrng - 1),",
-          "  ask [Flanking], No {0}; Yes {15} end,",
+          "  ask [Flanking?], No {0}; Yes {15} end,",
           "  0",
           ")"
         ],
@@ -8048,11 +8182,11 @@ const definitions = {
         "hp": 0,
         "sp": 0,
         "str": 0,
-        "mag": "ask [Blessing?]; None {0}, Mag {5}, Res {0} end",
+        "mag": "fill affirm([50% Blessing?], 5, 0)",
         "dex": 0,
         "spd": 0,
         "def": 0,
-        "res": "ask [Blessing?]; None {0}, Mag {0}, Res {5} end",
+        "res": "fill affirm([100% Blessing?], 5, 0)",
         "cha": 0,
         "mt": 0,
         "prot": 0,
@@ -8183,7 +8317,7 @@ const definitions = {
     {
       "name": "Guile Consumption 1",
       "description": "Restores 1 TP after unit uses a Guile weapon.",
-      "requires": "",
+      "requires": "Class `Dark Mage`",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -8217,7 +8351,7 @@ const definitions = {
     {
       "name": "Guile Consumption 2",
       "description": "Restores 1 TP after unit uses a Guile weapon and restores 1 TP after unit uses Guile metamagic.",
-      "requires": "",
+      "requires": "Class Druid",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9262,8 +9396,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Lances?], No {0}; Yes {20} end",
-        "avo": "ask [vs Lances?], No {0}; Yes {20} end",
+        "hit": "ask [Lancebreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Lancebreaker?], No {0}; Yes {20} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -9297,8 +9431,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Lances?], No {0}; Yes {30} end",
-        "avo": "ask [vs Lances?], No {0}; Yes {30} end",
+        "hit": "ask [Lancebreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Lancebreaker?], No {0}; Yes {30} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -10026,7 +10160,7 @@ const definitions = {
     },
     {
       "name": "Major Crest of Dominic",
-      "description": "20% chance to grant reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
+      "description": "20% chance to reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -10981,7 +11115,7 @@ const definitions = {
     },
     {
       "name": "Minor Crest of Dominic",
-      "description": "10% chance to grant reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
+      "description": "10% chance to reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -11564,9 +11698,9 @@ const definitions = {
       "modifiers": {
         "hp": 0,
         "sp": 0,
-        "str": "ask [Mounted?], 0; 4 end",
+        "str": "ask [Mounted Precision?], 0; 4 end",
         "mag": 0,
-        "dex": "ask [Mounted?], 0; 4 end",
+        "dex": "ask [Mounted Precision?], 0; 4 end",
         "spd": 0,
         "def": 0,
         "res": 0,
@@ -11764,7 +11898,7 @@ const definitions = {
     {
       "name": "Omnibreaker",
       "description": "Grants Hit +20 and Avo +20 in combat against @{tooltip:Monster:Original text said \"Monster, Mutant, and Undead\", but Undead traditionally are Monster units, and for Mutant, I would say it's up to whoever designed them to specify whether they're monsters or not. I don't think we need to add extra unit types to make niche things more complicated and more niche, personally. If people are designing wierd units, it's up to them to add a diversity of the existing types to them. Rant over.} units. Also, if this unit is using Reason and has other \"breaker\" skills equipped, grants an additional Hit +10 and Avo +10 in combat when those skills are active.",
-      "requires": "All (Anima B) (Armor B) (Level 20)",
+      "requires": "All (Reason B) (Armor B) (Level 20)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11778,8 +11912,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Monster?], No {0}; Yes {20} end + ask [Other Breaker?], No {0}, Yes {10} end",
-        "avo": "ask [vs Monster?], No {0}; Yes {20} end + ask [Other Breaker?], No {0}, Yes {10} end",
+        "hit": "ask [Omnibreaker?], No {0}; Yes {20} end + ask [Other Breaker?], No {0}, Yes {10} end",
+        "avo": "ask [Omnibreaker?], No {0}; Yes {20} end + ask [Other Breaker?], No {0}, Yes {10} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -12079,10 +12213,10 @@ const definitions = {
       "modifiers": {
         "hp": 0,
         "sp": 0,
-        "str": "ask [Mounted?], 0; 4 end",
+        "str": "ask [Pegasus Flight?], 0; 4 end",
         "mag": 0,
         "dex": 0,
-        "spd": "ask [Mounted?], 0; 4 end",
+        "spd": "ask [Pegasus Flight?], 0; 4 end",
         "def": 0,
         "res": 0,
         "cha": 0,
@@ -12315,7 +12449,7 @@ const definitions = {
     {
       "name": "Reason Consumption 1",
       "description": "Restores 1 TP after unit uses a Reason weapon.",
-      "requires": "",
+      "requires": "Class Mage",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -12349,7 +12483,7 @@ const definitions = {
     {
       "name": "Reason Consumption 2",
       "description": "Restores 1 TP after unit uses a Reason weapon and restores 1 TP after unit uses Reason metamagic.",
-      "requires": "",
+      "requires": "Class Warlock",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -13137,7 +13271,7 @@ const definitions = {
     },
     {
       "name": "Surgical Precision",
-      "description": "Grants Hit +10 and Crit +10. When this unit's action restores HP to a unit, roll a critical hit (if attacking, use that crit roll); if successful, double the amount of HP restored and apply one of the following effects (player controlling that unit chooses):\n\u2022  Apply @{condition:Overheal:[Overheal]} to that unit for one turn equal to any excess healing.\n\u2022  End one or more status conditions applied to that unit (player's choice) before healing is applied.\n\u2022  Restore SP equal to half of any excess healing.",
+      "description": "Grants Hit +10 and Crit +10. When this unit's action restores HP to a unit, roll a critical hit (if attacking, use that crit roll); if successful, double the amount of HP restored and apply one of the following effects (player controlling that unit chooses):\n\u2022  Apply @{condition:Overheal:[Overheal]} to that unit for one turn equal to any excess healing.\n\u2022  Before HP is restored, end one or more conditions on that unit (player's choice).\n\u2022  Restore SP equal to half of any excess healing.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -13171,7 +13305,7 @@ const definitions = {
     },
     {
       "name": "Survivalist Expert",
-      "description": "Every time this unit enters combat against an enemy he marks the target and gains an additional trait based on how many enemy units have been marked. 1 Mark: This unit can perform double attacks, 2 Marks: This unit gains +15 Avo, and 3 Marks: This unit gains +15 Hit.",
+      "description": "Every time this unit enters combat against an enemy he marks the target and gains an additional trait based on how many enemy units have been marked:\n\u2022  1 Mark: This unit can perform double attacks.\n\u2022  2 Marks: This unit gains +15 Avo.\n\u2022  3 Marks: This unit gains +15 Hit.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -13186,8 +13320,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [Units Marked?], One {0}, Two {0}; Three {15} end",
-        "avo": "ask [Units Marked?], One {0}, Two {15}; Three {15} end",
+        "hit": "if ask [Marks?], 0, 1, 2; 3 end >= 3 then 15 else 0 end",
+        "avo": "if ask [Marks?], 0, 1, 2; 3 end >= 2 then 15 else 0 end ",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -13465,8 +13599,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Swords?], No {0}; Yes {20} end",
-        "avo": "ask [vs Swords?], No {0}; Yes {20} end",
+        "hit": "ask [Swordbreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Swordbreaker?], No {0}; Yes {20} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -13500,8 +13634,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Swords?], No {0}; Yes {30} end",
-        "avo": "ask [vs Swords?], No {0}; Yes {30} end",
+        "hit": "ask [Swordbreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Swordbreaker?], No {0}; Yes {30} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -13670,8 +13804,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [vs Faith/Guile/Reason?], No {0}; Yes {20} end",
-        "avo": "ask [vs Faith/Guile/Reason?], No {0}; Yes {20} end",
+        "hit": "ask [Tomebreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Tomebreaker?], No {0}; Yes {20} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -14099,7 +14233,7 @@ const definitions = {
     {
       "name": "Barricade",
       "description": "Cannot be traversed by non-Flying units.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 10,
         "prot": 15,
@@ -14140,7 +14274,7 @@ const definitions = {
     {
       "name": "Blood Well",
       "description": "Cannot be targetted by crestless units. Once per unit per turn, a crestless unit that begins its phase adjacent to the a tile of this type takes 10 lethal damage.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 1,
         "prot": 0,
@@ -14183,7 +14317,7 @@ const definitions = {
     {
       "name": "Fire Patch",
       "description": "Once per unit per turn, a non-Flying unit that begins its phase in a tile of this type takes 20% non-lethal damage and has @{condition:Exposed:[Exposed]} applied to it for one turn.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 1,
         "prot": 0,
@@ -14225,7 +14359,7 @@ const definitions = {
     {
       "name": "Foliage",
       "description": "Costs non-Flying units 2 movement to enter.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 0,
         "prot": 0,
@@ -14266,7 +14400,7 @@ const definitions = {
     {
       "name": "Force Wall",
       "description": "This tile cannot be traversed.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 50,
         "prot": 0,
@@ -14307,7 +14441,7 @@ const definitions = {
     {
       "name": "Hail Storm",
       "description": "Once per unit per turn, a unit that begins its phase in a tile of this type has @{condition:Chilled:[Chilled]} applied to it for one turn.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 0,
         "prot": 0,
@@ -14347,7 +14481,7 @@ const definitions = {
     {
       "name": "Heal Tile",
       "description": "One per unit per turn, a unit that ends its phase in this tile recovers X HP.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 0,
         "prot": 0,
@@ -14388,7 +14522,7 @@ const definitions = {
     {
       "name": "Ice Block",
       "description": "Cannot be traversed by non-Flying units.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 1,
         "prot": 0,
@@ -14429,7 +14563,7 @@ const definitions = {
     {
       "name": "Lightning Arc",
       "description": "While this tile is occupied by a unit, it cannot be travsersed by other units. Once per unit per turn, when a unit enters a tile of this type, it takes 20% nonlethal damage and has @{condition:Halt:[Halt]} applied to it for one turn.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 0,
         "prot": 0,
@@ -14471,7 +14605,7 @@ const definitions = {
     {
       "name": "Smoke Screen",
       "description": "Hit -30 to attacks targeting a unit occupying a tile of this type. When a unit occupying a tile of this type initiates combat, target foe's abilities that activate [when foe initiates combat] are disabled.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 0,
         "prot": 0,
@@ -14511,7 +14645,7 @@ const definitions = {
     {
       "name": "Wind Torrent",
       "description": "A unit occupying this tile when it is created is moved to an adjacent tile, if possible (unit chooses). This tile is not traversable by Flying units; costs non-Flying units 2 movement to enter. Units can't target other units across this tile at Range > 1.",
-      "requires": "",
+      "requires": "None",
       "stats": {
         "hp": 0,
         "prot": 0,
@@ -14774,7 +14908,7 @@ const definitions = {
     },
     {
       "name": "Rafail Gem",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Lamine:Lamine}, grants wielder @{ability::Aegis}, @{ability::Pavis}, immunity to critical hits, and nullifies Effectiveness against Armor, Cavalry, and Flying units against the wielder. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}, grants wielder @{ability::Aegis}, @{ability::Pavis}, immunity to critical hits, and nullifies Effectiveness against Armor, Cavalry, and Flying units against the wielder. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
       "requires": "None",
       "price": 0,
       "type": "Accessory",
@@ -14980,7 +15114,7 @@ const definitions = {
     },
     {
       "name": "Fetters of Dromi",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Aubin:Aubin}, grants wielder Movement +1, @{ability::Aegis}, @{ability::Pavis}, and @{ability::Canto}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Aubin||Minor Crest of Aubin:Aubin}, grants wielder Movement +1, @{ability::Aegis}, @{ability::Pavis}, and @{ability::Canto}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
       "requires": "None",
       "price": 0,
       "type": "Ring",
@@ -15150,7 +15284,7 @@ const definitions = {
     },
     {
       "name": "Aegis Shield",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius:Fraldarius}, grants wielder @{ability::Aegis} and @{ability::Pavis}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}, grants wielder @{ability::Aegis} and @{ability::Pavis}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "None",
       "price": 0,
       "type": "Shield",
@@ -15424,7 +15558,7 @@ const definitions = {
     },
     {
       "name": "Ochain Shield",
-      "description": "Wielder is immune to critical hits. Restores 10% (20% with Crest of @{ability:Major Crest of Cichol:Cichol}) of Max HP at the start of wielders phase.",
+      "description": "Wielder is immune to critical hits. Restores 10% (20% with Crest of @{ability:Major Crest of Cichol||Minor Crest of Cichol:Cichol}) of Max HP at the start of wielders phase.",
       "requires": "None",
       "price": 0,
       "type": "Shield",
@@ -15460,7 +15594,7 @@ const definitions = {
     },
     {
       "name": "Seiros Shield",
-      "description": "Wielder takes half damage from Monster units. Restores 10% (20% with Crest of @{ability:Major Crest of Seiros:Seiros}) of Max HP at the start of wielders phase.",
+      "description": "Wielder takes half damage from Monster units. Restores 10% (20% with Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}) of Max HP at the start of wielders phase.",
       "requires": "None",
       "price": 0,
       "type": "Shield",
@@ -16875,7 +17009,7 @@ const definitions = {
         "Caster"
       ],
       "tier": "Starting",
-      "requires": "Required (Permission `Did they dance at the White Heron Cup?`)",
+      "requires": "Required (Permission `White Heron Cup`)",
       "abilities": [
         "Avo +20",
         "Level 10 Mov +1"
@@ -17434,14 +17568,16 @@ const definitions = {
     },
     {
       "name": "Sorcerer",
-      "description": "I don't understand why this is a Reason only class.",
+      "description": "Armored spellcaster. Choose one Spectrum skill on reclass.",
       "type": [
         "Armor",
         "Caster"
       ],
       "tier": "Advanced",
-      "requires": "All (Reason C+) (Required (Armor C+))  (Required (Level 15))",
+      "requires": "All (Any (Faith C+) (Guile C+) (Reason C+)) (Required (Armor C+))  (Required (Level 15))",
       "abilities": [
+        "Faith Magic Spectrum",
+        "Guile Magic Spectrum",
         "Reason Magic Spectrum",
         "Consumption 2"
       ],
@@ -17539,7 +17675,7 @@ const definitions = {
         "Martial"
       ],
       "tier": "Advanced",
-      "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
+      "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15)). Choose one Advantage skill on reclass.",
       "abilities": [
         "Sword Advantage",
         "Lance Advantage",
@@ -17586,7 +17722,7 @@ const definitions = {
     },
     {
       "name": "Fortress Knight",
-      "description": "An knight versed in embattlement with expertise in armored combat",
+      "description": "An knight versed in embattlement with expertise in armored combat. Choose one Advantage skill on reclass.",
       "type": [
         "Armor",
         "Martial"
@@ -17629,7 +17765,7 @@ const definitions = {
     },
     {
       "name": "Journeyman",
-      "description": "An advanced class fights with swords or bows in heavy armor.",
+      "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
       "type": [
         "Armor",
         "Martial"
@@ -17671,7 +17807,7 @@ const definitions = {
     },
     {
       "name": "Knight Captain",
-      "description": "An knight versed in armored combat with expertise in embattlement",
+      "description": "An knight versed in armored combat with expertise in embattlement. Choose one Advantage skill on reclass.",
       "type": [
         "Armor",
         "Martial"
@@ -17714,7 +17850,7 @@ const definitions = {
     },
     {
       "name": "Valkyrie",
-      "description": "A veteran mage who commands the battlefield from horseback",
+      "description": "A veteran mage who commands the battlefield from horseback. Choose one Range +1 skill on reclass.",
       "type": [
         "Cavalry",
         "Caster"
@@ -17766,7 +17902,7 @@ const definitions = {
     },
     {
       "name": "Dark Knight",
-      "description": "A mounted knight versed in both weapons and magic",
+      "description": "A mounted knight versed in both weapons and magic. Choose one weapon and one spell Advantage skill on reclass.",
       "type": [
         "Cavalry",
         "Martial",
@@ -17820,7 +17956,7 @@ const definitions = {
     },
     {
       "name": "Holy Knight",
-      "description": "A mounted knight versed in both weapons and magic",
+      "description": "A mounted knight versed in both weapons and magic. Choose one weapon Advantage skill on reclass.",
       "type": [
         "Cavalry",
         "Martial",
@@ -17873,7 +18009,7 @@ const definitions = {
     },
     {
       "name": "Dark Flier",
-      "description": "A mage who slings spells from upon the back of a pegasus",
+      "description": "A mage who slings spells from upon the back of a pegasus. Choose one Advantage skill on reclass.",
       "type": [
         "Flying",
         "Caster"
@@ -17925,7 +18061,7 @@ const definitions = {
     },
     {
       "name": "Dark Wyvernian",
-      "description": "A mage who rains death from above upon the back of a wyvern",
+      "description": "A mage who rains death from above upon the back of a wyvern. Choose one Advantage skill on reclass.",
       "type": [
         "Flying",
         "Caster"
@@ -18359,7 +18495,7 @@ const definitions = {
     },
     {
       "name": "Hussar",
-      "description": "A veteran light cavalier who focuses on teamwork",
+      "description": "A veteran light cavalier who focuses on teamwork. Choose one Advantage skill on reclass.",
       "type": [
         "Cavalry",
         "Martial"
@@ -18411,7 +18547,7 @@ const definitions = {
     },
     {
       "name": "Paladin",
-      "description": "A veteran warrior who commands the battlefield from horseback",
+      "description": "A veteran warrior who commands the battlefield from horseback. Choose one Advantage skill on reclass.",
       "type": [
         "Cavalry",
         "Martial"
@@ -18463,7 +18599,7 @@ const definitions = {
     },
     {
       "name": "Falcon Knight",
-      "description": "A pegasus knight who descends upon foes with the speed of a falcon",
+      "description": "A pegasus knight who descends upon foes with the speed of a falcon. Choose one Advantage skill on reclass.",
       "type": [
         "Flying",
         "Martial"
@@ -18617,7 +18753,7 @@ const definitions = {
     },
     {
       "name": "Wyvern Lord",
-      "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern",
+      "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern. Choose one Advantage skill on reclass.",
       "type": [
         "Flying",
         "Martial"
@@ -18669,7 +18805,7 @@ const definitions = {
     },
     {
       "name": "Assassin",
-      "description": "Bow and Sword martial class focused on damage, stealth, and untility.",
+      "description": "Bow and Sword martial class focused on damage, stealth, and untility. Choose one Advantage skill on reclass.",
       "type": [
         "Infantry",
         "Martial"
@@ -18752,7 +18888,7 @@ const definitions = {
     },
     {
       "name": "Hero",
-      "description": "Infantry Axe and Sword unit",
+      "description": "Infantry Axe and Sword unit. Choose one Advantage skill on reclass.",
       "type": [
         "Infantry",
         "Martial"
@@ -18834,7 +18970,7 @@ const definitions = {
     },
     {
       "name": "Monster Hunter",
-      "description": "Anti-Monster infantry class.",
+      "description": "Anti-Monster infantry class. Choose one Advantage skill on reclass.",
       "type": [
         "Infantry",
         "Martial"
@@ -19223,6 +19359,33 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Dual Hatchets",
+      "type": "Axes",
+      "description": "Decreases threshold to double foes by 2 in combat.",
+      "requires": "Axes C",
+      "rank": "C",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 5,
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Axe of Zoltan",
       "type": "Axes",
       "description": "Effective against Armor units. Costs 2330G and a Manual of Zoltan to upgrade from Silver Axe.",
@@ -19281,7 +19444,7 @@ const definitions = {
     {
       "name": "Labraunda",
       "type": "Axes",
-      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Seiros:Seiros}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Seiros:Seiros}.",
+      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}.",
       "requires": "Axes A",
       "rank": "A",
       "price": 0,
@@ -19310,7 +19473,7 @@ const definitions = {
     {
       "name": "Axe of Ukonvasara",
       "type": "Axes",
-      "description": "Effective against Armor units. Restores 10% (20% with Crest of @{ability:Major Crest of Gloucester:Gloucester}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Gloucester:Gloucester}.",
+      "description": "Effective against Armor units. Restores 10% (20% with Crest of @{ability:Major Crest of Gloucester||Minor Crest of Gloucester:Gloucester}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Gloucester||Minor Crest of Gloucester:Gloucester}.",
       "requires": "Axes A",
       "rank": "A",
       "price": 0,
@@ -19340,7 +19503,7 @@ const definitions = {
     {
       "name": "Aymr",
       "type": "Axes",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Seiros:Seiros}, enables use of @{art::Raging Storm}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}, enables use of @{art::Raging Storm}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Axes E",
       "rank": "E",
       "price": 0,
@@ -19369,7 +19532,7 @@ const definitions = {
     {
       "name": "Freikugel",
       "type": "Axes",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Goneril:Goneril}, enables use of @{art::Apocalyptic Flame}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Goneril||Minor Crest of Goneril:Goneril}, enables use of @{art::Apocalyptic Flame}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Axes E",
       "rank": "E",
       "price": 0,
@@ -19398,7 +19561,7 @@ const definitions = {
     {
       "name": "Crusher",
       "type": "Axes",
-      "description": "Deals magic-based damage. If wielder has the Crest of @{ability:Major Crest of Dominic:Dominic}, enables use of @{art::Dust}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "Deals magic-based damage. If wielder has the Crest of @{ability:Major Crest of Dominic||Minor Crest of Dominic:Dominic}, enables use of @{art::Dust}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Axes E",
       "rank": "E",
       "price": 0,
@@ -19535,7 +19698,7 @@ const definitions = {
     {
       "name": "Saintslayer",
       "type": "Lances",
-      "description": "Deals effective damage against Dragon units and units with a Crest of @{ability:Major Crest of Cichol:Cichol}, @{ability:Major Crest of Cethleann:Cethleann}, @{ability:Major Crest of Indech:Indech}, @{ability:Major Crest of Macuil:Macuil}, @{ability:Major Crest of Aubin:Aubin}, @{ability:Major Crest of Timotheos:Timotheos}, @{ability:Major Crest of Chevalier:Chevalier}, @{ability:Major Crest of Noa:Noa}, @{ability:Major Crest of Seiros:Seiros}, or @{ability:Major Crest of Flames:Flames}. After combat involving a unit this weapon deals Effective damage to, restores 20% of wielder's Max HP.",
+      "description": "Deals effective damage against Dragon units and units with a Crest of @{ability:Major Crest of Cichol||Minor Crest of Cichol:Cichol}, @{ability:Major Crest of Cethleann||Minor Crest of Cethleann:Cethleann}, @{ability:Major Crest of Indech||Minor Crest of Indech:Indech}, @{ability:Major Crest of Macuil||Minor Crest of Macuil:Macuil}, @{ability:Major Crest of Aubin||Minor Crest of Aubin:Aubin}, @{ability:Major Crest of Timotheos||Minor Crest of Timotheos:Timotheos}, @{ability:Major Crest of Chevalier||Minor Crest of Chevalier:Chevalier}, @{ability:Major Crest of Noa||Minor Crest of Noa:Noa}, @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}, or @{ability:Major Crest of Flames||Minor Crest of Flames:Flames}. After dealing damage, restores 10% of wielder's Max HP (20% if Effective).",
       "requires": "Lances A",
       "rank": "A",
       "price": 0,
@@ -19618,7 +19781,7 @@ const definitions = {
     {
       "name": "Spear of Assal",
       "type": "Lances",
-      "description": "Effective against Cavalry units. Restores 10% (20% with Crest of @{ability:Major Crest of Cichol:Cichol}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Cichol:Cichol}.",
+      "description": "Effective against Cavalry units. Restores 10% (20% with Crest of @{ability:Major Crest of Cichol||Minor Crest of Cichol:Cichol}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Cichol||Minor Crest of Cichol:Cichol}.",
       "requires": "Lances A",
       "rank": "A",
       "price": 0,
@@ -19648,7 +19811,7 @@ const definitions = {
     {
       "name": "Areadbhar",
       "type": "Lances",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Blaiddyd:Blaiddyd}, enables use of Atrocity. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Blaiddyd||Minor Crest of Blaiddyd:Blaiddyd}, enables use of Atrocity. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Lances E",
       "rank": "E",
       "price": 0,
@@ -19677,7 +19840,7 @@ const definitions = {
     {
       "name": "Lance of Ruin",
       "type": "Lances",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Gautier:Gautier}, enables use of @{art::Ruined Sky}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Gautier||Minor Crest of Gautier:Gautier}, enables use of @{art::Ruined Sky}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Lances E",
       "rank": "E",
       "price": 0,
@@ -19706,7 +19869,7 @@ const definitions = {
     {
       "name": "L\u00fain",
       "type": "Lances",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Daphnel:Daphnel}, enables use of @{art::Burning Quake}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Daphnel||Minor Crest of Daphnel:Daphnel}, enables use of @{art::Burning Quake}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Lances E",
       "rank": "E",
       "price": 0,
@@ -20011,7 +20174,7 @@ const definitions = {
     {
       "name": "Sword of Begalta",
       "type": "Swords",
-      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Reigan:Riegan}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Reigan:Reigan}.",
+      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Reigan||Minor Crest of Reigan:Riegan}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Reigan||Minor Crest of Reigan:Reigan}.",
       "requires": "Swords A",
       "rank": "A",
       "price": 0,
@@ -20040,7 +20203,7 @@ const definitions = {
     {
       "name": "Sword of Moralta",
       "type": "Swords",
-      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Fraldarius:Fraldarius}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Fraldarius:Fraldarius}.",
+      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}.",
       "requires": "Swords A",
       "rank": "A",
       "price": 0,
@@ -20069,7 +20232,7 @@ const definitions = {
     {
       "name": "Sword of Seiros",
       "type": "Swords",
-      "description": "Heals 50% of damage dealt. Restores 10% (20% with Crest of @{ability:Major Crest of Seiros:Seiros}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Seiros:Seiros}.",
+      "description": "Heals 50% of damage dealt. Restores 10% (20% with Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}.",
       "requires": "Swords A",
       "rank": "A",
       "price": 0,
@@ -20098,7 +20261,7 @@ const definitions = {
     {
       "name": "Blutgang",
       "type": "Swords",
-      "description": "Deal magic-based damage. If wielder has the Crest of the @{ability:Major Crest of the Beast:Beast}, enables use of @{art::Beast Fang}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "Deal magic-based damage. If wielder has the Crest of the @{ability:Major Crest of the Beast||Minor Crest of the Beast:Beast}, enables use of @{art::Beast Fang}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
@@ -20127,7 +20290,7 @@ const definitions = {
     {
       "name": "Thunderbrand",
       "type": "Swords",
-      "description": "Two consecutive hits when initating combat. If wielder has the Crest of @{ability:Major Crest of Charon:Charon}, enables use of @{art::Foudroyant Strike}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "Two consecutive hits when initating combat. If wielder has the Crest of @{ability:Major Crest of Charon||Minor Crest of Charon:Charon}, enables use of @{art::Foudroyant Strike}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
@@ -20156,7 +20319,7 @@ const definitions = {
     {
       "name": "Sword of the Creator",
       "type": "Swords",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Flames:Flames}, enables use of @{art::Ruptured Heaven}. If wielded by anyone other than Byleth, has Range = 1 and cannot make follow-up attacks.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Flames||Minor Crest of Flames:Flames}, enables use of @{art::Ruptured Heaven}. If wielded by anyone other than Byleth, has Range = 1 and cannot make follow-up attacks.",
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
@@ -20185,7 +20348,7 @@ const definitions = {
     {
       "name": "Sublime Creator Sword",
       "type": "Swords",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Flames:Flames}, enables use of @{art::Sublime Heaven}. If wielded by anyone other than Byleth, has Range = 1 and cannot make follow-up attacks.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Flames||Minor Crest of Flames:Flames}, enables use of @{art::Sublime Heaven}. If wielded by anyone other than Byleth, has Range = 1 and cannot make follow-up attacks.",
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
@@ -20214,7 +20377,7 @@ const definitions = {
     {
       "name": "Dark Creator Sword",
       "type": "Swords",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Flames:Flames}, enables use of @{art::Heaven's Fall}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Flames||Minor Crest of Flames:Flames}, enables use of @{art::Heaven's Fall}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Swords A",
       "rank": "A",
       "price": 0,
@@ -20442,7 +20605,7 @@ const definitions = {
     {
       "name": "Tathlum Bow",
       "type": "Bows",
-      "description": "Effective against Flying units. Restores 10% (20% with Crest of @{ability:Major Crest of Lamine:Lamine}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Lamine:Lamine}.",
+      "description": "Effective against Flying units. Restores 10% (20% with Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}.",
       "requires": "Bows A",
       "rank": "A",
       "price": 0,
@@ -20472,7 +20635,7 @@ const definitions = {
     {
       "name": "The Inexhaustible",
       "type": "Bows",
-      "description": "Effective against Flying units. Two consecutive hits when initating combat. Restores 10% (20% with Crest of @{ability:Major Crest of Indech:Indech}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Indech:Indech}.",
+      "description": "Effective against Flying units. Two consecutive hits when initating combat. Restores 10% (20% with Crest of @{ability:Major Crest of Indech||Minor Crest of Indech:Indech}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Indech||Minor Crest of Indech:Indech}.",
       "requires": "Bows A",
       "rank": "A",
       "price": 0,
@@ -20502,7 +20665,7 @@ const definitions = {
     {
       "name": "Failnaught",
       "type": "Bows",
-      "description": "Effective against Flying units. If wielder has the Crest of @{ability:Major Crest of Riegan:Riegan}, enables use of @{art::Fallen Star}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "Effective against Flying units. If wielder has the Crest of @{ability:Major Crest of Riegan||Minor Crest of Riegan:Riegan}, enables use of @{art::Fallen Star}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Bows E",
       "rank": "E",
       "price": 0,
@@ -20945,7 +21108,7 @@ const definitions = {
     {
       "name": "Amalthea",
       "type": "Faith",
-      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Cethleann:Cethleann}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Cethleann:Cethleann}.",
+      "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Cethleann||Minor Crest of Cethleann:Cethleann}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Cethleann||Minor Crest of Cethleann:Cethleann}.",
       "requires": "Faith A",
       "rank": "A",
       "price": 0,
@@ -20974,7 +21137,7 @@ const definitions = {
     {
       "name": "Ichor Scroll",
       "type": "Faith",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Lamine:Lamine}, enables use of @{art::Radiance}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}, enables use of @{art::Radiance}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Faith E",
       "rank": "E",
       "price": 0,
@@ -21379,7 +21542,7 @@ const definitions = {
     {
       "name": "Paradox",
       "type": "Guile",
-      "description": "On hit, apply @{const:gbp:[Dex -3]} and @{const:gbp:[Spd -3]} to target foe after combat for 1 turn.",
+      "description": "On hit, apply @{const:gbp:[Dex -3]} and @{const:gbp:[Spd -3]} to target foe after combat for 1 turn. Cannot make follow-up attacks.",
       "requires": "Guile A",
       "rank": "A",
       "price": 4220,
@@ -21466,7 +21629,7 @@ const definitions = {
     {
       "name": "Suttungr's Mystery",
       "type": "Guile",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Charon:Charon}, enables use of @{art::Relentless Magic}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Charon||Minor Crest of Charon:Charon}, enables use of @{art::Relentless Magic}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Guile E",
       "rank": "E",
       "price": 0,
@@ -21495,7 +21658,7 @@ const definitions = {
     {
       "name": "Hrotti",
       "type": "Guile",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Timotheos:Timotheos}, enables use of @{art::Naturebender}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Timotheos||Minor Crest of Timotheos:Timotheos}, enables use of @{art::Naturebender}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Guile E",
       "rank": "E",
       "price": 0,
@@ -22021,13 +22184,13 @@ const definitions = {
     {
       "name": "Taranis",
       "type": "Reason",
-      "description": "A lightning spell; restores 10% (20% with Crest of @{ability:Major Crest of Aubin:Aubin}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Aubin:Aubin}.",
+      "description": "A lightning spell; restores 10% (20% with Crest of @{ability:Major Crest of Aubin||Minor Crest of Aubin:Aubin}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Aubin||Minor Crest of Aubin:Aubin}.",
       "requires": "Reason A",
       "rank": "A",
       "price": 0,
       "mttype": "mag",
       "modifiers": {
-        "mt": 7,
+        "mt": 9,
         "prot": 0,
         "resl": 0,
         "hit": 75,
@@ -22051,7 +22214,7 @@ const definitions = {
     {
       "name": "Wind Caller's Genesis",
       "type": "Reason",
-      "description": "A wind spell; restores 10% (20% with Crest of @{ability:Major Crest of Macuil:Macuil}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Macuil:Macuil}.",
+      "description": "A wind spell; restores 10% (20% with Crest of @{ability:Major Crest of Macuil||Minor Crest of Macuil:Macuil}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Macuil||Minor Crest of Macuil:Macuil}.",
       "requires": "Reason A",
       "rank": "A",
       "price": 0,
@@ -22081,7 +22244,7 @@ const definitions = {
     {
       "name": "Scroll of Talos",
       "type": "Reason",
-      "description": "A lightning spell; restores 10% (20% with Crest of @{ability:Major Crest of Noa:Noa}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Noa:Noa}.",
+      "description": "A lightning spell; restores 10% (20% with Crest of @{ability:Major Crest of Noa||Minor Crest of Noa:Noa}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Noa||Minor Crest of Noa:Noa}.",
       "requires": "Reason A",
       "rank": "A",
       "price": 0,
@@ -22481,7 +22644,8 @@ const definitions = {
       "comment": "todo fix the mt calc on this",
       "tags": [
         "penalty",
-        "rolls"
+        "rolls",
+        "rework"
       ],
       "hidden": false
     },

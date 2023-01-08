@@ -16,12 +16,11 @@
         "mt": [
             "fill bothif(",
             "  weapon|type|bows,",
-            "  ask [Range Penalty?]",
-            "      ; [Range +0] {0}",
-            "      , [Range +1] {5}",
-            "      , [Range +2] {5}",
-            "      , [Further]  {5}",
-            "  end,",
+            "  -more",
+            "    other|range_penalty|prompt",
+            "  else",
+            "    -1",
+            "  end * 5,",
             "  0",
             ")"
         ],

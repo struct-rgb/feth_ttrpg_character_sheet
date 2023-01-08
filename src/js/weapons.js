@@ -46,18 +46,26 @@ class Weapons {
 			this.refresh();
 		});
 
-		this._inInventory = element("input", {
-			class: ["simple-border"],
-			attrs: {
-				type     : "checkbox",
-				onchange : (() => {
-					const activeID = this.sheet.wb.category.getActive();
-					if (activeID === null) return;
+		// this._inInventory = element("input", {
+		// 	class: ["simple-border"],
+		// 	attrs: {
+		// 		type     : "checkbox",
+		// 		onchange : (() => {
+		// 			const activeID = this.sheet.wb.category.getActive();
+		// 			if (activeID === null) return;
 
-					const element = this.sheet.wb.category.elements.get(activeID);
-					element.description = this.body();
-				})
-			}
+		// 			const element = this.sheet.wb.category.elements.get(activeID);
+		// 			element.description = this.body();
+		// 		})
+		// 	}
+		// });
+
+		this._inInventory = new Toggle("In Inventory?", false, () => {
+			const activeID = this.sheet.wb.category.getActive();
+			if (activeID === null) return;
+
+			const element = this.sheet.wb.category.elements.get(activeID);
+			element.description = this.body();
 		});
 
 
@@ -265,7 +273,7 @@ class Weapons {
 
 			element("br"),
 
-			tooltip([this._inInventory, "Is Weapon in Inventory?"], [
+			tooltip(this._inInventory.root, [
 				"This only really affects what gets put into the blurb for ",
 				"now, but in the future it might affect weapons with ",
 				"attributes that give you penalties for holding them."
@@ -277,12 +285,12 @@ class Weapons {
 			]),
 
 			element("details", [
-				element("summary", element("label", "Information")),
+				element("summary", element("label", "Custom Description")),
 				this._description,
 			]),
 
 			element("details", [
-				element("summary", element("label", "Other Statistics")),
+				element("summary", element("label", "Custom Statistics")),
 				element("table", second, "battalion-table"),
 			]),
 
@@ -394,14 +402,15 @@ class Weapons {
 
 	import(weapon) {
 
-		this.name        = weapon.name     || Weapon.DEFAULT;
-		this.rank        = weapon.rank     || 0;
-		this.base        = weapon.base || weapon.mttype  || 0;
-		this.price       = weapon.price    || 0;
-		this.inInventory = weapon.inventory || false;
-		this.template    = weapon.template || Weapon.DEFAULT;
-		this.attributes.setState(weapon.attributes);
+		this.name        = weapon.name        || Weapon.DEFAULT;
+		this.rank        = weapon.rank        || 0;
+		this.mttype      = weapon.mttype      || 0;
+		this.price       = weapon.price       || 0;
+		this.inInventory = weapon.inventory   || false;
+		this.template    = weapon.template    || Weapon.DEFAULT;
 		this.information = weapon.description || Weapons.DESCRIPTION;
+		this.attributes.setState(weapon.attributes);
+		
 
 		for (let stat in weapon.modifiers) {
 			
@@ -426,7 +435,7 @@ class Weapons {
 			version     : Version.CURRENT.toString(),
 			name        : this.name,
 			rank        : this.rank,
-			base        : this.base,
+			mttype      : this.mttype,
 			price       : this.price,
 			template    : this.template.name,
 			attributes  : this.attributes.getState(),
@@ -473,6 +482,82 @@ class Weapons {
 				? element("em", " (Inventory)", "punctuation")
 				: ""
 		]);
+	}
+
+	/* blurb display */
+
+	blurb() {
+
+		let star = undefined;
+
+		function d(condition) {
+			return condition ? "*" : "";
+		}
+
+		const mods = [];
+		const env  = new Expression.Env(Expression.Env.RUNTIME, sheet.definez);
+
+		if ((star = this._price._trigger(this.price))) {
+			mods.push(`${star}G`);
+		}
+
+		if ((star = env.read("weapon|dynamic|tpcost"))) {
+			mods.push([env.read("weapon|total|tpcost"), "TP", star]);
+		}
+
+		if ((star = env.read("weapon|dynamic|spcost"))) {
+			mods.push([env.read("weapon|total|spcost"), "SP", star]);
+		}
+
+		for (let key in this.stats) {
+
+			if (Feature.MODEXCLUDE.has(key)) {
+				continue;
+			}
+
+			const value = env.read(`weapon|total|${key}`);
+			const isdyn = env.read(`weapon|dynamic|${key}`);
+
+			if (!isdyn && value == 0) continue;
+
+			const mark  = d(isdyn);
+
+			mods.push(`${capitalize(key)}:\xA0${value}${mark}`);
+		}
+
+		const min  = env.read("weapon|total|minrng");
+		const max  = env.read("weapon|total|maxrng");
+		const mind = d(env.read("weapon|dynamic|minrng"));
+		const maxd = d(env.read("weapon|dynamic|maxrng"));
+
+		if (min != max) {
+			mods.push("Range:\xA0", min, mind, "\xA0-\xA0", max, maxd);
+		} else if (min != 0) {
+			mods.push("Range:\xA0", max, (mind || maxd));
+		}
+
+		if ((star = d(env.read("weapon|dynamic|tp")))) {
+			mods.push("Max TP:\xA0", env.read("weapon|total|tp"), star);
+		}
+
+		if ((star = d(env.read("weapon|dynamic|sp")))) {
+			mods.push("Max SP:\xA0", env.read("weapon|total|sp"), star);
+		}
+
+		const set  = new Set();
+		const rank = this._rank._trigger(this.rank);
+
+		return [
+			this.name, " (", this.template.type, " ", rank, ")", "\n",
+			mods.join(" "), mods.length ? "\n" : "",
+			hitip.text([this.name, this.fullInfo()], set), "\n",
+			Array.from(this.attributes.getActive())
+				.map(a => hitip.text(Attribute.get(a), set, true, true))
+				.map(t => t.replace(/\s+/g, " "))
+				.join("\n"),
+			"\nUsage Requirements\n",
+			"  * ", this.template.type, " ", rank
+		].join("");
 	}
 
 }

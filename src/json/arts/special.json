@@ -1,0 +1,30 @@
+{
+  "name": "Special",
+  "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Cha (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one (including itself).",
+  "requires": "Guile A",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": "1 + ask [Special Modifer?], 1, 2, 3, 4; 5 end",
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "condition",
+    "combo"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "A"
+}

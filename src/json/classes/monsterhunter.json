@@ -1,6 +1,6 @@
 {
     "name": "Monster Hunter",
-    "description": "Anti-Monster infantry class.",
+    "description": "Anti-Monster infantry class. Choose one Advantage skill on reclass.",
     "type": ["Infantry", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Bows C+)) (Required (Level 15))",
