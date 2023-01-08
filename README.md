@@ -29,6 +29,7 @@ to make some improvements to small things I felt that where lacking, so eh...
   * Added autosave configuration
   * Turned the checkboxes into funny buttons because I could.
   * The Hide buttons now say Show when text is hidden
+  * Finished adding Blurb feature (It generates Markdown)
 
 #### Bug Fixes
 
