@@ -1,6 +1,6 @@
 {
     "name": "Ochain Shield",
-    "description": "Wielder is immune to critical hits. Restores 10% (20% with Crest of @{ability:Major Crest of Cichol:Cichol}) of Max HP at the start of wielders phase.",
+    "description": "Wielder is immune to critical hits. Restores 10% (20% with Crest of @{ability:Major Crest of Cichol||Minor Crest of Cichol:Cichol}) of Max HP at the start of wielders phase.",
     "requires": "None",
     "price": 0,
     "type": "Shield",

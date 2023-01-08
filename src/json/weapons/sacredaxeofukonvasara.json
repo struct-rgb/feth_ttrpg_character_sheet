@@ -1,7 +1,7 @@
 {
   "name": "Axe of Ukonvasara",
   "type": "Axes",
-  "description": "Effective against Armor units. Restores 10% (20% with Crest of @{ability:Major Crest of Gloucester:Gloucester}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Gloucester:Gloucester}.",
+  "description": "Effective against Armor units. Restores 10% (20% with Crest of @{ability:Major Crest of Gloucester||Minor Crest of Gloucester:Gloucester}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Gloucester||Minor Crest of Gloucester:Gloucester}.",
   "requires": "Axes A",
   "rank": "A",
   "price": 0,

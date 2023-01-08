@@ -1,7 +1,7 @@
 {
     "name": "Deliverer",
     "description": "Mov +2 while an ally with @{condition:Shelter:[Shelter]} is in the same space (can apply mid phase; increases maximum movement).",
-    "requires": "",
+    "requires": "Class `Gryphon Rider`",
     "modifiers": {
         "hp": 0,
         "sp": 0,

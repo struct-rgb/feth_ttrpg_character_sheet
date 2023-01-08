@@ -1,6 +1,6 @@
 {
     "name": "Dark Flier",
-    "description": "A mage who slings spells from upon the back of a pegasus",
+    "description": "A mage who slings spells from upon the back of a pegasus. Choose one Advantage skill on reclass.",
     "type": ["Flying", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",

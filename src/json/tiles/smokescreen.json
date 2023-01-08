@@ -1,7 +1,7 @@
 {
     "name": "Smoke Screen",
     "description": "Hit -30 to attacks targeting a unit occupying a tile of this type. When a unit occupying a tile of this type initiates combat, target foe's abilities that activate [when foe initiates combat] are disabled.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 0,
         "prot": 0,

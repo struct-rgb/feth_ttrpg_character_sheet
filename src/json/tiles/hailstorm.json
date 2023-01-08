@@ -1,7 +1,7 @@
 {
     "name": "Hail Storm",
     "description": "Once per unit per turn, a unit that begins its phase in a tile of this type has @{condition:Chilled:[Chilled]} applied to it for one turn.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 0,
         "prot": 0,

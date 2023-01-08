@@ -1,6 +1,6 @@
 {
     "name": "Valkyrie",
-    "description": "A veteran mage who commands the battlefield from horseback",
+    "description": "A veteran mage who commands the battlefield from horseback. Choose one Range +1 skill on reclass.",
     "type": ["Cavalry", "Caster"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Faith C+)) (Required (Riding C+)) (Required (Level 15))",

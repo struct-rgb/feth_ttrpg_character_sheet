@@ -42,6 +42,7 @@ class Row {
 			if (this.sheet && this.sheet.stats) {
 				this.sheet.stats.refreshSecondary(); 
 			}
+			this.sheet.character.reclass();
 
 			return this.grade;
 		});
@@ -232,7 +233,7 @@ class SkillUserInterface {
 
 		for (let each of skills) {
 			const skill = each;
-			this.context[skill] = ((grade) => {
+			this.context[skill] = ((name, grade) => {
 				const diff = (
 					Grade.toNumber(this[skill].grade)
 						-
@@ -276,13 +277,13 @@ class SkillUserInterface {
 			return;
 		}
 
-		for (let row of this.rows) {
-			row.value = object.ranks[row.name] || 0;
-		}
-
 		this.talent   = object.talent;
 		this.weakness = object.weakness;
 		this.budding  = object.budding;
+
+		for (let row of this.rows) {
+			row.value = object.ranks[row.name] || 0;
+		}
 	}
 
 	export() {

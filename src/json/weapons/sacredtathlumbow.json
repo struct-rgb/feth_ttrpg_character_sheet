@@ -1,7 +1,7 @@
 {
   "name": "Tathlum Bow",
   "type": "Bows",
-  "description": "Effective against Flying units. Restores 10% (20% with Crest of @{ability:Major Crest of Lamine:Lamine}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Lamine:Lamine}.",
+  "description": "Effective against Flying units. Restores 10% (20% with Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}.",
   "requires": "Bows A",
   "rank": "A",
   "price": 0,

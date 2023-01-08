@@ -1,6 +1,6 @@
 {
     "name": "Surgical Precision",
-    "description": "Grants Hit +10 and Crit +10. When this unit's action restores HP to a unit, roll a critical hit (if attacking, use that crit roll); if successful, double the amount of HP restored and apply one of the following effects (player controlling that unit chooses):\n•  Apply @{condition:Overheal:[Overheal]} to that unit for one turn equal to any excess healing.\n•  End one or more status conditions applied to that unit (player's choice) before healing is applied.\n•  Restore SP equal to half of any excess healing.",
+    "description": "Grants Hit +10 and Crit +10. When this unit's action restores HP to a unit, roll a critical hit (if attacking, use that crit roll); if successful, double the amount of HP restored and apply one of the following effects (player controlling that unit chooses):\n•  Apply @{condition:Overheal:[Overheal]} to that unit for one turn equal to any excess healing.\n•  Before HP is restored, end one or more conditions on that unit (player's choice).\n•  Restore SP equal to half of any excess healing.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

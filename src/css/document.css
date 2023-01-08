@@ -1,0 +1,63 @@
+
+/* This is a selected item in a list. Like your selected weapon or character. */
+
+.selected-text {
+	text-decoration: underline;
+}
+
+/* tool tip style (the element the tooltip pops up over) */
+
+.tts {
+	border-bottom: 1px dotted;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+/* tool tip text style (the tooltip bit that pops up itself) */
+
+.ttts {
+	background-color: white;
+	color: black;
+	border-width: 2px;
+	border-color: black;
+}
+
+/* these are the disabled rows on the level up table */
+
+.attempt-disabled {
+	color: lightgrey;
+	font-style: italic;
+}
+
+/* these are the colored titles for the level up animation */
+
+.level-table th.incr-bell {
+
+	/* this is the stat increase one */
+
+	border-color: black;
+	border-radius: 15px 15px 3px 3px;
+	border-width: 2px;
+	border-style: outset;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+
+	/* this is the stat decrease one*/
+	border-color: black;
+	border-radius: 3px 3px 15px 15px;
+	border-width: 2px;
+	border-style: outset;
+	font-weight: bolder;
+}
+
+/* these control the toggle buttons in the filters */
+
+button.toggle-on {
+	background: grey;
+}
+
+button.toggle-off {
+	background: lightgrey;
+}

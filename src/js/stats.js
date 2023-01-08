@@ -563,23 +563,29 @@ class LevelHistory {
 		this._lrows  = [];
 		this._radios = [];
 
-		this._enable_warnings = element("input", {
-			class: ["simple-border"],
-			attrs: {
-				checked : true,
-				type    : "checkbox",
-			}
-		});
+		// this._enable_warnings = element("input", {
+		// 	class: ["simple-border"],
+		// 	attrs: {
+		// 		checked : true,
+		// 		type    : "checkbox",
+		// 	}
+		// });
 
-		this._enable_animation = element("input", {
-			class: ["simple-border"],
-			attrs: {
-				checked : true,
-				type    : "checkbox",
-				oninput : (() => {
-					this.bells.disabled = !this.bells.disabled;
-				}),
-			}
+		this._enable_warnings = new Toggle("Roll with Warnings", true);
+
+		// this._enable_animation = element("input", {
+		// 	class: ["simple-border"],
+		// 	attrs: {
+		// 		checked : true,
+		// 		type    : "checkbox",
+		// 		oninput : (() => {
+		// 			this.bells.disabled = !this.bells.disabled;
+		// 		}),
+		// 	}
+		// });
+
+		this._enable_animation = new Toggle("Level Up Animation", true, () => {
+			this.bells.disabled = !this.bells.disabled;
 		});
 
 		this.root = element("div", [
@@ -689,11 +695,11 @@ class LevelHistory {
 
 			element("br"),
 
-			tooltip([this._enable_warnings, "Roll with Warnings"],
+			tooltip(this._enable_warnings.root,
 				"Enable warnings for various potential pitfalls when rolling."
 			),
 
-			tooltip([this._enable_animation, "Level Up Animation"], [
+			tooltip(this._enable_animation.root, [
 				"Highlight changes with bell sounds. (Sound Effects by ",
 				element("a", {
 					content : "u_31vnwfmzt6 ",

@@ -174,27 +174,33 @@ class UserInterface {
 			attrs: {id: "generator-output"},
 		});
 
-		this._labels  = element("input", {
-			attrs: {
-				type    : "checkbox",
-				checked : true,
-			},
-		});
+		this._labels  = new Toggle("Roll20 Labels?", true);
 
-		this._alias   = element("input", {
-			attrs: {
-				id      : "generator-hardcode",
-				type    : "checkbox",
-				checked : false,
-			}
-		});
+		// this._labels  = element("input", {
+		// 	attrs: {
+		// 		type    : "checkbox",
+		// 		checked : true,
+		// 	},
+		// });
 
-		this._compact = element("input", {
-			attrs: {
-				type    : "checkbox",
-				checked : true,
-			}
-		});
+		this._alias   = new Toggle("Roll20 Variables?", false);
+
+		// this._alias   = element("input", {
+		// 	attrs: {
+		// 		id      : "generator-hardcode",
+		// 		type    : "checkbox",
+		// 		checked : false,
+		// 	}
+		// });
+
+		this._compact = new Toggle("Compact Macro Expressions?", true);
+
+		// this._compact = element("input", {
+		// 	attrs: {
+		// 		type    : "checkbox",
+		// 		checked : true,
+		// 	}
+		// });
 		
 		this._input   = element("input", {
 			class: ["simple-border", "calculator"],
@@ -251,10 +257,7 @@ class UserInterface {
 			element("br"),
 			
 			tooltip(
-				element("span", [
-					this._alias,
-					uniqueLabel("Roll20 Variables?", this._alias),
-				]),
+				this._alias.root,
 				wrap(
 					"This will replace the raw base stats with Roll20 ",
 					"variables. I.e. instead of inserting your raw base ",
@@ -266,10 +269,7 @@ class UserInterface {
 			),
 
 			tooltip(
-				element("span", [
-					this._labels,
-					uniqueLabel("Roll20 Labels?", this._labels),
-				]),
+				this._labels.root,
 				wrap(
 					"Label each modifier in the macro to make it easier to ",
 					"tell what weapon, attribute, ability, art, etc. that it ",
@@ -280,10 +280,7 @@ class UserInterface {
 			element("br"),
 
 			tooltip(
-				element("span", [
-					this._compact,
-					uniqueLabel("Compact Macro Expressions?", this._compact),
-				]),
+				this._compact.root,
 				wrap(
 					"Make generated macros more compact by eliminating ",
 					"extraneous operations such as adding or subtracting zero ",
@@ -507,7 +504,9 @@ class UserInterface {
 
 		const set = new Set([wpn.name]);
 
-		for (let line of hitip.text(wpn, set, false)) {
+		const feature = [wpn.name, wpn.fullInfo()];
+
+		for (let line of hitip.text(feature, set, false)) {
 			m.line(m.italic(line));
 		}
 
@@ -522,8 +521,6 @@ class UserInterface {
 		this._display.value = macro;
 	}
 
-
-
 	/* todo make this work */
 	blurb() {
 
@@ -533,33 +530,67 @@ class UserInterface {
 		const sheet = this.sheet;
 		const env   = new Expression.Env(Expression.Env.RUNTIME, sheet.definez);
 
-		text.push(sheet.character.name, "\n\n");
+		function list(title, iterable) {
+			const array = Array.from(iterable);
+			if (array.length == 0) return;
+
+			text.push(title, "\n\n");
+
+			for (let feature of array) {
+				text.push(feature.blurb(), "\n\n");
+			}
+		}
+
+		text.push("# ", sheet.character.name, "\n\n```\n");
 		for (let name of sheet.stats.names) {
 			text.push(
-				name.toUpperCase(), ": ",
+				name.toUpperCase().padEnd(3, " "), " = ",
 				env.read(`unit|total|${name}`), "\n"
 			);
 		}
-		text.push("\n");
+		text.push("```\n\n");
+
+		text.push("## Description\n\n");
+		text.push(sheet.character.description, "\n\n");
+
+		/* Weapons and Spells */
+
+		let   added = 0;
+		const hole  = text.length;
+
+		text.push("");
 
 		const active = sheet.wb.activeID;
 
 		for (let uid of sheet.wb.category.names()) {
 			sheet.wb.change(uid);
 			if (sheet.wb.model.inInventory) {
-				text.push(sheet.wb.model.template.blurb(), "\n\n");
+				text.push(sheet.wb.model.blurb(), "\n\n");
+				++added;
 			}
 		}
 
 		sheet.wb.change(active);
 
+		if (added) text[hole] = "## Weapons & Spells\n\n";
+
+		/* Other Features */
+
+		list("## Equipment", sheet.equipment.known.values());
+
+		const className = sheet.character.class.name;
+		if (className != "None") text.push(`## ${className}\n\n`);
+
+		list("### Class Abilities", sheet.abilities.class.values());
+
+		list("### Class Arts", sheet.arts.class.values());
+
+		list("## Equipped Abilities", sheet.abilities.equipped.values());
+
+		list("## Equipped Arts", sheet.arts.equipped.values());
+
 		/*
 		 * Weapons & Spells
-		 * Equipment
-		 * Class Abilites
-		 * Equipped Abilities
-		 * Class Arts
-		 * Equipped Arts
 		 */
 
 		this._display.value = text.join("");

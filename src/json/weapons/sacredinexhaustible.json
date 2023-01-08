@@ -1,7 +1,7 @@
 {
   "name": "The Inexhaustible",
   "type": "Bows",
-  "description": "Effective against Flying units. Two consecutive hits when initating combat. Restores 10% (20% with Crest of @{ability:Major Crest of Indech:Indech}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Indech:Indech}.",
+  "description": "Effective against Flying units. Two consecutive hits when initating combat. Restores 10% (20% with Crest of @{ability:Major Crest of Indech||Minor Crest of Indech:Indech}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Indech||Minor Crest of Indech:Indech}.",
   "requires": "Bows A",
   "rank": "A",
   "price": 0,

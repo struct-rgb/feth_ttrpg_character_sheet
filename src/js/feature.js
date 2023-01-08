@@ -1122,14 +1122,13 @@ class Ability extends Feature {
 				new Filter.Toggle("Class", false, (feature) => {
 					return feature.requires.symbols.has("Class");
 				}),
-				new Filter.Toggle("Skills", true, (feature) => {
+				new Filter.Toggle("Skills", false, (feature) => {
 					return (
 						!feature.requires.symbols.has("Class")
 							&&
 						!feature.tagged("personal")
 					);
 				}),
-
 
 				Filter.Group.END,
 
@@ -1578,6 +1577,9 @@ class Attribute extends AttackFeature {
 		return this.name + " (Rank +" + this.rank + ") ";
 	}
 
+	/* uninhereit the body method back to super.super.body */
+	body = Feature.prototype.body;
+
 	static select(trigger) {
 
 		trigger = trigger || (() => {});
@@ -1774,6 +1776,8 @@ const hitip = (function() {
 
 const HLREGEX = /(@){([^:]*):([^:]*):([^}]*)}/;
 
+const LINK_DELIMITER = "||";
+
 function parser(action, combine) {
 	return function(string, data) {
 		const tok   = string.split(HLREGEX).filter(x => x != null);
@@ -1836,7 +1840,10 @@ const LOOKUP = new Map([
 
 			for (let key in definitions.tooltips) {
 				map.set(key, {
-					text: definitions.tooltips[key].join(""),
+
+					name: definitions.tooltips[key].name,
+
+					text: definitions.tooltips[key].description.join(""),
 
 					body: function() {
 						return dead(this.text);
@@ -1890,22 +1897,40 @@ function linkfn(table, link, text) {
 		);
 	}
 
-	const instance = feature.get(link || text);
+	const con  = [];
+	const keys = link ? link.split(LINK_DELIMITER) : [text];
 
-	if (Object.is(instance, feature.EMPTY)) {
-		console.error(`feature link '${link || text}' broken`);
-		return element("span", text, "computed");
-	}	
+	let broken = false;
 
-	/* pass dead=true to prevent recursice call to this function */
-	return tooltip(element("span", text, "datum"), instance.body(true));
+	for (let key of keys) {
+
+		const instance = feature.get(key);
+
+		if (Object.is(instance, feature.EMPTY)) {
+			console.error(`feature link '${link || text}' broken`);
+			con.push(element("div", [
+				element("strong", `Broken feature link: ${key}`, "computed"),
+				element("br"),
+			]));
+			broken = true;
+			continue;
+		}
+
+		con.push(
+			element("div", [
+				element("strong", instance.name), element("br"),
+				instance.body(true)
+			])
+		);
+	}
+
+	const base = element("span", text, broken ? "computed" : "datum")
+	return tooltip(base, delimit(element("hr"), con));
 }
 
 const link = parser(linkfn, (merge) => element("span", merge));
 
 function textfn(table, link, text, userdata) {
-
-	const key = link || text;
 
 	/* special behavior for literal tooltips */
 	if (table == "tooltip") {
@@ -1914,11 +1939,6 @@ function textfn(table, link, text, userdata) {
 
 	/* omit the generic mechanics explainations */
 	if (table == "const") {
-		return text;
-	}
-
-	/* prevent unbounded recursion */
-	if (userdata.set.has(key)) {
 		return text;
 	}
 
@@ -1931,32 +1951,58 @@ function textfn(table, link, text, userdata) {
 		);
 	}
 
-	const instance = feature.get(key);
+	const con  = [];
+	const keys = link ? link.split(LINK_DELIMITER) : [text];
 
-	if (Object.is(instance, feature.EMPTY)) {
-		console.error(`feature link '${key}' broken`);
-		return text;
-	}	
+	for (let key of keys.reverse()) {
 
-	userdata.set.add(key);
-	const body = textp(instance.description, userdata);
-	userdata.stack.push(`${instance.name} - ${body}`);
-	// userdata.set.delete(key);
+		/* prevent unbounded recursion */
+		if (userdata.set.has(key)) {
+			con.push(text);
+			continue;
+		}
+
+		const instance = feature.get(key);
+
+		if (Object.is(instance, feature.EMPTY)) {
+			console.error(`feature link '${key}' broken`);
+			return text;
+		}	
+
+		userdata.set.add(key);
+		const body = textp(instance.description, userdata);
+		userdata.stack.push(`(${instance.name}) ${body}`);
+		// userdata.set.delete(key);
+	}
 
 	return text;
 }
 
 const textp = parser(textfn, (merge) => merge.join(""));
 
-function textwrapper(feature, set, join=true) {
+function textwrapper(feature, set, join=true, named=false) {
+
+	const [name, description] = (function() {
+		if (feature instanceof Feature) {
+			return [feature.name, feature.description];
+		}
+
+		if (feature instanceof Array && feature.length >= 2) {
+			return feature;
+		}
+
+		throw new TypeError(
+			`expected Feature or Array (length >= 2) but got '${feature}'`
+		);
+	})();
 
 	const userdata = {
-		"set"   : set || new Set([feature.name]),
+		"set"   : set || new Set([name]),
 		"stack" : [],
 	};
 
-	const body = textp(feature.description, userdata);
-	userdata.stack.push(`${feature.name} - ${body}`);
+	const body = textp(description, userdata);
+	userdata.stack.push(named ? `(${name}) ${body}` : body);
 
 	const entries = userdata.stack.reverse();
 	return join ? entries.join("\n") : entries;
@@ -1964,26 +2010,26 @@ function textwrapper(feature, set, join=true) {
 
 function totl(node, top=true) {
 
-	const fn = node[0];
-
-	if (top) {
-
-		const elements = totl(node, false);
-
-		if (fn == "All") {
-			return elements;
-		}
-
-		/* we want the top level to be inside of a  ul */
-		return `•  ${elements}`;
-	}
-
+	const fn   = node[0];
 	const args = node.slice(1);
+
+	if (top) switch (fn) {
+
+	case "All":
+		return totl(node, false);
+
+	case "Any":
+		return args.map(e => totl(e, true)).join("\nor\n");
+
+	default:
+		return `  * ${totl(node, false)}`;
+
+	}
 
 	switch (fn) {
 
 	case "All":
-		return args.map(e => `•  ${totl(e, false)}`).join("\n");
+		return args.map(e => `  * ${totl(e, false)}`).join("\n");
 
 	case "Any":
 		return args.map(e => totl(e, false)).join(" or ");

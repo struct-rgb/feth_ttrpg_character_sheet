@@ -1,6 +1,6 @@
 {
     "name": "Hero",
-    "description": "Infantry Axe and Sword unit",
+    "description": "Infantry Axe and Sword unit. Choose one Advantage skill on reclass.",
     "type": ["Infantry", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Axes C+)) (Required (Level 15))",

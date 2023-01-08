@@ -1,7 +1,7 @@
 {
     "name": "Foliage",
     "description": "Costs non-Flying units 2 movement to enter.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 0,
         "prot": 0,

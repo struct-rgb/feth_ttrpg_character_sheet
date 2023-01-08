@@ -1,7 +1,7 @@
 {
   "name": "Sword of Begalta",
   "type": "Swords",
-  "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Reigan:Riegan}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Reigan:Reigan}.",
+  "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Reigan||Minor Crest of Reigan:Riegan}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Reigan||Minor Crest of Reigan:Reigan}.",
   "requires": "Swords A",
   "rank": "A",
   "price": 0,

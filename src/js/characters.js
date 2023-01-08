@@ -86,19 +86,22 @@ class Characters {
 
 		this._sf    = Class.select(() => {
 			this.class = this._class.value;
-			this.refresh();
+			this.refresh([], []);
 		});
 
 		this._class = this._sf._select;
 
-		this._mounted = element("input", {
-			class: ["simple-border"],
-			attrs: {
-				type    : "checkbox",
-				oninput : (() => {
-					this.mounted = this._mounted.checked;
-				}),
-			}
+		// this._mounted = element("input", {
+		// 	class: ["simple-border"],
+		// 	attrs: {
+		// 		type    : "checkbox",
+		// 		oninput : (() => {
+		// 			this.mounted = this._mounted.checked;
+		// 		}),
+		// 	}
+		// });
+		this._mounted = new Toggle("Mounted?", false, (bool) => {
+			this.mounted = this._mounted.checked;
 		});
 
 		this._classText = document.createTextNode(
@@ -123,7 +126,7 @@ class Characters {
 			uniqueLabel("Class", this._class), element("br"),
 			this._sf.root,
 			
-			tooltip([this._mounted, "Mounted?"], [
+			tooltip(this._mounted.root, [
 				"Flying and Cavalry classes can ride mounts for increased ",
 				"stats. When not mounted, they lose that class-type.",
 			].join("")),
@@ -207,7 +210,10 @@ class Characters {
 		this._advantage.value = value;
 	}
 
-	refresh(active=[], clart=null) {
+	refresh(
+		active=this.sheet.abilities.class.getState().active,
+		clart=this.sheet.arts.class.getState().active
+	) {
 
 		this.sheet.abilities.class.setState({
 			added: this.class.abilities,
@@ -222,6 +228,10 @@ class Characters {
 		// this.sheet.skills.refresh()
 		this.sheet.stats.refresh();
 
+		this.reclass();
+	}
+
+	reclass() {
 		/* generate the class information blurb */
 		this._info.remove();
 
@@ -246,9 +256,6 @@ class Characters {
 				]),
 				element("div", list),
 			],
-			attrs  : {
-				onclick: (() => this.refresh())
-			}
 		});
 
 		this._info = p;
@@ -290,7 +297,7 @@ class Characters {
 			);
 
 		case "Permission":
-			return element("strong", name);
+			return element("strong", args[0] || name);
 
 		default:
 			return element("strong", node.join(" "));
@@ -392,7 +399,7 @@ class Characters {
 
 		this.sheet.stats.levelups.clear();
 
-		this.refresh();
+		this.refresh([], []);
 		this.sheet.skills.refresh();
 	}
 

@@ -1,7 +1,7 @@
 {
     "name": "Heal Tile",
     "description": "One per unit per turn, a unit that ends its phase in this tile recovers X HP.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 0,
         "prot": 0,

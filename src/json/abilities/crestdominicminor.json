@@ -1,6 +1,6 @@
 {
     "name": "Minor Crest of Dominic",
-    "description": "10% chance to grant reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
+    "description": "10% chance to reduce TP cost to 0 when attacking with Faith, Guile, or Reason.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

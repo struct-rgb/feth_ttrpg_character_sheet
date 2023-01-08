@@ -1,7 +1,7 @@
 {
     "name": "Guile Consumption 2",
     "description": "Restores 1 TP after unit uses a Guile weapon and restores 1 TP after unit uses Guile metamagic.",
-    "requires": "",
+    "requires": "Class Druid",
     "modifiers": {
         "hp": 0,
         "sp": 0,

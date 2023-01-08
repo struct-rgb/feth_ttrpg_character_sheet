@@ -5,10 +5,10 @@
     "modifiers": {
         "hp": 0,
         "sp": 0,
-        "str": "ask [Mounted?], 0; 4 end",
+        "str": "ask [Pegasus Flight?], 0; 4 end",
         "mag": 0,
         "dex": 0,
-        "spd": "ask [Mounted?], 0; 4 end",
+        "spd": "ask [Pegasus Flight?], 0; 4 end",
         "def": 0,
         "res": 0,
         "cha": 0,

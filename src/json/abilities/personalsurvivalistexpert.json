@@ -1,6 +1,6 @@
 {
     "name": "Survivalist Expert",
-    "description": "Every time this unit enters combat against an enemy he marks the target and gains an additional trait based on how many enemy units have been marked. 1 Mark: This unit can perform double attacks, 2 Marks: This unit gains +15 Avo, and 3 Marks: This unit gains +15 Hit.",
+    "description": "Every time this unit enters combat against an enemy he marks the target and gains an additional trait based on how many enemy units have been marked:\n•  1 Mark: This unit can perform double attacks.\n•  2 Marks: This unit gains +15 Avo.\n•  3 Marks: This unit gains +15 Hit.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,
@@ -16,8 +16,8 @@
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [Units Marked?], One {0}, Two {0}; Three {15} end",
-        "avo": "ask [Units Marked?], One {0}, Two {15}; Three {15} end",
+        "hit": "if ask [Marks?], 0, 1, 2; 3 end >= 3 then 15 else 0 end",
+        "avo": "if ask [Marks?], 0, 1, 2; 3 end >= 2 then 15 else 0 end ",
         "crit": 0,
         "cravo": 0,
 

@@ -1,7 +1,7 @@
 {
     "name": "Ice Block",
     "description": "Cannot be traversed by non-Flying units.",
-    "requires": "",
+    "requires": "None",
     "stats": {
         "hp": 1,
         "prot": 0,

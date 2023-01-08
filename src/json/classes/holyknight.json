@@ -1,6 +1,6 @@
 {
     "name": "Holy Knight",
-    "description": "A mounted knight versed in both weapons and magic",
+    "description": "A mounted knight versed in both weapons and magic. Choose one weapon Advantage skill on reclass.",
     "type": ["Cavalry", "Martial", "Caster"],
     "tier": "Advanced",
     "requires": "All (Faith C+) (Required (Riding C+)) (Required (Level 15))",

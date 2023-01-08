@@ -1,7 +1,7 @@
 {
   "name": "Lance of Ruin",
   "type": "Lances",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Gautier:Gautier}, enables use of @{art::Ruined Sky}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "If wielder has the Crest of @{ability:Major Crest of Gautier||Minor Crest of Gautier:Gautier}, enables use of @{art::Ruined Sky}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Lances E",
   "rank": "E",
   "price": 0,

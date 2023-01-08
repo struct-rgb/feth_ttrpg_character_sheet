@@ -1,0 +1,252 @@
+
+:root {
+	--green:#00a385;
+	--gold:#897736;
+	--navy:#4d4856;
+	--blue:#3a5192;
+	--wash:#989eb5;
+	--egg:#fff6e6;
+	--goldl:#f1e5ac;
+}
+
+/* This class is on the body element. */
+
+.base {
+	color: var(--blue);
+	background: var(--egg);
+}
+
+/* This is on the input elements like buttons and text inputs */
+
+.simple-border {
+	color: var(--blue);
+	outline: none;
+	background: var(--goldl);
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: var(--navy);
+	box-shadow: 2px 2px var(--gold);
+	border-style: ridge;
+	padding: 1px;
+	margin: 3px;
+}
+
+/* This can be on the input elements in tables */
+
+.datum-border {
+	outline: none;
+	background: transparent;
+	border-radius: 0px;
+	border-width: 0px;
+	border-color: transparent;
+	border-style: none;
+
+	font-weight: bold;
+	color: blue;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* These are blue edittable stat numbers in the default theme. */
+
+.datum {
+	font-weight: bold;
+	color: var(--green);
+}
+
+/* These are the orange not-editable numbers in the default theme. */
+
+.computed {
+	font-weight: bold;
+	color: var(--gold);
+}
+
+/* These are the parentheses around growth rates */
+
+.parenthesis {
+	color: var(--navy);
+}
+
+/* These are the math operators on the lower part of the stat tables */
+
+.punctuation {
+	color: var(--navy);
+}
+
+/* tool tip style (the element the tooltip pops up over) */
+
+.tts {
+	border-bottom: 1px dotted;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+/* tool tip text style (the tooltip bit that pops up itself) */
+
+.ttts {
+	background-color: var(--navy);
+	color: var(--egg);
+	border-radius: 6px;
+}
+
+/* these are the enabled rows on the level up table */
+
+.attempt-enabled {
+
+}
+
+/* these are the disabled rows on the level up table */
+
+.attempt-disabled {
+	color: var(--wash);
+	font-style: italic;
+}
+
+/* these are the colored titles for the level up animation */
+
+.level-table th.incr-bell {
+
+	/* this is the stat increase one */
+
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: var(--green);
+	border-style: outset;
+	background: var(--green);
+	color: var(--egg);
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+
+	/* this is the stat decrease one*/
+
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: var(--gold);
+	border-style: outset;
+	background: var(--gold);
+	color: var(--egg);
+	font-weight: bolder;
+}
+
+/* these control the toggle buttons in the filters */
+
+button.toggle-on {
+	color: var(--egg);
+	background: var(--gold);
+	border-radius: 5px;
+	border-color: var(--navy);
+	border-style: ridge;
+}
+
+button.toggle-off {
+	color: var(--navy);
+	background: var(--goldl);
+	border-radius: 5px;
+	border-color: var(--navy);
+	border-style: ridge;
+}
+
+/* these control calculator expression syntaxt highlighting */
+
+.hl-identifier {
+	/*color: ;*/
+}
+
+.hl-reserved {
+	color: var(--green);
+}
+
+.hl-operator {
+	color: var(--gold);
+}
+
+.hl-literal {
+	/*color: var(--green);*/
+}
+
+/* This is a selected item in a list. Like your selected weapon or character. */
+
+span.selectable {
+	color: var(--blue);
+	outline: none;
+	background: var(--goldl);
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: var(--navy);
+	box-shadow: 2px 2px var(--gold);
+	border-style: ridge;
+	padding: 1px;
+	margin: 3px;
+	font-weight: none;
+}
+
+dd {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+span.selectable:hover {
+	text-decoration: none;
+	color: var(--egg);
+	background: var(--gold);
+}
+
+span.selected-text {
+	color: var(--egg);
+	background: var(--gold);
+	border-radius: 3px;
+	border-width: 2px;
+	/*font-weight: bold;*/
+	padding: 1px;
+}
+
+.selected-text {
+	color: var(--egg);
+	background: var(--gold);
+	border-radius: 3px;
+	border-width: 2px;
+	/*font-weight: bold;*/
+	padding: 1px;
+}
+
+label.simple-border:hover {
+	text-decoration: none;
+	color: var(--egg);
+	background: var(--gold);
+	border-radius: 3px;
+	border-width: 2px;
+	/*font-weight: bold;*/
+	padding: 1px;
+}
+
+input.simple-border:hover {
+	text-decoration: none;
+	color: var(--egg);
+	background: var(--gold);
+	border-radius: 3px;
+	border-width: 2px;
+	/*font-weight: bold;*/
+	padding: 1px;
+}
+
+select.simple-border:hover {
+	text-decoration: none;
+	color: var(--egg);
+	background: var(--gold);
+	border-radius: 3px;
+	border-width: 2px;
+	/*font-weight: bold;*//
+	padding: 1px;
+}
+
+label.simple-border:hover {
+	text-decoration: none;
+	color: var(--egg);
+	background: var(--gold);
+	border-radius: 3px;
+	border-width: 2px;
+	/*font-weight: bold;*/
+	padding: 1px;
+}

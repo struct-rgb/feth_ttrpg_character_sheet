@@ -1,7 +1,7 @@
 {
   "name": "Scroll of Talos",
   "type": "Reason",
-  "description": "A lightning spell; restores 10% (20% with Crest of @{ability:Major Crest of Noa:Noa}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Noa:Noa}.",
+  "description": "A lightning spell; restores 10% (20% with Crest of @{ability:Major Crest of Noa||Minor Crest of Noa:Noa}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Noa||Minor Crest of Noa:Noa}.",
   "requires": "Reason A",
   "rank": "A",
   "price": 0,

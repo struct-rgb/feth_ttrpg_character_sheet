@@ -1,7 +1,7 @@
 {
     "name": "Faith Metamagic Adept",
     "description": "Reduces SP consumed when using Faith metamagic by 50% (round up).",
-    "requires": "",
+    "requires": "Faith A+",
     "modifiers": {
         "hp": 0,
         "sp": 0,

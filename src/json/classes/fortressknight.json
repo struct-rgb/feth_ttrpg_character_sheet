@@ -1,6 +1,6 @@
 {
     "name": "Fortress Knight",
-    "description": "An knight versed in embattlement with expertise in armored combat",
+    "description": "An knight versed in embattlement with expertise in armored combat. Choose one Advantage skill on reclass.",
     "type": ["Armor", "Martial"],
     "tier": "Advanced",
     "requires": "All (Any (Axes C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",

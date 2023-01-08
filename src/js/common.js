@@ -37,6 +37,52 @@ class SwapText {
 	}
 }
 
+
+class Toggle {
+
+	constructor(title, value, fn) {
+
+		this._fn       = fn || ((bool) => !bool);
+		this._original = value;
+		this._check    = document.createTextNode("");
+
+		this.root = element("button", {
+			attrs   : {
+				onclick: () => {
+					this.checked = !this.checked;
+					this._fn.call(this, this.checked);
+				},
+			},
+			content : element("span", [this._check, title]),
+			class   : ["simple-border"],
+		});
+
+		this.checked = value;
+	}
+
+
+	get checked() {
+		return this._checked;
+	}
+
+	set checked(value) {
+		this._checked = value;
+
+		if (this._checked) {
+			this.root.classList.add("selected-text");
+			this._check.data = "☑ ";
+		} else {
+			this.root.classList.remove("selected-text");
+			this._check.data = "☐ "; 
+		}
+	}
+
+	reset() {
+		this.checked = this._original;
+	}
+
+}
+
 /**
  * Creates a enumerated type with a bidirectional string/number mapping.
  */
@@ -87,7 +133,7 @@ class ConfigEnum {
 class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("2.0.0");
+	static CURRENT = new Version("2.1.0");
 
 	constructor(string) {
 		if (string == null) {

@@ -1,7 +1,7 @@
 {
   "name": "Thunderbrand",
   "type": "Swords",
-  "description": "Two consecutive hits when initating combat. If wielder has the Crest of @{ability:Major Crest of Charon:Charon}, enables use of @{art::Foudroyant Strike}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "Two consecutive hits when initating combat. If wielder has the Crest of @{ability:Major Crest of Charon||Minor Crest of Charon:Charon}, enables use of @{art::Foudroyant Strike}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
   "requires": "Swords E",
   "rank": "E",
   "price": 0,

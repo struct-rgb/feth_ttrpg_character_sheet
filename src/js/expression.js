@@ -134,6 +134,7 @@ const Tokens = (function() {
 		DIE      : "die",
 		MACRO    : "fill",
 		TEMPLATE : "template",
+		CONCAT   : "cat",
 		// IN       : "in",
 
 		/* builtin variables */
@@ -551,6 +552,21 @@ const Tokens = (function() {
 			},
 		}),
 
+		"text" : new Operator(0, {
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, argument] = node;
+				throw new CompilationError(
+					"Codegen reached text expression"
+				);
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return argument;
+			},
+		}),
+
 		/* from here on, these to have associate terminals */
 
 		[TERMINALS.FLOOR]: new Unary(0, {
@@ -629,7 +645,6 @@ const Tokens = (function() {
 
 			opcode: function(env) {
 				env.push(Math.sign(env.pop()));
-				// this.stack.push(Math.sign(this.stack.pop()));
 				return 1;
 			},
 
@@ -833,6 +848,41 @@ const Tokens = (function() {
 					throw error;
 				}
 			},
+		}),
+
+		[TERMINALS.CONCAT] : new Operator(0, {
+
+			help: [
+				TERMINALS.CONCAT,
+				"cat({1})",
+				wrap(
+					"Concatenate each item in {1} into a single string."
+				),
+				"comma separated list of expressions or [bracketed text]"
+			],
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, argument] = node;
+
+				throw new CompilationError(
+					wrap(
+						"Something went wrong, and codegen reached a cat ",
+						"expression even thought that should be impossible ",
+					)
+				);
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+
+				const strings = [];
+
+				for (let each of argument) {
+					strings.push(recurse(each));
+				} 
+
+				return strings.join("");
+			},
 		})
 	};
 
@@ -863,7 +913,7 @@ const Tokens = (function() {
 					return recurse(argB);
 				}
 
-				return `${recurse(argB)} [${argA[1]}]`;
+				return `${recurse(argB)} [${recurse(argA)}]`;
 			},
 		}),
 
@@ -892,7 +942,7 @@ const Tokens = (function() {
 					return recurse(argB);
 				}
 
-				return `@{${argA[1]}}`;
+				return `@{${recurse(argA)}}`;
 			},
 		}),
 
@@ -1193,7 +1243,7 @@ const Tokens = (function() {
 				const text = title[1];
 
 				try {
-					const macro = env.instantiate(title[1], args);
+					const macro = env.instantiate(recurse(title), args);
 					console.log(`Expansion of ${text}`, macro);
 					return recurse(macro);
 				} catch (error) {
@@ -1232,7 +1282,7 @@ const Tokens = (function() {
 			codegen: function(recurse, code, node, env) {
 				const [_opcode, title, instance] = node;
 
-				const defined = env.template(title[1], instance);
+				const defined = env.template(recurse(title), instance);
 
 				code.instructions.push(function(env) {
 					env.push(defined);
@@ -1403,7 +1453,7 @@ const Tokens = (function() {
 					return recurse(node);
 				}).join("|");
 
-				return `?{${title[1]}|${options}}`;
+				return `?{${recurse(title)}|${options}}`;
 			}
 		}),
 
@@ -1794,6 +1844,12 @@ class Parser {
 			return out;
 		}
 
+		out = this._parseConcat();
+		if (out) {
+			this._toNext();
+			return out;
+		}
+
 		this._index = save;
 		out = this._parseAdditiveExpression();
 		return out;
@@ -1890,6 +1946,10 @@ class Parser {
 			return null;
 		}
 
+		if (this.token == Tokens.TERMINALS.CONCAT) {
+			return this._parseConcat();
+		}
+
 		const string = this._parseString();
 		if (string != null) return string; 
 
@@ -1899,6 +1959,65 @@ class Parser {
 		if (Tokens.SET.RESERVED.has(token[0])) return null;
 
 		return ["text", token[0]];
+	}
+
+	_parseConcat() {
+
+		if (this.token != Tokens.TERMINALS.CONCAT) {
+			return null;
+		}
+		this._toNext();
+
+		if (this.token != Tokens.TERMINALS.BEGIN) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.BEGIN}'`,
+				this.position || -1
+			);
+		}
+		this._sink();
+		this._toNext();
+
+		let   first   = true; 
+		const options = [];
+		
+		for (;;) {
+
+			const out  = this._parseMacroArgument();
+
+			if (first && out === null) {
+				break;
+			}
+
+			if (out === null) {
+				
+				if (first) break;
+
+				throw new CompilationError(
+					"Expected expression or [bracketed text] after ",
+					`'${Tokens.TERMINALS.OPTION}'`,
+					this.position,
+				);
+			}
+			first = false;		
+
+			options.push(out[0] == "text" ? out : [Tokens.TERMINALS.META, out]);
+
+			if (this.token != Tokens.TERMINALS.OPTION) {
+				break;
+			}
+			this._toNext();
+		}
+
+		if (this.token != Tokens.TERMINALS.END) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.END}'`,
+				this.position || -1
+			);
+		}
+		this._swim();
+		// this._toNext();
+
+		return ["cat", options];
 	}
 
 	_parseLabelExpression() {
@@ -2614,7 +2733,7 @@ class Template {
 
 				const value = map.get(node[1]);
 
-				if (value[0] != "text") {
+				if (value[0] != "text" && value[0] != Tokens.TERMINALS.CONCAT) {
 					throw new CompilationError(
 						wrap(
 							"cannot substitute expression for template ",
