@@ -1,6 +1,6 @@
 {
-    "name": "Defiant Str",
-    "description": "Grants Str +8 in combat when HP ≤ 25%.",
+    "name": "Defiant Def",
+    "description": "Grants Def +8 in combat when HP ≤ 25%.",
     "requires": "All (Armor B) (Riding B) (Level 20)",
     "modifiers": {
         "hp": 0,
