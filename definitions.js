@@ -6067,6 +6067,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Barrier",
+      "description": "Reduces all damage dealt to the user by 50%.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
+      "hidden": false
+    },
+    {
       "name": "Battalion Renewal",
       "description": "While unit's battalion endurance \u2264 \u2153, unit recovers 30% of Max HP at the beginning of unit's phase.",
       "requires": "Any (Authority D) (Authority C) (Authority B) (Authority A)",
@@ -7534,6 +7568,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Dragon-Scale Wall",
+      "description": "Reduces all damage dealt to the user by 70%.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,2
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
+      "hidden": false
+    },
+    {
       "name": "Dual Support+",
       "description": "All Support Skills and Support-like abilities used by or on this Unit are treated as if they are 1 level higher.",
       "requires": "All (Axes B) (Faith B)",
@@ -7633,6 +7701,74 @@ const definitions = {
         "stance",
         "in combat"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Essence Barrier",
+      "description": "Reduces all damage dealt to the user by 70%.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
+      "hidden": false
+    },
+    {
+      "name": "Enclosing Wall",
+      "description": "Reduces all damage dealt to the user by 50%. Can only endure one round of combat before being destroyed.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
       "hidden": false
     },
     {
@@ -8949,6 +9085,40 @@ const definitions = {
       "tags": [
         "in combat"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Heavily Armored Wall",
+      "description": "Reduces all damage dealt to the user by 50%. Will not suffer a penalty for losing their Barrier. Refreshes at the start of each turn.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
       "hidden": false
     },
     {
