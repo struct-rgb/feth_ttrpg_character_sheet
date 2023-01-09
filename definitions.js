@@ -8275,7 +8275,7 @@ const definitions = {
         "prot": 0,
         "resl": 0,
         "hit": 0,
-        "avo": 0,
+        "avo": 30,
         "crit": 0,
         "cravo": 0,
 
