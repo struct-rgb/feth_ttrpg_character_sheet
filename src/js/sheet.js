@@ -53,6 +53,7 @@ class Theme {
 		new Theme("Golden Fear", "Boneless mode but yellow.", "./src/css/golden_fear.css"),
 		new Theme("Golden Egg", "Serious attempt at a gold theme.", "./src/css/golden_egg.css"),
 		new Theme("Document", "The most minimal theme.", "./src/css/document.css")
+		new Theme("Toast", "Designed by Toast, for Toast.", "./src/css/toast.css"),
 	];
 
 	constructor(name, description, stylesheet) {
