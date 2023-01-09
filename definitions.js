@@ -22825,29 +22825,29 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Spider Bite",
+      "name": "Crest Stone of Macuil",
       "type": "Other",
-      "description": "This giant spider is capable of powerful bites.",
+      "description": "This Crest Stone is a magic weapon that harnesses the power of the Wind Caller.",
       "requires": "Other E",
       "rank": "E",
       "price": 0,
       "mttype": "str",
       "modifiers": {
-        "mt": 10,
+        "mt": 20,
         "prot": 0,
         "resl": 0,
         "hit": 90,
         "avo": 0,
-        "crit": 0,
+        "crit": 10,
         "cravo": 0,
         "minrng": 1,
-        "maxrng": 1,
+        "maxrng": 4,
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
         "sp": 0
       },
-      "comment": "Incompatible with all Attributes except Refined.",
+      "comment": "Items in modifers should be integers",
       "tags": [],
       "hidden": false
     },
@@ -22929,6 +22929,33 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Spider Bite",
+      "type": "Other",
+      "description": "This giant spider is capable of powerful bites.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 10,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
       "tags": [],
       "hidden": false
     }
