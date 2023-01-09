@@ -8275,7 +8275,7 @@ const definitions = {
         "prot": 0,
         "resl": 0,
         "hit": 0,
-        "avo": 30,
+        "avo": "fill affirm([Against Sword, Lance, or Axe?], 30, 0)",
         "crit": 0,
         "cravo": 0,
 
