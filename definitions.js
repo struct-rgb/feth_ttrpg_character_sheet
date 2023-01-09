@@ -5442,6 +5442,44 @@ const definitions = {
       "hidden": false
     },
     {
+    "name": "Ancient Dragonskin",
+    "description": "Reduces all damage dealt to unit by 50%. Negates Lethality and Assassinate. Nullifies status effects. Unit cannot be moved.",
+    "requires": "Dragon",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
+    },
+    {
       "name": "Armor Effect Null",
       "description": "Nullifies any extra effectiveness against Armor units.",
       "requires": "Armor S+",
@@ -8217,6 +8255,44 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
       "hidden": false
+    },
+    {
+    "name": "Giant Wings",
+    "description": "Grants Avo +30 against sword, lance, or axe users.",
+    "requires": "Barrier",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": "fill affirm([Against Sword, Lance, or Axe?], 30, 0)",
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
     },
     {
       "name": "Gifted Skirmisher",
@@ -22463,87 +22539,87 @@ const definitions = {
       "tags": [],
       "hidden": false
     },
-      {
-	"name": "Dark Stone (Bird)",
-	"type": "Other",
-	"description": "A magic crystal that was ingested by a giant bird.",
-	"requires": "Other E",
-	"rank": "E",
-	"price": 0,
-	"mttype": "str",
-	"modifiers": {
-	  "mt": 9,
-	  "prot": 0,
-	  "resl": 0,		 
-	  "hit": 90,
-	  "avo": 0,
-	  "crit": 5,		  
-	  "cravo": 0,
-	  "minrng": 1,
-	  "maxrng": 2,
-	  "tpcost": 0,
-	  "spcost": 0,
-	  "tp": 0,
-	  "sp": 0
-	},
-	"comment": "Items in modifers should be integers",
-	"tags": [],
-	"hidden": false
-	},
-	{
-	"name": "Dark Stone (Crawler)",
-	"type": "Other",
-	"description": "A magic crystal that was ingested by a giant crawler.",
-	"requires": "Other E",
-	"rank": "E",
-	"price": 0,
-	"mttype": "str",
-	"modifiers": {
-	  "mt": 15,
-	  "prot": 0,
-	  "resl": 0,
-	  "hit": 75,
-	  "avo": 0,
-	  "crit": 5,
-	  "cravo": 0,
-	  "minrng": 1,
-	  "maxrng": 2,
-	  "tpcost": 0,
-	  "spcost": 0,
-	  "tp": 0,
-	  "sp": 0
-	},
-	"comment": "Items in modifers should be integers",
-	"tags": [],
-	"hidden": false
-	},
-	{
-	"name": "Dark Stone (Wolf)",
-	"type": "Other",
-	"description": "A magic crystal that was ingested by a giant wolf.",
-	"requires": "Other E",
-	"rank": "E",
-	"price": 0,
-	"mttype": "str",
-	"modifiers": {
-	  "mt": 13,
-	  "prot": 0,
-	  "resl": 0,
-	  "hit": 85,
-	  "avo": 0,
-	  "crit": 5,
-	  "cravo": 0,
-	  "minrng": 1,
-	  "maxrng": 2,
-	  "tpcost": 0,
-	  "spcost": 0,
-	  "tp": 0,
-	  "sp": 0
-	  },
-	"comment": "Items in modifers should be integers",
-	"tags": [],
-	"hidden": false
-	}
+    {
+      "name": "Dark Stone (Bird)",
+      "type": "Other",
+      "description": "A magic crystal that was ingested by a giant bird.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 9,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Dark Stone (Crawler)",
+      "type": "Other",
+      "description": "A magic crystal that was ingested by a giant crawler.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 15,
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Dark Stone (Wolf)",
+      "type": "Other",
+      "description": "A magic crystal that was ingested by a giant wolf.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 13,
+        "prot": 0,
+        "resl": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    }
   ],
   "conditions": [
     {
