@@ -1,6 +1,7 @@
 {
   "name": "Merciless Hail",
-  "description": "Ice metamagic; create a 3x3 area of @{tile:Hail Storm:Hail Storms} centered on target foe. @{art::Fire Wall} @{const:variant:Variant}: create a 3x3 area of @{tile:Hail Storm:Hail Storms} centered on target foe; conditions applied by created @{tile:Hail Storm:Hail Storms} last for two turns which also apply @{const:gbp:[Str -3]}, @{const:gbp:[Mag -3]}, @{const:gbp:[Spd -3]}, and @{const:gbp:[Def -3]}.",
+  "description": "Ice metamagic; create a 3x3 area of @{tile:Hail Storm:Hail Storms} centered on target foe for one turn. @{weapon::Fimbulvetr} @{const:variant:Variant}: create a 3x3 area of @{tile:Hail Storm:Hail Storms} centered on target foe for two turns; when @{tile:Hail Storm:Hail Storms} apply @{condition:Chilled:[Chilled]}, also apply @{const:gbp:[Str -3]}, @{const:gbp:[Mag -3]}, @{const:gbp:[Spd -3]}, and @{const:gbp:[Def -3]} to affected unit for one turn.",
+  "description_": "Ice metamagic; after combat create a @{tile::Hail Storm} in target foe's space for one turn. @{art::Fimbulvetr} @{const:variant:Variant}: Create @{tile::Hail Storm} in target foe's space for two turns. It costs 3 movement for a Flying unit to enter a tile under the @{tile::Hail Storm}'s area of effect.",
   "requires": "Reason B",
   "mttype": "else",
   "modifiers": {
