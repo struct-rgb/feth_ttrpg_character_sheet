@@ -9460,6 +9460,44 @@ const definitions = {
       "hidden": false
     },
     {
+    "name": "Keen Intuition",
+    "description": "Grants Avo +30 during combat with a foe 2 or more spaces away.",
+    "requires": "Barrier",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": "fill affirm([Enemy 2+ Spaces away?], 30, 0)",
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
+    },
+    {
       "name": "Knight\u2019s Protection",
       "description": "Eleanor receives a defense buff dependent on how many damaged allies are around her (Range of 3).\n\u2022  1 Damaged Ally: +1 DEF\n\u2022  3 Damaged Allies: +3 DEF\n\u2022  5 Damaged Allies: +6 DEF\nAdditionally, if a nearby ally drops to \u2153 HP, enemies will target and attack her if they are able to do so once per instance of HP drop. After that, she will need to use her action in order to prolong this protection.",
       "requires": "Innate",
