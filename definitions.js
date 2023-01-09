@@ -5442,6 +5442,44 @@ const definitions = {
       "hidden": false
     },
     {
+    "name": "Ancient Dragonskin",
+    "description": "Reduces all damage dealt to unit by 50%. Negates Lethality and Assassinate. Nullifies status effects. Unit cannot be moved.",
+    "requires": "Dragon",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
+    },
+    {
       "name": "Armor Effect Null",
       "description": "Nullifies any extra effectiveness against Armor units.",
       "requires": "Armor S+",
@@ -8218,6 +8256,44 @@ const definitions = {
       "tags": [],
       "hidden": false
     },
+    {
+    "name": "Giant Wings",
+    "description": "Grants Avo +30 against sword, lance, or axe users.",
+    "requires": "Barrier",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
+    }
     {
       "name": "Gifted Skirmisher",
       "description": "This Unit obtains the Monster Unit type, 5 Anima Metamagic tokens and a D Rank Anima Metamagic Ability of their choice that requires a target.Additionally, this Unit gains a B Rank Anima Metamagic Ability that requires a target at B Rank (Bows) and can use Anima Metamagic abilities through any Bow. If an ability is used in this way, it uses the Bow\u2019s Mt for any Mt and/or Mag calculation and only consumes half of the Anima Metamagic tokens required to cast the ability. If the Unit is using a Bow that deals magic-based damage, the Variant version of the Metamagic ability is used, if any. If it casts another spell, (Like Meteor Storm.) the Variant ability is ignored. If this Unit ever has 0 @{tooltip:Anima Metamagic tokens:Just going to assume this translates directly to TP now.} remaining, all Str-based weapons against this Unit will deal effective damage, this Unit\u2019s Mag and Stamina Pool is reduced to 0 at the start of the next player phase, and they gain +15 Crit/Avo.",
