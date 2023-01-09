@@ -22831,7 +22831,7 @@ const definitions = {
       "requires": "Other E",
       "rank": "E",
       "price": 0,
-      "mttype": "str",
+      "mttype": "mag",
       "modifiers": {
         "mt": 20,
         "prot": 0,
