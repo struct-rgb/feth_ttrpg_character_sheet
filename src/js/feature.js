@@ -1299,8 +1299,14 @@ class Ability extends Feature {
 				new Filter.Toggle("Static", false, (feature) => {
 					return feature.tagged("static");
 				}),
+
+				element("br"),
+
 				new Filter.Toggle("In Combat", false, (feature) => {
 					return feature.tagged("in combat");
+				}),
+				new Filter.Toggle("Barrier", false, (feature) => {
+					return feature.requires.symbols.has("Barrier");
 				}),
 
 				Filter.Group.END,
