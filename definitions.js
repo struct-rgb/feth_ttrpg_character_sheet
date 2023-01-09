@@ -1221,6 +1221,32 @@ const definitions = {
       "rank": "E"
     },
     {
+      "name": "Trinity Gore",
+      "description": "@{weapon::Trishul} only; Effective against Cavalry, effective against Dragon units.",
+      "requires": "All (Weapon `Trishul`) (Crest Lamine) (Lances E)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 15,
+        "prot": 0,
+        "resl": 0,
+        "hit": -15,
+        "avo": 10,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "relic"
+      ],
+      "hidden": false,
+      "type": "Lances",
+      "rank": "E"
+    },
+    {
       "name": "Sunder",
       "description": "No special effect.",
       "requires": "Swords D",
@@ -1684,6 +1710,32 @@ const definitions = {
       "rank": "A"
     },
     {
+      "name": "Mercy's End",
+      "description": "@{weapon::Curtana} only; Foe loses up to 20% of max HP after combat, effective against Dragon units.",
+      "requires": "All (Weapon `Curtana`) (Crest Fraldarius) (Swords E)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 5,
+        "prot": 0,
+        "resl": 0,
+        "hit": 20,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "relic"
+      ],
+      "hidden": false,
+      "type": "Swords",
+      "rank": "E"
+    },
+    {
       "name": "Curved Shot",
       "description": "No special effect.",
       "requires": "Bows D",
@@ -2033,6 +2085,32 @@ const definitions = {
       "tags": [
         "effective",
         "status",
+        "relic"
+      ],
+      "hidden": false,
+      "type": "Bows",
+      "rank": "E"
+    },
+    {
+      "name": "Lucent Wave",
+      "description": "@{weapon::Pinakla} only; Unit recovers HP equal to 25% of damage dealt after combat, effective against Dragon units.",
+      "requires": "All (Weapon `Pinakla`) (Crest Indech) (Bows E)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 7,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 4,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
         "relic"
       ],
       "hidden": false,
@@ -5364,6 +5442,44 @@ const definitions = {
       "hidden": false
     },
     {
+    "name": "Ancient Dragonskin",
+    "description": "Reduces all damage dealt to unit by 50%. Negates Lethality and Assassinate. Nullifies status effects. Unit cannot be moved.",
+    "requires": "Dragon",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
+    },
+    {
       "name": "Armor Effect Null",
       "description": "Nullifies any extra effectiveness against Armor units.",
       "requires": "Armor S+",
@@ -5948,6 +6064,40 @@ const definitions = {
         "faire",
         "static"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Barrier",
+      "description": "Reduces all damage dealt to the user by 50%.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
       "hidden": false
     },
     {
@@ -7218,8 +7368,8 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Defiant Str",
-      "description": "Grants Str +8 in combat when HP \u2264 25%.",
+      "name": "Defiant Def",
+      "description": "Grants Def +8 in combat when HP \u2264 25%.",
       "requires": "All (Armor B) (Riding B) (Level 20)",
       "modifiers": {
         "hp": 0,
@@ -7229,6 +7379,41 @@ const definitions = {
         "dex": 0,
         "spd": 0,
         "def": "fill defiant(8)",
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "defiant",
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Defiant Spd",
+      "description": "Grants Spd +8 in combat when HP \u2264 25%.",
+      "requires": "Unknown",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": "fill defiant(8)",
+        "def": 0,
         "res": 0,
         "cha": 0,
         "mt": 0,
@@ -7383,6 +7568,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Dragon-Scale Wall",
+      "description": "Reduces all damage dealt to the user by 70%.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
+      "hidden": false
+    },
+    {
       "name": "Dual Support+",
       "description": "All Support Skills and Support-like abilities used by or on this Unit are treated as if they are 1 level higher.",
       "requires": "All (Axes B) (Faith B)",
@@ -7482,6 +7701,74 @@ const definitions = {
         "stance",
         "in combat"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Essence Barrier",
+      "description": "Reduces all damage dealt to the user by 70%.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
+      "hidden": false
+    },
+    {
+      "name": "Enclosing Wall",
+      "description": "Reduces all damage dealt to the user by 50%. Can only endure one round of combat before being destroyed.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
       "hidden": false
     },
     {
@@ -8141,6 +8428,44 @@ const definitions = {
       "hidden": false
     },
     {
+    "name": "Giant Wings",
+    "description": "Grants Avo +30 against sword, lance, or axe users.",
+    "requires": "Barrier",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": "fill affirm([Against Sword, Lance, or Axe?], 30, 0)",
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
+    },
+    {
       "name": "Gifted Skirmisher",
       "description": "This Unit obtains the Monster Unit type, 5 Anima Metamagic tokens and a D Rank Anima Metamagic Ability of their choice that requires a target.Additionally, this Unit gains a B Rank Anima Metamagic Ability that requires a target at B Rank (Bows) and can use Anima Metamagic abilities through any Bow. If an ability is used in this way, it uses the Bow\u2019s Mt for any Mt and/or Mag calculation and only consumes half of the Anima Metamagic tokens required to cast the ability. If the Unit is using a Bow that deals magic-based damage, the Variant version of the Metamagic ability is used, if any. If it casts another spell, (Like Meteor Storm.) the Variant ability is ignored. If this Unit ever has 0 @{tooltip:Anima Metamagic tokens:Just going to assume this translates directly to TP now.} remaining, all Str-based weapons against this Unit will deal effective damage, this Unit\u2019s Mag and Stamina Pool is reduced to 0 at the start of the next player phase, and they gain +15 Crit/Avo.",
       "requires": "Innate",
@@ -8763,6 +9088,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Heavily Armored Wall",
+      "description": "Reduces all damage dealt to the user by 50%. Will not suffer a penalty for losing their Barrier. Refreshes at the start of each turn.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 0
+    },
+
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": ["in combat"],
+      "hidden": false
+    },
+    {
       "name": "Heavy Blade",
       "description": "Increases threshold to double this unit by 1 in combat.",
       "requires": "Any (Class Mercenary) (Class Soldier)",
@@ -9099,6 +9458,44 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
       "hidden": false
+    },
+    {
+    "name": "Keen Intuition",
+    "description": "Grants Avo +30 during combat with a foe 2 or more spaces away.",
+    "requires": "Barrier",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": "fill affirm([Enemy 2+ Spaces away?], 30, 0)",
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["in combat"],
+    "hidden": false
     },
     {
       "name": "Knight\u2019s Protection",
@@ -13031,6 +13428,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Seal Speed",
+      "description": "After combat, apply @{const:gbp:[Spd -6]} to target foe for one turn.",
+      "requires": "Unknown",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "seal"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Spd +2",
       "description": "Grants Spd +2.",
       "requires": "All (Any (Swords C) (Flying C)) (Level 10)",
@@ -13952,6 +14383,41 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "spirit"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Vital Defense",
+      "description": "Negates the foe's ability to inflict critical hits against the user.",
+      "requires": "Barrier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "blow",
+        "in combat"
       ],
       "hidden": false
     },
@@ -19896,6 +20362,35 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Trishul",
+      "type": "Lances",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}, enables use of @{art::Trinity Gore}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "requires": "Lances E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 17,
+        "prot": 0,
+        "resl": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 8,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+		"secret"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Rapier",
       "type": "Swords",
       "description": "Effective against Armor and Cavalry units. Consumes 3 TP when dealing damage. Cannot be equipped while wielder has 0 TP.",
@@ -20404,6 +20899,35 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Curtana",
+      "type": "Swords",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}, enables use of @{art::Mercy's End}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "requires": "Swords E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 11,
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 8,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+		"secret"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Training Bow",
       "type": "Bows",
       "description": "Effective against Flying units.",
@@ -20689,6 +21213,35 @@ const definitions = {
       "tags": [
         "relic",
         "effective"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Pinakla",
+      "type": "Bows",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Indech||Minor Crest of Indech:Indech}, enables use of @{art::Lucent Wave}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "requires": "Bows E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 16,
+        "prot": 0,
+        "resl": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 8,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+		"secret"
       ],
       "hidden": false
     },
@@ -22272,9 +22825,117 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Crest Stone of Macuil",
+      "type": "Other",
+      "description": "This Crest Stone is a magic weapon that harnesses the power of the Wind Caller.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 20,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 4,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Dark Stone (Bird)",
+      "type": "Other",
+      "description": "A magic crystal that was ingested by a giant bird.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 9,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Dark Stone (Crawler)",
+      "type": "Other",
+      "description": "A magic crystal that was ingested by a giant crawler.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 15,
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Dark Stone (Wolf)",
+      "type": "Other",
+      "description": "A magic crystal that was ingested by a giant wolf.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 13,
+        "prot": 0,
+        "resl": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Spider Bite",
       "type": "Other",
-      "description": "A monster weapon.",
+      "description": "This giant spider is capable of powerful bites.",
       "requires": "Other E",
       "rank": "E",
       "price": 0,

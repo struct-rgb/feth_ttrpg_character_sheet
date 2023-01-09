@@ -1,7 +1,7 @@
 {
-    "name": "Defiant Def",
-    "description": "Grants Def +8 in combat when HP ≤ 25%.",
-    "requires": "All (Armor B) (Riding B) (Level 20)",
+    "name": "Ancient Dragonskin",
+    "description": "Reduces all damage dealt to unit by 50%. Negates Lethality and Assassinate. Nullifies status effects. Unit cannot be moved.",
+    "requires": "Dragon",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9,7 +9,7 @@
         "mag": 0,
         "dex": 0,
         "spd": 0,
-        "def": "fill defiant(8)",
+        "def": 0,
         "res": 0,
         "cha": 0,
 
@@ -33,6 +33,6 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["defiant", "in combat"],
+    "tags": ["in combat"],
     "hidden": false
 }

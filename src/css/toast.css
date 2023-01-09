@@ -1,0 +1,169 @@
+:root {
+	--green:#00a385;
+	--lightblue:#74d7ec;
+	--navy:#4d4856;
+	--blue:#3a5192;
+	--wash:#989eb5;
+	--egg:#fff6e6;
+	--pink:#ffafc7;
+}
+
+.base {
+	color: #DDDDDD;
+	background: black
+}
+
+.simple-border {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: var(--lightblue);
+	border-style: ridge;
+	margin: 3px;
+}
+
+.selected-text {
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.datum {
+	font-weight: bold;
+	color: var(--pink);
+	padding: 0px;
+	margin: 0px;
+}
+
+.computed {
+	font-style: italic;
+	font-weight: bold;
+	color: var(--pink);
+	padding: 0px;
+	margin: 0px;
+}
+
+.parenthesis {
+	color: var(--lightblue);
+}
+
+.punctuation {
+	color: var(--lightblue);
+	font-style: italic;
+	font-weight: bold;
+}
+
+input[type=checkbox] {
+	color: var(--pink);
+}
+
+hr {
+	background-color: var(--lightblue);
+	border-color: var(--lightblue);
+}
+
+dt {
+	color: #AAAAAA;
+}
+
+dd {
+	color: #AAAAAA;
+}
+
+.tts {
+	border-bottom: 1px dotted var(--lightblue);
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.ttts {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 6px;
+	/*border-width: 2px;*/
+	/*border-color: var(--lightblue);*/
+	/*border-style: ridge;*/
+}
+
+.attempt-enabled {
+
+}
+
+.attempt-disabled {
+	color: darkgrey;
+}
+
+meter::-webkit-meter-bar {
+	background: black;
+}
+
+meter::-webkit-meter-optimum-value {
+	background: var(--pink);
+}
+
+meter::-webkit-meter-suboptimum-value {
+	background: var(--lightblue);
+}
+
+meter::-webkit-meter-even-less-good-value {
+	background: #660000;
+}
+
+input[type="checkbox"]:checked {
+	color: #222222;
+}
+
+.level-table th.incr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: var(--pink);
+	border-style: outset;
+	background: var(--pink);
+	color: #222222;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #222222;
+	border-style: outset;
+	background: #222222;
+	color: var(--pink);
+	font-weight: bolder;
+}
+
+button.toggle-on {
+	border-radius: 5px;
+	border-color: #222222;
+	background: var(--pink);
+	border-style: solid;
+	color: #222222;
+}
+
+button.toggle-off {
+	border-radius: 5px;
+	border-color: #222222;
+	background: black;
+	border-style: solid;
+	color: var(--pink);
+}
+
+.hl-identifier {
+	color: lightgrey;
+}
+
+.hl-reserved {
+	/*color: var(--lightblue);*/
+}
+
+.hl-operator {
+	color: var(--lightblue);
+}
+
+.hl-literal {
+	color: var(--pink);
+}
