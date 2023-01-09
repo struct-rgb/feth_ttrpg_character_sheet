@@ -7412,8 +7412,8 @@ const definitions = {
         "str": 0,
         "mag": 0,
         "dex": 0,
-        "spd": 0,
-        "def": "fill defiant(8)",
+        "spd": "fill defiant(8)",
+        "def": 0,
         "res": 0,
         "cha": 0,
         "mt": 0,
@@ -7593,7 +7593,7 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "sp": 0,2
+        "sp": 0,
         "mov": 0
     },
 
