@@ -1221,6 +1221,32 @@ const definitions = {
       "rank": "E"
     },
     {
+      "name": "Trinity Gore",
+      "description": "@{weapon::Trishul} only; Effective against Cavalry, effective against Dragon units.",
+      "requires": "All (Weapon `Trishul`) (Crest Lamine) (Lances E)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 15,
+        "prot": 0,
+        "resl": 0,
+        "hit": -15,
+        "avo": 10,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "relic"
+      ],
+      "hidden": false,
+      "type": "Lances",
+      "rank": "E"
+    },
+    {
       "name": "Sunder",
       "description": "No special effect.",
       "requires": "Swords D",
@@ -1684,6 +1710,32 @@ const definitions = {
       "rank": "A"
     },
     {
+      "name": "Mercy's End",
+      "description": "@{weapon::Curtana} only; Foe loses up to 20% of max HP after combat, effective against Dragon units.",
+      "requires": "All (Weapon `Curtana`) (Crest Fraldarius) (Swords E)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 5,
+        "prot": 0,
+        "resl": 0,
+        "hit": 20,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "relic"
+      ],
+      "hidden": false,
+      "type": "Swords",
+      "rank": "E"
+    },
+    {
       "name": "Curved Shot",
       "description": "No special effect.",
       "requires": "Bows D",
@@ -2033,6 +2085,32 @@ const definitions = {
       "tags": [
         "effective",
         "status",
+        "relic"
+      ],
+      "hidden": false,
+      "type": "Bows",
+      "rank": "E"
+    },
+    {
+      "name": "Lucent Wave",
+      "description": "@{weapon::Pinakla} only; Unit recovers HP equal to 25% of damage dealt after combat, effective against Dragon units.",
+      "requires": "All (Weapon `Pinakla`) (Crest Indech) (Bows E)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 7,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 4,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
         "relic"
       ],
       "hidden": false,
@@ -19896,6 +19974,35 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Trishul",
+      "type": "Lances",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}, enables use of @{art::Trinity Gore}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "requires": "Lances E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 17,
+        "prot": 0,
+        "resl": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 8,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+		"secret"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Rapier",
       "type": "Swords",
       "description": "Effective against Armor and Cavalry units. Consumes 3 TP when dealing damage. Cannot be equipped while wielder has 0 TP.",
@@ -20404,6 +20511,35 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Curtana",
+      "type": "Swords",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}, enables use of @{art::Mercy's End}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "requires": "Swords E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 11,
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 8,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+		"secret"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Training Bow",
       "type": "Bows",
       "description": "Effective against Flying units.",
@@ -20689,6 +20825,35 @@ const definitions = {
       "tags": [
         "relic",
         "effective"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Pinakla",
+      "type": "Bows",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Indech||Minor Crest of Indech:Indech}, enables use of @{art::Lucent Wave}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "requires": "Bows E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 16,
+        "prot": 0,
+        "resl": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 8,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+		"secret"
       ],
       "hidden": false
     },
