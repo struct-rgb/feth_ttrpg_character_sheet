@@ -2883,7 +2883,7 @@ const definitions = {
     },
     {
       "name": "Harrowing",
-      "description": "Double applied stat changes from this spell.",
+      "description": "Double stat changes of conditions applied by this spell.",
       "requires": "Guile C",
       "mttype": "else",
       "modifiers": {
