@@ -23090,7 +23090,7 @@ const definitions = {
       "tags": [],
       "hidden": false
     },
-    }
+    {
       "name": "Crest Stone of Macuil",
       "type": "Other",
       "description": "This Crest Stone is a magic weapon that harnesses the power of the Wind Caller.",
