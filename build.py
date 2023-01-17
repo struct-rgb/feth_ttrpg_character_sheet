@@ -72,6 +72,13 @@ SORTING_FUNCS = {
 		)
 	),
 
+	"attributes": lambda item: (
+		(
+			"first" not in item["tags"],
+			item["name"]
+		)
+	),
+
 	"conditions": lambda item: item["name"],
 
 	"tiles": lambda item: item["name"],

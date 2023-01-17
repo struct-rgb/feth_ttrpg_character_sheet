@@ -1,7 +1,7 @@
 {
     "name": "Reverse",
     "type": "Any",
-    "description": "Reverses how the Weapon Triangle and consumes 3 TP when dealing damage",
+    "description": "Reverses how the Weapon Triangle effectiveness and consumes 3 TP when dealing damage",
     "rank": 2,
     "price": 1100,
 
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["cost"],
+    "tags": ["cost", "forweapon", "forspell"],
     "hidden": true
 }

@@ -37,6 +37,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["penalty"],
+    "tags": ["penalty", "forweapon"],
     "hidden": false
 }

@@ -2157,35 +2157,6 @@ const definitions = {
       "rank": "D"
     },
     {
-      "name": "Quickened",
-      "description": "Cast a healing spell without ending your turn.",
-      "requires": "Faith D",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tiles": 0,
-        "spcost": 3,
-        "tpcost": 0,
-        "sp": 0,
-        "tp": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "combo"
-      ],
-      "hidden": false,
-      "type": "Faith",
-      "rank": "D"
-    },
-    {
       "name": "Beacon of Light",
       "description": "When casting @{art::Restore}, apply @{condition:Divine Ward:[Divine Ward]} to affected allies for 2 turns.",
       "requires": "Faith C",
@@ -2388,6 +2359,35 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "rework",
+        "combo"
+      ],
+      "hidden": false,
+      "type": "Faith",
+      "rank": "C"
+    },
+    {
+      "name": "Quickened",
+      "description": "Cast a healing spell without ending your turn.",
+      "requires": "Faith C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 3,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
         "combo"
       ],
       "hidden": false,
@@ -3281,7 +3281,7 @@ const definitions = {
     },
     {
       "name": "Manifest: Wind",
-      "description": "Wind metamagic; after combat, apply @{condition:Distant Guard:[Distant Guard X]} to this unit or an ally within 2 spaces for one turn, where X = 1 + the spell\u2019's Mt. @{art::Wind Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{condition:Distant Guard:[Distant Guard 5]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Wind Torrent} for one turn.",
+      "description": "Wind metamagic; after combat, apply @{condition:Distant Guard:[Distant Guard X]} to this unit or an ally within 2 spaces for one turn, where X = 1 + the spell\u2019's original Mt. @{art::Wind Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{condition:Distant Guard:[Distant Guard 5]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Wind Torrent} for one turn.",
       "requires": "Reason D",
       "mttype": "else",
       "modifiers": {
@@ -3312,7 +3312,7 @@ const definitions = {
     },
     {
       "name": "Manifest: Ice",
-      "description": "Ice metamagic; after combat, apply @{const:gbp:[Resl +X]} to this unit or an ally within 2 spaces for one turn, where X = 3 + the spell\u2019's Mt. @{art::Ice Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{const:gbp:[Resl +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Ice Block} for one turn.",
+      "description": "Ice metamagic; after combat, apply @{const:gbp:[Resl +X]} to this unit or an ally within 2 spaces for one turn, where X = 3 + the spell\u2019's original Mt. @{art::Ice Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{const:gbp:[Resl +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Ice Block} for one turn.",
       "requires": "Reason D",
       "mttype": "else",
       "modifiers": {
@@ -3465,7 +3465,7 @@ const definitions = {
     },
     {
       "name": "Productivity",
-      "description": "Lighting metamagic; apply @{condition:Productive:[Productive]} to this unit or target ally within 2 spacesnfor 2 turns. @{art::Lightning Wall} @{const:variant:Variant}: for one turn, allies that end any phase adjacent to a @{tile:Lightning Arc:Lightning Arcs} regain 1 TP. @{tooltip:(note):I changed the timing of this variant because it didn't work with the lightning wall rework.}",
+      "description": "Lighting metamagic; apply @{condition:Productive:[Productive]} to this unit or target ally within 2 spaces for 2 turns. @{art::Lightning Wall} @{const:variant:Variant}: for one turn, allies that end any phase adjacent to a @{tile:Lightning Arc:Lightning Arcs} regain 1 TP. @{tooltip:(note):I changed the timing of this variant because it didn't work with the lightning wall rework.}",
       "requires": "Reason C",
       "mttype": "else",
       "modifiers": {
@@ -3496,7 +3496,7 @@ const definitions = {
     },
     {
       "name": "Manifest: Force",
-      "description": "Force metamagic; after combat, apply @{const:gbp:[Prot +X]} to this unit or an ally within 2 spaces for one turn, where X = 4 + the spell\u2019's Mt. @{art::Force Wall} @{const:variant:Variant}: after combat, apply @{const:gbp:[Prot +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to any a tile created by a @{tooltip:Reason \"Wall\" spell:Specifically, an Ice Block, Fire Patch, Wind Torrent, Lightning Arc, or Force Wall} for one turn.",
+      "description": "Force metamagic; after combat, apply @{const:gbp:[Prot +X]} to this unit or an ally within 2 spaces for one turn, where X = 4 + the spell's original Mt. @{art::Force Wall} @{const:variant:Variant}: after combat, apply @{const:gbp:[Prot +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to any a tile created by a @{tooltip:Reason \"Wall\" spell:Specifically, an Ice Block, Fire Patch, Wind Torrent, Lightning Arc, or Force Wall} for one turn.",
       "requires": "Reason C",
       "mttype": "else",
       "modifiers": {
@@ -14233,7 +14233,7 @@ const definitions = {
   "tiles": [
     {
       "name": "Barricade",
-      "description": "Cannot be traversed by non-Flying units.",
+      "description": "Cannot be traversed by non-Flying units except those with @{ability::Pass} or affected by @{condition:Pass:[Pass]}.",
       "requires": "None",
       "stats": {
         "hp": 10,
@@ -14274,7 +14274,7 @@ const definitions = {
     },
     {
       "name": "Blood Well",
-      "description": "Cannot be targetted by crestless units. Once per unit per turn, a crestless unit that begins its phase adjacent to the a tile of this type takes 10 lethal damage.",
+      "description": "Cannot be traversed except by units with @{ability::Pass} or affected by @{condition:Pass:[Pass]}. Cannot be targetted by crestless units. Once per unit per turn, a crestless unit that begins its phase adjacent to the a tile of this type takes 10 lethal damage.",
       "requires": "None",
       "stats": {
         "hp": 1,
@@ -14522,7 +14522,7 @@ const definitions = {
     },
     {
       "name": "Ice Block",
-      "description": "Cannot be traversed by non-Flying units.",
+      "description": "Cannot be traversed by non-Flying units except those with @{ability::Pass} or affected by @{condition:Pass:[Pass]}.",
       "requires": "None",
       "stats": {
         "hp": 1,
@@ -15910,44 +15910,17 @@ const definitions = {
   ],
   "attributes": [
     {
-      "name": "Killer",
-      "description": "Grants weapon Crit +25 and consumes 3 TP when dealing damage. Disabled while wielder has 0 TP and on spells.",
-      "rank": 2,
-      "price": 1100,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": "ask [Killer?], No {0}; Yes {25} end",
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 3,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [
-        "cost"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Storm Infused",
+      "name": "Abyss Infused",
       "type": "Any",
-      "description": "Grants weapon [Is a wind spell in addition to other elements]. Disabled non-Reason and on non-lightning spells.",
+      "description": "Grants weapon [Is a fire spell in addition to other elements]. Disabled non-Reason and on non-ice spells.",
       "rank": 1,
       "price": 420,
       "mttype": "else",
       "modifiers": {
-        "mt": 0,
+        "mt": 2,
         "prot": 0,
         "resl": 0,
-        "hit": 10,
+        "hit": 0,
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -15959,15 +15932,16 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "forspell"
+      ],
       "hidden": true
     },
     {
-      "name": "Vortex Infused",
-      "type": "Any",
-      "description": "Grants weapon [Is a ice spell in addition to other elements]. Disabled non-Reason and on non-wind spells.",
-      "rank": 1,
-      "price": 420,
+      "name": "Blessed",
+      "description": "Grants weapon [Effective against Monsters]. While Equipped, wielder regains 10% max HP at the start of their phase. Disabled on spells.",
+      "rank": 2,
+      "price": 750,
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -15975,7 +15949,7 @@ const definitions = {
         "resl": 0,
         "hit": 0,
         "avo": 0,
-        "crit": 10,
+        "crit": 0,
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
@@ -15985,8 +15959,356 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "forweapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Blunt",
+      "type": "Any",
+      "description": "Grants weapon [Effective against Armor Units] and Hit -10. Disabled on spells and on weapons with Range > 1.",
+      "rank": 1,
+      "price": 450,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": -10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "effective",
+        "forweapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Bookmark",
+      "type": "Any",
+      "description": "While in inventory, wielder has six inventory slots. Disabled on non-spell weapons and on weapons with original Rank > D.",
+      "rank": 0,
+      "price": 2400,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "forspell"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Bound",
+      "type": "Any",
+      "description": "Weapon ceases to exist when removed from wielder\u2019s inventory or when wielder is defeated and weapon\u2019s value becomes 0G total. This attribute cannot be purchased.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "forspell",
+        "forweapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Brave",
+      "type": "Any",
+      "description": "When initiating combat, wielder makes two consecutive hits per normal attack and consumes 3 TP when dealing damage. Disabled on spells.",
+      "rank": 2,
+      "price": 750,
+      "mttype": "else",
+      "modifiers": {
+        "mt": -3,
+        "prot": 0,
+        "resl": 0,
+        "hit": -15,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "forweapon"
+      ],
       "hidden": true
+    },
+    {
+      "name": "Conjure Banshee",
+      "type": "Any",
+      "description": "When weapon is used to cast Summon, creates a Banshee unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "conjure",
+        "forspell"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Conjure Butcher",
+      "type": "Any",
+      "description": "When weapon is used to cast Summon, creates a Butcher unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "conjure",
+        "forspell"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Conjure Impaler",
+      "type": "Any",
+      "description": "When weapon is used to cast Summon, creates a Impaler unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "conjure",
+        "forspell"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Conjure Lemure",
+      "type": "Any",
+      "description": "When weapon is used to cast Summon, creates a Lemure unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "conjure",
+        "forspell"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Conjure Poltergeist",
+      "type": "Any",
+      "description": "When weapon is used to cast Summon, creates a Poltergeist unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "conjure",
+        "forspell"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Conjure Slasher",
+      "type": "Any",
+      "description": "When weapon us used to cast Summon creates a Slasher unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "conjure",
+        "forspell"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Curse of Ashiya",
+      "type": "Swords",
+      "description": "Grants weapon +40 Crit. Inflicts 5 damage to wielder after combat. Decreases Max TP by 4 when placed in the Unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on non-Swords and on weapons with Range > 1.",
+      "rank": 4,
+      "price": 2400,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 40,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": -4,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "forweapon",
+        "melee"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Devil",
+      "description": "Grants weapon +9 Mt. Inflicts 10 damage to wielder and consumes 3 TP after combat. Decreases Max TP by 2 when placed in the Unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)\n\nDisabled while wielder has 0 TP, on spells, and on weapons with Range > 1.",
+      "rank": 1,
+      "price": 330,
+      "mttype": "else",
+      "modifiers": {
+        "mt": "ask [Devil?], No {0}; Yes {9} end",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": -2,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "penalty",
+        "cost",
+        "forweapon"
+      ],
+      "hidden": false
     },
     {
       "name": "Flyswatter",
@@ -16012,7 +16334,150 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "forweapon"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Killer",
+      "description": "Grants weapon Crit +25 and consumes 3 TP when dealing damage. Disabled while wielder has 0 TP and on spells.",
+      "rank": 2,
+      "price": 1100,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": "ask [Killer?], No {0}; Yes {25} end",
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "cost",
+        "forweapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Long Blade",
+      "type": "Any",
+      "description": "Grants weapon [Effective against Cavalry] and -5 Hit. Disabled on spells and on weapons with Range > 1.",
+      "rank": 1,
+      "price": 550,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": -5,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "effective",
+        "forweapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Magic",
+      "type": "Prompt",
+      "description": "Grants weapon [Deals magic-based damage] and +1 Range.\n\nIf attacking from Range > 1, consumes 2 TP after combat. If the wielder has 0 TP, grants weapon -1 Range. Disabled on spells.",
+      "rank": 3,
+      "price": 1200,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "cost",
+        "forweapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Miniture",
+      "type": "Any",
+      "description": "Mt -2, and Minimum Range -1; Does not deal effective damage against Flying units. Disabled non-Bows and on weapons with Range > 2.",
+      "rank": 2,
+      "price": 680,
+      "mttype": "else",
+      "modifiers": {
+        "mt": -2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "forweapon"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Plasma Infused",
+      "type": "Any",
+      "description": "Grants weapon [Is a lightning spell in addition to other elements]. Disabled non-Reason and on non-fire spells.",
+      "rank": 1,
+      "price": 420,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "forspell"
       ],
       "hidden": true
     },
@@ -16054,142 +16519,9 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "penalty"
+        "penalty",
+        "forweapon"
       ],
-      "hidden": false
-    },
-    {
-      "name": "Brave",
-      "type": "Any",
-      "description": "When initiating combat, wielder makes two consecutive hits per normal attack and consumes 3 TP when dealing damage. Disabled on spells.",
-      "rank": 2,
-      "price": 750,
-      "mttype": "else",
-      "modifiers": {
-        "mt": -3,
-        "prot": 0,
-        "resl": 0,
-        "hit": -15,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 3,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": true
-    },
-    {
-      "name": "Magic",
-      "type": "Prompt",
-      "description": "Grants weapon [Deals magic-based damage] and +1 Range.\n\nIf attacking from Range > 1, consumes 2 TP after combat. If the wielder has 0 TP, grants weapon -1 Range. Disabled on spells.",
-      "rank": 3,
-      "price": 1200,
-      "mttype": "mag",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 1,
-        "tpcost": 2,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [
-        "cost"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Conjure Impaler",
-      "type": "Any",
-      "description": "When weapon is used to cast Summon, creates a Impaler unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
-      "rank": 0,
-      "price": 0,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Can only be applied to spells.",
-      "tags": [
-        "conjure"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Miniture",
-      "type": "Any",
-      "description": "Mt -2, and Minimum Range -1; Does not deal effective damage against Flying units. Disabled non-Bows and on weapons with Range > 2.",
-      "rank": 2,
-      "price": 680,
-      "mttype": "else",
-      "modifiers": {
-        "mt": -2,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": true
-    },
-    {
-      "name": "Umbral",
-      "type": "Any",
-      "description": "When wielder crits while attacking with this weapon, this weapon gains Mt +1 (cumulative) until the end of the battle. This attribute cannot be purchased.",
-      "rank": 0,
-      "price": 0,
-      "mttype": "else",
-      "modifiers": {
-        "mt": "ask [Times Crit?] end",
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 10,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "I think this should add +5 or +10 crit.",
-      "tags": [],
       "hidden": false
     },
     {
@@ -16215,23 +16547,25 @@ const definitions = {
         "sp": 0
       },
       "comment": "Can only be applied to spells.",
-      "tags": [],
+      "tags": [
+        "forspell"
+      ],
       "hidden": false
     },
     {
-      "name": "Blunt",
+      "name": "Refined",
       "type": "Any",
-      "description": "Grants weapon [Effective against Armor Units] and Hit -10. Disabled on spells and on weapons with Range > 1.",
+      "description": "Grants weapon +1 Mt, +10 Hit and +5 Crit. @{tooltip:Disabled:It doesn't say this in Patch #4, but logically, Refined should be able to apply to the upgraded versions of the upgradable Reason spells, right?} on spells except for Fire, Thunder, Wind, Blizzard, Banish, Miasma, Frostbite, Cutting Gale, Bolganone and Static Shock.",
       "rank": 1,
-      "price": 450,
+      "price": 650,
       "mttype": "else",
       "modifiers": {
-        "mt": 0,
+        "mt": 1,
         "prot": 0,
         "resl": 0,
-        "hit": -10,
+        "hit": 10,
         "avo": 0,
-        "crit": 0,
+        "crit": 5,
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
@@ -16242,14 +16576,15 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "forspell",
+        "forweapon"
       ],
       "hidden": false
     },
     {
       "name": "Reverse",
       "type": "Any",
-      "description": "Reverses how the Weapon Triangle and consumes 3 TP when dealing damage",
+      "description": "Reverses how the Weapon Triangle effectiveness and consumes 3 TP when dealing damage",
       "rank": 2,
       "price": 1100,
       "mttype": "else",
@@ -16270,117 +16605,10 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "cost"
-      ],
-      "hidden": true
-    },
-    {
-      "name": "Venin",
-      "type": "Prompt",
-      "description": "On hit, apply @(Condition)[Poison] to target foe. Consumes 3 TP when dealing damage. Disabled while user has 0 TP and on spells.\n\nDecreases Max TP by 2 when placed in the Unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)",
-      "rank": 2,
-      "price": 2800,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 3,
-        "spcost": 0,
-        "tp": -2,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [
         "cost",
-        "penalty"
+        "forweapon",
+        "forspell"
       ],
-      "hidden": false
-    },
-    {
-      "name": "Conjure Banshee",
-      "type": "Any",
-      "description": "When weapon is used to cast Summon, creates a Banshee unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
-      "rank": 0,
-      "price": 0,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Can only be applied to spells.",
-      "tags": [
-        "conjure"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Bookmark",
-      "type": "Any",
-      "description": "While in inventory, wielder has six inventory slots. Disabled on non-spell weapons and on weapons with original Rank > D.",
-      "rank": 0,
-      "price": 2400,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Can only be applied to spells.",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Plasma Infused",
-      "type": "Any",
-      "description": "Grants weapon [Is a lightning spell in addition to other elements]. Disabled non-Reason and on non-fire spells.",
-      "rank": 1,
-      "price": 420,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 1,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 5,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [],
       "hidden": true
     },
     {
@@ -16406,22 +16634,24 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "rework"
+        "rework",
+        "forspell",
+        "forweapon"
       ],
       "hidden": false
     },
     {
-      "name": "Conjure Butcher",
+      "name": "Storm Infused",
       "type": "Any",
-      "description": "When weapon is used to cast Summon, creates a Butcher unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
-      "rank": 0,
-      "price": 0,
+      "description": "Grants weapon [Is a wind spell in addition to other elements]. Disabled non-Reason and on non-lightning spells.",
+      "rank": 1,
+      "price": 420,
       "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": 0,
+        "hit": 10,
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -16432,9 +16662,37 @@ const definitions = {
         "tp": 0,
         "sp": 0
       },
-      "comment": "Can only be applied to spells.",
+      "comment": "Items in modifers should be integers",
       "tags": [
-        "conjure"
+        "forspell"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Umbral",
+      "type": "Any",
+      "description": "When wielder crits while attacking with this weapon, this weapon gains Mt +1 (cumulative) until the end of the battle. This attribute cannot be purchased.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": "ask [Times Crit?] end",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "I think this should add +5 or +10 crit.",
+      "tags": [
+        "forweapon"
       ],
       "hidden": false
     },
@@ -16462,9 +16720,69 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "cost"
+        "cost",
+        "forspell",
+        "forweapon"
       ],
       "hidden": false
+    },
+    {
+      "name": "Venin",
+      "type": "Prompt",
+      "description": "On hit, apply @(Condition)[Poison] to target foe. Consumes 3 TP when dealing damage. Disabled while user has 0 TP and on spells.\n\nDecreases Max TP by 2 when placed in the Unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)",
+      "rank": 2,
+      "price": 2800,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": -2,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "cost",
+        "penalty",
+        "forweapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Vortex Infused",
+      "type": "Any",
+      "description": "Grants weapon [Is a ice spell in addition to other elements]. Disabled non-Reason and on non-wind spells.",
+      "rank": 1,
+      "price": 420,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "forspell"
+      ],
+      "hidden": true
     },
     {
       "name": "Wide Blade",
@@ -16490,279 +16808,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Conjure Slasher",
-      "type": "Any",
-      "description": "When weapon us used to cast Summon creates a Slasher unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
-      "rank": 0,
-      "price": 0,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Can only be applied to spells.",
-      "tags": [
-        "conjure"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Bound",
-      "type": "Any",
-      "description": "Weapon ceases to exist when removed from wielder\u2019s inventory or when wielder is defeated and weapon\u2019s value becomes 0G total. This attribute cannot be purchased.",
-      "rank": 0,
-      "price": 0,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Blessed",
-      "description": "Grants weapon [Effective against Monsters]. While Equipped, wielder regains 10% max HP at the start of their phase. Disabled on spells.",
-      "rank": 2,
-      "price": 750,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Long Blade",
-      "type": "Any",
-      "description": "Grants weapon [Effective against Cavalry] and -5 Hit. Disabled on spells and on weapons with Range > 1.",
-      "rank": 1,
-      "price": 550,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": -5,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [
-        "effective"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Abyss Infused",
-      "type": "Any",
-      "description": "Grants weapon [Is a fire spell in addition to other elements]. Disabled non-Reason and on non-ice spells.",
-      "rank": 1,
-      "price": 420,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 2,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": true
-    },
-    {
-      "name": "Refined",
-      "type": "Any",
-      "description": "Grants weapon +1 Mt, +10 Hit and +5 Crit. @{tooltip:Disabled:It doesn't say this in Patch #4, but logically, Refined should be able to apply to the upgraded versions of the upgradable Reason spells, right?} on spells except for Fire, Thunder, Wind, Blizzard, Banish, Miasma, Frostbite, Cutting Gale, Bolganone and Static Shock.",
-      "rank": 1,
-      "price": 650,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 1,
-        "prot": 0,
-        "resl": 0,
-        "hit": 10,
-        "avo": 0,
-        "crit": 5,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Devil",
-      "description": "Grants weapon +9 Mt. Inflicts 10 damage to wielder and consumes 3 TP after combat. Decreases Max TP by 2 when placed in the Unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)\n\nDisabled while wielder has 0 TP, on spells, and on weapons with Range > 1.",
-      "rank": 1,
-      "price": 330,
-      "mttype": "else",
-      "modifiers": {
-        "mt": "ask [Devil?], No {0}; Yes {9} end",
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 3,
-        "spcost": 0,
-        "tp": -2,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [
-        "penalty",
-        "cost"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Curse of Ashiya",
-      "type": "Swords",
-      "description": "Grants weapon +40 Crit. Inflicts 5 damage to wielder after combat. Decreases Max TP by 4 when placed in the Unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on non-Swords and on weapons with Range > 1.",
-      "rank": 4,
-      "price": 2400,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 40,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": -4,
-        "sp": 0
-      },
-      "comment": "Items in modifers should be integers",
-      "tags": [
-        "weapons",
-        "melee"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Conjure Poltergeist",
-      "type": "Any",
-      "description": "When weapon is used to cast Summon, creates a Poltergeist unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
-      "rank": 0,
-      "price": 0,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Can only be applied to spells.",
-      "tags": [
-        "conjure"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Conjure Lemure",
-      "type": "Any",
-      "description": "When weapon is used to cast Summon, creates a Lemure unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
-      "rank": 0,
-      "price": 0,
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "comment": "Can only be applied to spells.",
-      "tags": [
-        "conjure"
+        "effective",
+        "forweapon"
       ],
       "hidden": false
     }
@@ -19276,7 +19323,34 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [],
-      "hidden": true
+      "hidden": false
+    },
+    {
+      "name": "Custom Axe",
+      "type": "Axes",
+      "description": "No special effects.",
+      "requires": "Axes E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
     },
     {
       "name": "Iron Axe",
@@ -19586,6 +19660,33 @@ const definitions = {
       "tags": [
         "relic"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Custom Lance",
+      "type": "Lances",
+      "description": "No special effects.",
+      "requires": "Lances E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
       "hidden": false
     },
     {
@@ -19981,6 +20082,33 @@ const definitions = {
       "tags": [
         "secret"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Custom Sword",
+      "type": "Swords",
+      "description": "No special effects.",
+      "requires": "Swords E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
       "hidden": false
     },
     {
@@ -20434,6 +20562,35 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Custom Bow",
+      "type": "Bows",
+      "description": "Effective against Flying units.",
+      "requires": "Bows E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill bowhit(0)",
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "effective"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Iron Bow",
       "type": "Bows",
       "description": "Effective against Flying units. Costs 420G to upgrade from Training Bow.",
@@ -20691,6 +20848,33 @@ const definitions = {
         "relic",
         "effective"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Custom Faith",
+      "type": "Faith",
+      "description": "No special effects.",
+      "requires": "Faith E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [],
       "hidden": false
     },
     {
@@ -21162,6 +21346,33 @@ const definitions = {
       "tags": [
         "relic"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Custom Guile",
+      "type": "Guile",
+      "description": "No special effects.",
+      "requires": "Guile E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [],
       "hidden": false
     },
     {
@@ -21683,6 +21894,33 @@ const definitions = {
       "tags": [
         "relic"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Custom Reason",
+      "type": "Reason",
+      "description": "No special effects.",
+      "requires": "Reason E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [],
       "hidden": false
     },
     {
@@ -22270,6 +22508,33 @@ const definitions = {
         "sacred",
         "lightning"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Custom Other",
+      "type": "Other",
+      "rank": "E",
+      "description": "No special effects.",
+      "requires": "Other E",
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
       "hidden": false
     },
     {
@@ -23029,7 +23294,7 @@ const definitions = {
     },
     {
       "name": "Pass",
-      "description": "Allows unit to pass through spaces occupied by foes.",
+      "description": "Allows unit to pass through spaces occupied by foes and certain player created @{tooltip:tiles:Ice Blocks and Barricades}. If condition ends while unit is an a tile that they would not be able to traverse without this condition, unit takes 10 nonlethal damage and is move to the nearest empty tile.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
