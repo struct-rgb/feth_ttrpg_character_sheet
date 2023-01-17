@@ -1,6 +1,6 @@
 {
   "name": "Manifest: Ice",
-  "description": "Ice metamagic; after combat, apply @{const:gbp:[Resl +X]} to this unit or an ally within 2 spaces for one turn, where X = 3 + the spell’'s Mt. @{art::Ice Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{const:gbp:[Resl +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Ice Block} for one turn.",
+  "description": "Ice metamagic; after combat, apply @{const:gbp:[Resl +X]} to this unit or an ally within 2 spaces for one turn, where X = 3 + the spell’'s original Mt. @{art::Ice Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{const:gbp:[Resl +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Ice Block} for one turn.",
   "requires": "Reason D",
   "mttype": "else",
   "modifiers": {

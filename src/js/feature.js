@@ -1602,7 +1602,20 @@ class Attribute extends AttackFeature {
 			),
 			content : [
 
-				element("strong", "Rank Increase"), element("br"),
+				element("strong", "For"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Weapons", false, (feature) => {
+					return feature.tagged("forweapon");
+				}),
+				new Filter.Toggle("Spells", false, (feature) => {
+					return feature.tagged("forspell");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Rank Increase"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 

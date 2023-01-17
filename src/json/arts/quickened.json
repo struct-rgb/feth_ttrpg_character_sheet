@@ -1,7 +1,7 @@
 {
   "name": "Quickened",
   "description": "Cast a healing spell without ending your turn.",
-  "requires": "Faith D",
+  "requires": "Faith C",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
@@ -25,5 +25,5 @@
   ],
   "hidden": false,
   "type": "Faith",
-  "rank": "D"
+  "rank": "C"
 }

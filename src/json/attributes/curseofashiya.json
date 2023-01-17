@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["weapons", "melee"],
+    "tags": ["forweapon", "melee"],
     "hidden": false
 }

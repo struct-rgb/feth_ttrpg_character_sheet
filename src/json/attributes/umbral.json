@@ -23,6 +23,6 @@
     },
 
     "comment": "I think this should add +5 or +10 crit.",
-    "tags": [],
+    "tags": ["forweapon"],
     "hidden": false
 }
