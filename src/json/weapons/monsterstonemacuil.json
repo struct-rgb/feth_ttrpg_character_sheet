@@ -1,0 +1,27 @@
+{
+  "name": "Crest Stone of Macuil",
+  "type": "Other",
+  "description": "This Crest Stone is a magic weapon that harnesses the power of the Wind Caller.",
+  "requires": "Other E",
+  "rank": "E",
+  "price": 0,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 20,
+    "prot": 0,
+    "resl": 0,
+    "hit": 90,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 4,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [],
+  "hidden": false
+}
