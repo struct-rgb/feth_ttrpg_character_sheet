@@ -3266,7 +3266,7 @@ const definitions = {
     },
     {
       "name": "Violent Gust",
-      "description": "When casting a Wind Spell, push your target back 1 space. If that space is occupied, the target is not pushed back and takes damage equal to \u00bd your Mag - the target\u2019s Def. Cutting Gale Variant: The target is moved back 2 additional spaces. If the target happens to collide with another foe or an object with HP, they both take the same damage from the impact.",
+      "description": "When casting a Wind Spell, on hit, push target foe back up to one space after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def. @{weapon::Cutting Gale} @{const:variant:Variant}: on hit, push target foe back up to three spaces after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def. If that space was occupied, occupying unit takes nonlethal damage equal to this unit's Mag - target unit's Def",
       "requires": "Reason D",
       "mttype": "else",
       "modifiers": {
@@ -3605,7 +3605,7 @@ const definitions = {
     },
     {
       "name": "Telekinesis",
-      "description": "When casting a Force Spell, force your target to move up to 2 spaces in any cardinal direction. If that space is occupied, the target is not pushed back and takes damage equal to your Mag - the target\u2019s Def.",
+      "description": "When casting a Force Spell, on hit, move target foe up to 2 spaces in any cardinal direction after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def.",
       "requires": "Reason C",
       "mttype": "else",
       "modifiers": {
@@ -15444,6 +15444,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Wage Mage Gem",
+      "description": "Wielder can pay 5 SP to use the following reaction. Trigger: this unit is targeted for an attack. Apply [Def +X] to this unit until the end of this chain of reactions, where X is half of this unit's Res.",
+      "requires": "None",
+      "price": 0,
+      "type": "Accessory",
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "White Dragon Scarf",
       "description": "No special effect.",
       "requires": "None",
@@ -21833,7 +21867,7 @@ const definitions = {
         "crit": 5,
         "cravo": 0,
         "minrng": 1,
-        "maxrng": 3,
+        "maxrng": 2,
         "tpcost": 6,
         "spcost": 0,
         "tp": 0,

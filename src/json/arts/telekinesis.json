@@ -1,6 +1,6 @@
 {
   "name": "Telekinesis",
-  "description": "When casting a Force Spell, force your target to move up to 2 spaces in any cardinal direction. If that space is occupied, the target is not pushed back and takes damage equal to your Mag - the target’s Def.",
+  "description": "When casting a Force Spell, on hit, move target foe up to 2 spaces in any cardinal direction after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def.",
   "requires": "Reason C",
   "mttype": "else",
   "modifiers": {
