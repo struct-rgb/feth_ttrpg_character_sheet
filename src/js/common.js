@@ -133,7 +133,7 @@ class ConfigEnum {
 class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("2.1.1");
+	static CURRENT = new Version("2.1.2");
 
 	constructor(string) {
 		if (string == null) {
