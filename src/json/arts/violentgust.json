@@ -1,6 +1,6 @@
 {
   "name": "Violent Gust",
-  "description": "When casting a Wind Spell, push your target back 1 space. If that space is occupied, the target is not pushed back and takes damage equal to ½ your Mag - the target’s Def. Cutting Gale Variant: The target is moved back 2 additional spaces. If the target happens to collide with another foe or an object with HP, they both take the same damage from the impact.",
+   "description": "When casting a Wind Spell, on hit, push target foe back up to one space after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def. @{weapon::Cutting Gale} @{const:variant:Variant}: on hit, push target foe back up to three spaces after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def. If that space was occupied, occupying unit takes nonlethal damage equal to this unit's Mag - target unit's Def",
   "requires": "Reason D",
   "mttype": "else",
   "modifiers": {
