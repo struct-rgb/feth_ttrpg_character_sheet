@@ -5304,6 +5304,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Agarthan Technology",
+      "description": "Adjacent foes deal 3 less damage during combat.",
+      "requires": "Agarthan",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 3,
+        "resl": 3,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "chance"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Aegis",
       "description": "Dex% chance to reduce the damage taken from Faith, Guile, Reason, Bows by 50%, and grants use of the @{art::Aegis} tactical art.",
       "requires": "All (Any (Swords B) (Lances B)) (Riding B) (Level 20)",
@@ -11067,7 +11101,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Major Crest of the Beast",
+      "name": "Minor Crest of the Beast",
       "description": "20% chance to grant Mt +5 when using non-spell weapons.",
       "requires": "Innate",
       "modifiers": {
