@@ -3086,8 +3086,8 @@ const definitions = {
       "rank": "A"
     },
     {
-      "name": "Special",
-      "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Cha (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one (including itself).",
+      "name": "Anathema",
+      "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Cha (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one.",
       "requires": "Guile A",
       "mttype": "else",
       "modifiers": {
@@ -3101,7 +3101,7 @@ const definitions = {
         "minrng": 0,
         "maxrng": 0,
         "tiles": 0,
-        "spcost": "1 + ask [Special Modifer?], 1, 2, 3, 4; 5 end",
+        "spcost": "1 + ask [Anathema Modifer?], 1, 2, 3, 4; 5 end",
         "tpcost": 0,
         "sp": 0,
         "tp": 0
