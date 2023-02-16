@@ -1383,11 +1383,11 @@ const Tokens = (function() {
 					break;
 				case "<=":
 					body = `((${vthen})-(${velse})) + ${velse}`;
-					cond = `{{[[${lhs}]],[[(${rhs})-1]]}<[[${rhs}]]}`;
+					cond = `{{[[${lhs}]],[[(${rhs})+1]]}<[[${rhs}]]}`;
 					break;
 				case ">=":
 					body = `((${vthen})-(${velse})) + ${velse}`;
-					cond = `{{[[${lhs}]],[[(${rhs})+1]]}>[[${rhs}]]}`;
+					cond = `{{[[${lhs}]],[[(${rhs})-1]]}>[[${rhs}]]}`;
 					break;
 				case "<":
 					body = `((${velse})-(${vthen})) + ${vthen}`;
