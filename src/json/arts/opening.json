@@ -1,6 +1,6 @@
 {
   "name": "Opening",
-  "description": "Can only be equipped by Armor units. Reaction with trigger: once per phase, foe uses movement to leave the range of this unit’s equipped weapon. Initiate combat against that foe.",
+  "description": "Can only be equipped by Armor units. Reaction with trigger: once per phase, foe uses movement to leave the maximum range of this unit’s equipped weapon. Initiate combat against that foe.",
   "requires": "All (Armor C+) (ClassType Armor)",
   "mttype": "else",
   "modifiers": {
