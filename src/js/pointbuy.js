@@ -110,8 +110,8 @@ const costfunctions = {
 		MAG : (s) => natural(scale(s, "MAG", 4) + Math.max(scale(s, "MAG", 4) - scale(s, "STR", 4), 0)/3),
 		DEX : (s) => natural(scale(s, "DEX", 4) + scale(s, "CHA", 4)/4),
 		SPD : (s) => natural(scale(s, "SPD", 4) + scale(s, "SPD", 4)/3 + Math.max(scale(s, "MAG", 4), scale(s, "STR", 4))/3),
-		DEF : (s) => natural(scale(s, "DEF", 4) + scale(s, "DEF", 4)/3),
-		RES : (s) => natural(scale(s, "RES", 4) + scale(s, "RES", 4)/3),
+		DEF : (s) => natural(scale(s, "DEF", 4) + scale(s, "RES", 4)/3),
+		RES : (s) => natural(scale(s, "RES", 4) + scale(s, "DEF", 4)/3),
 		CHA : (s) => natural(scale(s, "CHA", 4) + scale(s, "DEX", 4)/4),
 	},
 
@@ -121,8 +121,8 @@ const costfunctions = {
 		MAG : (s) => natural(scale(s, "MAG",  4) + Math.max(scale(s, "MAG", 4) - scale(s, "STR", 4), 0)/4),
 		DEX : (s) => natural(scale(s, "DEX",  4) + scale(s, "CHA", 4)/5),
 		SPD : (s) => natural(scale(s, "SPD",  4) + scale(s, "SPD", 4)/4 + Math.max(scale(s, "MAG", 4), scale(s, "STR", 4))/3),
-		DEF : (s) => natural(scale(s, "DEF",  4) + scale(s, "DEF", 4)/4),
-		RES : (s) => natural(scale(s, "RES",  4) + scale(s, "RES", 4)/4),
+		DEF : (s) => natural(scale(s, "DEF",  4) + scale(s, "RES", 4)/4),
+		RES : (s) => natural(scale(s, "RES",  4) + scale(s, "DEF", 4)/4),
 		CHA : (s) => natural(scale(s, "CHA",  4) + scale(s, "DEX", 4)/5),
 	},
 };
