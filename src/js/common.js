@@ -133,7 +133,7 @@ class ConfigEnum {
 class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("2.1.2");
+	static CURRENT = new Version("2.2.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -348,6 +348,7 @@ function uniqueLabel(content, forElement) {
  * @property {number} max   - the max value the cell can hold
  * @property {number} step  - the step for the input field
  * @property {string} root  - root element tag
+ * @property {number} def   - default value, used on creation of not value
  */
 
 function attrinput(textnode, options, oninput) {
@@ -358,7 +359,7 @@ function attrinput(textnode, options, oninput) {
 			type    : "number",
 			min     : assume(options.min, 0),
 			max     : assume(options.max, 100),
-			value   : assume(options.value, 0),
+			value   : assume(options.value, assume(options.def, 0)),
 			step    : assume(options.step, 1),
 			oninput : oninput,
 		},
@@ -385,6 +386,7 @@ class AttributeCell {
 		}));
 
 		this.input = input;
+		this._def  = assume(options.def, 0);
 
 		this.root  = element(
 			assume(options.root, "td"), [
@@ -446,6 +448,18 @@ class AttributeCell {
 		if (this.input.value > value) {
 			this.input.value = value;
 		}
+	}
+
+	get default() {
+		return this._def;
+	}
+
+	set default(value) {
+		this._def = value;
+	}
+
+	clear() {
+		this.value = this.default;
 	}
 
 	_shown() {

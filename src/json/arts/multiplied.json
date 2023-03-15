@@ -1,6 +1,6 @@
 {
-  "name": "Multipled",
-  "description": "When casting Heal, allies adjacent to you are also affected.",
+  "name": "Multiplied",
+  "description": "When casting@{weapon::Heal}, allies adjacent to you are also affected.",
   "requires": "Faith D",
   "mttype": "else",
   "modifiers": {

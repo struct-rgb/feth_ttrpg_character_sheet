@@ -1,20 +1,20 @@
 {
-  "name": "Magic Save",
-  "description": "Can only be equipped by Armor units. Trigger: ally in range targeted with a magic-based attack. Change the target to this unit instead; grants Resl +5 in that combat. Combat occurs as though this unit were located at ally’s tile.",
+  "name": "Strength Save",
+  "description": "Can only be equipped by Armor units. Trigger: ally in range targeted with a strength-based attack. Change the target to this unit instead. Combat occurs as though this unit were located at ally’s tile.",
   "requires": "All (Armor B+) (ClassType Armor)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
-    "resl": 5,
+    "resl": 0,
     "hit": 0,
     "avo": 0,
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
-    "maxrng": 2,
+    "maxrng": 1,
     "tpcost": 0,
-    "spcost": 2
+    "spcost": 3
   },
   "comment": "",
   "tags": [
@@ -25,3 +25,4 @@
   "type": "Armor",
   "rank": "B+"
 }
+
