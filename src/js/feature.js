@@ -8,11 +8,23 @@
 
 /* global ConfigEnum */
 /* global Filter */
+/* global wrap */
+/* global ellipse */
+/* global uniqueLabel */
 
 /* global element */
 /* global tooltip */
 /* global delimit */
 /* global capitalize */
+
+/* TODO this directive is to condense the many
+ * violations that not having this here makes below
+ * I probably don't want to use defintions globally,
+ * but until I decide to chance this, this todo will
+ * remain here to remind me of the various uses below.
+ */
+ 
+/* global definitions */
 
 class ModWidget {
 
@@ -72,6 +84,63 @@ class ModWidget {
 	}
 }
 
+class ReqWidget {
+
+	constructor(predicate, title, body, dead) {
+
+		this.predicate = predicate;
+		this.title     = title;
+
+		this._runtext = document.createTextNode("");
+
+		this._base    = element("span", {
+			class   : ["computed"],
+			content : this._runtext,
+			attrs   : {
+				onpointerenter: (() => {
+					this.refresh();
+				})
+			}
+		});
+
+		if (dead) {
+			this.root = this._base;
+			this.refresh();
+			return;
+		}
+
+		this.root = tooltip(this._base, [
+
+			"Value updates on mouse over.",
+
+			element("br"), element("br"),
+
+			body,
+		]);
+		
+		this.refresh();
+	}
+
+	refresh() {
+		const result       = this.predicate.exec(this.predicate.context).boolean;
+		this._runtext.data = `${this.title}${(result ? "Pass" : "Fail")}`;
+
+		const cl = this._base.classList;
+
+		if (result) {
+			if (cl.contains("computed")) {
+				cl.remove("computed");
+				cl.add("datum");
+			}
+		} else {
+			if(cl.contains("datum")) {
+				cl.remove("datum");
+				cl.add("computed");
+			}
+		}
+	}
+}
+
 /**
  * A class to represent customization features that modify a unit's statistics.
  * Instances of this class are immutable.
@@ -112,14 +181,20 @@ class Feature {
 	/**
 	 * Create a feature from a template object
 	 */
-	constructor(template, compiler) {
+	constructor(template, compiler, predicator) {
 		this.name         = template.name || "";
 		this.description  = template.description || "";
 		this.type         = template.type || "";
 		this.tags         = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
 		this.comment      = template.comment || "No comment.";
 		this.hidden       = template.hidden || false;
-		this.requires     = Polish.compile(template.requires || "");
+		// this.requires     = Polish.compile(template.requires || "");
+		
+		this.requires     = (predicator
+			? predicator.compile(template.requires || "None")
+			: Polish.compile("")
+		);
+
 		this.tags         = new Set(template.tags || []);
 		this.dependancies = new Set();
 
@@ -191,11 +266,11 @@ class Feature {
 	 * Populate the lookup map for this class
 	 * @param {Object} defintions - json game data
 	 */
-	static setLookupByName(iterable, compiler) {
+	static setLookupByName(iterable, compiler, predicator) {
 
 		// initialize the "empty" feature on first invocation
 		if (this.EMPTY === undefined) {
-			this.EMPTY = new this(this.EMPTY_OBJECT, compiler);
+			this.EMPTY = new this(this.EMPTY_OBJECT, compiler, predicator);
 		}
 
 		// initialize the map on first invocation
@@ -206,7 +281,7 @@ class Feature {
 		// clear existing values and refill map
 		this.byName.clear();
 		for (let template of iterable[this.kind]) {
-			const instance = new this(template, compiler);
+			const instance = new this(template, compiler, predicator);
 			this.byName.set(instance.name, instance);
 		}
 	}
@@ -235,6 +310,11 @@ class Feature {
 	 * @return {string} title for this item's {@link CategoryElement}
 	 */
 	title() {
+		
+		if (this.tagged("depricated")) {
+			return `${this.name} (DEPRICATED)`;
+		}
+
 		return this.name;
 	}
 
@@ -296,10 +376,11 @@ class Feature {
 			dead
 				? hitip.dead(this.description)
 				: hitip.link(this.description),
-			this.requires.source ? element("div", [
-				element("strong", "Usage Requirements"),
-				hitip.toul(this.requires.ast, dead),
-			]) : ""
+			// this.requires.source ? element("div", [
+			// 	element("strong", "Usage Requirements"),
+			// 	hitip.toul(this.requires.ast, dead),
+			// ]) : ""
+			this.requires.source ? hitip.toul(this.requires, dead) : ""
 		]);
 	}
 
@@ -382,6 +463,145 @@ class Feature {
 	}
 }
 
+class Preset {
+
+	static kind    = "presets";
+	static DEFAULT = "Blank Sheet";
+
+	constructor(template) {
+		this.name        = template.name         || "";
+		this.description = template.description  || "";
+		this.class       = template.class;
+		this.bases       = template.bases        || {};
+		this.growths     = template.growths      || {};
+		this.tags        = new Set(template.tags || []);
+		this.comment     = template.comment      || "No comment.";
+		this.hidden      = template.hidden       || false;
+
+		if (new.target === Preset) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Populate the lookup map for this class
+	 * @param {Object} defintions - json game data
+	 */
+	static setLookupByName(iterable) {
+
+		// initialize the "empty" feature on first invocation
+		if (this.EMPTY === undefined) {
+			this.EMPTY = new this(Feature.EMPTY_OBJECT);
+		}
+
+		// initialize the map on first invocation
+		if (this.byName === undefined) {
+			this.byName = new Map();
+		}
+
+		// clear existing values and refill map
+		this.byName.clear();
+		for (let template of iterable[this.kind]) {
+			const instance = new this(template);
+			this.byName.set(instance.name, instance);
+		}
+	}
+
+	static get(name, fallback) {
+		return (
+			name && this.byName.has(name)
+				? this.byName.get(name)
+				: this.EMPTY
+		);
+	}
+
+	static has(name) {
+		return name && this.byName.has(name);
+	}
+
+	static select(trigger) {
+
+		trigger = trigger || (() => {});
+
+		return new Filter.Select({
+			value   : this.DEFAULT,
+			trigger : trigger,
+			model   : this,
+			options : definitions[this.kind].map(cls =>
+				element("option", {
+					attrs   : {value: cls.name},
+					content : cls.name,
+				})
+			),
+			content : [
+
+				element("strong", "Class Type"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Armor", false, (feature) => {
+					return feature.tagged("Armor");
+				}),
+				new Filter.Toggle("Cavalry", false, (feature) => {
+					return feature.tagged("Cavalry");
+				}),
+				new Filter.Toggle("Flying", false, (feature) => {
+					return feature.tagged("Flying");
+				}),
+				element("br"),
+				new Filter.Toggle("Infantry", false, (feature) => {
+					return feature.tagged("Infantry");
+				}),
+				new Filter.Toggle("Monster", false, (feature) => {
+					return feature.tagged("Monster");
+				}),
+				new Filter.Toggle("Other", false, (feature) => {
+					return feature.tagged("Monster");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Weapon Type"), element("br"),
+				new Filter.Toggle("Caster", false, (feature) => {
+					return feature.tagged("Caster");
+				}),
+				new Filter.Toggle("Martial", false, (feature) => {
+					return feature.tagged("Martial");
+				}),
+				new Filter.Toggle("Pure", false, (feature) => {
+					const martial = feature.tagged("Martial");
+					const caster  = feature.tagged("Caster");
+					return (
+						(caster && !martial)
+							||	
+						(!caster && martial)
+					);
+				}),
+
+				element("br"), element("strong", "Other"), element("br"),
+
+				new Filter.Toggle("Rework", false, (feature) => {
+					return feature.tagged("rework");
+				}),
+
+				new Filter.Toggle("Hide", true, (feature) => {
+					return !feature.hidden;
+				}),
+			],
+		});
+	}
+
+	/**
+	 * Get the value of this feature's tag for a statistic. A "tag" in this case
+	 * is an optional property that isn't a direct modifier or multiplier
+	 * @param {string} name - the name of the tag
+	 * @returns {boolean} the value of the tag if it exists, null otherwise
+	 */
+	tagged(name) {
+		return this.tags.has(name);
+	}
+}
+
 /**
  * A {@link Feature} subclass that heavily governs attack calculations.
  */
@@ -390,9 +610,9 @@ class AttackFeature extends Feature {
 	/**
 	 * Create an AttackFeature from a template object
 	 */
-	constructor(template, compiler) {
-		super(template, compiler);
-		this.rank    = template.rank   || "";
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
+		this.rank    = template.rank   || "E";
 		this.mttype  = template.mttype || 0;
 		this.price   = template.price  || 0;
 
@@ -476,10 +696,11 @@ class AttackFeature extends Feature {
 			delimit(" ", mods),
 			mods.length ? element("br") : "",
 			hitip[dead ? "dead" : "link"](this.description),
-			this.requires.source ? element("div", [
-				element("strong", "Usage Requirements"),
-				hitip.toul(this.requires.ast, dead),
-			]) : ""
+			// this.requires.source ? element("div", [
+			// 	element("strong", "Usage Requirements"),
+			// 	hitip.toul(this.requires.ast, dead),
+			// ]) : ""
+			this.requires.source ? hitip.toul(this.requires, dead) : ""
 		]);
 	}
 }
@@ -494,9 +715,9 @@ class CombatArt extends AttackFeature {
 
 	static DEFAULT = "";
 
-	constructor(template, compiler) {
-		super(template, compiler);
-		// this.requires = Polish.compile(template.requires || "");
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
+		this.compatible = template.compatible || "False";
 
 		// If this is not a super() call, freeze the object.
 		if (new.target === CombatArt) {
@@ -509,6 +730,11 @@ class CombatArt extends AttackFeature {
 	 * @return {string} title for this combat this's {@link CategoryElement}
 	 */
 	title() {
+
+		if (this.tagged("depricated")) {
+			return `${this.name} (DEPRICATED)`;
+		}
+
 		const kind = (this.tagged("tactical") ? "Tactic" : "Art");
 
 		if (!this.type || !this.rank) {
@@ -516,6 +742,49 @@ class CombatArt extends AttackFeature {
 		}
 
 		return `${this.name} (${kind}: ${this.type} ${this.rank})`;
+	}
+
+	static compatibles(object) {
+		return {
+			"All": (op, ...args) => args.reduce((x, y) => x && y),
+			"Any": (op, ...args) => args.reduce((x, y) => x || y),
+			"Not": (op, arg) => !arg,
+			"Skill": (op, ...args) => {
+				for (let arg of args) {
+					if (object.weapon.type == arg) return true;
+				}
+				return false;
+			},
+			"Name": (op, ...args) => {
+				for (let arg of args) {
+					if (object.weapon.name == arg) return true;
+				}
+				return false;
+			},
+			"Tag": (op, ...args) => {
+				let has = true;
+				for (let arg of args) {
+					has = has && object.weapon.tagged(arg);
+				}
+				return has;
+			},
+			"Element": (op, ...args) => {
+				for (let arg of args) {
+					if (object.weapon.description.includes(arg)) return true;
+				}
+				return false;
+			},
+			"True": (op, ...args) => true,
+			"False": (op, ...args) => false,
+		};
+	}
+
+	compatible(weapon) {
+		if (!(weapon instanceof Weapon)) {
+			throw new Error("expected Weapon as argument");
+		}
+
+
 	}
 
 	static select(trigger) {
@@ -559,6 +828,9 @@ class CombatArt extends AttackFeature {
 					return feature.requires.symbols.has("Bows");
 				}),
 				element("br"),
+				new Filter.Toggle("Brawl", false, (feature) => {
+					return feature.requires.symbols.has("Brawl");
+				}),
 				new Filter.Toggle("Faith", false, (feature) => {
 					return feature.requires.symbols.has("Faith");
 				}),
@@ -718,6 +990,10 @@ class CombatArt extends AttackFeature {
 					return feature.tagged("movement");
 				}),
 
+				new Filter.Toggle("Order", false, (feature) => {
+					return feature.tagged("order");
+				}),
+
 				new Filter.Toggle("Variant", false, (feature) => {
 					return feature.tagged("variant");
 				}),
@@ -765,6 +1041,11 @@ class Weapon extends AttackFeature {
 	 * @return {string} title for this weapon's {@link CategoryElement}
 	 */
 	title() {
+
+		if (this.tagged("depricated")) {
+			return `${this.name} (DEPRICATED)`;
+		}
+
 		return this.name + " (" + this.type + " " + this.rank + ") ";
 	}
 
@@ -804,6 +1085,9 @@ class Weapon extends AttackFeature {
 					return feature.type == "Bows";
 				}),
 				element("br"),
+				new Filter.Toggle("Brawl", false, (feature) => {
+					return feature.type == "Brawl";
+				}),
 				new Filter.Toggle("Faith", false, (feature) => {
 					return feature.type == "Faith";
 				}),
@@ -812,6 +1096,10 @@ class Weapon extends AttackFeature {
 				}),
 				new Filter.Toggle("Guile", false, (feature) => {
 					return feature.type == "Guile";
+				}),
+				element("br"),
+				new Filter.Toggle("Authority", false, (feature) => {
+					return feature.type == "Authority";
 				}),
 				new Filter.Toggle("Other", false, (feature) => {
 					return feature.type == "Other";
@@ -886,6 +1174,66 @@ class Weapon extends AttackFeature {
 					return feature.mttype == "none";
 				}),
 
+				element("br"), element("strong", "Range"), element("br"),
+
+				new Filter.Toggle("1", false, (feature) => {
+					return (
+						feature.modifier("maxrng") == 1
+							&&
+						feature.modifier("minrng") == 1
+					);
+				}),
+
+				new Filter.Toggle("1-2", false, (feature) => {
+					return (
+						feature.modifier("maxrng") == 2
+							&&
+						feature.modifier("minrng") == 1
+					);
+				}),
+
+				new Filter.Toggle("2", false, (feature) => {
+					return (
+						feature.modifier("maxrng") == 2
+							&&
+						feature.modifier("minrng") == 2
+					);
+				}),
+
+				new Filter.Toggle("2-3", false, (feature) => {
+					return (
+						feature.modifier("maxrng") == 3
+							&&
+						feature.modifier("minrng") == 2
+					);
+				}),
+
+				element("br"),
+
+				new Filter.Toggle("1-3", false, (feature) => {
+					return (
+						feature.modifier("maxrng") == 3
+							&&
+						feature.modifier("minrng") == 1
+					);
+				}),
+
+				new Filter.Toggle("1-5", false, (feature) => {
+					return (
+						feature.modifier("maxrng") == 5
+							&&
+						feature.modifier("minrng") == 1
+					);
+				}),
+
+				new Filter.Toggle("Siege", false, (feature) => {
+					return (
+						feature.modifier("maxrng") == 10
+							&&
+						feature.modifier("minrng") == 3
+					);
+				}),
+
 				Filter.Group.END,
 
 				element("br"), element("strong", "Effect"), element("br"),
@@ -922,9 +1270,14 @@ class Weapon extends AttackFeature {
 				new Filter.Toggle("Hero's Relic", false, (feature) => {
 					return feature.tagged("relic");
 				}),
-				element("br"),
 				new Filter.Toggle("Secret", false, (feature) => {
 					return feature.tagged("secret");
+				}),
+
+				element("br"),
+
+				new Filter.Toggle("Template", false, (feature) => {
+					return feature.tagged("template");
 				}),
 				new Filter.Toggle("Purchasable", false, (feature) => {
 					return feature.price > 0;
@@ -959,12 +1312,17 @@ class Class extends Feature {
 	/**
 	 * Create a class from a template object
 	 */
-	constructor(template) {
-		super(template);
+	constructor(template, compiler, predicator) {
+		super(template, null, predicator);
 		this.abilities = template.abilities || [];
 		this.arts      = template.arts || [];
 		this.growths   = Object.freeze(template.growths || {});
 		this.tier      = template.tier    || "Starting";
+
+		this.default_base    = template.default_base;
+		this.default_preset  = template.default_preset;
+		this.default_mainarm = template.default_mainarm;
+		this.default_sidearm = template.default_sidearm;
 
 		this.mount = (template.mount
 			? ("name" in template.mount
@@ -976,6 +1334,52 @@ class Class extends Feature {
 		if (new.target === Class) {
 			Object.freeze(this);
 		}
+	}
+
+	modifierForUI(stat, sign=false, dead=false) {
+
+		/* test explicitly for membership */
+		if (!(stat in this.modifiers)) return 0;
+
+		/* then handle other number cases*/
+		const value = (
+			this.modifier(stat)
+				+
+			(this.hasMount() && stat in this.mount.modifiers
+				? this.mount.modifiers[stat]
+				: 0)
+		);
+
+		/* we don't care to display these */
+		if (value == 0) return 0;
+
+		return element("span", {
+			class   : ["computed"],
+			content : [
+				(sign && value >= 0) ? "+" : "",
+				String(value)
+			]
+		});
+	}
+
+	growthForUI(stat, sign=false, dead=false) {
+
+		/* test explicitly for membership */
+		if (!(stat in this.growths)) return 0;
+
+		/* then handle other number cases*/
+		const value = this.growth(stat);
+
+		/* we don't care to display these */
+		// if (value == 0) return 0;
+
+		return element("span", {
+			class   : ["computed"],
+			content : [
+				(sign && value >= 0) ? "+" : "",
+				String(value), "%"
+			]
+		});
 	}
 
 	/**
@@ -993,6 +1397,54 @@ class Class extends Feature {
 	 */
 	hasMount() {
 		return Boolean(this.mount);
+	}
+
+	/**
+	 * Generate a feature's {@link CategoryElement} description
+	 * @return {string} description for this item's {@link CategoryElement}
+	 */
+	body(dead=false, table=true, center=true) {
+
+		const rows = (
+			["hp", "spd", "str", "mag", "dex", "cha", "def", "res"]
+				.map(key => 
+					[
+						element("td", key.toUpperCase()),
+						element("td", this.modifierForUI(key, false, dead)),
+						element("td", [
+							element("span", "(", "punctuation"),
+							this.growthForUI(key, false, dead),
+							element("span", ")", "punctuation"),
+						]),
+					]
+				)
+				.chunk(2)
+				.map(array =>
+					element("tr", array.flatten())
+				)
+		);
+
+		rows.extend(
+			element("td"),
+			element("td"),
+			element("td", "MOV"),
+			element("td", this.modifierForUI("mov", false, dead)),
+			element("td"),
+			element("td"),
+		);
+
+		return element("span", [
+			element("em",
+				`${this.tier}, ${Array.isArray(this.type) ? this.type.join(", ") : this.type}`
+			), element("br"),
+			dead
+				? hitip.dead(this.description)
+				: hitip.link(this.description),
+			table
+				? element("table", element("tbody", rows), center ? "center-table" : undefined)
+				: "",
+			this.requires.source ? hitip.toul(this.requires, dead) : ""
+		]);
 	}
 
 	static select(trigger) {
@@ -1087,12 +1539,299 @@ class Ability extends Feature {
 
 	static kind = "abilities";
 
-	constructor(template, compiler) {
-		super(template, compiler);
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
 		this.weapon = template.weapon || "";
 
 		if (new.target === Ability) {
 			Object.freeze(this);
+		}
+	}
+
+	static select(trigger) {
+
+		trigger = trigger || (() => {});
+
+		return new Filter.Select({
+			value   : this.DEFAULT,
+			trigger : trigger,
+			model   : this,
+			options : definitions[this.kind].map(cls => 
+				element("option", {
+					attrs   : {value: cls.name},
+					content : cls.name,
+				})
+			),
+			content : [
+
+				element("strong", "Source"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Personal", false, (feature) => {
+					return feature.tagged("personal");
+				}),
+				new Filter.Toggle("Class", false, (feature) => {
+					return feature.requires.symbols.has("Class");
+				}),
+				new Filter.Toggle("Skills", false, (feature) => {
+					return (
+						!feature.requires.symbols.has("Class")
+							&&
+						!feature.tagged("personal")
+					);
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Skill"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Axes", false, (feature) => {
+					return feature.requires.symbols.has("Axes");
+				}),
+				new Filter.Toggle("Swords", false, (feature) => {
+					return feature.requires.symbols.has("Swords");
+				}),
+				new Filter.Toggle("Lances", false, (feature) => {
+					return feature.requires.symbols.has("Lances");
+				}),
+				new Filter.Toggle("Bows", false, (feature) => {
+					return feature.requires.symbols.has("Bows");
+				}),
+				element("br"),
+				new Filter.Toggle("Faith", false, (feature) => {
+					return feature.requires.symbols.has("Faith");
+				}),
+				new Filter.Toggle("Reason", false, (feature) => {
+					return feature.requires.symbols.has("Reason");
+				}),
+				new Filter.Toggle("Guile", false, (feature) => {
+					return feature.requires.symbols.has("Guile");
+				}),
+				element("br"),
+				new Filter.Toggle("Armor", false, (feature) => {
+					return feature.requires.symbols.has("Armor");
+				}),
+				new Filter.Toggle("Riding", false, (feature) => {
+					return feature.requires.symbols.has("Riding");
+				}),
+				new Filter.Toggle("Flying", false, (feature) => {
+					return feature.requires.symbols.has("Flying");
+				}),
+				new Filter.Toggle("Authority", false, (feature) => {
+					return feature.requires.symbols.has("Authority");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Rank"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("S", false, (feature) => {
+					return feature.requires.symbols.has("S");
+				}),
+				new Filter.Toggle("A", false, (feature) => {
+					return feature.requires.symbols.has("A");
+				}),
+				new Filter.Toggle("B", false, (feature) => {
+					return feature.requires.symbols.has("B");
+				}),
+				new Filter.Toggle("C", false, (feature) => {
+					return feature.requires.symbols.has("C");
+				}),
+				new Filter.Toggle("D", false, (feature) => {
+					return feature.requires.symbols.has("D");
+				}),
+				new Filter.Toggle("E", false, (feature) => {
+					return feature.requires.symbols.has("E");
+				}),
+				element("br"),
+				new Filter.Toggle("S+", false, (feature) => {
+					return feature.requires.symbols.has("S+");
+				}),
+				new Filter.Toggle("A+", false, (feature) => {
+					return feature.requires.symbols.has("A+");
+				}),
+				new Filter.Toggle("B+", false, (feature) => {
+					return feature.requires.symbols.has("B+");
+				}),
+				new Filter.Toggle("C+", false, (feature) => {
+					return feature.requires.symbols.has("C+");
+				}),
+				new Filter.Toggle("D+", false, (feature) => {
+					return feature.requires.symbols.has("D+");
+				}),
+				new Filter.Toggle("E+", false, (feature) => {
+					return feature.requires.symbols.has("E+");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Level"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("None", false, (feature) => {
+					return !feature.requires.symbols.has("Level");
+				}),
+				new Filter.Toggle("5", false, (feature) => {
+					return feature.requires.symbols.has("5");
+				}),
+				new Filter.Toggle("10", false, (feature) => {
+					return feature.requires.symbols.has("10");
+				}),
+				new Filter.Toggle("15", false, (feature) => {
+					return feature.requires.symbols.has("15");
+				}),
+				new Filter.Toggle("20", false, (feature) => {
+					return feature.requires.symbols.has("20");
+				}),
+				new Filter.Toggle("25", false, (feature) => {
+					return feature.requires.symbols.has("25");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Family"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Advantage", false, (feature) => {
+					return feature.tagged("advantage");
+				}),
+				new Filter.Toggle("Battalion", false, (feature) => {
+					return feature.tagged("battalion");
+				}),
+				new Filter.Toggle("Blow", false, (feature) => {
+					return feature.tagged("blow");
+				}),
+				new Filter.Toggle("Breaker", false, (feature) => {
+					return feature.tagged("breaker");
+				}),
+				new Filter.Toggle("Consumption", false, (feature) => {
+					return feature.tagged("consumption");
+				}),
+				new Filter.Toggle("Defiant", false, (feature) => {
+					return feature.tagged("defiant");
+				}),
+				new Filter.Toggle("Faire", false, (feature) => {
+					return feature.tagged("faire");
+				}),
+				new Filter.Toggle("\"Flight\"-like", false, (feature) => {
+					return feature.tagged("flight");
+				}),
+				new Filter.Toggle("Lull", false, (feature) => {
+					return feature.tagged("lull");
+				}),
+				new Filter.Toggle("Prowess", false, (feature) => {
+					return feature.tagged("prowess");
+				}),
+				new Filter.Toggle("Seal", false, (feature) => {
+					return feature.tagged("seal");
+				}),
+				new Filter.Toggle("Spirit", false, (feature) => {
+					return feature.tagged("spirit");
+				}),
+				new Filter.Toggle("Stance", false, (feature) => {
+					return feature.tagged("stance");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Effect"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Chance", false, (feature) => {
+					return feature.tagged("chance");
+				}),
+				new Filter.Toggle("Static", false, (feature) => {
+					return feature.tagged("static");
+				}),
+
+				element("br"),
+
+				new Filter.Toggle("In Combat", false, (feature) => {
+					return feature.tagged("in combat");
+				}),
+				new Filter.Toggle("Barrier", false, (feature) => {
+					return feature.requires.symbols.has("Barrier");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Crests"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Major", false, (feature) => {
+					return feature.tagged("major");
+				}),
+				new Filter.Toggle("Minor", false, (feature) => {
+					return feature.tagged("minor");
+				}),
+
+				Filter.Group.END,
+
+				new Filter.Toggle("None", true, (feature) => {
+					return !feature.tagged("crest");
+				}),
+
+				element("br"), element("strong", "Other"), element("br"),
+
+				new Filter.Toggle("Rework", false, (feature) => {
+					return feature.tagged("rework");
+				}),
+
+				new Filter.Toggle("Hide", true, (feature) => {
+					return !feature.hidden;
+				}),
+			],
+		});
+	}
+}
+
+
+class _BattalionAbility extends Feature {
+
+	static kind = "babil";
+	static DEFAULT = "";
+
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
+
+		if (new.target === _BattalionAbility) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Populate the lookup map for this class
+	 * @param {Object} defintions - json game data
+	 */
+	static setLookupByName(iterable, compiler, predicator) {
+
+		// initialize the "empty" feature on first invocation
+		if (this.EMPTY === undefined) {
+			this.EMPTY = new this(this.EMPTY_OBJECT, compiler, predicator);
+		}
+
+		// initialize the map on first invocation
+		if (this.byName === undefined) {
+			this.byName = new Map();
+		}
+
+		// clear existing values and refill map
+		this.byName.clear();
+		for (let template of iterable[this.kind]) {
+			for (let i = 0; i < template.tiers.length; ++i) {
+				/* todo fix this function */
+			}
+			const instance = new this(template, compiler, predicator);
+			this.byName.set(instance.name, instance);
 		}
 	}
 
@@ -1350,8 +2089,8 @@ class Equipment extends Feature {
 	static kind = "equipment";
 	static DEFAULT = "";
 
-	constructor(template, compiler) {
-		super(template, compiler);
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
 		this.price = template.price || "";
 
 		if (new.target === Equipment) {
@@ -1436,8 +2175,8 @@ class Tile extends AttackFeature {
 	static kind = "tiles";
 	static DEFAULT = "";
 
-	constructor(template, compiler) {
-		super(template, compiler);
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
 		this.stats = template.stats || {};
 
 		if (new.target === Tile) {
@@ -1446,6 +2185,11 @@ class Tile extends AttackFeature {
 	}
 
 	title() {
+		
+		if (this.tagged("depricated")) {
+			return `${this.name} (DEPRICATED)`;
+		}
+
 		return this.name;
 	}
 
@@ -1509,63 +2253,138 @@ class Tile extends AttackFeature {
 	}
 }
 
+class Adjutant extends Feature {
 
-// class Gambit extends AttackFeature {
+	static kind    = "adjutants";
+	static DEFAULT = "No Adjutant";
 
-// 	static kind = "gambit";
+	constructor(template) {
+		super(template);
 
-// 	constructor(template) {
-// 		super(template);
+		this.type = "Adjutant";
 
-// 		this.type    = "Gambit";
-// 		this.shape   = template.shape || "1x1 Square.";
-// 		this.magical = template.magical || false;
+		if (new.target === Adjutant) {
+			Object.freeze(this);
+		}
+	}
 
-// 		if (new.target === Battalion) {
-// 			Object.freeze(this);
-// 		}
-// 	}
+	static select(trigger) {
 
-// }
+		trigger = trigger || (() => {});
 
-// class Battalion extends Feature {
+		return new Filter.Select({
+			value   : this.DEFAULT,
+			trigger : trigger,
+			model   : this,
+			options : definitions[this.kind].map(cls => 
+				element("option", {
+					attrs   : {value: cls.name},
+					content : cls.name,
+				})
+			),
+			content : [
 
-// 	static kind = "battalions";
+				element("strong", "Reaction"), element("br"),
 
-// 	constructor(template) {
-// 		super(template);
+				new Filter.Group(Filter.Group.OR, false),
 
-// 		this.rarity = template.rarity || "Bronze";
-// 		this.price  = template.price  || 0;
+				new Filter.Toggle("Follow-Up (Magic)", false, (feature) => {
+					return feature.reaction == "Follow-Up (Magic)";
+				}),
+				new Filter.Toggle("Follow-Up (Strength)", false, (feature) => {
+					return feature.reaction == "Follow-Up (Strength)";
+				}),
+				new Filter.Toggle("Follow-Up (Either)", false, (feature) => {
+					return feature.reaction == "Follow-Up (Either)";
+				}),
+				new Filter.Toggle("Guard", false, (feature) => {
+					return feature.reaction == "Guard";
+				}),
+				new Filter.Toggle("Heal", false, (feature) => {
+					return feature.reaction == "Heal";
+				}),
 
-// 		this.gambit = template.gambit ? new Gambit(template.gambit) : null;
+				Filter.Group.END,
 
-// 		if (new.target === Battalion) {
-// 			Object.freeze(this);
-// 		}
-// 	}
+				element("br"), element("strong", "Other"), element("br"),
 
-// 	body() {
+				new Filter.Toggle("Rework", false, (feature) => {
+					return feature.tagged("rework");
+				}),
+
+				new Filter.Toggle("Hide", true, (feature) => {
+					return !feature.hidden;
+				}),
+			],
+		});
+	}
+}
+
+class Gambit extends AttackFeature {
+
+	static kind = "gambit";
+
+	constructor(template) {
+		super(template);
+
+		this.type    = "Gambit";
+		this.shape   = template.shape || "1x1 Square.";
+
+		if (new.target === Battalion) {
+			Object.freeze(this);
+		}
+	}
+
+}
+
+class Battalion extends Feature {
+
+	static kind    = "battalions";
+	static DEFAULT = "Alone";
+
+	constructor(template) {
+		super(template);
+
+		this.price   = template.price  || 0;
+		this.rank    = template.rank   || "E";
+		this.growths = Object.freeze(template.growths || {});
+		this.gambit  = template.gambit ? new Gambit(template.gambit) : null;
+
+		if (new.target === Battalion) {
+			Object.freeze(this);
+		}
+	}
+
+	/**
+	 * Get the value of this feature's growth modifier for a statistic
+	 * @param {string} stat - name of the stat to get the growth modifier for
+	 * @returns {number} the growth modifier for the stat, or 0 if none exists
+	 */
+	growth(stat) {
+		return this.growths[stat] || 0;
+	}
+
+	body() {
 		
-// 		const b = this;
-// 		const g = this.gambit;
+		const b = this;
+		const g = this.gambit;
 
-// 		return (
-// 			`${b.rarity} Battalion [${b.type}]<br />`
-// 				+ `(${b.requires} - Costs ${b.price})\n`
-// 				+ `${g.title()}:\n${g.body()}`
-// 		);
-// 	}
+		return (
+			`${b.rarity} Battalion [${b.type}]<br />`
+				+ `(${b.requires} - Costs ${b.price})\n`
+				+ `${g.title()}:\n${g.body()}`
+		);
+	}
 
-// }
+}
 
 class Attribute extends AttackFeature {
 
 	static kind = "attributes";
 	static DEFAULT = "";
 
-	constructor(template, compiler) {
-		super(template, compiler);
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
 
 		this.price  = template.price || 0;
 		this.rank   = template.rank  || 0;
@@ -1580,6 +2399,11 @@ class Attribute extends AttackFeature {
 	 * @return {string} title for this item's {@link CategoryElement}
 	 */
 	title() {
+
+		if (this.tagged("depricated")) {
+			return `${this.name} (DEPRICATED)`;
+		}
+
 		return this.name + " (Rank +" + this.rank + ") ";
 	}
 
@@ -1840,6 +2664,7 @@ const LOOKUP = new Map([
 	[ "attribute" , Attribute ],
 	[ "tile"      , Tile      ],
 	[ "equipment" , Equipment ],
+	[ "class"     , Class     ],
 
 	["", {
 		get: function() {
@@ -1848,6 +2673,19 @@ const LOOKUP = new Map([
 
 		body: function() {
 			return "This feature.";
+		},
+
+		select: function(trigger) {
+
+			trigger = trigger || (() => {});
+
+			return new Filter.Select({
+				value   : this.DEFAULT,
+				trigger : trigger,
+				model   : this,
+				options : [],
+				content : [],
+			});
 		}
 	}],
 
@@ -1882,6 +2720,28 @@ const LOOKUP = new Map([
 			}
 
 			return this.features.get(link);
+		},
+
+		DEFAULT: "gbp",
+
+		name: "Premade Tooltip",
+
+		select: function(trigger) {
+
+			trigger = trigger || (() => {});
+
+			return new Filter.Select({
+				value   : this.DEFAULT,
+				trigger : trigger,
+				model   : this,
+				options : Object.keys(definitions.tooltips).map(cls => 
+					element("option", {
+						attrs   : {value: cls},
+						content : cls,
+					})
+				),
+				content : [],
+			});
 		}
 	}],
 
@@ -1895,6 +2755,63 @@ const LOOKUP = new Map([
 
 		body: function() {
 			return "If you see this, an error has occured!";
+		},
+
+		name: "Custom Tooltip",
+
+		select: function(trigger) {
+			trigger = trigger || (() => {});
+
+			const text = element("input", {
+				class : ["simple-border"],
+				attrs : {
+					"placeholder" : "text",
+					"type"        : "text",
+				}
+			});
+
+			/* this mimics a Filter.Select object */
+			return {
+				_select : text,
+				root    : element("span", [
+					tooltip(text, []),
+				]),
+			};
+		}
+	}],
+
+	["style", {
+
+		text: "",
+
+		get: function() {
+			return this;
+		},
+
+		body: function() {
+			return "If you see this, an error has occured!";
+		},
+
+		name: "Text Style",
+
+		select: function(trigger) {
+
+			trigger = trigger || (() => {});
+
+			const styles = ["bold", "italic", "underline"];
+
+			return new Filter.Select({
+				value   : this.DEFAULT,
+				trigger : trigger,
+				model   : this,
+				options : styles.map(cls => 
+					element("option", {
+						attrs   : {value: cls},
+						content : cls,
+					})
+				),
+				content : [],
+			});
 		}
 
 	}]
@@ -1908,6 +2825,26 @@ function linkfn(table, link, text) {
 		return tooltip(element("span", link, "datum"), text);
 	}
 
+	/* special behavior for styles */
+	if (table == "style") {
+
+		const classes = link.split(LINK_DELIMITER);
+
+		if (classes.length == 0) {
+			console.error("style link is broken");
+			return element("div", [
+				element("strong", "Broken style.", "computed"),
+				element("br"),
+			]);
+		}
+
+		return element("span", {
+			class   : link.split(LINK_DELIMITER),
+			content : text || " ",
+		});
+	}
+
+	/* otherwise do a lookup */
 	const feature  = LOOKUP.get(table);
 
 	if (feature === undefined) {
@@ -1935,6 +2872,16 @@ function linkfn(table, link, text) {
 			continue;
 		}
 
+		if (instance instanceof Feature && instance.tagged("depricated")) {
+			console.error(`feature '${link || text}' is depricated`);
+			con.push(element("div", [
+				element("strong", `Depricated feature link: ${key}`, "computed"),
+				element("br"),
+			]));
+			broken = true;
+			continue;
+		}
+
 		con.push(
 			element("div", [
 				element("strong", instance.name), element("br"),
@@ -1943,8 +2890,8 @@ function linkfn(table, link, text) {
 		);
 	}
 
-	const base = element("span", text, broken ? "computed" : "datum")
-	return tooltip(base, delimit(element("hr"), con));
+	const base = element("span", text, broken ? "computed" : "datum");
+	return tooltip(base, delimit(() => element("hr"), con));
 }
 
 const link = parser(linkfn, (merge) => element("span", merge));
@@ -1986,7 +2933,12 @@ function textfn(table, link, text, userdata) {
 		if (Object.is(instance, feature.EMPTY)) {
 			console.error(`feature link '${key}' broken`);
 			return text;
-		}	
+		}
+
+		if (instance instanceof Feature && instance.tagged("depricated")) {
+			console.error(`feature '${key}' is depricated`);
+			return text;
+		}
 
 		userdata.set.add(key);
 		const body = textp(instance.description, userdata);
@@ -2027,28 +2979,31 @@ function textwrapper(feature, set, join=true, named=false) {
 	return join ? entries.join("\n") : entries;
 }
 
+const LISTPRED = new Set(["All", "Any"]);
+
+function andblurb() {
+	return link(LOOKUP.get("const").get("all").text);
+}
+
 function totl(node, top=true) {
 
 	const fn   = node[0];
 	const args = node.slice(1);
 
-	if (top) switch (fn) {
-
-	case "All":
-		return totl(node, false);
-
-	case "Any":
-		return args.map(e => totl(e, true)).join("\nor\n");
-
-	default:
-		return `  * ${totl(node, false)}`;
-
+	if (top) {
+		const list = LISTPRED.has(fn);
+		return wrap(
+			`Requires ${fn}\n`,
+			list
+				? args.map(e => `  * ${totl(e, false)}`).join("\n")
+				: `  * ${totl(node, false)}`
+		);
 	}
 
 	switch (fn) {
 
 	case "All":
-		return args.map(e => `  * ${totl(e, false)}`).join("\n");
+		return args.map(e => totl(e, false)).join(" and ");
 
 	case "Any":
 		return args.map(e => totl(e, false)).join(" or ");
@@ -2062,6 +3017,12 @@ function totl(node, top=true) {
 	case "Crest":
 		return `Crest of ${args[0]}`;
 
+	case "ClassType":
+		return `${args[0]} Class`;
+
+	case "Class":
+		return `Class is ${args[0]}`;
+
 	case "Weapon":
 	case "Equipment":
 		return `${args[0]} equipped`;
@@ -2073,27 +3034,37 @@ function totl(node, top=true) {
 
 function toul(node, dead=false, top=true) {
 
-	const fn = node[0];
-
 	if (top) {
 
-		const elements = toul(node, dead, false);
+		const ast = node.ast;
 
-		if (fn == "All") {
-			return elements;
-		}
+		const title = element("span", [
+			element("strong", `Requires ${ast[0]} `),
+			element("span", [
+				element("strong", "("),
+				(new ReqWidget(node, "", andblurb(), dead)).root,
+				element("strong", ")"),
+			])
+		]);
 
-		/* we want the top level to be inside of a  ul */
-		return element("ul", element("li", elements), "compact-list");
+		const body  = element("ul", {
+			class    : ["compact-list"],
+			content : LISTPRED.has(ast[0])
+				? ast.slice(1).map(e => element("li", toul(e, dead, false)))
+				: element("li", toul(ast, dead, false)),
+		});
+
+		return element("div", [title, body]);
 	}
 
+	const fn   = node[0];
 	const args = node.slice(1);
 
 	switch (fn) {
 
 	case "All":
-		return element("ul",
-			args.map(e => element("li", toul(e, dead, false))), "compact-list"
+		return delimit(" and ",
+			args.map(e => toul(e, dead, false))
 		);
 
 	case "Any":
@@ -2109,8 +3080,23 @@ function toul(node, dead=false, top=true) {
 	case "Permission":
 		return element("strong", fn);
 
-	case "Crest":
-		return element("strong", ["Crest of ", args[0]]);
+	case "Crest": {
+		const name  = `Crest of ${args[0]}`;
+		const major = `Major ${name}`;
+		const minor = `Minor ${name}`;
+		const func  = (dead ? deadfn : linkfn);
+		return element("span", 
+			element("strong", func("ability", `${major}||${minor}`, name))
+		);
+	}
+
+	case "ClassType":
+		return element("strong", [args[0], " Class"]);
+
+	case "Class":
+		return args.length >= 1 
+			? element("strong", ["Class is ", args[0]])
+			: element("strong", "Class");
 
 	case "Weapon":
 		return element("span",
@@ -2127,12 +3113,228 @@ function toul(node, dead=false, top=true) {
 	}
 }
 
+class TagAdder {
+
+	static TIPS = {
+
+		combo: element("div", [
+			element("br"),
+			element("span", wrap(
+				"Tip: you can combine multiple tooltips from the same ",
+				"namespace into one by typing || between the names ",
+				"in the center field."
+			)),
+			element("br"), element("br"),
+			element("span", wrap(
+				"@{art:Shelter R||Shelter F:Shelter}"
+			)),
+		]),
+
+		custom: element("div", [
+			element("br"),
+			element("span", wrap(
+				"Tip: the \"tooltip\" namespace lets you make custom tooltips. ",
+				"Unlike other namespaces, the display text goes in the center ",
+				"field and the tooltip text in the rightmost.",
+			)),
+			element("br"), element("br"),
+			element("span", wrap(
+				"@{tooltip:display text:tooltip text}"
+			))
+		]),
+
+		const: element("div", [
+			element("br"),
+			element("span", wrap(
+				"Tip: the \"const\" namespace contains commonly used ",
+				"prewritten tooltips."
+			)),
+			element("br"), element("br"),
+			element("span", wrap(
+				"gbp: shown for status conditions that apply a generic ",
+				"statistic bonus or penalty, i.e. [Stat +X] or [Stat -X]."
+			)),
+			element("br"), element("br"),
+			element("span", wrap(
+				"variant: explanation for how reason metamagic ",
+				"variants work (special effect with specific spells)"
+			)),
+			element("br"), element("br"),
+			element("span", wrap(
+				"ap: attack plurality table"
+			)),
+		]),
+
+		style: element("div", [
+			element("br"),
+			element("span", wrap(
+				"Tip: you can apply multiple styles at once by typing || ",
+				"between the names in the center field.",
+			)),
+			element("br"), element("br"),
+			element("span", wrap(
+				"@{style:bold||italic:extra emphasis}"
+			)),
+		]),
+	};
+
+	constructor(target, callback) {
+
+		this.target   = target;
+		this.callback = callback; 
+
+		class Thorax {
+			constructor(feature) {
+				// debugger
+				this.textnode = document.createTextNode(feature.name);
+				this.select   = feature.select(() => {
+					this.textnode.data = ellipse(this.select._select.value, 10);
+				});
+
+				this.root = this.select.root;
+
+				const div      = this.select.root.firstChild;
+				const dropdown = div.firstChild;
+				dropdown.remove();
+
+				div.firstChild.prepend(element("br"));
+				div.firstChild.prepend(dropdown);
+				div.firstChild.prepend(element("br"));
+				div.firstChild.prepend(element("strong", feature.name));
+				div.prepend(element("span", this.textnode, "datum"));				
+			}
+
+			get value() {
+				return this.select._select.value;
+			}
+		}
+
+		this._tags = element("select", {
+			class   : ["simple-border", "selectable"],
+			content : (
+				Array.from(LOOKUP.keys())
+					.filter(n => n != "")
+					.map(n =>
+						element("option", {attrs: {value: n}, content: n}))
+			),
+			attrs   : {
+				onchange: (() => {
+					const data        = this._tags.value;
+					this._tag_tn.data = data ? data : "\xA0\xA0\xA0";
+					this._span.firstChild.remove();
+					this._span.appendChild(this._map.get(data).root);
+					this._tips.firstChild.remove();
+					this._tips.appendChild(TagAdder.TIPS[
+						data == "tooltip" ? "custom" :
+						data == "style"   ? "style"  :
+						data == "const"   ? "const"  : "combo"
+					]);
+				})
+			}
+		});
+
+		const exclude = new Set([""]);
+
+		this._map = new Map(
+			Array.from(LOOKUP.entries())
+				.filter(e => !exclude.has(e[0]))
+				.map(e => { e[1] = new Thorax(e[1]); return e; })
+		);
+
+		this._span = element("span", this._map.get("weapon").root);
+
+		this._tool = element("input", {
+			class : ["simple-border", "selectable", "adder-field"],
+			attrs : {
+				type: "text",
+			}
+		});
+
+		this._text = element("textarea", {
+			class : ["simple-border", "selectable", "adder-field"],
+			attrs : {
+				placeholder : "Enter custom display text here...",
+				onchange    : (() => {
+					this._txt_tn.data = ellipse(this._text.value, 6);
+				}),
+			}
+		});
+
+		this._tips = element("div", TagAdder.TIPS["combo"]);
+
+		this._tag_tn = document.createTextNode("namespace");
+		this._txt_tn = document.createTextNode("...");
+
+		this.root = element("span", [
+			tooltip(
+				element("input", {
+					class  : ["simple-border"],
+					attrs  : {
+						value   : "Add",
+						type    : "button",
+						onclick : (() => {
+							this.insert(this.text());
+							this.callback.call();
+						})
+					},
+				}),
+				wrap(
+					"Add your own tooltips to your custom weapon description; ",
+					"mouse over the highlighted text to the right to select ",
+					"a feature to add."
+				)
+			),
+			element("span", [
+				"@{",
+				tooltip(element("span", this._tag_tn, "datum"), [
+					uniqueLabel("Choose a namespace:", this._tags), element("br"),
+					this._tags, this._tips
+				]),
+				":",
+				this._span,
+				":",
+				tooltip(element("span", this._txt_tn, "datum"), [
+					uniqueLabel("Enter display text:", this._text), element("br"),
+					this._text,
+					element("br"),
+					element("span", wrap(
+						"Tip: if left empty, display text will be the name of ",
+						"the feature selected in the center field.",
+					))
+				]),
+				"}"
+			])
+		]);
+	}
+
+	text() {
+		const namespace = this._tags.value;
+		const link      = this._map.get(namespace).value;
+		const text      = this._text.value || link;
+		return `@{${namespace}:${link}:${text}}`;
+	}
+
+	insert(text) {
+		const start  = this.target.selectionStart;
+		const end    = this.target.selectionEnd;
+		const old    = this.target.value;
+		this.target.value = (
+			`${old.substring(0, start)}${text}${old.substring(end)}`
+		);
+
+		this.target.setSelectionRange(start + text.length, end + text.length);
+		this.target.focus();
+	}
+
+}
+
 return {
 	link: link,
 	dead: dead,
 	toul: toul,
 	totl: totl,
 	text: textwrapper,
+	Adder: TagAdder,
 };
 
 })();
@@ -2145,4 +3347,8 @@ return {
 /* exported Attribute */
 /* exported Condition */
 /* exported Tile */
+/* exported Battalion */
+/* exported Gambit */
+/* exported Adjutant */
+/* exported Preset */
 /* exported hitip */

@@ -2,9 +2,9 @@
   "name": "Revival",
   "description": "This Unit can bring back an adjacent ally who has fallen in battle. They are revived with half of their HP and cannot act during the current Player Phase. This ability can only be used once per ally and is treated as a healing spell for the purposes of Healing Metamagic.",
   "requires": "Faith A",
-  "mttype": "else",
+  "mttype": "mag",
   "modifiers": {
-    "mt": 0,
+    "mt": 8,
     "prot": 0,
     "resl": 0,
     "hit": 0,
@@ -21,6 +21,9 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
+    "no hit",
+    "no crit",
+    "no stats",
     "tactical",
     "rework"
   ],

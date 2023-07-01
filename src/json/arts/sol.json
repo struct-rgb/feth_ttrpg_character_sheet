@@ -1,7 +1,8 @@
 {
   "name": "Sol",
   "description": "The user regains HP equal to the damage dealt.",
-  "requires": "All (Swords B+) (Bows B+) (Level 25)",
+  "requires": "All (Swords B+) (Axes B+) (Level 25)",
+  "compatible": "Skill Swords Axes",
   "mttype": "else",
   "modifiers": {
     "mt": 3,
@@ -21,6 +22,6 @@
     "healing"
   ],
   "hidden": false,
-  "type": "Swords-Bows",
+  "type": "Swords-Axes",
   "rank": "B+-B+"
 }

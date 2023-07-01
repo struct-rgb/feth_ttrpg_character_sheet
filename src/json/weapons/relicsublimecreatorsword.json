@@ -1,7 +1,7 @@
 {
   "name": "Sublime Creator Sword",
   "type": "Swords",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Flames||Minor Crest of Flames:Flames}, enables use of @{art::Sublime Heaven}. If wielded by anyone other than Byleth, has Range = 1 and cannot make follow-up attacks.",
+  "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Flames||Minor Crest of Flames:Crest of Flames} and @{art::Sublime Heaven}. If wielded by anyone other than Byleth, has Range = 1 and @{const:ap:AP = 1}.",
   "requires": "Swords E",
   "rank": "E",
   "price": 0,

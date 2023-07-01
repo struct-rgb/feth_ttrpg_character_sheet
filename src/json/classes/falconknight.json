@@ -39,6 +39,10 @@
         "mov": 2
     },
 
+    "default_base": "Pegasus Knight",
+    "default_preset": "Speed/Resistance/Luck",
+    "default_mainarm": "Lances",
+    "default_sidearm": "Swords",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

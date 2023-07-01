@@ -1,7 +1,7 @@
 {
   "name": "Luna",
   "type": "Guile",
-  "description": "Target foe's Res is 0 during damage calculation (other sources of Resl apply as normal).  Cannot make follow-up attacks.",
+  "description": "@{const:ap:AP = 1}; target foe's Res is 0 during damage calculation (other sources of Resl apply as normal).",
   "requires": "Guile C",
   "rank": "C",
   "price": 4120,

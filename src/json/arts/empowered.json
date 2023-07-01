@@ -2,6 +2,7 @@
   "name": "Empowered",
   "description": "When casting @{weapon::Heal}, do not halve magic while calculating Mt of healing. May be equipped alongside other Rank D metamagic of the same type.",
   "requires": "Faith D",
+  "compatible": "Name Heal",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -2,6 +2,7 @@
   "name": "Hexblade",
   "description": "Deals magic-based damage.",
   "requires": "Swords A",
+  "compatible": "Skill Swords",
   "mttype": "mag",
   "modifiers": {
     "mt": 7,

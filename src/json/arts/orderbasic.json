@@ -1,0 +1,34 @@
+{
+  "name": "Basic Order",
+  "description": "Grants unit's battalion an extra turn. (Battalion's unit(s) may move, and then the battalion may use an action, which may be a battalion art.)",
+  "requires": "Authority D",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": 0,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "order"
+  ],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "D"
+}

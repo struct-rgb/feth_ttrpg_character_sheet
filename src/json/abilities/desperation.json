@@ -1,6 +1,6 @@
 {
     "name": "Desperation",
-    "description": "If unit inititates combat with HP ≤ 50%, unit's follow-up attack (if possible) occurs before foe's counter attack.",
+    "description": "@{const:ap:AP +1} if unit’s HP is ≤ 50% and unit’s @{const:ap:AP = 2}.",
     "requires": "All (Riding C+) (Level 15)",
     "modifiers": {
         "hp": 0,

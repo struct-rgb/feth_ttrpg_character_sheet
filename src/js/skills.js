@@ -5,14 +5,9 @@
  */
 
 /* global element */
-/* global tooltip */
-/* global wrap */
-/* global uniqueLabel */
 /* global AttributeCell */
 
 /* global Grade */
-
-
 
 const Skills = (function() {
 
@@ -21,12 +16,23 @@ const Skills = (function() {
  */
 class Row {
 
+	static ICONS = ["—", "⮝", "⮟", "⮙", "⮛"];
+
 	constructor(name, section, sheet) {
 		this.name      = name;
 		this.section   = section;
 		this.sheet     = sheet;
 		this.old_value = 0;
 		this.grade     = "E";
+
+		const adoptions = {edit: true, shown: "—", min: 0, max: 4};
+
+		this.aptcell  = new AttributeCell(adoptions, (x) => {
+			this.cell.refresh();
+			return Row.ICONS[x];
+		});
+
+		this.aptcell.root.firstChild.firstChild.classList.add("arrowhead");
 
 		const options = {edit: true, shown: "E "};
 		this.cell     = new AttributeCell(options, (x) => {
@@ -36,7 +42,7 @@ class Row {
 			const total    = this.section._total;
 			total.value    = total.value + diff;
 			this.old_value = points;
-			this.grade     = Grade.for(x, this.name, this.section);
+			this.grade     = Grade.for(x, this.aptitude);
 
 			/** TODO ugly way to refresh tp */
 			if (this.sheet && this.sheet.stats) {
@@ -47,15 +53,7 @@ class Row {
 			return this.grade;
 		});
 
-		this.root = element("tr", {
-			attrs   : {
-				/** TODO this is used to hide brawling, remove for patch #5 */
-				id: `skill-${name}-row`
-			},
-			content : [
-				element("th", name), this.cell.root
-			]
-		});
+		this.root = element("tr", [element("th", name), this.aptcell.root, this.cell.root]);
 	}
 
 	get value() {
@@ -67,37 +65,18 @@ class Row {
 		this.refresh();
 	}
 
-	refresh() {
-		this.cell.refresh();
+	get aptitude() {
+		return this.aptcell.value;
 	}
-}
 
-class Select {
+	set aptitude(value) {
+		this.aptcell.value = value;
+		this.refresh();
+	}
 
-	constructor(name, description, skills, section) {
-		this.name       = name;
-		this.identifier = name.toLowerCase();
-
-		this.select     = element("select", {
-			class : ["simple-border"],
-			attrs : {
-				oninput: (() => section.refresh()),
-			},
-		});
-
-		for (let skill of skills) {
-			const option       = document.createElement("option");
-			option.value       = skill;
-			option.textContent = skill;
-			this.select.appendChild(option);
-		}
-
-		this.root = element("div", [
-			tooltip([
-				uniqueLabel(name, this.select), element("br"),
-				this.select,
-			], description),
-		]);
+	refresh() {
+		this.aptcell.refresh();
+		// this.cell.refresh();
 	}
 }
 
@@ -111,146 +90,35 @@ class SkillUserInterface {
 	 * @param {Array} skills - names of skills to add
 	 */
 	constructor(skills, sheet) {
-		const tbody = document.createElement("tbody");
-		const table = document.createElement("table");
 		this._total = new AttributeCell({edit: false}, x => x);
-		this.root   = document.createElement("div");
+		this._total.root.colSpan = 2;
 		this.rows   = [];
 
-		table.appendChild(tbody);
-		this.root.appendChild(table);
+		const body = element("tbody", 
+			skills.map(skill => {
+				const row = new Row(skill, this, sheet);
+				this[skill] = row;
+				this.rows.push(row);
+				return row.root;
+			}).extend(
+				element("tr", [
+					element("th", "Total"),
+					this._total.root
+				])
+			)
+		);
 
-		for (let skill of skills) {
-			const row = new Row(skill, this, sheet);
-			this[skill] = row;
-			this.rows.push(row);
-			tbody.appendChild(row.root);
-		}
+		// const foot = element("tfoot", );
 
-		const tr       = document.createElement("tr");
-		const th       = document.createElement("th");
-		th.textContent = "Total";
-		tr.appendChild(th);
-
-		tr.appendChild(this._total.root);
-		tbody.appendChild(tr);
+		this.root = element("div", element("table", body));
 
 		this.names = new Set(skills);
-
-		const pairs = [
-			[
-				"Talent",
-				wrap(
-					"Double the number of skill points before ",
-					"calculating Rank.",
-				)
-			],
-			[
-				"Weakness",
-				wrap(
-					"Halve the number of skill points before ",
-					"calculating Rank.",
-				)
-			],
-			[
-				"Budding",
-				wrap(
-					"With 32 skill points or more (25 or more if this ",
-					"skill is a Weakness), treat this skill as a Talent.",
-				)
-			],
-		];
-
-		for (let [aptitude, description] of pairs) {
-			
-			const selector = new Select(
-				aptitude, description, skills, this, sheet
-			);
-			
-			this.root.appendChild(selector.root);
-
-			Object.defineProperty(this, aptitude.toLowerCase(), {
-				
-				get: function () {
-					return selector.select.value;
-				},
-
-				set: function (value) {
-					if (!this.names.has(value)) {
-						throw Error(`'${value}' is an invalid skill name`);
-					}
-					selector.select.value = value; 
-				}
-
-			});
-		}
-
 		this.sheet = sheet;
 
-		this.context = {
-			
-			"All": ((op, ...args) => args.reduce((x, y) => ({
-				require: x.require || y.require,
-				succeed: false,
-				boolean: (
-					(x.boolean || (y.succeed && !x.require))
-						&&
-					(y.boolean || (x.succeed && !y.require))
-				),
-			}))),
-
-			"Any": ((op, ...args) => args.reduce((x, y) => ({
-				require: x.require || y.require,
-				succeed: x.succeed || y.succeed,
-				boolean: x.boolean || y.boolean,
-			}))),
-
-			"Required": ((op, x) => {
-				x.require = true;
-				return x;
-			}),
-
-			"Permission": ((op, text) => ({
-				require: false,
-				succeed: false,
-				boolean: true,
-				// boolean: confirm(text),
-			})),
-
-			"None": ((op) => ({
-				require: false,
-				succeed: false,
-				boolean: true
-			})),
-
-			"Level": ((op, level) => ({
-				require: false,
-				succeed: false,
-				boolean: this.sheet.stats.level >= level
-			})),
-
-		};
-
-		for (let each of skills) {
-			const skill = each;
-			this.context[skill] = ((name, grade) => {
-				const diff = (
-					Grade.toNumber(this[skill].grade)
-						-
-					Grade.toNumber(grade)
-				);
-
-				return {
-					require: false,
-					succeed: diff >= 1,
-					boolean: diff >= 0,
-				};
-			});
-		}
+		this.context = sheet._predicates || {}; // todo make this a param
 	}
 
 	validate(expression) {
-		// return Polish.execute(expression, this.context);
 		return expression.exec(this.context);
 	}
 
@@ -262,12 +130,23 @@ class SkillUserInterface {
 
 	clear() {
 		for (let row of this.rows) {
-			row.value = 0;
+			row.value    = 0;
+			row.aptitude = 0;
+		}
+	}
+
+	export() {
+
+		const object = {};
+
+		for (let row of this.rows) {
+			object[row.name] = {
+				value    : row.value,
+				aptitude : Grade.APTITUDE.asString(row.aptitude)
+			};
 		}
 
-		this.talent   = "Axes";
-		this.weakness = "Axes";
-		this.budding  = "Axes";
+		return object;
 	}
 
 	import(object) {
@@ -277,25 +156,10 @@ class SkillUserInterface {
 			return;
 		}
 
-		this.talent   = object.talent;
-		this.weakness = object.weakness;
-		this.budding  = object.budding;
-
 		for (let row of this.rows) {
-			row.value = object.ranks[row.name] || 0;
+			row.value    = object[row.name].value || 0;
+			row.aptitude = Grade.APTITUDE.asNumber(object[row.name].aptitude);
 		}
-	}
-
-	export() {
-		return {
-			talent   : this.talent,
-			weakness : this.weakness,
-			budding  : this.budding,
-			ranks    : this.rows.reduce(
-				(o, row) => (o[row.name] = row.value, o),
-				{}
-			),
-		};
 	}
 
 	get total() {

@@ -1,7 +1,7 @@
 {
     "name": "Cavalry Effect Null",
     "description": "Nullifies any extra effectiveness against Cavalry units.",
-    "requires": "Armor S+",
+    "requires": "Riding S+",
     "modifiers": {
         "hp": 0,
         "sp": 0,

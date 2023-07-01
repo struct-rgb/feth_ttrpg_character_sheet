@@ -1,7 +1,7 @@
 {
   "name": "Nosferatu",
   "type": "Faith",
-  "description": "Restores HP equal to 50% of damage dealt. Cannot make follow-up attacks.",
+  "description": "@{const:ap:AP = 1}; restores HP equal to 50% of damage dealt.",
   "requires": "Faith D",
   "rank": "D",
   "price": 900,

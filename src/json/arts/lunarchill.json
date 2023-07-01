@@ -2,6 +2,7 @@
   "name": "Lunar Chill",
   "description": "Ice metamagic; after combat, create a 2x2 area of @{tile:Heal Tile:Heal Tiles}, where X is 6 + the spell's Mt, within 2 spaces of this unit. (Specify end condition.)",
   "requires": "Reason B",
+  "compatible": "All (Skill Reason) (Tag `ice`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

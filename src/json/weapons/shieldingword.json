@@ -1,0 +1,30 @@
+{
+  "name": "Shielding Word",
+  "type": "Faith",
+  "description": "Restore 5 HP to target ally; if this exceeds target ally's Max HP, apply the excess as @{condition:Overheal:[Overheal]} for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: once per turn, ally in range enters combat.",
+  "requires": "Faith D",
+  "rank": "D",
+  "price": 780,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 5,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Can be used as a reaction. Incompatible with all Attributes.",
+  "tags": [
+    "reaction", "no crit", "no stats", "no hit", "no might", "no triangle", "condition"
+  ],
+  "hidden": false,
+  "omit": true
+}

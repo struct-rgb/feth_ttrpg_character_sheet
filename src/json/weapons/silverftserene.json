@@ -1,0 +1,29 @@
+{
+    "name": "Serene Fist Technique",
+    "type": "Brawl",
+    "rank": "B",
+    "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+    "requires": "Brawl B",
+    "price": 0,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 20,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 5,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false
+}

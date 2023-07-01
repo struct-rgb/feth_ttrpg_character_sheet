@@ -1,0 +1,46 @@
+{
+    "name": "Machian Pirates",
+    "description": "An assortment of pirates from all over the Western Seas.",
+    "rank": "E",
+    "weapon": "Swords",
+    "type": ["Infantry"],
+    "abilities": ["Dual Breach", "Sabotage", "Looting"],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "disc": 45,
+        "brav": 50,
+        "pres": 55,
+        "strc": 40
+    },
+
+    "modifiers": {
+        "disc": 24,
+        "brav": 28,
+        "pres": 15,
+        "strc": 11,
+        "auto": 1,
+        "cap" : 1,
+        "minrng": 0,
+        "maxrng": 1
+    },
+
+    "gambit": {
+        "name": "Crimping",
+        "description": "On hit, applies [Rattled] to all foes in AoE for one turn. After combat, battalion regains EP equal to half of the EP damage dealt to other battalion units by this attack.",
+        "aoe": "3x3 square centered on Unit",
+        "mttype": "str",
+        "modifiers": {
+            "mt": 6,
+            "hit": 50,
+            "minrng": 0,
+            "maxrng": 1,
+            "cost": 10
+        }
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

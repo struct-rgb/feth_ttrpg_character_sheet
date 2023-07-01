@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Brigand",
+  "default_preset": "Power/Balance/Balance",
+  "default_mainarm": "Axes",
+  "default_sidearm": "Faith",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

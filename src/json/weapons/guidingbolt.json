@@ -1,7 +1,7 @@
 {
   "name": "Guiding Bolt",
   "type": "Faith",
-  "description": "On hit, apply @{condition:Marked:[Marked]} to target foe for 1 turn. Cannot make follow-up attacks.",
+  "description": "@{const:ap:AP = 1}; on hit, apply @{condition:Marked:[Marked]} to target foe for 1 turn.",
   "requires": "Faith C",
   "rank": "C",
   "price": 1400,

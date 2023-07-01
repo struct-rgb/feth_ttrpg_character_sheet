@@ -16,7 +16,7 @@
 /* tool tip text style (the tooltip bit that pops up itself) */
 
 .ttts {
-	background-color: white;
+	background-color: lightgrey;
 	color: black;
 	border-width: 2px;
 	border-color: black;

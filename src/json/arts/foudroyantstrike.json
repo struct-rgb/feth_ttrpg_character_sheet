@@ -2,6 +2,7 @@
   "name": "Foudroyant Strike",
   "description": "Thunderbrand only; effective against Armor and Dragon foes.",
   "requires": "All (Weapon Thunderbrand) (Crest Charon) (Swords E)",
+  "compatible": "Name Thunderbrand",
   "mttype": "else",
   "modifiers": {
     "mt": 6,

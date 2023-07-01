@@ -10,19 +10,19 @@
         "hp": 25,
         "str": 15,
         "mag": 10,
-        "dex": 15,
+        "dex": 10,
         "spd": 5,
         "def": 15,
         "res": 10,
-        "cha": 15
+        "cha": 10
       },
     "modifiers": {
         "hp": 3,
         "str": 3,
-        "mag": 0,
+        "mag": 2,
         "dex": 2,
         "spd": 3,
-        "def": 2,
+        "def": 3,
         "res": 1,
         "cha": 1,
         "mov": 4
@@ -39,6 +39,10 @@
         "mov": 3
     },
 
+    "default_base": "Cavalier",
+    "default_preset": "Power/Balance/Dexterity",
+    "default_mainarm": "Lances",
+    "default_sidearm": "Swords",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

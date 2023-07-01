@@ -1,0 +1,26 @@
+{
+  "name": "Nimble Combo",
+  "description": "@{const:ap:AP 3} (two consecutive attacks); Avo +20.",
+  "requires": "Any (Brawl C) (Brawl B)",
+  "compatible": "Skill Brawl",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 2,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 20,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Brawl",
+  "rank": "C-B",
+  "omit": true
+}

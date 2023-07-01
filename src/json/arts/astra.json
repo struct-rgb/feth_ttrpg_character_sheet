@@ -2,6 +2,7 @@
   "name": "Astra",
   "description": "Halves might; user makes 5 consecutive attacks.",
   "requires": "Swords A+",
+  "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
     "mt": "(-(weapon|total|mt + abilities|mt + equipment|mt) / 2)",

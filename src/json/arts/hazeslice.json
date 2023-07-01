@@ -2,6 +2,7 @@
   "name": "Haze Slice",
   "description": "No special effect.",
   "requires": "Any (Sword C) (Swords B)",
+  "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
     "mt": 2,

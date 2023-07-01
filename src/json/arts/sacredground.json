@@ -2,6 +2,7 @@
   "name": "Sacred Ground",
   "description": "When casting @{art::Restore}, target and apply its effects to 2 additional allies within 2 spaces any targetted ally.",
   "requires": "Faith C",
+  "compatible": "Name Restore",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

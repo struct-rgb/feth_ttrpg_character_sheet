@@ -2,6 +2,7 @@
   "name": "Daylight",
   "description": "Fire metamagic; effective against @{tooltip:Monster:Originally said Undead units, but tbh, Undead creatures are traditionally Monster units, and specifying only Undead creates an unneccesary unit type and makes a niche art even more niche.} units. On hit, apply @{condition:Exposed:[Exposed]} to target foe and foes within 2 spaces of target foe for one turn.",
   "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `fire`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

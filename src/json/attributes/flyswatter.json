@@ -1,7 +1,7 @@
 {
     "name": "Flyswatter",
     "type": "Any",
-    "description": "Grants weapon [Effective against Flying] and -5 Hit. Disabled on spells and on weapons with Range > 1.",
+    "description": "Grants weapon [Effective against Flying] and -5 Hit. Disabled on spells and on weapons with Range > 1.\n\n(THIS IS ONLY FOR ENEMY WEAPONS, DO NOT GIVE THIS TO PLAYERS)",
     "rank": 1,
     "price": 550,
 

@@ -1,7 +1,7 @@
 {
   "name": "Bless",
   "type": "Faith",
-  "description": "Apply @{condition:Blessed:[Blessed]} to target ally for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: ally in range enters combat.",
+  "description": "Apply @{condition:Blessed:[Blessed]} to target ally for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: once per turn, ally in range enters combat.",
   "requires": "Faith D",
   "rank": "D",
   "price": 780,
@@ -23,7 +23,7 @@
   },
   "comment": "Can be used as a reaction. Incompatible with all Attributes.",
   "tags": [
-    "reaction", "no hit", "no might", "no triangle", "condition"
+    "reaction", "no crit", "no stats", "no hit", "no might", "no triangle", "condition"
   ],
   "hidden": false
 }

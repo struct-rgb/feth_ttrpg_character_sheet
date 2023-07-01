@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Soldier",
+    "default_preset": "Balance/Defense/Dexterity",
+    "default_mainarm": "Lances",
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

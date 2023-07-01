@@ -2,6 +2,7 @@
   "name": "Wrath Strike",
   "description": "No special effect.",
   "requires": "Swords D",
+  "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
     "mt": 5,

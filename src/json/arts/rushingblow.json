@@ -1,0 +1,26 @@
+{
+  "name": "Rushing Blow",
+  "description": "Avo +10; after combat, unit moves to opposite side of target foe (if able).",
+  "requires": "Brawl D",
+  "compatible": "Skill Brawl",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 7,
+    "prot": 0,
+    "resl": 0,
+    "hit": 20,
+    "avo": 10,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": ["movement"],
+  "hidden": false,
+  "type": "Brawl",
+  "rank": "D",
+  "omit": true
+}

@@ -1,7 +1,8 @@
 {
   "name": "Frozen Lance",
   "description": "Deals magic-based damage. Mt +30% of user's Dex.",
-  "requires": "All (Lance C) (Lances B)",
+  "requires": "All (Lances C) (Lances B)",
+  "compatible": "Skill Lances",
   "mttype": "mag",
   "modifiers": {
     "mt": "fill scale(3, [Dex], unit|total|dex)",

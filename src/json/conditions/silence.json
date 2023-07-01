@@ -1,6 +1,6 @@
 {
     "name": "Silence",
-    "description": "Affected unit cannot use Faith, Guile, and Reason tomes and arts.",
+    "description": "Affected unit cannot use Faith, Guile, and Reason weapons and arts.",
 
     "modifiers": {
         "hp": 0,

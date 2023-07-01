@@ -1,7 +1,7 @@
 {
     "name": "Canto",
-    "description": "After performing an action, unit can use any remaining movement.",
-    "requires": "Class",
+    "description": "Can only be used while mounted; after performing an action, unit can use any remaining movement.",
+    "requires": "Any (ClassType Cavalry) (ClassType Flying)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

@@ -2,6 +2,7 @@
   "name": "Triangle Attack",
   "description": "Usable by a Flying unit without needing to be equipped. Can only be used when 3 allied Flying units (including the user) are adjacent to the same enemy.",
   "requires": "All (Any (Class `Pegasus Knight`) (Class `Falcon Knight`)) (Lances E)",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": 8,

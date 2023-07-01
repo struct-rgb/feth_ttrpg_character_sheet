@@ -10,17 +10,17 @@
         "hp": 25,
         "str": 15,
         "mag": 10,
-        "dex": 10,
+        "dex": 20,
         "spd": 5,
         "def": 15,
         "res": 10,
-        "cha": 15
+        "cha": 5
       },
     "modifiers": {
         "hp": 4,
         "str": 4,
-        "mag": 0,
-        "dex": 1,
+        "mag": 2,
+        "dex": 2,
         "spd": 1,
         "def": 4,
         "res": 1,
@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Soldier",
+    "default_preset": "Balance/Defense/Dexterity",
+    "default_mainarm": "Lances",
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

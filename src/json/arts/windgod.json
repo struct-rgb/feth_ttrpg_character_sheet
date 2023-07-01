@@ -2,6 +2,7 @@
   "name": "Wind God",
   "description": "Barbarossa only.",
   "requires": "All (Class Barbarossa) (Bows C)",
+  "compatible": "Skill Bows",
   "mttype": "else",
   "modifiers": {
     "mt": 5,

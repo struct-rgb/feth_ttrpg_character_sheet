@@ -555,7 +555,7 @@ const Tokens = (function() {
 		"text" : new Operator(0, {
 
 			codegen: function(recurse, code, node, env) {
-				const [_opcode, argument] = node;
+				const [_opcode, _argument] = node;
 				throw new CompilationError(
 					"Codegen reached text expression"
 				);
@@ -862,7 +862,7 @@ const Tokens = (function() {
 			],
 
 			codegen: function(recurse, code, node, env) {
-				const [_opcode, argument] = node;
+				const [_opcode, _argument] = node;
 
 				throw new CompilationError(
 					wrap(
@@ -1305,7 +1305,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.IF,
-				"if {1} {2} {3} then {4} else {5}",
+				"if {1} {2} {3} then {4} else {5} end",
 				wrap(
 					"Compare {1} and {3} using relative operator {2}, ",
 					"if the result is true, then return {4} otherwise ",
@@ -1411,7 +1411,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.PROMPT,
-				"ask {1}, {2}, {3}; {4}",
+				"ask {1}, {2}, {3}; {4} end",
 				wrap(
 					"Creates a prompt in the generated Roll20 macro ",
 					"with {1} as a title. Only the [ask] {1} part is ",
@@ -1427,12 +1427,12 @@ const Tokens = (function() {
 					"expression types: [if], [more], [less], and ",
 					"other [ask] expressions. However, [metaif] is ",
 					"permitted. Options can be given titles using ",
-					"[=] expressions, e.g. [Title = 1]."
+					"[{}] expressions, e.g. [Title {{1}}]."
 				),
 				"any identifier or [bracketed text]",
-				"any expression (Title = {2} sets title)",
-				"any expression (Title = {3} sets title)",
-				"any expression (Title = {4} sets title)",
+				"any expression (Title {{2}} sets title)",
+				"any expression (Title {{3}} sets title)",
+				"any expression (Title {{4}} sets title)",
 				"etc...",
 			],
 
@@ -1463,7 +1463,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.METAIF,
-				"metaif {1} then {2} else {3}",
+				"metaif {1} then {2} else {3} end",
 				wrap(
 					"Evaluates relative expression {1} at compile ",
 					"time (compile time is defined as both code ",
@@ -2454,7 +2454,7 @@ class Parser {
 					 * I suspect the later so I'm making it throw an
 					 * exception whenever this branch is taken.
 					 *
-					 * Remove and restpre the return if you find out that
+					 * Remove and restore the return if you find out that
 					 * it does something of use for some reason.
 					 */
 
@@ -3622,6 +3622,8 @@ class CompiledExpression {
 	}
 
 	apply(context, node) {
+		if (!(node[0] in context))
+			throw new Error(`'${node[0]}' undefined for this context`);
 		return context[node[0]](...node);
 	}
 

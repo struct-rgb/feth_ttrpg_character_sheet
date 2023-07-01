@@ -2,6 +2,7 @@
   "name": "War Hero’s Strike",
   "description": "War Hero only; effective against all foes.",
   "requires": "All (Class `War Hero`) (Axes E)",
+  "compatible": "Skill Axes",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

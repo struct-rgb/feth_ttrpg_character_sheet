@@ -2,6 +2,7 @@
   "name": "Assassinate",
   "description": "Target foe's Def and Res are 0 during damage calculation (other sources of Prot and Resl apply as normal).",
   "requires": "All (Swords A) (Bows A) (Level 25)",
+  "compatible": "Skill Swords Bows",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

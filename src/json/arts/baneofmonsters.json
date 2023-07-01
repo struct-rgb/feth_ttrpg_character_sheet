@@ -2,6 +2,7 @@
   "name": "Bane of Monsters",
   "description": "Effective against Monster units.",
   "requires": "Any (Swords C) (Swords B)",
+  "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
     "mt": 6,

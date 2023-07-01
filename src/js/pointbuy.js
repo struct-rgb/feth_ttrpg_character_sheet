@@ -1,7 +1,10 @@
 
 /* global element */
 /* global AttributeCell */
-
+/* global Class */
+/* global assume */
+/* global uniqueID */
+/* global tooltip */
 
 /**
  * Options for initializing a new AttributePair
@@ -103,32 +106,43 @@ function natural(number) {
 }
 
 const costfunctions = {
-	
+
 	growth: {
-		HP  : (s) => natural(scale(s,  "HP", 6) + scale(s,  "HP", 6)/4),
-		STR : (s) => natural(scale(s, "STR", 4) + Math.max(scale(s, "STR", 4) - scale(s, "MAG", 4), 0)/3),
-		MAG : (s) => natural(scale(s, "MAG", 4) + Math.max(scale(s, "MAG", 4) - scale(s, "STR", 4), 0)/3),
-		DEX : (s) => natural(scale(s, "DEX", 4) + scale(s, "CHA", 4)/4),
-		SPD : (s) => natural(scale(s, "SPD", 4) + scale(s, "SPD", 4)/3 + Math.max(scale(s, "MAG", 4), scale(s, "STR", 4))/3),
-		DEF : (s) => natural(scale(s, "DEF", 4) + scale(s, "RES", 4)/3),
-		RES : (s) => natural(scale(s, "RES", 4) + scale(s, "DEF", 4)/3),
-		CHA : (s) => natural(scale(s, "CHA", 4) + scale(s, "DEX", 4)/4),
+		HP  : (s) => natural(scale(s,  "HP", 9)),
+		STR : (s) => natural(Math.max(scale(s, "STR", 5) - scale(s, "MAG", 5), 0)/2 + scale(s, "STR", 5)/2),
+		MAG : (s) => natural(Math.max(scale(s, "MAG", 5) - scale(s, "STR", 5), 0)/2 + scale(s, "MAG", 5)/2),
+		DEX : (s) => natural(scale(s, "DEX", 5)),
+		SPD : (s) => natural(scale(s, "SPD", 5)),
+		DEF : (s) => natural(scale(s, "DEF", 5)),
+		RES : (s) => natural(scale(s, "RES", 5)),
+		CHA : (s) => natural(scale(s, "CHA", 5)),
 	},
 
 	value: {
-		HP  : (s) => natural(scale(s,  "HP", 20)),
-		STR : (s) => natural(scale(s, "STR",  4) + Math.max(scale(s, "STR", 4) - scale(s, "MAG", 4), 0)/4),
-		MAG : (s) => natural(scale(s, "MAG",  4) + Math.max(scale(s, "MAG", 4) - scale(s, "STR", 4), 0)/4),
-		DEX : (s) => natural(scale(s, "DEX",  4) + scale(s, "CHA", 4)/5),
-		SPD : (s) => natural(scale(s, "SPD",  4) + scale(s, "SPD", 4)/4 + Math.max(scale(s, "MAG", 4), scale(s, "STR", 4))/3),
+		HP  : (s) => natural(scale(s,  "HP", 20) / 2),
+		STR : (s) => {
+			const str = scale(s, "STR", 4);
+			const mag = scale(s, "MAG", 4);
+			return natural(str + Math.max(str - mag, 0)/4);
+		},
+		MAG : (s) => {
+			const str = scale(s, "STR", 4);
+			const mag = scale(s, "MAG", 4);
+			return natural(mag + Math.max(mag - str, 0)/4);
+		},
+		DEX : (s) => natural((scale(s, "DEX",  4) / 2) + scale(s, "CHA", 4)/4),
+		SPD : (s) => {
+			const spd = scale(s, "SPD",  4);
+			return natural(spd + spd/4);
+		},
 		DEF : (s) => natural(scale(s, "DEF",  4) + scale(s, "RES", 4)/4),
 		RES : (s) => natural(scale(s, "RES",  4) + scale(s, "DEF", 4)/4),
-		CHA : (s) => natural(scale(s, "CHA",  4) + scale(s, "DEX", 4)/5),
+		CHA : (s) => natural((scale(s, "CHA",  4) / 2) + scale(s, "DEX", 4)/4),
 	},
 };
 
 class PointRange {
-	constructor(min, def, max, cost) {
+	constructor(min, def, max, cost=0) {
 
 		if (!(min <= max)) {
 			throw Error(
@@ -147,9 +161,118 @@ class PointRange {
 		this.max  = max;
 		this.cost = cost;
 	}
+
+	has(number) {
+		return this.min <= number && number < this.max;
+	}
+}
+
+class ForecastRecord {
+
+	constructor(forecast, cls, levels) {
+		this._cls     = cls;
+		this.uid      = uniqueID();
+		this.cnode    = document.createTextNode(cls);
+		this.forecast = forecast;
+		forecast.records.set(this.uid, this);
+
+		this.cell = new AttributeCell(
+			{
+				edit  : true,
+				shown : levels,
+				value : levels,
+				min   : 0,
+				max   : 100,
+				step  : 1,
+				root  : "span",
+			},
+			(value) => {
+				this.forecast.pb.update("final");
+				if (value == 0) this.remove();
+				this._levels = value;
+				return value;
+			}
+		);
+
+		const block = element("span", {
+			class   : ["simple-border"],
+			content : [
+				this.cell.root,
+				" level(s) of ",
+				tooltip(
+					element("span", this.cnode, "datum"),
+					Class.get(cls).body(true)
+				),
+			]
+		});
+
+		const del   = element("button", {
+			class   : ["simple-border", "smol"],
+			content : "Delete",
+			attrs   : {
+				onclick : (() => this.remove())
+			}
+		});
+
+		this.root = element("tr",
+			element("td", [block, del])
+		);
+	}
+
+	get levels() {
+		return this.cell.value;
+	}
+
+	set levels(value) {
+		this.cell.value = value;
+	}
+
+	get cls() {
+		return this._cls;
+	}
+
+	set cls(value) {
+		this._cls       = value;
+		this.cnode.data = value;
+		this.forecast.pb.update("final");
+	}
+
+	remove() {
+		this.forecast.records.delete(this.uid);
+		this.forecast.pb.update("final");
+		this.root.remove();
+	}
 }
 
 class Forecast {
+
+	static DIMINISHING = new Set(["str", "mag", "def", "res", "spd"]);
+
+	static diminish(sum, name=null) {
+
+		if (name != null) {
+			return this.DIMINISHING.has(name) ? this.diminish(sum) : 0;
+		}
+
+		// return Math.min(Math.floor((60 - sum) / 10 * 5), 0);
+		return Math.min((50 - sum) / 2, 0);
+	}
+
+	static statisic(name, base, growth, cls_levels, cls) {
+
+		let total = 0;
+
+		for (let [clas, levels] of cls_levels) {
+			const template  = Class.get(clas);
+			const sum       = Math.max(growth + template.growths[name], 0);
+			const multi     = sum + this.diminish(sum, name);
+			const delta     = multi * levels;
+			total          += delta;
+		}
+
+		const bonus = Class.get(cls).modifiers[name];
+		return base + Math.floor(total / 100) + bonus;
+	}
 
 	constructor(pb) {
 
@@ -157,27 +280,42 @@ class Forecast {
 
 		this.records = new Map(); 
 
+		const update = ((_event) => {
+			if (this._toadd.value == 0) return;
+			this.add(this._sf._select.value, Number(this._toadd.value));
+			pb.update("final");
+		});
+
 		this._toadd  = element("input", {
 			class: ["simple-border", "short-meter"],
 			attrs: {
-				type    : "number",
-				value   : 1,
-				min     : 1,
-				// oninput : (() => console.log("TODO")), 
+				type       : "number",
+				value      : 1,
+				min        : 1,
+				onkeypress : ((event) => {
+					if (event.key == "Enter") {
+						update(event);
+						this._sf._select.focus();
+					}
+				})
 			},
 		});
 
 		this._sf = Class.select(() => {});
+
+		this._sf._select.onkeypress = ((event) => {
+			if (event.key == "Enter") {
+				event.preventDefault();
+				this._toadd.focus();
+			}
+		});
 
 		this._button = element("input",  {
 			class   : ["simple-border"],
 			attrs   : {
 				value   : "Up",
 				type    : "button",
-				onclick : (() => {
-					this.add(this._sf._select.value, this._toadd.value);
-					pb.update("final");
-				}),
+				onclick : update,
 			},
 		});
 
@@ -195,31 +333,23 @@ class Forecast {
 		]);
 	}
 
+	get class() {
+		return this._cc._select.value;
+	}
+
+	set class(value) {
+		this._cc._select.value = value;
+	}
+
 	add(cls, levels) {
+		const row = new ForecastRecord(this, cls, levels);
+		this._table.appendChild(row.root);
+	}
 
-		const uid  = uniqueID();
-		const name = `${levels} level(s) of ${cls}`;
-
-		this.records.set(uid, [cls, levels]);
-
-		const row = element("tr", 
-			element("td",
-				element("input", {
-					class : ["simple-border"],
-					attrs : {
-						type    : "button",
-						value   : name,
-						onclick : (() => {
-							this.records.delete(uid);
-							row.remove();
-							this.pb.update("final");
-						})
-					},
-				})
-			)
-		);
-
-		this._table.appendChild(row);
+	clear() {
+		for (let record of this.records.values()) {
+			record.remove();
+		}
 	}
 
 	getBase(pb, key) {
@@ -232,23 +362,27 @@ class Forecast {
 
 	statistic(pb, name) {
 
+		const root = pb.rows.get(name)._growth.value.root.classList;
+		if (root.contains("underline")) root.remove("underline");
+
 		name = name.toLowerCase();
 
 		let total = 0;
 
-		for (let [cls, levels] of this.records.values()) {
+		for (let record of this.records.values()) {
 
-			const template = Class.get(cls);
+			const template = Class.get(record.cls);
 
 			const sum = Math.max(
 				this.getGrow(pb, name) + template.growths[name], 0
 			);
 
-			const cap = Math.min(
-				Math.floor((60 - sum) / 10 * 5), 0
-			);
+			const dim    = Forecast.diminish(sum, name);
+			if (dim < 0) root.add("underline");
 
-			total += levels * (sum + cap);
+			const multi  = sum + dim;
+			const delta  = multi * record.levels;
+			total       += delta;
 		}
 
 		const bonus = Class.get(this._cc._select.value).modifiers[name];
@@ -256,41 +390,53 @@ class Forecast {
 		return this.getBase(pb, name) + Math.floor(total / 100) + bonus;
 	}
 
+
+	get level() {
+		
+		let total = 0;
+
+		for (let record of this.records.values()) {
+			total += Number(record.levels);
+		}
+
+		return total;
+	}
+
 }
 
 class PointBuy {
 
-	static STATISTICS = ["HP", "STR", "MAG", "DEX", "SPD", "DEF", "RES", "CHA"];
+	static STATISTICS = definitions.stats.names.map(n => n.toUpperCase());
 
 	static ROWS = [
 		["HP",
 			new PointRange(20, 20, 32),
-			new PointRange(0,  6,  10)],
+			new PointRange(9,  9,  12)],
 		["STR",
-			new PointRange(0,  4, 12),
-			new PointRange(3,  4, 10)],
+			new PointRange(0,  4, 10),
+			new PointRange(5,  5,  8)],
 		["MAG",
-			new PointRange(0,  4, 12),
-			new PointRange(3,  4, 10)],
+			new PointRange(0,  4, 10),
+			new PointRange(5,  5,  8)],
 		["DEX",
-			new PointRange(0,  4, 12),
-			new PointRange(3,  4, 10)],
+			new PointRange(0,  4, 16),
+			new PointRange(5,  5,  8)],
 		["SPD",
-			new PointRange(0,  4, 12),
-			new PointRange(3,  4, 10)],
+			new PointRange(0,  4, 10),
+			new PointRange(5,  5,  8)],
 		["DEF",
-			new PointRange(0,  4, 12),
-			new PointRange(3,  4, 10)],
+			new PointRange(0,  4, 10),
+			new PointRange(5,  5,  8)],
 		["RES",
-			new PointRange(0,  4, 12),
-			new PointRange(3,  4, 10)],
+			new PointRange(0,  4, 10),
+			new PointRange(5,  5,  8)],
 		["CHA",
-			new PointRange(0,  4, 12),
-			new PointRange(3,  4, 10)]
+			new PointRange(0,  4, 16),
+			new PointRange(5,  5,  8)]
 	];
 
 	constructor() {
-		this.rows = new Map();
+		this.rows   = new Map();
 
 		this.totalValue  = new AttributePair("ValueTotal", {
 			edit    : false,
@@ -381,9 +527,11 @@ class PointBuy {
 			if (column != "final") {
 				const cost = costfunctions[column][row.name](getter);
 				row[privacy].cattr.value = (cost / PointBuy.COST_SCALE).toFixed(2);
-				costSum += Math.floor(cost / PointBuy.COST_SCALE);
+				// costSum += Math.trunc(cost / PointBuy.COST_SCALE);
+				costSum += cost;
 				baseSum += row[privacy].value.value;
 			} else {
+				const old  = row[privacy].value.value;
 				const pts  = this.forecast.statistic(this, row.name);
 				
 				const vcost = costfunctions.value[row.name](
@@ -394,25 +542,77 @@ class PointBuy {
 					(key) => PointBuy.COST_SCALE * this.rows.get(key).growth
 				);
 
-				const cost  = (
-					Math.floor(gcost / PointBuy.COST_SCALE) + Math.floor(vcost / PointBuy.COST_SCALE)
-				);
-
+				const cost = gcost + vcost;
+				
 				row[privacy].value.value = pts;
 				row[privacy].cattr.value = cost;
+
+				/* underline the numbers that have increased */
+				const root = row[privacy].value.root.classList;
+				if (root.contains("underline")) root.remove("underline");
+				if (old < pts) root.add("underline");
 				
 				costSum += cost;
 				baseSum += pts;
 			}
 		}
 		this.pairs[column].value.value = baseSum;
-		this.pairs[column].cattr.value = costSum;
+		this.pairs[column].cattr.value = Math.trunc(costSum / PointBuy.COST_SCALE);
 	}
 
 	*column(column) {
 		for (let [name, row] of this.rows.entries()) {
 			yield [name.toLowerCase(), row["_" + column].value.value];
 		}
+	}
+
+	// import(e) {
+	// 	const file = e.target.files[0];
+	// 	if (!file) return;
+
+	// 	const reader = new FileReader();
+
+	// 	reader.onload = (e) => {
+	// 		const item     = JSON.parse(e.target.result);
+	// 		this.importObject(this._updatefn(item));
+	// 	};
+		
+	// 	reader.readAsText(file);
+	// }
+
+	import(obj) {
+		for (let [stat, row] of this.rows.entries()) {
+			const key = stat.toLowerCase();
+			row._value.value.value  = obj.bases[key];
+			row._growth.value.value = obj.growths[key] / 5;
+		}
+	}
+
+	export() {
+		const a    = element("a");
+		const name = prompt("Enter a preset name:") || "mypreset";
+		
+		const item = {
+			"name": name,
+			"bases": {},
+			"growths": {},
+			"comment": "",
+			"tags": [],
+			"hidden": false
+		};
+
+		for (let [stat, row] of this.rows.entries()) {
+			const key = stat.toLowerCase();
+			item.bases[key]   = row._value.value.value;
+			item.growths[key] = row._growth.value.value;
+		}
+		item.bases.mov = 0;
+
+		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
+		a.href     = URL.createObjectURL(file);
+		a.download = item.name.replace(/ /g, "_") + ".json";
+		a.click();
+		URL.revokeObjectURL(a.href);
 	}
 }
 

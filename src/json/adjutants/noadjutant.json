@@ -1,0 +1,10 @@
+{
+	"name": "No Adjutant",
+	"description": "Lack of an Adjutant",
+	"ability": "None",
+	"reaction": "None",
+	"modifiers": {
+		"disc": 0,
+		"brav": 0
+	}
+}

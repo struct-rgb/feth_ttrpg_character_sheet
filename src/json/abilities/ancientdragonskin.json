@@ -1,7 +1,7 @@
 {
     "name": "Ancient Dragonskin",
     "description": "Reduces all damage dealt to unit by 50%. Negates Lethality and Assassinate. Nullifies status effects. Unit cannot be moved.",
-    "requires": "Dragon",
+    "requires": "Innate",
     "modifiers": {
         "hp": 0,
         "sp": 0,

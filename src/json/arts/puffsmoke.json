@@ -2,6 +2,7 @@
   "name": "Puff of Smoke",
   "description": "Wind metamagic; after combat, create a 2x2 area of @{tile:Smoke Screen:Smoke Screens} connecting to a space at Range ≤ 2 for 2 turns.",
   "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `wind`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -14,13 +14,17 @@
     "minrng": 1,
     "maxrng": 5,
     "tiles": 0,
-    "spcost": 2,
+    "spcost": 6,
     "tpcost": 0,
-    "sp": 6,
+    "sp": 0,
     "tp": 0
   },
   "comment": "",
   "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
     "tactical",
     "reaction"
   ],

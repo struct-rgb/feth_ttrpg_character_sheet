@@ -2,6 +2,7 @@
   "name": "Windsweep",
   "description": "Prevent enemy counter-attack.",
   "requires": "Swords A",
+  "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

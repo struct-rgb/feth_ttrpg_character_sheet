@@ -2,6 +2,7 @@
   "name": "Point-Blank Volley",
   "description": "Triggers 2 consecutive hits.",
   "requires": "Bows A",
+  "compatible": "Skill Bows",
   "mttype": "else",
   "modifiers": {
     "mt": 2,

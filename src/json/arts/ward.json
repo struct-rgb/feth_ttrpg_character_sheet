@@ -22,7 +22,11 @@
   "comment": "",
   "tags": [
     "tactical",
-    "condition"
+    "condition",
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats"
   ],
   "hidden": false,
   "type": "Faith",

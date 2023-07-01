@@ -1,0 +1,26 @@
+{
+  "name": "Mystic Blow",
+  "description": "Mt +30% of user's Mag.",
+  "requires": "Brawl A",
+  "compatible": "Skill Brawl",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "fill scale(3, [Mag], unit|total|mag)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Brawl",
+  "rank": "A",
+  "omit": true
+}

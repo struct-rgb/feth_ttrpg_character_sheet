@@ -1,7 +1,8 @@
 {
   "name": "Monster Blaster",
   "description": "Effective against Monster units.",
-  "requires": "Bows D",
+  "requires": "Any (Bows C) (Bows B)",
+  "compatible": "Skill Bows",
   "mttype": "else",
   "modifiers": {
     "mt": 5,
@@ -22,5 +23,5 @@
   ],
   "hidden": false,
   "type": "Bows",
-  "rank": "D"
+  "rank": "C-B"
 }

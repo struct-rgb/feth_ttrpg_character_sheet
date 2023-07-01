@@ -1,0 +1,39 @@
+{
+  "name": "Apothacary",
+  "description": "A versatile infantry class with decent defensive stats and the ability to make greater use of consumable items.",
+  "type": ["Infantry", "Martial", "Caster"],
+  "tier": "Starting",
+  "requires": "Any (Swords D) (Lances D) (Axes D) (Bows D) (Brawl D) (Faith D) (Reason D) (Guile D)",
+  "abilities": ["Item Expertise", "Level 10 Mov +1"],
+    "arts": [],
+  "growths": {
+    "hp": 25,
+    "str": 10,
+    "mag": 10,
+    "dex": 10,
+    "spd": 0,
+    "def": 15,
+    "res": 15,
+    "cha": 20
+  },
+  "modifiers": {
+    "hp": 2,
+    "str": 2,
+    "mag": 2,
+    "dex": 2,
+    "spd": 0,
+    "def": 3,
+    "res": 3,
+    "cha": 3,
+    "mov": 4
+  },
+  "mount": null,
+
+  "default_base": "Apothacary",
+  "default_preset": "Balance/Balance/Luck",
+  "default_mainarm": "Bows",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

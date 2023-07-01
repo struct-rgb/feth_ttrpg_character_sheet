@@ -1,0 +1,35 @@
+{
+  "name": "Covert Order",
+  "description": "Trigger: foe enters, exits, or initiates combat with ally in a space within Range 0-1 of this unit’s deployed battalion unit. This unit may use an “Order” art as a reaction, following the same restrictions as adjutant reactions. (Battalion units use a reaction with \"Trigger: employer uses 'Covert Order'\" rather than an action to employ the \"Order\" art’s effects.)",
+  "requires": "Authority A",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": 3,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "reaction",
+    "order"
+  ],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "A"
+}

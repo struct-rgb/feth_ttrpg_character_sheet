@@ -1,0 +1,28 @@
+{
+  "name": "Angle of Attack",
+  "description": "Can only be used while mounted and can only target foes adjacent to X of this army’s Flying units, where X ≥ 2. Multiply bonuses to Mt, Hit, and Crit by X.",
+  "requires": "Any (Class `Pegasus Knight`) (Class `Falcon Knight`) (Class `Griffin Knight`)",
+  "compatible": "Skills Axes Lances Swords",
+  "mttype": "none",
+  "modifiers": {
+    "mt": "3 * ask [Flying Allies?], 2 end",
+    "prot": 0,
+    "resl": 0,
+    "hit": "10 * ask [Flying Allies?], 2 end",
+    "avo": 0,
+    "crit": "10 * ask [Flying Allies?], 2 end",
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "scales"
+  ],
+  "hidden": true,
+  "rank": "",
+  "type": ["Axes", "Swords", "Lances"],
+  "omit": true
+}

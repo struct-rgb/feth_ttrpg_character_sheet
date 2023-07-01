@@ -2,6 +2,7 @@
   "name": "Grounder",
   "description": "Effective against Flying units.",
   "requires": "Any (Sword C) (Swords B)",
+  "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

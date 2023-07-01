@@ -2,6 +2,7 @@
   "name": "Physic",
   "description": "Extends the range of your healing spell by 3 for every 1 additional SP expended. This Metamagic ability can be used with another one.",
   "requires": "Faith C",
+  "compatible": "All (Skill Faith) (Tag `healing`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

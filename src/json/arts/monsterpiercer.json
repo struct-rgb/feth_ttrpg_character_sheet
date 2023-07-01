@@ -2,6 +2,7 @@
   "name": "Monster Piercer",
   "description": "Effective against Monster units.",
   "requires": "Any (Lances C) (Lances B)",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": 7,

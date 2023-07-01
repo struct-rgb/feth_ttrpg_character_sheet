@@ -23,5 +23,5 @@
   },
   "comment": "Items in modifers should be integers",
   "tags": [],
-  "hidden": false
+  "hidden": true
 }

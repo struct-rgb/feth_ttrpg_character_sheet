@@ -1,0 +1,25 @@
+{
+  "name": "Dual Strike F",
+  "description": "@{const:ap:AP 2}; unit’s sheltered or adjacent ally may pay 3 SP to make the follow-up with their equipped weapon as though they were in this unit’s space. Unit’s adjacent allies may also use this art as though they had it equipped. A unit may only make one attack as part of this art per phase.",
+  "requires": "Flying B",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Generic",
+  "rank": "",
+  "omit": true
+}

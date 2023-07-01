@@ -2,6 +2,7 @@
   "name": "Heavy Draw",
   "description": "No special effect.",
   "requires": "Any (Bows C) (Bows B)",
+  "compatible": "Skill Bows",
   "mttype": "else",
   "modifiers": {
     "mt": 8,

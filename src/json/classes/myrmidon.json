@@ -10,25 +10,29 @@
         "hp": 15,
         "str": 10,
         "mag": 10,
-        "dex": 15,
+        "dex": 10,
         "spd": 20,
         "def": 10,
         "res": 10,
-        "cha": 10
+        "cha": 20
       },
     "modifiers": {
         "hp": 1,
         "str": 3,
-        "mag": 0,
-        "dex": 3,
+        "mag": 2,
+        "dex": 2,
         "spd": 4,
         "def": 1,
         "res": 1,
-        "cha": 2,
+        "cha": 3,
         "mov": 4
     },
     "mount": null,
 
+    "default_base": "Myrmidon",
+    "default_preset": "Speed/Balance/Luck",
+    "default_mainarm": "Swords",
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

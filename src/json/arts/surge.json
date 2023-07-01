@@ -2,6 +2,7 @@
   "name": "Surge",
   "description": "When casting a Lightning Spell, inflict @{condition:Static:[Static]} on your target for 1 turn.",
   "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `lightning`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

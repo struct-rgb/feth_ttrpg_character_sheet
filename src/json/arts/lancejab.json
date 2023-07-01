@@ -2,6 +2,7 @@
   "name": "Lance Jab",
   "description": "Mt +30% of user's Spd.",
   "requires": "Lances A",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": "fill scale(3, [Spd], unit|total|spd)",

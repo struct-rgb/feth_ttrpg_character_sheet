@@ -1,0 +1,25 @@
+{
+  "name": "Coven",
+  "description": "Trigger: once per phase, an ally within range uses a Faith, Reason, or Guile spell without metamagic. Apply one of this unit’s equipped Guile combat arts to that spell, paying that art’s cost in addition to this.",
+  "requires": "Class Druid",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": "5 + ask [Cost of Guile Metamagic], 0 end"
+  },
+  "comment": "",
+  "tags": ["reaction", "tactical"],
+  "hidden": true,
+  "rank": "",
+  "type": "",
+  "omit": true
+}

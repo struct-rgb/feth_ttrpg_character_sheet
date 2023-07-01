@@ -1,7 +1,7 @@
 {
   "name": "Taranis",
   "type": "Reason",
-  "description": "A lightning spell; restores 10% (20% with Crest of @{ability:Major Crest of Aubin||Minor Crest of Aubin:Aubin}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Aubin||Minor Crest of Aubin:Aubin}.",
+  "description": "A lightning spell; @{attribute::Sacred} weapon associated with the @{ability:Major Crest of Aubin||Minor Crest of Aubin:Crest of Aubin}.",
   "requires": "Reason A",
   "rank": "A",
   "price": 0,

@@ -1,0 +1,28 @@
+{
+  "name": "Rebuke",
+  "type": "Faith",
+  "description": "Before combat, wielder may end a condition on an ally within 4 spaces of target foe and apply it to target foe for one turn. If so, grants Mt +4 in combat.",
+  "requires": "Faith D",
+  "rank": "D",
+  "price": 900,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": "1 + ask [Moved Condition?]; No {0}, Yes {4} end",
+    "prot": 0,
+    "resl": 0,
+    "hit": 85,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": ["condition"],
+  "hidden": false,
+  "omit": true
+}

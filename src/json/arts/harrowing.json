@@ -2,6 +2,7 @@
   "name": "Harrowing",
   "description": "Double stat changes of conditions applied by this spell.",
   "requires": "Guile C",
+  "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

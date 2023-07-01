@@ -2,6 +2,7 @@
   "name": "Virulent",
   "description": "Apply stat changes and conditions to adjacent allies of target.",
   "requires": "Guile D",
+  "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

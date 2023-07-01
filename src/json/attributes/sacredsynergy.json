@@ -22,6 +22,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["rework", "forspell", "forweapon"],
-    "hidden": false
+    "tags": ["rework", "forspell", "forweapon", "depricated"],
+    "hidden": true
 }

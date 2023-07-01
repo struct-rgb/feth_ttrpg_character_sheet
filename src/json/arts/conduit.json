@@ -1,0 +1,26 @@
+{
+  "name": "Conduit",
+  "description": "A Faith spell that targets an ally may target any ally adjacent to a unit created tile. Tiles with a duration created by a Reason spell have +1 duration.",
+  "requires": "Class Sage",
+  "compatible": "Any (Skill Faith) (All (Skill Reason) (Tag `wall`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": true,
+  "rank": "",
+  "type": ["Faith", "Reason"],
+  "omit": true
+}

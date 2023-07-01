@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Items in modifers should be integers",
-  "tags": [],
+  "tags": ["monster"],
   "hidden": false
 }

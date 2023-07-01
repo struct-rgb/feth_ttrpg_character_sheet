@@ -2,6 +2,7 @@
   "name": "Knight Kneeler",
   "description": "Effective against Cavalry units.",
   "requires": "Any (Lances C) (Lances B)",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": 5,

@@ -2,6 +2,7 @@
   "name": "Vindictive",
   "description": "Apply @{condition:Vulnerable:[Vulnerable]} to target and adjacent foes for 1 turn.",
   "requires": "Guile A",
+  "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

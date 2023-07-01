@@ -1,7 +1,7 @@
 {
     "name": "Lucky Seven",
     "description": "At the beginning of this unit's phase, roll 1d7 and apply the corresonding condition to this unit for one turn: 1=@{const:gbp:[Str +5]}, 2=@{const:gbp:[Mag +5]}, 3=@{const:gbp:[Spd +5]}, 4=@{const:gbp:[Def +5]}, 5=@{const:gbp:[Res +5]}, 6=@{const:gbp:[Hit +5]}, 7=@{const:gbp:[Avo +5]}. If this unit has more than once instance of @{ability::Lucky Seven} equipped, the effect of each instance beyond the first becomes: Once per turn, at the beginning of this units phase, this unit may reroll its Lucky Seven die result.",
-    "requires": "All (Sword B+) (Faith B+)",
+    "requires": "All (Swords B+) (Faith B+)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

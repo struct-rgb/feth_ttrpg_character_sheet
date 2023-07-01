@@ -1,7 +1,7 @@
 {
   "name": "Bolting",
   "type": "Reason",
-  "description": "A lightning spell; no special effects.",
+  "description": "A lightning spell; @{const:ap:AP = 1}.",
   "requires": "Reason A",
   "rank": "A",
   "price": 3820,

@@ -2,6 +2,7 @@
   "name": "Lightning Axe",
   "description": "Deals magic-based damage. Mt +30% of user's Res.",
   "requires": "Any (Axes C) (Axes B)",
+  "compatible": "Skill Axes",
   "mttype": "mag",
   "modifiers": {
     "mt": "fill scale(4, [Res], unit|total|res)",

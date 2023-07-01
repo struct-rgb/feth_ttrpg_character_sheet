@@ -2,6 +2,7 @@
   "name": "Monster Breaker",
   "description": "Effective against Monster units.",
   "requires": "Any (Axes C) (Axes B)",
+  "compatible": "Skill Axes",
   "mttype": "else",
   "modifiers": {
     "mt": 9,

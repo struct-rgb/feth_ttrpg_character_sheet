@@ -39,6 +39,10 @@
         "mov": 3
     },
 
+    "default_base": "Medium",
+    "default_preset": "Power/Balance/Balance",
+    "default_mainarm": "Guile",
+    "default_sidearm": "Lightning",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": ["rework"],
     "hidden": false

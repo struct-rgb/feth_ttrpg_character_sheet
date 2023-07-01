@@ -1,27 +1,27 @@
 {
     "name": "Witch Hunter",
-    "description": "A fighter that uses Swords and Bows to defeat mages",
+    "description": "A fighter that uses a variety of weapons to defeat mages",
     "type": ["Infantry", "Martial"],
     "tier": "Starting",
-    "requires": "Any (Swords D) (Bows D)",
-    "abilities": ["Hit/Avo +10", "Level 10 Mov +1"],
+    "requires": "Any (Reason D) (Axe D) (Bow D))",
+    "abilities": ["Trapper", "Level 10 Mov +1"],
     "arts": [],
     "growths": {
         "hp": 20,
         "str": 10,
         "mag": 10,
-        "dex": 20,
+        "dex": 15,
         "spd": 10,
         "def": 5,
         "res": 20,
-        "cha": 10
+        "cha": 15
       },
     "modifiers": {
         "hp": 3,
         "str": 2,
-        "mag": 1,
+        "mag": 2,
         "dex": 3,
-        "spd": 2,
+        "spd": 3,
         "def": 1,
         "res": 3,
         "cha": 1,
@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Witch Hunter",
+    "default_preset": "Speed/Resistance/Balance",
+    "default_mainarm": "Swords",
+    "default_sidearm": "Bows",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

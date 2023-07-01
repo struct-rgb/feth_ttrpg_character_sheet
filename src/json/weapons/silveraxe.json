@@ -2,8 +2,8 @@
   "name": "Silver Axe",
   "type": "Axes",
   "description": "No special effect. Costs 725G to upgrade from Steel Axe.",
-  "requires": "Axes C",
-  "rank": "C",
+  "requires": "Axes B",
+  "rank": "B",
   "price": 2175,
   "mttype": "str",
   "modifiers": {

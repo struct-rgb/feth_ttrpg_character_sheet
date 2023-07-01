@@ -4,20 +4,19 @@
 /* global AttributeCell */
 
 /* global Battalion */
+/* global Adjutant */
+
+/* global Expression */
+
+/* global Grade */
 
 class Battalions {
 
-	static DEFAULT = "Blank Battalion";
+	static LP_BONUS = [0, 2, 6, 8, 12, 16, 24, 32, 40, 48, 64, 80];
 
-	static CELL_OPTIONS = {
-		value : 0,
-		shown : "0",
-		edit  : true,
-	};
+	constructor(sheet) {
 
-	constructor(stats, sheet) {
-
-		this.sheet    = sheet;
+		this.sheet = sheet;
 
 		this._name = element("input", {
 			class : ["simple-border"],
@@ -43,122 +42,254 @@ class Battalions {
 					this.template      = this._select.value;
 				}),
 			},
+			content : definitions.battalions.map(
+				(object) => element("option", {
+					attrs   : {value: object.name},
+					content : object.name,
+				})
+			)
 		});
 
-		for (let template of definitions.battalions) {
-			const option       = element("option");
-			option.value       = template.name;
-			option.textContent = template.name;
-			this._select.appendChild(option);
-		}
+		this._aselect = element("select", {
+			class   : ["simple-border"],
+			attrs   : {
+				value   : Adjutant.DEFAULT,
+				oninput : (() => {
+					this.adjutant = this._aselect.value;
+				}),
+			},
+			content : definitions.adjutants.map(
+				(object) => element("option", {
+					attrs   : {value: object.name},
+					content : object.name,
+				})
+			)
+		});
 
-		this._template     = Battalion.get(Battalions.DEFAULT);
+		this._rank  = new AttributeCell({
+			edit    : true,
+			value   : 0,
+			shown   : "E",
+			min     : 0,
+			max     : 11,
+			root    : "span",
+			trigger : ((base) => {
+				let sum = base + Grade.toNumber(this.template.rank);
+
+				this._lp.refresh();
+
+				return Grade.fromNumber(Math.max(Math.min(sum, 12), 0));
+			}),
+		});
+
+		this._price = new AttributeCell({
+			edit    : true,
+			after   : element("sub", "G"),
+			value   : 0,
+			shown   : "0",
+			min     : 0,
+			max     : 100000,
+			step    : 1,
+			root    : "span",
+			trigger : ((base) => {
+				let sum = base + (this.template.price || 0);
+
+				// for (let attribute of this.attributes.getActive()) {
+				// 	sum += Attribute.get(attribute).price;
+				// }
+
+				return sum;
+			}),
+		});
 
 		this._level = new AttributeCell({
 			edit    : true,
+			// after   : element("sub", "G"),
 			value   : 1,
 			shown   : "1",
 			min     : 1,
-			max     : 5,
-			trigger : (x => x),
-		});
-
-		this._endurance_meter = element("meter", {
-			class: ["short-meter"],
-			attrs: {
-				min   : 0,
-				max   : 3,
-				value : 3,
-			},
-		});
-
-		this._endurance_input = element("input", {
-			class: ["hidden-field", "simple-border"],
-			attrs: {
-				type    : "number",
-				min     : 0,
-				max     : 3,
-				value   : 3,
-				oninput : (() => {
-					this._endurance_meter.value = this._endurance_input.value;
-				}),
-			},
-		});
-
-		const tbody = element("tbody", element("tr", [
-			element("th", "Level"), this._level.root, element("td", {
-				content : [
-					uniqueLabel(
-						this._endurance_meter,
-						this._endurance_input,
-					),
-					this._endurance_input,
-				],
-				attrs   : {colSpan: 2},
+			max     : 100,
+			step    : 1,
+			root    : "span",
+			trigger : ((base) => {
+				this.refresh();
+				return base;
 			}),
-		]));
+		});
 
 		this.stats = {};
 
-		for (let j = 0; j < stats.length;) {
-			const tr   = document.createElement("tr");
-			for (let i = 0; i < 2; ++i) {
-				tr.appendChild(element("th", stats[j].toUpperCase()));
+		const lconf = {edit: true, root: "span", value: 0, shown: "0",  min: 0, max: 999, after : ","};
+		const cconf = {edit: true, root: "span", value: 0, shown: "0",  min: 0, max: 999};
+		const lconfs = {edit: false, root: "span", value: 0, shown: "0",  min: 0, max: 999, after : ","};
+		const cconfs = {edit: false, root: "span", value: 0, shown: "0",  min: 0, max: 999};
 
-				const name = stats[j];
+		const makefn = (name) => {
+			const baseFunction = new Expression.Env(
+				Expression.Env.RUNTIME, this.sheet.definez
+			).func(`battalion|total|${name}`);
 
-				const base = new AttributeCell(Battalions.CELL_OPTIONS, (base) => {
-					this.sheet.stats.refresh();
-					return base + this._template.modifier(name);
-				});
+			return ((base) => {
+				this.sheet.stats.refreshSecondary();
+				return baseFunction();
+			});
+		};
 
-				this.stats[stats[j]] = base;
-				tr.appendChild(base.root);
-				++j;
-			}
-			tbody.appendChild(tr);
-		}
+		this._lp = new AttributeCell({
+			edit    : false,
+			// after   : element("sub", "G"),
+			value   : 0,
+			shown   : "0",
+			min     : 0,
+			max     : 1000,
+			step    : 1,
+			root    : "span",
+			trigger : makefn("lp"),
+		});
 
-		this._info    = element("div");
+		const defsec = (key, config, fn) => {
+			const cell      = new AttributeCell(config, fn);
+			this.stats[key] = cell;
+			return cell;
+		};
 
-		this._details = element("details", [
-			element("summary", "Details"),
-			this._info,
+		// const wide   = (title, key, trig) => {
+		// 	return element("tr", [
+		// 		element("th", title),
+		// 		element("td", {
+		// 			class   : ["center"],
+		// 			attrs   : {colSpan: 2},
+		// 			content : defsec(key, cconf, trig).root,
+		// 		}),
+		// 	]);
+		// };
+
+		const dual = (title, key1, key2) => {
+			return element("tr", [
+				element("th", title),
+				element("td", {
+					class   : ["center", "padded-cell-left"],
+					content : defsec(key1, lconf, makefn(key1)).root,
+				}),
+				element("td", {
+					class   : ["center", "padded-cell-right"],
+					content : defsec(key2, cconf, makefn(key2)).root
+				}),
+			]);
+		};
+
+		const duals = (title, key1, key2) => {
+			return element("tr", [
+				element("th", title),
+				element("td", {
+					class   : ["center", "padded-cell-left"],
+					content : defsec(key1, lconfs, makefn(key1)).root,
+				}),
+				element("td", {
+					class   : ["center", "padded-cell-right"],
+					content : defsec(key2, cconfs, makefn(key2)).root
+				}),
+			]);
+		};
+
+		const wideth = (content) => {
+			return element("tr",
+				element("th", {
+					content : content,
+					attrs   : {colSpan: 3},
+				})
+			);
+		};
+
+		const second = element("tbody", [
+			element("tr", [
+				element("th", "Level"),
+				element("td", {
+					class   : ["center"],
+					attrs   : {colSpan: 2}, 
+					content : this._level.root
+				}),
+			]),
+			element("tr", [
+				element("th", "Leadership"),
+				element("td", {
+					class   : ["center"],
+					attrs   : {colSpan: 2}, 
+					content : this._lp.root
+				}),
+			]),
+			dual("Disc/Brav", "disc", "brav"),
+			dual("Pres/Strc", "pres", "strc"),
+			duals("Auto/Cap", "auto", "cap"),
+			element("tr", [
+				element("th", "Range"),
+				element("td", {
+					attrs   : {colSpan: 2},
+					class   : ["center", "padded-cell"],
+					content : [
+						defsec("minrng", cconfs, makefn("minrng")).root,
+						element("span", " - ", "computed"),
+						defsec("maxrng", cconfs, makefn("maxrng")).root,
+					],
+				}),
+			]),
+			wideth(element("hr")),
+			duals("Atk/Br", "atk", "br"),
+			duals("EP/GCost", "ep", "gcost"),
+			duals("GMt/GHit", "gmt", "ghit"),
+			element("tr", [
+				element("th", "GRange"),
+				element("td", {
+					attrs   : {colSpan: 2},
+					class   : ["center", "padded-cell"],
+					content : [
+						defsec("gminrng", cconfs, makefn("gminrng")).root,
+						element("span", " - ", "computed"),
+						defsec("gmaxrng", cconfs, makefn("gmaxrng")).root,
+					],
+				}),
+			]),
+			wideth(element("hr")),
+			element("tr", [
+				element("th", "Rank"),
+				element("td", {
+					class   : ["center"],
+					attrs   : {colSpan: 2}, 
+					content : this._rank.root
+				}),
+			]),
+			element("tr", [
+				element("th", "Price"),
+				element("td", {
+					class   : ["center"],
+					attrs   : {colSpan: 2},
+					content : this._price.root,
+				}),
+			]),
 		]);
+
+		this._template = Battalion.get(Battalions.DEFAULT);
+		this._adjutant = Adjutant.get(Adjutant.DEFAULT);
 
 		this.root = element("div", [
 			uniqueLabel("Battalion Name", this._name), element("br"),
 			this._name, element("br"),
 
 			uniqueLabel("Template", this._select), element("br"),
-			this._select, element("br"), element("br"),
+			this._select, element("br"),
 
-			this._details,
+			uniqueLabel("Adjutant", this._aselect), element("br"),
+			this._aselect, element("br"), element("br"),
 
-			element("table", tbody, "battalion-table"),
+			element("details", [
+				element("summary", element("label", "Abilities")),
+			]),
+
+			element("details", [
+				element("summary", element("label", "Statistics")),
+				element("table", second, "battalion-table"),
+			]),
 		]);
-	}
-
-	get(stat) {
-		if (!(stat in this.stats)) return 0;
-		return this.stats[stat].value + this._template.modifier(stat);
-	}
-
-	get level() {
-		return Number(this._level.value);
-	}
-
-	set level(value) {
-		this._level.value = value;
-	}
-
-	get endurance() {
-		return Number(this._endurance_input.value);
-	}
-
-	set endurance(value) {
-		this._endurance_input.value = value;
-		this._endurance_meter.value = value;
 	}
 
 	get name() {
@@ -168,16 +299,11 @@ class Battalions {
 	set name(value) {
 		this._name.value = value;
 
-		/* TODO find better way to do this */
 		const activeID = this.sheet.bb.category.getActive();
 		if (activeID === null) return;
 
 		const element = this.sheet.bb.category.elements.get(activeID);
 		element.title = this.name;
-	}
-
-	get description() {
-		return this._template.name;
 	}
 
 	get template() {
@@ -189,69 +315,48 @@ class Battalions {
 		this._template     = Battalion.get(value);
 		this._select.value = value;
 
-		for (let stat in this.stats) {
-			this.stats[stat].refresh();
-		}
+		this.refresh();
 
-		/* TODO find better way to do this */
 		const activeID = this.sheet.bb.category.getActive();
 		if (activeID === null) return;
 
 		const elemenn       = this.sheet.bb.category.elements.get(activeID);
-		elemenn.description = this.description;
+		elemenn.description = this.body();
+	}
 
-		this._info.remove();
+	get adjutant() {
+		return this._adjutant;
+	}
 
-		const b = this._template;
-		const g = this._template.gambit;
-		const p = element("div");
+	set adjutant(value) {
+		this._adjutant = Adjutant.get(value);
+		this.refresh();
+	}
 
-		const text = [
-			["strong", b.name],
-			["br"],
-			["em", `${b.rarity} ${b.type} Battalion`],
-			["br"],
-			["em", `(${b.requires} - Costs ${b.price})`],
-			["br"], ["br"],
-			["strong", b.gambit.title()],
-			["br"],
-			["em", 
-				(g.higherMight()
-					? "Might: " + g.higherMight() + ", "
-					: "")
-				+ "Hit: " + g.modifier("hit") + ", "
-				+ "Uses: " + g.modifier("uses")
-			],
-			["br"],
-			["em",
-				"Range: "
-					+ (g.modifier("minrng") == g.modifier("maxrng")
-						? g.modifier("minrng")
-						: g.modifier("minrng") + "-" + g.modifier("maxrng"))
-				+ " (" + g.shape + ")"
-			],
-			["br"], ["br"],
-			["div", g.description],
-		];
+	get level() {
+		return this._level.value;
+	}
 
-		for (let line of text) {
-			p.appendChild(element(...line));
+	get rank() {
+		return this._rank.value;
+	}
+
+	refresh() {
+		for (let stat in this.stats) {
+			this.stats[stat].refresh();
 		}
-
-		this._info = p;
-		this._details.appendChild(p);
 	}
 
 	import(battalion) {
 
 		this.name        = battalion.name;
 		this.template    = battalion.template;
-		this.endurance   = battalion.endurance;
 
 		for (let stat in battalion.statistics) {
 			this.stats[stat].value = battalion.statistics[stat];
 		}
 
+		this.refresh();
 	}
 
 	export() {
@@ -265,22 +370,34 @@ class Battalions {
 		return {
 			name        : this.name,
 			template    : this.template.name,
-			endurance   : this.endurance,
 			statistics  : stats,
 		};
 	}
 
 	clear(preset) {
 
-		this.name        = preset || Battalions.DEFAULT;
-		this.template    = preset || Battalions.DEFAULT;
-		this.endurance   = 3;
+		this.name        = preset || Battalion.DEFAULT;
+		this.template    = preset || Battalion.DEFAULT;
 
 		for (let stat in this.stats) {
 			this.stats[stat].value = 0;
 		}
 	}
 
+
+	/* builtable display */
+
+	getTitle(object) {
+		return object.name;
+	}
+
+	getBody(object) {
+		return element("span", object.template || object.description);
+	}
+
+	body() {
+		return element("span", this._template.name);
+	}
 }
 
 /* exported Battalions */

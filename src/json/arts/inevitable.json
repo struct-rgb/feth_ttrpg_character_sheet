@@ -2,6 +2,7 @@
   "name": "Inevitable",
   "description": "Hit +20. This metamagic ability can be used with another one.",
   "requires": "Guile D",
+  "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

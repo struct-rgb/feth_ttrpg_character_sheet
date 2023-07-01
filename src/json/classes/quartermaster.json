@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Apothecary",
+  "default_preset": "Power/Balance/Luck",
+  "default_mainarm": "Axes",
+  "default_sidearm": "Swords",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

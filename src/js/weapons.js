@@ -4,10 +4,18 @@
 /* global uniqueLabel */
 /* global tooltip */
 /* global Version */
+/* global Toggle */
+/* global hitip */
+/* global TagSetWidget */
+/* global ModWidget */
+/* global capitalize */
+/* global delimit */
+/* global wrap */
 
 /* global CategoryModel */
 /* global MultiActiveCategory */
 
+/* global Feature */
 /* global Weapon */
 /* global Attribute */
 /* global AttackFeature */
@@ -16,10 +24,7 @@
 
 /* global Expression */
 
-
 class Weapons {
-
-	static DESCRIPTION = "Write any additional information here.";
 
 	constructor(sheet) {
 		this.root  = document.createElement("div");
@@ -46,20 +51,6 @@ class Weapons {
 			this.refresh();
 		});
 
-		// this._inInventory = element("input", {
-		// 	class: ["simple-border"],
-		// 	attrs: {
-		// 		type     : "checkbox",
-		// 		onchange : (() => {
-		// 			const activeID = this.sheet.wb.category.getActive();
-		// 			if (activeID === null) return;
-
-		// 			const element = this.sheet.wb.category.elements.get(activeID);
-		// 			element.description = this.body();
-		// 		})
-		// 	}
-		// });
-
 		this._inInventory = new Toggle("In Inventory?", false, () => {
 			const activeID = this.sheet.wb.category.getActive();
 			if (activeID === null) return;
@@ -67,7 +58,6 @@ class Weapons {
 			const element = this.sheet.wb.category.elements.get(activeID);
 			element.description = this.body();
 		});
-
 
 		this._select = this._sf._select;
 
@@ -104,11 +94,14 @@ class Weapons {
 
 		this._description = element("textarea", {
 			class   : ["simple-border"],
-			content : Weapons.DESCRIPTION,
+			content : "",
+			attrs   : {
+				placeholder : "Write any additional information here...",
+				onchange    : (() => this.refresh()),
+			}
 		});
 
-		this._dt = element("dt", element("span", this._template.title()));
-		this._dd = element("dd", element("span", this._template.body()));
+		this._preview = element("div");
 
 		this.stats = {};
 
@@ -262,6 +255,55 @@ class Weapons {
 			]),
 		]);
 
+		/* I won't allow these to be added to weapons so they can rot here */
+		this._WeIgHt = dual("Doubles/Doubled", "doubles", "doubled");
+		/* --------------------------------------------------------------- */
+
+		this._adder   = new hitip.Adder(this._description, () => this.refresh());
+		this._replace = new Toggle("Replace original?", false, () => {});
+
+		this._refr    = element("input", {
+			class : ["simple-border"],
+			attrs : {
+				type    : "button",
+				value   : "Refresh",
+				onclick : (() => this.refresh()),
+			}
+		});
+
+		const delrefr = () =>  this.refresh();
+		this._template_tags = new TagSetWidget("Template", delrefr, true);
+		this._custom_tags   = new TagSetWidget("Custom", delrefr, true);
+
+		const defs = (...args) => {
+			if (args.length % 2 > 0) {
+				throw new Error("definitions list must have even lenth");
+			}
+
+			const dl = element("dl");
+
+			for (let i = 0; i < args.length; ++i) {
+				const tag    = args[i]; 
+				const button = element("input", {
+					class : ["simple-border"],
+					attrs : {
+						value   : tag,
+						type    : "button",
+						onclick : (() => {
+							this._custom_tags.add(tag);
+							this.refresh();
+						})
+					}
+				});
+
+				dl.appendChild(element("dt", button));
+				++i;
+				dl.appendChild(element("dd", args[i]));
+			}
+
+			return dl;
+		};
+
 		this.root = element("div", [
 			uniqueLabel("Spell or Weapon Name", this._name), element("br"),
 			this._name, element("br"),
@@ -269,15 +311,20 @@ class Weapons {
 			uniqueLabel("Template", this._select), element("br"),
 			this._sf.root, element("br"), element("br"),
 
-			element("dl", [this._dt, this._dd]),
+			this._preview,
 
-			element("br"),
+			tooltip(this._refr, [
+				"Refresh the weapon preview."
+			].join("")),
 
 			tooltip(this._inInventory.root, [
 				"This only really affects what gets put into the blurb for ",
 				"now, but in the future it might affect weapons with ",
 				"attributes that give you penalties for holding them."
 			].join("")),
+
+			element("br"), 
+			element("br"), 
 
 			element("details", [
 				element("summary", element("label", "Attributes")),
@@ -286,7 +333,13 @@ class Weapons {
 
 			element("details", [
 				element("summary", element("label", "Custom Description")),
+				this._adder.root,
 				this._description,
+				tooltip(this._replace.root, [
+					"If checked, replaces the template weapon's original ",
+					"description. If not, appends the custom description to ",
+					"the end of the template weapon's original description."
+				].join(""))
 			]),
 
 			element("details", [
@@ -294,17 +347,50 @@ class Weapons {
 				element("table", second, "battalion-table"),
 			]),
 
+			element("details", [
+				element("summary", element("label", "Custom Tags")),
+				this._template_tags.root, this._custom_tags.root,
+				element("p", wrap(
+					"You can add the following tags in order to change how ",
+					"this weapon generates macros:",
+				)),
+				defs(
+					"healing",
+					"Reduced macro might for healing calculation.",
+					"no might",
+					"Macro omits might calculation",
+					"no hit",
+					"Macro omits roll to hit.",
+					"no crit",
+					"Macro omits roll to crit.",
+					"no stats",
+					"Macro omits summary of unit's stats.",
+					"no cost",
+					"Macro omits TP and SP cost.",
+					"no triangle",
+					"Macro omits weapon triangle prompt.",
+				)
+			]),
+
 		], "center-pane");
 	}
 
 	fullInfo() {
 		return (
-			this._template.description + (
-				this.information != Weapons.DESCRIPTION
-					? " " + this.information
-					: ""
-			)
+			this._replace.checked
+				? this.information
+				: (
+					this._template.description + (
+						this.information
+							? " " + this.information
+							: ""
+					)
+				)
 		);
+	}
+
+	tagged(tag) {
+		return this._custom_tags.has(tag) || this._template_tags.has(tag);
 	}
 
 	get name() {
@@ -350,15 +436,6 @@ class Weapons {
 		this._template     = Weapon.get(value);
 		this._select.value = value;
 
-		this._dt.lastChild.remove();
-		this._dd.lastChild.remove();
-
-		this._dt.appendChild(element("span", this._template.title()));
-		this._dd.appendChild(element("span", this._template.body()));
-
-		// this._dt.data = this._template.title();
-		// this._dd.data = this._template.body();
-
 		this.refresh();
 
 		const activeID = this.sheet.wb.category.getActive();
@@ -366,6 +443,12 @@ class Weapons {
 
 		const elemenn       = this.sheet.wb.category.elements.get(activeID);
 		elemenn.description = this.body();
+
+		this._template_tags.clear();
+
+		for (let tag of this.template.tags) {
+			this._template_tags.add(tag, true);
+		}
 	}
 
 	get price() {
@@ -390,14 +473,35 @@ class Weapons {
 
 	set inInventory(value) {
 		this._inInventory.checked = value;
+
+		const activeID = this.sheet.wb.category.getActive();
+		if (activeID === null) return;
+
+		const element = this.sheet.wb.category.elements.get(activeID);
+		element.description = this.body();
+	}
+
+	get replaceInfo() {
+		return this._replace.checked;
+	}
+
+	set replaceInfo(value) {
+		this._replace.checked = value;
 	}
 
 	refresh() {
 		this._rank.refresh();
 		this._price.refresh();
+
 		for (let stat in this.stats) {
 			this.stats[stat].refresh();
 		}
+
+		if (this._preview.hasChildNodes()) {
+			this._preview.lastChild.remove();
+		}
+
+		this._preview.appendChild(this.preview());
 	}
 
 	import(weapon) {
@@ -407,10 +511,10 @@ class Weapons {
 		this.mttype      = weapon.mttype      || 0;
 		this.price       = weapon.price       || 0;
 		this.inInventory = weapon.inventory   || false;
+		this.replaceInfo = weapon.replace     || false;
 		this.template    = weapon.template    || Weapon.DEFAULT;
-		this.information = weapon.description || Weapons.DESCRIPTION;
+		this.information = weapon.description || "";
 		this.attributes.setState(weapon.attributes);
-		
 
 		for (let stat in weapon.modifiers) {
 			
@@ -418,6 +522,13 @@ class Weapons {
 			if (!(stat in this.stats)) continue;
 
 			this.stats[stat].value = weapon.modifiers[stat];
+		}
+
+		if (weapon.tags instanceof Array) {
+			this._custom_tags.clear();
+			for (let tag of weapon.tags) {
+				this._custom_tags.add(tag);
+			}
 		}
 
 		this.refresh();
@@ -442,22 +553,27 @@ class Weapons {
 			modifiers   : stats,
 			description : this.information,
 			inventory   : this.inInventory,
+			replace     : this.replaceInfo,
+			tags        : Array.from(this._custom_tags.keys())
 		};
 	}
 
 	clear(preset) {
 
-		this.attributes.clear();
-		this.inInventory = false;
-		this.name        = preset || Weapon.DEFAULT;
-		this.template    = preset || Weapon.DEFAULT;
-		this.information = Weapons.DESCRIPTION;
-		this.rank        = 0;
-		this.price       = 0;
 
 		for (let stat in this.stats) {
 			this.stats[stat].value = 0;
 		}
+
+		this.attributes.clear();
+		this.inInventory = false;
+		this.replaceInfo = false;
+		this.information = "";
+		this.rank        = 0;
+		this.price       = 0;
+		this.name        = preset || Weapon.DEFAULT;
+		this.template    = preset || Weapon.DEFAULT;
+		this._custom_tags.clear();
 	}
 
 	/* builtable display */
@@ -486,6 +602,142 @@ class Weapons {
 
 	/* blurb display */
 
+	preview(dead=false) {
+
+		let   star  = undefined;
+		const sheet = this.sheet;
+
+		function span(...args) {
+			return element("span", args);
+		}
+		
+		const mods  = [];
+		const env   =  new Expression.Env(
+			Expression.Env.RUNTIME, sheet.definez
+		);
+
+		function uimod(name, sign=false, dead=false) {
+
+			const dyn = env.read(`weapon|dynamic|${name}`);
+
+			/* it it's a number just give a static html */
+			if (!dyn) {
+
+				const num = env.read(`weapon|total|${name}`);
+
+				/* we don't care to display these */
+				if (num == 0) return 0;
+
+				return element("span", {
+					class   : ["computed"],
+					content : [(sign && num >= 0) ? "+" : "", String(num)],
+				});
+			}
+
+			/* made a modifier expression for this value */
+			const modifier = sheet.compiler.compile(`weapon|total|${name}`);
+
+			/* handle an expression by returning a ModWidget */
+			return (new ModWidget(modifier, sign, !dead)).root;
+		}
+
+		if ((star = this._price._trigger(this.price))) {
+			mods.push([
+				element("span", star, "computed"),
+				element( "sub",  "G", "computed"),
+			]);
+		}
+
+		if ((star = uimod("tpcost", false, dead))) {
+			mods.push([star, element("sub", "TP", "computed")]);
+		}
+
+		if ((star = uimod("spcost", false, dead))) {
+			mods.push([star, element("sub", "SP", "computed")]);
+		}
+
+		for (let key in this.stats) {
+
+			if (Feature.MODEXCLUDE.has(key)) {
+				continue;
+			}
+
+			/* weapons shouldn't modify this */
+			if (key == "doubles" || key == "doubled") {
+				continue;
+			}
+
+			if ((star = uimod(key, true, dead))) {
+				mods.push(span(capitalize(key), ":\xA0", star));
+			}
+		}
+
+		const min = env.read("weapon|total|minrng");
+		const max = env.read("weapon|total|maxrng");
+
+		if (min != max) {
+			const min = uimod("minrng", false, dead);
+			const max = uimod("maxrng", false, dead);
+			mods.push(span("Range:\xA0", min, "\xA0-\xA0", max));
+		} else if (min != 0) {
+			mods.push(span("Range:\xA0", uimod("maxrng", false, dead)));
+		}
+
+		if ((star = uimod("tp", false, dead))) {
+			mods.push(span("Max TP:\xA0", star));
+		}
+
+		if ((star = uimod("sp", false, dead))) {
+			mods.push(span("Max SP:\xA0", star));
+		}
+
+		const rank  = this._rank._trigger(this.rank);
+		const attrs = Array.from(this.attributes.getActive());
+
+		let link = undefined;
+
+		try {
+			link = hitip.link(this.fullInfo());
+		} catch (error) {
+			console.log(error);
+			return element("div", [
+				element("dt", "Error Parsing Custom Description"),
+				element("dd", String(error)),
+			]);
+		}
+
+		const predicate = (
+			this.template.type
+				? `${this.template.type} ${rank}`
+				: "None"
+		);
+
+		const dd = element("dd", [
+			delimit(" ", mods), mods.length ? element("br") : "",
+			link,
+			attrs.length ? element("div", [
+				element("strong", "Attributes"),
+				element("ul",
+					attrs.map(a => element("li",
+						tooltip(
+							element("span", Attribute.get(a).name, "datum"),
+							Attribute.get(a).body(true)
+						)
+					))
+				)
+			]) : "",
+			element("div",
+				hitip.toul(this.sheet.predicator.compile(predicate), dead)
+			)
+		]);
+
+		const dt = element("dt", [
+			this.name, " (", this.template.type, " ", rank, ")"
+		]);
+
+		return element("div", [dt, dd]);
+	}
+
 	blurb() {
 
 		let star = undefined;
@@ -495,7 +747,9 @@ class Weapons {
 		}
 
 		const mods = [];
-		const env  = new Expression.Env(Expression.Env.RUNTIME, sheet.definez);
+		const env  = new Expression.Env(
+			Expression.Env.RUNTIME, sheet.definez
+		);
 
 		if ((star = this._price._trigger(this.price))) {
 			mods.push(`${star}G`);
@@ -512,6 +766,11 @@ class Weapons {
 		for (let key in this.stats) {
 
 			if (Feature.MODEXCLUDE.has(key)) {
+				continue;
+			}
+
+			/* weapons shouldn't modify this */
+			if (key == "doubles" || key == "doubled") {
 				continue;
 			}
 

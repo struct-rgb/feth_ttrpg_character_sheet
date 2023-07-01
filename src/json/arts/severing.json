@@ -1,7 +1,8 @@
 {
   "name": "Severing",
-  "description": "Do not pay TP this phase, instead apply @{condition:Severed:[Severed]} to this unit after combat, where X is the TP that would be paid. This metamagic ability can be used with another one.",
+  "description": "Do not pay TP for this spell, instead apply @{condition:Severed:[Severed]} to this unit after combat, where X is the TP that would be paid. This metamagic ability can be used with another one.",
   "requires": "Guile B",
+  "compatible": "Skill Guile",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

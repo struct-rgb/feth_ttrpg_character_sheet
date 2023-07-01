@@ -13,14 +13,20 @@
 /* global Version */
 /* global hilight */
 /* global SwapText */
+/* global Grade */
+/* global uniqueLabel */
+/* global BigButton */
 
 /* global Expression */
+/* global Polish */
 
 /* global Macros */
 
 /* global Notebook */
 
 /* global PointBuy */
+
+/* global Presetter */
 
 /* global Ability */
 /* global Class */
@@ -31,6 +37,9 @@
 /* global AttackFeature */
 /* global Condition */
 /* global Tile */
+/* global Battalion */
+/* global Adjutant */
+/* global Preset */
 
 /* global Legacy */
 
@@ -43,6 +52,8 @@
 /* global MultiActiveCategory */
 /* global SingleActiveCategory */
 
+/* global Battalions */
+
 class Theme {
 
 	static list = [
@@ -53,7 +64,7 @@ class Theme {
 		new Theme("Golden Fear", "Boneless mode but yellow.", "./src/css/golden_fear.css"),
 		new Theme("Golden Egg", "Serious attempt at a gold theme.", "./src/css/golden_egg.css"),
 		new Theme("Document", "The most minimal theme.", "./src/css/document.css"),
-		new Theme("Toast", "Designed by Toast, for Toast.", "./src/css/toast.css")
+		new Theme("Toast", "Designed by Toast, for Toast.", "./src/css/toast.css"),
 	];
 
 	constructor(name, description, stylesheet) {
@@ -61,28 +72,6 @@ class Theme {
 		this.description = description;
 		this.stylesheet  = stylesheet;
 	}
-
-}
-
-class BigButton {
-
-	constructor(text, onclick) {
-
-		onclick = onclick || (() => console.log(`BigButton ${text} clicked!`));
-		this.onclick = onclick;
-
-		this.idno          = uniqueID();
-		this.label         = element("label", text);
-		this.label.htmlFor = this.idno;
-		this.label.classList.add("custom-file-input", "simple-border");
-
-		this.input         = element("input");
-		this.input.id      = this.idno;
-		this.input.type    = "button";
-		this.input.onclick = onclick;
-		this.input.classList.add("no-display");
-	}
-
 }
 
 class AutosaveConfiguration {
@@ -228,14 +217,6 @@ class Buildables {
 
 		let button = undefined;
 
-		// /* Clear button */
-		// button         = element("input");
-		// button.type    = "button";
-		// button.value   = "Clear";
-		// button.onclick = options.clear || voidfn;
-		// button.classList.add("simple-border");
-		// this._clear      = button;
-
 		/* Save button */
 		this._save     = new BigButton("Save", () => void this.save());
 		this.root.appendChild(tooltip(this._save.label,
@@ -315,7 +296,7 @@ class Buildables {
 		const model   = new CategoryModel(options.name, this.map, getTitle, getBody, () => []);
 		this.category = new SingleActiveCategory(model, {
 			name        : options.name,
-			empty       : options.empty || "If you're reading this, something has gone wrong",
+			empty       : options.empty || "Something went wrong!",
 			selectable  : false,
 			reorderable : true,
 			removable   : true,
@@ -330,7 +311,6 @@ class Buildables {
 			onremove    : ((category, key) => void this.remove(key)),
 			parent      : this.root,
 		});
-
 	}
 
 	add() {
@@ -351,8 +331,6 @@ class Buildables {
 		this.activeID = activeID;
 
 		this.model.clear(this.select.value);
-
-		// this._new.onclick.call();
 	}
 
 	get active() {
@@ -360,7 +338,11 @@ class Buildables {
 	}
 
 	change(key) {
-		this.map.set(this.activeID, this.model.export());
+		
+		/* Guard against a stale activeID in importAll */
+		if (this.map.has(this.activeID))
+			this.map.set(this.activeID, this.model.export());
+
 		this.activeID = key;
 		this.category.toggleActive(key);
 
@@ -402,6 +384,7 @@ class Buildables {
 	}
 
 	clear() {
+		this.map.clear();
 		this.category.clear();
 		this.model.clear();
 	}
@@ -431,7 +414,7 @@ class Buildables {
 		this.category.clear();
 
 		for (let element in elements) {
-			this.map.set(element, elements[element]);
+			this.map.set(element, this._updatefn(elements[element]));
 			this.category.add(element);
 		}
 
@@ -477,81 +460,6 @@ class Buildables {
 }
 
 /**
- * Class representing a skill grade
- */
-class Grade {
-
-	static list = [
-		new Grade("E",  0,   0), new Grade("E+",  1,   1),
-		new Grade("D",  2,   2), new Grade("D+",  3,   4),
-		new Grade("C",  4,   8), new Grade("C+",  5,  16),
-		new Grade("B",  6,  36), new Grade("B+",  7,  50),
-		new Grade("A",  8,  64), new Grade("A+",  9,  80),
-		new Grade("S", 10, 150), new Grade("S+", 11, 200),
-		new Grade("X", 12, 201),
-	];
-
-	static toNumber = (function () {
-		const map = new Map(Grade.list.map((grade) => [grade.name, grade.number]));
-		return (name) => map.get(name);
-	})();
-
-	static fromNumber = (function () {
-		const map = new Map(Grade.list.map((grade) => [grade.number, grade.name]));
-		return (number) => map.get(number);
-	})();
-
-	static budThreshold     = 32;
-	static budThresholdWeak = 25;
-
-	/**
-	 * Converts a number of points to the corresponding letter grade
-	 * @static
-	 * @param {number} points - number of points
-	 * @returns {string} the letter grade
-	 */
-	static for(points, skill, aptitude) {
-		const final = points * Grade.multiplier(points, skill, aptitude);
-		return Grade.list.reduce((a, b) => b.points > final ? a : b).name;
-	}
-
-	static multiplier(points, skill, aptitude) {
-		return (
-			(skill == aptitude.budding
-				? (skill == aptitude.weakness
-					? (points >= Grade.budThresholdWeak
-						? 2.0
-						: 0.5)
-					: (points >= Grade.budThreshold
-						? 2.0
-						: 1.0))
-				: (skill == aptitude.talent
-					? 2.0
-					: (skill == aptitude.weakness
-						? 0.5
-						: 1.0)))
-		);
-	}
-
-	static TPTABLE = [
-		[15, 0, 0, 1, 2, 1, 2, 1, 2, 1, 10, 9],
-		[ 0, 0, 0, 0, 0, 1, 2, 1, 2, 1,  2, 1],
-		[ 0, 0, 0, 0, 0, 0, 0, 1, 2, 1,  2, 1],
-	];
-
-	/**
-	 * Create a grade
-	 * @param {string} name - letter for the grade
-	 * @param {number} points - minimum number of points to acheive the grade
-	 */
-	constructor(name, number, points) {
-		this.name   = name;
-		this.number = number;
-		this.points = points;
-	}
-}
-
-/**
  * Class representing the main body of the sheet.
  */
 class Sheet {
@@ -562,18 +470,28 @@ class Sheet {
 	 */
 	constructor(data) {
 
-		// main definition data object
+		/* main definition data object */
 		this.data = data;
 
 		this.macros = new Macros.UserInterface(this);
-		document.getElementById("macro-builder").appendChild(this.macros.root);
 
 		/* prominently display the version data */
-		const version = document.getElementById("version");
-		version.textContent = "Version " + Version.CURRENT.toString();
+		const version = element("strong", [
+			element("span", `Version ${Version.CURRENT.toString()} (`),
+			element("a", {
+				attrs: {"href": "./README.html"},
+				content: "Changelog"}
+			), ")"
+		]);
+
+		/* general layout divs */
+		const right_section = element("div", version, "span-4");
+		const skill_section = element("div", {class: ["span-1"]});
+		const stats_section = element("div", {class: ["span-2"]});
+		const class_section = element("div");
+		const equip_section = element("div");
 
 		const context  = {};
-
 		const macros   = (function(templates) {
 
 			const defs = {};
@@ -620,20 +538,31 @@ class Sheet {
 
 		const compiler = new Expression.Compiler(context, macros);
 		this.compiler  = compiler;
-		this.context(context);
+		this.context(context, this.macros.varopts);
 		this.definez   = context;
 
-		// set the lookup tables for each feature class
-		for (let each of [Ability, Weapon, CombatArt, Equipment, Class, Attribute, Condition, Tile]) {
-			each.setLookupByName(data, compiler);
+		const predicates = {};
+		const predicator = new Polish.Compiler(predicates, new Set());
+		this.predicator  = predicator;
+		this.predicates(predicates);
+		this.predicatez = predicates;
+
+		data.presets = Presetter.generate_presets();
+
+		/* set lookup tables for each feature class */
+		for (let each of [
+			Ability, Weapon, CombatArt, Equipment, Class, Attribute, Condition,
+			Tile, Battalion, Adjutant, Preset
+		]) {
+			each.setLookupByName(data, compiler, predicator);
 		}
 
 		/* populate skills, stats, and growths */
 		this.stats = new Stats(data.stats.names, this);
-		document.getElementById("stats-section").appendChild(this.stats.root);
+		stats_section.appendChild(this.stats.root);
 
 		this.skills = new Skills.UserInterface(data.skills, this);
-		document.getElementById("skill-section").appendChild(this.skills.root);
+		skill_section.appendChild(this.skills.root);
 
 		/* create callbacks for category events */
 		const refresh = (category, key) => {
@@ -654,7 +583,7 @@ class Sheet {
 		const myFeatureBody  = ((feature) => feature.body());
 		const myTriggers     = ((feature) => feature.dependancies);
 
-		let   sidebook = new Notebook(document.getElementById("equip-pane"));
+		let   sidebook = new Notebook(equip_section);
 		let   inner    = new Notebook();
 
 		this.tabs.assign = sidebook;
@@ -794,42 +723,34 @@ class Sheet {
 		sidebook.add("Equipment", this.equipment.known.root);
 
 		/* battalions tab for test */
-		this.battalion  = this.stats.battalion;
+		this.battalion  = new Battalions(this);
 
 		sidebook.active = "Abilities";
 
 		/* set up the characters and options tabs */
 
-		let notebook = new Notebook(document.getElementById("right-pane"));
+		let notebook = new Notebook(right_section);
 		this.tabs.main = notebook;
 
-		const buildnb = new Notebook([notebook.root, document.getElementById("main-tabs")]);
+		const buildnb = new Notebook([notebook.root, class_section]);
 		
 		this.character = new Characters(this);
 
 		const character_bb = new Buildables({
-			name      : "characters",
-			empty     : "If you're reading this, something has gone wrong",
-			templates : data.presets.map(x => x.name),
-			model     : this.character,
-			update    : Legacy.convert,
+			name       : "characters",
+			empty      : "If you're reading this, something has gone wrong",
+			// templates  : data.presets.map(x => x.name),
+			model      : this.character,
+			sortfilter : Preset.select(),
+			update     : Legacy.convert,
 		});
 
-		this.cb = character_bb;
-
-		buildnb.add("Characters", [character_bb.root, this.character.root]);
-
-		// const battalion_bb = new Buildables({
-		// 	name      : "battalions",
-		// 	empty     : "Not leading a battalion",
-		// 	templates : data.battalions.filter(x => !x.hidden).map(x => x.name),
-		// 	model     : this.battalion,
-		// });
-
-		// this.bb = battalion_bb;
-
-		/* TODO figure out what to do with battalions for patch #5 */
-		// buildnb.add("Battalions", [battalion_bb.root, btl]);
+		const battalion_bb = new Buildables({
+			name      : "battalions",
+			empty     : "Not leading a battalion",
+			templates : data.battalions.filter(x => !x.hidden).map(x => x.name),
+			model     : this.battalion,
+		});
 
 		this.weaponz = new Weapons(this);
 
@@ -841,22 +762,27 @@ class Sheet {
 			sortfilter : Weapon.select(),
 		});
 
+		this.cb = character_bb;
+
+		buildnb.add("Characters", [character_bb.root, this.character.root]);
+
 		this.wb = weapon_bb;
 
 		buildnb.add("Weapons & Spells", [weapon_bb.root, this.weaponz.root]);
+
+		this.bb = battalion_bb;
+
+		/* TODO figure out what to do with battalions for patch #6 */
+		// buildnb.add("Battalions", [battalion_bb.root, this.battalion.root]);
 
 		buildnb.active = "Characters";
 
 		this.tabs.create = buildnb;
 
 		notebook.add("Create", buildnb.root);
+		equip_section.append(sidebook.root);
 
-		const eqdiv = document.getElementById("equip-pane");
-		eqdiv.remove();
-
-		eqdiv.append(sidebook.root);
-
-		notebook.add("Assign", eqdiv);
+		notebook.add("Assign", equip_section);
 
 		const gloss = new Notebook();
 
@@ -906,18 +832,40 @@ class Sheet {
 
 		const tools = new Notebook();
 
-		/* get the macro builder and shove it into a tab */
-		const builder = document.getElementById("macro-builder");
-		builder.remove();
-		tools.add("Macros", builder);
-
-		const pbdiv = document.getElementById("point-buy");
-		pbdiv.remove();
+		tools.add("Macros", element("div", this.macros.root));
 
 		this.myPointBuy = new PointBuy();
-		pbdiv.appendChild(this.myPointBuy.root);
+		this.myPresetter = new Presetter();
 
-		tools.add("Point Buy", pbdiv);
+		tools.add("Point Buy", element("div", [
+			element("input", {
+				class : ["simple-border"],
+				attrs : {
+					type    : "button",
+					value   : "Use Bases",
+					onclick : (() => this.copy_point_buy())
+				}
+			}),
+			element("input", {
+				class : ["simple-border"],
+				attrs : {
+					type    : "button",
+					value   : "Use Level",
+					onclick : (() => this.copy_point_buy_stats())
+				}
+			}),
+			element("input", {
+				class : ["simple-border"],
+				attrs : {
+					type    : "button",
+					value   : "Clear Points",
+					onclick : (() => this.clear_point_buy())
+				}
+			}),
+			element("br"),
+			this.myPointBuy.root,
+			this.myPresetter.root
+		]));
 
 		const legacy_bb  = new Buildables({
 			name      : "legacy",
@@ -934,10 +882,6 @@ class Sheet {
 					name   : model_data.name,
 					data   : model_data,
 
-					// body   : (function() {
-					// 	return element("span", model_data.description);
-					// }),
-
 					/* builtable display */
 
 					getTitle: (function(object) {
@@ -951,15 +895,14 @@ class Sheet {
 					import : (function(object) {
 						this.name = object.name;
 						this.data = object;
-
-						// console.log(object);
 					}),
 
 					export : (function() {
 						return this.data;
 					}),
 					
-					clear  : (function() {
+					clear  : (function(template) {
+						console.log(template);
 						this.name = model_data.name;
 						this.data = model_data;
 					}),
@@ -1013,7 +956,7 @@ class Sheet {
 			"themes", this.myThemeMap, (x) => x.name, (x) => x.description, () => []
 		);
 
-		const themes = document.getElementById("themes");
+		const themes = element("div");
 
 		this._autosave_conf = new AutosaveConfiguration(this);
 
@@ -1079,6 +1022,25 @@ class Sheet {
 
 		/* autosave current sheet every five minutes */
 		this._autosave_conf.setInterval();
+
+		this.root = element("div", {
+			class   : ["container"],
+			content : [
+				skill_section,
+				stats_section,
+				element("div", { 
+					class   : ["span-3"],
+					content : class_section,
+				}),
+				element("div", {
+					class   : ["span-4"],
+					content : [
+						version,
+						this.tabs.main.root,
+					]
+				}),
+			]
+		});
 	}
 
 	/* this was a workaround the fact two arts cats weren't expected */
@@ -1093,6 +1055,138 @@ class Sheet {
 		if (equipped) return equipped;
 
 		return null;
+	}
+
+	predicates(base) {
+
+		const ctx = base || {};
+
+		const add = (name, func) => {
+			ctx[name] = func;
+		};
+
+		function autopass() {
+			return (op) => ({
+				require: false,
+				succeed: false,
+				boolean: true
+			});
+		}
+
+		add("All", (op, ...args) => args.reduce((x, y) => ({
+			require: x.require || y.require,
+			succeed: false,
+			boolean: (
+				(x.boolean || (y.succeed && !x.require))
+					&&
+				(y.boolean || (x.succeed && !y.require))
+			),
+		})));
+
+		add("Any", (op, ...args) => args.reduce((x, y) => ({
+			require: x.require || y.require,
+			succeed: x.succeed || y.succeed,
+			boolean: x.boolean || y.boolean,
+		})));
+
+		add("Required", ((op, x) => {
+			x.require = true;
+			return x;
+		}));
+
+		add("Permission", (op, text) => ({
+			require: false,
+			succeed: false,
+			boolean: true,
+			// boolean: confirm(text),
+		}));
+
+		add("None", autopass());
+		add("Other", autopass());
+		add("Barrier", autopass());
+		add("Innate", autopass());
+		add("Unfinished", autopass());
+
+		add("Level", (op, level) => ({
+			require: false,
+			succeed: false,
+			boolean: this.stats.level >= level
+		}));
+
+		for (let each of definitions.skills) {
+			const skill = each;
+
+			add(skill, (name, grade) => {
+				const diff = (
+					Grade.toNumber(this.skills[skill].grade)
+						-
+					Grade.toNumber(grade)
+				);
+
+				return {
+					require: false,
+					succeed: diff >= 1,
+					boolean: diff >= 0,
+				};
+			});
+		}
+
+		add("ClassType", (op, type) => {
+			return {
+				require: true,
+				succeed: false, 
+				boolean: this.character.class.type.includes(type),
+			};
+		});
+
+		add("Class", (op, name) => {
+			return {
+				require: true,
+				succeed: false, 
+				boolean: !name || this.character.class.name == name,
+			};
+		});
+
+		add("Equipment", (op, name) => {
+
+			const active = this.equipment.known.active;
+
+			return {
+				require: true,
+				succeed: false, 
+				boolean: active ? active == name : false,
+			};
+		});
+
+		add("Weapon", (op, name) => {
+
+			const active = this.wb.active;
+
+			return {
+				require: true,
+				succeed: false, 
+				boolean: active
+					? active.template == name
+					: false,
+			};
+		});
+
+		add("Crest", (op, name) => {
+
+			let found = false;
+			for (let each of this.abilities.equipped.active) {
+				if (each.includes(name)) found = true;
+			}
+
+			return {
+				require: true,
+				succeed: false, 
+				boolean: found,
+			};
+		});
+
+		this._predicates = ctx;
+		return ctx;
 	}
 
 	context(base) {
@@ -1141,7 +1235,8 @@ class Sheet {
 		 * v/ battalion.template.<batstat>
 		 */
 
-		const vardiv = document.getElementById("var-options");
+		/* this.macros must be initialized before this is called */
+		const vardiv = this.macros.varopts;
 		const varsen = [];
 		const ctx    = base || {};
 
@@ -1197,10 +1292,6 @@ class Sheet {
 		function funcsum(...names) {
 
 			const funcs = names.map(name => ctx[name]);
-
-			// if (funcs.some(func => func === undefined)) {
-			// 	debugger;
-			// }
 
 			return (env) => {
 
@@ -1266,29 +1357,29 @@ class Sheet {
 			expr  : "other|recursion",
 		});
 
-		add({
-			name  : "other|martial|mov",
-			about : wrap(
-				"This is the Martial Starting class movement bonus that ",
-				"those get after level 10. Evaluates to 1 if the state of ",
-				"the sheet meets those circumstances and to 0 otherwise.",
-			),
-			expr  : ((env) => {
-				const cls = this.character.class;
+		// add({
+		// 	name  : "other|martial|mov",
+		// 	about : wrap(
+		// 		"This is the Martial Starting class movement bonus that ",
+		// 		"those get after level 10. Evaluates to 1 if the state of ",
+		// 		"the sheet meets those circumstances and to 0 otherwise.",
+		// 	),
+		// 	expr  : ((env) => {
+		// 		const cls = this.character.class;
 
-				return label(env, "lvl 10 martial", Number(
-					cls.type == "Martial"
-					&& cls.tier == "Starting"
-					&& this.stats.level >= 10
-				));
-			}),
-		});
+		// 		return label(env, "lvl 10 martial", Number(
+		// 			cls.type == "Martial"
+		// 			&& cls.tier == "Starting"
+		// 			&& this.stats.level >= 10
+		// 		));
+		// 	}),
+		// });
 
 		add({
 			name  : "other|range_penalty|prompt",
 			about : wrap(
 				"The hit penalty for attacking past maximum bow range. This ",
-				"isn't available in the builder proper, but you can used it ",
+				"isn't available in the builder proper, but you can use it ",
 				"in a macro to prompt for values.",
 			),
 			expr  : `
@@ -1357,19 +1448,19 @@ class Sheet {
 			about : wrap(
 				"Takes into account whether this is codegen, in which case it ",
 				"evaluates to other|triangle, or macrogen, in which cast it ",
-				"evaluates to other|triangle|prompt. Additionally, if a ",
+				"evaluates to other|triangle|prompt. Additionally, if an art or ",
 				"weapon that has the 'no triangle' tag is equipped, instead ",
 				"evaluates to 0."
 			),
 			expr  : `
 				metaif builtins|macrogen == 1 then
-					metaif weapon|tagged|no_triangle == 0 then
+					metaif weapon|tagged|no_triangle + art|tagged|no_triangle == 0 then
 						other|triangle|prompt
 					else
 						0
 					end
 				else
-					if weapon|tagged|no_triangle == 0 then
+					if weapon|tagged|no_triangle + art|tagged|no_triangle == 0 then
 						other|triangle
 					else
 						0
@@ -1547,31 +1638,6 @@ class Sheet {
 				expr  : funcsum(...prime),
 			});
 
-			// if (name == "mov") {
-			// 	/* mov has a special calculation the others don't */
-			// 	add({
-			// 		name  : "unit|total|mov",
-			// 		about : 
-			// 			"The unit's total mov statistic after modifiers."
-			// 		,
-			// 		expr  : (() => {
-			// 			const mpri = prime.concat(["other|martial|mov"]);
-			// 			const fsum = funcsum(...mpri);
-
-			// 			return (env) => sum(env, 4, fsum(env));
-			// 		})(),
-			// 	});
-			// } else {
-			// 	add({
-			// 		name  : `unit|total|${name}`,
-			// 		about : wrap(
-			// 			`The unit's total ${name} statistic after `,
-			// 			"modifiers.",
-			// 		),
-			// 		expr  : funcsum(...prime),
-			// 	});
-			// }
-
 			add({
 				name  : `unit|total|${name}`,
 				about : wrap(
@@ -1598,7 +1664,7 @@ class Sheet {
 				"or as damage. Used in the macro builder.",
 			),
 			expr  : ((env) => {
-				return Number(this.weaponz.template.tagged("healing"));
+				return Number(this.weaponz.tagged("healing"));
 			}),
 		});
 
@@ -1625,8 +1691,8 @@ class Sheet {
 			about : wrap(
 				"A flag; 1 if art is tagged with 'tactical' and 0 if ",
 				"art is not tagged with 'tactical'. The 'tactical' tag ",
-				"indicates whether the art's might is applied as healing ",
-				"or as damage. Used in the macro builder.",
+				"indicates whether the art is considered a combat art or ",
+				"a tactical art for slots purposes."
 			),
 			expr  : ((env) => {
 				const key = this.getActiveArt();
@@ -1634,6 +1700,40 @@ class Sheet {
 				if (key == null) return 0;
 				
 				return CombatArt.get(key).tagged("tactical");
+			}),
+		});
+
+		add({
+			name  : "art|tagged|wall",
+			about : wrap(
+				"A flag; 1 if art is tagged with 'wall' and 0 if ",
+				"art is not tagged with 'wall'. The 'wall' tag ",
+				"indicates whether the art's primary purpose is to ",
+				"create tiles."
+			),
+			expr  : ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+				
+				return CombatArt.get(key).tagged("wall");
+			}),
+		});
+
+		add({
+			name  : "art|tagged|no_triangle",
+			about : wrap(
+				"A flag; 1 if art is tagged with 'no triangle' and 0 if ",
+				"weapon is not tagged with 'no triangle'. The 'no triangle' ",
+				"tag indicates whether the art is subject to the weapon ",
+				"triangle system or not. Used in the macro builder."
+			),
+			expr  : ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+				
+				return CombatArt.get(key).tagged("no triangle");
 			}),
 		});
 		
@@ -1661,7 +1761,7 @@ class Sheet {
 				"triangle system or not. Used in the macro builder."
 			),
 			expr  : ((env) => {
-				return Number(this.weaponz.template.tagged("no triangle"));
+				return Number(this.weaponz.tagged("no triangle"));
 			}),
 		});
 
@@ -1674,7 +1774,7 @@ class Sheet {
 				"Used in the macro builder.",
 			),
 			expr  : ((env) => {
-				return Number(this.weaponz.template.tagged("no hit"));
+				return Number(this.weaponz.tagged("no hit"));
 			}),
 		});
 
@@ -1688,18 +1788,37 @@ class Sheet {
 				"Used in the macro builder."
 			),
 			expr  : ((env) => {
-				return Number(this.weaponz.template.tagged("no might"));
+				return Number(this.weaponz.tagged("no might"));
 			}),
 		});
 
 		add({
-			name  : "weapon|multiplier|healing",
+			name  : "weapon|tagged|wall",
+			about : wrap(
+				"A flag; 1 if weapon is tagged with 'wall' and 0 if ",
+				"weapon is not tagged with 'wall'. The 'wall' tag ",
+				"indicates whether the weapon's primary purpose is to ",
+				"create tiles."
+			),
+			expr  : ((env) => {
+				return Number(this.weaponz.tagged("wall"));
+			}),
+		});
+
+		add({
+			name  : "unit|multiplier|healing",
 			about : wrap(
 				"Used to halve base magic for healing spell might; value is ",
 				"0.5 if weapon is tagged with 'healing' and is 1.0 if not."
 			),
 			expr  : ((env) => {
-				return this.weaponz.template.tagged("healing") ? 0.5 : 1.0;
+				const key = this.getActiveArt();
+
+				if (key == null) return 1.0;
+				
+				const art = CombatArt.get(key).tagged("healing");
+				const wpn = this.weaponz.tagged("healing");
+				return art || wpn ? 0.5 : 1.0;
 			}),
 		});
 
@@ -1724,6 +1843,24 @@ class Sheet {
 					const string = this.weaponz.template.type;
 					const number = Weapon.TYPE.asNumber(string);
 					return number == num;
+				}),
+			});
+		}
+
+		/* has to use the raw data because Attributes isn't populated yet */
+		for (let each of definitions.attributes) {
+
+			const name       = each.name;
+			const identifier = Expression.asIdentifier(name);
+
+			add({
+				name  : `weapon|has_attribute|${identifier}`,
+				about : wrap(
+					`Evaluates to 1 if weapon has the ${name} attribute, `,
+					"and otherwise evaluates to 0."
+				),
+				expr  : ((env) => {
+					return Number(this.weaponz.attributes.active.has(name));
 				}),
 			});
 		}
@@ -1798,15 +1935,23 @@ class Sheet {
 			}),
 		});
 
-		// add({
-		// 	name  : "",
-		// 	about : wrap(
-		// 		""
-		// 	),
-		// 	expr  : ((calc) => {
+		add({
+			name  : "art|type|combat",
+			about : wrap(
+				"Evaluates to 1 if unit has a combat art active, ",
+				"and otherwise evaluates to 0.",
+			),
+			expr  : ((env) => this.getActiveArt() != null),
+		});
 
-		// 	}),
-		// });
+		add({
+			name  : "art|type|tactical",
+			about : wrap(
+				"Evaluates to 1 if unit has a tactical art active, ",
+				"and otherwise evaluates to 0.",
+			),
+			expr  : ((env) => this.getActiveArt() != null),
+		});
 		
 		// d8888b. .88b  d88.  d888b    d8888b.  .d8b.  .d8888. d88888b
 		// 88  `8D 88'YbdP`88 88' Y8b   88  `8D d8' `8b 88'  YP 88'
@@ -1911,7 +2056,7 @@ class Sheet {
 
 				if (key == null) return 0;
 				
-				return AttackFeature.MTTYPE.asNumber(CombatArt.get(key).base);
+				return AttackFeature.MTTYPE.asNumber(CombatArt.get(key).mttype);
 			}),
 		});
 
@@ -2135,7 +2280,7 @@ class Sheet {
 						end
 					)
 						*
-					weapon|multiplier|healing
+					unit|multiplier|healing
 				)
 					+ weapon|total|mt
 					+ abilities|mt
@@ -2227,6 +2372,26 @@ class Sheet {
 						then other|triangle
 						else 0
 					end)
+			`,
+		});
+
+		add({
+			name  : "unit|total|doubles",
+			about : wrap(
+				"Maximum attack speed that of foes this unit can double."
+			),
+			expr  : `
+				(unit|total|spd + unit|modifier|doubles - 5)
+			`,
+		});
+
+		add({
+			name  : "unit|total|doubled",
+			about : wrap(
+				"Minimum attack speed that foe needs to double this unit."
+			),
+			expr  : `
+				(unit|total|spd + unit|modifier|doubled + 5)
 			`,
 		});
 
@@ -2348,6 +2513,212 @@ class Sheet {
 			expr  : "unit|modifier|tpcost",
 		});
 
+
+		// battalion stuff
+
+		add({
+			name  : "battalion|total|lp",
+			about : wrap(
+				"The total number of leadership points afforded to the ",
+				"equipped battalion. If none then evaluates to zero.",
+			),
+			expr  : ((env) => {
+				const dex   = env.read("unit|total|dex");
+				const luc   = env.read("unit|total|cha");
+				const lp    = Math.max(dex, luc);
+
+				const bonus = Battalions.LP_BONUS[this.battalion.rank];
+				
+				const lead  = -(
+					env.read("battalion|base|disc") + env.read("battalion|base|brav")
+						+
+					env.read("battalion|base|pres") + env.read("battalion|base|strc")
+				);
+
+				return lp + bonus + lead;
+			}),
+		});
+
+		add({
+			name  : "battalion|level",
+			about : wrap(
+				"The equipped battalion's level. Used to scale its stats."
+			),
+			expr  : ((env) => {
+				return label(env, 
+					`${this.battalion.name} level`,
+					this.battalion.level,
+				);
+			}),
+		});
+
+		for (let each of this.data.stats.battalion.first) {
+
+			const name = each;
+			const second = [];
+
+			second.push(add({
+				name  : `battalion|base|${name}`,
+				about : wrap(
+					`The equipped battalion's base ${name} statistic `,
+					"value entered into the table under Create => Weapons & ",
+					"Spells before modifiers. If none is equipped then ",
+					"evaluates to 0."
+				),
+				expr  : ((env) => {
+					return label(env, 
+						`${this.battalion.name} base`,
+						this.battalion.stats[name].value,
+					);
+				}),
+			}));
+
+			second.push(add({
+				name  : `battalion|template|${name}`,
+				about : wrap(
+					`The battalion's base ${name} statistic before modifiers.`
+				),
+				expr  : ((env) => {
+					const value =  this.battalion.template.modifiers[name];
+					return label(env, `base ${name}`, value);
+				}),
+			}));
+
+			if (this.data.stats.battalion.growths.includes(name)) {
+				second.push(add({
+					name  : `battalion|level|${name}`,
+					about : wrap(
+						`The battalion's ${name} bonus from its level.`,
+					),
+					expr  : ((env) => {
+						const growth = this.battalion.template.growth(name);
+						const level  = this.battalion.level;
+						const bonus  = Math.floor((level * growth)/100);
+						return label(env, `level ${level}`, bonus);
+					}),
+				}));
+			}
+
+			second.push(add({
+				name  : `battalion|adjutant|${name}`,
+				about : wrap(
+					`The adjutant's ${name} statistic; zero if no adjutant.`
+				),
+				expr  : ((env) => {
+					const value =  this.battalion.adjutant.modifier(name);
+					return label(env, `adj ${name}`, value);
+				}),
+			}));
+
+			add({
+				name  : `battalion|total|${name}`,
+				about : wrap(
+					`The battalion's base ${name} statistic before modifiers.`
+				),
+				expr  : funcsum(...second),
+			});	
+		}
+
+		for (let each of this.data.stats.battalion.gambit) {
+
+			const name = each;
+
+			add({
+				name  : `battalion|gambit|${name}`,
+				about : wrap(
+					`The battalion's base ${name} statistic before modifiers.`
+				),
+				expr  : ((env) => {
+					const value =  this.battalion.template.gambit.modifiers[name];
+					return label(env, `base ${name}`, value);
+				}),
+			});
+		}
+
+		add({
+			name  : "battalion|modifier|br",
+			about : wrap(
+				"The battalion's endurance statistic."
+			),
+			expr  : abilityfunc("br"),
+		});
+
+		add({
+			name  : "battalion|modifier|gmt",
+			about : wrap(
+				"The battalion's endurance statistic."
+			),
+			expr  : abilityfunc("gmt"),
+		});
+
+		add({
+			name  : "battalion|total|ep",
+			about : wrap(
+				"The battalion's endurance statistic."
+			),
+			expr  : "battalion|total|disc",
+		});
+
+		add({
+			name  : "battalion|total|atk",
+			about : wrap(
+				"The battalion's counterattack might."
+			),
+			expr  : (
+				"battalion|total|pres + floor((battalion|total|brav - battalion|total|disc)/2)"
+			),
+		});
+
+		add({
+			name  : "battalion|total|br",
+			about : wrap(
+				"The battalion's barrier statistic."
+			),
+			expr  : (
+				"2 + battalion|modifier|br + floor((battalion|total|disc - battalion|total|brav)/2)"
+			),
+		});
+
+		add({
+			name  : "battalion|total|gmt",
+			about : wrap(
+				"The battalion's gambit might statistic."
+			),
+			expr  : "battalion|total|atk + battalion|modifier|gmt + battalion|gambit|mt",
+		});
+
+		add({
+			name  : "battalion|total|ghit",
+			about : wrap(
+				"The battalion's gambit hit statistic."
+			),
+			expr  : "battalion|total|brav + battalion|gambit|hit",
+		});
+
+		add({
+			name  : "battalion|total|gcost",
+			about : wrap(
+				"The battalion's gambit cost statistic."
+			),
+			expr  : "battalion|gambit|cost + floor((battalion|total|disc - battalion|total|brav)/2)",
+		});
+
+		add({
+			name  : "battalion|total|gminrng",
+			about : wrap(
+				"The battalion's minimum gambit range statistic."
+			),
+			expr  : "battalion|gambit|minrng",
+		});
+
+		add({
+			name  : "battalion|total|gmaxrng",
+			about : wrap(
+				"The battalion's maximum gambit range statistic."
+			),
+			expr  : "battalion|gambit|maxrng",
+		});
+
 		const uid = uniqueID();
 
 		vardiv.append(
@@ -2364,10 +2735,7 @@ class Sheet {
 			})
 		);
 
-		document
-			.getElementById("generator-console")
-			.setAttribute("list", uid);
-
+		this.macros._input.setAttribute("list", uid);
 		this._context = ctx;
 		return ctx;
 	}
@@ -2488,6 +2856,142 @@ class Sheet {
 		}
 
 		this.stats.level = 0;
+	}
+
+	copy_point_buy_stats(doClass=true) {
+
+		/* set the class to "None" so we don't bring over bonuses */
+		const cls = this.myPointBuy.forecast.class;
+		this.myPointBuy.forecast.class = "None";
+		this.myPointBuy.update("final");
+
+		/* carry over each stat to the main sheet */
+		for (let [name, value] of this.myPointBuy.column("final")) {
+			this.stats.stats[name].value = value;
+			this.stats.stats[name].refresh();
+		}
+
+		/* carry over each growth as well, in case something changed */
+		for (let [name, value] of this.myPointBuy.column("growth")) {
+			this.stats.growths[name].value = value * 5;
+		}
+
+		/* compute and carry over the total level */
+		this.stats.level = this.myPointBuy.forecast.level;
+
+		/* set the class back to what it originally was */
+		this.myPointBuy.forecast.class = cls;
+		this.myPointBuy.update("final");
+
+		/* set main sheet's class to the one from the point buy */
+		if (doClass) {
+			this.character.class = cls;
+			this.character.refresh();
+		}
+	}
+
+	create_npc() {
+
+		/* set preset to custom and add a new sheet */
+		this.cb.select.value = "Custom";
+		this.cb.add();
+
+		/* easy access variables */
+		const ps  = this.myPresetter;
+		const pb  = this.myPointBuy;
+		const fc  = pb.forecast;
+		const cls = Class.get(ps.class);
+		
+		/* import the selected preset and clear the point buy */
+		pb.import(Preset.get(ps.preset));
+		fc.clear();
+		
+		/* add the levels to the point buy */
+		if (cls.default_base == cls.name) {
+			fc.add(cls.name, ps.level);
+		} else {
+			const advanced = Math.max(ps.level - 15, 0);
+			const basic    = ps.level - advanced; 
+			fc.add(cls.default_base, basic);
+			if (advanced) fc.add(cls.name, advanced);
+		}
+		fc.class = cls.name;
+		pb.update("final");
+
+		/* copy stats over to main sheet */
+		this.copy_point_buy_stats(false);
+
+		/* add weapons and abilties to sheet */
+
+		const addKit = (skill, scale) => {
+			
+			/* get correct skill and scale */
+			const kind = Presetter.KITS[skill];
+			const kits = kind[scale];
+
+			/* find appropriate kit for level */
+			let kit = null;
+			for (let level in kits) {
+				if (level > ps.level) break;
+				kit = kits[level];
+			}
+
+			if (kit === null) return;
+
+			/* add weapons */
+			for (let weapon of kit.weapons) {
+				if (!Weapon.has(weapon)){
+					throw new Error(`weapon '${weapon}' is undefined`);
+				}
+
+				this.wb.select.value = weapon;
+				this.wb.add();
+
+				this.weaponz.inInventory = true;
+			}
+
+			/* add abilities */
+			for (let ability of kit.abilities) {
+				if (!Ability.has(ability)){
+					throw new Error(`ability '${ability}' is undefined`);
+				}
+
+				this.abilities.equipped.add(ability);
+				this.abilities.equipped.toggleActive(ability);
+			}
+
+			/* set skill level */
+			if (skill in this.skills) {
+
+				const row = this.skills[skill];
+
+				if (row.value < kit.points) {
+					row.value = kit.points;
+				}
+
+				if (scale == 2 || scale == 3) {
+					row.aptitude = 1;
+				}
+			}
+
+			/* recurse */
+			if (kind.parent != null) addKit(kind.parent, scale);
+		};
+
+		if (ps.sidearm == "None") {
+			addKit(ps.mainarm, 3);
+		} else {
+			addKit(ps.mainarm, 2);
+			addKit(ps.sidearm, 1);
+		}
+
+		/* fill out flavor information */
+		this.character.name        = cls.name;
+		this.character.class       = cls.name;
+		this.character.description = cls.description;
+
+		/* refresh */
+		this.character.refresh();
 	}
 }
 

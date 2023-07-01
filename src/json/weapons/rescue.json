@@ -23,7 +23,7 @@
   },
   "comment": "Incompatible with all Attributes.",
   "tags": [
-    "no hit", "no might", "no triangle"
+    "no hit", "no stats", "no crit", "no might", "no triangle"
   ],
   "hidden": false
 }

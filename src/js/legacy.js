@@ -6,6 +6,38 @@
 
 const Legacy = (function() {
 
+function from_2_2_0(old) {
+
+	let o = old.skills;
+
+	old.skills = {
+		Axes      : {value: o.ranks.Axes      , aptitude: 0},
+		Swords    : {value: o.ranks.Swords    , aptitude: 0},
+		Lances    : {value: o.ranks.Lances    , aptitude: 0},
+		Brawl     : {value: o.ranks.Brawl     , aptitude: 0},
+		Bows      : {value: o.ranks.Bows      , aptitude: 0},
+		Reason    : {value: o.ranks.Reason    , aptitude: 0},
+		Faith     : {value: o.ranks.Faith     , aptitude: 0},
+		Guile     : {value: o.ranks.Guile     , aptitude: 0},
+		Authority : {value: o.ranks.Authority , aptitude: 0},
+		Armor     : {value: o.ranks.Armor     , aptitude: 0},
+		Riding    : {value: o.ranks.Riding    , aptitude: 0},
+		Flying    : {value: o.ranks.Flying    , aptitude: 0},
+	};
+
+	old.skills[o.talent].aptitude   = "Talent";
+	old.skills[o.weakness].aptitude = "Weakness";
+	old.skills[o.budding].aptitude  = (
+		old.skills[o.budding].aptitude == "Weakness"
+			? "BuddingWeakness"
+			: "Budding" 
+	);
+
+	old.version = "2.3.0";
+
+	return old;
+}
+
 function from_1_18_0(old) {
 
 	let o = undefined;
@@ -112,18 +144,6 @@ function from_1_18_0(old) {
 	};
 }
 
-function current(old) {
-	return old;
-}
-
-const VERS = [
-	[ new Version("1.13.0") , current     ],
-	[ new Version("1.16.0") , current     ],
-	[ new Version("1.18.0") , current     ],
-	[ new Version( "2.0.0") , from_1_18_0 ],
-	[ new Version("99.0.0") , current     ],
-];
-
 function convert(obj, to=Version.CURRENT) {
 
 	if (obj.version === undefined) {
@@ -139,7 +159,11 @@ function convert(obj, to=Version.CURRENT) {
 	const version = new Version(obj.version);
 
 	if (version.older("2.0.0")) {
-		return from_1_18_0(obj);
+		obj = from_1_18_0(obj);
+	}
+
+	if (version.older("2.3.0")) {
+		obj = from_2_2_0(obj);
 	}
 
 	return obj;

@@ -1,0 +1,39 @@
+{
+    "name": "Lord",
+    "description": "A battlefield leader.",
+    "type": ["Infantry", "Martial", "Caster"],
+    "tier": "Starting",
+    "requires": "Authority D",
+    "abilities": ["Lead by Example", "Level 10 Mov +1"],
+    "arts": [],
+    "growths": {
+        "hp": 15,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 10,
+        "def": 10,
+        "res": 10,
+        "cha": 25
+      },
+    "modifiers": {
+        "hp": 2,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 1,
+        "def": 2,
+        "res": 2,
+        "cha": 4,
+        "mov": 4
+    },
+    "mount": null,
+
+    "default_base": "Lord",
+    "default_preset": "Balance/Balance/Luck",
+    "default_mainarm": "Swords",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

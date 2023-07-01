@@ -35,18 +35,40 @@
       "sp",
       "tp",
       "spcost",
-      "tpcost"
+      "tpcost",
+      "doubles",
+      "doubled"
     ],
-    "battalion": [
-      "str",
-      "mag",
-      "def",
-      "res",
-      "hit",
-      "avo",
-      "crit",
-      "cha"
-    ]
+    "battalion": {
+      "first": [
+        "disc",
+        "brav",
+        "pres",
+        "strc",
+        "auto",
+        "cap",
+        "minrng",
+        "maxrng"
+      ],
+      "second": [
+        "ep",
+        "atk",
+        "br"
+      ],
+      "growths": [
+        "disc",
+        "brav",
+        "pres",
+        "strc"
+      ],
+      "gambit": [
+        "hit",
+        "mt",
+        "cost",
+        "minrng",
+        "maxrng"
+      ]
+    }
   },
   "skills": [
     "Axes",
@@ -267,8 +289,8 @@
     },
     {
       "define": [
-        "template wall()",
-        "  floor((Mag {unit|total|mag}) / 5)",
+        "template wall(statistic, value, divisor)",
+        "  floor(([statistic] {value}) / divisor)",
         "end"
       ],
       "about": [
@@ -289,10 +311,38 @@
       ]
     },
     "variant": {
-      "name": "Reason Metamagic Variants",
+      "name": "Arts Variants",
       "description": [
-        "Reason metamagic variants are alternate effects that activate ",
-        "instead of the normal effects when used with a specific spell."
+        "Arts variants are alternate or additional effects that activate when ",
+        "a combat art is used with a specific weapon or tactical art, or when ",
+        "a tactical art is used when a weapon possessing a specific attribute ",
+        "is equipped."
+      ]
+    },
+    "ap": {
+      "name": "Attack Plurality (AP)",
+      "description": [
+        "AP number determines the number of consecutive attacks (CAs) and ",
+        "follow-up attacks (FAs) in combat.\n\n",
+        "AP # \u00A0 # CA(s) \u00A0 # FA(s)\n",
+        "AP 1 \u00A0 1 CA(s) \u00A0 0 FA(s)\n",
+        "AP 2 \u00A0 1 CA(s) \u00A0 1 FA(s)\n",
+        "AP 3 \u00A0 2 CA(s) \u00A0 0 FA(s)\n",
+        "AP 4 \u00A0 2 CA(s) \u00A0 1 FA(s)\n",
+        "AP 5 \u00A0 3 CA(s) \u00A0 0 FA(s)\n\n",
+        "Combat arts/metamagic have fixed AP and are unaffected by AP ",
+        "modifiers unless otherwise stated."
+      ]
+    },
+    "all": {
+      "name": "Skill Rank Requirements",
+      "description": [
+        "When a group of skill rank requirements (SRRs) is qualified with ",
+        "@{style:bold:all} or connected with @{style:bold:and}, you may ",
+        "ignore all but one SRR in that group if one those listed is exceeded ",
+        "by one or more ranks. SRRs marked with @{style:bold:(required)} ",
+        "may not be ignored but may be the one SRR that lets the others ",
+        "be. Other requirements may never be ignored."
       ]
     }
   }

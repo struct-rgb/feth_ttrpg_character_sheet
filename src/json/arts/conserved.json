@@ -2,6 +2,7 @@
   "name": "Conserved",
   "description": "Reduce the SP cost of your healing spell by 3 (minimum of 1). A spell performed this way has a 25% chance of being lost.",
   "requires": "Faith C",
+  "compatible": "All (Skill Faith) (Tag `healing`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

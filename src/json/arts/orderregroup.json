@@ -1,0 +1,34 @@
+{
+  "name": "Covert Order",
+  "description": "This unit’s battalion uses its action to restore 8 + ½ (this unit’s Dex or Luc) EP to itself or target ally battalion in Range 1 if its current EP ≤ ½ Max EP.",
+  "requires": "Authority B+",
+  "mttype": "none",
+  "modifiers": {
+    "mt": "-(floor(unit|total|str / 2)) + 8 + floor(more unit|total|dex else unit|total|cha end / 2)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": 5,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "healing",
+    "order"
+  ],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "B+"
+}

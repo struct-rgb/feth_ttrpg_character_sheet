@@ -1,6 +1,6 @@
 {
     "name": "Consumption 2",
-    "description": "Restores 1 TP after unit uses a Faith, Guile, or Reason weapon and restores 1 TP after unit uses Faith, Guile, or Reason metamagic.",
+    "description": "Restores 1 TP after unit uses a Faith, Guile, Reason, or Brawl weapon and restores 1 TP after unit uses Faith, Guile, Reason, or Brawl combat art. Cannot be equipped with another \"Consumption\" ability.",
     "requires": "Any (Class Gremory/Guru) (Class Sorcerer)",
     "modifiers": {
         "hp": 0,
@@ -24,7 +24,11 @@
         "minrng": 0,
         "maxrng": 0,
 
-        "tpcost": "fill bothif(weapon|type|spell, -1, 0)",
+        "tpcost": [
+            "fill bothif(weapon|type|spell + weapon|type|brawl, -1, 0)",
+            "  +",
+            "fill bothif(art|type|combat * (weapon|type|spell + weapon|type|brawl), -1, 0)"
+        ],
         "spcost": 0,
         "tp": 0,
         "sp": 0,

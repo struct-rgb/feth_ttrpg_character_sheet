@@ -1,0 +1,35 @@
+{
+  "name": "Ice Breath",
+  "description": "Can only be used while mounted. Create up to 3 @{tile:Ice Block:Ice Blocks} in empty spaces a 1x3 or 3x1 line starting from target adjacent tile.",
+  "requires": "Any (Class `Wyvern Rider`) (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tiles": 3,
+    "spcost": 5,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "wall"
+  ],
+  "hidden": true,
+  "type": "Flying",
+  "rank": "",
+  "omit": true
+}

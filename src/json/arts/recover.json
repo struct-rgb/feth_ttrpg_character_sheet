@@ -2,7 +2,7 @@
   "name": "Recover",
   "description": "Restore (Mt + Mag / 2) HP to target ally.",
   "requires": "Faith C",
-  "mttype": "else",
+  "mttype": "mag",
   "modifiers": {
     "mt": 30,
     "prot": 0,
@@ -21,6 +21,9 @@
   },
   "comment": "",
   "tags": [
+    "no hit",
+    "no crit",
+    "no stats",
     "tactical",
     "healing"
   ],

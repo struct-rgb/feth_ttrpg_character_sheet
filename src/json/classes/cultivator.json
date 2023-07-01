@@ -1,0 +1,40 @@
+{
+    "name": "Cultivator",
+    "description": "A practioner of arts both martial and mystical.",
+    "type": ["Infantry", "Martial", "Caster"],
+    "tier": "Advanced",
+    "requires": "All (Brawl C+) (Any (Faith C+) (Reason C+) (Guile C+)) (Required (Level 15))",
+    "abilities": ["Consumption 2", "Stamina +15"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 15,
+        "mag": 20,
+        "dex": 20,
+        "spd": 20,
+        "def": 10,
+        "res": 10,
+        "cha": 10
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 4,
+        "dex": 4,
+        "spd": 2,
+        "def": 0,
+        "res": 3,
+        "cha": 4,
+        "mov": 5
+    },
+    "mount": null,
+
+    "default_base": "Brawler",
+    "default_preset": "Speed/Balance/Balance",
+    "default_mainarm": "Water",
+    "default_sidearm": "Wind",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false,
+    "omit": true
+}

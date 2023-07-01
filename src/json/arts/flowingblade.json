@@ -2,6 +2,7 @@
   "name": "Flowing Blade",
   "description": "Do not attack; apply @{condition:Flow:[Flow]} to this unit for one turn.",
   "requires": "Any (Swords C) (Sword B)",
+  "compatible": "Skill Swords",
   "mttype": "none",
   "modifiers": {
     "mt": 0,
@@ -18,6 +19,10 @@
   },
   "comment": "",
   "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
     "condition"
   ],
   "hidden": false,

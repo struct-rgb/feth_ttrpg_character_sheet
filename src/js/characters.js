@@ -4,8 +4,11 @@
 /* global tooltip */
 /* global uniqueLabel */
 /* global Version */
+/* global Toggle */
+/* global ellipse */
 
 /* global Class */
+/* global Preset */
 /* global Ability */
 /* global CombatArt */
 /* global Equipment */
@@ -13,8 +16,6 @@
 class Characters {
 
 	static DEFAULT = "Blank Sheet";
-
-	static DESCRIPTION = "Write your character description here.";
 
 	static DEFAULT_CLASS = "None";
 
@@ -71,10 +72,11 @@ class Characters {
 		});
 
 		this._description = element("textarea", {
-			class   : ["simple-border"],
-			content : Characters.DESCRIPTION,
-			attrs   : {
-				onchange: (() => {
+			class       : ["simple-border"],
+			content     : "",
+			attrs       : {
+				placeholder : "Write your character description here...",
+				onchange    : (() => {
 					const activeID = sheet.cb.category.getActive();
 					if (activeID === null) return;
 
@@ -91,15 +93,6 @@ class Characters {
 
 		this._class = this._sf._select;
 
-		// this._mounted = element("input", {
-		// 	class: ["simple-border"],
-		// 	attrs: {
-		// 		type    : "checkbox",
-		// 		oninput : (() => {
-		// 			this.mounted = this._mounted.checked;
-		// 		}),
-		// 	}
-		// });
 		this._mounted = new Toggle("Mounted?", false, (bool) => {
 			this.mounted = this._mounted.checked;
 		});
@@ -237,24 +230,11 @@ class Characters {
 
 		const c = Class.get(this._class.value);
 
-		const list = Characters.listize(c.requires.ast);
-		const pass = this.sheet.skills.validate(c.requires).boolean;
-
 		const p = element("div", {
 			class   : ["center-pane"],
 			content : [
 				element("dt", element("strong", c.name)),
-				element("dd", [
-					element("em", `${c.tier}, ${Array.isArray(c.type) ? c.type.join(", ") : c.type}`),
-					element("br"),
-					c.description,
-				]),
-				element("strong", [
-					"Class Requirements (",
-					element("span", pass ? "Pass" : "Fail", pass ? "datum" : "computed"),
-					")",
-				]),
-				element("div", list),
+				element("dd", c.body(true, false, false)),
 			],
 		});
 
@@ -306,6 +286,10 @@ class Characters {
 
 	import(object) {
 
+		if (typeof object != "object") {
+			throw Error(`expected object but got type ${typeof object}`);
+		}
+
 		this.sheet.stats.import(object.statistics);
 		this.sheet.skills.import(object.skills);
 
@@ -316,7 +300,7 @@ class Characters {
 		);
 
 		this.name        = object.name        || Characters.DEFAULT;
-		this.description = object.description || Characters.DESCRIPTION;
+		this.description = object.description || "";
 		this.money       = object.money       || 0;
 
 		this.sheet.wb.importAll(object.weapons);
@@ -368,12 +352,45 @@ class Characters {
 		};
 	}
 
+	preset(preset) {
+
+		if (!(preset instanceof Preset)) {
+			throw Error(`expected Preset but got ${preset.constructor.name}`);
+		}
+
+		this.clear();
+
+		this.class = (
+			Class.has(preset.class)
+				? preset.class
+				: Characters.DEFAULT_CLASS
+		);
+
+		this.name        = preset.name        || Characters.DEFAULT;
+		this.description = preset.description || "";
+		this.sheet.stats.import(preset);
+
+		this.refresh([], []);
+	}
+
+	/**
+	 * Clear the input widgets for this model
+	 * @param {string} preset - an object to fill the inputs from
+	 */
 	clear(preset) {
 
-		preset           = preset || {};
+		if (preset) {
+
+			if (!Preset.has(preset)) {
+				throw new Error(`preset '${preset}' is undefined`);
+			}
+
+			return this.preset(Preset.get(preset));
+		}
+
 		this.class       = Characters.DEFAULT_CLASS;
-		this.name        = preset.name        || Characters.DEFAULT;
-		this.description = preset.description || Characters.DESCRIPTION;
+		this.name        = Characters.DEFAULT;
+		this.description = "";
 		this.money       = 0;
 		this.triangle    = 0;
 
@@ -393,7 +410,6 @@ class Characters {
 		// this.sheet.battalion.clear();
 
 		this.sheet.abilities.equipped.clear();
-		// this.sheet.abilities.battlefield.clear();
 		this.sheet.arts.equipped.clear();
 		this.sheet.equipment.known.clear();
 
@@ -410,15 +426,11 @@ class Characters {
 	}
 
 	getBody(object) {
-		const string  = object.description;
-		const display = string.length > 50 ? string.slice(0, 50) + "..." : string;
-		return element("span", display);
+		return element("span", ellipse(object.description, 50));
 	}
 
 	body() {
-		const string  = this.description;
-		const display = string.length > 50 ? string.slice(0, 50) + "..." : string;
-		return element("span", display);
+		return this.getBody(this);
 	}
 
 }

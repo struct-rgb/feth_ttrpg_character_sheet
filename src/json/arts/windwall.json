@@ -13,7 +13,7 @@
     "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
-    "tiles": "fill wall()",
+    "tiles": "fill wall([Mag], unit|total|mag, 5)",
     "spcost": 5,
     "tpcost": 0,
     "sp": 0,
@@ -23,7 +23,11 @@
   "tags": [
     "tactical",
     "wall",
-    "wind"
+    "wind",
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats"
   ],
   "hidden": false,
   "type": "Reason",

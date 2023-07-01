@@ -2,6 +2,7 @@
   "name": "Poisoned",
   "description": "On hit, apply @{condition:Poison:[Poison]} to target foe. This Metamagic ability may be equipped alongside other D Rank Metamagic of the same type.",
   "requires": "Guile D",
+  "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

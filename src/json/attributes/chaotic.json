@@ -1,0 +1,29 @@
+{
+    "name": "Chaotic",
+    "type": "Any",
+    "description": "When a \"Rising\" Combat Art is used with equipped tome, decrease the cost of that art by 4 SP. Roll 2d6 and choose one roll, that art becomes the one you chose:\n1. Rising Thunder\n2. Rising Wind\n3. Rising Flame\n4. Rising Frost\n5. Rising Light\n6. Your choice of 1-5.\nIf you roll doubles, use the Variant version.\n\nDisabled on non-Reason weapons.",
+    "rank": 2,
+    "price": 2000,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": "fill affirm([Using a Rising Art?], -4, 0)",
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["forspell"],
+    "hidden": false,
+    "omit": true
+}

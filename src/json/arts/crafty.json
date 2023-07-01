@@ -2,6 +2,7 @@
   "name": "Crafty",
   "description": "Once this phase, cast a Guile spell with 0 Mt as a reaction with trigger: this unit or an ally is targeted by a foe within 5 tiles of this unit.",
   "requires": "Guile C",
+  "compatible": "All (Skill Guile) (Tag `no might`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

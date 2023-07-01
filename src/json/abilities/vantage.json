@@ -1,6 +1,6 @@
 {
     "name": "Vantage",
-    "description": "When foe initiates combat and if unit's HP ≤ 50%, unit still attacks first.",
+    "description": "If unit’s HP is ≤ 50%, when foe initiates combat, attack(s) are sequenced as though unit initiated combat.",
     "requires": "All (Any (Axes C+) (Swords C+)) (Level 15)",
     "modifiers": {
         "hp": 0,

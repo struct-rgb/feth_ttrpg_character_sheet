@@ -1,0 +1,10 @@
+{
+	"name": "Rosalie Nedler",
+	"description": "A surgeon with poor bedside manner.",
+	"ability": "When an adjacent ally or an ally in this units space regains HP, 40% chance to double heal and apply the excess as @{condition:Overheal:[Overheal]} for one turn.",
+	"reaction": "Heal",
+	"modifiers": {
+		"disc": 6,
+		"brav": 10
+	}
+}

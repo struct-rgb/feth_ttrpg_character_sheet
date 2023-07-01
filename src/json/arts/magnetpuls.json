@@ -2,6 +2,7 @@
   "name": "Magnetic Pulse",
   "description": "Lightning metamagic; after combat, apply @{condition::Magnetized} to target foe for one turn.",
   "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `lightning`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

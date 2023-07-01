@@ -10,25 +10,29 @@
         "hp": 30,
         "str": 20,
         "mag": 10,
-        "dex": 0,
+        "dex": 5,
         "spd": 0,
         "def": 25,
         "res": 15,
-        "cha": 10
+        "cha": 0
       },
     "modifiers": {
-        "hp": 5,
+        "hp": 10,
         "str": 3,
-        "mag": 0,
+        "mag": 1,
         "dex": 0,
         "spd": 0,
         "def": 5,
         "res": 3,
-        "cha": 2,
+        "cha": 0,
         "mov": 4
     },
     "mount": null,
 
+    "default_base": "Armored Knight",
+    "default_preset": "Power/Defense/Balance",
+    "default_mainarm": "Axes",
+    "default_sidearm": "Lances",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

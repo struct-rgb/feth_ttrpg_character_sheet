@@ -2,6 +2,7 @@
   "name": "Productivity",
   "description": "Lighting metamagic; apply @{condition:Productive:[Productive]} to this unit or target ally within 2 spaces for 2 turns. @{art::Lightning Wall} @{const:variant:Variant}: for one turn, allies that end any phase adjacent to a @{tile:Lightning Arc:Lightning Arcs} regain 1 TP. @{tooltip:(note):I changed the timing of this variant because it didn't work with the lightning wall rework.}",
   "requires": "Reason C",
+    "compatible": "All (Skill Reason) (Tag `lightning`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
