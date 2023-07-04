@@ -16,7 +16,7 @@
         "mt": "fill bothif(weapon|type|faith * unit|tagged|healing, 10, 0)",
         "prot": 0,
         "resl": 0,
-        "hit": 20,
+        "hit": 0,
         "avo": 0,
         "crit": 0,
         "cravo": 0,

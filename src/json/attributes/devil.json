@@ -1,6 +1,6 @@
 {
     "name": "Devil",
-    "description": "Grants weapon +9 Mt. Inflicts 10 damage to wielder and consumes 3 TP after combat. Decreases Max TP by 2 when placed in the Unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)\n\nDisabled while wielder has 0 TP, on spells, and on weapons with Range > 1.",
+    "description": "Grants weapon +9 Mt. Inflicts 10 nonlethal damage to wielder and consumes 3 TP after combat. Decreases Max TP by 2 when placed in the Unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)\n\nDisabled while wielder has 0 TP, on spells, and on weapons with Range > 1.",
     "rank": 1,
     "price": 330,
 

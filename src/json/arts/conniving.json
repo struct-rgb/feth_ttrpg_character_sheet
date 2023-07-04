@@ -1,0 +1,31 @@
+{
+  "name": "Conniving",
+  "description": "Once per turn, choose one mode:\n- Pay 4 SP to cast a Guile spell that deals no damage and restores no HP without ending this unit’s turn.\n- Pay 6 SP to initiate combat without ending this unit’s turn after combat. During combat, this unit’s attacks deal no damage.",
+  "requires": "Guile C",
+  "compatible": "Skill Guile",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 5,
+    "tiles": 0,
+    "spcost": "fill bothif(not(unit|total|mttype|none * (unit|total|mt)), 6, 4)",
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "combo"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "C",
+  "omit": true
+}

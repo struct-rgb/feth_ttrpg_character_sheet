@@ -2,6 +2,7 @@
   "name": "Helm Splitter",
   "description": "Effective against Armor units.",
   "requires": "Any (Axes C) (Axes B)",
+  "compatible": "Skill Axes",
   "mttype": "else",
   "modifiers": {
     "mt": 7,

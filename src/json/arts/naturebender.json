@@ -1,7 +1,8 @@
 {
   "name": "Naturebender",
-  "description": "@{weapon::Hrotti} only; calculates damage using the @{tooltip:higher:The builder can't do this automatically, but you can set it up manually in the weapon stats.} of user's Str or Mag, effective against Cavalry and Dragon units.",
+  "description": "@{weapon::Hrotti} only; @{tooltip:calculates:I changed this to match Eviscerate} damage against the lower of foe’s Prot or Resl. Effective against Cavalry and Dragon units.",
   "requires": "All (Weapon Hrotti) (Crest Timotheos) (Guile E)",
+  "compatible": "Name Hrotti",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -1,0 +1,25 @@
+{
+  "name": "Joust",
+  "description": "Can only target foes within range to counter attack. Cavalry units have weapon advantage; units deal effective damage against Cavalry units.",
+  "requires": "Cavalry A",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 4,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": ["effective", "advantage"],
+  "hidden": false,
+  "rank": "A",
+  "type": "Generic",
+  "omit": true
+}

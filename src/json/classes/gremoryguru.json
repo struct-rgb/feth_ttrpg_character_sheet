@@ -25,10 +25,14 @@
         "def": 0,
         "res": 1,
         "cha": 2,
-        "mov": 5
+        "mov": 4
     },
     "mount": null,
 
+    "default_base": "Medium",
+    "default_preset": "Power/Resistance/Balance",
+    "default_mainarm": "Force",
+    "default_sidearm": "Faith",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

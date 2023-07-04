@@ -2,6 +2,7 @@
   "name": "Sublime Heaven",
   "description": "@{weapon::Sublime Creator Sword} only; Mt +30% of user’s Mag, effective against Dragon units.",
   "requires": "All (Weapon `Sublime Creator Sword`) (Crest Flames) (Swords E)",
+  "compatible": "Name `Sublime Creator Sword`",
   "mttype": "else",
   "modifiers": {
     "mt": "fill scale(10, [Mag], unit|total|mag)",

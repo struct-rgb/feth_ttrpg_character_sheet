@@ -4,7 +4,7 @@
   "type": ["Infantry", "Caster"],
   "tier": "Starting",
   "requires": "Reason D",
-  "abilities": [ "Reason Consumption 1" ],
+  "abilities": [ "Reason Consumption 1", "Focus"],
     "arts": [],
   "growths": {
     "hp": 10,
@@ -18,9 +18,9 @@
   },
   "modifiers": {
     "hp": 0,
-    "str": 0,
+    "str": 1,
     "mag": 4,
-    "dex": 1,
+    "dex": 2,
     "spd": 2,
     "def": 0,
     "res": 4,
@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Mage",
+  "default_preset": "Balance/Balance/Dexterity",
+  "default_mainarm": "Fire",
+  "default_sidearm": "None",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

@@ -10,16 +10,16 @@
         "hp": 20,
         "str": 15,
         "mag": 10,
-        "dex": 15,
-        "spd": 10,
+        "dex": 20,
+        "spd": 15,
         "def": 15,
         "res": 5,
-        "cha": 10
+        "cha": 5
       },
     "modifiers": {
         "hp": 3,
         "str": 4,
-        "mag": 1,
+        "mag": 2,
         "dex": 3,
         "spd": 2,
         "def": 2,
@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Mercenary",
+    "default_preset": "Speed/Defense/Dexterity",
+    "default_mainarm": "Swords",
+    "default_sidearm": "Axes",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

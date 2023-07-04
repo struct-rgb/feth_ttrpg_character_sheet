@@ -2,6 +2,7 @@
   "name": "Brutal",
   "description": "Do not apply conditions after combat. Grants Mt +X in combat, where X is the negative modifier with the greatest magnitude out of the condition(s) that would have been applied after combat. Costs additional SP equal to half of X.",
   "requires": "Guile C",
+  "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": "ask [Modifier Magnitude?] end",

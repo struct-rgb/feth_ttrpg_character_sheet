@@ -1,7 +1,8 @@
 {
   "name": "Waning Shot",
-  "description": "After combat, inflicts Str -5 on foe for 1 turn.",
+  "description": "After combat, apply @{const:gbp:[Str -5]} to target foe for 1 turn.",
   "requires": "Any (Bows C) (Bows B)",
+  "compatible": "Skill Bows",
   "mttype": "else",
   "modifiers": {
     "mt": 4,

@@ -3,6 +3,7 @@
 /* global tooltip */
 /* global wrap */
 /* global AttributeCell */
+/* global Toggle */
 
 /* global Class */
 /* global Expression */
@@ -279,6 +280,8 @@ class LevelAnimation {
  * Widgit used to inspect and edit a LevelHistory instance
  */
 class LevelHistory {
+
+	static EMPTY = {bases: [0, 0, 0, 0, 0, 0, 0, 0], levels: []};
 
 	static levelUpOptions = new Map([
 		["Random/Prompt", "Roll to increase each stat. If less than two, user chooses one instead."],
@@ -563,26 +566,7 @@ class LevelHistory {
 		this._lrows  = [];
 		this._radios = [];
 
-		// this._enable_warnings = element("input", {
-		// 	class: ["simple-border"],
-		// 	attrs: {
-		// 		checked : true,
-		// 		type    : "checkbox",
-		// 	}
-		// });
-
 		this._enable_warnings = new Toggle("Roll with Warnings", true);
-
-		// this._enable_animation = element("input", {
-		// 	class: ["simple-border"],
-		// 	attrs: {
-		// 		checked : true,
-		// 		type    : "checkbox",
-		// 		oninput : (() => {
-		// 			this.bells.disabled = !this.bells.disabled;
-		// 		}),
-		// 	}
-		// });
 
 		this._enable_animation = new Toggle("Level Up Animation", true, () => {
 			this.bells.disabled = !this.bells.disabled;
@@ -666,9 +650,6 @@ class LevelHistory {
 							this.sheet.stats.stats[name].value = value;
 						}
 
-						// this.sheet.stats.level = (
-						// 	Math.floor(this.level()) - 1
-						// ) * 100;
 						this.sheet.stats.level = this.level();
 					})
 				},
@@ -1609,6 +1590,7 @@ class Stats {
 			dual("Prot/Resl", "prot", "resl"),
 			dual("Hit/Avo", "hit", "avo"),
 			dual("Crit/Avo", "crit", "cravo"),
+			dual("Dbs/Dbd", "doubles", "doubled"),
 			dual("SP/TP", "sp", "tp"),
 			element("tr", [
 				element("th", "Costs"),
@@ -1714,7 +1696,7 @@ class Stats {
 	 */
 	import(object) {
 		
-		this.level = object.level;
+		this.level = object.level || 1;
 
 		for (let name of this.names) {
 			this.stats[name].value   = object.bases[name];
@@ -1722,7 +1704,7 @@ class Stats {
 			this.growths[name].value = object.growths[name];
 		}
 
-		this.levelups.import(object.levelups || []);
+		this.levelups.import(object.levelups || LevelHistory.EMPTY);
 	}
 
 	/**

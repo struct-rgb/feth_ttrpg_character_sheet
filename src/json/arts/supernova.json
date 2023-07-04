@@ -2,6 +2,7 @@
   "name": "Supernova",
   "description": "When casting a Fire Spell, blind your target and surrounding enemies. After combat, the target and foes within 2 spaces of the target cannot benefit from Hit/Avo bonuses from Abilites for 1 turn.",
   "requires": "Reason A",
+  "compatible": "All (Skill Reason) (Tag `fire`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

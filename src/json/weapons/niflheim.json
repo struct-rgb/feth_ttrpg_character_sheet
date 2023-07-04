@@ -1,7 +1,7 @@
 {
   "name": "Niflheim",
   "type": "Reason",
-  "description": "An ice spell; on hit, deal half damage dealt to target foe to foes within one space of target foe and apply @{const:gbp:[Mov -1]} to target and adjacent foes after combat for 1 turn.",
+  "description": "An ice spell; @{const:ap:AP = 1}. On hit, deal half damage dealt to target foe to foes within one space of target foe and apply @{const:gbp:[Mov -1]} to target and adjacent foes after combat for 1 turn.",
   "requires": "Reason A",
   "rank": "A",
   "price": 3960,

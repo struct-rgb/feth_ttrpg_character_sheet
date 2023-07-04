@@ -2,6 +2,7 @@
   "name": "Overflowing",
   "description": "When casting @{weapon::Heal}, apply @{condition:Overheal:[Overheal]} to target ally where X = the amount of HP that would be restored in excess of target ally's Max HP.",
   "requires": "Faith D",
+  "compatible": "Name Heal",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

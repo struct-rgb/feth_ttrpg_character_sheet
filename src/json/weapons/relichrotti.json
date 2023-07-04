@@ -1,7 +1,7 @@
 {
   "name": "Hrotti",
   "type": "Guile",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Timotheos||Minor Crest of Timotheos:Timotheos}, enables use of @{art::Naturebender}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Timotheos||Minor Crest of Timotheos:Crest of Timotheos} and @{art::Naturebender}.",
   "requires": "Guile E",
   "rank": "E",
   "price": 0,

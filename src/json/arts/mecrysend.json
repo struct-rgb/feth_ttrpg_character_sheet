@@ -2,6 +2,7 @@
   "name": "Mercy's End",
   "description": "@{weapon::Curtana} only; Foe loses up to 20% of max HP after combat, effective against Dragon units.",
   "requires": "All (Weapon `Curtana`) (Crest Fraldarius) (Swords E)",
+  "compatible": "Name Curtana",
   "mttype": "else",
   "modifiers": {
     "mt": 5,

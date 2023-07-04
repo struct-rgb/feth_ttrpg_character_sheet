@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Mage",
+  "default_preset": "Balance/Balance/Dexterity",
+  "default_mainarm": "Fire",
+  "default_sidearm": "None",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

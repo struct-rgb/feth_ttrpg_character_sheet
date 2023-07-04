@@ -1,6 +1,6 @@
 {
     "name": "Minor Crest of Flames",
-    "description": "10% chance restore HP equal to 30% of damage dealt and 10% chance to grant Mt +5 and prevent foes' counterattacks.",
+    "description": "10% chance restore HP equal to 30% of damage dealt and 10% chance to grant Mt +5 and prevent foes' counterattacks. You implement this yourself.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

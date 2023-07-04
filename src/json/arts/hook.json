@@ -2,6 +2,7 @@
   "name": "Hook",
   "description": "On hit, moves target foe one space closer to user.",
   "requires": "Any (Lances C) (Lances B)",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

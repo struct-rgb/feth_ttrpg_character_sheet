@@ -2,6 +2,7 @@
   "name": "Prolonged",
   "description": "Extend duration of stat changes and conditions applied by this attack by 1 turn per additional 2 SP used.",
   "requires": "Guile D",
+  "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
@@ -14,7 +15,7 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-    "spcost": 2,
+    "spcost": "(ask [Turns to extend Condition?], 1 end * 2)",
     "tpcost": 0,
     "sp": 0,
     "tp": 0

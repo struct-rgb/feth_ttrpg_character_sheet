@@ -1,0 +1,28 @@
+{
+    "name": "Sacrificial",
+    "description": "On hit, after combat, user may pay 3 TP to apply [Vulnerable] to target foe until the end of target foe’s next combat this turn.\n\nDecreases Max TP by 4 when placed in unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.\n\nDisabled on spells, Brawl, Bows.",
+    "rank": 4,
+    "price": 2400,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * weapon|has_attribute|Ranged, 0, -3)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill affirm([Sacrefice?], label [On Hit, After Combat] {3}, 0)",
+        "spcost": 0,
+        "tp": -4,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false,
+    "omit": true
+}

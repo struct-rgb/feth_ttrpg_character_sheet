@@ -84,6 +84,10 @@ input.simple-border:hover {
 	text-decoration: underline;
 }
 
+button.simple-border:hover {
+	text-decoration: underline;
+}
+
 select.simple-border:hover {
 	text-decoration: underline;
 }
@@ -202,6 +206,11 @@ ul.compact-list {
 	text-align: center;
 }
 
+.center-table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .level-table {
 	/*border-spacing: 0px;*/
 }
@@ -316,4 +325,21 @@ button.tight {
 
 fieldset {
 	border: 0px;
+}
+
+.arrowhead {
+	display: inline-block;
+	height: 1em;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.underline {
+	text-decoration: underline;
 }

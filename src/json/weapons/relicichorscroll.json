@@ -1,7 +1,7 @@
 {
   "name": "Ichor Scroll",
   "type": "Faith",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}, enables use of @{art::Radiance}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Lamine||Minor Crest of Lamine:Crest of Lamine} and @{art::Radiance}.",
   "requires": "Faith E",
   "rank": "E",
   "price": 0,

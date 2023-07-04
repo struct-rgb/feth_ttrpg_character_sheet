@@ -1,8 +1,170 @@
 
-/**
- * A module that implements a builder for Roll20 Macros
- * @namespace UserInterface
- */
+Array.prototype.extend = function(...args) {
+	this.push(...args);
+	return this;
+};
+
+Array.prototype.chunk = function(size) {
+	return this.reduce(function(result, value, index, array) {
+		if (index % size == 0)
+			result.push(array.slice(index, index + size));
+		return result;
+	}, []);
+};
+
+Array.prototype.flatten = function() {
+	
+	const final = [];
+
+	for (let each of this) {
+		if (each instanceof Array) {
+			final.extend(...each);
+		} else {
+			final.push(each);
+		}
+	}
+
+	return final;
+};
+
+class TagSetWidget {
+
+	static TagData = function (key, row, locked) {
+		return {id: key, row: row, locked: locked};
+	};
+
+	constructor(label, ondelete, locked=false) {
+
+		this.map = new Map();
+
+		this._toadd = element("input", {
+			class: ["simple-border", "short-meter"],
+			attrs: {
+				type     : "text",
+				disabled : locked,
+				hidden   : locked,
+			},
+		});
+
+		this._button = element("input",  {
+			class   : ["simple-border"],
+			attrs   : {
+				value    : "Add",
+				type     : "button",
+				disabled : locked,
+				hidden   : locked,
+				onclick  : (() => {
+					this.add(this._toadd.value);
+				}),
+			},
+		});
+
+		this.ondelete = ondelete;
+
+		this._table = element("div");
+
+		this.root = element("div", [
+			label, this._button, this._toadd,
+			this._table,
+		]);
+
+		this.lock(locked);
+	}
+
+	lock(value) {
+		this._toadd.hidden    = value;
+		this._toadd.disabled  = value;
+		this._button.hidden   = value;
+		this._button.disabled = value;
+	}
+
+	add(tag, locked=false) {
+
+		if (this.map.has(tag)) return;
+
+		const row = element("input", {
+			class : ["simple-border"],
+			attrs : {
+				type    : "button",
+				value   : tag,
+				onclick : (() => {
+					if (locked) {
+						alert("Tag is locked.");
+					} else {
+						this.delete(tag);
+						this.ondelete();
+					}
+				})
+			},
+		});
+
+		this.map.set(tag, TagSetWidget.TagData(tag, row, locked));
+		this._table.appendChild(row);
+	}
+
+	get size() {
+		return this.map.size;
+	}
+
+	clear() {
+		for (let key of this.map.keys()) {
+			this.delete(key);
+		}
+	}
+
+	delete(tag) {
+		if (!this.map.has(tag)) return;
+		this.map.get(tag).row.remove();
+		this.map.delete(tag);
+	}
+
+	entries() {
+		return this.map.entries();
+	}
+
+	*forEach() {
+
+	}
+
+	*locked() {
+		for (let value of this.map.values()) {
+			if (value.locked) yield value;
+		}
+	}
+
+	has(tag) {
+		return this.map.has(tag);
+	}
+
+	keys() {
+		return this.map.keys();
+	}
+
+	values() {
+		return this.map.keys();
+	}
+}
+
+class BigButton {
+
+	constructor(text, onclick) {
+
+		onclick = onclick || (() => console.log(`BigButton ${text} clicked!`));
+		this.onclick = onclick;
+
+		this.idno          = uniqueID();
+		this.label         = element("label", text);
+		this.label.htmlFor = this.idno;
+		this.label.classList.add("custom-file-input", "simple-border");
+
+		this.input         = element("input");
+		this.input.id      = this.idno;
+		this.input.type    = "button";
+		this.input.onclick = onclick;
+		this.input.classList.add("no-display");
+	}
+
+}
 
 class SwapText {
 	constructor(modes, hidden=false) {
@@ -133,7 +295,8 @@ class ConfigEnum {
 class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	static CURRENT = new Version("2.2.0");
+
+  static CURRENT = new Version("2.3.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -186,6 +349,11 @@ class Version {
 function wrap(...args) {
 	return args.join("");
 }
+
+function ellipse(string, limit) {
+	if (limit == null) throw new Error("limit argument is mandatory");
+	return string.length > limit ?  `${string.slice(0, limit)}...` : string;
+} 
 
 const capitalize = (function() {
 
@@ -298,7 +466,12 @@ function delimit(delimiter, array) {
 	return array.reduce((accumulator, element) => (
 		(
 			accumulator.length
-				? accumulator.push(delimiter, element)
+				? accumulator.push(
+					typeof delimiter == "function"
+						? delimiter()
+						: delimiter,
+					element,
+				)
 				: accumulator.push(element)
 
 			, /* comma operator */
@@ -665,6 +838,10 @@ class Select {
 			}
 		} 
 	}
+
+	get value() {
+		return this._select.value;
+	}
 }
 
 return {
@@ -674,6 +851,158 @@ return {
 };
 
 })();
+
+/**
+ * Class representing a skill grade
+ */
+class Grade {
+
+	static APTITUDE = new ConfigEnum(0, "Normal", [
+		"Normal", "Talent", "Weakness", "Budding", "BuddingWeakness"
+	]);
+
+	static list = [
+		new Grade("E",  0,   0), new Grade("E+",  1,   1),
+		new Grade("D",  2,   2), new Grade("D+",  3,   4),
+		new Grade("C",  4,   8), new Grade("C+",  5,  16),
+		new Grade("B",  6,  36), new Grade("B+",  7,  50),
+		new Grade("A",  8,  64), new Grade("A+",  9,  80),
+		new Grade("S", 10, 150), new Grade("S+", 11, 200),
+		new Grade("X", 12, 201),
+	];
+
+	static toNumber = (function () {
+		const map = new Map(Grade.list.map((grade) => [grade.name, grade.number]));
+		return (name) => map.get(name);
+	})();
+
+	static fromNumber = (function () {
+		const map = new Map(Grade.list.map((grade) => [grade.number, grade.name]));
+		return (number) => map.get(number);
+	})();
+
+	static budThreshold     = 32;
+	static budThresholdWeak = 25;
+
+	/**
+	 * Converts a number of points to the corresponding letter grade
+	 * @static
+	 * @param {number} points - number of points
+	 * @returns {string} the letter grade
+	 */
+	static for(points, aptitude) {
+		const final = points * Grade.multiplier(points, aptitude);
+		return Grade.list.reduce((a, b) => b.points > final ? a : b).name;
+	}
+
+	static multiplier(points, aptitude) {
+		switch (aptitude) {
+		case 0  : return 1.0;
+		case 1  : return 2.0;
+		case 2  : return 0.5;
+		case 3  : return points >= Grade.budThreshold     ? 2.0 : 1.0;
+		case 4  : return points >= Grade.budThresholdWeak ? 2.0 : 0.5;
+		default : throw new Error("Invalid aptitude.");
+		}
+	}
+
+	static TPTABLE = [
+		[15, 0, 0, 1, 2, 1, 2, 1, 2, 1, 10, 9],
+		[ 0, 0, 0, 0, 0, 1, 2, 1, 2, 1,  2, 1],
+		[ 0, 0, 0, 0, 0, 0, 0, 1, 2, 1,  2, 1],
+	];
+
+	/**
+	 * Create a grade
+	 * @param {string} name - letter for the grade
+	 * @param {number} points - minimum number of points to acheive the grade
+	 */
+	constructor(name, number, points) {
+		this.name   = name;
+		this.number = number;
+		this.points = points;
+	}
+}
+
+
+const buffer = new Uint8Array(1);
+
+function d4() {
+	return (crypto.getRandomValues(buffer)[0] & 3) + 1;
+}
+
+const cardinal = ["North", "South", "East", "West"];
+
+function raijin_slots(dice) {
+	return Array.from(Array(dice), () => cardinal[d4() - 1]);
+}
+
+const raijin = (function() {
+
+function iteration(stop) {
+	let   x   = 0;
+	let   y   = 0;
+	let   i   = 0;
+	let   key = `${x},${y}`;
+	const set = new Set();
+
+	do {
+
+		set.add(key);
+
+		const roll = d4();
+
+		switch (roll) {
+		case 1  : ++y; break;
+		case 2  : --y; break;
+		case 3  : ++x; break;
+		case 4  : --x; break;
+		default : break;
+		}
+		key = `${x},${y}`;
+
+	} while(!set.has(key) && i++ < stop);
+
+	return set.size;
+}
+
+return function(iterations, stop=8) {
+
+	const map   = new Map();
+
+	for (let i = 0; i < iterations; ++i) {
+		const tiles = iteration(stop);
+		map.set(tiles, map.has(tiles) ? map.get(tiles) + 1 : 1);
+	}
+
+	const buckets = [];
+
+	for (let [tiles, iters] of map) {
+		buckets.push([tiles, (iters/iterations) * 100]);
+	}
+	
+	return buckets.sort((a, b) => a[0] - b[0]);
+};
+
+})();
+
+function statups(level, growth) {
+	let   total = 0;
+	let   value = 0;
+	const ups   = [0];
+	for (let i = 1; i <= level; ++i) {
+		total += growth;
+		if (total > 100) {
+			ups.push(1);
+			value += 1;
+			total -= 100;
+		} else {
+			ups.push(0);
+		}
+	}
+	ups[0] = value;
+	return ups;
+}
 
 /* exported wrap */
 /* exported capitalize */
@@ -690,3 +1019,8 @@ return {
 /* exported SwapText */
 /* exported Updater */
 /* exported Filter */
+/* exported ellipse */
+/* exported Grade */
+/* exported BigButton */
+/* exported TagSetWidget */
+/* exported Toggle */

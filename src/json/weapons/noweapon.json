@@ -2,7 +2,7 @@
     "name": "Blank Weapon",
     "type": "Other",
     "rank": "E",
-    "description": "Use this as a base when generating tactical art macros.",
+    "description": "No weapon equipped.",
     "requires": "None",
     "price": 0,
 
@@ -24,6 +24,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["first"],
+    "tags": ["first", "template"],
     "hidden": false
 }

@@ -13,13 +13,13 @@
         "dex": 25,
         "spd": 15,
         "def": 5,
-        "res": 15,
+        "res": 10,
         "cha": 15
       },
     "modifiers": {
         "hp": 1,
         "str": 2,
-        "mag": 1,
+        "mag": 2,
         "dex": 4,
         "spd": 2,
         "def": 1,
@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Archer",
+    "default_preset": "Power/Resistance/Dexterity",
+    "default_mainarm": "Bows",
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

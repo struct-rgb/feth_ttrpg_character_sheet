@@ -2,6 +2,7 @@
   "name": "Manifest: Force",
   "description": "Force metamagic; after combat, apply @{const:gbp:[Prot +X]} to this unit or an ally within 2 spaces for one turn, where X = 4 + the spell's original Mt. @{art::Force Wall} @{const:variant:Variant}: after combat, apply @{const:gbp:[Prot +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to any a tile created by a @{tooltip:Reason \"Wall\" spell:Specifically, an Ice Block, Fire Patch, Wind Torrent, Lightning Arc, or Force Wall} for one turn.",
   "requires": "Reason C",
+  "compatible": "All (Skill Reason) (Tag `force`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

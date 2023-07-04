@@ -2,6 +2,7 @@
   "name": "Flickering Flower",
   "description": "Emperor only; applies @{condition:Halt:[Halt]} to target foe for one turn.",
   "requires": "All (Class Emperor) (Axes E)",
+  "compatible": "Skill Axes",
   "mttype": "else",
   "modifiers": {
     "mt": 10,

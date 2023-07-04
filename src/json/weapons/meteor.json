@@ -1,7 +1,7 @@
 {
   "name": "Meteor",
   "type": "Reason",
-  "description": "A fire spell; on hit, deal half damage dealt to target foe to foes within one space of target foe.",
+  "description": "A fire spell; @{const:ap:AP = 1}. On hit, deal half damage dealt to target foe to foes within one space of target foe.",
   "requires": "Reason A",
   "rank": "A",
   "price": 3820,

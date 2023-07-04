@@ -1,7 +1,8 @@
 {
   "name": "Reactive",
-  "description": "Trigger: Before an attack on Enemy Phase. Cast @{weapon::Heal} on an ally within range.",
+  "description": "Trigger: Before combat on Enemy Phase. Cast @{weapon::Heal} on an ally within range.",
   "requires": "Faith B",
+  "compatible": "Name Heal",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

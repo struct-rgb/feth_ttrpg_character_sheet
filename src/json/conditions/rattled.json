@@ -1,17 +1,17 @@
 {
     "name": "Rattled",
-    "description": "Str -3, Mag -3, Dex -3, Spd -3, Def -3, Res -3, Cha -3 and affected unit’s Movement is reduced to 0.",
+    "description": "Affected unit ignores normal weapon triangle and is always at weapon disadvantage. Affected unit also cannot move and cannot use gambits or reactions.",
 
     "modifiers": {
         "hp": 0,
         "sp": 0,
-        "str": -3,
-        "mag": -3,
-        "dex": -3,
-        "spd": -3,
-        "def": -3,
-        "res": -3,
-        "cha": -3,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
 
         "mt": 0,
         "prot": 0,

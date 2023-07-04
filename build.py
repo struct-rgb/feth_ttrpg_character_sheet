@@ -4,7 +4,7 @@ import sys
 import json
 
 from pathlib import Path
-
+from argparse import ArgumentParser
 
 TIER_ORDER = {
 	"Starting": 1,
@@ -16,7 +16,7 @@ SKILL_ORDER = {
 	"Lances"   : 1,
 	"Swords"   : 2,
 	"Bows"     : 3,
-	"Brawling" : 4,
+	"Brawl"    : 4,
 	"Faith"    : 5,
 	"Guile"    : 6,
 	"Reason"   : 7,
@@ -35,6 +35,12 @@ RANK_ORDER = {
 
 SORTING_FUNCS = {
 
+	"presets": lambda item: (
+		(
+			"first" not in item["tags"],
+		)
+	),
+
 	"classes": lambda item: (
 		(
 			"first" not in item["tags"],
@@ -48,6 +54,8 @@ SORTING_FUNCS = {
 		(
 			"first" not in item["tags"],
 			SKILL_ORDER.get(item["type"], 8),
+			"custom" in item["tags"],
+			"secret" in item["tags"],
 			"relic" in item["tags"],
 			"sacred" in item["tags"],
 			RANK_ORDER.get(item["rank"], 6),
@@ -58,7 +66,7 @@ SORTING_FUNCS = {
 	"arts": lambda item: (
 		(
 			"first" not in item["tags"],
-			SKILL_ORDER.get(item["type"], 8),
+			8 if isinstance(item["type"], list) else SKILL_ORDER.get(item["type"], 8),
 			"relic" in item["tags"],
 			"sacred" in item["tags"],
 			RANK_ORDER.get(item["rank"], 6),
@@ -149,7 +157,7 @@ def error_context(source, data, error, context):
 
 	return "\n".join(text)
 
-def compile_definitions():
+def compile_definitions(omit=False):
 	"""
 	Gathers up and compiles all of the features defined in ./src/json into one
 	giant javascript file that can be linked to from index.html
@@ -200,6 +208,10 @@ def compile_definitions():
 					print(errors, file=sys.stderr)
 					sys.exit(2)
 
+			# omit files flagged for it
+			if omit and "omit" in data and data["omit"]:
+				continue
+
 			# success
 			definitions.append(data)
 
@@ -211,15 +223,34 @@ def compile_definitions():
 
 	return compiled
 
+argparser = ArgumentParser(
+	description="a script for building the character builder's data file"
+)
+
+argparser.add_argument(
+	"-o", "--omit",
+	help="omit files with {\"omit\": true} from the final data file",
+	action="store_true",
+)
+
+argparser.add_argument(
+	"-p", "--print",
+	help="print the final data file to stdout",
+	action="store_true",
+)
+
 def main():
 
-	compiled   = compile_definitions()
+	args = argparser.parse_args()
+
+	compiled   = compile_definitions(args.omit)
 	json_str   = json.dumps(compiled, indent=2)
 	javascript = f"/* eslint-disable */\nconst definitions = {json_str};"
 
 	Path("definitions.js").write_text(javascript)
 
-	print(json_str)	
+	if args.print:
+		print(json_str)	
 
 if __name__ == "__main__":
 	main()

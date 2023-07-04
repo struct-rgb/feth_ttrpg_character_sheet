@@ -1,7 +1,7 @@
 {
   "name": "Sword of Moralta",
   "type": "Swords",
-  "description": "Restores 10% (20% with Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}) of Max HP at the start of wielders phase. Possesses the @{attribute::Sacred Synergy} attribute while in the inventory of a unit with the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}.",
+  "description": "@{attribute::Sacred} weapon associated with the @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Crest of Fraldarius}.",
   "requires": "Swords A",
   "rank": "A",
   "price": 0,

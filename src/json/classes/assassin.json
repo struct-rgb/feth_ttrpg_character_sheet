@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Thief",
+    "default_preset": "Speed/Resistance/Balance",
+    "default_mainarm": "Swords",
+    "default_sidearm": "Bows",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

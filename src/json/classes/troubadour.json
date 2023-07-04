@@ -13,12 +13,12 @@
         "dex": 10,
         "spd": 10,
         "def": 10,
-        "res": 20,
+        "res": 15,
         "cha": 20
       },
     "modifiers": {
         "hp": 1,
-        "str": 0,
+        "str": 1,
         "mag": 3,
         "dex": 2,
         "spd": 2,
@@ -39,6 +39,10 @@
         "mov": 3
     },
 
+    "default_base": "Troubadour",
+    "default_preset": "Power/Resistance/Luck",
+    "default_mainarm": "Ice",
+    "default_sidearm": "Faith",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

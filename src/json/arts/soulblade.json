@@ -2,6 +2,7 @@
   "name": "Soulblade",
   "description": "Deals magic-based damage. Mt +30% of user’s Res.",
   "requires": "Any (Swords C) (Swords B)",
+  "compatible": "Skill Swords",
   "mttype": "mag",
   "modifiers": {
     "mt": "fill scale(5, [Res], unit|total|res)",

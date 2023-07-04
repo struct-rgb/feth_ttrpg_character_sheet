@@ -39,6 +39,10 @@
         "mov": 3
     },
 
+    "default_base": "Armored Knight",
+    "default_preset": "Power/Balance/Luck",
+    "default_mainarm": "Axes",
+    "default_sidearm": "Lances",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

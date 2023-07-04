@@ -2,6 +2,7 @@
   "name": "Redirection",
   "description": "On hit, apply @{condition:Redirect:[Redirect]} to this unit for one turn.",
   "requires": "Any (Lances C) (Lances B)",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

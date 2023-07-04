@@ -39,6 +39,10 @@
         "mov": 2
     },
 
+    "default_base": "Pegasus Knight",
+    "default_preset": "Speed/Resistane/Luck",
+    "default_mainarm": "Wind",
+    "default_sidearm": "Guile",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

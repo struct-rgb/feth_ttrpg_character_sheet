@@ -1,0 +1,28 @@
+{
+    "name": "Custom",
+    "description": "Preset for a custom character.",
+    "bases": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mov": 0
+    },
+    "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0
+    },
+    "comment": "Items must be integers.",
+    "tags": ["first"],
+    "hidden": false
+}

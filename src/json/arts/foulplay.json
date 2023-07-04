@@ -1,6 +1,6 @@
 {
   "name": "Foul Play",
-  "description": "Unit swaps positions with an ally in range. Exclusive to the Trickster class.",
+  "description": "Unit swaps positions with an ally in range.",
   "requires": "Class Trickster",
   "mttype": "else",
   "modifiers": {
@@ -18,6 +18,10 @@
   },
   "comment": "",
   "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
     "tactical",
     "rework"
   ],

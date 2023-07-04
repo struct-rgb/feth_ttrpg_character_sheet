@@ -4,7 +4,7 @@
     "type": ["Infantry", "Martial", "Caster"],
     "tier": "Starting",
     "requires": "Required (Permission `White Heron Cup`)",
-    "abilities": ["Avo +20", "Level 10 Mov +1"],
+    "abilities": ["Consumption 1", "Avo +20", "Level 10 Mov +1"],
     "arts": ["Dance", "Martial Dance"],
     "growths": {
         "hp": 20,
@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Dancer",
+    "default_preset": "Speed/Balance/Luck",
+    "default_mainarm": "Swords",
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

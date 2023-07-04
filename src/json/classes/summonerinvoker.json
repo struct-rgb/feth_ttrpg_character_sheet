@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Priest",
+    "default_preset": "Power/Balance/Luck",
+    "default_mainarm": "Guile",
+    "default_sidearm": "Faith",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

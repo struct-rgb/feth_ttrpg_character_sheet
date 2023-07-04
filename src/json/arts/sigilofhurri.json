@@ -2,6 +2,7 @@
   "name": "Sigil of Hurricane",
   "description": "After initiating combat with a target using a Wind spell, leave a 3x3 area centered on the target (The area moves with them.) and inflict @{condition:Cursed:[Cursed]} on that target for 2 turns.",
   "requires": "Reason B",
+  "compatible": "All (Skill Reason) (Tag `wind`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -2,6 +2,7 @@
   "name": "Wild Abandon",
   "description": "No special effect.",
   "requires": "Any(Axes C) (Axes B)",
+  "compatible": "Skill Axes",
   "mttype": "else",
   "modifiers": {
     "mt": 10,

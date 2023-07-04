@@ -2,6 +2,7 @@
   "name": "Life Bond",
   "description": "After casting @{art::Restore}, you may then cast @{weapon::Heal} or @{art::Recover} (if available) on one affected ally within range.",
   "requires": "Faith B",
+  "compatible": "Name Restore",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -1,0 +1,25 @@
+{
+  "name": "Cut Off",
+  "description": "Can only be used while mounted. Move target foe up to two spaces after combat. Mt +2 if an ally is adjacent to foe.",
+  "requires": "Class Hussar",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "4 + fill affirm([Ally Adjacent to Foe?], 2, 0)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 10,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": ["movement"],
+  "hidden": true,
+  "type": ["Swords", "Lances"],
+  "rank": "",
+  "omit": true
+}

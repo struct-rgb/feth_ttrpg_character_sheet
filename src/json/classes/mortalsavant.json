@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Myrmidon",
+  "default_preset": "Balance/Balance/Dexterity",
+  "default_mainarm": "Swords",
+  "default_sidearm": "Guile",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

@@ -2,6 +2,7 @@
   "name": "Armored Strike",
   "description": "Mt +30% of user's Def.",
   "requires": "Axes A",
+  "compatible": "Skill Axes",
   "mttype": "else",
   "modifiers": {
     "mt": "fill scale(3, [Def], unit|total|def)",

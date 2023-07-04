@@ -1,6 +1,6 @@
 {
     "name": "Major Crest of Flames",
-    "description": "20% chance restore HP equal to 30% of damage dealt and 20% chance to grant Mt +5 and prevent foes' counterattacks.",
+    "description": "20% chance restore HP equal to 30% of damage dealt and 20% chance to grant Mt +5 and prevent foes' counterattacks. You implement this yourself.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

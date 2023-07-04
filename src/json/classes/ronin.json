@@ -1,0 +1,40 @@
+{
+  "name": "Ronin",
+  "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
+  "type": ["Armor", "Martial"],
+  "tier": "Advanced",
+  "requires": "All (Any (Swords C+) (Bows C+)) (Required (Armor C+)) (Required (Level 15))",
+  "abilities": ["Duelist's Stance", "Sword Advantage", "Bow Advantage", "Positioning"],
+    "arts": [],
+  "growths": {
+    "hp": 30,
+    "str": 20,
+    "mag": 15,
+    "dex": 20,
+    "spd": 20,
+    "def": 15,
+    "res": 5,
+    "cha": 15
+  },
+  "modifiers": {
+    "hp": 5,
+    "str": 4,
+    "mag": 2,
+    "dex": 5,
+    "spd": 5,
+    "def": 2,
+    "res": 1,
+    "cha": 2,
+    "mov": 4
+  },
+  "mount": null,
+
+  "default_base": "Myrmidon",
+  "default_preset": "Speed/Balance/Luck",
+  "default_mainarm": "Swords",
+  "default_sidearm": "Bows",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false,
+  "omit": true
+}

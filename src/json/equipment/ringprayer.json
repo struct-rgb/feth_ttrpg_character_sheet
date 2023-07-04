@@ -1,6 +1,6 @@
 {
     "name": "Prayer Ring",
-    "description": "Grants wielder @{ability::Miracle}. Restores 10% of Max HP at the start of wielders phase.",
+    "description": "Grants wielder @{ability::Miracle}. Restores 10% of Max HP at the start of wielder's phase.",
     "requires": "None",
     "price": 0,
     "type": "Ring",

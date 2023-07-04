@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "Mercenary",
+    "default_preset": "Balance/Balance/Dexterity",
+    "default_mainarm": "Lances",
+    "default_sidearm": "Axes",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

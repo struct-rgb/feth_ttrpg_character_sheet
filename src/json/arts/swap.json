@@ -17,7 +17,14 @@
     "spcost": 0
   },
   "comment": "",
-  "tags": ["movement", "tactical"],
+  "tags": [
+    "movement",
+    "tactical",
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats"
+  ],
   "hidden": false,
   "type": null,
   "rank": ""

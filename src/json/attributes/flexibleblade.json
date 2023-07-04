@@ -1,0 +1,28 @@
+{
+    "name": "Flexible Blade",
+    "description": "When user is hit in combat at 1 range but avoids a critical hit due to CrAvo, user takes 5 less damage and has Mt +5 for the remainder of the combat.\n\nDisabled on weapons that are not Axes, Swords, Lances, or Brawl.",
+    "rank": 1,
+    "price": 1250,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": [],
+    "hidden": false,
+    "omit": true
+}

@@ -2,6 +2,7 @@
   "name": "Overcharge",
   "description": "When casting a Lightning Spell, for 2 turns, all foes within 2 spaces of you suffer from @{condition:Overcharged:[Overcharged]}.",
   "requires": "Reason A",
+  "compatible": "All (Skill Reason) (Tag `lightning`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

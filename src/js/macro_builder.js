@@ -2,13 +2,14 @@
 
 
 /* global wrap */
-/* global uniqueLabel */
 /* global tooltip */
 /* global element */
+/* global Toggle */
 
 /* global Expression */
 
 /* global CombatArt */
+/* global Ability */
 /* global hitip */
 
 /**
@@ -27,7 +28,7 @@ class Builder {
 	}
 
 	me(action) {
-		this.base.push("/me ", action, "\n");
+		this.base.push("/em ", action, "\n");
 		return this;
 	}
 
@@ -55,7 +56,6 @@ class Builder {
 	}
 
 	sum(...args) {
-		console.log(args);
 		const level = [];
 		level.push("[[");
 
@@ -171,41 +171,16 @@ class UserInterface {
 		
 		this._display = element("textarea", {
 			class: ["simple-border", "calculator", "calculator-out"],
-			attrs: {id: "generator-output"},
 		});
 
-		this._labels  = new Toggle("Roll20 Labels?", true);
-
-		// this._labels  = element("input", {
-		// 	attrs: {
-		// 		type    : "checkbox",
-		// 		checked : true,
-		// 	},
-		// });
-
-		this._alias   = new Toggle("Roll20 Variables?", false);
-
-		// this._alias   = element("input", {
-		// 	attrs: {
-		// 		id      : "generator-hardcode",
-		// 		type    : "checkbox",
-		// 		checked : false,
-		// 	}
-		// });
-
-		this._compact = new Toggle("Compact Macro Expressions?", true);
-
-		// this._compact = element("input", {
-		// 	attrs: {
-		// 		type    : "checkbox",
-		// 		checked : true,
-		// 	}
-		// });
+		this._labels   = new Toggle("Roll20 Labels?", true);
+		this._alias    = new Toggle("Roll20 Variables?", false);
+		this._compact  = new Toggle("Compact Macro Expressions?", true);
+		this._testroll = new Toggle("Test Roll Prompt?", false);
 		
 		this._input   = element("input", {
 			class: ["simple-border", "calculator"],
 			attrs: {
-				id        : "generator-console",
 				type      : "text",
 				onkeydown : ((event) => {
 					if (event.keyCode == 13) {
@@ -223,9 +198,8 @@ class UserInterface {
 			},
 		});
 
-		this._defs = element("dl",  {
-			attrs: {id: "varslist"}
-		});
+		this.varopts = element("div");
+		this._defs   = element("dl");
 
 		this.root     = element("div", [
 
@@ -234,25 +208,27 @@ class UserInterface {
 				attrs: {
 					type    : "button",
 					value   : "Create Blurb",
-					onclick : (() => this.sheet.blurb()),
+					onclick : (() => this.blurb()),
 				}
 			}),
 
-			tooltip(
-				element("input", {
-					class: ["simple-border"],
-					attrs: {
-						type    : "button",
-						value   : "Create Macro",
-						onclick : (() => this.sheet.macro()),
-					}
-				}),
-				wrap(
-					"In order to generate correct macros for tactical arts ",
-					"make sure your select weapon is \"Blank Weapon\" in the ",
-					"Create > Weapons & Spells tab. (It's Other E Rank.)"
-				),
-			),
+			element("input", {
+				class: ["simple-border"],
+				attrs: {
+					type    : "button",
+					value   : "Create Macro",
+					onclick : (() => this.macro()),
+				}
+			}),
+
+			element("input", {
+				class: ["simple-border"],
+				attrs: {
+					type    : "button",
+					value   : "Batch Create Macros",
+					onclick : (() => this.macros()),
+				}
+			}),
 
 			element("br"),
 			
@@ -289,6 +265,15 @@ class UserInterface {
 				),
 			),
 
+			tooltip(
+				this._testroll.root,
+				wrap(
+					"Generated macros will include a prompt on whether this ",
+					"this roll is a test roll or a real roll. Dice will not ",
+					"be rolled for a test roll."
+				),
+			),
+
 			element("br"),
 
 			this._display,
@@ -299,9 +284,7 @@ class UserInterface {
 
 			element("br"),
 
-			element("div", {
-				attrs: {id: "var-options"}
-			}),
+			this.varopts,
 
 			this._defs,
 		]);
@@ -422,12 +405,13 @@ class UserInterface {
 		}
 	}
 
-	macro() {
+	macro(display=true) {
 
 		const m   = new Builder();
-		const wpn = this.sheet.weaponz;
 		const art = CombatArt.get(this.sheet.arts.equipped.getActive());
+		const wpn = this.sheet.weaponz;
 
+		/* Set up macro-generation environment */
 		const env = new Expression.Env(
 			Expression.Env.MACROGEN
 				| (this._labels.checked  ? Expression.Env.LABEL   : 0)
@@ -436,95 +420,240 @@ class UserInterface {
 			this.sheet.definez,
 		);
 
+		/* Determine if this allows test rolls */
+		const roll = (
+			this._testroll.checked
+				? m.prompt("Test Roll",
+					"No"  , m.sum("1d100"),
+					"Yes" , m.sum("0"))
+				: m.sum("1d100")
+		);
+
+		if (art != CombatArt.EMPTY && art.tagged("depricated")) {
+			alert(`${art.name}\n${art.description}`);
+			return;
+		}
+
+		/* Make use of a blank default weapon for tactical arts */
+		let tactical = null;
+		if (art.tagged("tactical")) {
+			tactical = this.sheet.wb.activeID;
+			this.sheet.wb.add();
+			this.sheet.weaponz.template = "Tactical Art";
+		}
+
 		(m
 			.me("(FLAVOR TEXT GOES HERE)")
 			.table()
-			.row("name", this.sheet.weaponz.name
-				+ (art != CombatArt.EMPTY
-					? " w/ " + art.name
-					: ""))
+			.row("name",
+				(art != CombatArt.EMPTY
+					? (tactical
+						? art.name
+						: `${wpn.name} w/ ${art.name}`)
+					: wpn.name))
 		);
 
-		if (wpn.template.tagged("healing")) {
-			/* this is a healing effect */
-			
-			(m
-				.row("Healing",
-					m.sum(env.read("unit|total|mt")))
-			);
-		} else if (wpn.template.tagged("no might")) {
-			/* exclude the might row */
-		} else {
-			(m
-				.row("Damage is",
-					m.sum(env.read("unit|total|mt")))
-			);
-		}
-
-		if (!wpn.template.tagged("no hit") && !art.tagged("no hit")) {
+		if (!(wpn.tagged("no hit") || art.tagged("no hit"))) {
 			(m
 				.row("To Hit",
 					m.merge(
-						m.sum("1d100"),
+						roll,
 						"≤",
 						m.sum(env.read("unit|total|hit"))
 					))
 			);
 		}
 
-		if (!wpn.template.tagged("no crit")) {
+		if (!(wpn.tagged("no crit") || art.tagged("no crit"))) {
 			(m
 				.row("To Crit",
 					m.merge(
-						m.sum("1d100"),
+						roll,
 						"≤",
 						m.sum(env.read("unit|total|crit"))
 					))
 			);
 		}
 
-		(m
-			.row("Hit/Crit Avo",
-				m.merge(
-					m.sum(env.read("unit|total|avo")),
-					"/",
-					m.sum(env.read("unit|total|cravo"))))
-			.row("Prot/Resl",
-				m.merge(
-					m.sum(env.read("unit|total|prot")),
-					"/",
-					m.sum(env.read("unit|total|resl"))))
-			.row("Speed",
-				m.sum(env.read("unit|total|spd")))
-			.line("")
-			// .line(m.italic(
-			// 	`${this.sheet.weaponz.name}: ${this.sheet.weaponz.fullInfo()}`
-			// ))
+		if (wpn.tagged("no might") || art.tagged("no might")) {
+			/* exclude the might row */
+		} else if (wpn.tagged("healing") || (tactical && art.tagged("healing"))) {
+			/* this is a healing effect */
+			
+			(m
+				.row("Healing",
+					m.sum(env.read("unit|total|mt")))
+			);
+		} else {
+			(m
+				.row("Damage is",
+					m.merge(
+						m.sum(env.read("unit|total|mt")),
+						" v. ",
+						[
+							"Error",
+							"Prot",
+							"Resl",
+							"None"
+						][
+							env.read("unit|total|mttype")
+						]
+					))
+			);
+		}
+
+		if (!(wpn.tagged("no stats") || art.tagged("no stats"))) {
+			(m
+				.row("Hit/Crit Avo",
+					m.merge(
+						m.sum(env.read("unit|total|avo")),
+						"/",
+						m.sum(env.read("unit|total|cravo"))))
+				.row("Prot/Resl",
+					m.merge(
+						m.sum(env.read("unit|total|prot")),
+						"/",
+						m.sum(env.read("unit|total|resl"))))
+				.row("Doubles/Doubled",
+					m.merge(
+						m.sum(env.read("unit|total|doubles")),
+						"/",
+						m.sum(env.read("unit|total|doubled"))))
+			);
+		}
+
+		if (!(wpn.tagged("no cost") || art.tagged("no cost"))) {
+			(m
+				.row("SP/TP Cost",
+					m.merge(
+						m.sum(env.read("unit|total|spcost")),
+						"/",
+						m.sum(env.read("unit|total|tpcost"))))
+			);
+		}
+
+		/* List all abilities with a proc chance */
+		const procs = (
+			Array.from(this.sheet.abilities.equipped.getActive())
+				.map(x => Ability.get(x))
+				.filter(a => a.tagged("chance") && "proc" in a.modifiers)
 		);
+
+		/* Add in rolls for abilities with a proc chance */
+		for (let ability of procs) {
+			(m
+				.row(ability.name,
+					m.merge(
+						roll,
+						"≤",
+						m.sum(ability.modifiers.proc.macrogen())
+					))
+			);
+		}
+
+		m.line("");
 
 		const set = new Set([wpn.name]);
 
 		const feature = [wpn.name, wpn.fullInfo()];
 
-		for (let line of hitip.text(feature, set, false)) {
-			m.line(m.italic(line));
+		/* Weapon description */
+		if (!tactical) {
+			for (let line of hitip.text(feature, set, false)) {
+				m.line(m.italic(line));
+			}
 		}
 
+		/* Arts description */
 		if (this.sheet.arts.equipped.getActive()) {
 			for (let line of hitip.text(art, set, false)) {
 				m.line(m.italic(line));
 			}
 		}
 
+		/* Proc chance ability descriptions */
+		for (let ability of procs) {
+			for (let line of hitip.text(ability, set, false, true)) {
+				m.line(m.italic(line));
+			}
+		}
+
 		const macro = m.macro();
-		console.log(macro);
-		this._display.value = macro;
+
+		/* Reset weapon to equipped weapon after tactical art generation */
+		if (tactical) {
+			const tmp = this.sheet.wb.activeID;
+			this.sheet.wb.change(tactical);
+			this.sheet.wb.remove(tmp);
+		}
+
+		if (display) {
+			console.log(macro);
+			this._display.value = macro;
+		}
+
+		return macro;
 	}
 
-	/* todo make this work */
-	blurb() {
+	macros(display=true) {
+		/* experimental function to make macros for all possible combos */
 
-		alert("This feature is incomplete and may give incorrect or incomplete results");
+		const macros   = [];
+		const weapons  = this.sheet.wb;
+		const weapon   = this.sheet.weaponz;
+		const wselect  = weapons.activeID;
+		const arts     = this.sheet.arts.equipped;
+		const aselect  = arts.active;
+
+		const ref      = {weapon: null};
+		const compiler = new Polish.Compiler(CombatArt.compatibles(ref));
+
+		/* Create a macro for each weapon in inventory */
+		for (let key of Array.from(weapons.map.keys())) {
+			weapons.change(key);
+
+			/* We only want macros for weapons in the inventory */
+			if (!weapon.inInventory) continue;
+
+			/* First we needs a macro for the plain weapon */
+			if (arts.active) arts.toggleActive(arts.active);
+			macros.push(this.macro(false));
+
+			/* Now we need ones for its compatible arts */
+			ref.weapon = weapon.template;
+			for (let art of arts.values()) {
+
+				/* Skip these. We'll get them once at the end */
+				if (art.tagged("tactical")) continue;
+
+				/* Check whether this combat art and weapon are compatible */
+				if (!compiler.compile(art.compatible).exec()) continue;
+
+				/* Create the macro */
+				arts.toggleActive(art.name);
+				macros.push(this.macro(false));
+			}
+		}
+
+		/* Now to make macros for the tactical arts */
+		for (let art of arts.values()) {
+
+			/* Skip these. We already made macros for all of them */
+			if (!art.tagged("tactical")) continue;
+		
+			/* Create the macro */
+			arts.toggleActive(art.name);
+			macros.push(this.macro(false));
+		}
+
+		weapons.change(wselect);
+		arts.toggleActive(aselect);
+
+		if (display) this._display.value = macros.join("\n\n");
+		return macros;
+	}
+
+	blurb(display=true) {
 
 		const text  = [];
 		const sheet = this.sheet;
@@ -589,11 +718,11 @@ class UserInterface {
 
 		list("## Equipped Arts", sheet.arts.equipped.values());
 
-		/*
-		 * Weapons & Spells
-		 */
+		/* The End */
 
-		this._display.value = text.join("");
+		const blurb = text.join("");
+		if (display) this._display.value = blurb;
+		return blurb;
 	}
 }
 

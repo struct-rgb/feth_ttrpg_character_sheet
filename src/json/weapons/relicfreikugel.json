@@ -1,7 +1,7 @@
 {
   "name": "Freikugel",
   "type": "Axes",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Goneril||Minor Crest of Goneril:Goneril}, enables use of @{art::Apocalyptic Flame}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Goneril||Minor Crest of Goneril:Crest of Goneril} and @{art::Apocalyptic Flame}.",
   "requires": "Axes E",
   "rank": "E",
   "price": 0,

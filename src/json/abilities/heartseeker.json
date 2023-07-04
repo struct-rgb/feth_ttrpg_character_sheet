@@ -1,6 +1,6 @@
 {
     "name": "Heartseeker",
-    "description": "Adjacent foes suffer Avo -20 in combat.",
+    "description": "Adjacent foes have Avo -20 in combat.",
     "requires": "Class Druid",
     "modifiers": {
         "hp": 0,

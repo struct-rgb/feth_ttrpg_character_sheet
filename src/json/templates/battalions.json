@@ -1,0 +1,46 @@
+{
+    "name": "Battalion Template",
+    "description": "This is a template battalion; it can't be used",
+    "rank": "E D C B A S",
+    "weapon": "Swords Axes Lances Bows Guile Faith Reason Brawl Other",
+    "type": ["Martial Armor Flying Riding Other"],
+    "abilities": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "disc": 0,
+        "brav": 0,
+        "pres": 0,
+        "strc": 0
+    },
+
+    "modifiers": {
+        "disc": 0,
+        "brav": 0,
+        "pres": 0,
+        "strc": 0,
+        "auto": 0,
+        "cap" : 0,
+        "minrng": 0,
+        "maxrng": 0
+    },
+
+    "gambit": {
+        "name": "Gambit Name",
+        "description": "A description of the gambit",
+        "aoe": "An area of effect",
+        "mttype": "else str mag none",
+        "modifiers": {
+            "mt": 0,
+            "hit": 0,
+            "minrng": 1,
+            "maxrng": 1,
+            "cost": 0
+        }
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

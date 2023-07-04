@@ -2,6 +2,7 @@
   "name": "Shatter Slash",
   "description": "After combat, apply @{const:gbp:[Def -5]} to target foe for 1 turn.",
   "requires": "Any (Lances C) (Lances B)",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": 4,

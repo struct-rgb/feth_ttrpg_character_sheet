@@ -10,25 +10,29 @@
         "hp": 10,
         "str": 10,
         "mag": 10,
-        "dex": 20,
+        "dex": 15,
         "spd": 20,
         "def": 5,
-        "res": 15,
+        "res": 10,
         "cha": 20
       },
     "modifiers": {
         "hp": 1,
         "str": 1,
-        "mag": 0,
+        "mag": 1,
         "dex": 3,
         "spd": 5,
         "def": 1,
         "res": 2,
-        "cha": 0,
+        "cha": 4,
         "mov": 4
     },
     "mount": null,
 
+    "default_base": "Thief",
+    "default_preset": "Speed/Balance/Luck",
+    "default_mainarm": "Swords",
+    "default_sidearm": "Bows",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

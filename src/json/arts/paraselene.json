@@ -2,6 +2,7 @@
   "name": "Paraselene",
   "description": "Great Lord only; after combat, user moves 1 space away from target foe in the same row/column as target foe.",
   "requires": "Class `Great Lord`",
+  "compatible": "Skill Lances",
   "mttype": "else",
   "modifiers": {
     "mt": 10,

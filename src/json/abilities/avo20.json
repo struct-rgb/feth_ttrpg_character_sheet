@@ -1,7 +1,7 @@
 {
     "name": "Avo +20",
     "description": "Grants Avo +20.",
-    "requires": "Class Dancer)",
+    "requires": "Class Dancer",
     "modifiers": {
         "hp": 0,
         "sp": 0,

@@ -1,0 +1,10 @@
+{
+	"name": "Adjutant Template",
+	"description": "This is a template adjutant; it can't be used",
+	"ability": "None",
+	"reaction": "None",
+	"modifiers": {
+		"disc": 0,
+		"brav": 0
+	}
+}

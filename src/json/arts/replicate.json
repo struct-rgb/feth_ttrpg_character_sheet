@@ -1,0 +1,34 @@
+{
+  "name": "Replicate",
+  "description": "This unit splits into two copies of itself in target empty adjacent spaces as an action; both copies share one pool of SP, one pool of TP, one list of status conditions, one inventory, and at least one of the copies must take the Wait action each turn. The HP of both copies is set to be equal to the lowest HP among all surviving copies at the beginning of their phase. This art cannot be used while more than one copy exists.",
+  "requires": "All (Any (Brawl A+) (Reason A+)) (Any (Reason A+) (Guile A+)) (Any (Guile A+) (Swords A+)) (Any (Swords A+) (Brawl A+))",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tiles": 0,
+    "spcost": 0,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical"
+  ],
+  "hidden": true,
+  "type": "",
+  "rank": "A+",
+  "omit": true
+}

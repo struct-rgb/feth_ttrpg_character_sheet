@@ -4,7 +4,7 @@
   "type": ["Infantry", "Caster"],
   "tier": "Advanced",
   "requires": "All (Faith B) (Required (Level 15))",
-  "abilities": [ "Faith Magic Heal +10", "Faith Consumption 2", "Terrain Resistance" ],
+  "abilities": [ "Faith Heal +10", "Faith Consumption 2", "Terrain Resistance" ],
     "arts": [],
   "growths": {
     "hp": 15,
@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Priest",
+  "default_preset": "Balance/Resistance/Luck",
+  "default_mainarm": "Faith",
+  "default_sidearm": "None",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

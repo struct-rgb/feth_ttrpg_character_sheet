@@ -1,6 +1,6 @@
 {
   "name": "Levitation",
-  "description": "Force metamagic; after combat, apply @{condition:Levitation:[Levitation]} to this unit and adjacent allies for 3 turns.",
+  "description": "Apply @{condition:Levitation:[Levitation]} to this unit and adjacent allies for 3 turns.",
   "requires": "Reason A",
   "mttype": "else",
   "modifiers": {
@@ -21,6 +21,11 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
     "condition",
     "aoe",
     "force"

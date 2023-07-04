@@ -29,6 +29,9 @@
         "tp": 0,
         "sp": 0,
 
+        "doubles": 0,
+        "doubled": 3,
+
         "mov": 0
     },
 

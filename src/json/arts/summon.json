@@ -18,7 +18,11 @@
   },
   "comment": "",
   "tags": [
-    "tactical"
+    "tactical",
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats"
   ],
   "hidden": false,
   "rank": "",

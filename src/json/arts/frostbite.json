@@ -2,6 +2,7 @@
   "name": "Frostbite",
   "description": "Ice metamagic; after combat, apply @{condition:Frostbitten:[Frostbitten]} to target foe and foes adjacent to target foe for one turn. @{tooltip:(note):Original text said, \"After initiating combat, your target and adjecent foes suffer...\", not sure what it meant by \"after initiating combat\"}",
   "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `ice`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

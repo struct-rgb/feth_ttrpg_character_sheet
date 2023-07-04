@@ -1,0 +1,32 @@
+{
+  "name": "Flying Leap",
+  "description": "Can only be equipped by Cavalry units, can only be used while mounted. Unit may move to the opposite side of target space so long as that tile is traversable by Flying units.",
+  "requires": "Riding C",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "movement"
+  ],
+  "hidden": false,
+  "type": "",
+  "rank": "",
+  "omit": true
+}

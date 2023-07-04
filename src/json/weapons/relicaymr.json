@@ -1,7 +1,7 @@
 {
   "name": "Aymr",
   "type": "Axes",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Seiros||Minor Crest of Seiros:Seiros}, enables use of @{art::Raging Storm}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Seiros||Minor Crest of Seiros:Crest of Seiros} and @{art::Raging Storm}.",
   "requires": "Axes E",
   "rank": "E",
   "price": 0,

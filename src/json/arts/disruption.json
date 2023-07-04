@@ -2,6 +2,7 @@
   "name": "Disruption",
   "description": "Wind metamagic; apply @{condition:Distorted:[Distorted]} to target foe for 2 turns.",
   "requires": "Reason C",
+  "compatible": "All (Skill Reason) (Tag `wind`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

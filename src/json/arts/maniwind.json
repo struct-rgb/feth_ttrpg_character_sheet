@@ -2,6 +2,7 @@
   "name": "Manifest: Wind",
   "description": "Wind metamagic; after combat, apply @{condition:Distant Guard:[Distant Guard X]} to this unit or an ally within 2 spaces for one turn, where X = 1 + the spell’'s original Mt. @{art::Wind Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{condition:Distant Guard:[Distant Guard 5]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Wind Torrent} for one turn.",
   "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `wind`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

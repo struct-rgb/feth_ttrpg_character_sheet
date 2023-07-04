@@ -2,6 +2,7 @@
   "name": "Blue Flame Blade",
   "description": "Fire metamagic; instead of attacking, apply @{condition:Blue Flame:[Blue Flame X]}, where X is the spell's Mt, to target ally for 2 turns.",
   "requires": "Reason B",
+  "compatible": "All (Skill Reason) (Tag `fire`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

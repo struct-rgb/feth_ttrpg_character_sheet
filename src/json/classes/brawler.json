@@ -1,0 +1,39 @@
+{
+    "name": "Brawler",
+    "description": "A hand to hand combat specialist.",
+    "type": ["Infantry", "Martial", "Caster"],
+    "tier": "Starting",
+    "requires": "Brawl D",
+    "abilities": ["Brawl Consumption 1", "Stamina +5", "Level 10 Mov +1"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 15,
+        "def": 10,
+        "res": 0,
+        "cha": 10
+      },
+    "modifiers": {
+        "hp": 4,
+        "str": 2,
+        "mag": 2,
+        "dex": 3,
+        "spd": 3,
+        "def": 2,
+        "res": 0,
+        "cha": 2,
+        "mov": 5
+    },
+    "mount": null,
+
+    "default_base": "Brawler",
+    "default_preset": "Balance/Defense/Dexterity",
+    "default_mainarm": "Metal",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

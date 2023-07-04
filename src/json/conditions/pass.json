@@ -1,7 +1,6 @@
 {
     "name": "Pass",
-    "description": "Allows unit to pass through spaces occupied by foes and certain player created @{tooltip:tiles:Ice Blocks and Barricades}. If condition ends while unit is an a tile that they would not be able to traverse without this condition, unit takes 10 nonlethal damage and is move to the nearest empty tile.",
-
+    "description": "Allows unit to pass through spaces occupied by foes and certain player created @{tooltip:tiles:Ice Blocks and Barricades}, but unit cannot end its movement in such a space.",
     "modifiers": {
         "hp": 0,
         "sp": 0,

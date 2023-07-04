@@ -2,6 +2,7 @@
   "name": "Hunter’s Volley",
   "description": "Sniper only; triggers 2 consecutive hits.",
   "requires": "All (Bows B+) (Level 20)",
+  "compatible": "Skill Bows",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

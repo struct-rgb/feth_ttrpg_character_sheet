@@ -1,6 +1,6 @@
 {
   "name": "Dance",
-  "description": "Allows target ally to move and act again.",
+  "description": "Target ally without @{art::Dance} that has taken a turn this phase may take another turn.",
   "requires": "Class Dancer",
   "mttype": "none",
   "modifiers": {
@@ -21,6 +21,10 @@
   },
   "comment": "",
   "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
     "tactical"
   ],
   "hidden": false,

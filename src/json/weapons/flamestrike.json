@@ -1,7 +1,7 @@
 {
   "name": "Flame Strike",
   "type": "Faith",
-  "description": "On hit, deal half damage dealt to target foe to foes within two spaces of target foe.",
+  "description": "@{const:ap:AP = 1}; on hit, deal half damage dealt to target foe to foes within two spaces of target foe.",
   "requires": "Faith A",
   "rank": "A",
   "price": 4350,

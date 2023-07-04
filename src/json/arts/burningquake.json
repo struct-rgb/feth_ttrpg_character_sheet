@@ -2,6 +2,7 @@
   "name": "Burning Quake",
   "description": "@{weapon::Lúin} only; Mt +30% of user's Spd; effective against Dragon units.",
   "requires": "All (Weapon Lúin) (Crest Daphnel) (Lances E)",
+  "compatible": "Name Lúin",
   "mttype": "else",
   "modifiers": {
     "mt": "fill scale(8, [Spd], unit|total|spd)",

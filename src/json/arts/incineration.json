@@ -2,6 +2,7 @@
   "name": "Incineration",
   "description": "Fire metamagic; after combat, create a 3x3 area of @{tile:Fire Patch:Fire Patches} centered on a space within Range ≤ 4. @{art::Fire Wall} @{const:variant:Variant}: created @{tile:Fire Patch:Fire Patches} also apply their effect to spaces adjacent to them.",
   "requires": "Reason C",
+  "compatible": "All (Skill Reason) (Tag `fire`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -29,6 +29,10 @@
     },
     "mount": null,
 
+    "default_base": "None",
+    "default_preset": "Balance/Balance/Balance",
+    "default_mainarm": "Swords",
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": ["first"],
     "hidden": false

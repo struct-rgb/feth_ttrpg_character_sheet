@@ -1,7 +1,7 @@
 {
   "name": "Lúin",
   "type": "Lances",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Daphnel||Minor Crest of Daphnel:Daphnel}, enables use of @{art::Burning Quake}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Daphnel||Minor Crest of Daphnel:Crest of Daphnel} and @{art::Burning Quake}.",
   "requires": "Lances E",
   "rank": "E",
   "price": 0,

@@ -4,7 +4,7 @@
   "type": ["Infantry", "Caster"],
   "tier": "Starting",
   "requires": "Faith D",
-  "abilities": [ "Faith Consumption 1" ],
+  "abilities": [ "Faith Consumption 1", "Faith Heal +5" ],
     "arts": [],
   "growths": {
     "hp": 10,
@@ -18,7 +18,7 @@
   },
   "modifiers": {
     "hp": 0,
-    "str": 0,
+    "str": 1,
     "mag": 4,
     "dex": 2,
     "spd": 1,
@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Priest",
+  "default_preset": "Balance/Resistance/Luck",
+  "default_mainarm": "Faith",
+  "default_sidearm": "None",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

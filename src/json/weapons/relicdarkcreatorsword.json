@@ -1,7 +1,7 @@
 {
   "name": "Dark Creator Sword",
   "type": "Swords",
-  "description": "If wielder has the Crest of @{ability:Major Crest of Flames||Minor Crest of Flames:Flames}, enables use of @{art::Heaven's Fall}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Flames||Minor Crest of Flames:Crest of Flames} and @{art::Heaven's Fall}.",
   "requires": "Swords A",
   "rank": "A",
   "price": 0,

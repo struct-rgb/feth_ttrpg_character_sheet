@@ -29,6 +29,10 @@
   },
   "mount": null,
 
+  "default_base": "Journeyman",
+  "default_preset": "Balance/Balance/Balance",
+  "default_mainarm": "Sword",
+  "default_sidearm": "None",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

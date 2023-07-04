@@ -1,7 +1,8 @@
 {
   "name": "Quickened",
-  "description": "Cast a healing spell without ending your turn.",
+  "description": "Once per turn, cast a healing spell without ending this unit's turn.",
   "requires": "Faith C",
+  "compatible": "All (Skill Faith) (Tag `healing`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
