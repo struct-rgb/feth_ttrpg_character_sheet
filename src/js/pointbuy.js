@@ -14,6 +14,15 @@
  * @property {function} trigger - callback of oninput behavior
  */
 
+
+/**
+ * Options for initializing a new AttributePair
+ * @typedef {object} PairOptions
+ * @property {boolean} edit - whether the cell accepts input
+ * @property {PointRange} range - range of values
+ * @property {function} trigger - callback of oninput behavior
+ */
+
 class AttributePair {
 
 	constructor(name, options) {
@@ -79,7 +88,7 @@ class StatisticRow {
 				return x;
 			},
 		});
-
+    
 		this.root = element("tr",
 			[element("th", name)]
 				.concat(this._value.roots)
@@ -106,7 +115,6 @@ function natural(number) {
 }
 
 const costfunctions = {
-
 	growth: {
 		HP  : (s) => natural(scale(s,  "HP", 9)),
 		STR : (s) => natural(Math.max(scale(s, "STR", 5) - scale(s, "MAG", 5), 0)/2 + scale(s, "STR", 5)/2),
@@ -142,6 +150,7 @@ const costfunctions = {
 };
 
 class PointRange {
+  
 	constructor(min, def, max, cost=0) {
 
 		if (!(min <= max)) {

@@ -1653,7 +1653,7 @@ const definitions = {
       "name": "Mercy's End",
       "description": "@{weapon::Curtana} only; Foe loses up to 20% of max HP after combat, effective against Dragon units.",
       "requires": "All (Weapon `Curtana`) (Crest Fraldarius) (Swords E)",
-      "compatible": "name Curtana",
+      "compatible": "Name Curtana",
       "mttype": "else",
       "modifiers": {
         "mt": 5,
@@ -2222,22 +2222,20 @@ const definitions = {
       "compatible": "Name Failnaught",
       "mttype": "else",
       "modifiers": {
-        "mt": 10,
+        "mt": 7,
         "prot": 0,
         "resl": 0,
-        "hit": 30,
+        "hit": 10,
         "avo": 0,
-        "crit": 10,
+        "crit": 5,
         "cravo": 0,
         "minrng": 2,
-        "maxrng": 3,
+        "maxrng": 4,
         "tpcost": 0,
         "spcost": 3
       },
       "comment": "",
       "tags": [
-        "effective",
-        "status",
         "relic"
       ],
       "hidden": false,
@@ -2254,7 +2252,7 @@ const definitions = {
         "mt": 10,
         "prot": 0,
         "resl": 0,
-        "hit": 10,
+        "hit": 30,
         "avo": 0,
         "crit": 10,
         "cravo": 0,
@@ -5525,6 +5523,34 @@ const definitions = {
       "type": ""
     },
     {
+      "name": "Might Save",
+      "description": "This art is depricated; look for 'Strength Save'.",
+      "requires": "All (Armor B+) (ClassType Armor)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 5,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "reaction",
+        "tactical",
+        "depricated"
+      ],
+      "hidden": true,
+      "type": "Armor",
+      "rank": "B+"
+    },
+    {
       "name": "Swap",
       "description": "User swaps places with target adjacent ally.",
       "requires": "Level 5",
@@ -5619,7 +5645,7 @@ const definitions = {
     },
     {
       "name": "Dance",
-      "description": "Target ally without @{art::Dance} that has taken a turn this phase may take another turn.",
+      "description": "Allows target ally to move and act again.",
       "requires": "Class Dancer",
       "mttype": "none",
       "modifiers": {
@@ -6254,6 +6280,40 @@ const definitions = {
       "tags": [
         "stance",
         "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Ambush Predator",
+      "description": "If unit takes no action but Wait on its turn, apply @{const:gbp:[Avo +15]} and @{const:gbp:[Crit +10]} to unit for one turn.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": "ask [Ambush Predator]; No {0}, Yes {15} end",
+        "crit": "ask [Ambush Predator]; No {0}, Yes {10} end",
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
       ],
       "hidden": false
     },
@@ -7081,6 +7141,7 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "in combat"
@@ -7682,6 +7743,217 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "faire",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Brawl Advantage",
+      "description": "Grants Mt +5 in combat when unit has weapon triangle advantage.",
+      "requires": "None",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": "fill advantage(weapon|type|brawl)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "rework",
+        "advantage",
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Brawl Prowess 1",
+      "description": "Grants Hit +5, Avo +7, and Crit Avo +5 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
+      "requires": "Brawl E+",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill bothif(weapon|type|brawl, 5, 0)",
+        "avo": "fill bothif(weapon|type|brawl, 7, 0)",
+        "crit": 0,
+        "cravo": "fill bothif(weapon|type|brawl, 5, 0)",
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Brawl Prowess 2",
+      "description": "Grants Hit +6, Avo +10, and Crit Avo +6 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
+      "requires": "Brawl D+",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill bothif(weapon|type|brawl, 6, 0)",
+        "avo": "fill bothif(weapon|type|brawl, 10, 0)",
+        "crit": 0,
+        "cravo": "fill bothif(weapon|type|brawl, 6, 0)",
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Brawl Prowess 3",
+      "description": "Grants Hit +7, Avo +13, and Crit Avo +7 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
+      "requires": "All (Brawl C+) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill bothif(weapon|type|brawl, 7, 0)",
+        "avo": "fill bothif(weapon|type|brawl, 13, 0)",
+        "crit": 0,
+        "cravo": "fill bothif(weapon|type|brawl, 7, 0)",
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Brawl Prowess 4",
+      "description": "Grants Hit +8, Avo +16, and Crit Avo +8 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
+      "requires": "All (Brawl B+) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill bothif(weapon|type|brawl, 8, 0)",
+        "avo": "fill bothif(weapon|type|brawl, 16, 0)",
+        "crit": 0,
+        "cravo": "fill bothif(weapon|type|brawl, 8, 0)",
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Brawl Prowess 5",
+      "description": "Grants Hit +10, Avo +20, and Crit Avo +10 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
+      "requires": "All (Brawl A+) (Level 25)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill bothif(weapon|type|brawl, 10, 0)",
+        "avo": "fill bothif(weapon|type|brawl, 20, 0)",
+        "crit": 0,
+        "cravo": "fill bothif(weapon|type|brawl, 10, 0)",
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
         "static"
       ],
       "hidden": false
@@ -22691,17 +22963,19 @@ const definitions = {
         "resl": 0,
         "hit": 100,
         "avo": 0,
-        "crit": 0,
+        "crit": 5,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 8,
         "spcost": 0,
         "tp": 0,
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "secret"
+      ],
       "hidden": false
     },
     {
@@ -23101,20 +23375,20 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Ridill",
+      "name": "Curtana",
       "type": "Swords",
-      "description": "Deals magic-based damage.",
+      "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}, enables use of @{art::Mercy's End}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
-      "mttype": "mag",
+      "mttype": "str",
       "modifiers": {
         "mt": 11,
         "prot": 0,
         "resl": 0,
-        "hit": 80,
+        "hit": 75,
         "avo": 0,
-        "crit": 0,
+        "crit": 5,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -23136,7 +23410,7 @@ const definitions = {
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
-      "mttype": "str",
+      "mttype": "mag",
       "modifiers": {
         "mt": 11,
         "prot": 0,
@@ -25667,18 +25941,18 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Dark Stone (Bird)",
+      "name": "Dark Stone (Crawler)",
       "type": "Other",
-      "description": "A magic crystal that was ingested by a giant bird.",
+      "description": "A magic crystal that was ingested by a giant crawler.",
       "requires": "Other E",
       "rank": "E",
       "price": 0,
       "mttype": "str",
       "modifiers": {
-        "mt": 9,
+        "mt": 15,
         "prot": 0,
         "resl": 0,
-        "hit": 90,
+        "hit": 75,
         "avo": 0,
         "crit": 5,
         "cravo": 0,
