@@ -1,7 +1,7 @@
 {
     "name": "Duelist's Blow",
     "description": "Grants Avo +20 in combat when unit initiates combat.",
-    "requires": "All (Sword B+) (Faith B+)",
+    "requires": "All (Swords B+) (Faith B+)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
