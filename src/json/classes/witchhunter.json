@@ -3,7 +3,7 @@
     "description": "A fighter that uses a variety of weapons to defeat mages",
     "type": ["Infantry", "Martial"],
     "tier": "Starting",
-    "requires": "Any (Reason D) (Axe D) (Bow D))",
+    "requires": "Any (Reason D) (Axes D) (Bows D))",
     "abilities": ["Trapper", "Level 10 Mov +1"],
     "arts": [],
     "growths": {

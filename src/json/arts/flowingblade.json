@@ -1,7 +1,7 @@
 {
   "name": "Flowing Blade",
   "description": "Do not attack; apply @{condition:Flow:[Flow]} to this unit for one turn.",
-  "requires": "Any (Swords C) (Sword B)",
+  "requires": "Any (Swords C) (Swords B)",
   "compatible": "Skill Swords",
   "mttype": "none",
   "modifiers": {

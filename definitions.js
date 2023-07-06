@@ -1390,7 +1390,7 @@ const definitions = {
     {
       "name": "Haze Slice",
       "description": "No special effect.",
-      "requires": "Any (Sword C) (Swords B)",
+      "requires": "Any (Swords C) (Swords B)",
       "compatible": "Skill Swords",
       "mttype": "else",
       "modifiers": {
@@ -1415,7 +1415,7 @@ const definitions = {
     {
       "name": "Grounder",
       "description": "Effective against Flying units.",
-      "requires": "Any (Sword C) (Swords B)",
+      "requires": "Any (Swords C) (Swords B)",
       "compatible": "Skill Swords",
       "mttype": "else",
       "modifiers": {
@@ -2222,20 +2222,22 @@ const definitions = {
       "compatible": "Name Failnaught",
       "mttype": "else",
       "modifiers": {
-        "mt": 7,
+        "mt": 10,
         "prot": 0,
         "resl": 0,
-        "hit": 10,
+        "hit": 30,
         "avo": 0,
-        "crit": 5,
+        "crit": 10,
         "cravo": 0,
         "minrng": 2,
-        "maxrng": 4,
+        "maxrng": 3,
         "tpcost": 0,
         "spcost": 3
       },
       "comment": "",
       "tags": [
+        "effective",
+        "status",
         "relic"
       ],
       "hidden": false,
@@ -2252,7 +2254,7 @@ const definitions = {
         "mt": 10,
         "prot": 0,
         "resl": 0,
-        "hit": 30,
+        "hit": 10,
         "avo": 0,
         "crit": 10,
         "cravo": 0,
@@ -3334,33 +3336,6 @@ const definitions = {
       "rank": "A"
     },
     {
-      "name": "Maiming",
-      "description": "Crit +20 if target foe's HP < 100%. If target foe is defeated, target foe is also stabilized but is inflicted with a lasting injury. Target foe's controller may choose the injury by rolling 1d6 and using the following table, or may substitute an injury of their own choice:\n   1. Loss of a limb.\n  2. Loss of an eye.\n  3. Scarring of the torso.\n  4. Scarring of the face.\n  5. Blood clots slowly.\n  6. Emotional trauma only.",
-      "requires": "All (Guile A) (Innate)",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": "ask [Foe Wounded?]; No {0}, Yes {20} end",
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tiles": 0,
-        "spcost": 5,
-        "tpcost": 0,
-        "sp": 0,
-        "tp": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false,
-      "type": "Guile",
-      "rank": "A"
-    },
-    {
       "name": "Anathema",
       "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Cha (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one.",
       "requires": "Guile A",
@@ -3377,7 +3352,7 @@ const definitions = {
         "minrng": 0,
         "maxrng": 0,
         "tiles": 0,
-        "spcost": "1 + ask [Anathema Modifer?], 1, 2, 3, 4; 5 end",
+        "spcost": "1 + ask [Anathema Modifier?], 1, 2, 3, 4; 5 end",
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -5332,7 +5307,7 @@ const definitions = {
     {
       "name": "Flowing Blade",
       "description": "Do not attack; apply @{condition:Flow:[Flow]} to this unit for one turn.",
-      "requires": "Any (Swords C) (Sword B)",
+      "requires": "Any (Swords C) (Swords B)",
       "compatible": "Skill Swords",
       "mttype": "none",
       "modifiers": {
@@ -5523,34 +5498,6 @@ const definitions = {
       "type": ""
     },
     {
-      "name": "Might Save",
-      "description": "This art is depricated; look for 'Strength Save'.",
-      "requires": "All (Armor B+) (ClassType Armor)",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 5,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 2,
-        "tpcost": 0,
-        "spcost": 2
-      },
-      "comment": "",
-      "tags": [
-        "reaction",
-        "tactical",
-        "depricated"
-      ],
-      "hidden": true,
-      "type": "Armor",
-      "rank": "B+"
-    },
-    {
       "name": "Swap",
       "description": "User swaps places with target adjacent ally.",
       "requires": "Level 5",
@@ -5645,7 +5592,7 @@ const definitions = {
     },
     {
       "name": "Dance",
-      "description": "Allows target ally to move and act again.",
+      "description": "Target ally without @{art::Dance} that has taken a turn this phase may take another turn.",
       "requires": "Class Dancer",
       "mttype": "none",
       "modifiers": {
@@ -5898,7 +5845,7 @@ const definitions = {
     {
       "name": "Nedler's Amputator",
       "description": "Deals magic-based damage. Might increases based on user\u2019s Speed",
-      "requires": "Axe A",
+      "requires": "Axes A",
       "mttype": "mag",
       "modifiers": {
         "mt": 4,
@@ -6111,40 +6058,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Agarthan Technology",
-      "description": "Adjacent foes deal 3 less damage during combat.",
-      "requires": "Agarthan",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 3,
-        "resl": 3,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "chance"
-      ],
-      "hidden": false
-    },
-    {
       "name": "Aegis",
       "description": "Dex% chance to reduce the damage taken from Faith, Guile, Reason, Bows by 50%, and grants use of the @{art::Aegis} tactical art.",
       "requires": "All (Any (Swords B) (Lances B)) (Riding B) (Level 20)",
@@ -6175,6 +6088,40 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "chance"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Agarthan Technology",
+      "description": "Adjacent foes deal 3 less damage during combat.",
+      "requires": "Agarthan",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "cha": 0,
+        "mt": 0,
+        "prot": 3,
+        "resl": 3,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "in combat"
       ],
       "hidden": false
     },
@@ -6301,8 +6248,8 @@ const definitions = {
         "prot": 0,
         "resl": 0,
         "hit": 0,
-        "avo": "ask [Ambush Predator]; No {0}, Yes {15} end",
-        "crit": "ask [Ambush Predator]; No {0}, Yes {10} end",
+        "avo": "ask [Ambush Predator (avo)]; No {0}, Yes {15} end",
+        "crit": "ask [Ambush Predator (crit)]; No {0}, Yes {10} end",
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
@@ -7141,7 +7088,6 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "in combat"
@@ -7748,217 +7694,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Brawl Advantage",
-      "description": "Grants Mt +5 in combat when unit has weapon triangle advantage.",
-      "requires": "None",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": "fill advantage(weapon|type|brawl)",
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "rework",
-        "advantage",
-        "in combat"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 1",
-      "description": "Grants Hit +5, Avo +7, and Crit Avo +5 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "Brawl E+",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 5, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 7, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 5, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 2",
-      "description": "Grants Hit +6, Avo +10, and Crit Avo +6 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "Brawl D+",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 6, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 6, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 3",
-      "description": "Grants Hit +7, Avo +13, and Crit Avo +7 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "All (Brawl C+) (Level 5)",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 7, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 13, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 7, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 4",
-      "description": "Grants Hit +8, Avo +16, and Crit Avo +8 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "All (Brawl B+) (Level 15)",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 8, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 16, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 8, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 5",
-      "description": "Grants Hit +10, Avo +20, and Crit Avo +10 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "All (Brawl A+) (Level 25)",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 10, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 20, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 10, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
       "name": "Brawl Consumption 1",
       "description": "Restores 1 TP after unit uses a Brawl weapon. Consumes half an ability slot from level 15 onward. Cannot be equipped with another \"Brawl Consumption\" ability.",
       "requires": "Any (Brawl D+) (Class Brawler)",
@@ -8400,6 +8135,38 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
       "hidden": false
+    },
+    {
+      "name": "Cold Tempered",
+      "description": "Grants Def +4, Res +4, Str +4, and Mag +4 in combat when within two spaces of an @{tile::Ice Block}.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "mag": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "dex": 0,
+        "spd": 0,
+        "def": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "res": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": true
     },
     {
       "name": "Combat Artist",
@@ -9142,7 +8909,7 @@ const definitions = {
     {
       "name": "Duelist's Blow",
       "description": "Grants Avo +20 in combat when unit initiates combat.",
-      "requires": "All (Sword B+) (Faith B+)",
+      "requires": "All (Swords B+) (Faith B+)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9794,6 +9561,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Fear of Fire",
+      "description": "If unit is hit with a Fire element Reason spell or takes damage from a @{tile::Fire Patch}, apply @{const:gbp:[Def -4]}, @{const:gbp:[Res -4]}, and @{const:gbp:[Spd -4]} to unit for two turns or until unit is hit in combat.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
+        "def": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
+        "res": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": true
+    },
+    {
       "name": "Fiendish Blow",
       "description": "Grants Mag +6 in combat when unit initiates combat. A unit may only equip one \"Fiendish Blow\" ability at a time.",
       "requires": "All (Any (Reason B) (Guile B)) (Level 15)",
@@ -10037,6 +9838,38 @@ const definitions = {
         "in combat"
       ],
       "hidden": false
+    },
+    {
+      "name": "Freak of Nature",
+      "description": "Grants Def +4 and Res +4 in combat if unit is within two spaces of another monster unit, and grants Mag +4 and Str +4 in combat to other monster units within two spaces.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": "ask [Freak of Nature]; No {0}, Yes {4} end",
+        "res": "ask [Freak of Nature]; No {0}, Yes {4} end",
+        "cha": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": true
     },
     {
       "name": "Giant Wings",
@@ -12822,43 +12655,6 @@ const definitions = {
         "crest",
         "major",
         "chance"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Minor Crest of the Beast",
-      "description": "20% chance to grant Mt +5 when using non-spell weapons.",
-      "requires": "Innate",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "crest",
-        "minor",
-        "chance",
-        "in combat"
       ],
       "hidden": false
     },
@@ -20326,7 +20122,7 @@ const definitions = {
         "Martial"
       ],
       "tier": "Starting",
-      "requires": "Any (Reason D) (Axe D) (Bow D))",
+      "requires": "Any (Reason D) (Axes D) (Bows D))",
       "abilities": [
         "Trapper",
         "Level 10 Mov +1"
@@ -22963,19 +22759,17 @@ const definitions = {
         "resl": 0,
         "hit": 100,
         "avo": 0,
-        "crit": 5,
+        "crit": 0,
         "cravo": 0,
-        "minrng": 2,
-        "maxrng": 3,
-        "tpcost": 8,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
         "spcost": 0,
         "tp": 0,
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [
-        "secret"
-      ],
+      "tags": [],
       "hidden": false
     },
     {
@@ -23375,20 +23169,20 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Curtana",
+      "name": "Ridill",
       "type": "Swords",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}, enables use of @{art::Mercy's End}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "Deals magic-based damage.",
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
-      "mttype": "str",
+      "mttype": "mag",
       "modifiers": {
         "mt": 11,
         "prot": 0,
         "resl": 0,
-        "hit": 75,
+        "hit": 80,
         "avo": 0,
-        "crit": 5,
+        "crit": 0,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -23410,7 +23204,7 @@ const definitions = {
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
-      "mttype": "mag",
+      "mttype": "str",
       "modifiers": {
         "mt": 11,
         "prot": 0,
@@ -25941,18 +25735,18 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Dark Stone (Crawler)",
+      "name": "Dark Stone (Bird)",
       "type": "Other",
-      "description": "A magic crystal that was ingested by a giant crawler.",
+      "description": "A magic crystal that was ingested by a giant bird.",
       "requires": "Other E",
       "rank": "E",
       "price": 0,
       "mttype": "str",
       "modifiers": {
-        "mt": 15,
+        "mt": 9,
         "prot": 0,
         "resl": 0,
-        "hit": 75,
+        "hit": 90,
         "avo": 0,
         "crit": 5,
         "cravo": 0,
