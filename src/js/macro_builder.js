@@ -546,7 +546,7 @@ class UserInterface {
 					m.merge(
 						roll,
 						"≤",
-						m.sum(ability.modifiers.proc.macrogen())
+						m.sum(Expression.macro(ability.modifiers.proc))
 					))
 			);
 		}
