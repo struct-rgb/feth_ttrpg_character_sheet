@@ -1,7 +1,7 @@
 {
   "name": "Nedler's Amputator",
   "description": "Deals magic-based damage. Might increases based on user’s Speed",
-  "requires": "Axe A",
+  "requires": "Axes A",
   "mttype": "mag",
   "modifiers": {
     "mt": 4,

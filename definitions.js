@@ -3499,6 +3499,12 @@ const definitions = {
       "description": "Once per turn, cast a healing spell without ending this unit's turn.",
       "requires": "Faith C",
       "compatible": "All (Skill Faith) (Tag `healing`)",
+
+      "name": "Anathema",
+      "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Cha (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one.",
+      "requires": "Guile A",
+      "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
+
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -3512,6 +3518,7 @@ const definitions = {
         "maxrng": 0,
         "tiles": 0,
         "spcost": 3,
+
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -5475,7 +5482,6 @@ const definitions = {
       "type": "Generic",
       "rank": "E"
     },
-    {
       "name": "Martial Dance",
       "description": "Might increases based on user's Charm. Mt +3 if weapon has Max Range = 1.",
       "requires": "All (Class Dancer) (Any (Axes E) (Lances E) (Swords E) (Bows E))",
@@ -6364,8 +6370,8 @@ const definitions = {
       "mttype": "else",
       "modifiers": {
         "mt": 0,
-        "prot": 0,
-        "resl": 0,
+        "prot": 3,
+        "resl": 3,
         "hit": 0,
         "avo": 0,
         "crit": 0,
