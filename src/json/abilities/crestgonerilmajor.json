@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
@@ -29,10 +29,17 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": 0,
-
-        "proc": 50
+        "mov": 0
     },
+
+    "rows": [
+        {
+            "name": "Crest of the Goneril",
+            "when": "art|type|weapon",
+            "expr": 50,
+            "roll": true
+        }
+    ],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["crest", "major", "chance"],

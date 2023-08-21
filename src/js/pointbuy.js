@@ -88,9 +88,11 @@ class StatisticRow {
 				return x;
 			},
 		});
-    
-		this.root = element("tr",
-			[element("th", name)]
+
+		const title = element("th", name);
+		this.title  = title;
+		this.root   = element("tr",
+			[title]
 				.concat(this._value.roots)
 				.concat(this._growth.roots)
 				.concat(this._final.roots)
@@ -123,7 +125,7 @@ const costfunctions = {
 		SPD : (s) => natural(scale(s, "SPD", 5)),
 		DEF : (s) => natural(scale(s, "DEF", 5)),
 		RES : (s) => natural(scale(s, "RES", 5)),
-		CHA : (s) => natural(scale(s, "CHA", 5)),
+		LCK : (s) => natural(scale(s, "LCK", 5)),
 	},
 
 	value: {
@@ -138,14 +140,14 @@ const costfunctions = {
 			const mag = scale(s, "MAG", 4);
 			return natural(mag + Math.max(mag - str, 0)/4);
 		},
-		DEX : (s) => natural((scale(s, "DEX",  4) / 2) + scale(s, "CHA", 4)/4),
+		DEX : (s) => natural((scale(s, "DEX",  4) / 2) + scale(s, "LCK", 4)/4),
 		SPD : (s) => {
 			const spd = scale(s, "SPD",  4);
 			return natural(spd + spd/4);
 		},
 		DEF : (s) => natural(scale(s, "DEF",  4) + scale(s, "RES", 4)/4),
 		RES : (s) => natural(scale(s, "RES",  4) + scale(s, "DEF", 4)/4),
-		CHA : (s) => natural((scale(s, "CHA",  4) / 2) + scale(s, "DEX", 4)/4),
+		LCK : (s) => natural((scale(s, "LCK",  4) / 2) + scale(s, "DEX", 4)/4),
 	},
 };
 
@@ -399,18 +401,42 @@ class Forecast {
 		return this.getBase(pb, name) + Math.floor(total / 100) + bonus;
 	}
 
-
 	get level() {
 		
 		let total = 0;
 
 		for (let record of this.records.values()) {
-			total += Number(record.levels);
+			if (Class.get(record.cls).tier != "Bonus") {
+				total += Number(record.levels);
+			}
 		}
 
 		return total;
 	}
 
+	import(forecast) {
+		this.clear();
+
+		for (let record of forecast.levels) {
+			this.add(...record);
+		}
+
+		this.class = forecast.class;
+	}
+
+	export() {
+
+		const levels = [];
+
+		for (let record of this.records.values()) {
+			levels.push([record.cls, record.levels]);
+		}
+
+		return {
+			class  : this.class,
+			levels : levels,
+		};
+	}
 }
 
 class PointBuy {
@@ -422,25 +448,25 @@ class PointBuy {
 			new PointRange(20, 20, 32),
 			new PointRange(9,  9,  12)],
 		["STR",
-			new PointRange(0,  4, 10),
+			new PointRange(2,  4, 10),
 			new PointRange(5,  5,  8)],
 		["MAG",
-			new PointRange(0,  4, 10),
+			new PointRange(2,  4, 10),
 			new PointRange(5,  5,  8)],
 		["DEX",
-			new PointRange(0,  4, 16),
+			new PointRange(2,  4, 16),
 			new PointRange(5,  5,  8)],
 		["SPD",
-			new PointRange(0,  4, 10),
+			new PointRange(2,  4, 10),
 			new PointRange(5,  5,  8)],
 		["DEF",
-			new PointRange(0,  4, 10),
+			new PointRange(2,  4, 10),
 			new PointRange(5,  5,  8)],
 		["RES",
-			new PointRange(0,  4, 10),
+			new PointRange(2,  4, 10),
 			new PointRange(5,  5,  8)],
-		["CHA",
-			new PointRange(0,  4, 16),
+		["LCK",
+			new PointRange(2,  4, 16),
 			new PointRange(5,  5,  8)]
 	];
 
@@ -462,6 +488,29 @@ class PointBuy {
 			trigger : (x => x),
 		});
 
+		const rows = Array.from(this.rows.values());
+
+		this.bells = new LevelAnimation(
+			rows.map(
+				x => x.title
+			),
+			rows.map(
+				x => [x._value.value.input, x._growth.value.input]
+			).flatten()
+		);
+
+		// this.totalBuild  = new AttributeCell({
+		// 		edit : false,
+		// 		root : "span",
+		// 	},
+		// 	(x => {
+		// 		const str = this.rows.get("STR")._value.value.value;
+		// 		const mag = this.rows.get("MAG")._value.value.value;
+		// 		const spd = this.rows.get("SPD")._value.value.value;
+		// 		return Math.abs(10 - Math.floor((Math.max(str, mag) + spd)/2));
+		// 	})
+		// );
+
 		this.pairs    = {
 			value  : this.totalValue,
 			growth : this.totalGrowth,
@@ -481,7 +530,14 @@ class PointBuy {
 				...this.totalValue.roots,
 				...this.totalGrowth.roots,
 				...this.totalFinal.roots,
-			])
+			]),
+			// element("tr", [
+			// 	element("th", "Build"),
+			// 	element("td", {
+			// 		content : this.totalBuild.root,
+			// 		attrs   : {colSpan: 6}
+			// 	})
+			// ])
 		], "simple-border");
 
 		this.forecast = new Forecast(this);
@@ -504,6 +560,7 @@ class PointBuy {
 	clear(column) {
 
 		if (column == null) {
+			this.forecast.clear();
 			this._foreach_column((column) => this.clear(column));
 			return;
 		}
@@ -567,6 +624,7 @@ class PointBuy {
 		}
 		this.pairs[column].value.value = baseSum;
 		this.pairs[column].cattr.value = Math.trunc(costSum / PointBuy.COST_SCALE);
+		// this.totalBuild.refresh();
 	}
 
 	*column(column) {
@@ -575,36 +633,27 @@ class PointBuy {
 		}
 	}
 
-	// import(e) {
-	// 	const file = e.target.files[0];
-	// 	if (!file) return;
-
-	// 	const reader = new FileReader();
-
-	// 	reader.onload = (e) => {
-	// 		const item     = JSON.parse(e.target.result);
-	// 		this.importObject(this._updatefn(item));
-	// 	};
-		
-	// 	reader.readAsText(file);
-	// }
-
 	import(obj) {
 		for (let [stat, row] of this.rows.entries()) {
 			const key = stat.toLowerCase();
 			row._value.value.value  = obj.bases[key];
 			row._growth.value.value = obj.growths[key] / 5;
 		}
+
+		if ("forecast" in obj) {
+			this.forecast.import(obj.forecast);
+		}
+		this.update();
 	}
 
-	export() {
-		const a    = element("a");
-		const name = prompt("Enter a preset name:") || "mypreset";
+	export(doprompt=false) {
+		const name = (doprompt && prompt("Enter a preset name:")) || "mypreset";
 		
 		const item = {
 			"name": name,
 			"bases": {},
 			"growths": {},
+			"forecast": this.forecast.export(),
 			"comment": "",
 			"tags": [],
 			"hidden": false
@@ -613,10 +662,16 @@ class PointBuy {
 		for (let [stat, row] of this.rows.entries()) {
 			const key = stat.toLowerCase();
 			item.bases[key]   = row._value.value.value;
-			item.growths[key] = row._growth.value.value;
+			item.growths[key] = row._growth.value.value * 5;
 		}
 		item.bases.mov = 0;
 
+		return item;
+	}
+
+	fileExport() {
+		const a    = element("a");
+		const item = this.export();
 		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
 		a.href     = URL.createObjectURL(file);
 		a.download = item.name.replace(/ /g, "_") + ".json";

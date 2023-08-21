@@ -2,7 +2,7 @@
   "name": "Steal",
   "description": "Steal a non-weapon item from inventory of target foe with Spd < unit's Spd.",
   "requires": "All (Any (Swords C+) (Bows C+)) (Level 15)",
-  "mttype": "else",
+  "mttype": "none",
   "modifiers": {
     "mt": 0,
     "prot": 0,

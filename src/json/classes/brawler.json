@@ -1,7 +1,7 @@
 {
     "name": "Brawler",
     "description": "A hand to hand combat specialist.",
-    "type": ["Infantry", "Martial", "Caster"],
+    "type": ["Infantry"],
     "tier": "Starting",
     "requires": "Brawl D",
     "abilities": ["Brawl Consumption 1", "Stamina +5", "Level 10 Mov +1"],
@@ -14,7 +14,7 @@
         "spd": 15,
         "def": 10,
         "res": 0,
-        "cha": 10
+        "lck": 10
       },
     "modifiers": {
         "hp": 4,
@@ -24,7 +24,7 @@
         "spd": 3,
         "def": 2,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mov": 5
     },
     "mount": null,

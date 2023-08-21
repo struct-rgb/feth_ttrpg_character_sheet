@@ -9,7 +9,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 0
     },
     "growths": {
@@ -20,7 +20,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0
+        "lck": 0
     },
     "comment": "Items must be integers.",
     "tags": ["first"],

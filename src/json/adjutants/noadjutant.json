@@ -1,10 +1,10 @@
 {
 	"name": "No Adjutant",
-	"description": "Lack of an Adjutant",
-	"ability": "None",
-	"reaction": "None",
-	"modifiers": {
-		"disc": 0,
-		"brav": 0
-	}
+	"description": "Lack of an adjutant.",
+	"reactions": [],
+	"gambit": null,
+	
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["first"],
+    "hidden": false
 }

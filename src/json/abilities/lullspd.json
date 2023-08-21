@@ -1,6 +1,6 @@
 {
     "name": "Group Lull Def/Cha",
-    "description": "Grants Lull Def and Lull Cha in combat to all units in combat with foes within 2 spaces.Def -3 and Cha -3 in combat and ignore foe's in combat bonuses to Def and Cha to all foes granted by other abilities.",
+    "description": "Grants Lull Def and Lull Lck in combat to all units in combat with foes within 2 spaces.Def -3 and Lck -3 in combat and ignore foe's in combat bonuses to Def and Lck to all foes granted by other abilities.",
     "requires": "All (Reason B+) (Armor B+)",
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

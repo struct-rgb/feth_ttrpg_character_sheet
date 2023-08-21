@@ -23,5 +23,6 @@
   ],
   "hidden": true,
   "type": "Swords",
-  "rank": "C-B"
+  "rank": "C-B",
+  "omit": true
 }

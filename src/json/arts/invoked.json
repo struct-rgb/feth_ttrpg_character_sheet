@@ -1,6 +1,6 @@
 {
   "name": "Invoked",
-  "description": "If target foe is defeated this combat, cast @{art::Summon} after combat (always creates a Lemure) targeting the foe’s space. @{condition:Summoning Sickness:[Summoning Sickness]} is not applied to the created unit.",
+  "description": "If target foe is defeated this combat, cast @{art::Summon} after combat (always creates a Lemure) targeting the foe’s space. @{condition:Summoning Sickness:[Sickness]} is not applied to the created unit.",
   "requires": "Guile B",
   "compatible": "All (Skill Guile) (Not (Tag `no might`))",
   "mttype": "else",

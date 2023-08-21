@@ -1,0 +1,41 @@
+{
+  "name": "Lockpick",
+  "type": "Other",
+  "description": "Opens a locked door or chest. Has a 30% chance to break after each use.",
+  "requires": "None",
+  "rank": "E",
+  "price": 1000,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "rows": [
+    {
+        "name": "Break",
+        "expr": 30,
+        "roll": true
+    }
+  ],
+  "comment": "Incompatible with all Attributes.",
+  "tags": [
+    "no might",
+    "no crit",
+    "no hit",
+    "no stats",
+    "no triangle",
+    "break"
+  ],
+  "hidden": false
+}

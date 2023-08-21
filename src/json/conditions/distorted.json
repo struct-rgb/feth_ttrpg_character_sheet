@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": "ask [Below 50?], No {0}; Yes {-(unit|total|mt)} end",
         "prot": 0,

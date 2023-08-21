@@ -1,9 +1,0 @@
-{
-    "name": "Sabotage",
-    "description": "Foes within Range ≤ 1 have Crit Avo @{SCALE} in combat.",
-    "requires": "",
-    "tiers": ["-0", "-5", "-10", "-15", "-20"],
-    "comment": "Items in modifers can either be integers or string expressions",
-    "tags": [],
-    "hidden": false
-}

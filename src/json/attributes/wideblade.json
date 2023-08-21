@@ -1,7 +1,7 @@
 {
     "name": "Wide Blade",
     "type": "Any",
-    "description": "Grants weapon +4 Mt, -35 Hit and +10 Crit.\n\nDisabled on spells and on weapons with Range > 1.",
+    "description": "Grants weapon +4 Mt, -25 Hit and +10 Crit.\n\nDisabled on spells and on weapons with Range > 1.",
     "rank": 1,
     "price": 550,
 
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["effective", "forweapon"],
+    "tags": ["effective", "for axes", "for lances", "for swords", "for brawl"],
     "hidden": false
 }

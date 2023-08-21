@@ -1,7 +1,7 @@
 {
     "name": "Paladin",
     "description": "A veteran warrior who commands the battlefield from horseback. Choose one Advantage skill on reclass.",
-    "type": ["Cavalry", "Martial"],
+    "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
     "abilities": ["Sword Advantage", "Lance Advantage", "Canto", "Terrain Resistance"],
@@ -14,7 +14,7 @@
         "spd": 10,
         "def": 20,
         "res": 10,
-        "cha": 15
+        "lck": 15
       },
     "modifiers": {
         "hp": 5,
@@ -24,7 +24,7 @@
         "spd": 1,
         "def": 4,
         "res": 3,
-        "cha": 3,
+        "lck": 3,
         "mov": 6
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
     },
 

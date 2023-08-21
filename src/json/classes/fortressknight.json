@@ -1,7 +1,7 @@
 {
     "name": "Fortress Knight",
     "description": "An knight versed in embattlement with expertise in armored combat. Choose one Advantage skill on reclass.",
-    "type": ["Armor", "Martial"],
+    "type": ["Armor"],
     "tier": "Advanced",
     "requires": "All (Any (Axes C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
     "abilities": ["Axe Advantage", "Lance Advantage", "Weight -5"],
@@ -14,7 +14,7 @@
         "spd": 0,
         "def": 30,
         "res": 20,
-        "cha": 15
+        "lck": 15
       },
     "modifiers": {
         "hp": 7,
@@ -24,7 +24,7 @@
         "spd": 0,
         "def": 7,
         "res": 3,
-        "cha": 1,
+        "lck": 1,
         "mov": 4
     },
     "mount": null,

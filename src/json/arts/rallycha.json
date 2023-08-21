@@ -1,7 +1,7 @@
 {
   "name": "Rally Cha +8",
-  "description": "Apply @{const:gbp:[Cha +8]} to target ally for 1 turn.",
-  "requires": "All (Authority B) (Level 10)",
+  "description": "Replaced with @{art::Rally Lck +8}.",
+  "requires": "Authority C",
   "mttype": "none",
   "modifiers": {
     "mt": 0,
@@ -23,9 +23,10 @@
     "no crit",
     "no stats",
     "tactical",
-    "condition"
+    "condition",
+    "depricated"
   ],
   "hidden": false,
   "type": "Authority",
-  "rank": "B"
+  "rank": "C"
 }

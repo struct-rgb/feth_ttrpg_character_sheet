@@ -1,0 +1,40 @@
+{
+  "name": "Poison Flask",
+  "type": "Other",
+  "description": "Apply the @{condition:Poisoned:[Poisoned]} condition to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability) Has a 30% chance to break after use.",
+  "requires": "None",
+  "rank": "E",
+  "price": 600,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 80,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 3,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "rows": [
+    {
+        "name": "Break",
+        "expr": 30,
+        "roll": true
+    }
+  ],
+  "comment": "Incompatible with all Attributes.",
+  "tags": [
+    "no might",
+    "no crit",
+    "no stats",
+    "no triangle",
+    "break"
+  ],
+  "hidden": false
+}

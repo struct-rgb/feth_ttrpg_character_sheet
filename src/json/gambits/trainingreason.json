@@ -1,0 +1,34 @@
+{
+    "name": "Reason Training",
+    "description": "Battalion's weapon type is Guile and deals damage vs Resl; grants Atk +6 and Range 1-2. A battalion can only possess one \"Training\" gambit.",
+    "requires": "Authority E",
+    "mttype": "mag",
+    "price": "",
+    "rank": "E",
+    "aoe": "",
+    "modifiers": {
+        "atk": 6,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+
+        "epcost": 0,
+        "capcost": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["structure"],
+    "hidden": false
+}

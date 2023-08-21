@@ -1,6 +1,6 @@
 {
     "name": "Ceremonial",
-    "description": "If the weapon type of this weapon and the weapon type of wielder's equipped battalion are the same, this weapon's rank requirement can be met with an equivalent rank in Authority.",
+    "description": "If the weapon type of this weapon and the weapon type of wielder's equipped battalion are the same, this weapon's rank requirement can be met with an equivalent rank in Authority.\n\nDisabled on weapons that don’t deal damage.",
     "rank": 2,
     "price": 1000,
 
@@ -22,7 +22,7 @@
     },
 
     "comment": "",
-    "tags": ["forweapon", "forspell"],
+    "tags": ["for axe", "for lances", "for swords", "for brawl", "for faith", "for reason", "for guile"],
     "hidden": false,
     "omit": true
 }

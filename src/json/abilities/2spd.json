@@ -1,7 +1,7 @@
 {
     "name": "Spd +2",
-    "description": "Grants Spd +2.",
-    "requires": "All (Any (Swords C) (Flying C)) (Level 10)",
+    "description": "Grants Spd +2; consumes half of an ability slot starting at level 10.",
+    "requires": "All (Any (Swords D+) (Flying D+)) (Level 2)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

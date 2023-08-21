@@ -7,7 +7,7 @@
   "price": 0,
   "mttype": "str",
   "modifiers": {
-    "mt": 5,
+    "mt": 6,
     "prot": 0,
     "resl": 0,
     "hit": 80,

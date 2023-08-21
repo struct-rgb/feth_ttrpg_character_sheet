@@ -1,7 +1,7 @@
 {
     "name": "Dark Mage",
     "description": "A class that uses Guile.",
-    "type": ["Infantry", "Caster"],
+    "type": ["Infantry"],
     "tier": "Starting",
     "requires": "Guile D",
     "abilities": ["Guile Consumption 1", "Jinx"],
@@ -14,7 +14,7 @@
         "spd": 10,
         "def": 10,
         "res": 15,
-        "cha": 5
+        "lck": 5
       },
     "modifiers": {
         "hp": 1,
@@ -24,7 +24,7 @@
         "spd": 2,
         "def": 2,
         "res": 2,
-        "cha": 2,
+        "lck": 2,
         "mov": 4
     },
     "mount": null,

@@ -1,6 +1,6 @@
 {
     "name": "Shocked",
-    "description": "Mag -6 and Cha -6; healing affected unit receives is halved. If mounted, affected unit’s @{ability::Canto} is disabled.",
+    "description": "Mag -6 and Lck -6; healing affected unit receives is halved. If mounted, affected unit’s @{ability::Canto} is disabled.",
 
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": -6,
+        "lck": -6,
 
         "mt": 0,
         "prot": 0,

@@ -1,9 +1,9 @@
 {
-    "name": "Reverse",
+    "name": "Reaver",
     "type": "Any",
-    "description": "Reverses how the Weapon Triangle effectiveness and consumes 3 TP when dealing damage",
+    "description": "Reverses weapon triangle and consumes 3 TP on hit. This attribute is disabled while unit has 0 TP.\n\nDisabled on spells, Bows, and Brawl.",
     "rank": 2,
-    "price": 1100,
+    "price": 2400,
 
     "mttype": "else",
     "modifiers": {
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["cost", "forweapon", "forspell"],
-    "hidden": true
+    "tags": ["cost", "for axes", "for swords", "for lances"],
+    "hidden": false
 }

@@ -5,7 +5,7 @@
   "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
   "mttype": "else",
   "modifiers": {
-    "mt": "fill scale(1, [Cha], unit|total|cha)",
+    "mt": "fill scale(1, [Lck], unit|total|lck)",
     "prot": 0,
     "resl": 0,
     "hit": 0,
@@ -26,6 +26,5 @@
   ],
   "hidden": true,
   "type": "Generic",
-  "rank": "E",
-  "omit": true
+  "rank": "E"
 }

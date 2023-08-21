@@ -22,7 +22,7 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["for bows"],
     "hidden": false,
     "omit": true
 }

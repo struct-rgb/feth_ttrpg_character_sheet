@@ -1,7 +1,7 @@
 {
     "name": "Thief",
     "description": "A scoundrel versed in the Bow and Sword; can unlock doors and chests",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Starting",
     "requires": "Any (Swords D) (Bows D)",
     "abilities": ["Locktouch", "Stealth", "Level 10 Mov +1"],
@@ -14,7 +14,7 @@
         "spd": 20,
         "def": 5,
         "res": 10,
-        "cha": 20
+        "lck": 20
       },
     "modifiers": {
         "hp": 1,
@@ -24,7 +24,7 @@
         "spd": 5,
         "def": 1,
         "res": 2,
-        "cha": 4,
+        "lck": 4,
         "mov": 4
     },
     "mount": null,

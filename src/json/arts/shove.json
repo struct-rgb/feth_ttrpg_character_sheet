@@ -1,8 +1,8 @@
 {
   "name": "Shove",
-  "description": "Move target adjacent ally 1 space away from this unit in the direction target ally is from this unit.",
-  "requires": "Level 5",
-  "mttype": "else",
+  "description": "Move target adjacent ally 1 space away from this unit in the direction target ally is from this unit; consumes half of an arts slot starting at level 10.",
+  "requires": "None",
+  "mttype": "none",
   "modifiers": {
     "mt": 0,
     "prot": 0,

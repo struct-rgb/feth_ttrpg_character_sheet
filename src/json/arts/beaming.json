@@ -23,6 +23,5 @@
   "tags": ["movement"],
   "hidden": false,
   "type": "Faith",
-  "rank": "A",
-  "omit": true
+  "rank": "A"
 }

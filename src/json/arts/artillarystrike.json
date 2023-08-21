@@ -1,0 +1,27 @@
+{
+  "name": "Artillary Strike",
+  "description": "Gambit Hit -30 and Gambit Range +1. This art may not be used with gambits that don’t roll to hit.",
+  "requires": "Authority B",
+  "compatible": "All (Not (Tag `no hit`)) (Not (Name `Counter`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 4,
+
+    "ghit": -30
+  },
+  "comment": "",
+  "tags": ["metagambit"],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "B"
+}

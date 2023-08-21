@@ -1,30 +1,30 @@
 {
     "name": "Dark Flier",
     "description": "A mage who slings spells from upon the back of a pegasus. Choose one Advantage skill on reclass.",
-    "type": ["Flying", "Caster"],
+    "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": ["Reason Advantage", "Guile Advantage", "Canto", "Transmute"],
+    "abilities": ["Reason Advantage", "Guile Advantage", "Transmute", "Canto"],
     "arts": [],
     "growths": {
-        "hp": 20,
-        "str": 20,
+        "hp": 15,
+        "str": 15,
         "mag": 20,
-        "dex": 25,
+        "dex": 10,
         "spd": 30,
         "def": 0,
         "res": 25,
-        "cha": 0
+        "lck": 15
     },
     "modifiers": {
         "hp": 1,
         "str": 2,
-        "mag": 5,
+        "mag": 3,
         "dex": 2,
-        "spd": 5,
+        "spd": 7,
         "def": 0,
         "res": 6,
-        "cha": 0,
+        "lck": 2,
         "mov": 5
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
     },
 

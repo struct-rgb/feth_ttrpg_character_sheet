@@ -1,7 +1,7 @@
 {
     "name": "Transmute",
     "description": "If unit is hit with magic-based attack when foe initiates combat, apply @{condition:Transmute:[Transmute]} to this unit for one turn.",
-    "requires": "All (Any (Anima B+) (Guile B+)) (Flying B+) (Level 25)",
+    "requires": "All (Any (Reason B+) (Guile B+)) (Flying B+) (Level 25)",
     "modifiers": {
         "hp": 0,
         "str": 0,
@@ -10,7 +10,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Dark Wyvernian",
     "description": "A mage who rains death from above upon the back of a wyvern. Choose one Advantage skill on reclass.",
-    "type": ["Flying", "Caster"],
+    "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
     "abilities": ["Reason Advantage", "Guile Advantage", "Canto", "Savage Blow"],
@@ -14,7 +14,7 @@
         "spd": 20,
         "def": 20,
         "res": 0,
-        "cha": 15
+        "lck": 15
     },
     "modifiers": {
         "hp": 6,
@@ -24,7 +24,7 @@
         "spd": 1,
         "def": 4,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mov": 5
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
     },
 
@@ -44,6 +44,6 @@
     "default_mainarm": "Fire",
     "default_sidearm": "Guile",
     "comment": "Items in growth, modifiers, and mount should be integers",
-    "tags": [],
+    "tags": ["depricated"],
     "hidden": false
 }

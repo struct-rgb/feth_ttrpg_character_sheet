@@ -11,7 +11,7 @@
         "spd": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
         "def": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
         "res": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

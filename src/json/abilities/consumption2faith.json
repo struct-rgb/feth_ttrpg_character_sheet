@@ -1,6 +1,6 @@
 {
     "name": "Faith Consumption 2",
-    "description": "Restores 1 TP after unit uses a Faith weapon and restores 1 TP after unit uses Faith metamagic.",
+    "description": "Restores 1 TP after unit uses a Faith weapon and restores 1 TP after unit uses Faith metamagic.  Cannot be equipped with another \"Faith Consumption\" ability.",
     "requires": "Class Bishop",
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

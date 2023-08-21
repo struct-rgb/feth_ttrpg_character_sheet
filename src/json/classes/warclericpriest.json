@@ -1,7 +1,7 @@
 {
   "name": "War Cleric/Priest",
   "description": "An advanced class that uses Axes and Faith.",
-  "type": ["Infantry", "Martial", "Caster"],
+  "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "All (Axes C+) (Faith C+) (Required (Level 15))",
   "abilities": [ "Axe Advantage", "Faith Advantage", "Faith Consumption 1" ],
@@ -14,7 +14,7 @@
     "spd": 0,
     "def": 15,
     "res": 25,
-    "cha": 20
+    "lck": 20
   },
   "modifiers": {
     "hp": 4,
@@ -24,7 +24,7 @@
     "spd": 0,
     "def": 2,
     "res": 5,
-    "cha": 4,
+    "lck": 4,
     "mov": 6
   },
   "mount": null,

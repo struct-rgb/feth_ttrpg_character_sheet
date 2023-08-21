@@ -1,6 +1,6 @@
 {
     "name": "Darting Blow",
-    "description": "Grants Spd +6 in combat when unit initiates combat.",
+    "description": "Grants Spd +5 in combat when unit initiates combat.",
     "requires": "All (Any (Swords C) (Lances C)) (Flying C) (Level 15)",
     "modifiers": {
         "hp": 0,
@@ -8,10 +8,10 @@
         "str": 0,
         "mag": 0,
         "dex": 0,
-        "spd": "fill blow(6)",
+        "spd": "fill blow(5)",
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

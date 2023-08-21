@@ -1,0 +1,34 @@
+{
+    "name": "Dance of the Goddess",
+    "description": "Non-employer allies without Dance in AoE that have taken a turn this phase may take another turn.",
+    "requires": "All (Authority S) (Outfitting Infantry)",
+    "mttype": "none",
+    "price": "",
+    "rank": "S",
+    "aoe": "Radius 1",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -8,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+
+        "epcost": 40,
+        "capcost": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["measured", "no might", "no hit", "no stats"],
+    "hidden": false
+}

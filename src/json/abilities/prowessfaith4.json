@@ -1,7 +1,7 @@
 {
     "name": "Faith Prowess 4",
     "description": "Grants Hit +8, Avo +16, and Crit Avo +8 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
-    "requires": "All (Faith B+) (Level 15)",
+    "requires": "Any (All (Faith B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,15 +11,15 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|faith, 8, 0)",
         "avo": "fill bothif(weapon|type|faith, 16, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|faith, 8, 0)",
+        "crit": "fill bothif(weapon|type|faith, 8, 0)",
+        "cravo": "fill bothif(weapon|type|faith, 16, 0)",
 
         "minrng": 0,
         "maxrng": 0,

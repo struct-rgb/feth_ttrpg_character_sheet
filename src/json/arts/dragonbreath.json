@@ -20,6 +20,5 @@
   "tags": ["variant", "wall"],
   "hidden": false,
   "rank": "A",
-  "type": "Generic",
-  "omit": true
+  "type": "Generic"
 }

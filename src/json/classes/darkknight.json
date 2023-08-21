@@ -1,30 +1,30 @@
 {
     "name": "Dark Knight",
     "description": "A mounted knight versed in both weapons and magic. Choose one weapon and one spell Advantage skill on reclass.",
-    "type": ["Cavalry", "Martial", "Caster"],
+    "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Guile C+) (Reason C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Reason Advantage", "Guile Advantage", "Sword Advantage", "Lance Advantage", "Canto"],
+    "abilities": ["Reason Advantage", "Guile Advantage", "Sword Advantage", "Lance Advantage", "Despair Aura", "Canto"],
     "arts": [],
     "growths": {
         "hp": 30,
-        "str": 15,
+        "str": 20,
         "mag": 20,
-        "dex": 10,
+        "dex": 5,
         "spd": 10,
         "def": 10,
         "res": 20,
-        "cha": 20
+        "lck": 20
       },
     "modifiers": {
         "hp": 4,
-        "str": 2,
+        "str": 4,
         "mag": 4,
         "dex": 1,
         "spd": 0,
-        "def": 3,
+        "def": 4,
         "res": 5,
-        "cha": 4,
+        "lck": 4,
         "mov": 5
     },
     "mount": {
@@ -35,8 +35,8 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
-        "mov": 2
+        "lck": 0,
+        "mov": 3
     },
 
     "default_base": "Troubador",

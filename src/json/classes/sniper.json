@@ -1,7 +1,7 @@
 {
     "name": "Sniper",
     "description": "Bow focused infantry class.",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Bows B) (Required (Level 15))",
     "abilities": ["Bow Advantage", "Bow Crit +10", "Bow Range +1", "Stamina +10"],
@@ -14,7 +14,7 @@
         "spd": 15,
         "def": 10,
         "res": 15,
-        "cha": 15
+        "lck": 15
       },
     "modifiers": {
         "hp": 2,
@@ -24,7 +24,7 @@
         "spd": 3,
         "def": 2,
         "res": 4,
-        "cha": 4,
+        "lck": 4,
         "mov": 5
     },
     "mount": null,

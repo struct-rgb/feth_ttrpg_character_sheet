@@ -1,0 +1,43 @@
+{
+    "name": "Battalion Wrath",
+    "description": "Unit’s counterattacks and Initiate gambit have a (Charm)% chance to become critical hits. If battalion EP is ≤ ½, then this chance becomes (Charm + 50)%.",
+    "requires": "All (Authority B+) (Any (Training Axes) (Training Reason))",
+    "mttype": "else",
+    "price": 2500,
+    "rank": "B+",
+    "aoe": "",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+
+        "epcost": 0,
+        "capcost": 0
+    },
+
+    "rows": [
+        {
+            "name": "Wrath",
+            "when": "gambit|is_active|Initiate + gambit|is_active|Counter",
+            "expr": "unit|charm + fill affirm([EP ≤ ½?], 50, 0)",
+            "roll": true
+        }
+    ],
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["structure"],
+    "hidden": false
+}

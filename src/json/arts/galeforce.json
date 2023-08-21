@@ -20,6 +20,5 @@
   "tags": ["movement"],
   "hidden": true,
   "type": ["Reason", "Guile"],
-  "rank": "",
-  "omit": true
+  "rank": ""
 }

@@ -4,7 +4,7 @@
   "requires": "All (Class Dancer) (Swords E)",
   "mttype": "else",
   "modifiers": {
-    "mt": "fill scale(1, [Cha], unit|total|cha)",
+    "mt": "fill scale(1, [Cha], unit|total|lck)",
     "prot": 0,
     "resl": 0,
     "hit": 0,
@@ -18,9 +18,10 @@
   },
   "comment": "",
   "tags": [
-    "relic"
+    "depricated"
   ],
   "hidden": true,
   "type": "Swords",
-  "rank": "E"
+  "rank": "E",
+  "hidden": true
 }

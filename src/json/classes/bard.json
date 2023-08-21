@@ -1,7 +1,7 @@
 {
   "name": "Bard",
   "description": "An advanced class that uses Authority.",
-  "type": ["Infantry", "Other"],
+  "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "Authority B",
   "abilities": [ "Calm Spirit", "Positioning" ],
@@ -14,7 +14,7 @@
     "spd": 20,
     "def": 0,
     "res": 10,
-    "cha": 25
+    "lck": 25
   },
   "modifiers": {
     "hp": 3,
@@ -24,12 +24,12 @@
     "spd": 3,
     "def": 0,
     "res": 2,
-    "cha": 5,
+    "lck": 5,
     "mov": 5
   },
   "mount": null,
 
   "comment": "Items in growth, modifiers, and mount should be integers",
-  "tags": [],
+  "tags": ["depricated"],
   "hidden": false
 }

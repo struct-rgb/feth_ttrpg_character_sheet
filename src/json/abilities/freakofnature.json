@@ -11,7 +11,7 @@
         "spd": 0,
         "def": "ask [Freak of Nature]; No {0}, Yes {4} end",
         "res": "ask [Freak of Nature]; No {0}, Yes {4} end",
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

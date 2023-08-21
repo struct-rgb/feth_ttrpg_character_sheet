@@ -1,0 +1,42 @@
+{
+    "name": "Reinforce",
+    "description": "Restore 2 + ½ Charm EP to battalion ally in target tile.",
+    "requires": "Authority C",
+    "mttype": "none",
+    "price": "",
+    "rank": "C",
+    "aoe": "None",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+
+        "epcost": 8,
+        "capcost": 0
+    },
+
+    "rows": [
+        {
+            "name": "EP Restored",
+            "expr": "floor((unit|charm)/2) + 2",
+            "roll": false
+        }
+    ],
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["no hit", "no stats", "no might"],
+    "hidden": false
+}

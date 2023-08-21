@@ -12,7 +12,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": "fill bothif(unit|tagged|healing * unit|total|mttype|mag, 10, 0)",
         "prot": 0,

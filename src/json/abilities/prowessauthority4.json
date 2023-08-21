@@ -1,7 +1,7 @@
 {
-    "name": "Authority Prowess 4",
-    "description": "Gambit Might +8 and battalion Barrier +8. A unit may only equip one \"Authority Prowess\" ability at a time.",
-    "requires": "Any (Authority B+) (All (Armor B+) (ClassType Armor)) (All (Flying B+) (ClassType Flying)) (All (Riding B+) (ClassType Cavalry))",
+    "name": "Authority 4",
+    "description": "Gambit Might +8 and battalion Barrier +8. A unit may only equip one \"Authority\" ability at a time.",
+    "requires": "Any (All (Authority B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
@@ -29,7 +29,9 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": 0
+        "mov": 0,
+        "gmt": 8,
+        "br": 8
     },
 
     "comment": "Items in modifers can either be integers or string expressions",

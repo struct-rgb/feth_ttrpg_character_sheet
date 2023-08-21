@@ -1,7 +1,7 @@
 {
     "name": "Inspiration",
-    "description": "Before unit or adjacent ally enters combat, (Cha * 0.75)% chance to grant unit or adjacent ally a guaranteed follow-up attack in the combat.",
-    "requires": "None",
+    "description": "Before unit or adjacent ally enters combat, (Luc + 10)% chance to grant unit or adjacent ally @{const:ap:AP ≥ 2} in the combat.",
+    "requires": "All (Authority D) (Level 5)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
@@ -31,6 +31,14 @@
 
         "mov": 0
     },
+
+    "rows": [
+        {
+            "when": "not(weapon|tagged|no_might) * not(weapon|tagged|no_hit)",
+            "expr": "unit|total|luc + 10 + other|trigger",
+            "roll": true
+        }
+    ],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["chance"],

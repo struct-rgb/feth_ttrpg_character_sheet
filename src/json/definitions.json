@@ -8,7 +8,7 @@
       "spd",
       "def",
       "res",
-      "cha",
+      "lck",
       "mov"
     ],
     "first": [
@@ -19,7 +19,7 @@
       "spd",
       "def",
       "res",
-      "cha",
+      "lck",
       "mov"
     ],
     "second": [
@@ -41,32 +41,30 @@
     ],
     "battalion": {
       "first": [
-        "disc",
-        "brav",
-        "pres",
-        "strc",
+        "end",
+        "atk",
+        "prot",
+        "resl",
         "auto",
-        "cap",
-        "minrng",
-        "maxrng"
+        "plu"
       ],
       "second": [
-        "ep",
-        "atk",
-        "br"
-      ],
-      "growths": [
-        "disc",
-        "brav",
-        "pres",
-        "strc"
-      ],
-      "gambit": [
+        "mor",
+        "br",
+        "minrng",
+        "maxrng",
         "hit",
         "mt",
-        "cost",
-        "minrng",
-        "maxrng"
+        "epcost"
+      ],
+      "growths": [
+        "end",
+        "atk",
+        "prot",
+        "resl"
+      ],
+      "gambit": [
+      
       ]
     }
   },
@@ -150,6 +148,50 @@
         "[bracketed text] that the prompt should display",
         "an expression for if user selects Yes",
         "an expression for if user selects No"
+      ]
+    },
+    {
+      "define": [
+        "template confirm(title, multiplier)",
+        "  ((",
+        "    ask [title]",
+        "      ; No  { 0 }",
+        "      , Yes { 1 }",
+        "    end",
+        "  ) * (",
+        "    multiplier",
+        "  ))",
+        "end"
+      ],
+      "about": [
+        "Creates a Yes/No prompt that defaults to the Yes option in the ",
+        "character builder and the No option in the generated Roll20 macro. "
+      ],
+      "args": [
+        "[bracketed text] that the prompt should display",
+        "an expression for if user selects Yes (no is zero)."
+      ]
+    },
+    {
+      "define": [
+        "template refuse(title, multiplier)",
+        "  ((",
+        "    ask [title]",
+        "      ; Yes { 1 }",
+        "      , No  { 0 }",
+        "    end",
+        "  ) * (",
+        "    multiplier",
+        "  ))",
+        "end"
+      ],
+      "about": [
+        "Creates a Yes/No prompt that defaults to the Yes option in the ",
+        "character builder and the Yes option in the generated Roll20 macro. "
+      ],
+      "args": [
+        "[bracketed text] that the prompt should display",
+        "an expression for if user selects Yes (no is zero)."
       ]
     },
     {

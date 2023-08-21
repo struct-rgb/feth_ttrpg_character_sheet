@@ -499,7 +499,7 @@ class Category {
 	 * @param {string} name - name of the element to test
 	 * @returns {boolean} whether the element is active
 	 */
-	isActive (name) { // eslint-disable-line no-unused-vars
+	isActive(name) { // eslint-disable-line no-unused-vars
 		return false;
 	}
 
@@ -510,7 +510,7 @@ class Category {
 	 * @param {boolean=} quiet - if true, never triggers a toggle callback
 	 * @returns {boolean} whether the toggle was successful
 	 */
-	toggleActive (name, quiet=false) { // eslint-disable-line no-unused-vars
+	toggleActive(name, quiet=false) { // eslint-disable-line no-unused-vars
 		return false;
 	}
 
@@ -519,7 +519,7 @@ class Category {
 	 * @abstract
 	 * @returns names of acive elements
 	 */
-	getActive() { // eslint-disable-line no-unused-vars
+	getActive() {
 		return null;
 	}
 
@@ -913,6 +913,14 @@ class MultiActiveCategory extends Category {
 	 */
 	getActive() {
 		return this.active;
+	}
+
+	getActiveKeys() {
+		return this.active;
+	}
+
+	getActiveValues() {
+		return Array.from(this.active).map(key => this.model.get(key));
 	}
 
 	/**

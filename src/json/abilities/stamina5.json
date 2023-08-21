@@ -1,7 +1,7 @@
 {
     "name": "Stamina +5",
-    "description": "Grants Max SP +5.",
-    "requires": "Any (None) (Class `Brawler`)",
+    "description": "Grants Max SP +5; consumes half of an ability slot starting at level 10.",
+    "requires": "Any (All (Any (Axes D+) (Swords D+) (Lances D+) (Bows D+)) (Level 5)) (Class `Brawler`)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

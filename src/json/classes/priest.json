@@ -1,7 +1,7 @@
 {
   "name": "Priest",
   "description": "A Faith mage with high Resistance",
-  "type": ["Infantry", "Caster"],
+  "type": ["Infantry"],
   "tier": "Starting",
   "requires": "Faith D",
   "abilities": [ "Faith Consumption 1", "Faith Heal +5" ],
@@ -14,7 +14,7 @@
     "spd": 5,
     "def": 0,
     "res": 30,
-    "cha": 20
+    "lck": 20
   },
   "modifiers": {
     "hp": 0,
@@ -24,7 +24,7 @@
     "spd": 1,
     "def": 0,
     "res": 5,
-    "cha": 3,
+    "lck": 3,
     "mov": 4
   },
   "mount": null,

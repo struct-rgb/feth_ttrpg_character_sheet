@@ -1,0 +1,29 @@
+{
+    "name": "Heavy/Resiliance",
+    "description": "A battalion with high stats and low capacity designed to withstand magic-based attacks.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 40,
+        "resl": 55
+    },
+
+    "modifiers": {
+        "end": 28,
+        "atk": 10,
+        "prot": 7,
+        "resl": 10,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 0
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

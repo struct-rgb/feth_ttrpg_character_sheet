@@ -1,0 +1,32 @@
+{
+  "name": "First Aid Kit",
+  "type": "Other",
+  "description": "Restore (Mt + max(dex, lck) / 2) HP to target ally.",
+  "requires": "None",
+  "rank": "D",
+  "price": 780,
+  "mttype": "none",
+  "modifiers": {
+    "mt": "floor((unit|charm) / 2) + 8",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 1,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": [
+    "healing",
+    "no hit",
+    "no stats",
+    "no triangle"
+  ],
+  "hidden": false
+}

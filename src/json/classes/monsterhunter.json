@@ -1,7 +1,7 @@
 {
     "name": "Monster Hunter",
     "description": "Anti-Monster infantry class. Choose one Advantage skill on reclass.",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Bows C+)) (Required (Level 15))",
     "abilities": ["Bow Advantage", "Sword Advantage", "Hide Piercer", "Stamina +10"],
@@ -14,7 +14,7 @@
         "spd": 10,
         "def": 10,
         "res": 25,
-        "cha": 15
+        "lck": 15
       },
     "modifiers": {
         "hp": 4,
@@ -24,7 +24,7 @@
         "spd": 3,
         "def": 3,
         "res": 4,
-        "cha": 1,
+        "lck": 1,
         "mov": 5
     },
     "mount": null,

@@ -1,7 +1,7 @@
 {
     "name": "Lord",
     "description": "A battlefield leader.",
-    "type": ["Infantry", "Martial", "Caster"],
+    "type": ["Infantry"],
     "tier": "Starting",
     "requires": "Authority D",
     "abilities": ["Lead by Example", "Level 10 Mov +1"],
@@ -14,7 +14,7 @@
         "spd": 10,
         "def": 10,
         "res": 10,
-        "cha": 25
+        "lck": 25
       },
     "modifiers": {
         "hp": 2,
@@ -24,7 +24,7 @@
         "spd": 1,
         "def": 2,
         "res": 2,
-        "cha": 4,
+        "lck": 4,
         "mov": 4
     },
     "mount": null,

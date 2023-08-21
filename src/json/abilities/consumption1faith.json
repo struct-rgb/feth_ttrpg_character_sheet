@@ -1,7 +1,7 @@
 {
     "name": "Faith Consumption 1",
-    "description": "Restores 1 TP after unit uses a Faith weapon.",
-    "requires": "Any (Class Priest) (Class `War Cleric/Priest`)",
+    "description": "Restores 1 TP after unit uses a Faith weapon. Consumes half of an ability slot starting at level 15. Cannot be equipped with another \"Faith Consumption\" ability.",
+    "requires": "Any (Faith D+) (Class Priest) (Class `War Cleric/Priest`)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

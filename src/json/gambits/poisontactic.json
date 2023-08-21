@@ -1,0 +1,34 @@
+{
+    "name": "Poison Tactic",
+    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and apply @{condition:Poisoned:[Poisoned]} to all foes in AoE.",
+    "requires": "Authority C",
+    "mttype": "else",
+    "price": "",
+    "rank": "C",
+    "aoe": "Half Circle 2",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "mt": 5,
+        "hit": 60,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+
+        "epcost": 16,
+        "capcost": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["measured"],
+    "hidden": false
+}

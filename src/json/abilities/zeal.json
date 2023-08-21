@@ -1,5 +1,5 @@
 {
-    "name": "Zeal",
+    "name": "Crit +5",
     "description": "Crit +5.",
     "requires": "Class Myrmidon",
     "modifiers": {
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

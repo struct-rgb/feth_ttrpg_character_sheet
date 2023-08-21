@@ -8,13 +8,13 @@
     "mt": [
       "metaif builtins|macrogen == 1 then",
       "  metaif weapon|total|maxrng == 1",
-      "    then 4 + floor((Cha {unit|total|cha}) * 0.3)",
-      "    else 1 + floor((Cha {unit|total|cha}) * 0.3)",
+      "    then 4 + floor((Lck {unit|total|lck}) * 0.3)",
+      "    else 1 + floor((Lck {unit|total|lck}) * 0.3)",
       "  end",
       "else",
       "  if     weapon|total|maxrng == 1",
-      "    then 4 + floor((Cha {unit|total|cha}) * 0.3)",
-      "    else 1 + floor((Cha {unit|total|cha}) * 0.3)",
+      "    then 4 + floor((Lck {unit|total|lck}) * 0.3)",
+      "    else 1 + floor((Lck {unit|total|lck}) * 0.3)",
       "  end",
       "end"
     ],
@@ -34,9 +34,9 @@
   },
   "comment": "",
   "tags": [
-    "scales"
+    "scales", "depricated"
   ],
-  "hidden": false,
+  "hidden": true,
   "type": "Axes-Lances-Swords-Bows",
   "rank": "E"
 }

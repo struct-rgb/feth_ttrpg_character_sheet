@@ -1,6 +1,6 @@
 {
     "name": "Lancebreaker+",
-    "description": "Grants Hit +30 and Avo +30 in combat against Lances. A unit may only equip one \"Lancebreaker\" ability at a time",
+    "description": "Grants Hit +30 and Avo +30 in combat against Lances. If an \"Axe Prowess\" ability is the only \"Prowess\" ability equipped, and \"Lancebreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Lancebreaker\" ability at a time",
     "requires": "Axes A",
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

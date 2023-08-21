@@ -1,7 +1,7 @@
 {
     "name": "Medium",
     "description": "A mystic who specializes in protective wards",
-    "type": ["Armor", "Caster"],
+    "type": ["Armor"],
     "tier": "Starting",
     "requires": "Armor D",
     "abilities": ["Consumption 1"],
@@ -14,7 +14,7 @@
         "spd": 5,
         "def": 15,
         "res": 20,
-        "cha": 5
+        "lck": 5
       },
     "modifiers": {
         "hp": 10,
@@ -24,7 +24,7 @@
         "spd": 0,
         "def": 1,
         "res": 2,
-        "cha": 3,
+        "lck": 3,
         "mov": 4
     },
     "mount": null,

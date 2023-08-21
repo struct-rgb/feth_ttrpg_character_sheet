@@ -1,0 +1,25 @@
+{
+  "name": "Psychological Warfare",
+  "description": "Gambit that applies @{condition:Rattled:[Rattled]} to foes in its AoE applies @{condition:Confused:[Confused]} instead.",
+  "requires": "Authority C",
+  "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 6
+  },
+  "comment": "",
+  "tags": ["metagambit"],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "C"
+}

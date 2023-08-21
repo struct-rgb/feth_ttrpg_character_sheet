@@ -1,6 +1,6 @@
 {
   "name": "Suplex",
-  "description": "After combat, target foe is moved to the other side of unit. Cannot be used with weapons that have incompatible range. Consumes half an arts slot from level 10 onward.",
+  "description": "After combat, target foe is moved to the other side of unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
   "requires": "None",
   "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
   "mttype": "else",
@@ -21,6 +21,5 @@
   "tags": [],
   "hidden": false,
   "type": "Generic",
-  "rank": "",
-  "omit": true
+  "rank": ""
 }

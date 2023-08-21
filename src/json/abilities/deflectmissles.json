@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
@@ -30,7 +30,7 @@
         "sp": 0,
 
         "mov": 0,
-        "proc": "10 + more unit|total|dex else unit|total|cha end"
+        "proc": "10 + more unit|total|dex else unit|total|lck end"
     },
 
     "comment": "Items in modifers can either be integers or string expressions",

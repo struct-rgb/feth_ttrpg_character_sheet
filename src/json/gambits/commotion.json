@@ -1,0 +1,42 @@
+{
+    "name": "Commotion",
+    "description": "Foes in AoE take nonlethal damage equal to this battalion’s Rank plus two; a unit only takes damage from this gambit once per phase.",
+    "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+    "mttype": "none",
+    "price": "",
+    "rank": "D",
+    "aoe": "Radius 1",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+
+        "epcost": 2,
+        "capcost": 0
+    },
+
+    "rows": [
+        {
+            "name": "Damage",
+            "expr": "battalion|rank + 2",
+            "roll": false
+        }
+    ],
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["no might", "no hit", "no stats"],
+    "hidden": false
+}

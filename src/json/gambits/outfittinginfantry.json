@@ -1,0 +1,34 @@
+{
+    "name": "Infantry Outfitting",
+    "description": "Battalion’s units are Infantry units. This battalion may not possess another \"Outfitting\" gambit.",
+    "requires": "Authority E",
+    "mttype": "else",
+    "price": "",
+    "rank": "E",
+    "aoe": "",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+
+        "epcost": 0,
+        "capcost": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["structure"],
+    "hidden": false
+}

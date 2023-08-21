@@ -1,7 +1,7 @@
 {
     "name": "Falcon Knight",
     "description": "A pegasus knight who descends upon foes with the speed of a falcon. Choose one Advantage skill on reclass.",
-    "type": ["Flying", "Martial"],
+    "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
     "abilities": ["Sword Advantage", "Lance Advantage", "Avo +10", "Canto"],
@@ -14,28 +14,28 @@
         "spd": 30,
         "def": 10,
         "res": 20,
-        "cha": 5
+        "lck": 5
       },
     "modifiers": {
         "hp": 3,
-        "str": 2,
+        "str": 3,
         "mag": 0,
         "dex": 3,
-        "spd": 5,
+        "spd": 7,
         "def": 2,
         "res": 6,
-        "cha": 1,
+        "lck": 1,
         "mov": 6
     },
     "mount": {
         "hp": 0,
-        "str": 1,
+        "str": 0,
         "mag": 0,
         "dex": 0,
-        "spd": 2,
+        "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
     },
 

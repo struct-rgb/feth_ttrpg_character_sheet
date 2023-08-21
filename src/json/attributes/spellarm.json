@@ -1,0 +1,40 @@
+{
+    "name": "Spellarm",
+    "type": "Prompt",
+    "description": "Weapon deals strength-based damage, weapon's minimum range becomes weapon's maximum range, and TP cost is reduced by 20% of base TP cost.\n\nThis attribute is disabled on non-spells and on spells that don’t deal damage on attack.",
+    "rank": 1,
+    "price": 0,
+
+    "mttype": "str",
+    "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": [
+            "metaif builtins|macrogen == 1 then",
+            "  metaif not(weapon|has_attribute|Spellblade) <> 0",
+            "    then -(weapon|noattr|minrng) + (weapon|noattr|maxrng)",
+            "    else 0",
+            "  end",
+            "else",
+            "  if     not(weapon|has_attribute|Spellblade) <> 0",
+            "    then -(weapon|noattr|minrng) + (weapon|noattr|maxrng)",
+            "    else 0",
+            "  end",
+            "end"
+        ],
+        "maxrng": 0,
+        "tpcost": "-floor((weapon|noattr|tpcost) * 0.2)",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["cost", "for faith", "for reason", "for guile"],
+    "hidden": false
+}

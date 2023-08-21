@@ -11,14 +11,14 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
         "avo": 0,
-        "crit": "fill blow(30)",
+        "crit": "fill blow(20)",
         "cravo": 0,
 
         "minrng": 0,

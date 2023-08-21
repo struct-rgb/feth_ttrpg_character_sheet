@@ -1,7 +1,7 @@
 {
     "name": "Guile Prowess 2",
     "description": "Grants Hit +10, Avo +6, and Crit Avo +6 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
-    "requires": "Guile D+",
+    "requires": "Any (Guile D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,15 +11,15 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill bothif(weapon|type|guile, 10, 0)",
-        "avo": "fill bothif(weapon|type|guile, 6, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|guile, 6, 0)",
+        "hit": "fill bothif(weapon|type|guile, 8, 0)",
+        "avo": "fill bothif(weapon|type|guile, 8, 0)",
+        "crit": "fill bothif(weapon|type|guile, 8, 0)",
+        "cravo": "fill bothif(weapon|type|guile, 8, 0)",
 
         "minrng": 0,
         "maxrng": 0,

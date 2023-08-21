@@ -23,6 +23,6 @@
     },
 
     "comment": "Can only be applied to spells.",
-    "tags": ["forspell"],
+    "tags": ["for faith", "for reason", "for guile", "for brawl"],
     "hidden": false
 }

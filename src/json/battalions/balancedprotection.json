@@ -1,0 +1,29 @@
+{
+    "name": "Balanced/Protection",
+    "description": "A battalion with moderate stats and capacity designed to withstand strength-based attacks.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 55,
+        "resl": 45
+    },
+
+    "modifiers": {
+        "end": 26,
+        "atk": 9,
+        "prot": 9,
+        "resl": 6,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 1
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

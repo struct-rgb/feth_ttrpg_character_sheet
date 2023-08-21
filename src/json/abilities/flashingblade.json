@@ -1,7 +1,7 @@
 {
     "name": "Flashing Blade",
     "description": "Decreases threshold to double foes by 1 in combat.",
-    "requires": "Class Cavalier",
+    "requires": "Any (Class Cavalier) (Class Myrmidon)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

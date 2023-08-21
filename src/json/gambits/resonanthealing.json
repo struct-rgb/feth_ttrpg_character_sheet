@@ -1,0 +1,42 @@
+{
+    "name": "Resonant Healing",
+    "description": "Restore 2 + ½ Charm HP to allies in AoE.",
+    "requires": "All (Authority B) (Training Faith)",
+    "mttype": "none",
+    "price": "",
+    "rank": "B",
+    "aoe": "2x3 Perp. Line",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+
+        "epcost": 14,
+        "capcost": 0
+    },
+
+    "rows": [
+        {
+            "name": "Healing",
+            "expr": "floor((unit|charm)/2) + 2",
+            "roll": false
+        }
+    ],
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["measured", "no might", "no hit", "no stats"],
+    "hidden": false
+}

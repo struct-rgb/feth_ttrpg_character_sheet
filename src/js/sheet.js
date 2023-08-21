@@ -54,6 +54,8 @@
 
 /* global Battalions */
 
+const V3 = true;
+
 class Theme {
 
 	static list = [
@@ -475,6 +477,8 @@ class Sheet {
 
 		this.macros = new Macros.UserInterface(this);
 
+		this.attack_mttype = "str";
+
 		/* prominently display the version data */
 		const version = element("strong", [
 			element("span", `Version ${Version.CURRENT.toString()} (`),
@@ -552,9 +556,16 @@ class Sheet {
 		/* set lookup tables for each feature class */
 		for (let each of [
 			Ability, Weapon, CombatArt, Equipment, Class, Attribute, Condition,
-			Tile, Battalion, Adjutant, Preset
+			Tile, Battalion, Adjutant, Preset, Gambit
 		]) {
 			each.setLookupByName(data, compiler, predicator);
+		}
+
+		/* special nonsense */
+		for (let each of Adjutant.byName.values()) {
+			const gambit = each.gambit;
+			if (!gambit) continue;
+			Gambit.byName.set(gambit.name, gambit);
 		}
 
 		/* populate skills, stats, and growths */
@@ -590,7 +601,67 @@ class Sheet {
 
 		/* Level Ups tab */
 
-		sidebook.add("Level Ups", this.stats.levelups.root);
+		// inner.add("Deterministic", element("div", [
+		// 	element("input", {
+		// 		class : ["simple-border"],
+		// 		attrs : {
+		// 			type    : "button",
+		// 			value   : "Use Bases",
+		// 			onclick : (() => this.copy_point_buy())
+		// 		}
+		// 	}),
+		// 	element("input", {
+		// 		class : ["simple-border"],
+		// 		attrs : {
+		// 			type    : "button",
+		// 			value   : "Use Level",
+		// 			onclick : (() => this.copy_point_buy_stats())
+		// 		}
+		// 	}),
+		// 	element("input", {
+		// 		class : ["simple-border"],
+		// 		attrs : {
+		// 			type    : "button",
+		// 			value   : "Clear Points",
+		// 			onclick : (() => this.clear_point_buy())
+		// 		}
+		// 	}),
+		// 	element("br"),
+		// 	this.stats.pointbuy.root,
+		// ]));
+		// inner.add("Random", this.stats.levelups.root);
+		// inner.active = "Deterministic";
+
+		// sidebook.add("Levels", inner.root);
+
+		sidebook.add("Levels", element("div", [
+			element("input", {
+				class : ["simple-border"],
+				attrs : {
+					type    : "button",
+					value   : "Use Bases",
+					onclick : (() => this.copy_point_buy())
+				}
+			}),
+			element("input", {
+				class : ["simple-border"],
+				attrs : {
+					type    : "button",
+					value   : "Use Level",
+					onclick : (() => this.copy_point_buy_stats())
+				}
+			}),
+			element("input", {
+				class : ["simple-border"],
+				attrs : {
+					type    : "button",
+					value   : "Clear Points",
+					onclick : (() => this.clear_point_buy())
+				}
+			}),
+			element("br"),
+			this.stats.pointbuy.root,
+		]));
 
 		/* Ability category */
 
@@ -600,6 +671,7 @@ class Sheet {
 		
 		this.abilities = {};
 
+		// inner = new Notebook();
 		this.addCategory(new MultiActiveCategory(model, {
 			name        : "class",
 			empty       : "This class has no class abilities",
@@ -625,18 +697,18 @@ class Sheet {
 		}));
 		inner.add("Equipped", this.abilities.equipped.root);
 
-		this.addCategory(new MultiActiveCategory(model, {
-			name        : "battlefield",
-			empty       : "There are no battlefield abilities",
-			selectable  : true,
-			reorderable : true,
-			removable   : true,
-			hideable    : true,
-			ontoggle    : refresh,
-			onremove    : forget,
-			select      : Ability.select(),
-		}));
-		inner.add("On Battlefield", this.abilities.battlefield.root);
+		// this.addCategory(new MultiActiveCategory(model, {
+		// 	name        : "battlefield",
+		// 	empty       : "There are no battlefield abilities",
+		// 	selectable  : true,
+		// 	reorderable : true,
+		// 	removable   : true,
+		// 	hideable    : true,
+		// 	ontoggle    : refresh,
+		// 	onremove    : forget,
+		// 	select      : Ability.select(),
+		// }));
+		// inner.add("On Battlefield", this.abilities.battlefield.root);
 
 		inner.active = "From Class";
 
@@ -725,7 +797,7 @@ class Sheet {
 		/* battalions tab for test */
 		this.battalion  = new Battalions(this);
 
-		sidebook.active = "Abilities";
+		sidebook.active = "Levels";
 
 		/* set up the characters and options tabs */
 
@@ -764,18 +836,18 @@ class Sheet {
 
 		this.cb = character_bb;
 
-		buildnb.add("Characters", [character_bb.root, this.character.root]);
+		buildnb.add("Character", [character_bb.root, this.character.root]);
 
 		this.wb = weapon_bb;
 
-		buildnb.add("Weapons & Spells", [weapon_bb.root, this.weaponz.root]);
+		buildnb.add("Inventory", [weapon_bb.root, this.weaponz.root]);
 
 		this.bb = battalion_bb;
 
 		/* TODO figure out what to do with battalions for patch #6 */
-		// buildnb.add("Battalions", [battalion_bb.root, this.battalion.root]);
+		buildnb.add("Battalion", [battalion_bb.root, this.battalion.root]);
 
-		buildnb.active = "Characters";
+		buildnb.active = "Character";
 
 		this.tabs.create = buildnb;
 
@@ -834,38 +906,10 @@ class Sheet {
 
 		tools.add("Macros", element("div", this.macros.root));
 
-		this.myPointBuy = new PointBuy();
+		this.myPointBuy = this.stats.pointbuy;
 		this.myPresetter = new Presetter();
 
-		tools.add("Point Buy", element("div", [
-			element("input", {
-				class : ["simple-border"],
-				attrs : {
-					type    : "button",
-					value   : "Use Bases",
-					onclick : (() => this.copy_point_buy())
-				}
-			}),
-			element("input", {
-				class : ["simple-border"],
-				attrs : {
-					type    : "button",
-					value   : "Use Level",
-					onclick : (() => this.copy_point_buy_stats())
-				}
-			}),
-			element("input", {
-				class : ["simple-border"],
-				attrs : {
-					type    : "button",
-					value   : "Clear Points",
-					onclick : (() => this.clear_point_buy())
-				}
-			}),
-			element("br"),
-			this.myPointBuy.root,
-			this.myPresetter.root
-		]));
+		tools.add("NPCs", this.myPresetter.root);
 
 		const legacy_bb  = new Buildables({
 			name      : "legacy",
@@ -1057,6 +1101,30 @@ class Sheet {
 		return null;
 	}
 
+	getActiveArtCategory() {
+		const fromclass = this.arts.class.getActive();
+
+		if (fromclass) return [this.arts.class, fromclass];
+
+		const equipped = this.arts.equipped.getActive();
+
+		if (equipped) return [this.arts.equipped, equipped];
+
+		return [null, null];
+	}
+
+	setActiveArtCategory(category, art) {
+		if (!(category || art)) return;
+		this.clearActiveArt();
+		category.toggleActive(art);
+	}
+
+	clearActiveArt() {
+		for (let key in this.arts) {
+			this.arts[key].clearActive();
+		}
+	}
+
 	predicates(base) {
 
 		const ctx = base || {};
@@ -1171,6 +1239,48 @@ class Sheet {
 			};
 		});
 
+		add("Gambit", (op, name) => {
+
+			let found = false;
+			for (let each of this.battalion.gambits.active) {
+				if (each.includes(name)) found = true;
+			}
+
+			return {
+				require: true,
+				succeed: false, 
+				boolean: found,
+			};
+		});
+
+		add("Training", (op, name) => {
+
+			let found = false;
+			for (let each of this.battalion.gambits.active) {
+				if (each.includes(`${name} Training`)) found = true;
+			}
+
+			return {
+				require: true,
+				succeed: false, 
+				boolean: found,
+			};
+		});
+
+		add("Outfitting", (op, name) => {
+
+			let found = false;
+			for (let each of this.battalion.gambits.active) {
+				if (each.includes(`${name} Outfitting`)) found = true;
+			}
+
+			return {
+				require: true,
+				succeed: false, 
+				boolean: found,
+			};
+		});
+
 		add("Crest", (op, name) => {
 
 			let found = false;
@@ -1182,6 +1292,14 @@ class Sheet {
 				require: true,
 				succeed: false, 
 				boolean: found,
+			};
+		});
+
+		add("Adjutant", (op, name) => {
+			return {
+				require: true,
+				succeed: false, 
+				boolean: this.battalion.adjutant.name == name,
 			};
 		});
 
@@ -1207,34 +1325,6 @@ class Sheet {
 			);
 		}
 
-		/*
-		 * v/ level
-		 * v/ triangle
-		 *
-		 * v/ unit.modifier.<prime>
-		 * v/ unit.total.<prime>
-		 * v/ <prime.base>
-		 * v/ class.<prime>
-		 * v/ class.mount.<prime>
-		 *
-		 * v/ unit.total.<second>
-		 * v/ unit.modifier.<second>
-		 * v/ weapon.<second>
-		 * v/ weapon.base.<second>
-		 * v/ weapon.template.<second>
-		 * v/ weapon.attributes.<second>
-		 * v/ equipment.<second>
-		 * v/ arts.<second>
-		 * v/ battalion.gambit.<second>
-		 *
-		 * v/ abilities.<prime>
-		 * v/ abilities.<second>
-		 *
-		 * v/ battalion.<batstat>
-		 * v/ battalion.base.<batstat>
-		 * v/ battalion.template.<batstat>
-		 */
-
 		/* this.macros must be initialized before this is called */
 		const vardiv = this.macros.varopts;
 		const varsen = [];
@@ -1254,7 +1344,10 @@ class Sheet {
 
 			if (typeof template.expr == "string") {
 				const e = this.compiler.compile(template.expr);
-				fn   = ((env) => Expression.evaluate(e, env));
+				fn   = ((env) => {
+					if (template.debug) debugger;
+					return Expression.evaluate(e, env);
+				});
 				fn.e = e;
 				fn.s = element("div", [
 					"=== Calculator Expression ===", element("br"),
@@ -1291,13 +1384,23 @@ class Sheet {
 
 		function funcsum(...names) {
 
-			const funcs = names.map(name => ctx[name]);
+			const funcs = names.map(name => {
+				const type = typeof name;
+				if  ( type == "function" ) return name;
+				if  ( type == "string"   ) return ctx[name];
+				throw new Error(`type '${type}' is invalid`);
+			});
 
 			return (env) => {
 
 				let a = 0;
 				for (let func of funcs) {
 					a = sum(env, a, func(env));
+
+					if ((typeof a != "number" && typeof a != "string") || Number.isNaN(a)) {
+						debugger;
+					}
+
 				}
 
 				return a;
@@ -1310,7 +1413,7 @@ class Sheet {
 			return ((env) => {
 
 				let a = 0;
-				const cats = ["class", "equipped", "battlefield"];
+				const cats = ["class", "equipped"];
 
 				for (let cat of cats) {
 					for (let each of this.abilities[cat].getActive()) {
@@ -1321,6 +1424,74 @@ class Sheet {
 
 						a = sum(env, a, label(env, ability.name, modifier));
 					}
+				}
+
+				return a;
+			});
+		};
+
+		const artfunc = (desig) => {
+			const name = desig;
+
+			return ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+				
+				const art = CombatArt.get(key);
+
+				return label(env, art.name, art.modifier(name));
+			});
+		};
+
+		const gambitfunc = (desig, onlyActive=true) => {
+			const name   = desig;
+			const active = onlyActive;
+
+			return ((env) => {
+
+				let a = 0;
+
+				const iter = (
+					active
+						? this.battalion.gambits.getActive()
+						: this.battalion.gambits.names()
+				);
+
+				for (let each of iter) {
+
+					const gambit = Gambit.get(each);
+					// if (ability.tagged("art")) continue;
+					const modifier = gambit.modifier(name, env);
+					if (modifier == 0) continue;
+
+					a = sum(env, a, label(env, gambit.name, modifier));
+				}
+
+				return a;
+			});
+		};
+
+		const gambitoverfunc = (desig, onlyActive=true) => {
+			const name   = desig;
+			const active = onlyActive;
+
+			return ((env) => {
+
+				let a = 0, s = true;
+
+				const iter = (
+					active
+						? this.battalion.gambits.getActive()
+						: this.battalion.gambits.values()
+				);
+
+				for (let each of iter) {
+					const g = Gambit.get(each);
+					const m = g.modifier(name, env);
+
+					if (!g.tagged("structure")) s = false;
+					a = s ? sum(env, a, label(env, g.name, m)) : m;
 				}
 
 				return a;
@@ -1345,6 +1516,12 @@ class Sheet {
 		// YP  YP  YP Y888888P `8888Y'  `Y88P'
 
 		add({
+			name  : "other|trigger",
+			about : "SBAC trigger modifier",
+			expr  : abilityfunc("trigger"),
+		});
+
+		add({
 			name  : "unit|level",
 			about : "This unit's level",
 			expr  : ((env) => this.stats.level)
@@ -1356,24 +1533,6 @@ class Sheet {
 			about : "If the interpreter is broken this will freeze the page.",
 			expr  : "other|recursion",
 		});
-
-		// add({
-		// 	name  : "other|martial|mov",
-		// 	about : wrap(
-		// 		"This is the Martial Starting class movement bonus that ",
-		// 		"those get after level 10. Evaluates to 1 if the state of ",
-		// 		"the sheet meets those circumstances and to 0 otherwise.",
-		// 	),
-		// 	expr  : ((env) => {
-		// 		const cls = this.character.class;
-
-		// 		return label(env, "lvl 10 martial", Number(
-		// 			cls.type == "Martial"
-		// 			&& cls.tier == "Starting"
-		// 			&& this.stats.level >= 10
-		// 		));
-		// 	}),
-		// });
 
 		add({
 			name  : "other|range_penalty|prompt",
@@ -1540,14 +1699,8 @@ class Sheet {
 					// the normal sum of the growths
 					const sum  = Math.max(0, unit + cls);
 
-					// anything above 60% is halved, create limiter
-					const raw  = Math.floor((60 - sum) / 10) * 5;
-
-					// change a positive limiter to no effect (zero)
-					const cap  = Math.min(raw, 0);
-
 					// add limiter (negative) to sum growth to get final
-					const grow = sum + cap;
+					const grow = sum + Forecast.diminish(sum, name);
 
 					return grow;
 				}),
@@ -1654,88 +1807,6 @@ class Sheet {
 		//    88    88~~~88 88  ooo 88  ooo 88~~~~~ 88   88
 		//    88    88   88 88. ~8~ 88. ~8~ 88.     88  .8D
 		//    YP    YP   YP  Y888P   Y888P  Y88888P Y8888D'		
-
-		add({
-			name  : "weapon|tagged|healing",
-			about : wrap(
-				"A flag; 1 if weapon is tagged with 'healing' and 0 if ",
-				"weapon is not tagged with 'healing'. The 'healing' tag ",
-				"indicates whether the weapon's might is applied as healing ",
-				"or as damage. Used in the macro builder.",
-			),
-			expr  : ((env) => {
-				return Number(this.weaponz.tagged("healing"));
-			}),
-		});
-
-		add({
-			name  : "art|tagged|healing",
-			about : wrap(
-				"A flag; 1 if art is tagged with 'healing' and 0 if ",
-				"art is not tagged with 'healing'. The 'healing' tag ",
-				"indicates whether the art's might is applied as healing ",
-				"or as damage. Used in the macro builder.",
-			),
-			expr  : ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-				
-				return CombatArt.get(key).tagged("healing");
-			}),
-		});
-
-
-		add({
-			name  : "art|tagged|tactical",
-			about : wrap(
-				"A flag; 1 if art is tagged with 'tactical' and 0 if ",
-				"art is not tagged with 'tactical'. The 'tactical' tag ",
-				"indicates whether the art is considered a combat art or ",
-				"a tactical art for slots purposes."
-			),
-			expr  : ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-				
-				return CombatArt.get(key).tagged("tactical");
-			}),
-		});
-
-		add({
-			name  : "art|tagged|wall",
-			about : wrap(
-				"A flag; 1 if art is tagged with 'wall' and 0 if ",
-				"art is not tagged with 'wall'. The 'wall' tag ",
-				"indicates whether the art's primary purpose is to ",
-				"create tiles."
-			),
-			expr  : ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-				
-				return CombatArt.get(key).tagged("wall");
-			}),
-		});
-
-		add({
-			name  : "art|tagged|no_triangle",
-			about : wrap(
-				"A flag; 1 if art is tagged with 'no triangle' and 0 if ",
-				"weapon is not tagged with 'no triangle'. The 'no triangle' ",
-				"tag indicates whether the art is subject to the weapon ",
-				"triangle system or not. Used in the macro builder."
-			),
-			expr  : ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-				
-				return CombatArt.get(key).tagged("no triangle");
-			}),
-		});
 		
 		add({
 			name  : "unit|tagged|healing",
@@ -1752,58 +1823,60 @@ class Sheet {
 			),
 		});
 
-		add({
-			name  : "weapon|tagged|no_triangle",
-			about : wrap(
-				"A flag; 1 if weapon is tagged with 'no triangle' and 0 if ",
-				"weapon is not tagged with 'no triangle'. The 'no triangle' ",
-				"tag indicates whether the weapon is subject to the weapon ",
-				"triangle system or not. Used in the macro builder."
-			),
-			expr  : ((env) => {
-				return Number(this.weaponz.tagged("no triangle"));
-			}),
-		});
+		let weapon_tags = new Set();
 
-		add({
-			name  : "weapon|tagged|no_hit",
-			about : wrap(
-				"A flag; 1 if weapon is tagged with 'no hit' and 0 if ",
-				"weapon is not tagged with 'no hit'. The 'no hit' ",
-				"tag indicates whether the weapon rolls to hit or not. ",
-				"Used in the macro builder.",
-			),
-			expr  : ((env) => {
-				return Number(this.weaponz.tagged("no hit"));
-			}),
-		});
+		for (let weapon of chain(definitions.weapons, definitions.attributes)) {
+			for (let tag of weapon.tags) {
+				
+				const name = tag;
+				if (weapon_tags.has(tag)) continue;
 
-		add({
-			name  : "weapon|tagged|no_might",
-			about : wrap(
-				"A flag; 1 if weapon is tagged with 'no might' and 0 if ",
-				"weapon is not tagged with 'no might'. The 'no might' ",
-				"tag indicates whether the weapon uses the might stat or ",
-				"only applies an effect (e.g. buff spells). ",
-				"Used in the macro builder."
-			),
-			expr  : ((env) => {
-				return Number(this.weaponz.tagged("no might"));
-			}),
-		});
+				add({
+					name  : `weapon|tagged|${Expression.asIdentifier(tag)}`,
+					about : wrap(
+						`A flag; 1 if weapon is tagged with '${tag}' and 0 if `,
+						`weapon is not tagged with '${tag}'.`
+					),
+					expr  : ((env) => {
 
-		add({
-			name  : "weapon|tagged|wall",
-			about : wrap(
-				"A flag; 1 if weapon is tagged with 'wall' and 0 if ",
-				"weapon is not tagged with 'wall'. The 'wall' tag ",
-				"indicates whether the weapon's primary purpose is to ",
-				"create tiles."
-			),
-			expr  : ((env) => {
-				return Number(this.weaponz.tagged("wall"));
-			}),
-		});
+						for (let each of this.weaponz.attributes.values()) {
+							if (each.tagged(name)) return true;
+						}
+
+						return Number(this.weaponz.tagged(name));
+					}),
+				});
+
+				weapon_tags.add(tag);
+			}
+		}
+
+		const art_tags = new Set();
+
+		for (let art of definitions.arts) {
+			for (let tag of art.tags) {
+
+				const name = tag;
+				if (art_tags.has(tag)) continue;
+
+				add({
+					name  : `art|tagged|${Expression.asIdentifier(tag)}`,
+					about : wrap(
+						`A flag; 1 if art is tagged with '${tag}' and 0 if `,
+						`art is not tagged with '${tag}'.`
+					),
+					expr  : ((env) => {
+						const key = this.getActiveArt();
+
+						if (key == null) return 0;
+					
+						return CombatArt.get(key).tagged(name);
+					}),
+				});
+
+				art_tags.add(tag);
+			}
+		}
 
 		add({
 			name  : "unit|multiplier|healing",
@@ -1813,10 +1886,7 @@ class Sheet {
 			),
 			expr  : ((env) => {
 				const key = this.getActiveArt();
-
-				if (key == null) return 1.0;
-				
-				const art = CombatArt.get(key).tagged("healing");
+				const art = key && CombatArt.get(key).tagged("healing");
 				const wpn = this.weaponz.tagged("healing");
 				return art || wpn ? 0.5 : 1.0;
 			}),
@@ -1941,7 +2011,10 @@ class Sheet {
 				"Evaluates to 1 if unit has a combat art active, ",
 				"and otherwise evaluates to 0.",
 			),
-			expr  : ((env) => this.getActiveArt() != null),
+			expr  : ((env) => {
+				const name = this.getActiveArt();
+				return name ? !CombatArt.get(name).tagged("tactical") : false;
+			}),
 		});
 
 		add({
@@ -1950,8 +2023,21 @@ class Sheet {
 				"Evaluates to 1 if unit has a tactical art active, ",
 				"and otherwise evaluates to 0.",
 			),
+			expr  : ((env) => {
+				const name = this.getActiveArt();
+				return name ? CombatArt.get(name).tagged("tactical") : false;
+			}),
+		});
+
+		add({
+			name  : "art|active",
+			about : wrap(
+				"Evaluates to 1 if unit has an art active, ",
+				"and otherwise evaluates to 0.",
+			),
 			expr  : ((env) => this.getActiveArt() != null),
 		});
+
 		
 		// d8888b. .88b  d88.  d888b    d8888b.  .d8b.  .d8888. d88888b
 		// 88  `8D 88'YbdP`88 88' Y8b   88  `8D d8' `8b 88'  YP 88'
@@ -2057,6 +2143,86 @@ class Sheet {
 				if (key == null) return 0;
 				
 				return AttackFeature.MTTYPE.asNumber(CombatArt.get(key).mttype);
+			}),
+		});
+
+		add({
+			name  : "gambit|structure|mttype",
+			about : wrap(
+				"What statistic this gambit's might deals damage against based ",
+				"on this battalion's equipped structure gambits. Training ",
+				"gambits serve as the base and can be overriden by others."
+			),
+			expr  : ((env) => {
+				let mttype = 0;
+
+				for (let gambit of this.battalion.gambits.values()) {
+					
+					if (!gambit.tagged("structure")) continue;
+
+					mttype = AttackFeature.MTTYPE.asNumber(gambit.mttype);
+
+					/* some structure that overrides a training gambit */
+					if (!gambit.name.includes("Training")) {
+						return mttype;
+					}
+				}
+
+				return mttype;
+			}),
+		});
+
+		add({
+			name  : "gambit|active|mttype",
+			about : wrap(
+				"What statistic the active gambit's might is targets.",
+			),
+			expr  : ((env) => {
+				return AttackFeature.MTTYPE.asNumber(
+					this.battalion.getGambit().mttype
+				);
+			}),
+
+		});
+
+		add({
+			name  : "gambit|art|mttype",
+			about : wrap(
+				"What statistic a metagambit's might is based off of.",
+			),
+			expr  : ((env) => {
+				const key = this.getActiveArt();
+
+				if (key == null) return 0;
+
+				const art = CombatArt.get(key);
+
+				if (!art.tagged("metagambit")) return 0;
+				
+				return AttackFeature.MTTYPE.asNumber(art.mttype);
+			}),
+
+		});
+
+		add({
+			name  : "gambit|total|mttype",
+			about : wrap(
+				"What statistic this gambit's might targets",
+			),
+			expr  : ((env) => {
+				return (
+					/* meta gambit overrides active gambit */
+					env.read("gambit|art|mttype")
+						||
+					/* active gambit overrides structure value */
+					env.read("gambit|active|mttype")
+						||
+					/* structure value serves as fallback */
+					env.read("gambit|structure|mttype")
+						||
+					/* fallback is not to assume N/A */
+					3 
+				);
 			}),
 		});
 
@@ -2254,6 +2420,14 @@ class Sheet {
 		}
 
 		add({
+			name  : "unit|charm",
+			about : wrap(
+				"Higher of dexterity and luck.",
+			),
+			expr  : "[Charm] {more unit|total|lck else unit|total|dex end}" 
+		});
+
+		add({
 			name  : "unit|total|mt",
 			about : wrap(
 				"The amount of damage an attack does before it is reduced by",
@@ -2328,52 +2502,86 @@ class Sheet {
 			expr  : funcsum("unit|total|res", "unit|modifier|resl"),
 		});
 
-		add({
-			name  : "unit|total|crit",
-			about : wrap(
-				"The unit's chance to score a critical hit."
-			),
-			expr  : `
-				(floor((unit|total|dex) / 2)
-					+ unit|total|cha
-					+ unit|modifier|crit)
-			`,
-		});
+		if (V3) {
+			add({
+				name  : "unit|total|crit",
+				about : wrap(
+					"The unit's chance to score a critical hit."
+				),
+				expr  : "unit|total|lck + unit|modifier|crit",
+			});
 
-		add({
-			name  : "unit|total|cravo",
-			about : wrap(
-				"Reduces foe's chance to score a critical hit on this unit."
-			),
-			expr  : "unit|total|cha + unit|modifier|cravo",
-		});
+			add({
+				name  : "unit|total|cravo",
+				about : wrap(
+					"Reduces foe's chance to score a critical hit on this unit."
+				),
+				expr  : "unit|total|dex + unit|modifier|cravo",
+			});
 
-		add({
-			name  : "unit|total|hit",
-			about : wrap(
-				"The unit's chance to score a hit."
-			),
-			expr  : `
-				(unit|total|dex
-					+ unit|modifier|hit
-					+ other|triangle|conditional)
-			`,
-		});
+			add({
+				name  : "unit|total|hit",
+				about : wrap(
+					"The unit's chance to score a hit."
+				),
+				expr  : "unit|total|dex + unit|modifier|hit",
+			});
 
-		add({
-			name  : "unit|total|avo",
-			about : wrap(
-				"Reduces foe's chance to score a hit on this unit."
-			),
-			expr  : `
-				(unit|total|spd
-					+ unit|modifier|avo
-					+ metaif builtins|codegen == 1
-						then other|triangle
-						else 0
-					end)
-			`,
-		});
+			add({
+				name  : "unit|total|avo",
+				about : wrap(
+					"Reduces foe's chance to score a hit on this unit."
+				),
+				expr  : "unit|total|lck + unit|modifier|avo",
+			});
+		} else {
+			add({
+				name  : "unit|total|crit",
+				about : wrap(
+					"The unit's chance to score a critical hit."
+				),
+				expr  : `
+					(floor((unit|total|dex) / 2)
+						+ unit|total|lck
+						+ unit|modifier|crit)
+				`,
+			});
+
+			add({
+				name  : "unit|total|cravo",
+				about : wrap(
+					"Reduces foe's chance to score a critical hit on this unit."
+				),
+				expr  : "unit|total|lck + unit|modifier|cravo",
+			});
+
+			add({
+				name  : "unit|total|hit",
+				about : wrap(
+					"The unit's chance to score a hit."
+				),
+				expr  : `
+					(unit|total|dex
+						+ unit|modifier|hit
+						+ other|triangle|conditional)
+				`,
+			});
+
+			add({
+				name  : "unit|total|avo",
+				about : wrap(
+					"Reduces foe's chance to score a hit on this unit."
+				),
+				expr  : `
+					(unit|total|spd
+						+ unit|modifier|avo
+						+ metaif builtins|codegen == 1
+							then other|triangle
+							else 0
+						end)
+				`,
+			});
+		}
 
 		add({
 			name  : "unit|total|doubles",
@@ -2513,30 +2721,93 @@ class Sheet {
 			expr  : "unit|modifier|tpcost",
 		});
 
+		// d8888b.  .d8b.  d888888b d888888b  .d8b.  db      d888888b  .d88b.  d8b   db
+		// 88  `8D d8' `8b `~~88~~' `~~88~~' d8' `8b 88        `88'   .8P  Y8. 888o  88
+		// 88oooY' 88ooo88    88       88    88ooo88 88         88    88    88 88V8o 88
+		// 88~~~b. 88~~~88    88       88    88~~~88 88         88    88    88 88 V8o88
+		// 88   8D 88   88    88       88    88   88 88booo.   .88.   `8b  d8' 88  V888
+		// Y8888P' YP   YP    YP       YP    YP   YP Y88888P Y888888P  `Y88P'  VP   V8P
 
-		// battalion stuff
+		/* has to use the raw data because Gambits isn't populated yet */
+		for (let each of definitions.gambits) {
+
+			const name       = each.name;
+			const identifier = Expression.asIdentifier(name);
+
+			if (name == "Counter") continue;
+
+			add({
+				name  : `gambit|is_active|${identifier}`,
+				about : wrap(
+					`Evaluates to 1 if ${name} in an active gambit, `,
+					"and otherwise evaluates to 0."
+				),
+				expr  : ((env) => {
+					return Number(this.battalion.gambits.active.has(name));
+				}),
+			});
+		}
 
 		add({
-			name  : "battalion|total|lp",
+			name  : `gambit|is_active|Counter`,
 			about : wrap(
-				"The total number of leadership points afforded to the ",
-				"equipped battalion. If none then evaluates to zero.",
+				`Evaluates to 1 if Counter in an active gambit, `,
+				"and otherwise evaluates to 0."
 			),
 			expr  : ((env) => {
-				const dex   = env.read("unit|total|dex");
-				const luc   = env.read("unit|total|cha");
-				const lp    = Math.max(dex, luc);
-
-				const bonus = Battalions.LP_BONUS[this.battalion.rank];
-				
-				const lead  = -(
-					env.read("battalion|base|disc") + env.read("battalion|base|brav")
-						+
-					env.read("battalion|base|pres") + env.read("battalion|base|strc")
-				);
-
-				return lp + bonus + lead;
+				return Number(this.battalion.getGambit().name == "Counter");
 			}),
+		});
+
+		add({
+			name  : "battalion|modifier|cap",
+			about : wrap(
+				"The total capacity cost of equipped gambits.",
+			),
+			expr  : gambitfunc("cap", false),
+		});
+
+		add({
+			name  : "battalion|rank",
+			about : wrap(
+				"The numerical value of a battalion's rank."
+			),
+			expr  : ((env) => {
+				return this.battalion.rank;
+			}),
+		});
+
+		add({
+			name  : "battalion|template|cap",
+			about : wrap(
+				"The battalion's template capcity statistic before modifiers."
+			),
+			expr  : ((env) => {
+				return this.battalion.template.modifier("cap");
+			}),
+		});
+
+		add({
+			name  : "battalion|rank|cap",
+			about : wrap(
+				"The a battalion's capacity modifier from its rank."
+			),
+			expr  : ((env) => {
+				return this.battalion.rank + 1;
+			}),
+		});
+
+		add({
+			name  : "battalion|total|cap",
+			about : wrap(
+				"The total number of capacity points afforded to the ",
+				"equipped battalion. If none then evaluates to zero.",
+			),
+			expr  : funcsum(
+				"battalion|template|cap",
+				"battalion|rank|cap",
+				"battalion|modifier|cap"
+			),
 		});
 
 		add({
@@ -2545,10 +2816,7 @@ class Sheet {
 				"The equipped battalion's level. Used to scale its stats."
 			),
 			expr  : ((env) => {
-				return label(env, 
-					`${this.battalion.name} level`,
-					this.battalion.level,
-				);
+				return label(env, "level", this.battalion.level);
 			}),
 		});
 
@@ -2558,34 +2826,18 @@ class Sheet {
 			const second = [];
 
 			second.push(add({
-				name  : `battalion|base|${name}`,
-				about : wrap(
-					`The equipped battalion's base ${name} statistic `,
-					"value entered into the table under Create => Weapons & ",
-					"Spells before modifiers. If none is equipped then ",
-					"evaluates to 0."
-				),
-				expr  : ((env) => {
-					return label(env, 
-						`${this.battalion.name} base`,
-						this.battalion.stats[name].value,
-					);
-				}),
-			}));
-
-			second.push(add({
 				name  : `battalion|template|${name}`,
 				about : wrap(
-					`The battalion's base ${name} statistic before modifiers.`
+					`The battalion's template ${name} statistic before modifiers.`
 				),
 				expr  : ((env) => {
-					const value =  this.battalion.template.modifiers[name];
-					return label(env, `base ${name}`, value);
+					const value = this.battalion.template.modifiers[name];
+					return label(env, `template ${name}`, value);
 				}),
 			}));
 
 			if (this.data.stats.battalion.growths.includes(name)) {
-				second.push(add({
+				add({
 					name  : `battalion|level|${name}`,
 					about : wrap(
 						`The battalion's ${name} bonus from its level.`,
@@ -2596,18 +2848,48 @@ class Sheet {
 						const bonus  = Math.floor((level * growth)/100);
 						return label(env, `level ${level}`, bonus);
 					}),
+				});
+
+				add({
+					name  : `battalion|growth|${name}`,
+					about : wrap(
+						`The battalion's template ${name} growth.`
+					),
+					expr  : ((env) => {
+						return this.battalion.template.growth(name);
+					}),
+				});
+
+				add({
+					name  : `battalion|mult|${name}`,
+					about : wrap(
+						`The battalion's template ${name} growth as a real number.`
+					),
+					expr  : ((env) => {
+						return label(env,
+							`${this.battalion.name} ${name} growth`,
+							this.battalion.template.growth(name) / 100
+						);
+					}),
+				});
+
+				second.push(add({
+					name  : `battalion|long|${name}`,
+					about : wrap(
+						`The battalion's ${name} bonus from its level written out.`,
+					),
+					expr  : `
+						floor(battalion|mult|${name} * Level {battalion|level})
+					`,
 				}));
 			}
 
 			second.push(add({
-				name  : `battalion|adjutant|${name}`,
+				name  : `battalion|modifier|${name}`,
 				about : wrap(
 					`The adjutant's ${name} statistic; zero if no adjutant.`
 				),
-				expr  : ((env) => {
-					const value =  this.battalion.adjutant.modifier(name);
-					return label(env, `adj ${name}`, value);
-				}),
+				expr  : gambitfunc(name),
 			}));
 
 			add({
@@ -2616,24 +2898,41 @@ class Sheet {
 					`The battalion's base ${name} statistic before modifiers.`
 				),
 				expr  : funcsum(...second),
-			});	
+			});
+
+			add({
+				name  : `battalion|leveled|${name}`,
+				about : wrap(
+					`The battalion's leveled ${name} statistic before modifiers.`
+				),
+				expr  : `battalion|template|${name} + battalion|long|${name}`,
+			});
 		}
 
-		for (let each of this.data.stats.battalion.gambit) {
+		for (let each of this.data.stats.battalion.second) {
 
 			const name = each;
 
 			add({
-				name  : `battalion|gambit|${name}`,
+				name  : `battalion|modifier|${name}`,
 				about : wrap(
-					`The battalion's base ${name} statistic before modifiers.`
+					`The battalion's ${name} modifier; zero if no adjutant.`
 				),
-				expr  : ((env) => {
-					const value =  this.battalion.template.gambit.modifiers[name];
-					return label(env, `base ${name}`, value);
-				}),
+				expr  : (
+					(name == "minrng" || name == "maxrng")
+						? gambitoverfunc(name)
+						: gambitfunc(name)
+				),
 			});
 		}
+
+		add({
+			name  : "battalion|total|cha",
+			about : wrap(
+				"The battalion's total charm statistic."
+			),
+			expr  : funcsum((env) => env.read("unit|charm"), gambitfunc("cha")),
+		});
 
 		add({
 			name  : "battalion|modifier|br",
@@ -2646,9 +2945,57 @@ class Sheet {
 		add({
 			name  : "battalion|modifier|gmt",
 			about : wrap(
-				"The battalion's endurance statistic."
+				"The battalion's might statistic bonuses from employer."
 			),
-			expr  : abilityfunc("gmt"),
+			expr  : funcsum(abilityfunc("gmt"), artfunc("gmt")),
+		});
+
+		add({
+			name  : "battalion|modifier|gepcost",
+			about : wrap(
+				"The battalion's ep cost statistic bonuses from employer."
+			),
+			expr  : funcsum(abilityfunc("gepcost"), artfunc("gepcost")),
+		});
+
+		add({
+			name  : "battalion|modifier|ghit",
+			about : wrap(
+				"The battalion's hit statistic bonuses from employer."
+			),
+			expr  : funcsum(abilityfunc("ghit"), artfunc("ghit")),
+		});
+
+		add({
+			name  : "battalion|modifier|gmaxrng",
+			about : wrap(
+				"The battalion's gambit max range statistic bonuses from employer."
+			),
+			expr  : funcsum(abilityfunc("gmaxrng"), gambitfunc("gmaxrng"), artfunc("gmaxrng"))
+		});
+
+		add({
+			name  : "battalion|modifier|gminrng",
+			about : wrap(
+				"The battalion's gambit minrng statistic bonuses from employer."
+			),
+			expr  : funcsum(abilityfunc("gmaxrng"), gambitfunc("gmaxrng"), artfunc("gminrng"))
+		});
+
+		add({
+			name  : "battalion|total|mt",
+			about : wrap(
+				"The battalion's might statistic."
+			),
+			expr  : "battalion|total|atk + battalion|modifier|mt + battalion|modifier|gmt",
+		});
+
+		add({
+			name  : "battalion|total|hit",
+			about : wrap(
+				"The battalion's hit statistic."
+			),
+			expr  : "unit|charm + battalion|modifier|hit + battalion|modifier|ghit",
 		});
 
 		add({
@@ -2656,17 +3003,39 @@ class Sheet {
 			about : wrap(
 				"The battalion's endurance statistic."
 			),
-			expr  : "battalion|total|disc",
+			expr  : "unit|charm + battalion|total|end",
 		});
 
 		add({
-			name  : "battalion|total|atk",
+			name  : "battalion|total|cha",
 			about : wrap(
-				"The battalion's counterattack might."
+				"The battalion's charm statistic."
 			),
-			expr  : (
-				"battalion|total|pres + floor((battalion|total|brav - battalion|total|disc)/2)"
+			expr  : "unit|charm",
+		});
+
+		add({
+			name  : "battalion|total|epcost",
+			about : wrap(
+				"The battalion's hit statistic."
 			),
+			expr  : "battalion|modifier|epcost + battalion|modifier|gepcost",
+		});
+
+		add({
+			name  : "battalion|total|minrng",
+			about : wrap(
+				"The battalion's minimum range statistic."
+			),
+			expr  : "battalion|modifier|minrng + battalion|modifier|gminrng",
+		});
+
+		add({
+			name  : "battalion|total|maxrng",
+			about : wrap(
+				"The battalion's minimum range statistic."
+			),
+			expr  : "battalion|modifier|maxrng + battalion|modifier|gmaxrng",
 		});
 
 		add({
@@ -2675,48 +3044,22 @@ class Sheet {
 				"The battalion's barrier statistic."
 			),
 			expr  : (
-				"2 + battalion|modifier|br + floor((battalion|total|disc - battalion|total|brav)/2)"
+				"battalion|modifier|br"
 			),
 		});
 
-		add({
-			name  : "battalion|total|gmt",
-			about : wrap(
-				"The battalion's gambit might statistic."
-			),
-			expr  : "battalion|total|atk + battalion|modifier|gmt + battalion|gambit|mt",
-		});
+		const CONTRACT = [
+			300, 400, 600, 900, 1400, 1900, 2500, 3200, 4000, 4900, 5900, 7000
+		];
 
 		add({
-			name  : "battalion|total|ghit",
+			name  : "battalion|total|contract",
 			about : wrap(
-				"The battalion's gambit hit statistic."
+				"The battalion's initial contract cost."
 			),
-			expr  : "battalion|total|brav + battalion|gambit|hit",
-		});
-
-		add({
-			name  : "battalion|total|gcost",
-			about : wrap(
-				"The battalion's gambit cost statistic."
-			),
-			expr  : "battalion|gambit|cost + floor((battalion|total|disc - battalion|total|brav)/2)",
-		});
-
-		add({
-			name  : "battalion|total|gminrng",
-			about : wrap(
-				"The battalion's minimum gambit range statistic."
-			),
-			expr  : "battalion|gambit|minrng",
-		});
-
-		add({
-			name  : "battalion|total|gmaxrng",
-			about : wrap(
-				"The battalion's maximum gambit range statistic."
-			),
-			expr  : "battalion|gambit|maxrng",
+			expr  : ((env) => {
+				return CONTRACT[this.battalion.rank];
+			}),
 		});
 
 		const uid = uniqueID();
@@ -2764,6 +3107,34 @@ class Sheet {
 		);
 
 		return env.read(`unit|total|${second}`);
+	}
+
+	*iterCustomRows() {
+
+		let row = undefined;
+		let tmp = undefined;
+
+		for (row of this.weaponz.template.rows) yield row;
+
+		for (let each of this.weaponz.attributes.getActiveValues()) {
+			for (row of each.rows) yield row;
+		}
+
+		for (let each of this.abilities.class.getActiveValues()) {
+			for (row of each.rows) yield row;
+		}
+
+		for (let each of this.abilities.equipped.getActiveValues()) {
+			for (row of each.rows) yield row;
+		}
+
+		if ((tmp = this.getActiveArt())) {
+			for (row of CombatArt.get(tmp).rows) yield row;
+		}
+		
+		if ((tmp = this.equipment.known.getActive())) {
+			for (row of Equipment.get(tmp).rows) yield row;
+		}
 	}
 
 	/* methods relating to persisting the sheet */
@@ -2939,13 +3310,30 @@ class Sheet {
 			if (kit === null) return;
 
 			/* add weapons */
-			for (let weapon of kit.weapons) {
+			for (let each of kit.weapons) {
+
+				const weapon = each instanceof Array ? each[0]       : each;
+				const attrs  = each instanceof Array ? each.slice(1) : [];
+
 				if (!Weapon.has(weapon)){
 					throw new Error(`weapon '${weapon}' is undefined`);
 				}
 
 				this.wb.select.value = weapon;
 				this.wb.add();
+
+				/* add any attributes to the weapon */
+				for (let attr of attrs) {
+					this.weaponz.attributes.add(attr);
+					this.weaponz.attributes.toggleActive(attr);
+				}
+
+				/* include any attributes in the weapon's name */
+				if (attrs.length) {
+					this.weaponz.name = (
+						attrs.join(" ") + " " + this.weaponz.name
+					);
+				}
 
 				this.weaponz.inInventory = true;
 			}
@@ -2960,10 +3348,19 @@ class Sheet {
 				this.abilities.equipped.toggleActive(ability);
 			}
 
-			/* set skill level */
-			if (skill in this.skills) {
+			/* add arts */
+			for (let art of kit.arts) {
+				if (!CombatArt.has(art)) {
+					throw new Error(`art '${art}' is undefined`);
+				}
 
-				const row = this.skills[skill];
+				this.arts.equipped.add(art);
+			}
+
+			/* set skill level */
+			if (skill in this.skills || skill.skill in this.skills) {
+
+				const row = this.skills[skill] || this.skills[skill.skill];
 
 				if (row.value < kit.points) {
 					row.value = kit.points;

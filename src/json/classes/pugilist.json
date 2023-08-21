@@ -1,7 +1,7 @@
 {
     "name": "Pugilist",
     "description": "A tenacious brawler.",
-    "type": ["Armor", "Martial", "Caster"],
+    "type": ["Armor"],
     "tier": "Advanced",
     "requires": "All (Brawl C+) (Required (Armor C+)) (Required (Level 15))",
     "abilities": ["Brawl Advantage", "Brawl Consumption 2", "Butterfly Stance"],
@@ -14,7 +14,7 @@
         "spd": 30,
         "def": 25,
         "res": 15,
-        "cha": 10
+        "lck": 10
       },
     "modifiers": {
         "hp": 7,
@@ -24,7 +24,7 @@
         "spd": 5,
         "def": 5,
         "res": 4,
-        "cha": 4,
+        "lck": 4,
         "mov": 5
     },
     "mount": null,

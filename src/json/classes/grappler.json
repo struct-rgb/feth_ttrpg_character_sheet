@@ -1,7 +1,7 @@
 {
     "name": "Grappler",
     "description": "A hand to hand combat expert.",
-    "type": ["Infantry", "Martial", "Caster"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Brawl B) (Required (Level 15))",
     "abilities": ["Brawl Advantage", "Brawl Crit +10", "Brawl Consumption 2", "Stamina +15"],
@@ -14,7 +14,7 @@
         "spd": 20,
         "def": 20,
         "res": 0,
-        "cha": 10
+        "lck": 10
       },
     "modifiers": {
         "hp": 6,
@@ -24,7 +24,7 @@
         "spd": 4,
         "def": 3,
         "res": 1,
-        "cha": 2,
+        "lck": 2,
         "mov": 6
     },
     "mount": null,

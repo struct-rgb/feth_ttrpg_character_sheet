@@ -9,7 +9,7 @@ const definitions = {
       "spd",
       "def",
       "res",
-      "cha",
+      "lck",
       "mov"
     ],
     "first": [
@@ -20,7 +20,7 @@ const definitions = {
       "spd",
       "def",
       "res",
-      "cha",
+      "lck",
       "mov"
     ],
     "second": [
@@ -42,33 +42,29 @@ const definitions = {
     ],
     "battalion": {
       "first": [
-        "disc",
-        "brav",
-        "pres",
-        "strc",
+        "end",
+        "atk",
+        "prot",
+        "resl",
         "auto",
-        "cap",
-        "minrng",
-        "maxrng"
+        "plu"
       ],
       "second": [
-        "ep",
-        "atk",
-        "br"
-      ],
-      "growths": [
-        "disc",
-        "brav",
-        "pres",
-        "strc"
-      ],
-      "gambit": [
+        "mor",
+        "br",
+        "minrng",
+        "maxrng",
         "hit",
         "mt",
-        "cost",
-        "minrng",
-        "maxrng"
-      ]
+        "epcost"
+      ],
+      "growths": [
+        "end",
+        "atk",
+        "prot",
+        "resl"
+      ],
+      "gambit": []
     }
   },
   "skills": [
@@ -151,6 +147,50 @@ const definitions = {
         "[bracketed text] that the prompt should display",
         "an expression for if user selects Yes",
         "an expression for if user selects No"
+      ]
+    },
+    {
+      "define": [
+        "template confirm(title, multiplier)",
+        "  ((",
+        "    ask [title]",
+        "      ; No  { 0 }",
+        "      , Yes { 1 }",
+        "    end",
+        "  ) * (",
+        "    multiplier",
+        "  ))",
+        "end"
+      ],
+      "about": [
+        "Creates a Yes/No prompt that defaults to the Yes option in the ",
+        "character builder and the No option in the generated Roll20 macro. "
+      ],
+      "args": [
+        "[bracketed text] that the prompt should display",
+        "an expression for if user selects Yes (no is zero)."
+      ]
+    },
+    {
+      "define": [
+        "template refuse(title, multiplier)",
+        "  ((",
+        "    ask [title]",
+        "      ; Yes { 1 }",
+        "      , No  { 0 }",
+        "    end",
+        "  ) * (",
+        "    multiplier",
+        "  ))",
+        "end"
+      ],
+      "about": [
+        "Creates a Yes/No prompt that defaults to the Yes option in the ",
+        "character builder and the Yes option in the generated Roll20 macro. "
+      ],
+      "args": [
+        "[bracketed text] that the prompt should display",
+        "an expression for if user selects Yes (no is zero)."
       ]
     },
     {
@@ -349,6 +389,33 @@ const definitions = {
   },
   "arts": [
     {
+      "name": "Flickering Flower",
+      "description": "Emperor only; applies @{condition:Halt:[Halt]} to target foe for one turn.",
+      "requires": "All (Class Emperor) (Axes E)",
+      "compatible": "Skill Axes",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 10,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Axes",
+      "rank": "E"
+    },
+    {
       "name": "Smash",
       "description": "No special effect.",
       "requires": "Axes D",
@@ -397,6 +464,36 @@ const definitions = {
       "hidden": false,
       "type": "Axes",
       "rank": "D"
+    },
+    {
+      "name": "Clear the Way",
+      "description": "Can only be used while a Axe is equipped; choose one mode to apply to target adjacent space:\n \u2022 Destroy all player created tiles.\n \u2022 Convert Foliage into a plain tile.\n \u2022 Move any occupying units into an empty adjacent space\n \u2022 Do nothing.\nAfterwards move into target space.\n@{const:variant:Cleaving Variant:} If a foe is moved, deal 10% nonlethal damage to that foe.",
+      "requires": "Axes D+",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "tactical",
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats"
+      ],
+      "hidden": false,
+      "rank": "D+",
+      "type": "Axes"
     },
     {
       "name": "Conduit of Faith",
@@ -543,6 +640,39 @@ const definitions = {
       "rank": "A"
     },
     {
+      "name": "Healing Focus",
+      "description": "Restores 50% of user's HP (Rounded up) and applies @{condition:Halt:[Halt]} to user for one turn. Then user can act again, but may not use this art.",
+      "requires": "All (Axes A+) (Level 25)",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 7
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "healing",
+        "tactical",
+        "condition",
+        "combo"
+      ],
+      "hidden": false,
+      "type": "Axes",
+      "rank": "A+"
+    },
+    {
       "name": "Focused Strike",
       "description": "No special effect.",
       "requires": "Any (Axes C) (Axes B)",
@@ -674,39 +804,6 @@ const definitions = {
       "rank": "C-B"
     },
     {
-      "name": "Healing Focus",
-      "description": "Restores 50% of user's HP (Rounded up) and applies @{condition:Halt:[Halt]} to user for one turn. Then user can act again, but may not use this art.",
-      "requires": "All (Axes A+) (Level 25)",
-      "mttype": "none",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 7
-      },
-      "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "healing",
-        "tactical",
-        "condition",
-        "combo"
-      ],
-      "hidden": false,
-      "type": "Axes",
-      "rank": "A+"
-    },
-    {
       "name": "Shield Axe",
       "description": "Restores HP equal to half of damage dealt; extra HP is applied as @{condition:Overheal:[Overheal]} for one turn.",
       "requires": "Any (Axes C) (Axes B)",
@@ -732,34 +829,6 @@ const definitions = {
       "hidden": false,
       "type": "Axes",
       "rank": "C-B"
-    },
-    {
-      "name": "Flickering Flower",
-      "description": "Emperor only; applies @{condition:Halt:[Halt]} to target foe for one turn.",
-      "requires": "All (Class Emperor) (Axes E)",
-      "compatible": "Skill Axes",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 10,
-        "prot": 0,
-        "resl": 0,
-        "hit": 10,
-        "avo": 0,
-        "crit": 10,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 3
-      },
-      "comment": "",
-      "tags": [
-        "status",
-        "relic"
-      ],
-      "hidden": false,
-      "type": "Axes",
-      "rank": "E"
     },
     {
       "name": "Raging Storm",
@@ -812,7 +881,7 @@ const definitions = {
       "comment": "",
       "tags": [
         "effective",
-        "status",
+        "condition",
         "relic"
       ],
       "hidden": false,
@@ -952,6 +1021,39 @@ const definitions = {
       "rank": "D"
     },
     {
+      "name": "Vault",
+      "description": "Can only be used while a Lance is equipped and cannot be used while mounted. Unit may move to the opposite side of target space so long as that tile is traversable by Flying units.\n@{const:variant:Piercing Variant:} Deal 10% nonlethal damage to foes occupying target space.",
+      "requires": "Lances D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tiles": 0,
+        "spcost": 0,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Lances",
+      "rank": "D+"
+    },
+    {
       "name": "Frozen Lance",
       "description": "Deals magic-based damage. Mt +30% of user's Dex.",
       "requires": "All (Lances C) (Lances B)",
@@ -1022,7 +1124,7 @@ const definitions = {
         "minrng": 1,
         "maxrng": 1,
         "tpcost": 0,
-        "spcost": 4
+        "spcost": 8
       },
       "comment": "",
       "tags": [],
@@ -1105,7 +1207,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "status"
+        "condition"
       ],
       "hidden": false,
       "type": "Lances",
@@ -1226,6 +1328,32 @@ const definitions = {
       "rank": "C-B"
     },
     {
+      "name": "Phalanx",
+      "description": "@{const:ap:AP = 2 + (#adjacent allies)}.",
+      "requires": "Class Halberdier",
+      "compatible": "Skill Lances",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 20,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 5
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true,
+      "type": "Lances",
+      "rank": "",
+      "omit": true
+    },
+    {
       "name": "Atrocity",
       "description": "@{weapon::Areadbhar} only; effective against all units.",
       "requires": "All (Weapon Areadbhar) (Crest Blaiddyd) (Lances E)",
@@ -1338,6 +1466,32 @@ const definitions = {
       "rank": "E"
     },
     {
+      "name": "Sword Dance",
+      "description": "Might increases based on user\u2019s Charm.",
+      "requires": "All (Class Dancer) (Swords E)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill scale(1, [Cha], unit|total|lck)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 20,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true,
+      "type": "Swords",
+      "rank": "E"
+    },
+    {
       "name": "Sunder",
       "description": "No special effect.",
       "requires": "Swords D",
@@ -1388,9 +1542,73 @@ const definitions = {
       "rank": "D"
     },
     {
+      "name": "Dodge and Weave",
+      "description": "Can only be used while a Sword is equipped; swap places with an adjacent unit. This may be done up to three times.\n@{const:variant:Cleaving Variant:} Deal 10% nonlethal damage to one foe this unit swaps with.",
+      "requires": "Sword D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tiles": 0,
+        "spcost": 0,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Swords",
+      "rank": "D+"
+    },
+    {
+      "name": "Sneak Attack",
+      "description": "Trigger: (before) an adjacent enemy enters combat with an ally two spaces away. Initiate combat with that enemy with equipped Sword at AP 1. In combat, target foe cannot counterattack and damage this unit deals is halved after damage calculation. @{const:variant:Ranged Variant:} If unit is equipped with a sword with the \u201cRanged\u201d attribute, the attack instead deals full damage.",
+      "requires": "Swords C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 5
+      },
+      "comment": "",
+      "tags": [
+        "reaction",
+        "tactical",
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats"
+      ],
+      "hidden": false,
+      "rank": "C",
+      "type": "Swords"
+    },
+    {
       "name": "Haze Slice",
       "description": "No special effect.",
-      "requires": "Any (Sword C) (Swords B)",
+      "requires": "Any (Swords C) (Swords B)",
       "compatible": "Skill Swords",
       "mttype": "else",
       "modifiers": {
@@ -1415,7 +1633,7 @@ const definitions = {
     {
       "name": "Grounder",
       "description": "Effective against Flying units.",
-      "requires": "Any (Sword C) (Swords B)",
+      "requires": "Any (Swords C) (Swords B)",
       "compatible": "Skill Swords",
       "mttype": "else",
       "modifiers": {
@@ -1517,6 +1735,31 @@ const definitions = {
       "rank": "A"
     },
     {
+      "name": "Astra",
+      "description": "Halves might; user makes 5 consecutive attacks.",
+      "requires": "Swords A+",
+      "compatible": "Skill Swords",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "(-(weapon|total|mt + abilities|mt + equipment|mt) / 2)",
+        "prot": 0,
+        "resl": 0,
+        "hit": -10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 7
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Swords",
+      "rank": "A+"
+    },
+    {
       "name": "Subdue",
       "description": "Leaves foe with at least 1 HP.",
       "requires": "Any (Swords C) (Swords B) (Class Lord)",
@@ -1595,32 +1838,8 @@ const definitions = {
       ],
       "hidden": true,
       "type": "Swords",
-      "rank": "C-B"
-    },
-    {
-      "name": "Astra",
-      "description": "Halves might; user makes 5 consecutive attacks.",
-      "requires": "Swords A+",
-      "compatible": "Skill Swords",
-      "mttype": "else",
-      "modifiers": {
-        "mt": "(-(weapon|total|mt + abilities|mt + equipment|mt) / 2)",
-        "prot": 0,
-        "resl": 0,
-        "hit": -10,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 7
-      },
-      "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Swords",
-      "rank": "A+"
+      "rank": "C-B",
+      "omit": true
     },
     {
       "name": "Soulblade",
@@ -1730,32 +1949,6 @@ const definitions = {
         "relic"
       ],
       "hidden": false,
-      "type": "Swords",
-      "rank": "E"
-    },
-    {
-      "name": "Sword Dance",
-      "description": "Might increases based on user\u2019s Charm.",
-      "requires": "All (Class Dancer) (Swords E)",
-      "mttype": "else",
-      "modifiers": {
-        "mt": "fill scale(1, [Cha], unit|total|cha)",
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 20,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 2
-      },
-      "comment": "",
-      "tags": [
-        "relic"
-      ],
-      "hidden": true,
       "type": "Swords",
       "rank": "E"
     },
@@ -1870,6 +2063,64 @@ const definitions = {
       "rank": "D"
     },
     {
+      "name": "Ricochet",
+      "description": "Can target units through wind torrents. Cannot target foes unless an Armor unit or a tile impassable to non-Flying units exists at an intersection of perpendicular lines between this unit and target foe. Can be used with one other combat art, replacing that art\u2019s range and AP.",
+      "requires": "Bows D",
+      "compatible": "Skill Bows",
+      "mttype": "else",
+      "modifiers": {
+        "mt": -1,
+        "prot": 0,
+        "resl": 0,
+        "hit": -10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 6,
+        "tpcost": 0,
+        "spcost": 1
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Bows",
+      "rank": "D"
+    },
+    {
+      "name": "Wire Trap",
+      "description": "Starting from target space, create one or more @{tile::Tripwires} (at most 1\u214c3 Dex) in connection spaces inside of the same column or inside of the same row.\n@{const:variant:Stabilizer Variant:} Range +1 and tiles can be placed in two columns or rows.",
+      "requires": "Bows D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tiles": 0,
+        "spcost": 0,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Bows",
+      "rank": "D+"
+    },
+    {
       "name": "Wind God",
       "description": "Barbarossa only.",
       "requires": "All (Class Barbarossa) (Bows C)",
@@ -1893,6 +2144,33 @@ const definitions = {
       "hidden": false,
       "type": "Bows",
       "rank": "C"
+    },
+    {
+      "name": "Hunter\u2019s Volley",
+      "description": "Sniper only; triggers 2 consecutive hits.",
+      "requires": "Class Sniper",
+      "compatible": "Skill Bows",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 15,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 0,
+        "spcost": 5
+      },
+      "comment": "",
+      "tags": [
+        "rework"
+      ],
+      "hidden": false,
+      "type": "Bows",
+      "rank": "B+"
     },
     {
       "name": "Ward Arrow",
@@ -1948,7 +2226,7 @@ const definitions = {
     },
     {
       "name": "Encloser",
-      "description": "Applies @{condition:Halt:[Halt]} to target foe for 1 turn.",
+      "description": "On hit, after combat, applies @{condition:Halt:[Halt]} to target foe for 1 turn.",
       "requires": "Bows A",
       "compatible": "Skill Bows",
       "mttype": "else",
@@ -1967,7 +2245,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "status"
+        "condition"
       ],
       "hidden": false,
       "type": "Bows",
@@ -2019,7 +2297,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "status"
+        "condition"
       ],
       "hidden": false,
       "type": "Bows",
@@ -2045,37 +2323,12 @@ const definitions = {
         "spcost": 3
       },
       "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Bows",
-      "rank": "C-B"
-    },
-    {
-      "name": "Hunter\u2019s Volley",
-      "description": "Sniper only; triggers 2 consecutive hits.",
-      "requires": "All (Bows B+) (Level 20)",
-      "compatible": "Skill Bows",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 1,
-        "prot": 0,
-        "resl": 0,
-        "hit": 15,
-        "avo": 0,
-        "crit": 10,
-        "cravo": 0,
-        "minrng": 2,
-        "maxrng": 3,
-        "tpcost": 0,
-        "spcost": 5
-      },
-      "comment": "",
       "tags": [
-        "rework"
+        "condition"
       ],
       "hidden": false,
       "type": "Bows",
-      "rank": "B+"
+      "rank": "C-B"
     },
     {
       "name": "Break Shot",
@@ -2098,7 +2351,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "status"
+        "condition"
       ],
       "hidden": false,
       "type": "Bows",
@@ -2222,25 +2475,562 @@ const definitions = {
       "compatible": "Name Failnaught",
       "mttype": "else",
       "modifiers": {
-        "mt": 7,
+        "mt": 10,
         "prot": 0,
         "resl": 0,
-        "hit": 10,
+        "hit": 30,
         "avo": 0,
-        "crit": 5,
+        "crit": 10,
         "cravo": 0,
         "minrng": 2,
-        "maxrng": 4,
+        "maxrng": 3,
         "tpcost": 0,
         "spcost": 3
       },
       "comment": "",
       "tags": [
+        "effective",
+        "condition",
         "relic"
       ],
       "hidden": false,
       "type": "Bows",
       "rank": "E"
+    },
+    {
+      "name": "Rushing Blow",
+      "description": "Avo +10; after combat, unit moves to opposite side of target foe (if able).",
+      "requires": "Brawl D",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 7,
+        "prot": 0,
+        "resl": 0,
+        "hit": 20,
+        "avo": 10,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "movement"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "D"
+    },
+    {
+      "name": "Fading Blow",
+      "description": "Avo +30; after combat unit moves one space back. @{const:variant:Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value. ",
+      "requires": "Brawl D",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 6,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 30,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "movement"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "D"
+    },
+    {
+      "name": "Dive Kick",
+      "description": "If able, unit moves one space toward target foe before combat and combat occurs at Range 1, and if not, combat occurs at Range 2 and this attack misses.",
+      "requires": "Brawl D",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 9,
+        "prot": 0,
+        "resl": 0,
+        "hit": -10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "movement"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "D",
+      "omit": true
+    },
+    {
+      "name": "Chase",
+      "description": "Trigger: foe that was adjacent at start of phase finishes moving. This unit moves to the space closest to that foe that it can reach, up to its max movement.",
+      "requires": "Brawl C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "reaction",
+        "movement"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C",
+      "omit": true
+    },
+    {
+      "name": "Grapple",
+      "description": "Apply @{condition:Halt:[Halt]} to target foe for 1 turn.",
+      "requires": "Brawl C+",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C+"
+    },
+    {
+      "name": "Bombard",
+      "description": "@{const:ap:AP = 2d3 - 1}.",
+      "requires": "Brawl A",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "A",
+      "omit": true
+    },
+    {
+      "name": "Cavitation Wave",
+      "description": "No special effect.",
+      "requires": "Brawl A",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 6,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "A",
+      "omit": true
+    },
+    {
+      "name": "Mystic Blow",
+      "description": "Mt +30% of user's Mag.",
+      "requires": "Brawl A",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill scale(3, [Mag], unit|total|mag)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "A"
+    },
+    {
+      "name": "Draining Blow",
+      "description": "Restores HP equal to 50% of damage dealt.",
+      "requires": "Brawl A",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 5,
+        "prot": 0,
+        "resl": 0,
+        "hit": 20,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "healing"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "A"
+    },
+    {
+      "name": "Mighty Blow",
+      "description": "Mt +30% of user's Str.",
+      "requires": "Brawl A",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill scale(3, [Str], unit|total|str)",
+        "prot": 0,
+        "resl": 0,
+        "hit": -5,
+        "avo": 0,
+        "crit": 20,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "A"
+    },
+    {
+      "name": "Shock Wave",
+      "description": "On hit, after combat, apply @{condition:Halt:[Halt]} to target foe until the end of target foe\u2019s next combat this turn.",
+      "requires": "Any (Brawl C) (Brawl B)",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 5,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 5
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C-B",
+      "omit": true
+    },
+    {
+      "name": "Fierce Iron Fist",
+      "description": "@{const:ap:AP 5} (three consecutive attacks).",
+      "requires": "Class Grappler",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true,
+      "type": "Brawl",
+      "rank": ""
+    },
+    {
+      "name": "Wolf Fang Fist",
+      "description": "@{const:ap:AP 3} (two consecutive attacks); weapon advantage against Cavalry units.",
+      "requires": "Brawl C-B",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C-B"
+    },
+    {
+      "name": "One-Two Punch",
+      "description": "@{const:ap:AP 2} (guaranteed follow-up); if first attack hits, then Mt +4 in combat to second attack. @{const:variant:Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
+      "requires": "Any (Brawl C) (Brawl B)",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "4 + ask [First Attack Hit?]; No {0}, Yes {4} end",
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C-B"
+    },
+    {
+      "name": "Pinpoint Strike",
+      "description": "Can target allies in addition to foes. When targeting an ally, restore Damage - (ally\u2019s Prot/Resl) HP instead of attacking.",
+      "requires": "Any (Brawl C) (Brawl B)",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 8,
+        "prot": 0,
+        "resl": 0,
+        "hit": -30,
+        "avo": 0,
+        "crit": 30,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "healing"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C-B"
+    },
+    {
+      "name": "Big Dipper Strike",
+      "description": "Effective against Infantry units; on hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn.",
+      "requires": "Brawl C-B",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 7,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 20,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "condition",
+        "effective"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C-B",
+      "omit": true
+    },
+    {
+      "name": "Nimble Combo",
+      "description": "@{const:ap:AP 3} (two consecutive attacks); Avo +20.",
+      "requires": "Any (Brawl C) (Brawl B)",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 20,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C-B"
+    },
+    {
+      "name": "Pneuma Gale",
+      "description": "Deals magic-based damage.",
+      "requires": "Class Cultivator",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 7,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true,
+      "type": "Brawl",
+      "rank": ""
+    },
+    {
+      "name": "Stinging Strikes",
+      "description": "Can be used on enemy phase, after a foe initiates combat. Uses unit's normal @{const:ap:AP} (max of 2)",
+      "requires": "Class Pugilist",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true,
+      "type": "Brawl",
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Monster Crusher",
+      "description": "Effective against Monster units.",
+      "requires": "Any (Brawl C) (Brawl B)",
+      "compatible": "Skill Brawl",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 13,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "effective"
+      ],
+      "hidden": false,
+      "type": "Brawl",
+      "rank": "C-B"
     },
     {
       "name": "Eviscerate",
@@ -2252,7 +3042,7 @@ const definitions = {
         "mt": 10,
         "prot": 0,
         "resl": 0,
-        "hit": 30,
+        "hit": 10,
         "avo": 0,
         "crit": 10,
         "cravo": 0,
@@ -2395,6 +3185,34 @@ const definitions = {
       "rank": "D"
     },
     {
+      "name": "Shining",
+      "description": "Weapon advantage against Monster units. Foes may be targeted as though they are affected by @{condition:Exposed:[Exposed]}.",
+      "requires": "Faith D",
+      "compatible": "All (Skill Faith) (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 2,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "type": "Faith",
+      "rank": "D"
+    },
+    {
       "name": "Multiplied",
       "description": "When casting@{weapon::Heal}, allies adjacent to you are also affected.",
       "requires": "Faith D",
@@ -2452,6 +3270,34 @@ const definitions = {
         "combo",
         "rework"
       ],
+      "hidden": false,
+      "type": "Faith",
+      "rank": "C"
+    },
+    {
+      "name": "Guiding",
+      "description": "On hit, after combat, apply @{condition:Marked:[Marked]} to target foe for one turn.",
+      "requires": "Faith C",
+      "compatible": "All (Skill Faith) (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 4,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
       "hidden": false,
       "type": "Faith",
       "rank": "C"
@@ -2679,6 +3525,34 @@ const definitions = {
       "rank": "C"
     },
     {
+      "name": "Faithful",
+      "description": "@{const:ap:AP 3} (two consecutive attacks) if unit has enough speed to double foe, otherwise apply @{condition:Blessed:[Blessed]} to unit in combat.",
+      "requires": "Faith B",
+      "compatible": "All (Skill Faith) (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 3,
+        "tiles": 0,
+        "spcost": 6,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "type": "Faith",
+      "rank": "B"
+    },
+    {
       "name": "Reactive",
       "description": "Trigger: Before combat on Enemy Phase. Cast @{weapon::Heal} on an ally within range.",
       "requires": "Faith B",
@@ -2803,6 +3677,35 @@ const definitions = {
       "rank": "B"
     },
     {
+      "name": "Beaming",
+      "description": "When @{weapon::Rescue} or @{weapon::Warp} is used, create a @{tile::Wormhole} in tile where targeted unit was teleported from. The next unit that enters this tile is teleported to the target\u2019s location and the wormhole disappears. If the tile is occupied it teleports to an adjacent tile of its choice instead.",
+      "requires": "Faith A",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 5,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "movement"
+      ],
+      "hidden": false,
+      "type": "Faith",
+      "rank": "A"
+    },
+    {
       "name": "Revival",
       "description": "This Unit can bring back an adjacent ally who has fallen in battle. They are revived with half of their HP and cannot act during the current Player Phase. This ability can only be used once per ally and is treated as a healing spell for the purposes of Healing Metamagic.",
       "requires": "Faith A",
@@ -2836,6 +3739,60 @@ const definitions = {
       "rank": "A"
     },
     {
+      "name": "Theological",
+      "description": "Grants additional might equal to twice the number of non-damaging Faith tomes present in unit's inventory.",
+      "requires": "Faith A",
+      "compatible": "All (Skill Faith) (Not (Tag `no hit`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "1 + ask [Non-Damaging Faith Tomes?] end",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 7,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "type": "Faith",
+      "rank": "A",
+      "omit": true
+    },
+    {
+      "name": "Gratia",
+      "description": "Restore HP to an ally within two spaces equal to damage dealt.",
+      "requires": "Class Bishop",
+      "compatible": "All (Skill Faith) (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 5,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 3,
+        "tpcost": 0,
+        "spcost": 5
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true,
+      "type": "Faith",
+      "rank": ""
+    },
+    {
       "name": "Radiance",
       "description": "@{weapon::Ichor Scroll} only; restores HP equal to 50% of damage dealt, effective against Dragon units.",
       "requires": "All (Weapon `Ichor Scroll`) (Crest Lamine) (Faith E)",
@@ -2865,7 +3822,7 @@ const definitions = {
     },
     {
       "name": "Poisoned",
-      "description": "On hit, apply @{condition:Poison:[Poison]} to target foe. This Metamagic ability may be equipped alongside other D Rank Metamagic of the same type.",
+      "description": "On hit, apply @{condition:Poisoned:[Poisoned]} to target foe. This Metamagic ability may be equipped alongside other D Rank Metamagic of the same type.",
       "requires": "Guile D",
       "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
       "mttype": "else",
@@ -3176,6 +4133,37 @@ const definitions = {
       "rank": "C"
     },
     {
+      "name": "Conniving",
+      "description": "Once per turn, choose one mode:\n- Pay 4 SP to cast a Guile spell that deals no damage and restores no HP without ending this unit\u2019s turn.\n- Pay 6 SP to initiate combat without ending this unit\u2019s turn after combat. During combat, this unit\u2019s attacks deal no damage.",
+      "requires": "Guile C",
+      "compatible": "Skill Guile",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "tiles": 0,
+        "spcost": "fill bothif(not(unit|total|mttype|none * (unit|total|mt)), 6, 4)",
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "combo"
+      ],
+      "hidden": false,
+      "type": "Guile",
+      "rank": "C",
+      "omit": true
+    },
+    {
       "name": "Confusion",
       "description": "On hit, apply @{condition:Confused:[Confused]} to target foe for one turn.",
       "requires": "Guile C",
@@ -3277,7 +4265,7 @@ const definitions = {
     },
     {
       "name": "Invoked",
-      "description": "If target foe is defeated this combat, cast @{art::Summon} after combat (always creates a Lemure) targeting the foe\u2019s space. @{condition:Summoning Sickness:[Summoning Sickness]} is not applied to the created unit.",
+      "description": "If target foe is defeated this combat, cast @{art::Summon} after combat (always creates a Lemure) targeting the foe\u2019s space. @{condition:Summoning Sickness:[Sickness]} is not applied to the created unit.",
       "requires": "Guile B",
       "compatible": "All (Skill Guile) (Not (Tag `no might`))",
       "mttype": "else",
@@ -3337,6 +4325,7 @@ const definitions = {
       "name": "Maiming",
       "description": "Crit +20 if target foe's HP < 100%. If target foe is defeated, target foe is also stabilized but is inflicted with a lasting injury. Target foe's controller may choose the injury by rolling 1d6 and using the following table, or may substitute an injury of their own choice:\n   1. Loss of a limb.\n  2. Loss of an eye.\n  3. Scarring of the torso.\n  4. Scarring of the face.\n  5. Blood clots slowly.\n  6. Emotional trauma only.",
       "requires": "All (Guile A) (Innate)",
+      "compatible": "All (Skill Guile) (Not (Tag `no hit`)) (Not (Tag `no might`))",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -3356,13 +4345,14 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
-      "hidden": false,
+      "hidden": true,
       "type": "Guile",
-      "rank": "A"
+      "rank": "A",
+      "omit": true
     },
     {
       "name": "Anathema",
-      "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Cha (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one.",
+      "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Lck (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one.",
       "requires": "Guile A",
       "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
       "mttype": "else",
@@ -3377,7 +4367,7 @@ const definitions = {
         "minrng": 0,
         "maxrng": 0,
         "tiles": 0,
-        "spcost": "1 + ask [Anathema Modifer?], 1, 2, 3, 4; 5 end",
+        "spcost": "1 + ask [Anathema Modifier?], 1, 2, 3, 4; 5 end",
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -3645,6 +4635,33 @@ const definitions = {
       "rank": "D"
     },
     {
+      "name": "Singularity",
+      "description": "Force metamagic; restores HP to target Force Wall instead of damaging it and destroys other types of player create tiles. After combat, if target\u2019s space is empty, create a Force Wall in that space. @{const:variant:Sagittae Variant:} Created Force wall may be placed in a space adjacent to this unit instead.",
+      "requires": "Reason D",
+      "compatible": "All (Skill Reason) (Tag `force`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "wall"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "D"
+    },
+    {
       "name": "Manifest: Wind",
       "description": "Wind metamagic; after combat, apply @{condition:Distant Guard:[Distant Guard X]} to this unit or an ally within 2 spaces for one turn, where X = 1 + the spell\u2019's original Mt. @{art::Wind Wall} @{const:variant:Variant}: Costs an additional @{tooltip:4 SP:I (Ryan) replaced the clause about it using up all remaining uses of Ice Wall while cleaning these descriptions up because spell uses are no longer a thing. Instead it increases the cost by a good amount. Talk to me if that's not a good adaptation.}; after combat, apply @{condition:Distant Guard:[Distant Guard 5]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to an @{tile::Wind Torrent} for one turn.",
       "requires": "Reason D",
@@ -3734,6 +4751,33 @@ const definitions = {
       "tags": [
         "wall",
         "wind"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "D"
+    },
+    {
+      "name": "Arc Generation",
+      "description": "Lightning metamagic; create up to two Lightning Arcs in empty tiles adjacent to either this unit or target foe for one turn. @{const:variant:Static Shock Variant}: Create up to four Lightning Arcs distributed adjacent to both units.",
+      "requires": "Reason D",
+      "compatible": "All (Skill Reason) (Tag `lightning`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "wall"
       ],
       "hidden": false,
       "type": "Reason",
@@ -4401,6 +5445,37 @@ const definitions = {
       "rank": "C-B"
     },
     {
+      "name": "Deadly Dance",
+      "description": "Mt +30% of user's Luc; unit may use remaining movement after combat if used at Range 1.",
+      "requires": "Class Dancer",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill scale(1, [Lck], unit|total|lck)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 20,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": "more weapon|total|minrng else 1 end",
+        "maxrng": "less weapon|total|maxrng else 2 end",
+        "tiles": 0,
+        "spcost": 2,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "scales",
+        "movement"
+      ],
+      "hidden": true,
+      "type": "Generic",
+      "rank": "E"
+    },
+    {
       "name": "Martial Dance",
       "description": "Might increases based on user's Charm. Mt +3 if weapon has Max Range = 1.",
       "requires": "All (Class Dancer) (Any (Axes E) (Lances E) (Swords E) (Bows E))",
@@ -4410,13 +5485,13 @@ const definitions = {
         "mt": [
           "metaif builtins|macrogen == 1 then",
           "  metaif weapon|total|maxrng == 1",
-          "    then 4 + floor((Cha {unit|total|cha}) * 0.3)",
-          "    else 1 + floor((Cha {unit|total|cha}) * 0.3)",
+          "    then 4 + floor((Lck {unit|total|lck}) * 0.3)",
+          "    else 1 + floor((Lck {unit|total|lck}) * 0.3)",
           "  end",
           "else",
           "  if     weapon|total|maxrng == 1",
-          "    then 4 + floor((Cha {unit|total|cha}) * 0.3)",
-          "    else 1 + floor((Cha {unit|total|cha}) * 0.3)",
+          "    then 4 + floor((Lck {unit|total|lck}) * 0.3)",
+          "    else 1 + floor((Lck {unit|total|lck}) * 0.3)",
           "  end",
           "end"
         ],
@@ -4436,17 +5511,19 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "scales"
+        "scales",
+        "depricated"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": "Axes-Lances-Swords-Bows",
       "rank": "E"
     },
     {
-      "name": "Basic Order",
-      "description": "Grants unit's battalion an extra turn. (Battalion's unit(s) may move, and then the battalion may use an action, which may be a battalion art.)",
+      "name": "All Out",
+      "description": "Gambit Hit +20; if foe in target tile is in range to, it may counterattack this battalion unit ignoring its barrier. Can be used with one other meta gambit.",
       "requires": "Authority D",
-      "mttype": "none",
+      "compatible": "Not (Tag `no hit`)",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4457,11 +5534,63 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tiles": 0,
-        "spcost": 0,
         "tpcost": 0,
-        "sp": 0,
-        "tp": 0
+        "spcost": 4,
+        "ghit": 20
+      },
+      "comment": "",
+      "tags": [
+        "combo",
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "D"
+    },
+    {
+      "name": "Above and Beyond",
+      "description": "Use a gambit that costs zero EP and doesn\u2019t have the Measured tag immediately before or after a different gambit. @{style:italic:(}@{gambit::Regroup}@{style:italic: cancels the second gambit if used before.)}",
+      "requires": "Authority D",
+      "compatible": "All (Not (Tag `measured`)) (Modifier `epcost` `0`) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "D"
+    },
+    {
+      "name": "Rally Res +4",
+      "description": "Apply @{const:gbp:[Res +4]} to target ally for 1 turn or if target is a battalion unit, instead restore 4 EP to that battalion. Consumes half of an arts slot starting at level 15.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
       },
       "comment": "",
       "tags": [
@@ -4470,15 +5599,170 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "order"
+        "condition"
       ],
       "hidden": false,
       "type": "Authority",
-      "rank": "D"
+      "rank": "D+"
     },
     {
-      "name": "Attack Order",
-      "description": "Use a gambit, but without paying EP and without applying that gambit\u2019s effect.",
+      "name": "Rally Mag +4",
+      "description": "Apply @{const:gbp:[Mag +4]} to target ally for 1 turn or if target is a battalion unit, instead restore 4 EP to that battalion. Consumes half of an arts slot starting at level 15.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "D+"
+    },
+    {
+      "name": "Rally Def +4",
+      "description": "Apply @{const:gbp:[Def +4]} to target ally for 1 turn or if target is a battalion unit, instead restore 4 EP to that battalion. Consumes half of an arts slot starting at level 15.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "D+"
+    },
+    {
+      "name": "Rally Spd +4",
+      "description": "Apply @{const:gbp:[Spd +4]} to target ally for 1 turn or if target is a battalion unit, instead restore 4 EP to that battalion. Consumes half of an arts slot starting at level 15.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "D+"
+    },
+    {
+      "name": "Rally Str +4",
+      "description": "Apply @{const:gbp:[Str +4]} to target ally for 1 turn or if target is a battalion unit, instead restore 4 EP to that battalion. Consumes half of an arts slot starting at level 15.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "D+"
+    },
+    {
+      "name": "Smite",
+      "description": "Move target adjacent ally 2 spaces away from this unit in the direction target ally is from this unit.",
+      "requires": "Armor D+",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "movement",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "movement",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Armor",
+      "rank": "D+"
+    },
+    {
+      "name": "Rally Lck +8",
+      "description": "Apply @{const:gbp:[Lck +8]} to target ally for 1 turn or if target is a battalion unit, instead restore 8 EP to that battalion. Consumes half of an arts slot starting at level 15.",
       "requires": "Authority C",
       "mttype": "none",
       "modifiers": {
@@ -4489,13 +5773,10 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tiles": 0,
-        "spcost": 4,
+        "minrng": 1,
+        "maxrng": 1,
         "tpcost": 0,
-        "sp": 0,
-        "tp": 0
+        "spcost": 0
       },
       "comment": "",
       "tags": [
@@ -4504,7 +5785,34 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "order"
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "C"
+    },
+    {
+      "name": "Psychological Warfare",
+      "description": "Gambit that applies @{condition:Rattled:[Rattled]} to foes in its AoE applies @{condition:Confused:[Confused]} instead.",
+      "requires": "Authority C",
+      "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
       ],
       "hidden": false,
       "type": "Authority",
@@ -4568,7 +5876,6 @@ const definitions = {
         "no hit",
         "no crit",
         "no stats",
-        "status",
         "tactical"
       ],
       "hidden": false,
@@ -4576,12 +5883,13 @@ const definitions = {
       "rank": "C"
     },
     {
-      "name": "Medical Order",
-      "description": "This unit\u2019s battalion uses its action to restore 8 + \u00bd (this unit\u2019s Dex or Luc) HP to target in Range 0-1 of one of its deployed units.",
+      "name": "Biological Warfare",
+      "description": "Gambit that applies @{condition:Rattled:[Rattled]} to foes in its AoE applies @{condition:Sickness:[Sickness]} instead.",
       "requires": "Authority C",
-      "mttype": "str",
+      "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+      "mttype": "else",
       "modifiers": {
-        "mt": "-(floor(unit|total|str / 2)) + 8 + floor(more unit|total|dex else unit|total|cha end / 2)",
+        "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -4590,24 +5898,350 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 5
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "C"
+    },
+    {
+      "name": "Rally Dex +8",
+      "description": "Apply @{const:gbp:[Dex +8]} to target ally for 1 turn or if target is a battalion unit, instead restore 8 EP to that battalion. Consumes half of an arts slot starting at level 15.",
+      "requires": "Authority C",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "C"
+    },
+    {
+      "name": "Chemical Warfare",
+      "description": "Gambit that applies @{condition:Rattled:[Rattled]} to foes in its AoE applies @{condition:Poisoned:[Poisoned]}instead for infintate duration.",
+      "requires": "Authority C",
+      "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "C"
+    },
+    {
+      "name": "Trample",
+      "description": "Can only be equipped by Cavalry units, can only be used while mounted, can only target Infantry foes, and doesn\u2019t provoke counterattacks.\nOn hit, applies @{condition:Rattled:[Rattled]} to target foe.\nThis unit moves to the opposite side of target foe after combat (if able).",
+      "requires": "Riding C",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "movement",
+      "tags": [
+        "movement",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Riding",
+      "rank": "C"
+    },
+    {
+      "name": "Rally Cha +8",
+      "description": "Replaced with @{art::Rally Lck +8}.",
+      "requires": "Authority C",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "condition",
+        "depricated"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "C"
+    },
+    {
+      "name": "Soar",
+      "description": "Can only be equipped by Flying units and can only be used while mounted. Apply @{condition:Pass:[Pass]} to this unit for one turn or until this unit dismounts.",
+      "requires": "Flying C",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "movement",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "movement",
+        "tactical",
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Flying",
+      "rank": "C"
+    },
+    {
+      "name": "Warning Cry",
+      "description": "Choose up to two different modes to apply within range of your danger zone (you may choose multiple targets):\n- Target unit moves one space away from this unit.\n- Apply @{condition:Exposed:[Exposed]} to any foes in target space.\n-End one condition of your choice that is affecting target unit.\n-Restore 10 HP to target ally.",
+      "requires": "Flying C+",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "movement",
+      "tags": [
+        "movement",
+        "tactical",
+        "condition",
+        "healing"
+      ],
+      "hidden": false,
+      "type": "Flying",
+      "rank": "C+"
+    },
+    {
+      "name": "Opening",
+      "description": "Can only be equipped by Armor units. Reaction with trigger: once per phase, foe uses movement to leave the maximum range of this unit\u2019s equipped weapon. Initiate combat against that foe.",
+      "requires": "All (Armor C+) (ClassType Armor)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 5,
         "tiles": 0,
-        "spcost": 3,
+        "spcost": 6,
         "tpcost": 0,
         "sp": 0,
         "tp": 0
       },
       "comment": "",
       "tags": [
+        "no might",
         "no hit",
         "no crit",
         "no stats",
         "tactical",
-        "healing",
-        "order"
+        "reaction"
+      ],
+      "hidden": false,
+      "type": "Armor",
+      "rank": "C+"
+    },
+    {
+      "name": "Showdown",
+      "description": "This unit initiates a duel against target foe in weapon range and all other units are removed for the duration. Dueling units cannot use normal movement, must use their action to initiate combat if they are able, and after a unit fails to deal damage with an attack it loses the ability to initiate combat for the duration. The turn count does not advance during the course of the duel and the duel ends when both units cannot initiate combat. All non-defeated units return to their spaces from before the duel.\n\nTake an extra turn.",
+      "requires": "Any (Brawl B) (Armor B)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Brawl-Armor",
+      "rank": "B"
+    },
+    {
+      "name": "Reconnaissance",
+      "description": "Apply @{condition:Forwarned:[Forewarned]} to target ally within your danger zone for one turn.",
+      "requires": "Flying B",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "movement",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "condition",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Flying",
+      "rank": "B"
+    },
+    {
+      "name": "Counter Intelligence",
+      "description": "Trigger: Within two spaces of this unit\u2019s battalion unit, target foe uses a reaction or target battalion unit foe uses a gambit. Apply @{condition:Rattled:[Rattled]} to that unit until the end of the phase.",
+      "requires": "Any (Authority B) (Armor B)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [
+        "tactical",
+        "reaction",
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats"
       ],
       "hidden": false,
       "type": "Authority",
-      "rank": "C"
+      "rank": "B"
+    },
+    {
+      "name": "Covert Orders",
+      "description": "Trigger: before foe enters, after foe exits, or before foe initiates combat with ally in a space within Range 0-1 of this unit\u2019s deployed battalion unit. Use a gambit without the Measured tag as a reaction, following the same restrictions as adjutant reactions.",
+      "requires": "Authority B",
+      "compatible": "All (Not (Tag `measured`)) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "combo",
+        "reaction",
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "B"
     },
     {
       "name": "Shelter R",
@@ -4633,7 +6267,6 @@ const definitions = {
         "no hit",
         "no crit",
         "no stats",
-        "status",
         "tactical"
       ],
       "hidden": false,
@@ -4641,10 +6274,94 @@ const definitions = {
       "rank": "B"
     },
     {
-      "name": "Rally Dex +8",
-      "description": "Apply @{const:gbp:[Dex +8]} to target ally for 1 turn.",
-      "requires": "All (Authority B) (Level 10)",
-      "mttype": "none",
+      "name": "Total Warfare",
+      "description": "Gambit that applies @{condition:Rattled:[Rattled]} to foes in its AoE also deals nonlethal damage to foes in AoE @{style:italic:(other than foe in target tile)} equal to half of the damage dealt to foe in target tile.",
+      "requires": "Authority B",
+      "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "B"
+    },
+    {
+      "name": "Artillary Strike",
+      "description": "Gambit Hit -30 and Gambit Range +1. This art may not be used with gambits that don\u2019t roll to hit.",
+      "requires": "Authority B",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 4,
+        "ghit": -30
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "B"
+    },
+    {
+      "name": "Assume Responsibility",
+      "description": "Pay X SP, where X this gambit\u2019s EP cost. Do not pay EP to use this gambit. Can be used with one other meta gambit.",
+      "requires": "Authority B",
+      "compatible": "All (Not (Modifier `epcost` 0)) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": "battalion|modifier|epcost",
+        "gepcost": "-(battalion|modifier|epcost)"
+      },
+      "comment": "",
+      "tags": [
+        "combo",
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "B"
+    },
+    {
+      "name": "Strength Save",
+      "description": "Can only be equipped by Armor units. Trigger: ally in range targeted with a strength-based attack. Change the target to this unit instead. Combat occurs as though this unit were located at ally\u2019s tile.",
+      "requires": "All (Armor B+) (ClassType Armor)",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4656,7 +6373,7 @@ const definitions = {
         "minrng": 1,
         "maxrng": 1,
         "tpcost": 0,
-        "spcost": 0
+        "spcost": 3
       },
       "comment": "",
       "tags": [
@@ -4664,88 +6381,46 @@ const definitions = {
         "no hit",
         "no crit",
         "no stats",
-        "tactical",
-        "condition"
+        "reaction",
+        "tactical"
       ],
       "hidden": false,
-      "type": "Authority",
-      "rank": "B"
+      "type": "Armor",
+      "rank": "B+"
     },
     {
-      "name": "Escort Order",
-      "description": "This unit\u2019s battalion uses its action to move target ally adjacent to its employer to an empty space in Range 0-1 of one of its deployed units.",
-      "requires": "Authority B",
-      "mttype": "none",
+      "name": "Might Save",
+      "description": "This art is depricated; look for 'Strength Save'.",
+      "requires": "All (Armor B+) (ClassType Armor)",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
-        "prot": 0,
+        "prot": 5,
         "resl": 0,
         "hit": 0,
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tiles": 0,
-        "spcost": 5,
+        "minrng": 1,
+        "maxrng": 2,
         "tpcost": 0,
-        "sp": 0,
-        "tp": 0
+        "spcost": 2
       },
       "comment": "",
       "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
+        "reaction",
         "tactical",
-        "movement",
-        "order"
+        "depricated"
       ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "B"
+      "hidden": true,
+      "type": "Armor",
+      "rank": "B+"
     },
     {
-      "name": "Escort Order",
-      "description": "This unit\u2019s battalion uses its action to move target ally adjacent to its employer to an empty space in Range 0-1 of one of its deployed units.",
-      "requires": "Authority B",
-      "mttype": "none",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tiles": 0,
-        "spcost": 5,
-        "tpcost": 0,
-        "sp": 0,
-        "tp": 0
-      },
-      "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "movement",
-        "order"
-      ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "B"
-    },
-    {
-      "name": "Rally Cha +8",
-      "description": "Apply @{const:gbp:[Cha +8]} to target ally for 1 turn.",
-      "requires": "All (Authority B) (Level 10)",
-      "mttype": "none",
+      "name": "Magic Save",
+      "description": "Can only be equipped by Armor units. Trigger: ally in range targeted with a magic-based attack. Change the target to this unit instead. Combat occurs as though this unit were located at ally\u2019s tile.",
+      "requires": "All (Armor B+) (ClassType Armor)",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4757,7 +6432,7 @@ const definitions = {
         "minrng": 1,
         "maxrng": 1,
         "tpcost": 0,
-        "spcost": 0
+        "spcost": 3
       },
       "comment": "",
       "tags": [
@@ -4765,12 +6440,40 @@ const definitions = {
         "no hit",
         "no crit",
         "no stats",
-        "tactical",
-        "condition"
+        "reaction",
+        "tactical"
       ],
       "hidden": false,
-      "type": "Authority",
-      "rank": "B"
+      "type": "Armor",
+      "rank": "B+"
+    },
+    {
+      "name": "Abduct",
+      "description": "Can only be equipped by Flying units and can only be used while mounted. Unit may choose to deal nonlethal damage. On hit, apply @{condition:Levitated:[Levitated]} to target Infantry or Armor foe until the end of the phase; for the duration, when this unit moves, target foe moves into this unit\u2019s previous space.",
+      "requires": "Flying A",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 15,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 5
+      },
+      "comment": "",
+      "tags": [
+        "condition",
+        "movement"
+      ],
+      "hidden": false,
+      "rank": "A",
+      "type": "Generic",
+      "omit": true
     },
     {
       "name": "Rally Mov +1",
@@ -4805,15 +6508,242 @@ const definitions = {
       "rank": "A"
     },
     {
-      "name": "Covert Order",
-      "description": "Trigger: foe enters, exits, or initiates combat with ally in a space within Range 0-1 of this unit\u2019s deployed battalion unit. This unit may use an \u201cOrder\u201d art as a reaction, following the same restrictions as adjutant reactions. (Battalion units use a reaction with \"Trigger: employer uses 'Covert Order'\" rather than an action to employ the \"Order\" art\u2019s effects.)",
+      "name": "Absorb Casualties",
+      "description": "Can only be equipped by an Infantry unit and only if that unit has an Infantry battalion equipped.\n\nApply @{condition::[Null Effect]} to non-employer allies in this gambit\u2019s AoE for one turn; for the duration, this battalion has the Infantry, Flying, Armored, and Cavalry unit types while in combat. Can be used with one other meta gambit.",
       "requires": "Authority A",
+      "compatible": "All (Not (AoE `None` ``)) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "combo",
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "A"
+    },
+    {
+      "name": "Wings of Mercy",
+      "description": "Can only be equipped by a Flying unit and only if that unit has a Flying battalion equipped.\n\nBefore gambit, move a battalion unit into the space of or adjacent to any non-battalion ally that has already moved this turn with HP < 100%. After gambit, move that battalion unit again with normal Auto.",
+      "requires": "Authority A",
+      "compatible": "True",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "A"
+    },
+    {
+      "name": "Lie in Wait",
+      "description": "Can only be equipped by an Armor unit and only if that unit has an Armor battalion equipped.\n\nTrigger: once per phase, after foe enters, before foe exits, or before foe initiates combat with ally in a space within Range 0-1 of this unit\u2019s deployed battalion unit. Use a gambit with an attack and the Measured tag as a reaction, targeting that foe\u2019s space and following the same restrictions as adjutant reactions.",
+      "requires": "Authority A",
+      "compatible": "All (Tag `measured`) (Not (Tag `no hit`)) (Not (Tag `no might`)) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [
+        "combo",
+        "reaction",
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "A"
+    },
+    {
+      "name": "Joust",
+      "description": "Can only target foes within range to counter attack. Cavalry units have weapon advantage; units deal effective damage against Cavalry units.",
+      "requires": "Cavalry A",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 4,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "effective",
+        "advantage"
+      ],
+      "hidden": false,
+      "rank": "A",
+      "type": "Generic"
+    },
+    {
+      "name": "Dragonbreath",
+      "description": "Can only be equipped by Flying units, can only be used while mounted.\n\nEffective against Dragon units; attack replaces unit\u2019s equipped weapon with an Other weapon that is treated as though it were the same type as unit\u2019s equipped weapon by unit\u2019s abilities.\n\n@{const:variant:\"Breath\" Art Variant:} Two additional tiles are created adjacent to the center tile of the line, if possible.",
+      "requires": "Flying A",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "-(weapon|total|mt) + 15",
+        "prot": 0,
+        "resl": 0,
+        "hit": "-(weapon|total|hit) + 85",
+        "avo": "-(weapon|total|avo)",
+        "crit": "-(weapon|total|crit) + 10",
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "variant",
+        "wall"
+      ],
+      "hidden": false,
+      "rank": "A",
+      "type": "Generic"
+    },
+    {
+      "name": "No Quarter",
+      "description": "Gambit Mt +2; deal lethal damage equal to half of damage dealt to foe in target tile to each of foe in target tile\u2019s other HP bars, its employer, and its battalion. @{style:italic:(Units with multiple HP bars aren\u2019t defeated until all bars are reduced to 0.)}",
+      "requires": "Authority A",
+      "compatible": "All (Not (Tag `no might`)) (Not (Tag `no hit`)) (Not (Name `Counter`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 4,
+        "gmt": 2
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "A"
+    },
+    {
+      "name": "Thundering Hooves",
+      "description": "Can only be equipped by a Cavalry unit and only if that unit has a Cavalry battalion equipped.\n\nBattalion\u2019s units have [Auto +1] until the end of the turn. You may move all battalion units before and after this gambit.",
+      "requires": "Authority A",
+      "compatible": "Not (Name `Counter`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "A"
+    },
+    {
+      "name": "Replicate",
+      "description": "This unit splits into two copies of itself in target empty adjacent spaces as an action; both copies share one pool of SP, one pool of TP, one list of status conditions, one inventory, and at least one of the copies must take the Wait action each turn. The HP of both copies is set to be equal to the lowest HP among all surviving copies at the beginning of their phase. This art cannot be used while more than one copy exists.",
+      "requires": "All (Any (Brawl A+) (Reason A+)) (Any (Reason A+) (Guile A+)) (Any (Guile A+) (Swords A+)) (Any (Swords A+) (Brawl A+))",
       "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tiles": 0,
+        "spcost": 0,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical"
+      ],
+      "hidden": true,
+      "type": "",
+      "rank": "A+"
+    },
+    {
+      "name": "Cantor's Strike",
+      "description": "Uses equipped weapon\u2019s range; after combat this unit may use a Heal tome as a free action.",
+      "requires": "Class `War Cleric/Priest`",
+      "compatible": "Skill Axes Faith",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 4,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -4827,48 +6757,15 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "reaction",
-        "order"
+        "combo"
       ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "A"
-    },
-    {
-      "name": "Rally Res +4",
-      "description": "Apply @{const:gbp:[Res +4]} to target ally for 1 turn.",
-      "requires": "All (Authority C+) (Level 10)",
-      "mttype": "none",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0
-      },
-      "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "condition"
+      "hidden": true,
+      "type": [
+        "Axes",
+        "Faith"
       ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "C+"
+      "rank": "",
+      "omit": true
     },
     {
       "name": "Assassinate",
@@ -4896,6 +6793,38 @@ const definitions = {
       "rank": "A-A"
     },
     {
+      "name": "Flying Leap",
+      "description": "Can only be equipped by Cavalry units, can only be used while mounted. Unit may move to the opposite side of target space so long as that tile is traversable by Flying units.",
+      "requires": "Riding C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "movement"
+      ],
+      "hidden": false,
+      "type": "",
+      "rank": "",
+      "omit": true
+    },
+    {
       "name": "Displaced Strike",
       "description": "Only usable with ethereal weapons.",
       "requires": "Weapon `Ethreal Lance`",
@@ -4918,6 +6847,37 @@ const definitions = {
         "rework"
       ],
       "hidden": true,
+      "type": null,
+      "rank": ""
+    },
+    {
+      "name": "Emergency Landing",
+      "description": "Can only be equipped by Flying units and can only be used while mounted. Trigger: foe targets this unit with an attack. Dismount. If unit can only pay part of the SP cost, unit pays as much as possible, then takes lethal damage equal to the difference.",
+      "requires": "Flying D+",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 12
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "reaction"
+      ],
+      "hidden": false,
       "type": null,
       "rank": ""
     },
@@ -4953,10 +6913,10 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Recruit Order",
-      "description": "This unit\u2019s battalion applies @{condition:Traitor:[Traitor]} to an unnamed (generic unit) foe in its space for one turn.",
-      "requires": "Authority A+",
-      "mttype": "none",
+      "name": "Lunge",
+      "description": "After combat, unit and target foe swap places. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4965,26 +6925,16 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tiles": 0,
-        "spcost": 13,
+        "minrng": 1,
+        "maxrng": 1,
         "tpcost": 0,
-        "sp": 0,
-        "tp": 0
+        "spcost": 0
       },
       "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "order"
-      ],
+      "tags": [],
       "hidden": false,
-      "type": "Authority",
-      "rank": "A+"
+      "type": "Generic",
+      "rank": ""
     },
     {
       "name": "Paraselene",
@@ -5045,10 +6995,11 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Rally Mag +4",
-      "description": "Apply @{const:gbp:[Mag +4]} to target ally for 1 turn.",
-      "requires": "All (Authority C+) (Level 10)",
-      "mttype": "none",
+      "name": "Faith Healing",
+      "description": "Apply an equipped Faith D metamagic that can apply to @{weapon::Hea}l to @{gambit::Hospital} or @{gambit::Resonant Healing} or apply an equipped Faith metamagic that can apply to @{art::Restore} to @{gambit::Recovery Roar}. Consider each affected ally to have been targeted for the purpose of that art, but this effect does not target. Pay SP equal to the SP cost of the combat art\n\nMay be equipped without consuming an arts slot if this unit equips one other meta gambit of a different rank.",
+      "requires": "Any (Authority C) (Authority B)",
+      "compatible": "Name `Hospital` `Resonant Healing` `Recovery Roar`",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5057,57 +7008,49 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
+        "minrng": 0,
+        "maxrng": 0,
         "tpcost": 0,
         "spcost": 0
       },
       "comment": "",
       "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "condition"
+        "combo"
       ],
       "hidden": false,
       "type": "Authority",
-      "rank": "C+"
+      "rank": "C-B"
     },
     {
-      "name": "Covert Order",
-      "description": "This unit\u2019s battalion uses its action to restore 8 + \u00bd (this unit\u2019s Dex or Luc) EP to itself or target ally battalion in Range 1 if its current EP \u2264 \u00bd Max EP.",
-      "requires": "Authority B+",
+      "name": "Angle of Attack",
+      "description": "Can only be used while mounted and can only target foes adjacent to X of this army\u2019s Flying units, where X \u2265 2. Multiply bonuses to Mt, Hit, and Crit by X.",
+      "requires": "Any (Class `Pegasus Knight`) (Class `Falcon Knight`) (Class `Griffin Knight`)",
+      "compatible": "Skill Axes Lances Swords",
       "mttype": "none",
       "modifiers": {
-        "mt": "-(floor(unit|total|str / 2)) + 8 + floor(more unit|total|dex else unit|total|cha end / 2)",
+        "mt": "3 * ask [Flying Allies?], 2 end",
         "prot": 0,
         "resl": 0,
-        "hit": 0,
+        "hit": "10 * ask [Flying Allies?], 2 end",
         "avo": 0,
-        "crit": 0,
+        "crit": "10 * ask [Flying Allies?], 2 end",
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tiles": 0,
-        "spcost": 5,
+        "minrng": 1,
+        "maxrng": 1,
         "tpcost": 0,
-        "sp": 0,
-        "tp": 0
+        "spcost": 3
       },
       "comment": "",
       "tags": [
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "healing",
-        "order"
+        "scales"
       ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "B+"
+      "hidden": true,
+      "rank": "",
+      "type": [
+        "Axes",
+        "Swords",
+        "Lances"
+      ]
     },
     {
       "name": "Sol",
@@ -5172,10 +7115,43 @@ const definitions = {
       "rank": "B+-B+"
     },
     {
-      "name": "Protect Order",
-      "description": "This unit\u2019s battalion uses its action to apply @{condition:Bodyguard:[Bodyguard]} to one of its deployed units for one turn.",
-      "requires": "Authority C+",
-      "mttype": "none",
+      "name": "Hind Kick",
+      "description": "Can only be equipped by Cavalry units, can only be used while mounted. Trigger: once per phase, when a foe enters into an adjacent space opposite to an adjacent ally. Deal 20% nonlethal damage to that foe and push them one space away.",
+      "requires": "Riding C+",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "movement",
+        "reaction"
+      ],
+      "hidden": false,
+      "type": "",
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Cantabrian Circle",
+      "description": "Can only be used while mounted. Trigger: a combat involving this unit ends. Move up to 2 spaces.",
+      "requires": "Class `Bow Knight`",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5187,7 +7163,7 @@ const definitions = {
         "minrng": 0,
         "maxrng": 0,
         "tiles": 0,
-        "spcost": 2,
+        "spcost": 3,
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -5199,17 +7175,48 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition",
-        "order"
+        "reaction",
+        "movement"
       ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "C+"
+      "hidden": true,
+      "type": "Riding",
+      "rank": "",
+      "omit": true
     },
     {
-      "name": "Strength Save",
-      "description": "Can only be equipped by Armor units. Trigger: ally in range targeted with a strength-based attack. Change the target to this unit instead. Combat occurs as though this unit were located at ally\u2019s tile.",
-      "requires": "All (Armor B+) (ClassType Armor)",
+      "name": "Cut Off",
+      "description": "Can only be used while mounted. Move target foe up to two spaces after combat. Mt +2 if an ally is adjacent to foe.",
+      "requires": "Class Hussar",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "4 + fill affirm([Ally Adjacent to Foe?], 2, 0)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 10,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "movement"
+      ],
+      "hidden": true,
+      "type": [
+        "Swords",
+        "Lances"
+      ],
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Frost Breath",
+      "description": "Create up to 3 @{tile:Ice Block:Ice Blocks} in empty spaces in a 1x3 or 3x1 line starting from target adjacent tile. ",
+      "requires": "Any (Class `Wyvern Rider`) (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -5221,8 +7228,11 @@ const definitions = {
         "cravo": 0,
         "minrng": 1,
         "maxrng": 1,
+        "tiles": 3,
+        "spcost": 5,
         "tpcost": 0,
-        "spcost": 3
+        "sp": 0,
+        "tp": 0
       },
       "comment": "",
       "tags": [
@@ -5230,18 +7240,87 @@ const definitions = {
         "no hit",
         "no crit",
         "no stats",
-        "reaction",
-        "tactical"
+        "tactical",
+        "wall",
+        "condition"
       ],
-      "hidden": false,
-      "type": "Armor",
-      "rank": "B+"
+      "hidden": true,
+      "type": "Flying",
+      "rank": "",
+      "omit": true
     },
     {
-      "name": "Rally Def +4",
-      "description": "Apply @{const:gbp:[Def +4]} to target ally for 1 turn.",
-      "requires": "All (Authority C+) (Level 10)",
-      "mttype": "none",
+      "name": "Fog Breath",
+      "description": "Can only be used while mounted. Create up to 3 @{tile:Smoke Screen:Smoke Screens} in a 1x3 or 3x1 line starting from target adjacent tile.",
+      "requires": "Any (Class `Wyvern Rider`) (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tiles": 3,
+        "spcost": 6,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "wall"
+      ],
+      "hidden": true,
+      "type": "Flying",
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Kick Up Dust",
+      "description": "Can only be equipped by Cavalry units and can only be used while mounted. Choose one mode for this unit:\n- Move to an adjacent space.\n- Swap places with an adjacent ally.\nThen, create a @{tile::Wind Torrent} or a @{tile::Smoke Screen} for one turn in this unit\u2019s previous space (unit chooses); this unit cannot end its movement in that tile.",
+      "requires": "Riding D+",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "movment",
+        "wall"
+      ],
+      "hidden": false,
+      "type": "",
+      "rank": ""
+    },
+    {
+      "name": "Drag Back",
+      "description": "After combat, unit moves one space back, and target foe moves into units previous space. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5256,21 +7335,14 @@ const definitions = {
         "spcost": 0
       },
       "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "condition"
-      ],
+      "tags": [],
       "hidden": false,
-      "type": "Authority",
-      "rank": "C+"
+      "type": "Generic",
+      "rank": ""
     },
     {
       "name": "Summon",
-      "description": "Create an allied phantom unit (Lemure) of the same level as this unit in an empty space within range and roll 1d100 to determine which Weapons, Arts, and Abilities it possesses. Apply @{condition:Summoning Sickness:[Summoning Sickness]} to that unit for one turn. All weapons a phantom is created with have the @{attribute::Bound} attribute, and any other items in a phantom\u2019s inventory go to the convoy when it is defeated. If this unit uses @{art::Summon} again while that unit is not defeated, apply the following effect instead: Do not pay TP or SP for this use of @{art::Summon}; move that allied unit to an empty space within range.",
+      "description": "Create an allied phantom unit (Lemure) of the same level as this unit in an empty space within range and roll 1d100 to determine which Weapons, Arts, and Abilities it possesses. Apply @{condition:Sickness:[Sickness]} to that unit for one turn. All weapons a phantom is created with have the @{attribute::Bound} attribute, and any other items in a phantom\u2019s inventory go to the convoy when it is defeated. If this unit uses @{art::Summon} again while that unit is not defeated, apply the following effect instead: Do not pay TP or SP for this use of @{art::Summon}; move that allied unit to an empty space within range.",
       "requires": "Class Invoker/Summoner",
       "mttype": "none",
       "modifiers": {
@@ -5300,9 +7372,9 @@ const definitions = {
     },
     {
       "name": "Reposition",
-      "description": "Move target ally to the opposite side of this unit.",
-      "requires": "Level 5",
-      "mttype": "else",
+      "description": "Move target ally to the opposite side of this unit; consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5332,7 +7404,7 @@ const definitions = {
     {
       "name": "Flowing Blade",
       "description": "Do not attack; apply @{condition:Flow:[Flow]} to this unit for one turn.",
-      "requires": "Any (Swords C) (Sword B)",
+      "requires": "Any (Swords C) (Swords B)",
       "compatible": "Skill Swords",
       "mttype": "none",
       "modifiers": {
@@ -5364,7 +7436,7 @@ const definitions = {
       "name": "Sprint",
       "description": "Unit may move up to 2 additional spaces.",
       "requires": "Armor B",
-      "mttype": "else",
+      "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5427,9 +7499,9 @@ const definitions = {
     },
     {
       "name": "Hustle",
-      "description": "This unit may move one additional space.",
-      "requires": "Level 5",
-      "mttype": "else",
+      "description": "This unit may move one additional space; consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5457,10 +7529,11 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Defend Order",
-      "description": "This unit\u2019s battalion uses its action to apply @{condition:Sentinel:[Sentinel]} to all of its deployed units for one turn.",
-      "requires": "Authority D+",
-      "mttype": "none",
+      "name": "Conduit",
+      "description": "A Faith spell that targets an ally may target any ally adjacent to a unit created tile. Tiles with a duration created by a Reason spell have +1 duration.",
+      "requires": "Class Sage",
+      "compatible": "Any (Skill Faith) (All (Skill Reason) (Tag `wall`))",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5471,25 +7544,43 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tiles": 0,
-        "spcost": 0,
         "tpcost": 0,
-        "sp": 0,
-        "tp": 0
+        "spcost": 2
       },
       "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "condition",
-        "order"
+      "tags": [],
+      "hidden": true,
+      "rank": "",
+      "type": [
+        "Faith",
+        "Reason"
       ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "D+"
+      "omit": true
+    },
+    {
+      "name": "Hybrid Strike",
+      "description": "Unit makes an attack with an equipped Swords, Axes, Lances, or Bows weapon and a follow-up attack with a Faith, Reason, or Guile weapon @{const:ap:(AP 2)}. Both attacks must be able to be made at the same range.",
+      "requires": "Class (Class `Dark Knight`) (Class `Mortal Savant`) (Class `Holy Knight`)",
+      "compatible": "Skill Swords Axes Lances Bows",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true,
+      "type": "Generic",
+      "rank": ""
     },
     {
       "name": "Emergency Invigoration",
@@ -5523,38 +7614,10 @@ const definitions = {
       "type": ""
     },
     {
-      "name": "Might Save",
-      "description": "This art is depricated; look for 'Strength Save'.",
-      "requires": "All (Armor B+) (ClassType Armor)",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 5,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 2,
-        "tpcost": 0,
-        "spcost": 2
-      },
-      "comment": "",
-      "tags": [
-        "reaction",
-        "tactical",
-        "depricated"
-      ],
-      "hidden": true,
-      "type": "Armor",
-      "rank": "B+"
-    },
-    {
       "name": "Swap",
-      "description": "User swaps places with target adjacent ally.",
-      "requires": "Level 5",
-      "mttype": "else",
+      "description": "User swaps places with target adjacent ally; consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5582,40 +7645,10 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Rally Spd +4",
-      "description": "Apply @{const:gbp:[Spd +4]} to target ally for 1 turn.",
-      "requires": "All (Authority C+) (Level 10)",
-      "mttype": "none",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0
-      },
-      "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "condition"
-      ],
-      "hidden": false,
-      "type": "Authority",
-      "rank": "C+"
-    },
-    {
-      "name": "Magic Save",
-      "description": "Can only be equipped by Armor units. Trigger: ally in range targeted with a magic-based attack. Change the target to this unit instead. Combat occurs as though this unit were located at ally\u2019s tile.",
-      "requires": "All (Armor B+) (ClassType Armor)",
+      "name": "Intellectual Warfare",
+      "description": "Gambit that applies a condition to foes in its AoE also applies @{condition:Exposed:[Exposed]} for one turn. Can be used with one other meta gambit.",
+      "requires": "Any (Authority C) (Authority B)",
+      "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -5625,27 +7658,23 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
+        "minrng": 0,
+        "maxrng": 0,
         "tpcost": 0,
         "spcost": 3
       },
       "comment": "",
       "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "reaction",
-        "tactical"
+        "combo",
+        "metagambit"
       ],
       "hidden": false,
-      "type": "Armor",
-      "rank": "B+"
+      "type": "Authority",
+      "rank": "C-B"
     },
     {
       "name": "Dance",
-      "description": "Allows target ally to move and act again.",
+      "description": "Target ally without @{art::Dance} that has taken a turn this phase may take another turn.",
       "requires": "Class Dancer",
       "mttype": "none",
       "modifiers": {
@@ -5677,10 +7706,112 @@ const definitions = {
       "rank": ""
     },
     {
+      "name": "Arts Instruction",
+      "description": "Replace the effect of @{gambit::Initiate} with the effect of an equipped combat art that applies to attacks made with a weapon, so long as the weapon type of the combat art matches the weapon type of this battalion. Consider each affected foe to have been targeted for the purpose of that art, but this effect does not target. Pay SP equal to the SP cost of the combat art.\n\nMay be equipped without consuming an arts slot if this unit equips one other meta gambit of a different rank.",
+      "requires": "Any (Authority C) (Authority B)",
+      "compatible": "Name `Initiate`",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "combo",
+        "metagambit"
+      ],
+      "hidden": false,
+      "type": "Authority",
+      "rank": "C-B"
+    },
+    {
+      "name": "Suplex",
+      "description": "After combat, target foe is moved to the other side of unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
+      "name": "Dual Strike R",
+      "description": "@{const:ap:AP 2}; unit\u2019s sheltered or adjacent ally may pay 3 SP to make the follow-up with their equipped weapon as though they were in this unit\u2019s space. Unit\u2019s adjacent allies may also use this art as though they had it equipped. A unit may only make one attack as part of this art per phase.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "requires": "Riding C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
+      "name": "Reel In",
+      "description": "After combat, target foe moves one space closer to unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
       "name": "Steal",
       "description": "Steal a non-weapon item from inventory of target foe with Spd < unit's Spd.",
       "requires": "All (Any (Swords C+) (Bows C+)) (Level 15)",
-      "mttype": "else",
+      "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5707,10 +7838,10 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Rally Str +4",
-      "description": "Apply @{const:gbp:[Str +4]} to target ally for 1 turn.",
-      "requires": "All (Authority C+) (Level 10)",
-      "mttype": "none",
+      "name": "Take Cover",
+      "description": "Can only be equipped by Infantry units. Apply @{condition:Spotted:[Spotted -1]} to unit for one turn.",
+      "requires": "Level 5",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5719,10 +7850,10 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
+        "minrng": 0,
+        "maxrng": 0,
         "tpcost": 0,
-        "spcost": 0
+        "spcost": 2
       },
       "comment": "",
       "tags": [
@@ -5734,14 +7865,15 @@ const definitions = {
         "condition"
       ],
       "hidden": false,
-      "type": "Authority",
-      "rank": "C+"
+      "type": "",
+      "rank": "",
+      "omit": true
     },
     {
       "name": "Draw Back",
-      "description": "User and target adjacent ally move 1 space opposite the direction target ally is from this unit.",
-      "requires": "Level 5",
-      "mttype": "else",
+      "description": "User and target adjacent ally move 1 space opposite the direction target ally is from this unit; consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5765,10 +7897,80 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Demo Order",
-      "description": "This unit\u2019s battalion uses its action to destroy up to 5 connecting player created tiles starting from target tile in Range 0-1 of one of its deployed units, then chooses one mode:\n* Create a @{tile::Fortification} in an empty space at Range 1 for 10 of employer\u2019s SP.\n* Create a @{tile::Turret} in an empty space at Range 1 for 4 of employer\u2019s SP.\n* Create a @{tile::Fire Patch} in an empty space at Range 1 for 2 of employer\u2019s SP.\n* Create a @{tile::Smoke Screen} in an space within Range 0-1 for 4 of employer\u2019s SP.\nThe SP cost is reduced by twice the number of tiles destroyed before it was created.",
-      "requires": "Authority D+",
-      "mttype": "none",
+      "name": "Distraction",
+      "description": "Starting from target tile, create one or more @{tile:Smoke Screen:Smoke Screens} (at most 1\u214c5 Spd) in connecting tiles for one turn.",
+      "requires": "Class `Ronin`",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "tiles": "fill wall([Spd], unit|total|spd, 5)",
+        "spcost": 10,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "wall"
+      ],
+      "hidden": true,
+      "type": "Armor",
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Ice Breath",
+      "description": "Can only be used while mounted. Create up to 3 @{tile:Ice Block:Ice Blocks} in empty spaces a 1x3 or 3x1 line starting from target adjacent tile.",
+      "requires": "Any (Class `Wyvern Rider`) (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tiles": 3,
+        "spcost": 5,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "wall"
+      ],
+      "hidden": true,
+      "type": "Flying",
+      "rank": ""
+    },
+    {
+      "name": "Dual Strike F",
+      "description": "@{const:ap:AP 2}; unit\u2019s sheltered or adjacent ally may pay 3 SP to make the follow-up with their equipped weapon as though they were in this unit\u2019s space. Unit\u2019s adjacent allies may also use this art as though they had it equipped. A unit may only make one attack as part of this art per phase.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "requires": "Flying B",
+      "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5779,60 +7981,18 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tiles": 1,
-        "spcost": 0,
         "tpcost": 0,
-        "sp": 0,
-        "tp": 0
+        "spcost": 3
       },
       "comment": "",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "wall",
-        "order"
-      ],
+      "tags": [],
       "hidden": false,
-      "type": "Authority",
-      "rank": "D+"
-    },
-    {
-      "name": "Smite",
-      "description": "Move target adjacent ally 2 spaces away from this unit in the direction target ally is from this unit.",
-      "requires": "Armor D+",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0
-      },
-      "comment": "movement",
-      "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "movement",
-        "tactical"
-      ],
-      "hidden": false,
-      "type": "Armor",
-      "rank": "D+"
+      "type": "Generic",
+      "rank": ""
     },
     {
       "name": "Pivot",
-      "description": "This unit moves to the opposite side of target ally.",
+      "description": "This unit moves to the opposite side of target ally; consumes half of an arts slot starting at level 10.",
       "requires": "Level 5",
       "mttype": "else",
       "modifiers": {
@@ -5862,38 +8022,34 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Opening",
-      "description": "Can only be equipped by Armor units. Reaction with trigger: once per phase, foe uses movement to leave the maximum range of this unit\u2019s equipped weapon. Initiate combat against that foe.",
-      "requires": "All (Armor C+) (ClassType Armor)",
+      "name": "Called Shot",
+      "description": "Choose one part of the body to target (Conditions are applied on hit after combat for one turn):\n \u2022 Arms\u2014 Hit -15. [Hexed]\n \u2022 Legs\u2014 Hit -25. [Halt]\n \u2022 Head\u2014 Hit -35. Crit +35.\n \u2022 Torso\u2014 Hit -45. [Exposed]\n(Target for as if already affected.)\nThis combat art can be used with one other combat art with AP = 1 that does not apply a condition on hit.",
+      "requires": "All (Level 15) (Any (Axes C) (Lances C) (Swords C) (Brawl C) (Bows C))",
+      "compatible": "Skills Axes Lances Swords Brawl Bows",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": 0,
+        "hit": "ask [Body Part?]; [Arms] {-15}, [Legs] {-25}, [Head] {-35}, [Torso] {-45} end ",
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 5,
+        "minrng": 0,
+        "maxrng": 0,
         "tiles": 0,
-        "spcost": 6,
+        "spcost": 3,
         "tpcost": 0,
         "sp": 0,
         "tp": 0
       },
       "comment": "",
       "tags": [
-        "no might",
-        "no hit",
-        "no crit",
-        "no stats",
-        "tactical",
-        "reaction"
+        "condition"
       ],
       "hidden": false,
-      "type": "Armor",
-      "rank": "C+"
+      "type": "Generic",
+      "rank": ""
     },
     {
       "name": "Nedler's Amputator",
@@ -5919,6 +8075,62 @@ const definitions = {
       ],
       "hidden": true,
       "type": null,
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Fire Breath",
+      "description": "Can only be used while mounted. Create up to 3 @{tile:Fire Patch:Fire Patches} in a 1x3 or 3x1 line starting from target adjacent tile.",
+      "requires": "Any (Class `Wyvern Rider`) (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tiles": 3,
+        "spcost": 4,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "tactical",
+        "wall",
+        "condition"
+      ],
+      "hidden": true,
+      "type": "Flying",
+      "rank": ""
+    },
+    {
+      "name": "Push Aside",
+      "description": "After combat, target foe is moved one space in a direction perpendicular to unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
       "rank": ""
     },
     {
@@ -5984,10 +8196,155 @@ const definitions = {
       "type": ""
     },
     {
-      "name": "Shove",
-      "description": "Move target adjacent ally 1 space away from this unit in the direction target ally is from this unit.",
-      "requires": "Level 5",
+      "name": "Creature Ken",
+      "description": "May be used with one other combat art. If unit\u2019s attacks are Effective against Monster units, unit has weapon advantage, and if not, unit\u2019s attacks become Effective against Monster units.",
+      "requires": "Class `Monster Hunter`",
       "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": "more weapon|total|minrng else 1 end",
+        "maxrng": "less weapon|total|maxrng else 2 end",
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "combo",
+        "effective"
+      ],
+      "hidden": true,
+      "rank": "",
+      "type": "Generic",
+      "omit": true
+    },
+    {
+      "name": "Run Down",
+      "description": "Can only be equipped by Cavalry units, and can only be used while mounted. Unit swaps spaces with target foe after combat (if able). On hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn. ",
+      "requires": "Riding C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 15,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "condition",
+        "movement"
+      ],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
+      "name": "Galeforce",
+      "description": "Can only be used while mounted. If target foe is defeated, unit\u2019s full movement is restored after combat.",
+      "requires": "Any (Class `Dark Flier`) (Class Valkyrie)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 6
+      },
+      "comment": "",
+      "tags": [
+        "movement"
+      ],
+      "hidden": true,
+      "type": [
+        "Reason",
+        "Guile"
+      ],
+      "rank": ""
+    },
+    {
+      "name": "Retribution",
+      "description": "Trigger: once per turn, foe deals X lethal damage to this unit. Deal X nonlethal damage to that foe.\n\nMay still be chained if this unit has already reacted this chain.",
+      "requires": "Class `Sorcerer`",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "reaction"
+      ],
+      "hidden": true,
+      "type": [
+        "Reason",
+        "Faith",
+        "Guile"
+      ],
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Battlement Strike",
+      "description": "If this unit is adjacent to a @{tile::Barricade}, it may initiate combat as though it occupied any contiguous @{tile::Barricade}.",
+      "requires": "Class `Fortress Knight`",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true,
+      "type": "Generic",
+      "rank": "",
+      "omit": true
+    },
+    {
+      "name": "Shove",
+      "description": "Move target adjacent ally 1 space away from this unit in the direction target ally is from this unit; consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "none",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -6015,6 +8372,89 @@ const definitions = {
       "rank": ""
     },
     {
+      "name": "Ardent Sacrefice",
+      "description": "Restore 10 HP to target ally, this unit takes 10 nonlethal damage. Consumes half of an arts slot starting at level 15.",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "healing",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
+      "name": "Coven",
+      "description": "Trigger: once per phase, an ally within range uses a Faith, Reason, or Guile spell without metamagic. Apply one of this unit\u2019s equipped Guile combat arts to that spell, paying that art\u2019s cost in addition to this.",
+      "requires": "Class Druid",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": "5 + ask [Cost of Guile Metamagic], 0 end"
+      },
+      "comment": "",
+      "tags": [
+        "reaction",
+        "tactical"
+      ],
+      "hidden": true,
+      "rank": "",
+      "type": "",
+      "omit": true
+    },
+    {
+      "name": "Knock Back",
+      "description": "After combat, target foe is pushed one space away. Cannot be used with weapons that have incompatible range.  Consumes half of an arts slot starting at level 10.",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
       "name": "Wander",
       "description": "Unit may move 2 additional spaces while ignoring movement penalties.",
       "requires": "Class Wanderer",
@@ -6039,7 +8479,8 @@ const definitions = {
       ],
       "hidden": true,
       "type": null,
-      "rank": ""
+      "rank": "",
+      "omit": true
     }
   ],
   "abilities": [
@@ -6056,7 +8497,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6088,7 +8529,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6111,40 +8552,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Agarthan Technology",
-      "description": "Adjacent foes deal 3 less damage during combat.",
-      "requires": "Agarthan",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 3,
-        "resl": 3,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "chance"
-      ],
-      "hidden": false
-    },
-    {
       "name": "Aegis",
       "description": "Dex% chance to reduce the damage taken from Faith, Guile, Reason, Bows by 50%, and grants use of the @{art::Aegis} tactical art.",
       "requires": "All (Any (Swords B) (Lances B)) (Riding B) (Level 20)",
@@ -6157,7 +8564,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6179,6 +8586,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Agarthan Technology",
+      "description": "Adjacent foes deal 3 less damage during combat.",
+      "requires": "Agarthan",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 3,
+        "resl": 3,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Air Superiority",
       "description": "Grants Hit +20 and Avo +20 in combat against Flying units.",
       "requires": "Class `Kinshi Knight`",
@@ -6191,7 +8632,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6226,7 +8667,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6261,7 +8702,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6279,9 +8720,334 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "stance",
+        "in combat",
+        "depricated"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Allied Lull Avo",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Avo -15 to foes and ignore foe's in-combat bonuses granted to Avo by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
         "in combat"
       ],
-      "hidden": false
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Crit",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Crit -15 to foes and ignore foe's in-combat bonuses granted to Crit by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Crit Avo",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Crit Avo -15 to foes and ignore foe's in-combat bonuses granted to Crit Avo by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Def",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Def -3 to foes and ignore foe's in-combat bonuses granted to Def by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Hit",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Hit -15 to foes and ignore foe's in-combat bonuses granted to Hit by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Mag",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Mag -3 to foes and ignore foe's in-combat bonuses granted to Mag by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Res",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Res -3 to foes and ignore foe's in-combat bonuses granted to Res by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Spd",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Spd -3 to foes and ignore foe's in-combat bonuses granted to Spd by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Allied Lull Str",
+      "description": "Can only be equipped by Cavalry units. While mounted, Allies within two spaces have \"In combat, Str -3 to foes and ignore foe's in-combat bonuses granted to Str by other abilities.\" Cannot be equipped alongside another \"Allied Lull\" ability. A unit can only benefit from the effects of one \"Allied Lull\" ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "lull",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Ambush Predator",
@@ -6296,13 +9062,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
-        "avo": "ask [Ambush Predator]; No {0}, Yes {15} end",
-        "crit": "ask [Ambush Predator]; No {0}, Yes {10} end",
+        "avo": "ask [Ambush Predator (avo)]; No {0}, Yes {15} end",
+        "crit": "ask [Ambush Predator (crit)]; No {0}, Yes {10} end",
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
@@ -6315,7 +9081,7 @@ const definitions = {
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Ancient Dragonskin",
@@ -6330,7 +9096,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6364,7 +9130,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6396,7 +9162,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6431,7 +9197,7 @@ const definitions = {
         "spd": 0,
         "def": "fill blow(6)",
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6455,7 +9221,7 @@ const definitions = {
     },
     {
       "name": "Assiduous Harbinger",
-      "description": "((Cha + Mag)/2)% chance to disable foe's Faith, Guile, and Reason arts that target this unit.",
+      "description": "((Lck + Mag)/2)% chance to disable foe's Faith, Guile, and Reason arts that target this unit.",
       "requires": "All (Riding B+) (Armor B+) (Level 20)",
       "modifiers": {
         "hp": 0,
@@ -6466,7 +9232,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6501,7 +9267,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6521,8 +9287,96 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Authority Prowess 1",
-      "description": "Gambit Might +2 and battalion Barrier +2. A unit may only equip one \"Authority Prowess\" ability at a time and may only equip one \"Prowess 1\" ability at a time.",
+      "name": "Assure Magic",
+      "description": "Unit's magic-based attacks deal a minimum of Mt / 4 lethal damage on a hit (round up).",
+      "requires": "All (Any (Axes D) (Lances D) (Swords D) (Bows D) (Reason D) (Faith D) (Guile D) (Brawl D)) Level 5",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "rows": [
+        {
+          "name": "Minimum Damage",
+          "when": "unit|total|mttype|mag",
+          "expr": "ceil((unit|total|mt) / 4)",
+          "roll": false
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "assure",
+        "chance"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Assure Strength",
+      "description": "Unit's strength-based attacks deal a minimum of Mt / 4 lethal damage on a hit (round up).",
+      "requires": "All (Any (Axes D) (Lances D) (Swords D) (Bows D) (Reason D) (Faith D) (Guile D) (Brawl D)) Level 5",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "rows": [
+        {
+          "name": "Minimum Damage",
+          "when": "unit|total|mttype|str",
+          "expr": "ceil((unit|total|mt) / 4)",
+          "roll": false
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "assure",
+        "chance"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Authority 1",
+      "description": "Gambit Might +2 and battalion Barrier +2. A unit may only equip one \"Authority\" ability at a time and may only equip one \"Prowess 1\" ability at a time.",
       "requires": "Any (Authority E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -6533,7 +9387,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6546,7 +9400,9 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0
+        "mov": 0,
+        "gmt": 2,
+        "br": 2
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
@@ -6556,8 +9412,8 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Authority Prowess 2",
-      "description": "Gambit Might +4 and battalion Barrier +4. A unit may only equip one \"Authority Prowess\" ability at a time and may only equip up to two \"Prowess 2\" abilities at a time.",
+      "name": "Authority 2",
+      "description": "Gambit Might +4 and battalion Barrier +4. A unit may only equip one \"Authority\" ability at a time and may only equip up to two \"Prowess 2\" abilities at a time.",
       "requires": "Any (Authority D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -6568,7 +9424,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6581,7 +9437,9 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0
+        "mov": 0,
+        "gmt": 4,
+        "br": 4
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
@@ -6591,9 +9449,9 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Authority Prowess 3",
-      "description": "Gambit Might +6 and battalion Barrier +6. A unit may only equip one \"Authority Prowess\" ability at a time.",
-      "requires": "Any (Authority C+) (All (Armor C+) (ClassType Armor)) (All (Flying C+) (ClassType Flying)) (All (Riding C+) (ClassType Cavalry))",
+      "name": "Authority 3",
+      "description": "Gambit Might +6 and battalion Barrier +6. A unit may only equip one \"Authority\" ability at a time.",
+      "requires": "Any (All (Authority C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6603,7 +9461,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6616,7 +9474,9 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0
+        "mov": 0,
+        "gmt": 6,
+        "br": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
@@ -6626,9 +9486,9 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Authority Prowess 4",
-      "description": "Gambit Might +8 and battalion Barrier +8. A unit may only equip one \"Authority Prowess\" ability at a time.",
-      "requires": "Any (Authority B+) (All (Armor B+) (ClassType Armor)) (All (Flying B+) (ClassType Flying)) (All (Riding B+) (ClassType Cavalry))",
+      "name": "Authority 4",
+      "description": "Gambit Might +8 and battalion Barrier +8. A unit may only equip one \"Authority\" ability at a time.",
+      "requires": "Any (All (Authority B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6638,7 +9498,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6651,7 +9511,9 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0
+        "mov": 0,
+        "gmt": 8,
+        "br": 8
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
@@ -6661,9 +9523,9 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Authority Prowess 5",
-      "description": "Gambit Might +10 and battalion Barrier +10. A unit may only equip one \"Authority Prowess\" ability at a time.",
-      "requires": "Any (Authority A+) (All (Armor A+) (ClassType Armor)) (All (Flying A+) (ClassType Flying)) (All (Riding A+) (ClassType Cavalry))",
+      "name": "Authority 5",
+      "description": "Gambit Might +10 and battalion Barrier +10. A unit may only equip one \"Authority\" ability at a time.",
+      "requires": "Any (All (Authority A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6673,7 +9535,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6686,7 +9548,9 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0
+        "mov": 0,
+        "gmt": 10,
+        "br": 10
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
@@ -6708,7 +9572,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6742,7 +9606,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6764,6 +9628,42 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Avo Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Avo +20]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Axe Advantage",
       "description": "Grants Mt +5 in combat when unit has weapon triangle advantage.",
       "requires": "None",
@@ -6776,7 +9676,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill advantage(weapon|type|axes)",
         "prot": 0,
         "resl": 0,
@@ -6812,7 +9712,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -6836,7 +9736,7 @@ const definitions = {
     {
       "name": "Axe Prowess 1",
       "description": "Grants Hit +7, Avo +5, and Crit Avo +5 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
-      "requires": "Axes E+",
+      "requires": "Any (Axes E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6846,13 +9746,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|axes, 7, 0)",
         "avo": "fill bothif(weapon|type|axes, 5, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|axes, 7, 0)",
         "cravo": "fill bothif(weapon|type|axes, 5, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -6871,7 +9771,7 @@ const definitions = {
     {
       "name": "Axe Prowess 2",
       "description": "Grants Hit +10, Avo +6, and Crit Avo +6 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
-      "requires": "Axes D+",
+      "requires": "Any (Axes D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6881,13 +9781,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|axes, 10, 0)",
         "avo": "fill bothif(weapon|type|axes, 6, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|axes, 10, 0)",
         "cravo": "fill bothif(weapon|type|axes, 6, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -6906,7 +9806,7 @@ const definitions = {
     {
       "name": "Axe Prowess 3",
       "description": "Grants Hit +13, Avo +7, and Crit Avo +7 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
-      "requires": "All (Axes C+) (Level 5)",
+      "requires": "Any (Axes C+) (All (Armor C+) (ClassType Armor)) (All (Flying C+) (ClassType Flying)) (All (Riding C+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6916,13 +9816,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|axes, 13, 0)",
         "avo": "fill bothif(weapon|type|axes, 7, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|axes, 13, 0)",
         "cravo": "fill bothif(weapon|type|axes, 7, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -6941,7 +9841,7 @@ const definitions = {
     {
       "name": "Axe Prowess 4",
       "description": "Grants Hit +16, Avo +8, and Crit Avo +8 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
-      "requires": "All (Axes B+) (Level 15)",
+      "requires": "Any (All (Axes B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6951,13 +9851,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|axes, 16, 0)",
         "avo": "fill bothif(weapon|type|axes, 8, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|axes, 16, 0)",
         "cravo": "fill bothif(weapon|type|axes, 8, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -6976,7 +9876,7 @@ const definitions = {
     {
       "name": "Axe Prowess 5",
       "description": "Grants Hit +20, Avo +10, and Crit Avo +10 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
-      "requires": "All (Axes A+) (Levels 25)",
+      "requires": "Any (All (Axes A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6986,13 +9886,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|axes, 20, 0)",
         "avo": "fill bothif(weapon|type|axes, 10, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|axes, 20, 0)",
         "cravo": "fill bothif(weapon|type|axes, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -7010,7 +9910,7 @@ const definitions = {
     },
     {
       "name": "Axebreaker",
-      "description": "Grants Hit +20 and Avo +20 in combat against Axes. A unit may only equip one \"Axebreaker\" ability at a time",
+      "description": "Grants Hit +20 and Avo +20 in combat against Axes. If an \"Sword Prowess\" ability is the only \"Prowess\" ability equipped, and \"Axebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Axebreaker\" ability at a time",
       "requires": "Swords B",
       "modifiers": {
         "hp": 0,
@@ -7021,7 +9921,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7045,7 +9945,7 @@ const definitions = {
     },
     {
       "name": "Axebreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Axes. A unit may only equip one \"Axebreaker\" ability at a time",
+      "description": "Grants Hit +30 and Avo +30 in combat against Axes. If an \"Sword Prowess\" ability is the only \"Prowess\" ability equipped, and \"Axebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Axebreaker\" ability at a time.",
       "requires": "Swords A",
       "modifiers": {
         "hp": 0,
@@ -7056,7 +9956,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7091,7 +9991,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill faire(weapon|type|axes)",
         "prot": 0,
         "resl": 0,
@@ -7114,6 +10014,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Bandit's Boots",
+      "description": "Other units can't target affected unit as a foe while they can target a different foe. If this unit has @{ability::Stealth} equipped, this unit has Mov +1.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 1
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
+      ],
+      "hidden": true,
+      "omit": true
+    },
+    {
       "name": "Barrier",
       "description": "Reduces all damage dealt to the user by 50%.",
       "requires": "Barrier",
@@ -7126,7 +10061,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7141,7 +10076,6 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "in combat"
@@ -7161,7 +10095,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7195,7 +10129,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7229,7 +10163,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7263,7 +10197,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7285,6 +10219,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Battle Stance",
+      "description": "At the start of the player phase and lasting till the end of Enemy phase choose one of 6 stats to increase by 5: Res (Solar), Def (Earth), Avo (Wind), Str (Fire), Mag (Lunar), Hit (Water).",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Aaron von Rogue School's personal.",
+      "tags": [
+        "personal",
+        "action"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Beheading Blow",
       "description": "Grants Crit +30 in combat when unit initiates combat. @{tooltip:(note):Possibly nerf to +25 if too strong.}",
       "requires": "All (Axes E) (Level 0)",
@@ -7297,13 +10266,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
         "avo": 0,
-        "crit": "fill blow(30)",
+        "crit": "fill blow(20)",
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
@@ -7333,7 +10302,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7348,11 +10317,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Snakeroot's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Book & Chain",
@@ -7367,7 +10336,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill bothif(weapon|type|spell, ask [Book & Chain?], No {0}; Yes {4} end, 0)",
         "prot": 0,
         "resl": 0,
@@ -7382,11 +10351,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Hugo von Dominic's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Bow Advantage",
@@ -7401,7 +10370,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": [
           "fill bothif(",
           "  weapon|type|bows,",
@@ -7447,7 +10416,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7471,7 +10440,7 @@ const definitions = {
     {
       "name": "Bow Prowess 1",
       "description": "Grants Hit +6, Avo +6, and Crit Avo +5 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
-      "requires": "Bows E+",
+      "requires": "Any (Bows E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7481,14 +10450,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|bows, 6, 0)",
         "avo": "fill bothif(weapon|type|bows, 6, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|bows, 5, 0)",
+        "crit": "fill bothif(weapon|type|bows, 6, 0)",
+        "cravo": "fill bothif(weapon|type|bows, 6, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -7506,7 +10475,7 @@ const definitions = {
     {
       "name": "Bow Prowess 2",
       "description": "Grants Hit +8, Avo +8, and Crit Avo +6 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
-      "requires": "Bows D+",
+      "requires": "Any (Bows D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7516,14 +10485,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|bows, 8, 0)",
         "avo": "fill bothif(weapon|type|bows, 8, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|bows, 6, 0)",
+        "crit": "fill bothif(weapon|type|bows, 8, 0)",
+        "cravo": "fill bothif(weapon|type|bows, 8, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -7541,7 +10510,7 @@ const definitions = {
     {
       "name": "Bow Prowess 3",
       "description": "Grants Hit +10, Avo +10, and Crit Avo +7 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
-      "requires": "All (Bows C+) (Level 5)",
+      "requires": "Any (All (Bows C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7551,14 +10520,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|bows, 10, 0)",
         "avo": "fill bothif(weapon|type|bows, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|bows, 7, 0)",
+        "crit": "fill bothif(weapon|type|bows, 10, 0)",
+        "cravo": "fill bothif(weapon|type|bows, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -7576,7 +10545,7 @@ const definitions = {
     {
       "name": "Bow Prowess 4",
       "description": "Grants Hit +12, Avo +12, and Crit Avo +8 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
-      "requires": "All (Bows B+) (Level 15)",
+      "requires": "Any (All (Bows B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7586,14 +10555,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|bows, 12, 0)",
         "avo": "fill bothif(weapon|type|bows, 12, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|bows, 8, 0)",
+        "crit": "fill bothif(weapon|type|bows, 12, 0)",
+        "cravo": "fill bothif(weapon|type|bows, 12, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -7611,7 +10580,7 @@ const definitions = {
     {
       "name": "Bow Prowess 5",
       "description": "Grants Hit +15, Avo +15, and Crit Avo +10 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
-      "requires": "All (Bows A+) (Level 25)",
+      "requires": "Any (All (Bows A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7621,14 +10590,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|bows, 15, 0)",
         "avo": "fill bothif(weapon|type|bows, 15, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|bows, 10, 0)",
+        "crit": "fill bothif(weapon|type|bows, 15, 0)",
+        "cravo": "fill bothif(weapon|type|bows, 15, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -7656,7 +10625,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7679,8 +10648,8 @@ const definitions = {
     },
     {
       "name": "Bowbreaker",
-      "description": "Grants Hit +20 and Avo +20 in combat against Bows.",
-      "requires": "All (Reason B+) (Level 20)",
+      "description": "Grants Hit +20 and Avo +20 in combat against Bows. If an \"Brawl Prowess\" ability is the only \"Prowess\" ability equipped, and \"Bowbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
+      "requires": "Brawl B",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -7690,12 +10659,47 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [Bowbreaker?], No {0}; Yes {20} end",
-        "avo": "ask [Bowbreaker?], No {0}; Yes {20} end",
+        "hit": "ask [Tomebreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Tomebreaker?], No {0}; Yes {20} end",
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "breaker",
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Bowbreaker+",
+      "description": "Grants Hit +30 and Avo +30 in combat against Bows. If an \"Brawl Prowess\" ability is the only \"Prowess\" ability equipped, and \"Bowbreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
+      "requires": "Brawl A",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "ask [Tomebreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Tomebreaker?], No {0}; Yes {30} end",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -7725,7 +10729,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill faire(weapon|type|bows)",
         "prot": 0,
         "resl": 0,
@@ -7760,7 +10764,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill advantage(weapon|type|brawl)",
         "prot": 0,
         "resl": 0,
@@ -7781,186 +10785,12 @@ const definitions = {
         "advantage",
         "in combat"
       ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 1",
-      "description": "Grants Hit +5, Avo +7, and Crit Avo +5 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "Brawl E+",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 5, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 7, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 5, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 2",
-      "description": "Grants Hit +6, Avo +10, and Crit Avo +6 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "Brawl D+",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 6, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 6, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 3",
-      "description": "Grants Hit +7, Avo +13, and Crit Avo +7 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "All (Brawl C+) (Level 5)",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 7, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 13, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 7, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 4",
-      "description": "Grants Hit +8, Avo +16, and Crit Avo +8 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "All (Brawl B+) (Level 15)",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 8, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 16, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 8, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Brawl Prowess 5",
-      "description": "Grants Hit +10, Avo +20, and Crit Avo +10 when unit uses Brawl. A unit may only equip one \"Brawl Prowess\" ability at a time.",
-      "requires": "All (Brawl A+) (Level 25)",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": "fill bothif(weapon|type|brawl, 10, 0)",
-        "avo": "fill bothif(weapon|type|brawl, 20, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|brawl, 10, 0)",
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "prowess",
-        "static"
-      ],
-      "hidden": false
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Brawl Consumption 1",
-      "description": "Restores 1 TP after unit uses a Brawl weapon. Consumes half an ability slot from level 15 onward. Cannot be equipped with another \"Brawl Consumption\" ability.",
+      "description": "Restores 1 TP after unit uses a Brawl weapon. Consumes half of an ability slot starting at level 15. Cannot be equipped with another \"Brawl Consumption\" ability.",
       "requires": "Any (Brawl D+) (Class Brawler)",
       "modifiers": {
         "hp": 0,
@@ -7971,7 +10801,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -7993,6 +10823,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Brawl Consumption 2",
+      "description": "Restores 1 TP after unit uses a Brawl weapon and restores 1 TP after unit uses a Brawl combat art. Cannot be equipped with another \"Brawl Consumption\" ability.",
+      "requires": "Any (All (Brawl C+) (Level 15)) (Class Grappler)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill bothif(weapon|type|brawl, -1, 0) + fill bothif(art|type|combat * weapon|type|brawl, -1, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "consumption"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Brawl Crit +10",
       "description": "Grants Crit +10 when unit uses associated weapon type.",
       "requires": "Brawl S",
@@ -8005,7 +10870,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8039,13 +10904,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|brawl, 6, 0)",
         "avo": "fill bothif(weapon|type|brawl, 6, 0)",
-        "crit": "0 * (fill bothif(weapon|type|brawl, 6, 0))",
+        "crit": "fill bothif(weapon|type|brawl, 6, 0)",
         "cravo": "fill bothif(weapon|type|brawl, 6, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -8074,13 +10939,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|brawl, 8, 0)",
         "avo": "fill bothif(weapon|type|brawl, 8, 0)",
-        "crit": "0 * (fill bothif(weapon|type|brawl, 8, 0))",
+        "crit": "fill bothif(weapon|type|brawl, 8, 0)",
         "cravo": "fill bothif(weapon|type|brawl, 8, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -8109,13 +10974,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|brawl, 10, 0)",
         "avo": "fill bothif(weapon|type|brawl, 10, 0)",
-        "crit": "0 * (fill bothif(weapon|type|brawl, 10, 0))",
+        "crit": "fill bothif(weapon|type|brawl, 10, 0)",
         "cravo": "fill bothif(weapon|type|brawl, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -8144,13 +11009,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|brawl, 12, 0)",
         "avo": "fill bothif(weapon|type|brawl, 12, 0)",
-        "crit": "0 * (fill bothif(weapon|type|brawl, 12, 0))",
+        "crit": "fill bothif(weapon|type|brawl, 12, 0)",
         "cravo": "fill bothif(weapon|type|brawl, 12, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -8179,13 +11044,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|brawl, 15, 0)",
         "avo": "fill bothif(weapon|type|brawl, 15, 0)",
-        "crit": "0 * (fill bothif(weapon|type|brawl, 15, 0))",
+        "crit": "fill bothif(weapon|type|brawl, 15, 0)",
         "cravo": "fill bothif(weapon|type|brawl, 15, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -8202,9 +11067,9 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Calm Spirit",
-      "description": "Whenever this unit targets an ally, apply @{const:gbp:[Dex +4]}, @{const:gbp:[Spd +4]}, and @{const:gbp:[Cha +4] to target ally for one turn.",
-      "requires": "Any (Class Bard) (Class Quartermaster)",
+      "name": "Brawl Satiation",
+      "description": "Restores 1 TP after unit uses Guile combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+      "requires": "All (Brawl C+) (Level 15)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -8214,7 +11079,112 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill bothif(art|type|combat * weapon|type|brawl, -1, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "consumption"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Bush Tactics",
+      "description": "Unit may choose to ignore movement penalties from difficult terrain and unit created tiles; when this unit or an ally, on its phase, applies a status condition to a foe within three spaces of this unit, apply @{condition:Pass:[Pass]} and @{condition:Canto:[Canto]} to this unit or that ally, respectively, until the end of the phase.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Butterfly Stance",
+      "description": "If unit takes no action but Wait on unit's phase, apply @{condition:Flow:[Flow]} to unit for one turn.",
+      "requires": "Class Pugilist",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": "fill stance(30)",
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "stance",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Calm Spirit",
+      "description": "When unit targets an ally, apply @{const:gbp:[Avo +10]} and @{const:gbp:[Crit Avo +10]} to target ally for one turn. If target is a battalion unit, instead restore 5 EP to that battalion.",
+      "requires": "Any (Class Warlord) (Class Quartermaster)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8248,7 +11218,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8280,7 +11250,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8301,8 +11271,8 @@ const definitions = {
     },
     {
       "name": "Cha +4",
-      "description": "Grants Cha +4.",
-      "requires": "All (Authority C) (Level 10)",
+      "description": "Replaced with @{ability::Lck +4}.",
+      "requires": "All (Authority D+) (Level 2)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -8312,7 +11282,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 4,
+        "lck": 4,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8329,8 +11299,41 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "depricated"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Charge",
+      "description": "Unit may initiate attacks as though it were in the space of its deployed battalion unit(s).",
+      "requires": "Any (Authority B+) (Armor B+)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
       "hidden": false
     },
     {
@@ -8346,7 +11349,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8365,9 +11368,10 @@ const definitions = {
       "tags": [
         "blow",
         "rework",
-        "aoe"
+        "aoe",
+        "depricated"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Close Counter",
@@ -8382,7 +11386,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8402,6 +11406,72 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Close Quarters Tactica",
+      "description": "After a combat in which this unit hit an enemy, this unit may use a tactical art targeting that enemy (and may choose to target that enemy as an all)",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Brielle von Edmund's personal.",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Cold Tempered",
+      "description": "Grants Def +4, Res +4, Str +4, and Mag +4 in combat when within two spaces of an @{tile::Ice Block}.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "mag": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "dex": 0,
+        "spd": 0,
+        "def": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "res": "ask [Cold Tempered?]; No {0}, Yes {4} end",
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": true
+    },
+    {
       "name": "Combat Artist",
       "description": "Grants Mt +5 in combat if using a combat art.",
       "requires": "Class `Master of Arms`",
@@ -8414,7 +11484,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": [
           "fill bothif(",
           "  art|equipped",
@@ -8466,7 +11536,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8501,7 +11571,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8535,7 +11605,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8561,6 +11631,248 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Cornered Animal",
+      "description": "At beginning of unit's phase, if there are four or more units within 2 spaces of unit, applies [Berserk] to unit for two turns. When unit enters combat, unit regains 2 + (number of units within two spaces) HP.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": "fill affirm([Berserk?], 3, 0)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Victor von Edmund's personal.",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Crit +5",
+      "description": "Crit +5.",
+      "requires": "Class Myrmidon",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Crit Avo +10",
+      "description": "Grants Crit Avo +10; consumes half of an ability slot starting at level 15.",
+      "requires": "",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 10,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Crit Avo +10",
+      "description": "Grants Crit Avo +10; consumes half of an ability slot starting at level 15.",
+      "requires": "",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 10,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Crit Avo +5",
+      "description": "Crit Avo +5.",
+      "requires": "Class Soldier",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 5,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Crit Avo Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Crit Avo +20]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Crit Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Crit +20]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Critical Blow",
       "description": "Grants Crit +15 in combat when unit initiates combat.",
       "requires": "Class Brigand",
@@ -8573,7 +11885,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8597,7 +11909,7 @@ const definitions = {
     },
     {
       "name": "Darting Blow",
-      "description": "Grants Spd +6 in combat when unit initiates combat.",
+      "description": "Grants Spd +5 in combat when unit initiates combat.",
       "requires": "All (Any (Swords C) (Lances C)) (Flying C) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -8605,10 +11917,10 @@ const definitions = {
         "str": 0,
         "mag": 0,
         "dex": 0,
-        "spd": "fill blow(6)",
+        "spd": "fill blow(5)",
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8632,7 +11944,7 @@ const definitions = {
     },
     {
       "name": "Darting Stance",
-      "description": "Grants Spd +5 in combat when foe initiates combat.",
+      "description": "Grants Spd +4 in combat when foe initiates combat.",
       "requires": "All (Swords B) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -8640,10 +11952,10 @@ const definitions = {
         "str": 0,
         "mag": 0,
         "dex": 0,
-        "spd": "fill stance(5)",
+        "spd": "fill stance(4)",
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8667,18 +11979,18 @@ const definitions = {
     },
     {
       "name": "Death Blow",
-      "description": "Grants Str +6 in combat when unit initiates combat.",
+      "description": "Grants Str +5 in combat when unit initiates combat.",
       "requires": "All (Axes B) (Level 15)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
-        "str": "fill blow(6)",
+        "str": "fill blow(5)",
         "mag": 0,
         "dex": 0,
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8702,8 +12014,8 @@ const definitions = {
     },
     {
       "name": "Def +2",
-      "description": "Grants Def +2.",
-      "requires": "All (Any (Lances C) (Armor C)) (Level 10)",
+      "description": "Grants Def +2; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Any (Lances D+) (Armor D+)) (Level 2)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -8713,7 +12025,7 @@ const definitions = {
         "spd": 0,
         "def": 2,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8735,6 +12047,42 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Def Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Def +4]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Defensive Tactics",
       "description": "While battalion endurance > 0, whenever this unit takes damage, that damage is reduced by 50% and battalion endurance decreases by 1",
       "requires": "Any (Authority D) (Authority C) (Authority B) (Authority A)",
@@ -8747,7 +12095,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8781,7 +12129,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8816,7 +12164,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8851,7 +12199,7 @@ const definitions = {
         "spd": 0,
         "def": "fill defiant(8)",
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8874,6 +12222,78 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Defiant Mag",
+      "description": "Grants Mag +6 in combat when HP \u2264 50%.",
+      "requires": "None",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": "fill defiant(6)",
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "defiant",
+        "in combat"
+      ],
+      "hidden": true,
+      "omit": true
+    },
+    {
+      "name": "Defiant Res",
+      "description": "Grants Res +6 in combat when HP \u2264 50%.",
+      "requires": "None",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": "fill defiant(6)",
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "defiant",
+        "in combat"
+      ],
+      "hidden": true,
+      "omit": true
+    },
+    {
       "name": "Defiant Spd",
       "description": "Grants Spd +8 in combat when HP \u2264 25%.",
       "requires": "",
@@ -8886,7 +12306,7 @@ const definitions = {
         "spd": "fill defiant(8)",
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8921,7 +12341,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8944,6 +12364,42 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Deflect Missles",
+      "description": "(Dex or Luc + 10)%  chance to change the target of foe's Sword, Lance, Axe, and Bow attacks made at Range \u2265 2 that target this unit or an adjacent ally to that foe.",
+      "requires": "All (Brawl B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "proc": "10 + more unit|total|dex else unit|total|lck end"
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "chance"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Deliverer",
       "description": "Mov +2 while an ally with @{condition:Shelter:[Shelter]} is in the same space (can apply mid phase; increases maximum movement).",
       "requires": "Class `Gryphon Rider`",
@@ -8956,7 +12412,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -8976,6 +12432,39 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Despair Aura",
+      "description": "At the beginning of this unit\u2019s phase, foes within 2 spaces take 10% nonlethal damage.",
+      "requires": "Class `Dark Knight`",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": true,
+      "omit": true
+    },
+    {
       "name": "Desperation",
       "description": "@{const:ap:AP +1} if unit\u2019s HP is \u2264 50% and unit\u2019s @{const:ap:AP = 2}.",
       "requires": "All (Riding C+) (Level 15)",
@@ -8988,7 +12477,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9009,8 +12498,8 @@ const definitions = {
     },
     {
       "name": "Dex +4",
-      "description": "Grants Dex +4.",
-      "requires": "All (Riding C) (Level 10)",
+      "description": "Grants Dex +4; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Brawl D+) (Level 2)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9020,7 +12509,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9054,7 +12543,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9086,7 +12575,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9120,7 +12609,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9142,7 +12631,7 @@ const definitions = {
     {
       "name": "Duelist's Blow",
       "description": "Grants Avo +20 in combat when unit initiates combat.",
-      "requires": "All (Sword B+) (Faith B+)",
+      "requires": "All (Swords B+) (Faith B+)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9152,7 +12641,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9187,7 +12676,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9210,6 +12699,38 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Emergency Invigoration",
+      "description": "When unit targets an ally, apply @{const:ap:[AP \u2265 2]} to target ally for one turn. (Ally's minimum AP becomes 2 for one turn.)",
+      "requires": "Class Quartermaster",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Enclosing Wall",
       "description": "Reduces all damage dealt to the user by 50%. Can only endure one round of combat before being destroyed.",
       "requires": "Barrier",
@@ -9222,7 +12743,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9256,7 +12777,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9290,7 +12811,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill advantage(weapon|type|faith)",
         "prot": 0,
         "resl": 0,
@@ -9315,8 +12836,8 @@ const definitions = {
     },
     {
       "name": "Faith Consumption 1",
-      "description": "Restores 1 TP after unit uses a Faith weapon.",
-      "requires": "Any (Class Priest) (Class `War Cleric/Priest`)",
+      "description": "Restores 1 TP after unit uses a Faith weapon. Consumes half of an ability slot starting at level 15. Cannot be equipped with another \"Faith Consumption\" ability.",
+      "requires": "Any (Faith D+) (Class Priest) (Class `War Cleric/Priest`)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9326,7 +12847,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9349,7 +12870,7 @@ const definitions = {
     },
     {
       "name": "Faith Consumption 2",
-      "description": "Restores 1 TP after unit uses a Faith weapon and restores 1 TP after unit uses Faith metamagic.",
+      "description": "Restores 1 TP after unit uses a Faith weapon and restores 1 TP after unit uses Faith metamagic.  Cannot be equipped with another \"Faith Consumption\" ability.",
       "requires": "Class Bishop",
       "modifiers": {
         "hp": 0,
@@ -9360,7 +12881,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9394,7 +12915,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9428,7 +12949,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill bothif(weapon|type|faith * unit|tagged|healing, 10, 0)",
         "prot": 0,
         "resl": 0,
@@ -9462,7 +12983,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill bothif(weapon|type|faith * unit|tagged|healing, 5, 0)",
         "prot": 0,
         "resl": 0,
@@ -9496,7 +13017,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9530,7 +13051,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9552,7 +13073,7 @@ const definitions = {
     {
       "name": "Faith Prowess 1",
       "description": "Grants Hit +5, Avo +7, and Crit Avo +5 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
-      "requires": "Faith E+",
+      "requires": "Any (Faith E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9562,14 +13083,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|faith, 5, 0)",
         "avo": "fill bothif(weapon|type|faith, 7, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|faith, 5, 0)",
+        "crit": "fill bothif(weapon|type|faith, 5, 0)",
+        "cravo": "fill bothif(weapon|type|faith, 7, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -9587,7 +13108,7 @@ const definitions = {
     {
       "name": "Faith Prowess 2",
       "description": "Grants Hit +6, Avo +10, and Crit Avo +6 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
-      "requires": "Faith D+",
+      "requires": "Any (Faith D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9597,14 +13118,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|faith, 6, 0)",
         "avo": "fill bothif(weapon|type|faith, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|faith, 6, 0)",
+        "crit": "fill bothif(weapon|type|faith, 6, 0)",
+        "cravo": "fill bothif(weapon|type|faith, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -9622,7 +13143,7 @@ const definitions = {
     {
       "name": "Faith Prowess 3",
       "description": "Grants Hit +7, Avo +13, and Crit Avo +7 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
-      "requires": "All (Faith C+) (Level 5)",
+      "requires": "Any (All (Faith C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9632,14 +13153,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|faith, 7, 0)",
         "avo": "fill bothif(weapon|type|faith, 13, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|faith, 7, 0)",
+        "crit": "fill bothif(weapon|type|faith, 7, 0)",
+        "cravo": "fill bothif(weapon|type|faith, 13, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -9657,7 +13178,7 @@ const definitions = {
     {
       "name": "Faith Prowess 4",
       "description": "Grants Hit +8, Avo +16, and Crit Avo +8 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
-      "requires": "All (Faith B+) (Level 15)",
+      "requires": "Any (All (Faith B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9667,14 +13188,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|faith, 8, 0)",
         "avo": "fill bothif(weapon|type|faith, 16, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|faith, 8, 0)",
+        "crit": "fill bothif(weapon|type|faith, 8, 0)",
+        "cravo": "fill bothif(weapon|type|faith, 16, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -9692,7 +13213,7 @@ const definitions = {
     {
       "name": "Faith Prowess 5",
       "description": "Grants Hit +10, Avo +20, and Crit Avo +10 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
-      "requires": "All (Faith A+) (Level 25)",
+      "requires": "Any (All (Faith A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9702,14 +13223,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|faith, 10, 0)",
         "avo": "fill bothif(weapon|type|faith, 20, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|faith, 10, 0)",
+        "crit": "fill bothif(weapon|type|faith, 10, 0)",
+        "cravo": "fill bothif(weapon|type|faith, 20, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -9737,7 +13258,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9759,6 +13280,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Faith Satiation",
+      "description": "Restores 1 TP after unit uses Guile combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+      "requires": "All (Faith C+) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill bothif(art|type|combat * weapon|type|faith, -1, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "consumption"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Faith Tomefaire",
       "description": "Grants Mt +5 when unit uses associated weapon type.",
       "requires": "Faith S+",
@@ -9771,7 +13327,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill faire(not(unit|tagged|healing) * weapon|type|faith)",
         "prot": 0,
         "resl": 0,
@@ -9794,19 +13350,86 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Far Counter",
+      "description": "Allows user to make a single attack as a counter attack when attacked from greater than 1 space while unit has a Brawl weapon equipped.",
+      "requires": "Brawl C",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Fear of Fire",
+      "description": "If unit is hit with a Fire element Reason spell or takes damage from a @{tile::Fire Patch}, apply @{const:gbp:[Def -4]}, @{const:gbp:[Res -4]}, and @{const:gbp:[Spd -4]} to unit for two turns or until unit is hit in combat.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
+        "def": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
+        "res": "ask [Fear of Fire?]; No {0}, Yes {-4} end",
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": true
+    },
+    {
       "name": "Fiendish Blow",
-      "description": "Grants Mag +6 in combat when unit initiates combat. A unit may only equip one \"Fiendish Blow\" ability at a time.",
+      "description": "Grants Mag +5 in combat when unit initiates combat. A unit may only equip one \"Fiendish Blow\" ability at a time.",
       "requires": "All (Any (Reason B) (Guile B)) (Level 15)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
         "str": 0,
-        "mag": "fill blow(6)",
+        "mag": "fill blow(5)",
         "dex": 0,
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9830,18 +13453,18 @@ const definitions = {
     },
     {
       "name": "Fiendish Stance",
-      "description": "Grants Mag +5 in combat when foe initiates combat.",
+      "description": "Grants Mag +4 in combat when foe initiates combat.",
       "requires": "All (Reason B) (Level 15)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
         "str": 0,
-        "mag": "fill stance(5)",
+        "mag": "fill stance(4)",
         "dex": 0,
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9865,18 +13488,18 @@ const definitions = {
     },
     {
       "name": "Fierce Stance",
-      "description": "Grants Str +5 in combat when foe initiates combat.",
+      "description": "Grants Str +4 in combat when foe initiates combat.",
       "requires": "All (Lances B) (Level 15)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
-        "str": "fill stance(5)",
+        "str": "fill stance(4)",
         "mag": 0,
         "dex": 0,
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9899,6 +13522,76 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Fistbreaker",
+      "description": "Grants Hit +30 and Avo +30 in combat against Bows. If an \"Reason Prowess\", \"Faith Prowess\", or \"Guile Prowess\" ability is the only \"Prowess\" ability equipped, and \"Fistbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Fistbreaker\" ability at a time.",
+      "requires": "Brawl A",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "ask [Fistbreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Fistbreaker?], No {0}; Yes {20} end",
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "breaker",
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Fistbreaker+",
+      "description": "Grants Hit +30 and Avo +30 in combat against Bows. If an \"Reason Prowess\", \"Faith Prowess\", or \"Guile Prowess\" ability is the only \"Prowess\" ability equipped, and \"Fistbreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Fistbreaker\" ability at a time.",
+      "requires": "Brawl A",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "ask [Fistbreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Fistbreaker?], No {0}; Yes {30} end",
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "breaker",
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Flanking Maneuver",
       "description": "Hit +15 in combat when unit and or more allies are adjacent to target foe.",
       "requires": "Class Hussar",
@@ -9911,7 +13604,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9939,7 +13632,7 @@ const definitions = {
     {
       "name": "Flashing Blade",
       "description": "Decreases threshold to double foes by 1 in combat.",
-      "requires": "Class Cavalier",
+      "requires": "Any (Class Cavalier) (Class Myrmidon)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9949,7 +13642,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -9985,7 +13678,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10005,6 +13698,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Flying Fortress",
+      "description": "This unit is always considered an Armor Unit. Gains 2 Skill Points in Armor per Level Up. (Starting from 1.) When this Unit's HP is <= 25%, this unit can use their Save from (Magic or Weapons) on a foe within range. When Save from (Magic or Weapons) is used in this way, the foe cannot attack this Unit, and after unit can make a contested check against the foe. (Unit's STR+DEX vs. Foe's current HP * 2) If the unit wins, the foe is forcibly engaged into combat instead of this Unit if they're attacked.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Beatrice von Edmund's personal.",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Focus",
       "description": "Grants Crit +10 when there are no adjacent allies.",
       "requires": "Class `Dark Mage`",
@@ -10016,7 +13743,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10039,6 +13766,38 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Freak of Nature",
+      "description": "Grants Def +4 and Res +4 in combat if unit is within two spaces of another monster unit, and grants Mag +4 and Str +4 in combat to other monster units within two spaces.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": "ask [Freak of Nature]; No {0}, Yes {4} end",
+        "res": "ask [Freak of Nature]; No {0}, Yes {4} end",
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": true
+    },
+    {
       "name": "Giant Wings",
       "description": "Grants Avo +30 against sword, lance, or axe users.",
       "requires": "Barrier",
@@ -10051,7 +13810,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10085,7 +13844,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10100,26 +13859,26 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Fleur von Albreht's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
-      "name": "Goddess' Blessings",
-      "description": "Grants +5 Mag when unit is at 100% HP, and +5 Res when unit is below 50% HP.",
+      "name": "Give and Break",
+      "description": "The first time this unit is targeted by an ally on each phase, apply @{condition:Favor:[Favor]} to that ally; the first time this unit targets an ally each phase, apply @{condition:Favor:[Favor]} to this unit.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
         "sp": 0,
         "str": 0,
-        "mag": "fill affirm([50% Blessing?], 5, 0)",
+        "mag": 0,
         "dex": 0,
         "spd": 0,
         "def": 0,
-        "res": "fill affirm([100% Blessing?], 5, 0)",
-        "cha": 0,
+        "res": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10138,11 +13897,46 @@ const definitions = {
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": false,
+      "omit": false
+    },
+    {
+      "name": "Goddess' Blessings",
+      "description": "Grants +5 Mag when unit is at 100% HP, and +5 Res when unit is below 50% HP.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": "fill affirm([50% Blessing?], 5, 0)",
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": "fill affirm([100% Blessing?], 5, 0)",
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Amelie Cosgrove's personal.",
+      "tags": [
+        "personal"
+      ],
+      "hidden": true
     },
     {
       "name": "Group Lull Def/Cha",
-      "description": "Grants Lull Def and Lull Cha in combat to all units in combat with foes within 2 spaces.Def -3 and Cha -3 in combat and ignore foe's in combat bonuses to Def and Cha to all foes granted by other abilities.",
+      "description": "Grants Lull Def and Lull Lck in combat to all units in combat with foes within 2 spaces.Def -3 and Lck -3 in combat and ignore foe's in combat bonuses to Def and Lck to all foes granted by other abilities.",
       "requires": "All (Reason B+) (Armor B+)",
       "modifiers": {
         "hp": 0,
@@ -10153,7 +13947,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10188,7 +13982,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10223,7 +14017,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill advantage(weapon|type|guile)",
         "prot": 0,
         "resl": 0,
@@ -10248,8 +14042,8 @@ const definitions = {
     },
     {
       "name": "Guile Consumption 1",
-      "description": "Restores 1 TP after unit uses a Guile weapon.",
-      "requires": "Class `Dark Mage`",
+      "description": "Restores 1 TP after unit uses a Guile weapon. Consumes half of an ability slot starting at level 15. Cannot be equipped with another \"Guile Consumption\" ability.",
+      "requires": "Any (Guile D+) (Class `Dark Mage`)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10259,7 +14053,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10282,7 +14076,7 @@ const definitions = {
     },
     {
       "name": "Guile Consumption 2",
-      "description": "Restores 1 TP after unit uses a Guile weapon and restores 1 TP after unit uses Guile metamagic.",
+      "description": "Restores 1 TP after unit uses a Guile weapon and restores 1 TP after unit uses Guile metamagic.  Cannot be equipped with another \"Guile Consumption\" ability.",
       "requires": "Class Druid",
       "modifiers": {
         "hp": 0,
@@ -10293,7 +14087,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10327,7 +14121,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10361,7 +14155,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10385,7 +14179,7 @@ const definitions = {
     {
       "name": "Guile Prowess 1",
       "description": "Grants Hit +7, Avo +5, and Crit Avo +5 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
-      "requires": "Guile E+",
+      "requires": "Any (Guile E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10395,14 +14189,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill bothif(weapon|type|guile, 7, 0)",
-        "avo": "fill bothif(weapon|type|guile, 5, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|guile, 5, 0)",
+        "hit": "fill bothif(weapon|type|guile, 6, 0)",
+        "avo": "fill bothif(weapon|type|guile, 6, 0)",
+        "crit": "fill bothif(weapon|type|guile, 6, 0)",
+        "cravo": "fill bothif(weapon|type|guile, 6, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -10420,7 +14214,7 @@ const definitions = {
     {
       "name": "Guile Prowess 2",
       "description": "Grants Hit +10, Avo +6, and Crit Avo +6 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
-      "requires": "Guile D+",
+      "requires": "Any (Guile D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10430,14 +14224,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill bothif(weapon|type|guile, 10, 0)",
-        "avo": "fill bothif(weapon|type|guile, 6, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|guile, 6, 0)",
+        "hit": "fill bothif(weapon|type|guile, 8, 0)",
+        "avo": "fill bothif(weapon|type|guile, 8, 0)",
+        "crit": "fill bothif(weapon|type|guile, 8, 0)",
+        "cravo": "fill bothif(weapon|type|guile, 8, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -10455,7 +14249,7 @@ const definitions = {
     {
       "name": "Guile Prowess 3",
       "description": "Grants Hit +13, Avo +7, and Crit Avo +7 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
-      "requires": "All (Guile C+) (Level 5)",
+      "requires": "Any (All (Guile C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10465,14 +14259,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill bothif(weapon|type|guile, 13, 0)",
-        "avo": "fill bothif(weapon|type|guile, 7, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|guile, 7, 0)",
+        "hit": "fill bothif(weapon|type|guile, 10, 0)",
+        "avo": "fill bothif(weapon|type|guile, 10, 0)",
+        "crit": "fill bothif(weapon|type|guile, 10, 0)",
+        "cravo": "fill bothif(weapon|type|guile, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -10490,7 +14284,7 @@ const definitions = {
     {
       "name": "Guile Prowess 4",
       "description": "Grants Hit +16, Avo +8, and Crit Avo +8 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
-      "requires": "All (Guile B+) (Level 15)",
+      "requires": "Any (All (Guile B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10500,14 +14294,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill bothif(weapon|type|guile, 16, 0)",
-        "avo": "fill bothif(weapon|type|guile, 8, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|guile, 8, 0)",
+        "hit": "fill bothif(weapon|type|guile, 12, 0)",
+        "avo": "fill bothif(weapon|type|guile, 12, 0)",
+        "crit": "fill bothif(weapon|type|guile, 12, 0)",
+        "cravo": "fill bothif(weapon|type|guile, 12, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -10525,7 +14319,7 @@ const definitions = {
     {
       "name": "Guile Prowess 5",
       "description": "Grants Hit +20, Avo +10, and Crit Avo +10 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
-      "requires": "All (Guile A+) (Level 25)",
+      "requires": "Any (All (Guile A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10535,14 +14329,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill bothif(weapon|type|guile, 20, 0)",
-        "avo": "fill bothif(weapon|type|guile, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|guile, 10, 0)",
+        "hit": "fill bothif(weapon|type|guile, 15, 0)",
+        "avo": "fill bothif(weapon|type|guile, 15, 0)",
+        "crit": "fill bothif(weapon|type|guile, 15, 0)",
+        "cravo": "fill bothif(weapon|type|guile, 15, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -10570,7 +14364,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10592,6 +14386,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Guile Satiation",
+      "description": "Restores 1 TP after unit uses Guile combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+      "requires": "All (Guile C+) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill bothif(art|type|combat * weapon|type|guile, -1, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "consumption"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Guile Tomefaire",
       "description": "Grants Mt +5 when unit uses associated weapon type.",
       "requires": "Guile S+",
@@ -10604,7 +14433,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill faire(weapon|type|guile)",
         "prot": 0,
         "resl": 0,
@@ -10628,7 +14457,7 @@ const definitions = {
     },
     {
       "name": "HP +5",
-      "description": "Grants Max HP +5.",
+      "description": "Grants Max HP +5; consumes half of an ability slot starting at level 10.",
       "requires": "Level 5",
       "modifiers": {
         "hp": 5,
@@ -10638,7 +14467,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10661,6 +14490,76 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Hallowed Effigy",
+      "description": "When this unit targets another unit, it may choose to end @{condition:Branded:[Branded]} on all of affected units and then apply @{condition:Branded:[Branded]} to that unit.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Harrying Blow",
+      "description": "If unit initiated combat at Range = 1 while mounted, then on hit, after combat, apply @{condition:Taunted:[Taunted]} to target foe for one turn.",
+      "requires": "Any (Riding C+) (Flying C+)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "blow",
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Heartseeker",
       "description": "Adjacent foes have Avo -20 in combat.",
       "requires": "Class Druid",
@@ -10672,7 +14571,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10707,7 +14606,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10741,7 +14640,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10766,8 +14665,8 @@ const definitions = {
     },
     {
       "name": "Heckle",
-      "description": "Before unit or adjacent ally enters combat, Cha% chance prevent foe from making a follow-up attack in that combat.",
-      "requires": "None",
+      "description": "Before unit or adjacent ally enters combat, (Luc + 20)% chance to make foe\u2019s @{const:ap:AP = 1} for that combat if foe is not using arts.",
+      "requires": "All (Authority D) (Level 5)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10777,7 +14676,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10792,6 +14691,13 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "rows": [
+        {
+          "when": "not(weapon|tagged|no_might) * not(weapon|tagged|no_hit)",
+          "expr": "unit|total|luc + 20 + other|trigger",
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "chance"
@@ -10811,7 +14717,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill bothif(art|equipped, fill affirm([Hero Complex?], 5, 0), 0)",
         "prot": 0,
         "resl": 0,
@@ -10826,11 +14732,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Lianne Amsel's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Hide Piercer",
@@ -10845,7 +14751,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10879,7 +14785,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10913,7 +14819,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10947,7 +14853,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -10969,6 +14875,76 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Hit +5",
+      "description": "Hit +5.",
+      "requires": "Class Mercenary",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 5,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Hit Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Hit +20]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Hit/Avo +10",
       "description": "Grants Hit +10 and Avo +10.",
       "requires": "Class `Witch Hunter`",
@@ -10981,7 +14957,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11003,9 +14979,9 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "If Looks Could Kill",
-      "description": "When attacking, there is a 35% chance that Lillanna can add half her Cha to calculate damage. After using the Dance action, there is a 100% chance that this ability will activate on the next attack made by Lillianna",
-      "requires": "Innate",
+      "name": "Hope Aura",
+      "description": "At the beginning of this unit\u2019s phase, allies within 2 spaces recover 10% HP.",
+      "requires": "Class `Holy Knight`",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11015,41 +14991,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
-        "mt": "ask [Killing Look?], No {0}; Yes {floor((unit|total|cha) / 2)} end",
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "personal"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Inspiration",
-      "description": "Before unit or adjacent ally enters combat, (Cha * 0.75)% chance to grant unit or adjacent ally a guaranteed follow-up attack in the combat.",
-      "requires": "None",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11064,6 +15006,80 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": true,
+      "omit": true
+    },
+    {
+      "name": "If Looks Could Kill",
+      "description": "When attacking, there is a 35% chance that Lillanna can add half her Lck to calculate damage. After using the Dance action, there is a 100% chance that this ability will activate on the next attack made by Lillianna",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": "ask [Killing Look?], No {0}; Yes {floor((unit|total|lck) / 2)} end",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Lillianna von Bergliez's personal.",
+      "tags": [
+        "personal"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Inspiration",
+      "description": "Before unit or adjacent ally enters combat, (Luc + 10)% chance to grant unit or adjacent ally @{const:ap:AP \u2265 2} in the combat.",
+      "requires": "All (Authority D) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "rows": [
+        {
+          "when": "not(weapon|tagged|no_might) * not(weapon|tagged|no_hit)",
+          "expr": "unit|total|luc + 10 + other|trigger",
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "chance"
@@ -11083,7 +15099,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11104,18 +15120,18 @@ const definitions = {
     },
     {
       "name": "Item Expertise",
-      "description": "This unit gains the following benefits:\n* Ignore break chances.\n* Items with Range 0 have Range +1\n* Consumable items and nonspell weapons cost 1 less TP.\nThis unit has an additional inventory slot that can only hold consumable items.",
+      "description": "This unit gains the following benefits:\n \u2022 Ignore break chances.\n  \u2022 Items with Range 0 have Range +1\n* Consumable items and nonspell weapons cost 1 less TP.\n \u2022 This unit has an additional inventory slot that can only hold consumable items.",
       "requires": "Any (Class Apothecary) (Class Quartermaster)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
         "str": 0,
-        "mag": 2,
+        "mag": 0,
         "dex": 0,
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11125,7 +15141,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": "fill bothif(not(weapon|template|maxrng), 1, 0)",
-        "tpcost": "fill bothif(not(weapon|type|spell) * weapon|template|tpcost, -1, 0)",
+        "tpcost": "fill bothif(not(weapon|type|spell) * weapon|total|tpcost, -1, 0)",
         "spcost": 0,
         "tp": 0,
         "mov": 0
@@ -11146,7 +15162,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11169,6 +15185,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Judo Stance",
+      "description": "When foe initiates combat, after combat, foe takes nonlethal damage equal to half of damage taken by unit during combat.",
+      "requires": "All (Brawl C+) (Level 10)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "stance"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Keen Intuition",
       "description": "Grants Avo +30 during combat with a foe 2 or more spaces away.",
       "requires": "Barrier",
@@ -11181,7 +15232,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11215,7 +15266,7 @@ const definitions = {
         "spd": 0,
         "def": "ask [Damaged Allies?]; [0] {0}, [1] {1}, [3] {3}, [5] {6} end",
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11230,11 +15281,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Eleanor Higgins's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lance Advantage",
@@ -11249,7 +15300,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill advantage(weapon|type|lances)",
         "prot": 0,
         "resl": 0,
@@ -11285,7 +15336,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11319,14 +15370,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|lances, 6, 0)",
         "avo": "fill bothif(weapon|type|lances, 6, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|lances, 5, 0)",
+        "crit": "fill bothif(weapon|type|lances, 6, 0)",
+        "cravo": "fill bothif(weapon|type|lances, 6, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -11354,14 +15405,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|lances, 8, 0)",
         "avo": "fill bothif(weapon|type|lances, 8, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|lances, 6, 0)",
+        "crit": "fill bothif(weapon|type|lances, 8, 0)",
+        "cravo": "fill bothif(weapon|type|lances, 8, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -11389,14 +15440,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|lances, 10, 0)",
         "avo": "fill bothif(weapon|type|lances, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|lances, 7, 0)",
+        "crit": "fill bothif(weapon|type|lances, 10, 0)",
+        "cravo": "fill bothif(weapon|type|lances, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -11424,14 +15475,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|lances, 12, 0)",
         "avo": "fill bothif(weapon|type|lances, 12, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|lances, 8, 0)",
+        "crit": "fill bothif(weapon|type|lances, 12, 0)",
+        "cravo": "fill bothif(weapon|type|lances, 12, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -11459,14 +15510,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|lances, 15, 0)",
         "avo": "fill bothif(weapon|type|lances, 15, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|lances, 10, 0)",
+        "crit": "fill bothif(weapon|type|lances, 15, 0)",
+        "cravo": "fill bothif(weapon|type|lances, 15, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -11483,8 +15534,8 @@ const definitions = {
     },
     {
       "name": "Lancebreaker",
-      "description": "Grants Hit +20 and Avo +20 in combat against Lances. A unit may only equip one \"Lancebreaker\" ability at a time",
-      "requires": "Axes B",
+      "description": "Grants Hit +20 and Avo +20 in combat against Lances. If an \"Axe Prowess\" ability is the only \"Prowess\" ability equipped, and \"Lancebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Lancebreaker\" ability at a time.",
+      "requires": "Lances B",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11494,7 +15545,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11518,7 +15569,7 @@ const definitions = {
     },
     {
       "name": "Lancebreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Lances. A unit may only equip one \"Lancebreaker\" ability at a time",
+      "description": "Grants Hit +30 and Avo +30 in combat against Lances. If an \"Axe Prowess\" ability is the only \"Prowess\" ability equipped, and \"Lancebreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Lancebreaker\" ability at a time",
       "requires": "Axes A",
       "modifiers": {
         "hp": 0,
@@ -11529,7 +15580,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11564,7 +15615,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill faire(weapon|type|lances)",
         "prot": 0,
         "resl": 0,
@@ -11587,8 +15638,42 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Lck +4",
+      "description": "Grants Lck +4; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Authority D+) (Level 2)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 4,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Lead by Example",
-      "description": "After using an \"Order\" tactical art on its phase, this unit may immediately use a non-\"Order\" tactical art without the \"measured\" tag, or initiate combat with a foe in weapon range.",
+      "description": "After this unit uses a gambit without the Measured tag, this unit may immediately use a tactical art without the Measured tag, or initiate combat with a foe in weapon range. Both instances of forced movement may apply to battalion units and ignore Auto range.",
       "requires": "Any (Authority A) (Class Lord) (Class Banneret) (Class General) (Class `Crow Knight`)",
       "modifiers": {
         "hp": 0,
@@ -11599,7 +15684,7 @@ const definitions = {
         "spd": 0,
         "def": 2,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11622,6 +15707,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Let Me Protect You",
+      "description": "As an action, apply @{const:gbp:[Def +4]} to allies within two spaces for one turn.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "\u59eb\u5b50 von Varley's personal.",
+      "tags": [
+        "personal",
+        "action"
+      ],
+      "hidden": true
+    },
+    {
       "name": "Lethality",
       "description": "Dex/4% chance to instantly defeat target foe when dealing damage.",
       "requires": "All (Swords 20) (Bows 20) (Level 20)",
@@ -11634,7 +15754,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11668,7 +15788,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11713,7 +15833,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11746,7 +15866,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11766,6 +15886,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Logistical Support",
+      "description": "Can only be equipped by Flying units. While mounted, healing received by allies within Range 2 is increased by 5 while unit\u2019s level \u2264 10 or 10 if unit\u2019s level > 10. ",
+      "requires": "Flying C",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "healing"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Lucky Seven",
       "description": "At the beginning of this unit's phase, roll 1d7 and apply the corresonding condition to this unit for one turn: 1=@{const:gbp:[Str +5]}, 2=@{const:gbp:[Mag +5]}, 3=@{const:gbp:[Spd +5]}, 4=@{const:gbp:[Def +5]}, 5=@{const:gbp:[Res +5]}, 6=@{const:gbp:[Hit +5]}, 7=@{const:gbp:[Avo +5]}. If this unit has more than once instance of @{ability::Lucky Seven} equipped, the effect of each instance beyond the first becomes: Once per turn, at the beginning of this units phase, this unit may reroll its Lucky Seven die result.",
       "requires": "All (Swords B+) (Faith B+)",
@@ -11778,7 +15933,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11799,7 +15954,7 @@ const definitions = {
     },
     {
       "name": "Lull Cha",
-      "description": "In combat, Cha -3 to foe and ignore foe's in combat bonuses granted to Cha by other abilities.",
+      "description": "In combat, Lck -3 to foe and ignore foe's in combat bonuses granted to Lck by other abilities.",
       "requires": "None",
       "modifiers": {
         "hp": 0,
@@ -11810,7 +15965,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11845,7 +16000,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11880,7 +16035,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11915,7 +16070,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11950,7 +16105,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -11985,7 +16140,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "(ask [Expend Charges?] end * 2)",
         "prot": 0,
         "resl": 0,
@@ -12000,16 +16155,16 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Simdora Lycan's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Mag +2",
-      "description": "Grants Mag +2.",
-      "requires": "All (Any (Reason C) (Guile C)) (Level 10)",
+      "description": "Grants Mag +2; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Any (Reason D+) (Guile D+)) (Level 2)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -12019,7 +16174,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12041,9 +16196,9 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Major Crest of Aubin",
-      "description": "20% chance to prevent foes' counterattacks when using a non-spell weapon.",
-      "requires": "Innate",
+      "name": "Mag Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Mag +4]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -12053,7 +16208,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12066,9 +16221,52 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Major Crest of Aubin",
+      "description": "20% chance to prevent foes' counterattacks when using a non-spell weapon.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "rows": [
+        {
+          "name": "Crest of Aubin",
+          "when": "weapon|type|weapon",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12090,7 +16288,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12103,9 +16301,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Blaiddyd",
+          "when": "art|type|weapon",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12127,7 +16332,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12140,9 +16345,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 50
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Cethleann",
+          "when": "unit|tagged|healing",
+          "expr": 50,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12165,7 +16377,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12178,9 +16390,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 70
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Charon",
+          "when": "art|type|weapon",
+          "expr": 70,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12203,7 +16422,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12216,9 +16435,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 50
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Chevalier",
+          "when": "art|type|weapon",
+          "expr": 50,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12240,7 +16466,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12253,9 +16479,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 50
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Cichol",
+          "when": "art|type|weapon",
+          "expr": 50,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12277,7 +16510,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12290,9 +16523,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 70
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Daphnel",
+          "when": "art|type|weapon",
+          "expr": 70,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12315,7 +16555,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12328,9 +16568,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Dominic",
+          "when": "weapon|type|spell",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12352,7 +16599,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12368,6 +16615,14 @@ const definitions = {
         "mov": 0,
         "proc": 20
       },
+      "rows": [
+        {
+          "name": "Crest of the Ernest",
+          "when": "weapon|type|weapon",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12378,7 +16633,7 @@ const definitions = {
     },
     {
       "name": "Major Crest of Flames",
-      "description": "20% chance restore HP equal to 30% of damage dealt and 20% chance to grant Mt +5 and prevent foes' counterattacks. You implement this yourself.",
+      "description": "20% chance restore HP equal to 30% of damage dealt and 20% chance to grant Mt +5 and prevent foes' counterattacks.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -12389,7 +16644,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12404,6 +16659,18 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Flames (HP)",
+          "expr": 20,
+          "roll": true
+        },
+        {
+          "name": "Crest of the Flames (Mt)",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12426,7 +16693,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12439,9 +16706,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 40
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Fraldarius",
+          "when": "weapon|type|weapon",
+          "expr": 40,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12464,7 +16738,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12480,6 +16754,14 @@ const definitions = {
         "mov": 0,
         "proc": 70
       },
+      "rows": [
+        {
+          "name": "Crest of the Gautier",
+          "when": "art|type|weapon",
+          "expr": 70,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12502,7 +16784,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12515,9 +16797,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Gloucester",
+          "when": "weapon|type|spell",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12540,7 +16829,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12553,9 +16842,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 50
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Goneril",
+          "when": "art|type|weapon",
+          "expr": 50,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12577,7 +16873,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12590,9 +16886,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Indech",
+          "when": "weapon|type|weapon",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12614,7 +16917,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12630,6 +16933,14 @@ const definitions = {
         "mov": 0,
         "proc": 20
       },
+      "rows": [
+        {
+          "name": "Crest of the Lamine",
+          "when": "unit|tagged|healing",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12651,7 +16962,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12664,9 +16975,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Macuil",
+          "when": "weapon|type|spell",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12689,7 +17007,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12702,9 +17020,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Noa",
+          "when": "weapon|type|spell",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12726,7 +17051,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12739,9 +17064,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 50
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Riegen",
+          "when": "art|type|weapon",
+          "expr": 50,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12763,7 +17095,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12776,9 +17108,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 70
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Seiros",
+          "when": "art|type|weapon",
+          "expr": 70,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12801,44 +17140,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "proc": 20
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "crest",
-        "major",
-        "chance"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Minor Crest of the Beast",
-      "description": "20% chance to grant Mt +5 when using non-spell weapons.",
-      "requires": "Innate",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12853,12 +17155,19 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Timotheos",
+          "when": "unit|tagged|healing",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
-        "minor",
-        "chance",
-        "in combat"
+        "major",
+        "chance"
       ],
       "hidden": false
     },
@@ -12875,7 +17184,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12888,9 +17197,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 40
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Beast",
+          "when": "weapon|type|weapon",
+          "expr": 40,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -12913,7 +17229,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -12945,7 +17261,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill affirm([Measured Retaliation?], 4, 0)",
         "prot": "fill affirm([Measured Retaliation?], 4, 0)",
         "resl": "fill affirm([Measured Retaliation?], 4, 0)",
@@ -12960,11 +17276,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Keyve Molinaro's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Metamagician",
@@ -12979,7 +17295,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": [
           "fill bothif(",
           "  art|equipped",
@@ -13029,7 +17345,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13042,9 +17358,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 10
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of Aubin",
+          "when": "weapon|type|weapon",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13066,7 +17389,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13079,9 +17402,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 10
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Blaiddyd",
+          "when": "art|type|weapon",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13103,7 +17433,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13116,9 +17446,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 30
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Cethleann",
+          "when": "unit|tagged|healing",
+          "expr": 30,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13141,7 +17478,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13154,9 +17491,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 40
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Charon",
+          "when": "art|type|weapon",
+          "expr": 40,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13179,7 +17523,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13192,9 +17536,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 30
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Chevalier",
+          "when": "art|type|weapon",
+          "expr": 30,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13216,7 +17567,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13229,9 +17580,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 30
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Cichol",
+          "when": "art|type|weapon",
+          "expr": 30,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13253,7 +17611,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13266,9 +17624,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 40
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Daphnel",
+          "when": "art|type|weapon",
+          "expr": 40,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13291,7 +17656,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13307,6 +17672,14 @@ const definitions = {
         "mov": 0,
         "proc": 10
       },
+      "rows": [
+        {
+          "name": "Crest of the Dominic",
+          "when": "weapon|type|spell",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13328,44 +17701,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "proc": 10
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "crest",
-        "minor",
-        "chance"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Minor Crest of Flames",
-      "description": "10% chance restore HP equal to 30% of damage dealt and 10% chance to grant Mt +5 and prevent foes' counterattacks. You implement this yourself.",
-      "requires": "Innate",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13380,6 +17716,62 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Ernest",
+          "when": "weapon|type|weapon",
+          "expr": 10,
+          "roll": true
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "crest",
+        "minor",
+        "chance"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Minor Crest of Flames",
+      "description": "10% chance restore HP equal to 30% of damage dealt and 10% chance to grant Mt +5 and prevent foes' counterattacks.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "rows": [
+        {
+          "name": "Crest of the Flames (HP)",
+          "expr": 10,
+          "roll": true
+        },
+        {
+          "name": "Crest of the Flames (Mt)",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13402,7 +17794,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13415,9 +17807,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Fraldarius",
+          "when": "weapon|type|weapon",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13440,7 +17839,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13453,9 +17852,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 40
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Gautier",
+          "when": "art|type|weapon",
+          "expr": 40,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13478,7 +17884,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13491,9 +17897,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 10
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Gloucester",
+          "when": "weapon|type|spell",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13516,7 +17929,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13529,9 +17942,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 30
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Goneril",
+          "when": "art|type|weapon",
+          "expr": 30,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13553,7 +17973,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13566,9 +17986,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 10
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Indech",
+          "when": "weapon|type|weapon",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13590,7 +18017,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13606,6 +18033,14 @@ const definitions = {
         "mov": 0,
         "proc": 10
       },
+      "rows": [
+        {
+          "name": "Crest of the Lamine",
+          "when": "unit|tagged|healing",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13627,7 +18062,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13640,9 +18075,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 10
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Macuil",
+          "when": "weapon|type|spell",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13665,7 +18107,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13681,6 +18123,14 @@ const definitions = {
         "mov": 0,
         "proc": 10
       },
+      "rows": [
+        {
+          "name": "Crest of the Noa",
+          "when": "weapon|type|spell",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13702,7 +18152,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13715,9 +18165,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 30
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Riegen",
+          "when": "art|type|",
+          "expr": 30,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13739,7 +18196,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13752,9 +18209,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 40
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Charon",
+          "when": "art|type|weapon",
+          "expr": 40,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13777,7 +18241,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13790,9 +18254,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 10
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Lamine",
+          "when": "unit|tagged|healing",
+          "expr": 10,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13814,7 +18285,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13827,9 +18298,16 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": 20
+        "mov": 0
       },
+      "rows": [
+        {
+          "name": "Crest of the Beast",
+          "when": "weapon|type|weapon",
+          "expr": 20,
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "crest",
@@ -13852,7 +18330,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13886,7 +18364,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13901,11 +18379,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Carmen's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Mounted Precision",
@@ -13920,7 +18398,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13955,7 +18433,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -13989,7 +18467,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14013,8 +18491,8 @@ const definitions = {
     },
     {
       "name": "N\u00e9gation",
-      "description": "Before unit enters combat, (Dex * 1.25)% chance to prevent foe's follow-up attacks for that combat.",
-      "requires": "None",
+      "description": "Before unit enters combat, (Dex + 30)% chance to make foe\u2019s @{const:ap:AP = 1} for that combat if foe is not using arts.",
+      "requires": "All (Any (Faith D) (Lances D) (Axes D) (Armor D)) (Level 5)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -14024,7 +18502,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14039,6 +18517,13 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "rows": [
+        {
+          "when": "not(weapon|tagged|no_might) * not(weapon|tagged|no_hit)",
+          "expr": "unit|total|dex + 30 + other|trigger",
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "chance"
@@ -14058,7 +18543,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14090,7 +18575,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14124,7 +18609,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14149,8 +18634,8 @@ const definitions = {
     },
     {
       "name": "Opportunit\u00e9",
-      "description": "Before unit enters combat, Dex% chance to grant unit a guaranteed follow-up attack in that combat.",
-      "requires": "None",
+      "description": "Before unit enters combat, (Dex + 20)% chance to grant unit @{const:ap:AP \u2265 2} in combat.",
+      "requires": "All (Any (Reason D) (Guile D) (Swords D) (Bows D)) (Level 5)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -14160,7 +18645,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14175,6 +18660,13 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "rows": [
+        {
+          "when": "not(weapon|tagged|no_might) * not(weapon|tagged|no_hit)",
+          "expr": "unit|total|dex + 20 + other|trigger",
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "chance"
@@ -14194,14 +18686,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|other, 6, 0)",
         "avo": "fill bothif(weapon|type|other, 6, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|other, 5, 0)",
+        "crit": "fill bothif(weapon|type|other, 6, 0)",
+        "cravo": "fill bothif(weapon|type|other, 6, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -14229,14 +18721,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|other, 8, 0)",
         "avo": "fill bothif(weapon|type|other, 8, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|other, 6, 0)",
+        "crit": "fill bothif(weapon|type|other, 8, 0)",
+        "cravo": "fill bothif(weapon|type|other, 8, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -14264,14 +18756,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|other, 10, 0)",
         "avo": "fill bothif(weapon|type|other, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|other, 7, 0)",
+        "crit": "fill bothif(weapon|type|other, 10, 0)",
+        "cravo": "fill bothif(weapon|type|other, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -14299,14 +18791,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|other, 12, 0)",
         "avo": "fill bothif(weapon|type|other, 12, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|other, 8, 0)",
+        "crit": "fill bothif(weapon|type|other, 12, 0)",
+        "cravo": "fill bothif(weapon|type|other, 12, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -14334,14 +18826,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|other, 15, 0)",
         "avo": "fill bothif(weapon|type|other, 15, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|other, 10, 0)",
+        "crit": "fill bothif(weapon|type|other, 15, 0)",
+        "cravo": "fill bothif(weapon|type|other, 15, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -14369,7 +18861,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14401,7 +18893,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14435,7 +18927,7 @@ const definitions = {
         "spd": "ask [Pegasus Flight?], 0; 4 end",
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14458,6 +18950,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Phantasm",
+      "description": "This unit is a Flying and Monster unit in addition to its other unit types, and it is permanently affected by the @{condition:Pass:[Pass]} condition.",
+      "requires": "None",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": true
+    },
+    {
       "name": "Piercing Blow",
       "description": "When this unit initiates combat, after the resolution of that combat, deal nonlethal damage equal to 50% of the damage dealt to target foe that combat to the nearest enemy in a three space perpendicular (3x1 line) behind target foe.",
       "requires": "All (Any (Lances E) (Bows E)) (Level 0)",
@@ -14470,7 +18996,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14488,7 +19014,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "blow",
-        "rework"
+        "rework",
+        "depricated"
       ],
       "hidden": false
     },
@@ -14505,7 +19032,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14526,8 +19053,8 @@ const definitions = {
     },
     {
       "name": "Positioning",
-      "description": "When this unit targets an ally with a Level 5 tactical art, afterwards, that unit may move three spaces, but must move in a cardinal direction @{tooltip:(original):Original text said, \"If this Unit uses a Movement Art on an ally, that ally can choose to move 3 spaces in any cardinal direction. This ability cannot be used across what would be impassable terrain for the affected Unit.\" but this is vague.}",
-      "requires": "Any (Class Bard) (Class Journeyman)",
+      "description": "When this unit targets an ally with a tactical art causes forced movement, after that forced moment that unit may additionally move up to three spaces in a cardinal direction.",
+      "requires": "Class Ronin",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -14537,7 +19064,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14553,9 +19080,7 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "rework"
-      ],
+      "tags": [],
       "hidden": false
     },
     {
@@ -14571,7 +19096,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14586,9 +19111,44 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Clara von Aegir's personal.",
       "tags": [
         "personal"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Quicktrigger",
+      "description": "Unit\u2019s SBACs have +20% chance to activate. ",
+      "requires": "Level 5",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "trigger": 20
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
       ],
       "hidden": false
     },
@@ -14605,7 +19165,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14627,6 +19187,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Rangefinder",
+      "description": "Can only be equipped by Flying units. While mounted, adjacent foes have @{condition:Spotted:[Spotted +1]}.",
+      "requires": "Flying C+",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Reason Advantage",
       "description": "Grants Mt +5 in combat when unit has weapon triangle advantage.",
       "requires": "None",
@@ -14639,7 +19234,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill advantage(weapon|type|reason)",
         "prot": 0,
         "resl": 0,
@@ -14664,8 +19259,8 @@ const definitions = {
     },
     {
       "name": "Reason Consumption 1",
-      "description": "Restores 1 TP after unit uses a Reason weapon.",
-      "requires": "Class Mage",
+      "description": "Restores 1 TP after unit uses a Reason weapon. Consumes half of an ability slot starting at level 15. Cannot be equipped with another \"Reason Consumption\" ability.",
+      "requires": "Any (Reason D+) (Class Mage)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -14675,7 +19270,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14698,7 +19293,7 @@ const definitions = {
     },
     {
       "name": "Reason Consumption 2",
-      "description": "Restores 1 TP after unit uses a Reason weapon and restores 1 TP after unit uses Reason metamagic.",
+      "description": "Restores 1 TP after unit uses a Reason weapon and restores 1 TP after unit uses Reason metamagic.  Cannot be equipped with another \"Reason Consumption\" ability.",
       "requires": "Class Warlock",
       "modifiers": {
         "hp": 0,
@@ -14709,7 +19304,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14743,7 +19338,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14777,7 +19372,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -14811,13 +19406,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|reason, 7, 0)",
         "avo": "fill bothif(weapon|type|reason, 5, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|reason, 7, 0)",
         "cravo": "fill bothif(weapon|type|reason, 5, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -14846,13 +19441,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|reason, 10, 0)",
         "avo": "fill bothif(weapon|type|reason, 6, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|reason, 10, 0)",
         "cravo": "fill bothif(weapon|type|reason, 6, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -14881,13 +19476,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|reason, 13, 0)",
         "avo": "fill bothif(weapon|type|reason, 7, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|reason, 13, 0)",
         "cravo": "fill bothif(weapon|type|reason, 7, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -14916,13 +19511,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|reason, 16, 0)",
         "avo": "fill bothif(weapon|type|reason, 8, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|reason, 16, 0)",
         "cravo": "fill bothif(weapon|type|reason, 8, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -14951,13 +19546,13 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|reason, 20, 0)",
         "avo": "fill bothif(weapon|type|reason, 10, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|reason, 20, 0)",
         "cravo": "fill bothif(weapon|type|reason, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
@@ -14986,7 +19581,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15008,6 +19603,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Reason Satiation",
+      "description": "Restores 1 TP after unit uses Reason combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+      "requires": "All (Reason C+) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill bothif(art|type|combat * weapon|type|reason, -1, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "consumption"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Reason Tomefaire",
       "description": "Grants Mt +5 when unit uses associated weapon type.",
       "requires": "Reason S+",
@@ -15020,7 +19650,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill faire(weapon|type|reason)",
         "prot": 0,
         "resl": 0,
@@ -15055,7 +19685,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15076,8 +19706,8 @@ const definitions = {
     },
     {
       "name": "Res +2",
-      "description": "Grants Res +2.",
-      "requires": "All (Faith C) (Level 10)",
+      "description": "Grants Res +2; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Faith D+) (Level 2)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -15087,7 +19717,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 2,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15109,6 +19739,77 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Res Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Res +4]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Satiation",
+      "description": "Restores 1 TP after unit uses Faith, Guile, Reason, or Brawl combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+      "requires": "Class",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill bothif(art|type|combat * (weapon|type|spell + weapon|type|brawl), -1, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "consumption"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Savage Blow",
       "description": "When unit initiates combat, after combat, deal 7 nonlethal damage to foes adjacent to target foe.",
       "requires": "Class `Dark Wyvernian`",
@@ -15121,7 +19822,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15144,6 +19845,112 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Scattering Blow",
+      "description": "If unit initiated combat, any status conditions applied to target foe during or after combat are also applied to foes adjacent to target foe.",
+      "requires": "Riding C+",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "blow",
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Scouting Blow",
+      "description": "If unit initiated combat at Range = 1, after combat, apply @{condition:Spotted:[Spotted +1]} to target foe for one turn.",
+      "requires": "Flying B",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "blow",
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Seal Def 4",
+      "description": "After combat, this unit may apply @{const:gbp:[Def -4]} to target foe for one turn. (Only apply the effect of up to one \"Seal\" ability after combat.)",
+      "requires": "All (Axes D+) (Bows D+) (Riding D+) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "seal"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Seal Defense",
       "description": "After combat, apply @{const:gbp:[Def -6]} to target foe for one turn.",
       "requires": "All (Any (Axes C) (Lances C)) (Flying C) (Level 15)",
@@ -15156,7 +19963,41 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "seal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Seal Mag 4",
+      "description": "After combat, this unit may apply @{const:gbp:[Mag -4]} to target foe for one turn. (Only apply the effect of up to one \"Seal\" ability after combat.)",
+      "requires": "All (Faith D+) (Flying D+) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15190,7 +20031,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15213,6 +20054,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Seal Res 4",
+      "description": "After combat, this unit may apply @{const:gbp:[Res -4]} to target foe for one turn. (Only apply the effect of up to one \"Seal\" ability after combat.)",
+      "requires": "All (Reason D+) (Guile D+) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "seal"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Seal Resistance",
       "description": "After combat, apply @{const:gbp:[Res -6]} to target foe for one turn.",
       "requires": "All (Any (Reason A+) (Guile A+)) (Level 25)",
@@ -15225,7 +20100,41 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "seal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Seal Spd 4",
+      "description": "After combat, this unit may apply @{const:gbp:[Spd -4]} to target foe for one turn. (Only apply the effect of up to one \"Seal\" ability after combat.)",
+      "requires": "All (Swords D+) (Brawl D+) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15259,7 +20168,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15281,9 +20190,78 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Seal Str 4",
+      "description": "After combat, this unit may apply @{const:gbp:[Str -4]} to target foe for one turn. (Only apply the effect of up to one \"Seal\" ability after combat.)",
+      "requires": "All (Lances D+) (Armor D+) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "seal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Soul Eater",
+      "description": "When this unit defeats an enemy, they gain +4 to one of @{tooltip:several:In total\n\nAxes: Str\nBows: Dex/Lck\nBrawl: Str/Spd\nFaith: Res/Lck\nGuile: Mag\nLances: Dex\nReason: Mag/Lck\nSwords: Spd\nArmor: Def\nCavalry: Dex\nFlying: Spd\nInfantry: Cha\nMonsters: Str/Mag\n\nMonster's bonus is determined based on which stat the monster attacks with.} stats, determined via the weapon and type of the enemy, or 5 + (5 per 5 levels) temporary HP. This buff lasts until the end of the unit's next turn. If they kill another enemy, they must replace their current bonus.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "\u59eb\u5b50 von Varley's personal.",
+      "tags": [
+        "personal",
+        "action"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Spd +2",
-      "description": "Grants Spd +2.",
-      "requires": "All (Any (Swords C) (Flying C)) (Level 10)",
+      "description": "Grants Spd +2; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Any (Swords D+) (Flying D+)) (Level 2)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -15293,7 +20271,7 @@ const definitions = {
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15327,7 +20305,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15361,7 +20339,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15384,8 +20362,8 @@ const definitions = {
     },
     {
       "name": "Stamina +5",
-      "description": "Grants Max SP +5.",
-      "requires": "Any (None) (Class `Brawler`)",
+      "description": "Grants Max SP +5; consumes half of an ability slot starting at level 10.",
+      "requires": "Any (All (Any (Axes D+) (Swords D+) (Lances D+) (Bows D+)) (Level 5)) (Class `Brawler`)",
       "modifiers": {
         "hp": 0,
         "sp": 5,
@@ -15395,7 +20373,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15418,7 +20396,7 @@ const definitions = {
     },
     {
       "name": "Steady Stance",
-      "description": "Grants Hit +30 in combat when foe initiates combat.",
+      "description": "Grants Hit +20 in combat when foe initiates combat.",
       "requires": "All (Lances E) (Level 0)",
       "modifiers": {
         "hp": 0,
@@ -15429,11 +20407,11 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill stance(30)",
+        "hit": "fill stance(20)",
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -15465,7 +20443,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15485,9 +20463,44 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Stone Stance",
+      "description": "When foe initiates combat, after that combat, regain HP equal to half of damage taken by unit during combat.",
+      "requires": "All (Any (Axes C+) (Brawl C+)) (Level 10)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "stance"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Str +2",
-      "description": "Grants Str +2.",
-      "requires": "All (Any (Axes C) (Bows C) (Riding C)) (Level 10)",
+      "description": "Grants Str +2; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Any (Axes D+) (Bows D+) (Riding D+)) (Level 2)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -15497,7 +20510,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15519,8 +20532,44 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Str Vanguard",
+      "description": "Can only be equipped by Cavalry units. While mounted, if unit initiated combat this phase, until the end of the phase, allies within two spaces have @{const:gbp:[Str +4]} in combat.\n\nCannot be equipped alongside another \u201cVanguard\u201d ability. A unit can only benefit from the effects of one \u201cVanguard\u201d ability at once, and may choose which to benefit from before combat if there are multiple possibilities.",
+      "requires": "All (Riding A) (Level 20)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "condition",
+        "in combat"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Sturdy Stance",
-      "description": "Grants Def +5 in combat when foe initiates combat.",
+      "description": "Grants Def +4 in combat when foe initiates combat.",
       "requires": "All (Armor C+) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -15529,9 +20578,9 @@ const definitions = {
         "mag": 0,
         "dex": 0,
         "spd": 0,
-        "def": "fill stance(5)",
+        "def": "fill stance(4)",
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15554,6 +20603,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Sumo Stance",
+      "description": "HP +5. This unit is immune to forced movement effects. The first time a foe would occupy a space adjacent to this unit on that foe\u2019s phase, that foe is forced one space away from this unit. If that unit would experience a collision, it takes 20% HP nonlethal damage.",
+      "requires": "All (Brawl C) (Level 10)",
+      "modifiers": {
+        "hp": 5,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "stance"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Surgical Precision",
       "description": "Grants Hit +10 and Crit +10. When this unit's action restores HP to a unit, roll a critical hit (if attacking, use that crit roll); if successful, double the amount of HP restored and apply one of the following effects (player controlling that unit chooses):\n\u2022  Apply @{condition:Overheal:[Overheal]} to that unit for one turn equal to any excess healing.\n\u2022  Before HP is restored, end one or more conditions on that unit (player's choice).\n\u2022  Restore SP equal to half of any excess healing.",
       "requires": "Innate",
@@ -15566,7 +20650,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15581,11 +20665,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Rosalie Nedler's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Survivalist Expert",
@@ -15600,7 +20684,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15615,11 +20699,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Ricardo von Nuvelle's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Sword Advantage",
@@ -15634,7 +20718,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill advantage(weapon|type|swords)",
         "prot": 0,
         "resl": 0,
@@ -15670,7 +20754,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15704,14 +20788,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|swords, 5, 0)",
         "avo": "fill bothif(weapon|type|swords, 7, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|swords, 5, 0)",
+        "crit": "fill bothif(weapon|type|swords, 5, 0)",
+        "cravo": "fill bothif(weapon|type|swords, 7, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -15739,14 +20823,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|swords, 6, 0)",
         "avo": "fill bothif(weapon|type|swords, 10, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|swords, 6, 0)",
+        "crit": "fill bothif(weapon|type|swords, 6, 0)",
+        "cravo": "fill bothif(weapon|type|swords, 10, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -15774,14 +20858,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|swords, 7, 0)",
         "avo": "fill bothif(weapon|type|swords, 13, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|swords, 7, 0)",
+        "crit": "fill bothif(weapon|type|swords, 7, 0)",
+        "cravo": "fill bothif(weapon|type|swords, 13, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -15809,14 +20893,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|swords, 8, 0)",
         "avo": "fill bothif(weapon|type|swords, 16, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|swords, 8, 0)",
+        "crit": "fill bothif(weapon|type|swords, 8, 0)",
+        "cravo": "fill bothif(weapon|type|swords, 16, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -15844,14 +20928,14 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|swords, 10, 0)",
         "avo": "fill bothif(weapon|type|swords, 20, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|swords, 10, 0)",
+        "crit": "fill bothif(weapon|type|swords, 10, 0)",
+        "cravo": "fill bothif(weapon|type|swords, 20, 0)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -15868,7 +20952,7 @@ const definitions = {
     },
     {
       "name": "Swordbreaker",
-      "description": "Grants Hit +20 and Avo +20 in combat against Swords. A unit may only equip one \"Swordbreaker\" ability at a time",
+      "description": "Grants Hit +20 and Avo +20 in combat against Swords. If an \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time",
       "requires": "Lances B",
       "modifiers": {
         "hp": 0,
@@ -15879,7 +20963,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15903,7 +20987,7 @@ const definitions = {
     },
     {
       "name": "Swordbreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Swords. A unit may only equip one \"Swordbreaker\" ability at a time",
+      "description": "Grants Hit +30 and Avo +30 in combat against Swords. If an \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time.",
       "requires": "Lances A",
       "modifiers": {
         "hp": 0,
@@ -15914,7 +20998,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -15949,7 +21033,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill faire(weapon|type|swords)",
         "prot": 0,
         "resl": 0,
@@ -15972,6 +21056,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "TP +3",
+      "description": "Grants TP +3; consumes half of an ability slot starting at level 10.",
+      "requires": "All (Faith D+) (Reason D+) (Guile D+) (Brawl D+) (Level 5)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 3,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Tactician",
       "description": "Grants allies within Range \u2264 1 Hit +10 and Avo +10 in combat.",
       "requires": "Any (Class Troubadour) (Class Valkyrie)",
@@ -15984,7 +21102,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16018,7 +21136,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16033,11 +21151,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Fleche von Bergliez's personal.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Terrain Resistance",
@@ -16052,7 +21170,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16084,7 +21202,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16099,16 +21217,16 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "remove this",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
-      "name": "Tomebreaker",
-      "description": "Grants Hit +20 and Avo +20 in combat against Faith, Reason, or Guile.",
-      "requires": "All (Any (Swords B) (Bows B)) (Level 15)",
+      "name": "Tomebreaker+",
+      "description": "Grants Hit +30 and Avo +30 in combat against Bows. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
+      "requires": "Bows A",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -16118,7 +21236,42 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "ask [Tomebreaker?], No {0}; Yes {30} end",
+        "avo": "ask [Tomebreaker?], No {0}; Yes {30} end",
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "breaker",
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Tomebreaker+",
+      "description": "Grants Hit +20 and Avo +20 in combat against Bows. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
+      "requires": "Bows B",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16143,7 +21296,7 @@ const definitions = {
     {
       "name": "Transmute",
       "description": "If unit is hit with magic-based attack when foe initiates combat, apply @{condition:Transmute:[Transmute]} to this unit for one turn.",
-      "requires": "All (Any (Anima B+) (Guile B+)) (Flying B+) (Level 25)",
+      "requires": "All (Any (Reason B+) (Guile B+)) (Flying B+) (Level 25)",
       "modifiers": {
         "hp": 0,
         "str": 0,
@@ -16152,7 +21305,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16173,8 +21326,216 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Trapper",
+      "description": "Items and tactical arts that create tiles has Range +1 and cost 1 SP (tactical arts) or TP (items) less.",
+      "requires": "Any (Class `Witch Hunter`) (Class `Monster Hunter`)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": [
+          "fill bothif(",
+          "  weapon|tagged|wall + (art|tagged|tactical * art|tagged|wall),",
+          "  1,",
+          "  0",
+          ")"
+        ],
+        "tpcost": "fill bothif(weapon|tagged|wall, -1, 0)",
+        "spcost": "fill bothif(art|tagged|tactical * art|tagged|wall, -1, 0)",
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Trick Shot",
+      "description": "The resource costs of consumable items, bow weapon attributes, and arts that apply conditions to foes are halved.",
+      "requires": "Class `Bow Knight`",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": [
+          "fill bothif(weapon|tagged|target_foe + weapon|tagged|condition, -(weapon|total|tpcost), 0)"
+        ],
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Tripleforce",
+      "description": "Compatible tomes have @{attribute::Spellblade} while in this unit's inventory. Once per enemy phase, this unit can spend 3 TP to use one of these reactions:\n\n \u2022 Saber Throw - Trigger: after a foe misses this unit with an attack. Make a counterattack against that foe with equipped tome regardless of range.\n \u2022 Force Push - Trigger: After foe creates a tile within 3 spaces of this unit. Use @{art::Telekinesis} targeting a player created tile, regardless of tile type.\n \u2022 Mind Trick - Trigger: Foe ends combat against this unit. Apply @{condition:Confused:[Confused]} and @{condition:Berserk:[Berserk]} to that foe for one turn; that foe moves and acts again during the next player phase and this unit is removed from the battlefield during player phase until it does.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Aaron von Rogue School's personal.",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Unarmored Combatant 1",
+      "description": "HP +10, Avo +5, and Def -4.",
+      "requires": "Any (Brawl D+) (Axes D+)",
+      "modifiers": {
+        "hp": 10,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": -4,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 5,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Unarmored Combatant 2",
+      "description": "HP +20, Avo +7, and Def -8.",
+      "requires": "Any (Brawl C) (Axes C)",
+      "modifiers": {
+        "hp": 20,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": -8,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 7,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Unarmored Combatant 3",
+      "description": "HP +30, Avo +10, and Def -12.",
+      "requires": "Any (Brawl B) (Axes B)",
+      "modifiers": {
+        "hp": 30,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": -12,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 10,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Uncanny Blow",
-      "description": "Grants Hit +30 in combat when unit initiates combat.",
+      "description": "Grants Hit +20 in combat when unit initiates combat.",
       "requires": "All (Any (Reason B) (Faith B)) (Riding B) (Level 20)",
       "modifiers": {
         "hp": 0,
@@ -16185,11 +21546,11 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill blow(30)",
+        "hit": "fill blow(20)",
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -16220,7 +21581,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16241,7 +21602,7 @@ const definitions = {
     },
     {
       "name": "Vibrant Spirit",
-      "description": "Whenever this unit targets an ally, apply @{const:gbp:[Str +4]}, @{const:gbp:[Mag +4]}, and @{const:gbp:[Cha +4] to target ally for one turn.",
+      "description": "When unit targets an ally, apply @{const:gbp:[Hit +10]} and @{const:gbp:[Crit +10]} to target ally for one turn. If target is a battalion unit, instead restore 5 EP to that battalion.",
       "requires": "Authority B+",
       "modifiers": {
         "hp": 0,
@@ -16252,7 +21613,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16286,7 +21647,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16309,7 +21670,7 @@ const definitions = {
     },
     {
       "name": "Warding Blow",
-      "description": "Grants Res +6 in combat when unit initiates combat.",
+      "description": "Grants Res +5 in combat when unit initiates combat.",
       "requires": "All (Any (Bows B) (All (Any (Reason B) (Guile B)) (Flying B)))) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -16319,8 +21680,8 @@ const definitions = {
         "dex": 0,
         "spd": 0,
         "def": 0,
-        "res": "fill blow(6)",
-        "cha": 0,
+        "res": "fill blow(5)",
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16344,7 +21705,7 @@ const definitions = {
     },
     {
       "name": "Warding Stance",
-      "description": "Grants Res +5 in combat when foe initiates combat.",
+      "description": "Grants Res +4 in combat when foe initiates combat.",
       "requires": "Any (All (Faith B) (Level 15)) (Class `Mortal Savant`)",
       "modifiers": {
         "hp": 0,
@@ -16354,8 +21715,8 @@ const definitions = {
         "dex": 0,
         "spd": 0,
         "def": 0,
-        "res": "fill stance(5)",
-        "cha": 0,
+        "res": "fill stance(4)",
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16390,7 +21751,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16426,7 +21787,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16462,7 +21823,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16477,11 +21838,11 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
-      "comment": "Items in modifers can either be integers or string expressions",
+      "comment": "Amelie Cosgrove's personl.",
       "tags": [
         "personal"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Wrath",
@@ -16495,7 +21856,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16516,6 +21877,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Wrestler",
+      "description": "After combat, if enemy was hit by a range 1 attack, (Dex or Luc + 20)% chance this unit may choose one of the following:\n- Move target foe up to two spaces in a cardinal direction (you choose).\n- Apply @{condition:Rattled:[Rattled]} to target foe for one turn.\n- Apply @{condition:[Taunted] to target foe for one turn.\n-Apply @{const:gbp:[Str -3]} to target foe for one turn.",
+      "requires": "All (Brawl B) (Level 15)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "proc": "20 + more unit|total|dex else unit|total|lck end"
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Wyvern Flight",
       "description": "If unit's HP > 50% and unit is mounted, grants Str -4 and Def -4 in combat.",
       "requires": "All (Reason A+) (Level 25)",
@@ -16528,7 +21923,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16549,40 +21944,6 @@ const definitions = {
         "in combat"
       ],
       "hidden": false
-    },
-    {
-      "name": "Zeal",
-      "description": "Crit +5.",
-      "requires": "Class Myrmidon",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 5,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "static"
-      ],
-      "hidden": false
     }
   ],
   "tiles": [
@@ -16591,7 +21952,7 @@ const definitions = {
       "description": "Cannot be traversed by non-Flying units except those with @{ability::Pass} or affected by @{condition:Pass:[Pass]}.",
       "requires": "None",
       "stats": {
-        "hp": 10,
+        "hp": 20,
         "prot": 15,
         "resl": 5,
         "mov": 0
@@ -16604,7 +21965,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 15,
         "resl": 5,
@@ -16645,7 +22006,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16688,7 +22049,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16730,7 +22091,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 1,
         "resl": 0,
@@ -16771,7 +22132,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16812,7 +22173,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16852,7 +22213,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16893,7 +22254,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16934,7 +22295,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -16976,7 +22337,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17016,7 +22377,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17051,7 +22412,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 0
       },
       "growths": {
@@ -17062,7 +22423,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0
+        "lck": 0
       },
       "comment": "Items must be integers.",
       "tags": [
@@ -17086,7 +22447,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17120,7 +22481,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17154,7 +22515,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17188,7 +22549,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17222,7 +22583,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17258,7 +22619,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 1,
+        "lck": 1,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17292,7 +22653,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17301,6 +22662,142 @@ const definitions = {
         "crit": 0,
         "cravo": 0,
         "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Quiver: Antimagic Arrowheads",
+      "description": "Before wielder makes an attack with a bow, they may pay 2 TP to apply @{const:gbp:[Mag -4]} to target foe and end one or more conditions on target foe after combat if it hits. One quiver in a unit\u2019s inventory does not consume an item slot.",
+      "requires": "None",
+      "price": 1000,
+      "type": "Quiver",
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "tpcost": "fill bothif(weapon|type|bows, fill confirm([Antimagic?], +2), 0)",
+        "spcost": 0,
+        "tp": 1,
+        "sp": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Quiver: Envenomed Arrowheads",
+      "description": "Before wielder makes an attack with a bow, they may pay 1 TP to cause target foe to take 10% nonlethal damage after combat if it hits. One quiver in a unit\u2019s inventory does not consume an item slot.",
+      "requires": "None",
+      "price": 750,
+      "type": "Quiver",
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "tpcost": "fill bothif(weapon|type|bows, fill confirm([Envenomed?], +1), 0)",
+        "spcost": 0,
+        "tp": 1,
+        "sp": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Quiver: Serrated Arrowheads",
+      "description": "Before wielder makes an attack with a bow, they may pay 2 TP to grant it Crit +15. One quiver in a unit\u2019s inventory does not consume an item slot.",
+      "requires": "None",
+      "price": 750,
+      "type": "Quiver",
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": "fill bothif(weapon|type|bows, fill confirm([Serrated?], +15), 0)",
+        "cravo": 0,
+        "tpcost": "fill bothif(weapon|type|bows, fill confirm([Serrated?], +2), 0)",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Quiver: Sticky Arrowheads",
+      "description": "Before wielder makes an attack with a bow, they may pay 3 TP to grant it Mt -3 and to apply @{const:gbp:[Mov -2]} to target foe if it hits. One quiver in a unit\u2019s inventory does not consume an item slot.",
+      "requires": "None",
+      "price": 750,
+      "type": "Quiver",
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": "fill bothif(weapon|type|bows, fill confirm([Sticky?], -3), 0)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "tpcost": "fill bothif(weapon|type|bows, fill confirm([Sticky?], +3), 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0,
@@ -17326,7 +22823,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17360,7 +22857,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17394,7 +22891,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17428,7 +22925,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17463,7 +22960,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 4,
+        "lck": 4,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17496,7 +22993,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17530,7 +23027,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17564,7 +23061,7 @@ const definitions = {
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17599,7 +23096,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17632,7 +23129,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 6,
         "resl": 3,
@@ -17668,7 +23165,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 3,
         "resl": 0,
@@ -17702,7 +23199,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 3,
         "resl": 0,
@@ -17736,7 +23233,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 2,
         "resl": 4,
@@ -17770,7 +23267,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 2,
         "resl": 0,
@@ -17804,7 +23301,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 3,
         "resl": 0,
@@ -17838,7 +23335,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 3,
         "resl": 0,
@@ -17872,7 +23369,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 1,
         "resl": 0,
@@ -17906,7 +23403,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 6,
         "resl": 0,
@@ -17942,7 +23439,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 5,
         "resl": 0,
@@ -17978,7 +23475,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 4,
         "resl": 0,
@@ -18012,7 +23509,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 3,
         "resl": 0,
@@ -18046,7 +23543,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 1,
         "resl": 2,
@@ -18080,7 +23577,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 3,
         "resl": 0,
@@ -18116,7 +23613,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -18152,7 +23649,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill bothif(unit|tagged|healing * unit|total|mttype|mag, 10, 0)",
         "prot": 0,
         "resl": 0,
@@ -18186,7 +23683,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "fill bothif(not(unit|tagged|healing) * unit|total|mttype|mag, 3, 0)",
         "prot": 0,
         "resl": 0,
@@ -18220,7 +23717,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -18273,6 +23770,49 @@ const definitions = {
       "hidden": true
     },
     {
+      "name": "Bibliobellicum",
+      "type": "Prompt",
+      "description": "Weapon deals strength-based damage and TP cost is reduced by 20% of base TP cost when used at Range 1.\n\nThis attribute is disabled on non-spells and on spells that don\u2019t deal damage on attack.",
+      "rank": 0,
+      "price": 500,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": [
+          "metaif builtins|macrogen == 1 then",
+          "  metaif weapon|total|maxrng <> 1",
+          "    then fill affirm([Range 1?], -floor((weapon|noattr|tpcost) * 0.2), 0)",
+          "    else -floor((weapon|noattr|tpcost) * 0.2)",
+          "  end",
+          "else",
+          "  if     weapon|total|maxrng <> 1",
+          "    then fill affirm([Range 1?], -floor((weapon|noattr|tpcost) * 0.2), 0)",
+          "    else -floor((weapon|noattr|tpcost) * 0.2)",
+          "  end",
+          "end"
+        ],
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "cost",
+        "for faith",
+        "for reason",
+        "for guile"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Blessed",
       "description": "Grants weapon [Effective against Monsters]. While Equipped, wielder regains 10% max HP at the start of their phase. Disabled on spells.",
       "rank": 2,
@@ -18295,7 +23835,10 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "forweapon"
+        "for axes",
+        "for lances",
+        "for brawl",
+        "for swords"
       ],
       "hidden": false
     },
@@ -18324,7 +23867,10 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "effective",
-        "forweapon"
+        "for axes",
+        "for lance",
+        "for swords",
+        "for brawl"
       ],
       "hidden": false
     },
@@ -18352,7 +23898,10 @@ const definitions = {
       },
       "comment": "Can only be applied to spells.",
       "tags": [
-        "forspell"
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl"
       ],
       "hidden": false
     },
@@ -18379,21 +23928,18 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [
-        "forspell",
-        "forweapon"
-      ],
+      "tags": [],
       "hidden": false
     },
     {
       "name": "Brave",
       "type": "Any",
-      "description": "When initiating combat, wielder makes two consecutive hits per normal attack and consumes 3 TP when dealing damage. Disabled on spells.",
+      "description": "Hit -15 and base might is reduced by half. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP +1} to foe if foe\u2019s @{const:ap:AP = 2}. Consumes 2 TP per attack and decreases Max TP by 5 when placed in unit\u2019s inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on spells and Brawl weapons.",
       "rank": 2,
-      "price": 750,
+      "price": 2500,
       "mttype": "else",
       "modifiers": {
-        "mt": -3,
+        "mt": "-ceil(weapon|noattr|mt / 2)",
         "prot": 0,
         "resl": 0,
         "hit": -15,
@@ -18402,16 +23948,115 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": 3,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": -5,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for bows",
+        "for swords",
+        "for lances"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Ceremonial",
+      "description": "If the weapon type of this weapon and the weapon type of wielder's equipped battalion are the same, this weapon's rank requirement can be met with an equivalent rank in Authority.\n\nDisabled on weapons that don\u2019t deal damage.",
+      "rank": 2,
+      "price": 1000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "",
+      "tags": [
+        "for axe",
+        "for lances",
+        "for swords",
+        "for brawl",
+        "for faith",
+        "for reason",
+        "for guile"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Chaotic",
+      "type": "Any",
+      "description": "When a \"Rising\" Combat Art is used with equipped tome, decrease the cost of that art by 4 SP. Roll 2d6 and choose one roll, that art becomes the one you chose:\n1. Rising Thunder\n2. Rising Wind\n3. Rising Flame\n4. Rising Frost\n5. Rising Light\n6. Your choice of 1-5.\nIf you roll doubles, use the Variant version.\n\nDisabled on non-Reason weapons.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": "fill affirm([Using a Rising Art?], -4, 0)",
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for reason"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Cleaving",
+      "type": "Any",
+      "description": "When this unit initiates combat, after the resolution of that combat, deal nonlethal damage equal to 50% of the damage dealt to target foe that combat to a foe adjacent to but not behind target foe. For 4 TP, this effect may occur after a combat on enemy phase.\n\nDisabled on weapons that are not Axes, Reason, Brawl or Swords.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill affirm([Cleave on Enemy Phase?], label [After Combat] {4}, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "forweapon"
+        "cost",
+        "for axes",
+        "for reason",
+        "for brawl",
+        "for swords"
       ],
-      "hidden": true
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Conjure Banshee",
@@ -18438,7 +24083,7 @@ const definitions = {
       "comment": "Can only be applied to spells.",
       "tags": [
         "conjure",
-        "forspell"
+        "for guile"
       ],
       "hidden": false
     },
@@ -18467,7 +24112,7 @@ const definitions = {
       "comment": "Can only be applied to spells.",
       "tags": [
         "conjure",
-        "forspell"
+        "for guile"
       ],
       "hidden": false
     },
@@ -18496,7 +24141,7 @@ const definitions = {
       "comment": "Can only be applied to spells.",
       "tags": [
         "conjure",
-        "forspell"
+        "for guile"
       ],
       "hidden": false
     },
@@ -18525,7 +24170,36 @@ const definitions = {
       "comment": "Can only be applied to spells.",
       "tags": [
         "conjure",
-        "forspell"
+        "for guile"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Conjure Martyr",
+      "type": "Any",
+      "description": "When weapon is used to cast Summon, creates a Martyr unit. Disabled if this weapon has another \"Conjure\" attribute and on weapons other than Summon.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can only be applied to spells.",
+      "tags": [
+        "conjure",
+        "for guile"
       ],
       "hidden": false
     },
@@ -18554,7 +24228,7 @@ const definitions = {
       "comment": "Can only be applied to spells.",
       "tags": [
         "conjure",
-        "forspell"
+        "for guile"
       ],
       "hidden": false
     },
@@ -18583,7 +24257,7 @@ const definitions = {
       "comment": "Can only be applied to spells.",
       "tags": [
         "conjure",
-        "forspell"
+        "for guile"
       ],
       "hidden": false
     },
@@ -18611,7 +24285,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "forweapon",
+        "for swords",
         "melee"
       ],
       "hidden": false
@@ -18641,9 +24315,43 @@ const definitions = {
       "tags": [
         "penalty",
         "cost",
-        "forweapon"
+        "for axes",
+        "for lances",
+        "for swords",
+        "for brawl"
       ],
       "hidden": false
+    },
+    {
+      "name": "Flexible Blade",
+      "description": "When user is hit in combat at 1 range but avoids a critical hit due to CrAvo, user takes 5 less damage and has Mt +5 for the remainder of the combat.\n\nDisabled on weapons that are not Axes, Swords, Lances, or Brawl.",
+      "rank": 1,
+      "price": 1250,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for swords",
+        "for lances",
+        "for brawl"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Flyswatter",
@@ -18670,9 +24378,48 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "effective",
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances",
+        "for brawl"
       ],
       "hidden": true
+    },
+    {
+      "name": "Improvised",
+      "type": "Any",
+      "description": "This weapon\u2019s selling cost is 0G.\nAll attributes on this weapon are always enabled, but each time this weapon is used, there\u2019s a 30% chance that it will lose the most expensive attribute not already selected to be lost after the battle. This attribute is always lost last. If two or more other attributes are tied you may choose which one(s) are lost.\n\nCannot be purchased.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for swords",
+        "for lances",
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl",
+        "for bows"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Killer",
@@ -18698,7 +24445,11 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "cost",
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances",
+        "for brawl",
+        "for bows"
       ],
       "hidden": false
     },
@@ -18727,14 +24478,17 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "effective",
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances",
+        "for brawl"
       ],
       "hidden": false
     },
     {
       "name": "Magic",
       "type": "Prompt",
-      "description": "Grants weapon [Deals magic-based damage] and +1 Range.\n\nIf attacking from Range > 1, consumes 2 TP after combat. If the wielder has 0 TP, grants weapon -1 Range. Disabled on spells.",
+      "description": "Grants weapon [Deals magic-based damage] and +1 Range.\n\nIf attacking from Range > 1, consumes 2 TP after combat. If the wielder has 0 TP, grants weapon -1 Range. Disabled on spells and Brawl weapons.",
       "rank": 3,
       "price": 1200,
       "mttype": "mag",
@@ -18756,7 +24510,10 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "cost",
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances",
+        "for bows"
       ],
       "hidden": false
     },
@@ -18782,7 +24539,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "for brawl"
+      ],
       "hidden": false
     },
     {
@@ -18835,8 +24594,77 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "for brawl"
+      ],
       "hidden": false
+    },
+    {
+      "name": "Paralytic",
+      "description": "On hit, after combat, user may pay 3 TP to apply @{condition:Rattled:[Rattled]} to target foe until the end of target foe\u2019s next combat this turn.\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.\n\nDisabled on weapons with Max Range > 4.",
+      "rank": 2,
+      "price": 900,
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged + weapon|has_attribute|Stabilizer), 0, -3)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill affirm([Paralyze?], label [On Hit, After Combat] {3}, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for swords",
+        "for lances",
+        "for brawl",
+        "for bows",
+        "for faith",
+        "for reason",
+        "for guile"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Piercing",
+      "type": "Any",
+      "description": "When this unit initiates combat, after the resolution of that combat, deal nonlethal damage equal to 50% of the damage dealt to target foe that combat to the nearest enemy in a three space perpendicular (3x1 line) behind target foe. For 4 TP, this effect may occur after a combat on enemy phase.\n\nDisabled on weapons that are not Lances, Guile, Faith or Bows.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill affirm([Pierce on Enemy Phase?], label [After Combat] {4}, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for lances",
+        "for guile",
+        "for faith",
+        "for bows"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Plasma Infused",
@@ -18869,7 +24697,7 @@ const definitions = {
     {
       "name": "Ranged",
       "type": "Any",
-      "description": "Grants weapon Range +1, -3 Mt, -10 Hit.\n\nIf the weapon already has Range > 1 without Attributes, ignore Mt penalty. Disabled on spells.",
+      "description": "Grants weapon Range +1, -3 Mt, -10 Hit.\n\nIf the weapon already has Range > 1 without Attributes, ignore Mt penalty. Disabled on spells, Bows, and Brawl.",
       "rank": 0,
       "price": 1500,
       "mttype": "else",
@@ -18905,7 +24733,40 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "penalty",
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Reaver",
+      "type": "Any",
+      "description": "Reverses weapon triangle and consumes 3 TP on hit. This attribute is disabled while unit has 0 TP.\n\nDisabled on spells, Bows, and Brawl.",
+      "rank": 2,
+      "price": 2400,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "cost",
+        "for axes",
+        "for swords",
+        "for lances"
       ],
       "hidden": false
     },
@@ -18933,14 +24794,17 @@ const definitions = {
       },
       "comment": "Can only be applied to spells.",
       "tags": [
-        "forspell"
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl"
       ],
       "hidden": false
     },
     {
       "name": "Refined",
       "type": "Any",
-      "description": "Grants weapon +1 Mt, +10 Hit and +5 Crit. @{tooltip:Disabled:It doesn't say this in Patch #4, but logically, Refined should be able to apply to the upgraded versions of the upgradable Reason spells, right?} on spells except for Fire, Thunder, Wind, Blizzard, Banish, Miasma, Frostbite, Cutting Gale, Bolganone and Static Shock.",
+      "description": "Grants weapon +1 Mt, +5 Hit and +5 Crit. Disabled on spells except for Fire, Thunder, Wind, Blizzard, Banish, Miasma, Frostbite, Cutting Gale, Bolganone and Static Shock.",
       "rank": 1,
       "price": 650,
       "mttype": "else",
@@ -18948,7 +24812,7 @@ const definitions = {
         "mt": 1,
         "prot": 0,
         "resl": 0,
-        "hit": 10,
+        "hit": 5,
         "avo": 0,
         "crit": 5,
         "cravo": 0,
@@ -18961,8 +24825,14 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "forspell",
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances",
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl",
+        "for bows"
       ],
       "hidden": false
     },
@@ -18989,37 +24859,36 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
-      "name": "Reverse",
+      "name": "Reloading Mechanism",
       "type": "Any",
-      "description": "Reverses how the Weapon Triangle effectiveness and consumes 3 TP when dealing damage",
-      "rank": 2,
-      "price": 1100,
+      "description": "This weapon\u2019s max AP becomes 2. Disabled on non-Bows and on weapons without \"Structure: Crossbow\".",
+      "rank": 1,
+      "price": 1250,
       "mttype": "else",
       "modifiers": {
-        "mt": 0,
+        "mt": 4,
         "prot": 0,
         "resl": 0,
         "hit": 0,
         "avo": 0,
-        "crit": 0,
+        "crit": 10,
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": 3,
+        "tpcost": 0,
         "spcost": 0,
         "tp": 0,
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "cost",
-        "forweapon",
-        "forspell"
+        "for bows"
       ],
-      "hidden": true
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Sacred",
@@ -19044,7 +24913,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Sacred Synergy",
@@ -19077,6 +24946,282 @@ const definitions = {
       "hidden": true
     },
     {
+      "name": "Sacrificial",
+      "description": "On hit, after combat, user may pay 3 TP to apply [Vulnerable] to target foe until the end of target foe\u2019s next combat this turn.\n\nDecreases Max TP by 4 when placed in unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.\n\nDisabled on spells, Brawl, Bows.",
+      "rank": 4,
+      "price": 2400,
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * weapon|has_attribute|Ranged, 0, -3)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill affirm([Sacrefice?], label [On Hit, After Combat] {3}, 0)",
+        "spcost": 0,
+        "tp": -4,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for lances",
+        "for swords"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Sealing",
+      "description": "If @{const:gbp:[Stat -X]} would be applied to target foe as a result of an attack made with this weapon, where Stat is not Mov, instead apply @{const:gbp:[Stat -(X + 2)]} to target foe.\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.",
+      "rank": 0,
+      "price": 1250,
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged + weapon|has_attribute|Stabilizer), 0, -3)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for swords",
+        "for lances",
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl",
+        "for bows"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Slim",
+      "description": "Grants Mt -2 and Hit +10.\n\nDisabled on weapons that are not Swords, Lances, or Axes.",
+      "rank": 0,
+      "price": 550,
+      "mttype": "else",
+      "modifiers": {
+        "mt": -2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for swords",
+        "for lances",
+        "for axes"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Spellarm",
+      "type": "Prompt",
+      "description": "Weapon deals strength-based damage, weapon's minimum range becomes weapon's maximum range, and TP cost is reduced by 20% of base TP cost.\n\nThis attribute is disabled on non-spells and on spells that don\u2019t deal damage on attack.",
+      "rank": 1,
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": [
+          "metaif builtins|macrogen == 1 then",
+          "  metaif not(weapon|has_attribute|Spellblade) <> 0",
+          "    then -(weapon|noattr|minrng) + (weapon|noattr|maxrng)",
+          "    else 0",
+          "  end",
+          "else",
+          "  if     not(weapon|has_attribute|Spellblade) <> 0",
+          "    then -(weapon|noattr|minrng) + (weapon|noattr|maxrng)",
+          "    else 0",
+          "  end",
+          "end"
+        ],
+        "maxrng": 0,
+        "tpcost": "-floor((weapon|noattr|tpcost) * 0.2)",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "cost",
+        "for faith",
+        "for reason",
+        "for guile"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Spellblade",
+      "type": "Any",
+      "description": "Range becomes 1 and TP cost is reduced by 30% of base TP cost. Additional effect depending on weapon type:\n\n \u2022 Reason: Mt +3 and tome is compatible with Axe attributes.\n\n \u2022 Guile: Mt +2, Hit +5, and tome is compatible with lance attributes.\n\n \u2022 Faith: Mt +1, Hit +10, and tome is compatible with sword attributes.\n\nThe @{attribute::Ranged} attribute is disabled on this weapon. This attribute is disabled on non-spells and on spells that don\u2019t deal damage on attack.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": [
+          "metaif builtins|macrogen == 1 then",
+          "  metaif weapon|type|faith  <> 0 then",
+          "    1",
+          "  elseif weapon|type|reason <> 0 then",
+          "    3",
+          "  elseif weapon|type|guile  <> 0 then",
+          "    2",
+          "  else",
+          "    0",
+          "  end",
+          "else",
+          "  if     weapon|type|faith  <> 0 then",
+          "    1",
+          "  elseif weapon|type|reason <> 0 then",
+          "    3",
+          "  elseif weapon|type|guile  <> 0 then",
+          "    2",
+          "  else",
+          "    0",
+          "  end",
+          "end"
+        ],
+        "prot": 0,
+        "resl": 0,
+        "hit": [
+          "metaif builtins|macrogen == 1 then",
+          "  metaif weapon|type|faith  <> 0 then",
+          "    10",
+          "  elseif weapon|type|reason <> 0 then",
+          "    0",
+          "  elseif weapon|type|guile  <> 0 then",
+          "    5",
+          "  else",
+          "    0",
+          "  end",
+          "else",
+          "  if     weapon|type|faith  <> 0 then",
+          "    10",
+          "  elseif weapon|type|reason <> 0 then",
+          "    0",
+          "  elseif weapon|type|guile  <> 0 then",
+          "    5",
+          "  else",
+          "    0",
+          "  end",
+          "end"
+        ],
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": "-(weapon|noattr|minrng) + 1",
+        "maxrng": "-(weapon|noattr|maxrng) + 1",
+        "tpcost": "-floor((weapon|noattr|tpcost) * 0.3)",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for faith",
+        "for reason",
+        "for guile"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Stabilizer",
+      "description": "Allows weapon to ignore the Mt penalties imposed by the @Sealing, Tainted, and Paralytic attributes.\n\nDisabled on non-Bow weapons.",
+      "rank": 2,
+      "price": 500,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for bows"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Stalwart",
+      "description": "After combat, if unit is affected by @{const:gbp:[Mt +X]}, increase the value of X by 1. If not, apply @{const:gbp:[Mt +1]} to unit for one turn.",
+      "rank": 1,
+      "price": 1250,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for swords",
+        "for lances",
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl",
+        "for bows"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Storm Infused",
       "type": "Any",
       "description": "Grants weapon [Is a wind spell in addition to other elements]. Disabled non-Reason and on non-lightning spells.",
@@ -19105,6 +25250,400 @@ const definitions = {
       "hidden": true
     },
     {
+      "name": "Structure: Crossbow",
+      "type": "Any",
+      "description": "Must be added when weapon is first obtained.\n\nMt +4. Crit +10. This weapon can only attack once per combat @{const:ap:(Max AP = 1)}.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 4,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for bows",
+        "structure"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Structure: Greatbow",
+      "type": "Any",
+      "description": "Must be added when weapon is first obtained.\n\nRange +2. Mt +6. Crit +20. This weapon can only make one attack per turn and only on its wielder's phase; as an action, target a space within range, and at the beginning of the wielder's next phase, make an attack against a unit in or adjacent to target space without using an action.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 6,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 20,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for bows",
+        "structure"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Structure: Longbow",
+      "type": "Any",
+      "description": "Must be added when weapon is first obtained.\n\nWeapon\u2019s minimum and maximum range increase by 1. While equipped, disables wielder's effects that decrease wielder's minimum range.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for bows",
+        "structure"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Structure: Shortbow",
+      "type": "Any",
+      "description": "Must be added when weapon is first obtained.\n\nWeapon gains a minimum range of 1. This weapon's maximum range cannot be increased by wielder's abilities and combat arts or by other attributes. Disabled on non-Bows and on weapons with another \u201cStructure\u201d attribute.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": -1,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for bows",
+        "structure"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Structure: Sling",
+      "description": "Must be added when weapon is first obtained.\n\nMt +1, Max Range +1 and this weapon's base @{const:ap:AP} altering effects are disabled.\n\nDisabled on non-Brawl weapons and on weapons with another \"Structure\" attribute.",
+      "rank": 0,
+      "price": 550,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for brawl",
+        "structure"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Tainted",
+      "description": "On hit, after combat, user may pay 3 TP to apply @{condition:Sickness:[Sickness]} to target foe until the end of target foe\u2019s next combat this turn.\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.\n\nDisabled on weapons with Max Range > 4.",
+      "rank": 1,
+      "price": 450,
+      "mttype": "else",
+      "modifiers": {
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged + weapon|has_attribute|Stabilizer), 0, -3)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill affirm([Taint?], label [On Hit, After Combat] {3}, 0)",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for axes",
+        "for swords",
+        "for lances",
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl",
+        "for bows"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Treatment: Abundant",
+      "description": "On a critical heal, all excess healing may be expended to apply that much @{condition:Overheal:[Overheal]} to target ally for one turn.\n\nDisabled on all items except Heal and First Aid Kit, and disabled on First Aid Kit with more than one \u201cTreatment\u201d attribute.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "treatment",
+        "for faith",
+        "for other"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Treatment: Critical",
+      "description": "On critical heal, healing amount is doubled.\n\nDisabled on all items except Heal and First Aid Kit, and disabled on First Aid Kit with more than one \u201cTreatment\u201d attribute.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "treatment",
+        "for faith",
+        "for other"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Treatment: Destructive",
+      "description": "On a critical heal, all excess healing may be expended to deal half that much nonlethal damage to foes within two spaces.\n\nDisabled on all items except Heal and First Aid Kit, and disabled on First Aid Kit with more than one \u201cTreatment\u201d attribute.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "treatment",
+        "for faith",
+        "for other"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Treatment: Reciprocal",
+      "description": "On critical heal, all excess healing may be expended to restore that much HP to wielder.\n\nDisabled on all items except Heal and First Aid Kit, and disabled on First Aid Kit with more than one \u201cTreatment\u201d attribute.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "treatment",
+        "for faith",
+        "for other"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Treatment: Rejuvenative",
+      "description": "On a critical heal, all excess healing may be expended to restore half as SP to target ally.\n\nDisabled on all items except Heal and First Aid Kit, and disabled on First Aid Kit with more than one \u201cTreatment\u201d attribute.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "treatment",
+        "for faith",
+        "for other"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Treatment: Repairative",
+      "description": "On critical heal, all excess healing may be expended to restore half as TP to target ally.\n\nDisabled on all items except Heal and First Aid Kit, and disabled on First Aid Kit with more than one \u201cTreatment\u201d attribute.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "treatment",
+        "for faith",
+        "for other"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Treatment: Restorative",
+      "description": "On a critical heal, all excess healing may be expended to end any number of status effects on the target (your choice which).\n\nDisabled on all items except Heal and First Aid Kit, and disabled on First Aid Kit with more than one \u201cTreatment\u201d attribute.",
+      "rank": 2,
+      "price": 2000,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "treatment",
+        "for faith",
+        "for other"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Umbral",
       "type": "Any",
       "description": "When wielder crits while attacking with this weapon, this weapon gains Mt +1 (cumulative) until the end of the battle. This attribute cannot be purchased.",
@@ -19128,9 +25667,16 @@ const definitions = {
       },
       "comment": "I think this should add +5 or +10 crit.",
       "tags": [
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances",
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl",
+        "for bows"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Unlocked",
@@ -19157,15 +25703,21 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "cost",
-        "forspell",
-        "forweapon"
+        "for axes",
+        "for swords",
+        "for lances",
+        "for faith",
+        "for reason",
+        "for guile",
+        "for brawl",
+        "for bows"
       ],
       "hidden": false
     },
     {
       "name": "Venin",
       "type": "Prompt",
-      "description": "On hit, apply @(Condition)[Poison] to target foe. Consumes 3 TP when dealing damage. Disabled while user has 0 TP and on spells.\n\nDecreases Max TP by 2 when placed in the Unit\u2019s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)",
+      "description": "On hit, after combat, user may pay 3 TP to apply @{condition:Poisoned:[Poisoned]} to target foe.\n\nDisabled on spells.",
       "rank": 2,
       "price": 2800,
       "mttype": "else",
@@ -19181,14 +25733,17 @@ const definitions = {
         "maxrng": 0,
         "tpcost": 3,
         "spcost": 0,
-        "tp": -2,
+        "tp": 0,
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
       "tags": [
         "cost",
         "penalty",
-        "forweapon"
+        "for axes",
+        "for brawl",
+        "for swords",
+        "for lances"
       ],
       "hidden": false
     },
@@ -19223,7 +25778,7 @@ const definitions = {
     {
       "name": "Wide Blade",
       "type": "Any",
-      "description": "Grants weapon +4 Mt, -35 Hit and +10 Crit.\n\nDisabled on spells and on weapons with Range > 1.",
+      "description": "Grants weapon +4 Mt, -25 Hit and +10 Crit.\n\nDisabled on spells and on weapons with Range > 1.",
       "rank": 1,
       "price": 550,
       "mttype": "else",
@@ -19245,7 +25800,10 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "effective",
-        "forweapon"
+        "for axes",
+        "for lances",
+        "for swords",
+        "for brawl"
       ],
       "hidden": false
     }
@@ -19253,43 +25811,25 @@ const definitions = {
   "battalions": [
     {
       "name": "Alone",
-      "description": "Not leading a battalion.",
+      "description": "The abscence of a battalion.",
       "rank": "E",
-      "weapon": "Other",
-      "type": [
-        "Infantry"
-      ],
-      "abilities": [],
+      "gambits": [],
       "requires": "",
       "price": 0,
       "growths": {
-        "disc": 0,
-        "brav": 0,
-        "pres": 0,
-        "strc": 0
+        "end": 0,
+        "atk": 0,
+        "prot": 0,
+        "resl": 0
       },
       "modifiers": {
-        "disc": 0,
-        "brav": 0,
-        "pres": 0,
-        "strc": 0,
+        "end": 0,
+        "atk": 0,
+        "prot": 0,
+        "resl": 0,
         "auto": 0,
-        "cap": 0,
-        "minrng": 0,
-        "maxrng": 0
-      },
-      "gambit": {
-        "name": "No Gambit",
-        "description": "No special effect.",
-        "aoe": "None",
-        "mttype": "none",
-        "modifiers": {
-          "mt": 0,
-          "hit": 0,
-          "minrng": 0,
-          "maxrng": 0,
-          "cost": 0
-        }
+        "plu": 0,
+        "cap": 0
       },
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [
@@ -19298,52 +25838,342 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Machian Pirates",
-      "description": "An assortment of pirates from all over the Western Seas.",
+      "name": "Adjutant",
+      "description": "A battalion that represents having an adjutant with no battalion equipped otherwise. This battalion has zero capacity regardless of rank.",
       "rank": "E",
-      "weapon": "Swords",
-      "type": [
-        "Infantry"
-      ],
-      "abilities": [
-        "Dual Breach",
-        "Sabotage",
-        "Looting"
-      ],
+      "gambits": [],
       "requires": "",
       "price": 0,
       "growths": {
-        "disc": 45,
-        "brav": 50,
-        "pres": 55,
-        "strc": 40
+        "end": 60,
+        "atk": 40,
+        "prot": 40,
+        "resl": 40
       },
       "modifiers": {
-        "disc": 24,
-        "brav": 28,
-        "pres": 15,
-        "strc": 11,
+        "end": 10,
+        "atk": 6,
+        "prot": 6,
+        "resl": 6,
         "auto": 1,
-        "cap": 1,
-        "minrng": 0,
-        "maxrng": 1
-      },
-      "gambit": {
-        "name": "Crimping",
-        "description": "On hit, applies [Rattled] to all foes in AoE for one turn. After combat, battalion regains EP equal to half of the EP damage dealt to other battalion units by this attack.",
-        "aoe": "3x3 square centered on Unit",
-        "mttype": "str",
-        "modifiers": {
-          "mt": 6,
-          "hit": 50,
-          "minrng": 0,
-          "maxrng": 1,
-          "cost": 10
-        }
+        "plu": 1,
+        "cap": 0
       },
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
+    },
+    {
+      "name": "Autonomy",
+      "description": "A battalion with superior Autonomy.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 60,
+        "atk": 50,
+        "prot": 45,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 26,
+        "atk": 7,
+        "prot": 7,
+        "resl": 7,
+        "auto": 2,
+        "plu": 1,
+        "cap": 1
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": true
+    },
+    {
+      "name": "Balanced/Offense",
+      "description": "A battalion with moderate stats and capacity designed for offensive gambit usage.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 45,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 24,
+        "atk": 10,
+        "prot": 7,
+        "resl": 7,
+        "auto": 1,
+        "plu": 1,
+        "cap": 1
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Balanced/Protection",
+      "description": "A battalion with moderate stats and capacity designed to withstand strength-based attacks.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 55,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 26,
+        "atk": 9,
+        "prot": 9,
+        "resl": 6,
+        "auto": 1,
+        "plu": 1,
+        "cap": 1
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Balanced/Resiliance",
+      "description": "A battalion with moderate stats and capacity designed to withstand magic-based attacks.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 55,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 26,
+        "atk": 9,
+        "prot": 6,
+        "resl": 9,
+        "auto": 1,
+        "plu": 1,
+        "cap": 1
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Capacity",
+      "description": "A battalion with superior Capacity.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 80,
+        "atk": 45,
+        "prot": 45,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 28,
+        "atk": 6,
+        "prot": 6,
+        "resl": 6,
+        "auto": 1,
+        "plu": 1,
+        "cap": 3
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Heavy/Offense",
+      "description": "A battalion with high stats and low capacity designed for offensive gambit usage.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 45,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 26,
+        "atk": 12,
+        "prot": 8,
+        "resl": 8,
+        "auto": 1,
+        "plu": 1,
+        "cap": 0
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Heavy/Protection",
+      "description": "A battalion with high stats and low capacity designed to withstand strength-based attacks.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 55,
+        "resl": 40
+      },
+      "modifiers": {
+        "end": 28,
+        "atk": 10,
+        "prot": 10,
+        "resl": 7,
+        "auto": 1,
+        "plu": 1,
+        "cap": 0
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Heavy/Resiliance",
+      "description": "A battalion with high stats and low capacity designed to withstand magic-based attacks.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 40,
+        "resl": 55
+      },
+      "modifiers": {
+        "end": 28,
+        "atk": 10,
+        "prot": 7,
+        "resl": 10,
+        "auto": 1,
+        "plu": 1,
+        "cap": 0
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Light/Offense",
+      "description": "A battalion with low stats and high capacity designed for offensive gambit usage.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 45,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 24,
+        "atk": 8,
+        "prot": 7,
+        "resl": 7,
+        "auto": 1,
+        "plu": 1,
+        "cap": 2
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Light/Protection",
+      "description": "A battalion with low stats and high capacity designed to withstand strength-based attacks.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 55,
+        "resl": 40
+      },
+      "modifiers": {
+        "end": 24,
+        "atk": 7,
+        "prot": 8,
+        "resl": 7,
+        "auto": 1,
+        "plu": 1,
+        "cap": 2
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Light/Resiliance",
+      "description": "A battalion with low stats and high capacity designed to withstand magic-based attacks.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 40,
+        "resl": 55
+      },
+      "modifiers": {
+        "end": 24,
+        "atk": 7,
+        "prot": 7,
+        "resl": 8,
+        "auto": 1,
+        "plu": 1,
+        "cap": 2
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Plurality",
+      "description": "A battalion with superior Plurality.",
+      "rank": "E",
+      "gambits": [],
+      "requires": "",
+      "price": 0,
+      "growths": {
+        "end": 60,
+        "atk": 50,
+        "prot": 45,
+        "resl": 45
+      },
+      "modifiers": {
+        "end": 26,
+        "atk": 7,
+        "prot": 7,
+        "resl": 7,
+        "auto": 1,
+        "plu": 2,
+        "cap": 1
+      },
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": true
     }
   ],
   "classes": [
@@ -19365,7 +26195,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0
+        "lck": 0
       },
       "modifiers": {
         "hp": 0,
@@ -19375,7 +26205,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 0
       },
       "mount": null,
@@ -19390,54 +26220,10 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Medium",
-      "description": "A mystic who specializes in protective wards",
-      "type": [
-        "Armor",
-        "Caster"
-      ],
-      "tier": "Starting",
-      "requires": "Armor D",
-      "abilities": [
-        "Consumption 1"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 10,
-        "mag": 15,
-        "dex": 10,
-        "spd": 5,
-        "def": 15,
-        "res": 20,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 10,
-        "str": 1,
-        "mag": 2,
-        "dex": 3,
-        "spd": 0,
-        "def": 1,
-        "res": 2,
-        "cha": 3,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Medium",
-      "default_preset": "Balance/Defense/Balance",
-      "default_mainarm": "Force",
-      "default_sidearm": "Guile",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
       "name": "Armored Knight",
       "description": "A knight who specializes in armored combat",
       "type": [
-        "Armor",
-        "Martial"
+        "Armor"
       ],
       "tier": "Starting",
       "requires": "Armor D",
@@ -19453,7 +26239,7 @@ const definitions = {
         "spd": 0,
         "def": 25,
         "res": 15,
-        "cha": 0
+        "lck": 0
       },
       "modifiers": {
         "hp": 10,
@@ -19463,7 +26249,7 @@ const definitions = {
         "spd": 0,
         "def": 5,
         "res": 3,
-        "cha": 0,
+        "lck": 0,
         "mov": 4
       },
       "mount": null,
@@ -19476,318 +26262,43 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Dark Mage",
-      "description": "A class that uses Guile.",
+      "name": "Medium",
+      "description": "A mystic who specializes in protective wards",
       "type": [
-        "Infantry",
-        "Caster"
+        "Armor"
       ],
       "tier": "Starting",
-      "requires": "Guile D",
+      "requires": "Armor D",
       "abilities": [
-        "Guile Consumption 1",
-        "Jinx"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 15,
-        "str": 10,
-        "mag": 20,
-        "dex": 20,
-        "spd": 10,
-        "def": 10,
-        "res": 15,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 1,
-        "str": 1,
-        "mag": 4,
-        "dex": 2,
-        "spd": 2,
-        "def": 2,
-        "res": 2,
-        "cha": 2,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Dark Mage",
-      "default_preset": "Power/Balance/Dexterity",
-      "default_mainarm": "Guile",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Mage",
-      "description": "A class that uses Reason.",
-      "type": [
-        "Infantry",
-        "Caster"
-      ],
-      "tier": "Starting",
-      "requires": "Reason D",
-      "abilities": [
-        "Reason Consumption 1",
-        "Focus"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 10,
-        "str": 10,
-        "mag": 20,
-        "dex": 15,
-        "spd": 10,
-        "def": 0,
-        "res": 20,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 0,
-        "str": 1,
-        "mag": 4,
-        "dex": 2,
-        "spd": 2,
-        "def": 0,
-        "res": 4,
-        "cha": 3,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Mage",
-      "default_preset": "Balance/Balance/Dexterity",
-      "default_mainarm": "Fire",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Priest",
-      "description": "A Faith mage with high Resistance",
-      "type": [
-        "Infantry",
-        "Caster"
-      ],
-      "tier": "Starting",
-      "requires": "Faith D",
-      "abilities": [
-        "Faith Consumption 1",
-        "Faith Heal +5"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 10,
-        "str": 10,
-        "mag": 15,
-        "dex": 10,
-        "spd": 5,
-        "def": 0,
-        "res": 30,
-        "cha": 20
-      },
-      "modifiers": {
-        "hp": 0,
-        "str": 1,
-        "mag": 4,
-        "dex": 2,
-        "spd": 1,
-        "def": 0,
-        "res": 5,
-        "cha": 3,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Priest",
-      "default_preset": "Balance/Resistance/Luck",
-      "default_mainarm": "Faith",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Apothacary",
-      "description": "A versatile infantry class with decent defensive stats and the ability to make greater use of consumable items.",
-      "type": [
-        "Infantry",
-        "Martial",
-        "Caster"
-      ],
-      "tier": "Starting",
-      "requires": "Any (Swords D) (Lances D) (Axes D) (Bows D) (Brawl D) (Faith D) (Reason D) (Guile D)",
-      "abilities": [
-        "Item Expertise",
-        "Level 10 Mov +1"
+        "Consumption 1"
       ],
       "arts": [],
       "growths": {
         "hp": 25,
         "str": 10,
-        "mag": 10,
-        "dex": 10,
-        "spd": 0,
-        "def": 15,
-        "res": 15,
-        "cha": 20
-      },
-      "modifiers": {
-        "hp": 2,
-        "str": 2,
-        "mag": 2,
-        "dex": 2,
-        "spd": 0,
-        "def": 3,
-        "res": 3,
-        "cha": 3,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Apothacary",
-      "default_preset": "Balance/Balance/Luck",
-      "default_mainarm": "Bows",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Brawler",
-      "description": "A hand to hand combat specialist.",
-      "type": [
-        "Infantry",
-        "Martial",
-        "Caster"
-      ],
-      "tier": "Starting",
-      "requires": "Brawl D",
-      "abilities": [
-        "Brawl Consumption 1",
-        "Stamina +5",
-        "Level 10 Mov +1"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 10,
-        "mag": 10,
-        "dex": 15,
-        "spd": 15,
-        "def": 10,
-        "res": 0,
-        "cha": 10
-      },
-      "modifiers": {
-        "hp": 4,
-        "str": 2,
-        "mag": 2,
-        "dex": 3,
-        "spd": 3,
-        "def": 2,
-        "res": 0,
-        "cha": 2,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Brawler",
-      "default_preset": "Balance/Defense/Dexterity",
-      "default_mainarm": "Metal",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Dancer",
-      "description": "A performer who raises morale, allowing allies to act again",
-      "type": [
-        "Infantry",
-        "Martial",
-        "Caster"
-      ],
-      "tier": "Starting",
-      "requires": "Required (Permission `White Heron Cup`)",
-      "abilities": [
-        "Consumption 1",
-        "Avo +20",
-        "Level 10 Mov +1"
-      ],
-      "arts": [
-        "Dance",
-        "Martial Dance"
-      ],
-      "growths": {
-        "hp": 20,
-        "str": 15,
         "mag": 15,
-        "dex": 15,
-        "spd": 15,
-        "def": 5,
-        "res": 15,
-        "cha": 30
+        "dex": 10,
+        "spd": 5,
+        "def": 15,
+        "res": 20,
+        "lck": 5
       },
       "modifiers": {
-        "hp": 4,
-        "str": 0,
-        "mag": 0,
-        "dex": 3,
-        "spd": 3,
-        "def": 0,
-        "res": 0,
-        "cha": 5,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Dancer",
-      "default_preset": "Speed/Balance/Luck",
-      "default_mainarm": "Swords",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Lord",
-      "description": "A battlefield leader.",
-      "type": [
-        "Infantry",
-        "Martial",
-        "Caster"
-      ],
-      "tier": "Starting",
-      "requires": "Authority D",
-      "abilities": [
-        "Lead by Example",
-        "Level 10 Mov +1"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 15,
-        "str": 10,
-        "mag": 10,
-        "dex": 15,
-        "spd": 10,
-        "def": 10,
-        "res": 10,
-        "cha": 25
-      },
-      "modifiers": {
-        "hp": 2,
-        "str": 2,
+        "hp": 10,
+        "str": 1,
         "mag": 2,
-        "dex": 2,
-        "spd": 1,
-        "def": 2,
+        "dex": 3,
+        "spd": 0,
+        "def": 1,
         "res": 2,
-        "cha": 4,
+        "lck": 3,
         "mov": 4
       },
       "mount": null,
-      "default_base": "Lord",
-      "default_preset": "Balance/Balance/Luck",
-      "default_mainarm": "Swords",
-      "default_sidearm": "None",
+      "default_base": "Medium",
+      "default_preset": "Balance/Defense/Balance",
+      "default_mainarm": "Force",
+      "default_sidearm": "Guile",
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
@@ -19796,12 +26307,12 @@ const definitions = {
       "name": "Cavalier",
       "description": "A warrior who fights from horseback",
       "type": [
-        "Cavalry",
-        "Martial"
+        "Cavalry"
       ],
       "tier": "Starting",
       "requires": "Riding D",
       "abilities": [
+        "Crit +5",
         "Flashing Blade",
         "Canto"
       ],
@@ -19814,7 +26325,7 @@ const definitions = {
         "spd": 5,
         "def": 15,
         "res": 10,
-        "cha": 10
+        "lck": 10
       },
       "modifiers": {
         "hp": 3,
@@ -19824,7 +26335,7 @@ const definitions = {
         "spd": 3,
         "def": 3,
         "res": 1,
-        "cha": 1,
+        "lck": 1,
         "mov": 4
       },
       "mount": {
@@ -19835,7 +26346,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 3
       },
       "default_base": "Cavalier",
@@ -19850,8 +26361,7 @@ const definitions = {
       "name": "Troubadour",
       "description": "A mage who fights from horseback",
       "type": [
-        "Cavalry",
-        "Other"
+        "Cavalry"
       ],
       "tier": "Starting",
       "requires": "Riding D",
@@ -19868,7 +26378,7 @@ const definitions = {
         "spd": 10,
         "def": 10,
         "res": 15,
-        "cha": 20
+        "lck": 20
       },
       "modifiers": {
         "hp": 1,
@@ -19878,7 +26388,7 @@ const definitions = {
         "spd": 2,
         "def": 2,
         "res": 2,
-        "cha": 3,
+        "lck": 3,
         "mov": 4
       },
       "mount": {
@@ -19889,13 +26399,66 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 3
       },
       "default_base": "Troubadour",
       "default_preset": "Power/Resistance/Luck",
       "default_mainarm": "Ice",
       "default_sidearm": "Faith",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Pegasus Knight",
+      "description": "A warrior who nimbly soars upon the back of a pegasus",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Starting",
+      "requires": "Flying D",
+      "abilities": [
+        "Avo +10",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 20,
+        "str": 10,
+        "mag": 10,
+        "dex": 5,
+        "spd": 20,
+        "def": 10,
+        "res": 15,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 5,
+        "def": 1,
+        "res": 3,
+        "lck": 1,
+        "mov": 4
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Pegasus Knight",
+      "default_preset": "Speed/Resistance/Luck",
+      "default_mainarm": "Lances",
+      "default_sidearm": "Swords",
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
@@ -19921,7 +26484,7 @@ const definitions = {
         "spd": 10,
         "def": 20,
         "res": 0,
-        "cha": 10
+        "lck": 10
       },
       "modifiers": {
         "hp": 4,
@@ -19931,7 +26494,7 @@ const definitions = {
         "spd": 1,
         "def": 5,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mov": 4
       },
       "mount": {
@@ -19942,7 +26505,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
       },
       "default_base": "Wyvern Rider",
@@ -19954,100 +26517,43 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Pegasus Knight",
-      "description": "A warrior who nimbly soars upon the back of a pegasus",
+      "name": "Apothacary",
+      "description": "A versatile infantry class with decent defensive stats and the ability to make greater use of consumable items.",
       "type": [
-        "Flying",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
-      "requires": "Flying D",
+      "requires": "Any (Swords D) (Lances D) (Axes D) (Bows D) (Brawl D) (Faith D) (Reason D) (Guile D)",
       "abilities": [
-        "Avo +10",
-        "Canto"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 20,
-        "str": 10,
-        "mag": 10,
-        "dex": 5,
-        "spd": 20,
-        "def": 10,
-        "res": 15,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 1,
-        "str": 2,
-        "mag": 2,
-        "dex": 2,
-        "spd": 5,
-        "def": 1,
-        "res": 3,
-        "cha": 1,
-        "mov": 4
-      },
-      "mount": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Pegasus Knight",
-      "default_preset": "Speed/Resistance/Luck",
-      "default_mainarm": "Lances",
-      "default_sidearm": "Swords",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Phantom",
-      "description": "A spirit summoned to do battle.",
-      "type": [
-        "Monster",
-        "Flying",
-        "Other"
-      ],
-      "tier": "Starting",
-      "requires": "None",
-      "abilities": [
-        "Pass",
-        "Flying Effect Null",
+        "Item Expertise",
         "Level 10 Mov +1"
       ],
       "arts": [],
       "growths": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
+        "hp": 25,
+        "str": 10,
+        "mag": 10,
+        "dex": 10,
         "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0
+        "def": 15,
+        "res": 15,
+        "lck": 20
       },
       "modifiers": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
+        "hp": 2,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
         "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 4
+        "def": 3,
+        "res": 3,
+        "lck": 3,
+        "mov": 5
       },
       "mount": null,
-      "default_base": "Phantom",
-      "default_preset": "Custom",
-      "default_mainarm": "Guile",
+      "default_base": "Apothacary",
+      "default_preset": "Balance/Balance/Luck",
+      "default_mainarm": "Bows",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
@@ -20057,8 +26563,7 @@ const definitions = {
       "name": "Archer",
       "description": "Bow focused martial class.",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
       "requires": "Bows D",
@@ -20075,7 +26580,7 @@ const definitions = {
         "spd": 15,
         "def": 5,
         "res": 10,
-        "cha": 15
+        "lck": 15
       },
       "modifiers": {
         "hp": 1,
@@ -20085,13 +26590,57 @@ const definitions = {
         "spd": 2,
         "def": 1,
         "res": 2,
-        "cha": 3,
+        "lck": 3,
         "mov": 4
       },
       "mount": null,
       "default_base": "Archer",
-      "default_preset": "Power/Resistance/Dexterity",
+      "default_preset": "Balance/Resistance/Dexterity",
       "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Brawler",
+      "description": "A hand to hand combat specialist.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Starting",
+      "requires": "Brawl D",
+      "abilities": [
+        "Brawl Consumption 1",
+        "Stamina +5",
+        "Level 10 Mov +1"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 15,
+        "def": 10,
+        "res": 0,
+        "lck": 10
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 2,
+        "mag": 2,
+        "dex": 3,
+        "spd": 3,
+        "def": 2,
+        "res": 0,
+        "lck": 2,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Brawler",
+      "default_preset": "Balance/Defense/Dexterity",
+      "default_mainarm": "Metal",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
@@ -20101,8 +26650,7 @@ const definitions = {
       "name": "Brigand",
       "description": "A powerful, axe-wielding foot-soldier",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
       "requires": "Axes D",
@@ -20119,7 +26667,7 @@ const definitions = {
         "spd": 10,
         "def": 10,
         "res": 0,
-        "cha": 10
+        "lck": 10
       },
       "modifiers": {
         "hp": 5,
@@ -20129,7 +26677,7 @@ const definitions = {
         "spd": 2,
         "def": 1,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mov": 4
       },
       "mount": null,
@@ -20142,15 +26690,191 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Dancer",
+      "description": "A performer who raises morale, allowing allies to act again",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Starting",
+      "requires": "Required (Permission `White Heron Cup`)",
+      "abilities": [
+        "Consumption 1",
+        "Avo +20",
+        "Level 10 Mov +1"
+      ],
+      "arts": [
+        "Dance",
+        "Deadly Dance"
+      ],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 15,
+        "spd": 15,
+        "def": 5,
+        "res": 15,
+        "lck": 30
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 0,
+        "mag": 0,
+        "dex": 5,
+        "spd": 5,
+        "def": 1,
+        "res": 1,
+        "lck": 6,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Dancer",
+      "default_preset": "Speed/Balance/Luck",
+      "default_mainarm": "Swords",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Dark Mage",
+      "description": "A class that uses Guile.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Starting",
+      "requires": "Guile D",
+      "abilities": [
+        "Guile Consumption 1",
+        "Jinx"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 15,
+        "str": 10,
+        "mag": 20,
+        "dex": 20,
+        "spd": 10,
+        "def": 10,
+        "res": 15,
+        "lck": 5
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 1,
+        "mag": 4,
+        "dex": 2,
+        "spd": 2,
+        "def": 2,
+        "res": 2,
+        "lck": 2,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Dark Mage",
+      "default_preset": "Power/Balance/Dexterity",
+      "default_mainarm": "Guile",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Lord",
+      "description": "A battlefield leader.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Starting",
+      "requires": "Authority D",
+      "abilities": [
+        "Lead by Example",
+        "Level 10 Mov +1"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 15,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 10,
+        "def": 10,
+        "res": 10,
+        "lck": 25
+      },
+      "modifiers": {
+        "hp": 2,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 1,
+        "def": 2,
+        "res": 2,
+        "lck": 4,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Lord",
+      "default_preset": "Balance/Balance/Luck",
+      "default_mainarm": "Swords",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Mage",
+      "description": "A class that uses Reason.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Starting",
+      "requires": "Reason D",
+      "abilities": [
+        "Reason Consumption 1",
+        "Focus"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 10,
+        "str": 10,
+        "mag": 20,
+        "dex": 15,
+        "spd": 10,
+        "def": 0,
+        "res": 20,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 1,
+        "mag": 4,
+        "dex": 2,
+        "spd": 2,
+        "def": 0,
+        "res": 4,
+        "lck": 3,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Mage",
+      "default_preset": "Balance/Balance/Dexterity",
+      "default_mainarm": "Fire",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Mercenary",
       "description": "Well rounded Sword fighter.",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
       "requires": "Any (Swords D) (Axes D)",
       "abilities": [
+        "Hit +5",
         "Heavy Blade",
         "Level 10 Mov +1"
       ],
@@ -20163,7 +26887,7 @@ const definitions = {
         "spd": 15,
         "def": 15,
         "res": 5,
-        "cha": 5
+        "lck": 5
       },
       "modifiers": {
         "hp": 3,
@@ -20173,7 +26897,7 @@ const definitions = {
         "spd": 2,
         "def": 2,
         "res": 1,
-        "cha": 1,
+        "lck": 1,
         "mov": 4
       },
       "mount": null,
@@ -20186,16 +26910,59 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Monk",
+      "description": "A well-rounded infantry brawling class with high Luck.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Starting",
+      "requires": "Brawl D",
+      "abilities": [
+        "Brawl Consumption 1",
+        "Chain Guard",
+        "Level 10 Mov +1"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 10,
+        "def": 10,
+        "res": 5,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 3,
+        "def": 1,
+        "res": 1,
+        "lck": 4,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Monk",
+      "default_preset": "Balance/Balance/Luck",
+      "default_mainarm": "Metal",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Myrmidon",
       "description": "A nimble Sword fighter.",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
       "requires": "Swords D",
       "abilities": [
-        "Zeal",
+        "Crit +5",
         "Level 10 Mov +1"
       ],
       "arts": [],
@@ -20207,7 +26974,7 @@ const definitions = {
         "spd": 20,
         "def": 10,
         "res": 10,
-        "cha": 20
+        "lck": 20
       },
       "modifiers": {
         "hp": 1,
@@ -20217,7 +26984,7 @@ const definitions = {
         "spd": 4,
         "def": 1,
         "res": 1,
-        "cha": 3,
+        "lck": 3,
         "mov": 4
       },
       "mount": null,
@@ -20230,15 +26997,58 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Priest",
+      "description": "A Faith mage with high Resistance",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Starting",
+      "requires": "Faith D",
+      "abilities": [
+        "Faith Consumption 1",
+        "Faith Heal +5"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 10,
+        "str": 10,
+        "mag": 15,
+        "dex": 10,
+        "spd": 5,
+        "def": 0,
+        "res": 30,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 1,
+        "mag": 4,
+        "dex": 2,
+        "spd": 1,
+        "def": 0,
+        "res": 5,
+        "lck": 3,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Priest",
+      "default_preset": "Balance/Resistance/Luck",
+      "default_mainarm": "Faith",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Soldier",
       "description": "An foot-soldier who bears a lance into battle",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
       "requires": "Lances D",
       "abilities": [
+        "Crit Avo +5",
         "Heavy Blade",
         "Level 10 Mov +1"
       ],
@@ -20251,7 +27061,7 @@ const definitions = {
         "spd": 5,
         "def": 15,
         "res": 10,
-        "cha": 5
+        "lck": 5
       },
       "modifiers": {
         "hp": 4,
@@ -20261,7 +27071,7 @@ const definitions = {
         "spd": 1,
         "def": 4,
         "res": 1,
-        "cha": 0,
+        "lck": 0,
         "mov": 4
       },
       "mount": null,
@@ -20277,8 +27087,7 @@ const definitions = {
       "name": "Thief",
       "description": "A scoundrel versed in the Bow and Sword; can unlock doors and chests",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
       "requires": "Any (Swords D) (Bows D)",
@@ -20296,7 +27105,7 @@ const definitions = {
         "spd": 20,
         "def": 5,
         "res": 10,
-        "cha": 20
+        "lck": 20
       },
       "modifiers": {
         "hp": 1,
@@ -20306,7 +27115,7 @@ const definitions = {
         "spd": 5,
         "def": 1,
         "res": 2,
-        "cha": 4,
+        "lck": 4,
         "mov": 4
       },
       "mount": null,
@@ -20322,8 +27131,7 @@ const definitions = {
       "name": "Witch Hunter",
       "description": "A fighter that uses a variety of weapons to defeat mages",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Starting",
       "requires": "Any (Reason D) (Axe D) (Bow D))",
@@ -20340,7 +27148,7 @@ const definitions = {
         "spd": 10,
         "def": 5,
         "res": 20,
-        "cha": 15
+        "lck": 15
       },
       "modifiers": {
         "hp": 3,
@@ -20350,7 +27158,7 @@ const definitions = {
         "spd": 3,
         "def": 1,
         "res": 3,
-        "cha": 1,
+        "lck": 1,
         "mov": 4
       },
       "mount": null,
@@ -20363,177 +27171,10 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Sorcerer",
-      "description": "Armored spellcaster. Choose one Spectrum skill on reclass.",
-      "type": [
-        "Armor",
-        "Caster"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Faith C+) (Guile C+) (Reason C+)) (Required (Armor C+))  (Required (Level 15))",
-      "abilities": [
-        "Faith Magic Spectrum",
-        "Guile Magic Spectrum",
-        "Reason Magic Spectrum",
-        "Consumption 2"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 15,
-        "mag": 20,
-        "dex": 0,
-        "spd": 5,
-        "def": 15,
-        "res": 25,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 5,
-        "str": 0,
-        "mag": 4,
-        "dex": 3,
-        "spd": 3,
-        "def": 3,
-        "res": 5,
-        "cha": 2,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Medium",
-      "default_preset": "Power/Balance/Luck",
-      "default_mainarm": "Force",
-      "default_sidearm": "Guile",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [
-        "rework"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Dark Signifier",
-      "description": "A armored knight who fights from horseback (I assume no canot was a mistake)",
-      "type": [
-        "Armor",
-        "Cavalry",
-        "Caster",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
-      "abilities": [
-        "Mask of the Signifier",
-        "Group Lull Def/Cha",
-        "Weight -3",
-        "Canto"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 20,
-        "mag": 20,
-        "dex": 20,
-        "spd": 5,
-        "def": 15,
-        "res": 20,
-        "cha": 20
-      },
-      "modifiers": {
-        "hp": 7,
-        "str": 4,
-        "mag": 4,
-        "dex": 2,
-        "spd": 1,
-        "def": 3,
-        "res": 4,
-        "cha": 3,
-        "mov": 4
-      },
-      "mount": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 3
-      },
-      "default_base": "Medium",
-      "default_preset": "Power/Balance/Balance",
-      "default_mainarm": "Guile",
-      "default_sidearm": "Lightning",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [
-        "rework"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Great Knight",
-      "description": "A armored knight who fights from horseback. Choose one Advantage skill on reclass.",
-      "type": [
-        "Armor",
-        "Cavalry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
-      "abilities": [
-        "Sword Advantage",
-        "Lance Advantage",
-        "Axe Advantage",
-        "Weight -3",
-        "Canto"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 25,
-        "mag": 15,
-        "dex": 15,
-        "spd": 10,
-        "def": 20,
-        "res": 20,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 6,
-        "str": 7,
-        "mag": 0,
-        "dex": 3,
-        "spd": 2,
-        "def": 5,
-        "res": 4,
-        "cha": 2,
-        "mov": 4
-      },
-      "mount": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 3
-      },
-      "default_base": "Armored Knight",
-      "default_preset": "Power/Balance/Luck",
-      "default_mainarm": "Axes",
-      "default_sidearm": "Lances",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
       "name": "Fortress Knight",
       "description": "An knight versed in embattlement with expertise in armored combat. Choose one Advantage skill on reclass.",
       "type": [
-        "Armor",
-        "Martial"
+        "Armor"
       ],
       "tier": "Advanced",
       "requires": "All (Any (Axes C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
@@ -20553,7 +27194,7 @@ const definitions = {
         "spd": 0,
         "def": 30,
         "res": 20,
-        "cha": 15
+        "lck": 15
       },
       "modifiers": {
         "hp": 7,
@@ -20563,7 +27204,7 @@ const definitions = {
         "spd": 0,
         "def": 7,
         "res": 3,
-        "cha": 1,
+        "lck": 1,
         "mov": 4
       },
       "mount": null,
@@ -20579,8 +27220,7 @@ const definitions = {
       "name": "Journeyman",
       "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
       "type": [
-        "Armor",
-        "Martial"
+        "Armor"
       ],
       "tier": "Advanced",
       "requires": "All (Any (Swords C+) (Swords C+)) (Required (Armor C+)) (Required (Level 15))",
@@ -20599,7 +27239,7 @@ const definitions = {
         "spd": 20,
         "def": 15,
         "res": 5,
-        "cha": 15
+        "lck": 15
       },
       "modifiers": {
         "hp": 5,
@@ -20609,7 +27249,7 @@ const definitions = {
         "spd": 5,
         "def": 2,
         "res": 1,
-        "cha": 2,
+        "lck": 2,
         "mov": 4
       },
       "mount": null,
@@ -20625,8 +27265,7 @@ const definitions = {
       "name": "Knight Captain",
       "description": "An knight versed in armored combat with expertise in embattlement. Choose one Advantage skill on reclass.",
       "type": [
-        "Armor",
-        "Martial"
+        "Armor"
       ],
       "tier": "Advanced",
       "requires": "All (Any (Swords C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
@@ -20646,7 +27285,7 @@ const definitions = {
         "spd": 15,
         "def": 20,
         "res": 20,
-        "cha": 20
+        "lck": 20
       },
       "modifiers": {
         "hp": 5,
@@ -20656,7 +27295,7 @@ const definitions = {
         "spd": 0,
         "def": 5,
         "res": 3,
-        "cha": 3,
+        "lck": 3,
         "mov": 4
       },
       "mount": null,
@@ -20669,40 +27308,178 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Valkyrie",
-      "description": "A veteran mage who commands the battlefield from horseback. Choose one Range +1 skill on reclass.",
+      "name": "Pugilist",
+      "description": "A tenacious brawler.",
       "type": [
-        "Cavalry",
-        "Caster"
+        "Armor"
       ],
       "tier": "Advanced",
-      "requires": "All (Any (Reason C+) (Faith C+)) (Required (Riding C+)) (Required (Level 15))",
+      "requires": "All (Brawl C+) (Required (Armor C+)) (Required (Level 15))",
       "abilities": [
-        "Reason Range +1",
-        "Faith Range +1",
-        "Canto",
-        "Tactician"
+        "Brawl Advantage",
+        "Brawl Consumption 2",
+        "Butterfly Stance"
       ],
       "arts": [],
       "growths": {
-        "hp": 20,
+        "hp": 35,
         "str": 15,
-        "mag": 20,
-        "dex": 15,
-        "spd": 10,
-        "def": 10,
-        "res": 20,
-        "cha": 25
+        "mag": 15,
+        "dex": 20,
+        "spd": 30,
+        "def": 25,
+        "res": 15,
+        "lck": 10
       },
       "modifiers": {
-        "hp": 3,
+        "hp": 7,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 5,
+        "def": 5,
+        "res": 4,
+        "lck": 4,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Brawler",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Beast",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Ronin",
+      "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
+      "type": [
+        "Armor"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords C+) (Bows C+)) (Required (Armor C+)) (Required (Level 15))",
+      "abilities": [
+        "Duelist's Stance",
+        "Sword Advantage",
+        "Bow Advantage",
+        "Positioning"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 15,
+        "dex": 20,
+        "spd": 20,
+        "def": 15,
+        "res": 5,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 5,
         "str": 4,
-        "mag": 1,
-        "dex": 3,
-        "spd": 2,
+        "mag": 2,
+        "dex": 5,
+        "spd": 5,
         "def": 2,
         "res": 1,
-        "cha": 1,
+        "lck": 2,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Myrmidon",
+      "default_preset": "Speed/Balance/Luck",
+      "default_mainarm": "Swords",
+      "default_sidearm": "Bows",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Sorcerer",
+      "description": "Armored spellcaster. Choose one Spectrum skill on reclass.",
+      "type": [
+        "Armor"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Faith C+) (Guile C+) (Reason C+)) (Required (Armor C+))  (Required (Level 15))",
+      "abilities": [
+        "Faith Magic Spectrum",
+        "Guile Magic Spectrum",
+        "Reason Magic Spectrum",
+        "Consumption 2"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 20,
+        "dex": 0,
+        "spd": 5,
+        "def": 15,
+        "res": 25,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 5,
+        "str": 0,
+        "mag": 4,
+        "dex": 3,
+        "spd": 3,
+        "def": 3,
+        "res": 5,
+        "lck": 2,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Medium",
+      "default_preset": "Power/Balance/Luck",
+      "default_mainarm": "Force",
+      "default_sidearm": "Guile",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [
+        "rework"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Dark Signifier",
+      "description": "A armored knight who fights from horseback (I assume no canot was a mistake)",
+      "type": [
+        "Armor",
+        "Cavalry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
+      "abilities": [
+        "Mask of the Signifier",
+        "Group Lull Def/Cha",
+        "Weight -3",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 20,
+        "dex": 20,
+        "spd": 5,
+        "def": 15,
+        "res": 20,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 7,
+        "str": 4,
+        "mag": 4,
+        "dex": 2,
+        "spd": 1,
+        "def": 3,
+        "res": 4,
+        "lck": 3,
         "mov": 4
       },
       "mount": {
@@ -20713,54 +27490,109 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
-        "mov": 2
+        "lck": 0,
+        "mov": 3
       },
-      "default_base": "Troubadour",
-      "default_preset": "Power/Resistance/Luck",
-      "default_mainarm": "Ice",
-      "default_sidearm": "Faith",
+      "default_base": "Medium",
+      "default_preset": "Power/Balance/Balance",
+      "default_mainarm": "Guile",
+      "default_sidearm": "Lightning",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "rework"
+      ],
       "hidden": false
     },
     {
-      "name": "Dark Knight",
-      "description": "A mounted knight versed in both weapons and magic. Choose one weapon and one spell Advantage skill on reclass.",
+      "name": "Great Knight",
+      "description": "A armored knight who fights from horseback. Choose one Advantage skill on reclass.",
       "type": [
-        "Cavalry",
-        "Martial",
-        "Caster"
+        "Armor",
+        "Cavalry"
       ],
       "tier": "Advanced",
-      "requires": "All (Any (Guile C+) (Reason C+)) (Required (Riding C+)) (Required (Level 15))",
+      "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
       "abilities": [
-        "Reason Advantage",
-        "Guile Advantage",
         "Sword Advantage",
         "Lance Advantage",
+        "Axe Advantage",
+        "Weight -3",
         "Canto"
       ],
       "arts": [],
       "growths": {
         "hp": 30,
-        "str": 15,
-        "mag": 20,
-        "dex": 10,
+        "str": 25,
+        "mag": 15,
+        "dex": 15,
         "spd": 10,
-        "def": 10,
+        "def": 20,
         "res": 20,
-        "cha": 20
+        "lck": 15
       },
       "modifiers": {
-        "hp": 4,
-        "str": 2,
-        "mag": 4,
-        "dex": 1,
+        "hp": 6,
+        "str": 7,
+        "mag": 0,
+        "dex": 3,
+        "spd": 2,
+        "def": 5,
+        "res": 4,
+        "lck": 2,
+        "mov": 4
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
         "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 3
+      },
+      "default_base": "Armored Knight",
+      "default_preset": "Power/Balance/Luck",
+      "default_mainarm": "Axes",
+      "default_sidearm": "Lances",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Bow Knight",
+      "description": "A mounted archer with superior range and movement",
+      "type": [
+        "Cavalry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Bows C+) (Required (Riding C+)) (Required (Level 15))",
+      "abilities": [
+        "Bow Advantage",
+        "Trick Shot",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 20,
+        "str": 20,
+        "mag": 15,
+        "dex": 25,
+        "spd": 15,
+        "def": 10,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 3,
+        "mag": 2,
+        "dex": 2,
+        "spd": 4,
         "def": 3,
-        "res": 5,
-        "cha": 4,
+        "res": 2,
+        "lck": 5,
         "mov": 5
       },
       "mount": {
@@ -20771,8 +27603,65 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
+      },
+      "default_base": "Archer",
+      "default_preset": "Power/Balance/Dexterity",
+      "default_mainarm": "Bows",
+      "default_sidearm": "Lances",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Dark Knight",
+      "description": "A mounted knight versed in both weapons and magic. Choose one weapon and one spell Advantage skill on reclass.",
+      "type": [
+        "Cavalry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Guile C+) (Reason C+)) (Required (Riding C+)) (Required (Level 15))",
+      "abilities": [
+        "Reason Advantage",
+        "Guile Advantage",
+        "Sword Advantage",
+        "Lance Advantage",
+        "Despair Aura",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 20,
+        "dex": 5,
+        "spd": 10,
+        "def": 10,
+        "res": 20,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 4,
+        "mag": 4,
+        "dex": 1,
+        "spd": 0,
+        "def": 4,
+        "res": 5,
+        "lck": 4,
+        "mov": 5
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 3
       },
       "default_base": "Troubador",
       "default_preset": "Power/Balance/Luck",
@@ -20786,9 +27675,7 @@ const definitions = {
       "name": "Holy Knight",
       "description": "A mounted knight versed in both weapons and magic. Choose one weapon Advantage skill on reclass.",
       "type": [
-        "Cavalry",
-        "Martial",
-        "Caster"
+        "Cavalry"
       ],
       "tier": "Advanced",
       "requires": "All (Faith C+) (Required (Riding C+)) (Required (Level 15))",
@@ -20807,7 +27694,7 @@ const definitions = {
         "spd": 5,
         "def": 5,
         "res": 30,
-        "cha": 20
+        "lck": 20
       },
       "modifiers": {
         "hp": 3,
@@ -20817,7 +27704,7 @@ const definitions = {
         "spd": 0,
         "def": 2,
         "res": 6,
-        "cha": 4,
+        "lck": 4,
         "mov": 5
       },
       "mount": {
@@ -20828,7 +27715,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
       },
       "default_base": "Priest",
@@ -20840,40 +27727,261 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Hussar",
+      "description": "A veteran light cavalier who focuses on teamwork. Choose one Advantage skill on reclass.",
+      "type": [
+        "Cavalry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
+      "abilities": [
+        "Sword Advantage",
+        "Lance Advantage",
+        "Canto",
+        "Flanking Maneuver"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 15,
+        "dex": 15,
+        "spd": 20,
+        "def": 15,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 3,
+        "mag": 1,
+        "dex": 4,
+        "spd": 5,
+        "def": 3,
+        "res": 2,
+        "lck": 3,
+        "mov": 6
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Cavalier",
+      "default_preset": "Speed/Balance/Balance",
+      "default_mainarm": "Swords",
+      "default_sidearm": "Lances",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Paladin",
+      "description": "A veteran warrior who commands the battlefield from horseback. Choose one Advantage skill on reclass.",
+      "type": [
+        "Cavalry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
+      "abilities": [
+        "Sword Advantage",
+        "Lance Advantage",
+        "Canto",
+        "Terrain Resistance"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 15,
+        "dex": 15,
+        "spd": 10,
+        "def": 20,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 5,
+        "str": 5,
+        "mag": 1,
+        "dex": 2,
+        "spd": 1,
+        "def": 4,
+        "res": 3,
+        "lck": 3,
+        "mov": 6
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Cavalier",
+      "default_preset": "Power/Balance/Dexterity",
+      "default_mainarm": "Lances",
+      "default_sidearm": "Swords",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Valkyrie",
+      "description": "A veteran mage who commands the battlefield from horseback. Choose one Range +1 skill on reclass.",
+      "type": [
+        "Cavalry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Reason C+) (Faith C+)) (Required (Riding C+)) (Required (Level 15))",
+      "abilities": [
+        "Reason Range +1",
+        "Faith Range +1",
+        "Canto",
+        "Tactician"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 20,
+        "dex": 15,
+        "spd": 10,
+        "def": 10,
+        "res": 20,
+        "lck": 25
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 4,
+        "mag": 1,
+        "dex": 3,
+        "spd": 2,
+        "def": 2,
+        "res": 1,
+        "lck": 1,
+        "mov": 4
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Troubadour",
+      "default_preset": "Power/Resistance/Luck",
+      "default_mainarm": "Ice",
+      "default_sidearm": "Faith",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Crow Knight",
+      "description": "A flying class that acts as a squadron leader, leading a flock of battalion units into battle.",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Authority C+) (Required (Flying C+)) (Required (Level 15))",
+      "abilities": [
+        "Lead by Example",
+        "Battalion Plurality +1",
+        "Avo +10"
+      ],
+      "arts": [
+        "Angle of Attack"
+      ],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 5,
+        "spd": 30,
+        "def": 10,
+        "res": 15,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 2,
+        "str": 3,
+        "mag": 3,
+        "dex": 1,
+        "spd": 5,
+        "def": 2,
+        "res": 3,
+        "lck": 6,
+        "mov": 4
+      },
+      "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 7
+      },
+      "default_base": "Lord",
+      "default_preset": "Speed/Resistance/Luck",
+      "default_mainarm": "Lances",
+      "default_sidearm": "Swords",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Dark Flier",
       "description": "A mage who slings spells from upon the back of a pegasus. Choose one Advantage skill on reclass.",
       "type": [
-        "Flying",
-        "Caster"
+        "Flying"
       ],
       "tier": "Advanced",
       "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
       "abilities": [
         "Reason Advantage",
         "Guile Advantage",
-        "Canto",
-        "Transmute"
+        "Transmute",
+        "Canto"
       ],
       "arts": [],
       "growths": {
-        "hp": 20,
-        "str": 20,
+        "hp": 15,
+        "str": 15,
         "mag": 20,
-        "dex": 25,
+        "dex": 10,
         "spd": 30,
         "def": 0,
         "res": 25,
-        "cha": 0
+        "lck": 15
       },
       "modifiers": {
         "hp": 1,
         "str": 2,
-        "mag": 5,
+        "mag": 3,
         "dex": 2,
-        "spd": 5,
+        "spd": 7,
         "def": 0,
         "res": 6,
-        "cha": 0,
+        "lck": 2,
         "mov": 5
       },
       "mount": {
@@ -20884,7 +27992,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
       },
       "default_base": "Pegasus Knight",
@@ -20899,8 +28007,7 @@ const definitions = {
       "name": "Dark Wyvernian",
       "description": "A mage who rains death from above upon the back of a wyvern. Choose one Advantage skill on reclass.",
       "type": [
-        "Flying",
-        "Caster"
+        "Flying"
       ],
       "tier": "Advanced",
       "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
@@ -20919,7 +28026,7 @@ const definitions = {
         "spd": 20,
         "def": 20,
         "res": 0,
-        "cha": 15
+        "lck": 15
       },
       "modifiers": {
         "hp": 6,
@@ -20929,7 +28036,7 @@ const definitions = {
         "spd": 1,
         "def": 4,
         "res": 0,
-        "cha": 2,
+        "lck": 2,
         "mov": 5
       },
       "mount": {
@@ -20940,7 +28047,227 @@ const definitions = {
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Wyvern Rider",
+      "default_preset": "Balance/Defense/Balance",
+      "default_mainarm": "Fire",
+      "default_sidearm": "Guile",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [
+        "depricated"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Falcon Knight",
+      "description": "A pegasus knight who descends upon foes with the speed of a falcon. Choose one Advantage skill on reclass.",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
+      "abilities": [
+        "Sword Advantage",
+        "Lance Advantage",
+        "Avo +10",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 15,
+        "dex": 20,
+        "spd": 30,
+        "def": 10,
+        "res": 20,
+        "lck": 5
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 3,
+        "mag": 0,
+        "dex": 3,
+        "spd": 7,
+        "def": 2,
+        "res": 6,
+        "lck": 1,
+        "mov": 6
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Pegasus Knight",
+      "default_preset": "Speed/Resistance/Luck",
+      "default_mainarm": "Lances",
+      "default_sidearm": "Swords",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Gryphon Rider",
+      "description": "A flyier who specializes in ferrying allies around the battlefield",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Axes C+) (Required (Flying C+)) (Required (Level 15))",
+      "abilities": [
+        "Deliverer",
+        "Avo +10",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 15,
+        "dex": 20,
+        "spd": 20,
+        "def": 15,
+        "res": 15,
+        "lck": 10
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 3,
+        "mag": 0,
+        "dex": 4,
+        "spd": 3,
+        "def": 3,
+        "res": 3,
+        "lck": 4,
+        "mov": 6
+      },
+      "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Pegasus Knight",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Axes",
+      "default_sidearm": "Lances",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Kinshi Knight",
+      "description": "A flying knight who controls the skies",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Bows C+) (Required (Flying C+)) (Required (Level 15))",
+      "abilities": [
+        "Bow Advantage",
+        "Air Superiority",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 25,
+        "spd": 30,
+        "def": 10,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 1,
+        "mag": 0,
+        "dex": 5,
+        "spd": 4,
+        "def": 2,
+        "res": 2,
+        "lck": 4,
+        "mov": 5
+      },
+      "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Archer",
+      "default_preset": "Speed/Resistance/Luck",
+      "default_mainarm": "Bows",
+      "default_sidearm": "Lances",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Malig Knight",
+      "description": "A mage who rains death from above upon the back of a wyvern. Choose one Advantage skill on reclass.",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
+      "abilities": [
+        "Reason Advantage",
+        "Guile Advantage",
+        "Savage Blow",
+        "Canto"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 20,
+        "dex": 15,
+        "spd": 20,
+        "def": 20,
+        "res": 0,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 6,
+        "str": 3,
+        "mag": 4,
+        "dex": 1,
+        "spd": 3,
+        "def": 4,
+        "res": 0,
+        "lck": 4,
+        "mov": 5
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
         "mov": 2
       },
       "default_base": "Wyvern Rider",
@@ -20952,11 +28279,155 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Wyvern Lord",
+      "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern. Choose one Advantage and Breath skill on reclass.",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Axes C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
+      "abilities": [
+        "Axe Advantage",
+        "Lance Advantage",
+        "Avo +10",
+        "Canto"
+      ],
+      "arts": [
+        "Frost Breath",
+        "Flame Breath",
+        "Fog Breath"
+      ],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 15,
+        "dex": 15,
+        "spd": 15,
+        "def": 25,
+        "res": 0,
+        "lck": 10
+      },
+      "modifiers": {
+        "hp": 6,
+        "str": 5,
+        "mag": 2,
+        "dex": 1,
+        "spd": 3,
+        "def": 5,
+        "res": 0,
+        "lck": 2,
+        "mov": 5
+      },
+      "mount": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 2
+      },
+      "default_base": "Wyvern Rider",
+      "default_preset": "Balance/Balance/Dexterity",
+      "default_mainarm": "Axes",
+      "default_sidearm": "Lances",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Assassin",
+      "description": "Bow and Sword martial class focused on damage, stealth, and untility. Choose one Advantage skill on reclass.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Swords C+) (Bows C+) (Required (Level 15))",
+      "abilities": [
+        "Bow Advantage",
+        "Sword Advantage",
+        "Stealth",
+        "Locktouch"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 20,
+        "spd": 25,
+        "def": 0,
+        "res": 15,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 2,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 7,
+        "def": 1,
+        "res": 2,
+        "lck": 5,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Thief",
+      "default_preset": "Speed/Resistance/Balance",
+      "default_mainarm": "Swords",
+      "default_sidearm": "Bows",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Bard",
+      "description": "An advanced class that uses Authority.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "Authority B",
+      "abilities": [
+        "Calm Spirit",
+        "Positioning"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 20,
+        "dex": 30,
+        "spd": 20,
+        "def": 0,
+        "res": 10,
+        "lck": 25
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 3,
+        "mag": 4,
+        "dex": 6,
+        "spd": 3,
+        "def": 0,
+        "res": 2,
+        "lck": 5,
+        "mov": 5
+      },
+      "mount": null,
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [
+        "depricated"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Bishop",
       "description": "An advanced class that uses Faith.",
       "type": [
-        "Infantry",
-        "Caster"
+        "Infantry"
       ],
       "tier": "Advanced",
       "requires": "All (Faith B) (Required (Level 15))",
@@ -20969,22 +28440,22 @@ const definitions = {
       "growths": {
         "hp": 15,
         "str": 15,
-        "mag": 20,
-        "dex": 15,
+        "mag": 25,
+        "dex": 20,
         "spd": 5,
         "def": 0,
-        "res": 35,
-        "cha": 20
+        "res": 30,
+        "lck": 20
       },
       "modifiers": {
         "hp": 3,
-        "str": 0,
-        "mag": 4,
+        "str": 1,
+        "mag": 5,
         "dex": 2,
         "spd": 0,
-        "def": 0,
+        "def": 1,
         "res": 7,
-        "cha": 2,
+        "lck": 4,
         "mov": 4
       },
       "mount": null,
@@ -20997,11 +28468,54 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Cultivator",
+      "description": "A practioner of arts both martial and mystical.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Brawl C+) (Any (Faith C+) (Reason C+) (Guile C+)) (Required (Level 15))",
+      "abilities": [
+        "Consumption 2",
+        "Stamina +15"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 15,
+        "mag": 20,
+        "dex": 20,
+        "spd": 20,
+        "def": 10,
+        "res": 10,
+        "lck": 10
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 4,
+        "dex": 4,
+        "spd": 2,
+        "def": 0,
+        "res": 3,
+        "lck": 4,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Brawler",
+      "default_preset": "Speed/Balance/Balance",
+      "default_mainarm": "Water",
+      "default_sidearm": "Wind",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Druid",
       "description": "An advanced class that uses Guile.",
       "type": [
-        "Infantry",
-        "Caster"
+        "Infantry"
       ],
       "tier": "Advanced",
       "requires": "All (Guile B) (Required (Level 15))",
@@ -21019,7 +28533,7 @@ const definitions = {
         "spd": 10,
         "def": 15,
         "res": 15,
-        "cha": 20
+        "lck": 20
       },
       "modifiers": {
         "hp": 5,
@@ -21029,7 +28543,7 @@ const definitions = {
         "spd": 1,
         "def": 0,
         "res": 3,
-        "cha": 2,
+        "lck": 2,
         "mov": 4
       },
       "mount": null,
@@ -21042,11 +28556,58 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Grappler",
+      "description": "A hand to hand combat expert.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Brawl B) (Required (Level 15))",
+      "abilities": [
+        "Brawl Advantage",
+        "Brawl Crit +10",
+        "Brawl Consumption 2",
+        "Stamina +15"
+      ],
+      "arts": [
+        "Fierce Iron Fist"
+      ],
+      "growths": {
+        "hp": 30,
+        "str": 15,
+        "mag": 15,
+        "dex": 25,
+        "spd": 20,
+        "def": 20,
+        "res": 0,
+        "lck": 10
+      },
+      "modifiers": {
+        "hp": 6,
+        "str": 2,
+        "mag": 2,
+        "dex": 4,
+        "spd": 4,
+        "def": 3,
+        "res": 1,
+        "lck": 2,
+        "mov": 6
+      },
+      "mount": null,
+      "default_base": "Grappler",
+      "default_preset": "Balance/Defense/Dexterity",
+      "default_mainarm": "Metal",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Gremory/Guru",
       "description": "A generalist mage who dabbles in multiple varieties of magic",
       "type": [
-        "Infantry",
-        "Caster"
+        "Infantry"
       ],
       "tier": "Advanced",
       "requires": "All (Any (Faith C+) (Guile C+)) (Any (Guile C+) (Reason C+)) (Any (Reason C+) (Faith C+)) (Required (Level 15))",
@@ -21063,7 +28624,7 @@ const definitions = {
         "spd": 10,
         "def": 0,
         "res": 20,
-        "cha": 20
+        "lck": 20
       },
       "modifiers": {
         "hp": 3,
@@ -21073,7 +28634,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 1,
-        "cha": 2,
+        "lck": 2,
         "mov": 4
       },
       "mount": null,
@@ -21086,11 +28647,325 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Halberdier",
+      "description": "A foot-soldier with an expertise in polearms",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Lances B) (Required (Level 15))",
+      "abilities": [
+        "Lance Advantage",
+        "Lance Crit +10",
+        "Stamina +15"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 15,
+        "dex": 15,
+        "spd": 5,
+        "def": 20,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 6,
+        "str": 5,
+        "mag": 0,
+        "dex": 3,
+        "spd": 1,
+        "def": 6,
+        "res": 3,
+        "lck": 0,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Soldier",
+      "default_preset": "Balance/Defense/Dexterity",
+      "default_mainarm": "Lances",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Hero",
+      "description": "Infantry Axe and Sword unit. Choose one Advantage skill on reclass.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords C+) (Axes C+)) (Required (Level 15))",
+      "abilities": [
+        "Sword Advantage",
+        "Axe Advantage",
+        "Vantage",
+        "Stamina +10"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 20,
+        "dex": 20,
+        "spd": 15,
+        "def": 15,
+        "res": 10,
+        "lck": 5
+      },
+      "modifiers": {
+        "hp": 5,
+        "str": 5,
+        "mag": 1,
+        "dex": 4,
+        "spd": 2,
+        "def": 3,
+        "res": 2,
+        "lck": 2,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Mercenary",
+      "default_preset": "Speed/Defense/Dexterity",
+      "default_mainarm": "Swords",
+      "default_sidearm": "Axes",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Master of Arms",
+      "description": "A generalist fighter who dabbles in all kinds of weapons",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Axes C+) (Lances C+)) (Any (Lances C+) (Swords C+)) (Any (Swords C+) (Axes C+)) (Required (Level 15))",
+      "abilities": [
+        "Combat Artist",
+        "Stamina +15"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 25,
+        "mag": 15,
+        "dex": 15,
+        "spd": 15,
+        "def": 10,
+        "res": 5,
+        "lck": 5
+      },
+      "modifiers": {
+        "hp": 7,
+        "str": 5,
+        "mag": 0,
+        "dex": 5,
+        "spd": 4,
+        "def": 1,
+        "res": 1,
+        "lck": 1,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Mercenary",
+      "default_preset": "Balance/Balance/Dexterity",
+      "default_mainarm": "Lances",
+      "default_sidearm": "Axes",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Monster Hunter",
+      "description": "Anti-Monster infantry class. Choose one Advantage skill on reclass.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords C+) (Bows C+)) (Required (Level 15))",
+      "abilities": [
+        "Bow Advantage",
+        "Sword Advantage",
+        "Hide Piercer",
+        "Stamina +10"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 15,
+        "dex": 25,
+        "spd": 10,
+        "def": 10,
+        "res": 25,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 3,
+        "mag": 2,
+        "dex": 4,
+        "spd": 3,
+        "def": 3,
+        "res": 4,
+        "lck": 1,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "",
+      "default_preset": "Balance/Balance/Dexterity",
+      "default_mainarm": "Axes",
+      "default_sidearm": "Bows",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [
+        "rework"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Mortal Savant",
+      "description": "One who has mastered both magic and the blade",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Swords C+) (Any (Reason C+) (Guile C+)) (Required (Level 15))",
+      "abilities": [
+        "Sword Advantage",
+        "Warding Stance",
+        "Stamina +10"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 20,
+        "dex": 20,
+        "spd": 15,
+        "def": 15,
+        "res": 10,
+        "lck": 5
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 3,
+        "mag": 2,
+        "dex": 4,
+        "spd": 3,
+        "def": 3,
+        "res": 4,
+        "lck": 2,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Myrmidon",
+      "default_preset": "Balance/Balance/Dexterity",
+      "default_mainarm": "Swords",
+      "default_sidearm": "Guile",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Quartermaster",
+      "description": "An advanced class that uses weapons and commands troops.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Authority B+) (Required (Level 15))",
+      "abilities": [
+        "Item Expertise",
+        "Emergency Invigoration"
+      ],
+      "arts": [
+        "Supply Maneuver"
+      ],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 20,
+        "dex": 10,
+        "spd": 5,
+        "def": 15,
+        "res": 15,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 5,
+        "str": 4,
+        "mag": 4,
+        "dex": 4,
+        "spd": 0,
+        "def": 3,
+        "res": 2,
+        "lck": 4,
+        "mov": 6
+      },
+      "mount": null,
+      "default_base": "Apothecary",
+      "default_preset": "Power/Balance/Luck",
+      "default_mainarm": "Axes",
+      "default_sidearm": "Swords",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Sniper",
+      "description": "Bow focused infantry class.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Bows B) (Required (Level 15))",
+      "abilities": [
+        "Bow Advantage",
+        "Bow Crit +10",
+        "Bow Range +1",
+        "Stamina +10"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 15,
+        "str": 20,
+        "mag": 20,
+        "dex": 30,
+        "spd": 15,
+        "def": 10,
+        "res": 15,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 2,
+        "str": 3,
+        "mag": 2,
+        "dex": 6,
+        "spd": 3,
+        "def": 2,
+        "res": 4,
+        "lck": 4,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Archer",
+      "default_preset": "Power/Resistance/Dexterity",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [
+        "rework"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Summoner/Invoker",
       "description": "A mystic who calls on spirits to aid in battle",
       "type": [
-        "Infantry",
-        "Caster"
+        "Infantry"
       ],
       "tier": "Advanced",
       "requires": "All (Guile C+) (Faith C+) (Required (Level 15))",
@@ -21110,7 +28985,7 @@ const definitions = {
         "spd": 5,
         "def": 0,
         "res": 30,
-        "cha": 30
+        "lck": 30
       },
       "modifiers": {
         "hp": 6,
@@ -21120,7 +28995,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 5,
-        "cha": 4,
+        "lck": 4,
         "mov": 4
       },
       "mount": null,
@@ -21133,904 +29008,10 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Warlock",
-      "description": "An advanced class that uses Reason.",
-      "type": [
-        "Infantry",
-        "Caster"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Reason B) (Required (Level 15))",
-      "abilities": [
-        "Reason Advantage",
-        "Reason Consumption 2"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 15,
-        "str": 15,
-        "mag": 25,
-        "dex": 15,
-        "spd": 15,
-        "def": 0,
-        "res": 25,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 3,
-        "str": 1,
-        "mag": 4,
-        "dex": 3,
-        "spd": 2,
-        "def": 2,
-        "res": 1,
-        "cha": 1,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Mage",
-      "default_preset": "Balance/Balance/Dexterity",
-      "default_mainarm": "Fire",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Mortal Savant",
-      "description": "One who has mastered both magic and the blade",
-      "type": [
-        "Infantry",
-        "Martial",
-        "Caster"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Swords C+) (Any (Reason C+) (Guile C+)) (Required (Level 15))",
-      "abilities": [
-        "Sword Advantage",
-        "Warding Stance",
-        "Stamina +10"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 20,
-        "mag": 20,
-        "dex": 20,
-        "spd": 15,
-        "def": 15,
-        "res": 10,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 3,
-        "str": 3,
-        "mag": 2,
-        "dex": 4,
-        "spd": 3,
-        "def": 3,
-        "res": 4,
-        "cha": 2,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Myrmidon",
-      "default_preset": "Balance/Balance/Dexterity",
-      "default_mainarm": "Swords",
-      "default_sidearm": "Guile",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Trickster",
-      "description": "An advanced class that uses Swords and Faith.",
-      "type": [
-        "Infantry",
-        "Martial",
-        "Caster"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Swords C+) (Faith C+) (Required (Level 15))",
-      "abilities": [
-        "Locktouch",
-        "Stealth",
-        "Lucky Seven"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 20,
-        "str": 15,
-        "mag": 20,
-        "dex": 20,
-        "spd": 20,
-        "def": 5,
-        "res": 20,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 5,
-        "str": 3,
-        "mag": 3,
-        "dex": 3,
-        "spd": 5,
-        "def": 0,
-        "res": 3,
-        "cha": 2,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Myrmidon",
-      "default_preset": "Speed/Balance/Balance",
-      "default_mainarm": "Swords",
-      "default_sidearm": "Faith",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "War Cleric/Priest",
-      "description": "An advanced class that uses Axes and Faith.",
-      "type": [
-        "Infantry",
-        "Martial",
-        "Caster"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Axes C+) (Faith C+) (Required (Level 15))",
-      "abilities": [
-        "Axe Advantage",
-        "Faith Advantage",
-        "Faith Consumption 1"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 20,
-        "mag": 15,
-        "dex": 15,
-        "spd": 0,
-        "def": 15,
-        "res": 25,
-        "cha": 20
-      },
-      "modifiers": {
-        "hp": 4,
-        "str": 4,
-        "mag": 3,
-        "dex": 2,
-        "spd": 0,
-        "def": 2,
-        "res": 5,
-        "cha": 4,
-        "mov": 6
-      },
-      "mount": null,
-      "default_base": "Brigand",
-      "default_preset": "Power/Balance/Balance",
-      "default_mainarm": "Axes",
-      "default_sidearm": "Faith",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Bow Knight",
-      "description": "A mounted archer with superior range and movement",
-      "type": [
-        "Cavalry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Bows C+) (Required (Riding C+)) (Required (Level 15))",
-      "abilities": [
-        "Bow Advantage",
-        "Canto",
-        "Terrain Resistance"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 20,
-        "mag": 15,
-        "dex": 25,
-        "spd": 10,
-        "def": 15,
-        "res": 10,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 3,
-        "str": 3,
-        "mag": 2,
-        "dex": 5,
-        "spd": 4,
-        "def": 3,
-        "res": 2,
-        "cha": 2,
-        "mov": 5
-      },
-      "mount": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Archer",
-      "default_preset": "Power/Balance/Dexterity",
-      "default_mainarm": "Bows",
-      "default_sidearm": "Lances",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Hussar",
-      "description": "A veteran light cavalier who focuses on teamwork. Choose one Advantage skill on reclass.",
-      "type": [
-        "Cavalry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
-      "abilities": [
-        "Sword Advantage",
-        "Lance Advantage",
-        "Canto",
-        "Flanking Maneuver"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 20,
-        "mag": 15,
-        "dex": 15,
-        "spd": 20,
-        "def": 15,
-        "res": 10,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 4,
-        "str": 3,
-        "mag": 1,
-        "dex": 4,
-        "spd": 5,
-        "def": 3,
-        "res": 2,
-        "cha": 3,
-        "mov": 6
-      },
-      "mount": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Cavalier",
-      "default_preset": "Speed/Balance/Balance",
-      "default_mainarm": "Swords",
-      "default_sidearm": "Lances",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Paladin",
-      "description": "A veteran warrior who commands the battlefield from horseback. Choose one Advantage skill on reclass.",
-      "type": [
-        "Cavalry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
-      "abilities": [
-        "Sword Advantage",
-        "Lance Advantage",
-        "Canto",
-        "Terrain Resistance"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 20,
-        "mag": 15,
-        "dex": 15,
-        "spd": 10,
-        "def": 20,
-        "res": 10,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 5,
-        "str": 5,
-        "mag": 1,
-        "dex": 2,
-        "spd": 1,
-        "def": 4,
-        "res": 3,
-        "cha": 3,
-        "mov": 6
-      },
-      "mount": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Cavalier",
-      "default_preset": "Power/Balance/Dexterity",
-      "default_mainarm": "Lances",
-      "default_sidearm": "Swords",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Falcon Knight",
-      "description": "A pegasus knight who descends upon foes with the speed of a falcon. Choose one Advantage skill on reclass.",
-      "type": [
-        "Flying",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Swords C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
-      "abilities": [
-        "Sword Advantage",
-        "Lance Advantage",
-        "Avo +10",
-        "Canto"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 15,
-        "mag": 15,
-        "dex": 20,
-        "spd": 30,
-        "def": 10,
-        "res": 20,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 3,
-        "str": 2,
-        "mag": 0,
-        "dex": 3,
-        "spd": 5,
-        "def": 2,
-        "res": 6,
-        "cha": 1,
-        "mov": 6
-      },
-      "mount": {
-        "hp": 0,
-        "str": 1,
-        "mag": 0,
-        "dex": 0,
-        "spd": 2,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Pegasus Knight",
-      "default_preset": "Speed/Resistance/Luck",
-      "default_mainarm": "Lances",
-      "default_sidearm": "Swords",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Gryphon Rider",
-      "description": "A flyier who specializes in ferrying allies around the battlefield",
-      "type": [
-        "Flying",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Axes C+) (Required (Flying C+)) (Required (Level 15))",
-      "abilities": [
-        "Deliverer",
-        "Avo +10",
-        "Canto"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 20,
-        "mag": 15,
-        "dex": 20,
-        "spd": 20,
-        "def": 15,
-        "res": 15,
-        "cha": 10
-      },
-      "modifiers": {
-        "hp": 4,
-        "str": 3,
-        "mag": 0,
-        "dex": 4,
-        "spd": 3,
-        "def": 3,
-        "res": 3,
-        "cha": 4,
-        "mov": 6
-      },
-      "mount": {
-        "hp": 0,
-        "str": 1,
-        "mag": 0,
-        "dex": 0,
-        "spd": 2,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Pegasus Knight",
-      "default_preset": "Balance/Balance/Balance",
-      "default_mainarm": "Axes",
-      "default_sidearm": "Lances",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Kinshi Knight",
-      "description": "A flying knight who controls the skies",
-      "type": [
-        "Flying",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Bows C+) (Required (Flying C+)) (Required (Level 15))",
-      "abilities": [
-        "Bow Advantage",
-        "Air Superiority",
-        "Canto"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 20,
-        "str": 15,
-        "mag": 15,
-        "dex": 25,
-        "spd": 30,
-        "def": 10,
-        "res": 10,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 4,
-        "str": 1,
-        "mag": 0,
-        "dex": 5,
-        "spd": 4,
-        "def": 2,
-        "res": 2,
-        "cha": 4,
-        "mov": 5
-      },
-      "mount": {
-        "hp": 0,
-        "str": 1,
-        "mag": 0,
-        "dex": 0,
-        "spd": 2,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Archer",
-      "default_preset": "Speed/Resistance/Luck",
-      "default_mainarm": "Bows",
-      "default_sidearm": "Lances",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Wyvern Lord",
-      "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern. Choose one Advantage skill on reclass.",
-      "type": [
-        "Flying",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Axes C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
-      "abilities": [
-        "Axe Advantage",
-        "Lance Advantage",
-        "Avo +10",
-        "Canto"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 25,
-        "mag": 15,
-        "dex": 15,
-        "spd": 15,
-        "def": 25,
-        "res": 0,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 6,
-        "str": 4,
-        "mag": 0,
-        "dex": 3,
-        "spd": 2,
-        "def": 5,
-        "res": 0,
-        "cha": 2,
-        "mov": 6
-      },
-      "mount": {
-        "hp": 0,
-        "str": 1,
-        "mag": 0,
-        "dex": 0,
-        "spd": 2,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mov": 2
-      },
-      "default_base": "Wyvern Rider",
-      "default_preset": "Balance/Balance/Dexterity",
-      "default_mainarm": "Axes",
-      "default_sidearm": "Lances",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Assassin",
-      "description": "Bow and Sword martial class focused on damage, stealth, and untility. Choose one Advantage skill on reclass.",
-      "type": [
-        "Infantry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Swords C+) (Bows C+) (Required (Level 15))",
-      "abilities": [
-        "Bow Advantage",
-        "Sword Advantage",
-        "Stealth",
-        "Locktouch"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 20,
-        "str": 15,
-        "mag": 15,
-        "dex": 25,
-        "spd": 25,
-        "def": 0,
-        "res": 15,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 2,
-        "str": 2,
-        "mag": 0,
-        "dex": 5,
-        "spd": 7,
-        "def": 1,
-        "res": 2,
-        "cha": 1,
-        "mov": 6
-      },
-      "mount": null,
-      "default_base": "Thief",
-      "default_preset": "Speed/Resistance/Balance",
-      "default_mainarm": "Swords",
-      "default_sidearm": "Bows",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Halberdier",
-      "description": "A foot-soldier with an expertise in polearms",
-      "type": [
-        "Infantry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Lances B) (Required (Level 15))",
-      "abilities": [
-        "Lance Advantage",
-        "Lance Crit +10",
-        "Stamina +15"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 20,
-        "mag": 15,
-        "dex": 15,
-        "spd": 5,
-        "def": 20,
-        "res": 10,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 6,
-        "str": 5,
-        "mag": 0,
-        "dex": 3,
-        "spd": 1,
-        "def": 6,
-        "res": 3,
-        "cha": 0,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Soldier",
-      "default_preset": "Balance/Defense/Dexterity",
-      "default_mainarm": "Lances",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Hero",
-      "description": "Infantry Axe and Sword unit. Choose one Advantage skill on reclass.",
-      "type": [
-        "Infantry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Swords C+) (Axes C+)) (Required (Level 15))",
-      "abilities": [
-        "Sword Advantage",
-        "Axe Advantage",
-        "Vantage",
-        "Stamina +10"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 20,
-        "mag": 20,
-        "dex": 20,
-        "spd": 15,
-        "def": 15,
-        "res": 10,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 5,
-        "str": 5,
-        "mag": 1,
-        "dex": 4,
-        "spd": 2,
-        "def": 3,
-        "res": 2,
-        "cha": 2,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Mercenary",
-      "default_preset": "Speed/Defense/Dexterity",
-      "default_mainarm": "Swords",
-      "default_sidearm": "Axes",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Master of Arms",
-      "description": "A generalist fighter who dabbles in all kinds of weapons",
-      "type": [
-        "Infantry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Axes C+) (Lances C+)) (Any (Lances C+) (Swords C+)) (Any (Swords C+) (Axes C+)) (Required (Level 15))",
-      "abilities": [
-        "Combat Artist",
-        "Stamina +15"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 25,
-        "mag": 15,
-        "dex": 15,
-        "spd": 15,
-        "def": 10,
-        "res": 5,
-        "cha": 5
-      },
-      "modifiers": {
-        "hp": 7,
-        "str": 5,
-        "mag": 0,
-        "dex": 5,
-        "spd": 4,
-        "def": 1,
-        "res": 1,
-        "cha": 1,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Mercenary",
-      "default_preset": "Balance/Balance/Dexterity",
-      "default_mainarm": "Lances",
-      "default_sidearm": "Axes",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Monster Hunter",
-      "description": "Anti-Monster infantry class. Choose one Advantage skill on reclass.",
-      "type": [
-        "Infantry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Swords C+) (Bows C+)) (Required (Level 15))",
-      "abilities": [
-        "Bow Advantage",
-        "Sword Advantage",
-        "Hide Piercer",
-        "Stamina +10"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 15,
-        "mag": 15,
-        "dex": 25,
-        "spd": 10,
-        "def": 10,
-        "res": 25,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 4,
-        "str": 3,
-        "mag": 2,
-        "dex": 4,
-        "spd": 3,
-        "def": 3,
-        "res": 4,
-        "cha": 1,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "",
-      "default_preset": "Balance/Balance/Dexterity",
-      "default_mainarm": "Axes",
-      "default_sidearm": "Bows",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [
-        "rework"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Quartermaster",
-      "description": "An advanced class that uses weapons and commands troops.",
-      "type": [
-        "Infantry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Swords C+) (Lances C+) (Axes C+)) (Authority C+) (Required (Level 15))",
-      "abilities": [
-        "Calm Spirit"
-      ],
-      "arts": [
-        "Emergency Invigoration"
-      ],
-      "growths": {
-        "hp": 35,
-        "str": 20,
-        "mag": 15,
-        "dex": 25,
-        "spd": 0,
-        "def": 15,
-        "res": 10,
-        "cha": 20
-      },
-      "modifiers": {
-        "hp": 5,
-        "str": 4,
-        "mag": 2,
-        "dex": 4,
-        "spd": 0,
-        "def": 1,
-        "res": 0,
-        "cha": 4,
-        "mov": 6
-      },
-      "mount": null,
-      "default_base": "Apothecary",
-      "default_preset": "Power/Balance/Luck",
-      "default_mainarm": "Axes",
-      "default_sidearm": "Swords",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Sniper",
-      "description": "Bow focused infantry class.",
-      "type": [
-        "Infantry",
-        "Martial"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Bows B) (Required (Level 15))",
-      "abilities": [
-        "Bow Advantage",
-        "Bow Crit +10",
-        "Bow Range +1",
-        "Stamina +10"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 15,
-        "str": 20,
-        "mag": 20,
-        "dex": 30,
-        "spd": 15,
-        "def": 10,
-        "res": 15,
-        "cha": 15
-      },
-      "modifiers": {
-        "hp": 2,
-        "str": 3,
-        "mag": 2,
-        "dex": 6,
-        "spd": 3,
-        "def": 2,
-        "res": 4,
-        "cha": 4,
-        "mov": 5
-      },
-      "mount": null,
-      "default_base": "Archer",
-      "default_preset": "Power/Resistance/Dexterity",
-      "default_mainarm": "Bows",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [
-        "rework"
-      ],
-      "hidden": false
-    },
-    {
       "name": "Swordmaster",
       "description": "These Sword fighters prefer Strong, quick, Strikes",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Advanced",
       "requires": "All (Swords B) (Required (Level 15))",
@@ -22048,7 +29029,7 @@ const definitions = {
         "spd": 25,
         "def": 15,
         "res": 10,
-        "cha": 10
+        "lck": 10
       },
       "modifiers": {
         "hp": 4,
@@ -22058,7 +29039,7 @@ const definitions = {
         "spd": 1,
         "def": 4,
         "res": 1,
-        "cha": 0,
+        "lck": 0,
         "mov": 5
       },
       "mount": null,
@@ -22071,11 +29052,141 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Trickster",
+      "description": "An advanced class that uses Swords and Faith.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Swords C+) (Faith C+) (Required (Level 15))",
+      "abilities": [
+        "Locktouch",
+        "Stealth",
+        "Lucky Seven"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 20,
+        "dex": 20,
+        "spd": 20,
+        "def": 5,
+        "res": 20,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 5,
+        "str": 3,
+        "mag": 3,
+        "dex": 3,
+        "spd": 5,
+        "def": 0,
+        "res": 3,
+        "lck": 2,
+        "mov": 5
+      },
+      "mount": null,
+      "default_base": "Myrmidon",
+      "default_preset": "Speed/Balance/Balance",
+      "default_mainarm": "Swords",
+      "default_sidearm": "Faith",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "War Cleric/Priest",
+      "description": "An advanced class that uses Axes and Faith.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Axes C+) (Faith C+) (Required (Level 15))",
+      "abilities": [
+        "Axe Advantage",
+        "Faith Advantage",
+        "Faith Consumption 1"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 15,
+        "dex": 15,
+        "spd": 0,
+        "def": 15,
+        "res": 25,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 4,
+        "str": 4,
+        "mag": 3,
+        "dex": 2,
+        "spd": 0,
+        "def": 2,
+        "res": 5,
+        "lck": 4,
+        "mov": 6
+      },
+      "mount": null,
+      "default_base": "Brigand",
+      "default_preset": "Power/Balance/Balance",
+      "default_mainarm": "Axes",
+      "default_sidearm": "Faith",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Warlock",
+      "description": "An advanced class that uses Reason.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Reason B) (Required (Level 15))",
+      "abilities": [
+        "Reason Advantage",
+        "Reason Consumption 2"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 15,
+        "str": 15,
+        "mag": 25,
+        "dex": 15,
+        "spd": 15,
+        "def": 0,
+        "res": 25,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 1,
+        "mag": 4,
+        "dex": 3,
+        "spd": 2,
+        "def": 2,
+        "res": 1,
+        "lck": 1,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Mage",
+      "default_preset": "Balance/Balance/Dexterity",
+      "default_mainarm": "Fire",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Warrior",
       "description": "This axe expert is not just a warrior, but THE warrior",
       "type": [
-        "Infantry",
-        "Martial"
+        "Infantry"
       ],
       "tier": "Advanced",
       "requires": "All (Axes B) (Required (Level 15))",
@@ -22093,7 +29204,7 @@ const definitions = {
         "spd": 10,
         "def": 10,
         "res": 0,
-        "cha": 10
+        "lck": 10
       },
       "modifiers": {
         "hp": 7,
@@ -22103,7 +29214,7 @@ const definitions = {
         "spd": 3,
         "def": 2,
         "res": 0,
-        "cha": 3,
+        "lck": 3,
         "mov": 5
       },
       "mount": null,
@@ -22116,44 +29227,679 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Bard",
-      "description": "An advanced class that uses Authority.",
+      "name": "Banshee",
+      "description": "The corrupted soul of a fallen spellcaster.",
       "type": [
-        "Infantry",
-        "Other"
+        "Flying",
+        "Monster"
       ],
-      "tier": "Advanced",
-      "requires": "Authority B",
+      "tier": "Phantom",
+      "requires": "Innate",
       "abilities": [
-        "Calm Spirit",
-        "Positioning"
+        "Guile Consumption 1",
+        "Pass"
       ],
-      "arts": [],
+      "arts": [
+        "Draw Back"
+      ],
       "growths": {
-        "hp": 20,
-        "str": 15,
-        "mag": 20,
-        "dex": 30,
-        "spd": 20,
+        "hp": 0,
+        "str": 25,
+        "mag": 55,
+        "dex": 50,
+        "spd": 40,
         "def": 0,
-        "res": 10,
-        "cha": 25
+        "res": 0,
+        "lck": 25
       },
       "modifiers": {
-        "hp": 3,
-        "str": 3,
-        "mag": 4,
-        "dex": 6,
-        "spd": 3,
+        "hp": 1,
+        "str": 1,
+        "mag": 12,
+        "dex": 9,
+        "spd": 9,
         "def": 0,
-        "res": 2,
-        "cha": 5,
-        "mov": 5
+        "res": 0,
+        "lck": 5,
+        "mov": 4
       },
       "mount": null,
+      "default_base": "Banshee",
+      "default_preset": "Custom",
+      "default_mainarm": "Banshee",
+      "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
+    },
+    {
+      "name": "Butcher",
+      "description": "The lost soul of a fallen brigand.",
+      "type": [
+        "Flying",
+        "Monster"
+      ],
+      "tier": "Phantom",
+      "requires": "Innate",
+      "abilities": [
+        "Pass",
+        "Level 10 Mov +1"
+      ],
+      "arts": [
+        "Shove"
+      ],
+      "growths": {
+        "hp": 0,
+        "str": 65,
+        "mag": 25,
+        "dex": 60,
+        "spd": 30,
+        "def": 0,
+        "res": 0,
+        "lck": 30
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 16,
+        "mag": 1,
+        "dex": 9,
+        "spd": 8,
+        "def": 0,
+        "res": 0,
+        "lck": 6,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Butcher",
+      "default_preset": "Custom",
+      "default_mainarm": "Butcher",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Impaler",
+      "description": "The lost soul of a fallen soldier.",
+      "type": [
+        "Flying",
+        "Monster"
+      ],
+      "tier": "Phantom",
+      "requires": "Innate",
+      "abilities": [
+        "Pass",
+        "Level 10 Mov +1"
+      ],
+      "arts": [
+        "Reposition"
+      ],
+      "growths": {
+        "hp": 0,
+        "str": 55,
+        "mag": 20,
+        "dex": 40,
+        "spd": 35,
+        "def": 0,
+        "res": 0,
+        "lck": 45
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 12,
+        "mag": 1,
+        "dex": 11,
+        "spd": 10,
+        "def": 0,
+        "res": 0,
+        "lck": 5,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Impaler",
+      "default_preset": "Custom",
+      "default_mainarm": "Impaler",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Lemure",
+      "description": "A formless shade of the departed.",
+      "type": [
+        "Flying",
+        "Monster"
+      ],
+      "tier": "Phantom",
+      "requires": "Innate",
+      "abilities": [
+        "Pass",
+        "Level 10 Mov +1"
+      ],
+      "arts": [
+        "Hustle"
+      ],
+      "growths": {
+        "hp": 0,
+        "str": 60,
+        "mag": 25,
+        "dex": 55,
+        "spd": 35,
+        "def": 0,
+        "res": 0,
+        "lck": 25
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 10,
+        "mag": 1,
+        "dex": 11,
+        "spd": 9,
+        "def": 0,
+        "res": 0,
+        "lck": 5,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Lemure",
+      "default_preset": "Custom",
+      "default_mainarm": "Lemure",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Martyr",
+      "description": "A benevolent spirit of one who died for their beliefs.",
+      "type": [
+        "Flying",
+        "Monster"
+      ],
+      "tier": "Phantom",
+      "requires": "Innate",
+      "abilities": [
+        "Pass"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 25,
+        "mag": 55,
+        "dex": 35,
+        "spd": 35,
+        "def": 0,
+        "res": 0,
+        "lck": 35
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 1,
+        "mag": 12,
+        "dex": 7,
+        "spd": 8,
+        "def": 0,
+        "res": 0,
+        "lck": 7,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Martyr",
+      "default_preset": "Custom",
+      "default_mainarm": "Martyr",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Poltergeist",
+      "description": "A spirit of mischief.",
+      "type": [
+        "Flying",
+        "Monster"
+      ],
+      "tier": "Phantom",
+      "requires": "Innate",
+      "abilities": [
+        "Pass"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 25,
+        "mag": 25,
+        "dex": 45,
+        "spd": 60,
+        "def": 0,
+        "res": 0,
+        "lck": 40
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 5,
+        "mag": 5,
+        "dex": 10,
+        "spd": 18,
+        "def": 0,
+        "res": 0,
+        "lck": 6,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Poltergeist",
+      "default_preset": "Custom",
+      "default_mainarm": "Poltergeist",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Slasher",
+      "description": "The lost soul of a fallen mercenary.",
+      "type": [
+        "Flying",
+        "Monster"
+      ],
+      "tier": "Phantom",
+      "requires": "Innate",
+      "abilities": [
+        "Pass",
+        "Level 10 Mov +1"
+      ],
+      "arts": [
+        "Swap"
+      ],
+      "growths": {
+        "hp": 0,
+        "str": 40,
+        "mag": 20,
+        "dex": 45,
+        "spd": 55,
+        "def": 0,
+        "res": 0,
+        "lck": 40
+      },
+      "modifiers": {
+        "hp": 1,
+        "str": 11,
+        "mag": 1,
+        "dex": 10,
+        "spd": 14,
+        "def": 0,
+        "res": 0,
+        "lck": 5,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Slasher",
+      "default_preset": "Custom",
+      "default_mainarm": "Slasher",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Defense",
+      "description": "A bonus to DEF.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 100,
+        "res": 0,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Dexterity",
+      "description": "A bonus to DEX.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 100,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Hit Points",
+      "description": "A bonus to HP.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 100,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Luck",
+      "description": "A bonus to LCK.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 100
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Magic",
+      "description": "A bonus to MAG.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 100,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Resistance",
+      "description": "A bonus to RES.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 100,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Speed",
+      "description": "A bonus to SPD.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 100,
+        "def": 0,
+        "res": 0,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Strength",
+      "description": "A bonus to STR.",
+      "type": [],
+      "tier": "Bonus",
+      "requires": "None",
+      "abilities": [],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 100,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 0
+      },
+      "mount": null,
+      "default_base": "None",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Bows",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false,
+      "omit": true
+    },
+    {
+      "name": "Phantom",
+      "description": "A spirit summoned to do battle.",
+      "type": [
+        "Monster",
+        "Flying"
+      ],
+      "tier": "Other",
+      "requires": "None",
+      "abilities": [
+        "Pass",
+        "Flying Effect Null",
+        "Level 10 Mov +1"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Phantom",
+      "default_preset": "Custom",
+      "default_mainarm": "Guile",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     }
   ],
   "weapons": [
@@ -22333,7 +30079,7 @@ const definitions = {
       "price": 2175,
       "mttype": "str",
       "modifiers": {
-        "mt": 16,
+        "mt": 14,
         "prot": 0,
         "resl": 0,
         "hit": 70,
@@ -22378,6 +30124,33 @@ const definitions = {
       "tags": [
         "effective"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Black-Sand Steel Axe",
+      "type": "Axes",
+      "description": "No special effect. Costs 975G to upgrade from Silver Axe.",
+      "requires": "Axes A",
+      "rank": "A",
+      "price": 3150,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 17,
+        "prot": 0,
+        "resl": 0,
+        "hit": 60,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
       "hidden": false
     },
     {
@@ -22672,12 +30445,39 @@ const definitions = {
       "price": 2115,
       "mttype": "str",
       "modifiers": {
-        "mt": 13,
+        "mt": 11,
         "prot": 0,
         "resl": 0,
         "hit": 80,
         "avo": 0,
         "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Black-Sand Steel Lance",
+      "type": "Lances",
+      "description": "No special effects. Costs 975G to upgrade from Silver Lance.",
+      "requires": "Lances A",
+      "rank": "A",
+      "price": 3090,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 14,
+        "prot": 0,
+        "resl": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 10,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 1,
@@ -22773,6 +30573,36 @@ const definitions = {
         "effective"
       ],
       "hidden": false
+    },
+    {
+      "name": "Anthrophage",
+      "type": "Lances",
+      "description": "Heals 50% of damage dealt; @{attribute::Sacred} weapon associated with the @{ability:Major Crest of the Beast||Minor Crest of the Beast:Crest of the Beast}.",
+      "requires": "Swords A",
+      "rank": "A",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 16,
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "sacred"
+      ],
+      "hidden": true,
+      "omit": true
     },
     {
       "name": "Areadbhar",
@@ -22888,7 +30718,7 @@ const definitions = {
       "tags": [
         "secret"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Trishul",
@@ -22963,19 +30793,17 @@ const definitions = {
         "resl": 0,
         "hit": 100,
         "avo": 0,
-        "crit": 5,
+        "crit": 0,
         "cravo": 0,
-        "minrng": 2,
-        "maxrng": 3,
-        "tpcost": 8,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
         "spcost": 0,
         "tp": 0,
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [
-        "secret"
-      ],
+      "tags": [],
       "hidden": false
     },
     {
@@ -23041,12 +30869,39 @@ const definitions = {
       "price": 2055,
       "mttype": "str",
       "modifiers": {
-        "mt": 11,
+        "mt": 9,
         "prot": 0,
         "resl": 0,
         "hit": 90,
         "avo": 0,
         "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Black-Sand Steel Sword",
+      "type": "Swords",
+      "description": "No special effect. Costs 975G to upgrade from Silver Sword.",
+      "requires": "Swords A",
+      "rank": "A",
+      "price": 3030,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 11,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 10,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 1,
@@ -23375,20 +31230,20 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Curtana",
+      "name": "Ridill",
       "type": "Swords",
-      "description": "If wielder has the Crest of @{ability:Major Crest of Fraldarius||Minor Crest of Fraldarius:Fraldarius}, enables use of @{art::Mercy's End}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+      "description": "Deals magic-based damage.",
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
-      "mttype": "str",
+      "mttype": "mag",
       "modifiers": {
         "mt": 11,
         "prot": 0,
         "resl": 0,
-        "hit": 75,
+        "hit": 80,
         "avo": 0,
-        "crit": 5,
+        "crit": 0,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -23410,7 +31265,7 @@ const definitions = {
       "requires": "Swords E",
       "rank": "E",
       "price": 0,
-      "mttype": "mag",
+      "mttype": "str",
       "modifiers": {
         "mt": 11,
         "prot": 0,
@@ -23647,12 +31502,41 @@ const definitions = {
       "price": 2115,
       "mttype": "str",
       "modifiers": {
-        "mt": 12,
+        "mt": 11,
         "prot": 0,
         "resl": 0,
         "hit": "fill bowhit(75)",
         "avo": 0,
         "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "effective"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Black-Sand Steel Bow",
+      "type": "Bows",
+      "description": "Effective against Flying units. Costs 975G to upgrade from Silver Bow.",
+      "requires": "Bows A",
+      "rank": "A",
+      "price": 3090,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 13,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill bowhit(70)",
+        "avo": 0,
+        "crit": 10,
         "cravo": 0,
         "minrng": 2,
         "maxrng": 2,
@@ -23881,7 +31765,7 @@ const definitions = {
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 0,
+        "mt": 1,
         "prot": 0,
         "resl": 0,
         "hit": 90,
@@ -23903,12 +31787,12 @@ const definitions = {
       "name": "Howling Fist Technique",
       "type": "Brawl",
       "rank": "D",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A beast technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl D",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 2,
+        "mt": 3,
         "prot": 0,
         "resl": 0,
         "hit": 75,
@@ -23923,19 +31807,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "beast"
+      ],
       "hidden": false
     },
     {
       "name": "Swift Fist Technique",
       "type": "Brawl",
       "rank": "D",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl D",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 0,
+        "mt": 1,
         "prot": 0,
         "resl": 0,
         "hit": 70,
@@ -23950,19 +31836,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "water"
+      ],
       "hidden": false
     },
     {
       "name": "Iron Fist Technique",
       "type": "Brawl",
       "rank": "D",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A beast technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl D",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 1,
+        "mt": 2,
         "prot": 0,
         "resl": 0,
         "hit": 80,
@@ -23977,19 +31865,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "metal"
+      ],
       "hidden": false
     },
     {
       "name": "Bellowing Fist Technique",
       "type": "Brawl",
       "rank": "C",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A beast technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl C",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 4,
+        "mt": 5,
         "prot": 0,
         "resl": 0,
         "hit": 65,
@@ -24004,19 +31894,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "beast"
+      ],
       "hidden": false
     },
     {
       "name": "Steel Fist Technique",
       "type": "Brawl",
       "rank": "C",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A beast technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl C",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 3,
+        "mt": 4,
         "prot": 0,
         "resl": 0,
         "hit": 85,
@@ -24031,19 +31923,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "metal"
+      ],
       "hidden": false
     },
     {
       "name": "Graceful Fist Technique",
       "type": "Brawl",
       "rank": "C",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl C",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 2,
+        "mt": 3,
         "prot": 0,
         "resl": 0,
         "hit": 75,
@@ -24058,19 +31952,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "water"
+      ],
       "hidden": false
     },
     {
       "name": "Roaring Fist Technique",
       "type": "Brawl",
       "rank": "B",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A beast technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl B",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 6,
+        "mt": 7,
         "prot": 0,
         "resl": 0,
         "hit": 55,
@@ -24085,19 +31981,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "beast"
+      ],
       "hidden": false
     },
     {
       "name": "Serene Fist Technique",
       "type": "Brawl",
       "rank": "B",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl B",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 3,
+        "mt": 4,
         "prot": 0,
         "resl": 0,
         "hit": 80,
@@ -24112,19 +32010,21 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "water"
+      ],
       "hidden": false
     },
     {
       "name": "Silver Fist Technique",
       "type": "Brawl",
       "rank": "B",
-      "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+      "description": "A metal technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
       "requires": "Brawl B",
       "price": 0,
       "mttype": "else",
       "modifiers": {
-        "mt": 4,
+        "mt": 5,
         "prot": 0,
         "resl": 0,
         "hit": 90,
@@ -24139,7 +32039,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "metal"
+      ],
       "hidden": false
     },
     {
@@ -24151,7 +32053,7 @@ const definitions = {
       "price": 0,
       "mttype": "str",
       "modifiers": {
-        "mt": 5,
+        "mt": 6,
         "prot": 0,
         "resl": 0,
         "hit": 80,
@@ -24180,7 +32082,7 @@ const definitions = {
       "price": 0,
       "mttype": "str",
       "modifiers": {
-        "mt": 6,
+        "mt": 7,
         "prot": 0,
         "resl": 0,
         "hit": 90,
@@ -24228,6 +32130,36 @@ const definitions = {
         "template"
       ],
       "hidden": false
+    },
+    {
+      "name": "Rebuke",
+      "type": "Faith",
+      "description": "Before combat, wielder may end a condition on an ally within 4 spaces of target foe and apply it to target foe for one turn. If so, grants Mt +4 in combat.",
+      "requires": "Faith D",
+      "rank": "D",
+      "price": 900,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": "1 + ask [Moved Condition?]; No {0}, Yes {4} end",
+        "prot": 0,
+        "resl": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Banish",
@@ -24317,6 +32249,42 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [],
       "hidden": false
+    },
+    {
+      "name": "Shielding Word",
+      "type": "Faith",
+      "description": "Restore 5 HP to target ally; if this exceeds target ally's Max HP, apply the excess as @{condition:Overheal:[Overheal]} for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: once per turn, ally in range enters combat.",
+      "requires": "Faith D",
+      "rank": "D",
+      "price": 780,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can be used as a reaction. Incompatible with all Attributes.",
+      "tags": [
+        "reaction",
+        "no crit",
+        "no stats",
+        "no hit",
+        "no might",
+        "no triangle",
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Heal",
@@ -24502,6 +32470,34 @@ const definitions = {
         "no triangle"
       ],
       "hidden": false
+    },
+    {
+      "name": "Sanctificare",
+      "type": "Faith",
+      "description": "Effective against Armor units.",
+      "requires": "Faith B",
+      "rank": "B",
+      "price": 3900,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 9,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 5,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Warp",
@@ -24740,6 +32736,36 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Miasma",
+      "type": "Guile",
+      "description": "If target foe is affected by one or more conditions, grants Mt +4 in combat. After combat, if target foe was defeated, apply up to one condition that target foe was affected by before combat or that unit would have applied to target foe after combat to a foe within two spaces of target foe's space for one turn, otherwise increase the duration of up to one of those conditions by one turn.",
+      "requires": "Guile D",
+      "rank": "D",
+      "price": 900,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": "2 + ask [Foe Affect by a Condition?]; No {0}, Yes {4} end",
+        "prot": 0,
+        "resl": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Ectoplasm",
       "type": "Guile",
       "description": "Deals strength-based damage. This weapon cannot be purchased.",
@@ -24765,6 +32791,41 @@ const definitions = {
       "comment": "Incompatible with all Attributes except Refined. Summon Only unless obtained elsewhere.",
       "tags": [],
       "hidden": false
+    },
+    {
+      "name": "Damning Word",
+      "type": "Guile",
+      "description": "Apply @{condition:Severed:[Severed 5]} to target foe for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: once per turn, foe in range enters combat.",
+      "requires": "Guile D",
+      "rank": "D",
+      "price": 780,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 5,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Can be used as a reaction. Incompatible with all Attributes.",
+      "tags": [
+        "reaction",
+        "no crit",
+        "no stats",
+        "no might",
+        "no triangle",
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Miasma",
@@ -24951,7 +33012,7 @@ const definitions = {
         "resl": 0,
         "hit": 70,
         "avo": 0,
-        "crit": 7,
+        "crit": 0,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -25209,6 +33270,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Doom",
+      "type": "Guile",
+      "description": "On hit, apply @{condition:Doomed:[Doomed]} to target foe for three turns.",
+      "requires": "Guile S",
+      "rank": "S",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 65,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "tpcost": 5,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes. Cannot be obtained normally.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no stats",
+        "no triangle",
+        "condition"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Suttungr's Mystery",
       "type": "Guile",
       "description": "@{attribute::Relic} weapon associated with the @{ability:Major Crest of Charon||Minor Crest of Charon:Crest of Charon} and @{art::Relentless Magic}.",
@@ -25294,6 +33389,36 @@ const definitions = {
         "template"
       ],
       "hidden": false
+    },
+    {
+      "name": "Pugni",
+      "type": "Reason",
+      "description": "A force spell; no special effects.",
+      "requires": "Reason D",
+      "rank": "D",
+      "price": 925,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 95,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [
+        "force"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Blizzard",
@@ -25557,6 +33682,36 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Ballistae",
+      "type": "Reason",
+      "description": "A force spell; no special effects.",
+      "requires": "Reason B",
+      "rank": "B",
+      "price": 2200,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 8,
+        "prot": 0,
+        "resl": 0,
+        "hit": 85,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 4,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [
+        "force"
+      ],
+      "hidden": false,
+      "omit": true
+    },
+    {
       "name": "Thoron",
       "type": "Reason",
       "description": "A lightning spell; no special effects.",
@@ -25584,6 +33739,36 @@ const definitions = {
         "lightning"
       ],
       "hidden": false
+    },
+    {
+      "name": "Fujin",
+      "type": "Reason",
+      "description": "A wind spell; @{const:ap:AP = 1}. On hit, move target foe up to one space.",
+      "requires": "Reason B",
+      "rank": "B",
+      "price": 3820,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "tpcost": 6,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "wind"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Fimbulvetr",
@@ -25701,6 +33886,36 @@ const definitions = {
         "lightning"
       ],
       "hidden": false
+    },
+    {
+      "name": "Apollo",
+      "type": "Reason",
+      "description": "A force spell; @{const:ap:AP = 1}.",
+      "requires": "Reason A",
+      "rank": "A",
+      "price": 3820,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 8,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "tpcost": 9,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "force"
+      ],
+      "hidden": false,
+      "omit": true
     },
     {
       "name": "Meteor",
@@ -25883,6 +34098,88 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Enchanted Music Box",
+      "type": "Other",
+      "description": "Cannot be used by a character below level 15. Target ally without @{art::Dance} that has taken a turn this phase may take another turn. Only one @{weapon::Enchanted Music Box} can be used per army per phase and only once that phase. This item cannot be used as part of a reaction. Has 30% chance to break after each use.",
+      "requires": "Level 15",
+      "rank": "E",
+      "price": 2000,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 5,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Lockpick",
+      "type": "Other",
+      "description": "Opens a locked door or chest. Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 1000,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Crest Stone of Macuil",
       "type": "Other",
       "description": "This Crest Stone is a magic weapon that harnesses the power of the Wind Caller.",
@@ -25912,31 +34209,289 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Dark Stone (Crawler)",
+      "name": "Armor Oil",
       "type": "Other",
-      "description": "A magic crystal that was ingested by a giant crawler.",
-      "requires": "Other E",
+      "description": "Apply @{const:gbp:[Crit Avo +40]} to this unit or target ally for one turn. Has a 30% chance to break after use.",
+      "requires": "None",
       "rank": "E",
-      "price": 0,
-      "mttype": "str",
+      "price": 500,
+      "mttype": "none",
       "modifiers": {
-        "mt": 15,
+        "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": 75,
+        "hit": 0,
         "avo": 0,
-        "crit": 5,
+        "crit": 0,
         "cravo": 0,
         "minrng": 1,
-        "maxrng": 2,
+        "maxrng": 1,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Pure Water",
+      "type": "Other",
+      "description": "Apply @{condition:Warded:[Warded]} to this unit or target ally. Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 600,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
         "sp": 0
       },
-      "comment": "Items in modifers should be integers",
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
       "tags": [
-        "monster"
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Potion of Resilience",
+      "type": "Other",
+      "description": "Nullifies effectiveness against this unit or target unit for one turn. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 3000,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 5,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Stoneskin Potion",
+      "type": "Other",
+      "description": "Apply @{condition:Stoneskin:[Stoneskin]} to this unit or target ally for two turns. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 750,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Poison Flask",
+      "type": "Other",
+      "description": "Apply the @{condition:Poisoned:[Poisoned]} condition to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability) Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 600,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Vulnerary",
+      "type": "Other",
+      "description": "Restore 10 HP to this unit. Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 300,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "healing",
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Purple Salve",
+      "type": "Other",
+      "description": "End one or more status conditions applied to self or target unit. (You may choose which conditions to end.) Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 300,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "tpcost": 1,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "healing",
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
       ],
       "hidden": false
     },
@@ -25966,6 +34521,314 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "monster"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Spirit of Golden Hartshorn",
+      "type": "Other",
+      "description": "This Unit can bring back an adjacent ally who has fallen in battle. They are revived with one HP and cannot act during the current Player Phase. This item can only be used once per ally. Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 2000,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 9,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "healing",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Pyrotechnics",
+      "type": "Other",
+      "description": "On hit, apply @{condition:Break:[Break]} to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability). Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 1000,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 2,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 5,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Quicksilver Coffee",
+      "type": "Other",
+      "description": "Apply @{const:gbp:[Mov +3]} to this unit or target ally for one turn. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 300,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Elixir",
+      "type": "Other",
+      "description": "Restores this unit to full HP. Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 1200,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "healing",
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Dark Stone (Bird)",
+      "type": "Other",
+      "description": "A magic crystal that was ingested by a giant bird.",
+      "requires": "Other E",
+      "rank": "E",
+      "price": 0,
+      "mttype": "str",
+      "modifiers": {
+        "mt": 9,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "monster"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Lightning Bamboo",
+      "type": "Other",
+      "description": "Target tile becomes a light Foliage tile one turn after use. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 1250,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Charge Vessel",
+      "type": "Other",
+      "description": "Apply the @{condition:Static:[Static]} condition to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability) Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 900,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 3,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Skeleton Key",
+      "type": "Other",
+      "description": "Opens a locked door or chest and breaks after use. (This is not considered a break chance, it just happens.)",
+      "requires": "None",
+      "rank": "E",
+      "price": 300,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
       ],
       "hidden": false
     },
@@ -25995,6 +34858,47 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "template"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Vegicidal Spray",
+      "type": "Other",
+      "description": "Remove the benefits and penalties imposed by Foliage tiles in target space. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 400,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 1,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
       ],
       "hidden": false
     },
@@ -26057,6 +34961,130 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Jar of Grease",
+      "type": "Other",
+      "description": "Target tile and adjacent tiles count as Difficult Terrain for one turn. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 750,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Concoction",
+      "type": "Other",
+      "description": "Restore 20 HP to this unit. Has a 30% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 600,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "healing",
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Alchemist's Fire",
+      "type": "Other",
+      "description": "Create a Fire Patch in target unoccupied space. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 300,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 1,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Spider Bite",
       "type": "Other",
       "description": "A monster weapon.",
@@ -26084,6 +35112,38 @@ const definitions = {
         "monster"
       ],
       "hidden": false
+    },
+    {
+      "name": "First Aid Kit",
+      "type": "Other",
+      "description": "Restore (Mt + max(dex, lck) / 2) HP to target ally.",
+      "requires": "None",
+      "rank": "D",
+      "price": 780,
+      "mttype": "none",
+      "modifiers": {
+        "mt": "floor((unit|charm) / 2) + 8",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 1,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "healing",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
     }
   ],
   "conditions": [
@@ -26099,7 +35159,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26133,7 +35193,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 3,
         "prot": 0,
         "resl": 0,
@@ -26169,7 +35229,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26204,7 +35264,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26239,7 +35299,74 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "bonus"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Branded",
+      "description": "When applying unit deals zero or more damage to affected unit, that damage is increased by 4, and when affected unit deals 4 or more damage to applying unit, that damage is decreased by 4.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "bonus",
+        "penalty"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Canto",
+      "description": "After performing an action on its phase, affectedunit can use any remaining movement.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26272,7 +35399,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26306,7 +35433,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26340,7 +35467,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26376,7 +35503,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26411,7 +35538,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": "ask [Distant Guard] end",
         "resl": "ask [Distant Guard] end",
@@ -26446,7 +35573,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": "ask [Below 50?], No {0}; Yes {-(unit|total|mt)} end",
         "prot": 0,
         "resl": 0,
@@ -26481,7 +35608,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 7,
@@ -26515,7 +35642,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26539,6 +35666,39 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Favor",
+      "description": "Before combat, affected unit may end this condition to apply one mode:\n \u2022 Affected unit has weapon advantage until the end of combat.\n \u2022 End one other condition on affected unit (you choose).\n \u2022 Affected unit regains 6 SP.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "bonus"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Flow",
       "description": "Avo +30; each phase, grants affected unit a guaranteed follow-up attack in affected unit\u2019s first combat at Range 1.",
       "modifiers": {
@@ -26550,7 +35710,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26583,7 +35743,7 @@ const definitions = {
         "spd": -5,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26618,7 +35778,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26652,7 +35812,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26687,7 +35847,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26721,7 +35881,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26754,7 +35914,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26778,6 +35938,37 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Null Effect",
+      "description": "Nullifies effectiveness against affected unit",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": -30,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Overcharged",
       "description": "If affected unit is Infantry, Avo -20. If affected unit is Armor, Cavalry, or Flying, affected unit takes Effective damage from attacks.",
       "modifiers": {
@@ -26789,7 +35980,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26823,7 +36014,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26858,7 +36049,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26892,7 +36083,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26915,7 +36106,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Poison",
+      "name": "Poisoned",
       "description": "Affected unit takes 20% nonlethal damage at the beginning of its phase.",
       "modifiers": {
         "hp": 0,
@@ -26926,7 +36117,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26960,7 +36151,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -26993,7 +36184,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27026,7 +36217,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27060,7 +36251,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 1,
         "prot": 0,
         "resl": 5,
@@ -27093,7 +36284,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27126,7 +36317,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27161,7 +36352,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27187,7 +36378,7 @@ const definitions = {
     },
     {
       "name": "Shocked",
-      "description": "Mag -6 and Cha -6; healing affected unit receives is halved. If mounted, affected unit\u2019s @{ability::Canto} is disabled.",
+      "description": "Mag -6 and Lck -6; healing affected unit receives is halved. If mounted, affected unit\u2019s @{ability::Canto} is disabled.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -27197,7 +36388,40 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": -6,
+        "lck": -6,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "penalty"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Sickness",
+      "description": "Affected unit cannot initiate attacks.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27230,7 +36454,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27263,7 +36487,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27296,7 +36520,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27319,8 +36543,8 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Summoning Sickness",
-      "description": "Affected unit cannot initiate attacks.",
+      "name": "Stoneskin",
+      "description": "Affected unit has Def +7, but affects unit's Mov and Spd are zero.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -27328,9 +36552,9 @@ const definitions = {
         "mag": 0,
         "dex": 0,
         "spd": 0,
-        "def": 0,
+        "def": 7,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27347,13 +36571,14 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "penalty"
+        "penalty",
+        "bonus"
       ],
       "hidden": false
     },
     {
       "name": "Taunted",
-      "description": "Affected unit has Hit -30 in-combat if it initiates combat against a unit other than those in set of applying units. On merge, add applying unit to the set of applying units.",
+      "description": "Affected unit has Hit -30 in-combat if it can initiate combat against a unit in the set of applying units and instead initiates combat against a unit other than those in set of applying units. On merge, add applying unit to the set of applying units.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -27363,7 +36588,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27386,41 +36611,8 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Traitor",
-      "description": "All damage that affected unit receives from foes becomes nonlethal. If this unit is reduced to 1 HP, it permanently changes armies to the army of the applying unit (this unit is under group control unless otherwise specified) and this condition ends.\nThe affected unit is not retained between battles, unless it becomes an named NPC, and only then may be deployed as any other NPC would, subject to the rules of the GM for a specific map.",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "cha": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "penalty"
-      ],
-      "hidden": false
-    },
-    {
       "name": "Transmute",
-      "description": "Str +3, Mag +3, Dex +3, Spd +3, Def +3, Res +3, Cha +3, and affected unit may apply its next attack as magic damage.",
+      "description": "Str +3, Mag +3, Dex +3, Spd +3, Def +3, Res +3, Lck +3, and affected unit may apply its next attack as magic damage.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -27430,7 +36622,7 @@ const definitions = {
         "spd": 3,
         "def": 3,
         "res": 3,
-        "cha": 3,
+        "lck": 3,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27463,7 +36655,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27496,7 +36688,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -27529,7 +36721,7 @@ const definitions = {
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mt": 0,
         "prot": 0,
         "resl": 7,
@@ -27551,43 +36743,2889 @@ const definitions = {
       "hidden": false
     }
   ],
-  "babils": [
+  "adjutants": [
     {
-      "name": "Sabotage",
-      "description": "Foes within Range \u2264 1 have Crit Avo @{SCALE} in combat.",
-      "requires": "",
-      "tiers": [
-        "-0",
-        "-5",
-        "-10",
-        "-15",
-        "-20"
+      "name": "No Adjutant",
+      "description": "Lack of an adjutant.",
+      "reactions": [],
+      "gambit": null,
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "first"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Rosalie Nedler",
+      "description": "A surgeon with poor bedside manner.",
+      "reactions": [
+        "Adjutant Heal"
+      ],
+      "gambit": {
+        "name": "Surgical Intervention",
+        "description": "When an adjacent ally or an ally in this units space regains HP, 40% chance to double heal and apply the excess as @{condition:Overheal:[Overheal]} for one turn.",
+        "requires": "Adjutant `Rosalie Nedler`",
+        "mttype": "none",
+        "price": "",
+        "rank": "",
+        "aoe": "",
+        "modifiers": {
+          "atk": 0,
+          "mor": 0,
+          "prot": 0,
+          "resl": 0,
+          "cap": 0,
+          "auto": 0,
+          "plu": 0,
+          "end": 0,
+          "br": 0,
+          "hit": 0,
+          "mt": 0,
+          "cost": 0,
+          "minrng": 0,
+          "maxrng": 0,
+          "epcost": 0,
+          "capcost": 0
+        },
+        "comment": "Items in modifers can either be integers or string expressions",
+        "tags": [
+          "structure",
+          "adjutant"
+        ],
+        "hidden": false
+      },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
       "hidden": false
     }
   ],
-  "adjutants": [
+  "gambits": [
     {
-      "name": "Rosalie Nedler",
-      "description": "A surgeon with poor bedside manner.",
-      "ability": "When an adjacent ally or an ally in this units space regains HP, 40% chance to double heal and apply the excess as @{condition:Overheal:[Overheal]} for one turn.",
-      "reaction": "Heal",
+      "name": "Axes Training",
+      "description": "Battalion's weapon type is Axes and deals damage vs Prot; grants Atk +6, and Range 0-1. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "str",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
       "modifiers": {
-        "disc": 6,
-        "brav": 10
-      }
+        "atk": 6,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
     },
     {
-      "name": "No Adjutant",
-      "description": "Lack of an Adjutant",
-      "ability": "None",
-      "reaction": "None",
+      "name": "Bows Training",
+      "description": "Battalion's weapon type is Bows and deals damage vs Prot; grants Atk +4, Hit +10, and Range 1-2. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "str",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
       "modifiers": {
-        "disc": 0,
-        "brav": 0
-      }
+        "atk": 4,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 10,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Faith Training",
+      "description": "Battalion's weapon type is Faith and deals damage vs Resl; grants Atk +2, Hit +20, and Range 1-2. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "mag",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 2,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 20,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Guile Training",
+      "description": "Battalion's weapon type is Guile and deals damage vs Resl; grants Atk +4, Hit +10, and Range 1-2. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "mag",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 4,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 10,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Lances Training",
+      "description": "Battalion's weapon type is Lances and deals damage vs Prot; grants Atk +4, Hit +10, and Range 0-1. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "str",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 4,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 10,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Mighty Fist Training",
+      "description": "Battalion's weapon type is Brawl and deals damage vs Prot; grants Hit +30, and Range 0-1. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "str",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 30,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Mystic Fist Training",
+      "description": "Battalion's weapon type is Brawl and deals damage vs Resl; grants Hit +30, and Range 0-1. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "mag",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 30,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Reason Training",
+      "description": "Battalion's weapon type is Guile and deals damage vs Resl; grants Atk +6 and Range 1-2. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "mag",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 6,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Swords Training",
+      "description": "Battalion's weapon type is Swords and deals damage vs Prot; grants Atk +2, Hit +20, and Range 0-1. A battalion can only possess one \"Training\" gambit.",
+      "requires": "Authority E",
+      "mttype": "str",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 2,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 20,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Armor Outfitting",
+      "description": "Grants Prot/Resl +3; battalion\u2019s units are Armor units. This battalion may not possess another \"Outfitting\" gambit, unless that gambit is \"Cavalry Outfitting.\"",
+      "requires": "Authority E",
+      "mttype": "else",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 3,
+        "resl": 3,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Cavalry Outfitting",
+      "description": "Grants Auto +1; battalion\u2019s units are Cavalry units. This battalion may not possess another \"Outfitting\" gambit, unless that gambit is \"Armor Outfitting.\"",
+      "requires": "Authority E",
+      "mttype": "else",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 1,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Flying Outfitting",
+      "description": "Grants Auto +1; battalion\u2019s units are Flying units. This battalion may not possess another \"Outfitting\" gambit.",
+      "requires": "Authority E",
+      "mttype": "else",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 1,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Infantry Outfitting",
+      "description": "Battalion\u2019s units are Infantry units. This battalion may not possess another \"Outfitting\" gambit.",
+      "requires": "Authority E",
+      "mttype": "else",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Monstrous Outfitting",
+      "description": "Grants Max EP +5; battalion\u2019s units are Monster units. Not purchasable.",
+      "requires": "Authority E",
+      "mttype": "else",
+      "price": "",
+      "rank": "E",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Adjutant Follow-Up (Magic)",
+      "description": "Trigger: After employer exits a combat in which employer made one or more attacks, and at most one of those attacks hit. Target the same foe that employer was just in combat with and make one attack against target foe.\n\nThis attack does not trigger counter attack(s).",
+      "requires": "Adjutant",
+      "mttype": "mag",
+      "price": 0,
+      "rank": "E",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "reaction",
+        "adjutant",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Adjutant Follow-Up (Strength)",
+      "description": "Trigger: After employer exits a combat in which employer made one or more attacks, and at most one of those attacks hit. Target the same foe that employer was just in combat with and make one attack against target foe.\n\nThis attack does not trigger counter attack(s).",
+      "requires": "Adjutant",
+      "mttype": "str",
+      "price": 0,
+      "rank": "E",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "reaction",
+        "adjutant",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Adjutant Guard",
+      "description": "Trigger: Target employer would enter combat. Halve the damage of the first attack that hits target employer.",
+      "requires": "Adjutant",
+      "mttype": "none",
+      "price": 0,
+      "rank": "E",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "reaction",
+        "adjutant",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Adjutant Heal",
+      "description": "Trigger: Target employer would enter combat. Restore HP to target employer equal to (Attack / 2) + 8.",
+      "requires": "Adjutant",
+      "mttype": "none",
+      "price": 0,
+      "rank": "E",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": "floor((battalion|total|atk)/2) + 8",
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "reaction",
+        "adjutant",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Counter",
+      "description": "A battalion counter attack.",
+      "requires": "None",
+      "mttype": "else",
+      "price": "",
+      "rank": "E",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": 0,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no hit",
+        "no cost"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Stabilize",
+      "description": "Stabilize ally in target tile.",
+      "requires": "Authority E",
+      "mttype": "none",
+      "price": "",
+      "rank": "E",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -1,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Eject",
+      "description": "Move a non-employer ally in target space into an unoccupied adjacent space.",
+      "requires": "Authority E+",
+      "mttype": "none",
+      "price": "",
+      "rank": "E+",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -1,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Envelope",
+      "description": "If this unit\u2019s space is not occupied by another unit, move a non-employer, non-battalion ally in target space into this unit\u2019s space.",
+      "requires": "Authority E+",
+      "mttype": "none",
+      "price": "",
+      "rank": "E+",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -1,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Commotion",
+      "description": "Foes in AoE take nonlethal damage equal to this battalion\u2019s Rank plus two; a unit only takes damage from this gambit once per phase.",
+      "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "none",
+      "price": "",
+      "rank": "D",
+      "aoe": "Radius 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 2,
+        "capcost": 0
+      },
+      "rows": [
+        {
+          "name": "Damage",
+          "expr": "battalion|rank + 2",
+          "roll": false
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Disturbance",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "D",
+      "aoe": "1x2 Par. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 60,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 6,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Expel",
+      "description": "Move a foe in target space into an unoccupied adjacent space.",
+      "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "none",
+      "price": "",
+      "rank": "D",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Fusillade",
+      "description": "Effective vs Flying foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority D) (Training Bows)",
+      "mttype": "else",
+      "price": "",
+      "rank": "D",
+      "aoe": "Circle 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 10,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Group Magic",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority D) (Any (Training Faith) (Training Reason) (Training Guile))",
+      "mttype": "else",
+      "price": "",
+      "rank": "D",
+      "aoe": "Circle 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 10,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Subsume",
+      "description": "If this unit\u2019s space is not occupied by another unit, move a non-battalion foe in target space into this unit\u2019s space.",
+      "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "none",
+      "price": "",
+      "rank": "D",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Bemoan",
+      "description": "Extend the duration of one condition affecting a foe in target tile by one turn.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "price": "",
+      "rank": "D+",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -1,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Bolster",
+      "description": "Extend the duration of one condition affecting a non-employer ally in target tile by one turn.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "price": "",
+      "rank": "D+",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Close Counter",
+      "description": "Unit\u2019s min range is 0 when counter-attacking.",
+      "requires": "All (Authority D+) (Any (Training Faith) (Training Guile) (Training Reason) (Training Bows))",
+      "mttype": "else",
+      "price": "",
+      "rank": "D+",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": -1,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Demolish",
+      "description": "Destroy up to 1 per 5 Charm connecting player created tiles in AoE starting from target player created tile in range.",
+      "requires": "Authority D+",
+      "mttype": "none",
+      "price": "",
+      "rank": "D+",
+      "aoe": "Variable",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Far Counter",
+      "description": "Unit\u2019s max range is 2 when counter-attacking.",
+      "requires": "All (Authority D+) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "D+",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Hold the Line",
+      "description": "Apply @{condition:Sentinel:[Sentinel]} to this battalion's units for one turn.",
+      "requires": "All (Authority D+) (Any (Training Swords) (Training Axes) (Training Lances) (Training `Mighty Fist`) (Training `Mystic Fist`) (Outfitting Armor))",
+      "mttype": "none",
+      "price": "",
+      "rank": "D+",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Assembly",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn, then after combat, this unit moves one space backward while foe in target space moves into this unit\u2019s previous space.",
+      "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "1x2 Par. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Battalion Hexblade",
+      "description": "Battalion deals damage vs Resl.",
+      "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training Bows))",
+      "mttype": "mag",
+      "price": "",
+      "rank": "C",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Construct",
+      "description": "Choose to pay the associated cost to create one of the following tiles in target space following the restrictions in parentheses:\n \u2022 @{tile::Explosive} (empty space, 30 EP)\n \u2022 @{tile::Barricade} (empty space, 6 EP)\n\u2022 @{tile::Turret} (empty space, 6 EP)\n \u2022 @{tile::Smoke Screen} (4 EP)\n \u2022 @{tile::Fire Patch} (2 EP)",
+      "requires": "Authority C",
+      "mttype": "none",
+      "price": "",
+      "rank": "C",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Hospital",
+      "description": "Restore 2 + \u00bd Charm HP to non-employer ally in AoE. Cannot be equipped alongside @{gambit::Initiate}.",
+      "requires": "Authority C",
+      "mttype": "none",
+      "price": "",
+      "rank": "C",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 4,
+        "capcost": 0
+      },
+      "rows": [
+        {
+          "name": "Healing",
+          "expr": "floor((unit|charm)/2) + 2",
+          "roll": false
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no hit",
+        "no stats",
+        "no might"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Initiate",
+      "description": "No special effects. Cannot be equipped alongside @{gambit::Hospital}.\u201d",
+      "requires": "Authority C",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 1,
+        "hit": 60,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 4,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Lure",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn, then, after combat, move foe in target space to the opposite side of this unit.",
+      "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "1x2 Par. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Mad Melee",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "1x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 60,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Onslaught",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn then, after combat, push foe in target space one space  away from this unit.",
+      "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "1x2 Par. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 8,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Poison Tactic",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and apply @{condition:Poisoned:[Poisoned]} to all foes in AoE.",
+      "requires": "Authority C",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "Half Circle 2",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 5,
+        "hit": 60,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 16,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Poisoned Arrows",
+      "description": "Effective against Flying foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and apply @{condition:Poison:[Poisoned]} to all foes in AoE.",
+      "requires": "All (Authority C) (Training Bows))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "Circle 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 60,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 12,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Random Shot",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "1x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 8,
+        "hit": 40,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Regroup",
+      "description": "All of this battalion\u2019s units retreat and this battalion regains 2 + \u00bd Charm EP.",
+      "requires": "Authority C",
+      "mttype": "none",
+      "price": "",
+      "rank": "C",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "rows": [
+        {
+          "name": "EP Restored",
+          "expr": "2 + floor((unit|charm) / 2)",
+          "roll": false
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Reinforce",
+      "description": "Restore 2 + \u00bd Charm EP to battalion ally in target tile.",
+      "requires": "Authority C",
+      "mttype": "none",
+      "price": "",
+      "rank": "C",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "rows": [
+        {
+          "name": "EP Restored",
+          "expr": "floor((unit|charm)/2) + 2",
+          "roll": false
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no hit",
+        "no stats",
+        "no might"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Reversal",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn, then after combat, this unit and foe in target space swap places.",
+      "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C",
+      "aoe": "1x2 Par. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -3,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 8,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Battalion Vantage",
+      "description": "If foe initiates combat against this unit and battalion EP \u2264 \u00bd, this unit\u2019s counter attack(s) occur before foe\u2019s attack.",
+      "requires": "All (Authority C+) (Any (Training Lances) (Training Guile))",
+      "mttype": "else",
+      "price": 1500,
+      "rank": "C+",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Guardian",
+      "description": "Apply @{condition:Bodyguard:[Bodyguard]} to one of this battalion\u2019s units for one turn.",
+      "requires": "All (Authority C+) (Any (Training Swords) (Training Axes) (Training Lances) (Training `Mighty Fist`) (Training `Mystic Fist`) (Outfitting Armor)))",
+      "mttype": "else",
+      "price": "",
+      "rank": "C+",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Obfuscate",
+      "description": "For one turn, foes within AoE have Hit -20 in combat. (Overlapping areas do not stack.)",
+      "requires": "Authority C+",
+      "mttype": "else",
+      "price": "",
+      "rank": "C+",
+      "aoe": "Circle 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 4,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Recovery Roar",
+      "description": "End status effects of your choice on all allies in AoE.",
+      "requires": "All (Authority C+) (Training Faith)",
+      "mttype": "else",
+      "price": "",
+      "rank": "C+",
+      "aoe": "Circle 2",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 6,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Sabotage",
+      "description": "For one turn, foes in AoE have Crit Avo -20 in combat. (Overlapping areas do not stack.)",
+      "requires": "Authority C+",
+      "mttype": "else",
+      "price": "",
+      "rank": "C+",
+      "aoe": "Circle 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 4,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Spotting Aid",
+      "description": "For one turn, foes in AoE have Avo -20 in combat. (Overlapping areas do not stack.)",
+      "requires": "Authority C+",
+      "mttype": "else",
+      "price": "",
+      "rank": "C+",
+      "aoe": "Radius 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 4,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Absorption",
+      "description": "On hit, apply 2{condition:Rattled:[Rattled]} to all foes in AoE for one turn and deal nonlethal damage equal to half damage dealt to foe in target tile to all foes in AoE, then battalion regains EP equal to half of total damage dealt.",
+      "requires": "All (Authority B) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`)) (Outfitting Infantry)",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "Circle 2",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 30,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 20,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Assault Troop",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority B) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "B",
+      "aoe": "1x4 Par. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 10,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 14,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Blaze",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn. After combat, create @{tiles:Fire Patch:Fire Patches} in all empty spaces in AoE.",
+      "requires": "Authority B",
+      "mttype": "else",
+      "price": "",
+      "rank": "B",
+      "aoe": "Half Circle 2",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 10,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 20,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Divide and Conquer",
+      "description": "Grants Plu +1",
+      "requires": "All (Authority B) (Any (Outfitting Flying) (Outfitting Armor))",
+      "mttype": "else",
+      "price": "",
+      "rank": "B",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 1,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Escort",
+      "description": "Move a non-battalion ally from a space adjacent to this battalion\u2019s employer into target space. Cannot be equipped alongside @{gambit::Rescue}.",
+      "requires": "Authority B",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 6,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Flash-Fire Arrows",
+      "description": "Effective against Flying foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn. After combat, create @{tile:Fire Patch:Fire Patches} in all empty spaces in AoE.",
+      "requires": "All (Authority B) (Training Bows)",
+      "mttype": "else",
+      "price": "",
+      "rank": "B",
+      "aoe": "1x4 Par. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 7,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 20,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Holy Ward",
+      "description": "Allies in AoE take no damage from magical attacks for one turn. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+      "requires": "All (Authority B) (Outfitting Armor)",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "1x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Remote Operations",
+      "description": "Grants Auto +1.",
+      "requires": "All (Authority B) (Any (Outfitting Cavalry) (Outfitting Armor))",
+      "mttype": "else",
+      "price": "",
+      "rank": "B",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 1,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Rescue",
+      "description": "Move a non-battalion ally from target space to an empty space adjacent to this battalion\u2019s employer. Cannot be equipped alongside @{gambit::Escort}.",
+      "requires": "Authority B",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "None",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 6,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Resonant Elements",
+      "description": "For each space in AoE, this unit may create either an @{tile::Ice Block}, @{tile::Fire Patch}, @{tile::Wind Torrent}, @{tile::Lightning Arc}, or @{tile::Force Wall} in that space. Only @{tile::Wind Torrents} and @{tile::Fire Patches} may be created in occupied spaces, and created @{tile::Lightning Arcs} and @{tile::Wind Torrents} last one turn before disappearing.",
+      "requires": "All (Authority B) (Training Reason)",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 14,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Resonant Healing",
+      "description": "Restore 2 + \u00bd Charm HP to allies in AoE.",
+      "requires": "All (Authority B) (Training Faith)",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 14,
+        "capcost": 0
+      },
+      "rows": [
+        {
+          "name": "Healing",
+          "expr": "floor((unit|charm)/2) + 2",
+          "roll": false
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Resonant Magic",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority B) (Any (Training Faith) (Training Reason) (Training Guile))",
+      "mttype": "else",
+      "price": "",
+      "rank": "B",
+      "aoe": "Circle 2",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 7,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 18,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Resonant Morass",
+      "description": "Deal 20% nonlethal damage to all foes in AoE and apply @{condition:gbp:[Mov -3]} to all foes in AoE for one turn.",
+      "requires": "All (Authority B) (Training Guile)",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 14,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Sacred Shield",
+      "description": "Allies in AoE take no damage from physical attacks for one turn. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+      "requires": "All (Authority B) (Outfitting Armor)",
+      "mttype": "none",
+      "price": "",
+      "rank": "B",
+      "aoe": "1x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Battalion Pursuit",
+      "description": "Unit has a (Charm+ 20)% chance to perform a follow-up attack with counter attacks or using the Initiate gambit.",
+      "requires": "All (Authority B+) (Any (Training Swords) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": 2500,
+      "rank": "B+",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "rows": [
+        {
+          "name": "Pursuit",
+          "when": "gambit|is_active|Initiate + gambit|is_active|Counter",
+          "expr": "unit|charm + 20",
+          "roll": true
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Battalion Wrath",
+      "description": "Unit\u2019s counterattacks and Initiate gambit have a (Charm)% chance to become critical hits. If battalion EP is \u2264 \u00bd, then this chance becomes (Charm + 50)%.",
+      "requires": "All (Authority B+) (Any (Training Axes) (Training Reason))",
+      "mttype": "else",
+      "price": 2500,
+      "rank": "B+",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -5,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "rows": [
+        {
+          "name": "Wrath",
+          "when": "gambit|is_active|Initiate + gambit|is_active|Counter",
+          "expr": "unit|charm + fill affirm([EP \u2264 \u00bd?], 50, 0)",
+          "roll": true
+        }
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "All Out Brawl",
+      "description": "Effective against Infantry Foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority A) (All (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 8,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 16,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Battalion Renewal",
+      "description": "Unit\u2019s battalion recovers EP equal to 20% of its Max EP at the start of its phase.",
+      "requires": "All (Authority A) (Any (Training Faith) (Training `Mighty Fist`) (Training `Mystic Fist`))",
+      "mttype": "else",
+      "price": 3500,
+      "rank": "A",
+      "aoe": "",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "hit": 0,
+        "mt": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 0,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "structure"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Battering Ram",
+      "description": "Effective against Armor Foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and destroy all player created tiles in or adjacent to AoE.",
+      "requires": "All (Authority A) (Training Axes)",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 10,
+        "hit": 40,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 18,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Beastial Terror",
+      "description": "Mounted foes in range are forced to dismount, and for one turn, foes in AoE cannot remount. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+      "requires": "All (Authority A) (Outfitting Infantry)",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "Circle 2",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no hit",
+        "no might",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Blessing",
+      "description": "Apply @{condition:Guaranteed:[Guaranteed Miracle]} to non-employer allies in AoE for one turn.",
+      "requires": "All (Authority A) (Training Faith)",
+      "mttype": "none",
+      "price": "",
+      "rank": "A",
+      "aoe": "Radius 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 24,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Flock Together",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority A) (Outfitting Flying)",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 6,
+        "hit": 80,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 12,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Hail of Arrows",
+      "description": "Effective against Flying foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority A) (Training Bows)",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 9,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "epcost": 14,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Impregnable Wall",
+      "description": "Allies in AoE deal and take a maximum of one damage for one turn. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+      "requires": "All (Authority A) (Outfitting Armor)",
+      "mttype": "none",
+      "price": "",
+      "rank": "A",
+      "aoe": "1x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 8,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Line of Lances",
+      "description": "Effective against Cavalry foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and you may force each Cavalry foe in or adjacent to AoE to dismount, and for one turn, foes in or adjacent to AoE cannot remount. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+      "requires": "All (Authority A) (Training Lances)",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 5,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 14,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Linked Horses",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+      "requires": "All (Authority A) (Outfitting Cavalry)",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 12,
+        "hit": 50,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 12,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Retribution",
+      "description": "Allies in AoE counterattack regardless of range for one turn. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+      "requires": "All (Authority A) (Outfitting Armor)",
+      "mttype": "none",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 16,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Wing Clipping",
+      "description": "Effective against Flying foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and you may force each Flying foe in or adjacent to AoE to dismount, and for one turn, foes in or adjacent to AoE cannot remount.  @{style:italic:(Effect is attached to the spaces, not the units.)}",
+      "requires": "All (Authority A) (Training Swords)",
+      "mttype": "else",
+      "price": "",
+      "rank": "A",
+      "aoe": "2x3 Perp. Line",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -6,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 4,
+        "hit": 60,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "epcost": 14,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Stride",
+      "description": "Apply @{const:gbp:[Mov +5]} for one turn to non-employer allies in AoE.",
+      "requires": "Authority A+",
+      "mttype": "none",
+      "price": "",
+      "rank": "A+",
+      "aoe": "Radius 2",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -8,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 20,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Dance of the Goddess",
+      "description": "Non-employer allies without Dance in AoE that have taken a turn this phase may take another turn.",
+      "requires": "All (Authority S) (Outfitting Infantry)",
+      "mttype": "none",
+      "price": "",
+      "rank": "S",
+      "aoe": "Radius 1",
+      "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -8,
+        "auto": 0,
+        "plu": 0,
+        "end": 0,
+        "br": 0,
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "epcost": 40,
+        "capcost": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "measured",
+        "no might",
+        "no hit",
+        "no stats"
+      ],
+      "hidden": false
     }
   ]
 };

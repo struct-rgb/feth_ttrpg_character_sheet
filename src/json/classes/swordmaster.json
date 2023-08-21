@@ -1,7 +1,7 @@
 {
   "name": "Swordmaster",
   "description": "These Sword fighters prefer Strong, quick, Strikes",
-  "type": ["Infantry", "Martial"],
+  "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "All (Swords B) (Required (Level 15))",
   "abilities": [ "Sword Advantage", "Sword Crit +10", "Stamina +15" ],
@@ -14,7 +14,7 @@
     "spd": 25,
     "def": 15,
     "res": 10,
-    "cha": 10
+    "lck": 10
   },
   "modifiers": {
     "hp": 4,
@@ -24,7 +24,7 @@
     "spd": 1,
     "def": 4,
     "res": 1,
-    "cha": 0,
+    "lck": 0,
     "mov": 5
   },
   "mount": null,

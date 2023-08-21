@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["forspell", "forweapon"],
+    "tags": [],
     "hidden": false
 }

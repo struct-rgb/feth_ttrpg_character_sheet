@@ -211,7 +211,6 @@ class Weapons {
 
 		const second = element("tbody", [
 			wide("Might", "mt", makefn("mt")),
-			// wide("Based on", "base", ,
 			element("tr", [
 				element("th", "Based on"),
 				element("td", {
@@ -332,7 +331,7 @@ class Weapons {
 			]),
 
 			element("details", [
-				element("summary", element("label", "Custom Description")),
+				element("summary", element("label", "Customize Description")),
 				this._adder.root,
 				this._description,
 				tooltip(this._replace.root, [
@@ -343,12 +342,12 @@ class Weapons {
 			]),
 
 			element("details", [
-				element("summary", element("label", "Custom Statistics")),
+				element("summary", element("label", "Customize Statistics")),
 				element("table", second, "battalion-table"),
 			]),
 
 			element("details", [
-				element("summary", element("label", "Custom Tags")),
+				element("summary", element("label", "Customize Tags")),
 				this._template_tags.root, this._custom_tags.root,
 				element("p", wrap(
 					"You can add the following tags in order to change how ",

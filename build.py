@@ -9,6 +9,8 @@ from argparse import ArgumentParser
 TIER_ORDER = {
 	"Starting": 1,
 	"Advanced": 2,
+	"Phantom": 3,
+	"Bonus": 4,
 }
 
 SKILL_ORDER = {
@@ -24,16 +26,30 @@ SKILL_ORDER = {
 }
 
 RANK_ORDER = {
-	"S": 5,
-	"A": 4,
-	"B": 3,
-	"B-C": 2.5,
-	"C": 2,
-	"D": 1,
-	"E": 0,
+	"S+" : 12,
+	"S"  : 11,
+	"A+" : 10,
+	"A"  :  9,
+	"B+" :  8,
+	"B"  :  7,
+	"B-C":  6,
+	"C+" :  5,
+	"C"  :  4,
+	"D+" :  3,
+	"D"  :  2,
+	"E+" :  1, 
+	"E"  :  0,
 }
 
+OVERMAX_RANK = 13
+
 SORTING_FUNCS = {
+
+	"adjutants": lambda item: (
+		(
+			"first" not in item["tags"],
+		)
+	),
 
 	"presets": lambda item: (
 		(
@@ -44,8 +60,26 @@ SORTING_FUNCS = {
 	"classes": lambda item: (
 		(
 			"first" not in item["tags"],
-			TIER_ORDER.get(item["tier"], 3),
+			TIER_ORDER.get(item["tier"], 1000),
 			"".join(sorted(item["type"])),
+			item["name"]
+		)
+	),
+
+	"gambits": lambda item: (
+		(
+			"first" not in item["tags"],
+			"Training" not in item["name"],
+			"Outfitting" not in item["name"],
+			RANK_ORDER.get(item["rank"], OVERMAX_RANK),
+			item["name"]
+
+		)
+	),
+
+	"battalions": lambda item: (
+		(
+			"first" not in item["tags"],
 			item["name"]
 		)
 	),
@@ -58,7 +92,7 @@ SORTING_FUNCS = {
 			"secret" in item["tags"],
 			"relic" in item["tags"],
 			"sacred" in item["tags"],
-			RANK_ORDER.get(item["rank"], 6),
+			RANK_ORDER.get(item["rank"], OVERMAX_RANK),
 			# item["name"],
 		)
 	),
@@ -69,7 +103,7 @@ SORTING_FUNCS = {
 			8 if isinstance(item["type"], list) else SKILL_ORDER.get(item["type"], 8),
 			"relic" in item["tags"],
 			"sacred" in item["tags"],
-			RANK_ORDER.get(item["rank"], 6),
+			RANK_ORDER.get(item["rank"], OVERMAX_RANK),
 		)
 	),
 
@@ -157,6 +191,26 @@ def error_context(source, data, error, context):
 
 	return "\n".join(text)
 
+def json_check_load(file):
+	try:
+		data = file.read_text()
+	except UnicodeDecodeError as error:
+		print(
+			f"Error loading: {definition}\n"
+			"    could not decode file as utf-8"
+		)
+		sys.exit(1)
+
+	# first, try to read in file checking syntax
+	try:
+		data = json.loads(data)
+	except json.decoder.JSONDecodeError as error:
+		context = error_context(file, data, error, 3)
+		print(context, file=sys.stderr)
+		sys.exit(1)
+
+	return data
+
 def compile_definitions(omit=False):
 	"""
 	Gathers up and compiles all of the features defined in ./src/json into one
@@ -172,31 +226,15 @@ def compile_definitions(omit=False):
 		if not file.is_dir() or file.name == "templates":
 			continue
 
-		template = json.loads(
-			Path("./src/json/templates/%s.json" % file.name).read_text()
+		template = json_check_load(
+			Path("./src/json/templates/%s.json" % file.name)
 		)
 
 		definitions = []
 
 		for definition in file.iterdir():
 
-			try:
-				data = definition.read_text()
-			except UnicodeDecodeError as error:
-				print(
-					f"Error loading: {definition}\n"
-					"    could not decode file as utf-8"
-				)
-				continue
-
-			# first, try to read in file checking syntax
-			try:
-				data = json.loads(data)
-			except json.decoder.JSONDecodeError as error:
-				context = error_context(definition, data, error, 3)
-				print(context, file=sys.stderr)
-				sys.exit(1)
-
+			data = json_check_load(definition)
 			
 			# skip this stage for presets because they're too complex
 			if file.name != "presets":

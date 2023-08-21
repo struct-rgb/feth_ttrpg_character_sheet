@@ -23,6 +23,6 @@
     },
 
     "comment": "Can only be applied to spells.",
-    "tags": ["conjure", "forspell"],
+    "tags": ["conjure", "for guile"],
     "hidden": false
 }

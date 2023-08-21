@@ -1,7 +1,7 @@
 {
   "name": "Mage",
   "description": "A class that uses Reason.",
-  "type": ["Infantry", "Caster"],
+  "type": ["Infantry"],
   "tier": "Starting",
   "requires": "Reason D",
   "abilities": [ "Reason Consumption 1", "Focus"],
@@ -14,7 +14,7 @@
     "spd": 10,
     "def": 0,
     "res": 20,
-    "cha": 15
+    "lck": 15
   },
   "modifiers": {
     "hp": 0,
@@ -24,7 +24,7 @@
     "spd": 2,
     "def": 0,
     "res": 4,
-    "cha": 3,
+    "lck": 3,
     "mov": 4
   },
   "mount": null,

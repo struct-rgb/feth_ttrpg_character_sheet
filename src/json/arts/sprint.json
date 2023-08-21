@@ -2,7 +2,7 @@
   "name": "Sprint",
   "description": "Unit may move up to 2 additional spaces.",
   "requires": "Armor B",
-  "mttype": "else",
+  "mttype": "none",
   "modifiers": {
     "mt": 0,
     "prot": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Opportunité",
-    "description": "Before unit enters combat, Dex% chance to grant unit a guaranteed follow-up attack in that combat.",
-    "requires": "None",
+    "description": "Before unit enters combat, (Dex + 20)% chance to grant unit @{const:ap:AP ≥ 2} in combat.",
+    "requires": "All (Any (Reason D) (Guile D) (Swords D) (Bows D)) (Level 5)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
@@ -31,6 +31,14 @@
 
         "mov": 0
     },
+
+    "rows": [
+        {
+            "when": "not(weapon|tagged|no_might) * not(weapon|tagged|no_hit)",
+            "expr": "unit|total|dex + 20 + other|trigger",
+            "roll": true
+        }
+    ],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["chance"],

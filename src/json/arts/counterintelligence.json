@@ -1,0 +1,24 @@
+{
+  "name": "Counter Intelligence",
+  "description": "Trigger: Within two spaces of this unit’s battalion unit, target foe uses a reaction or target battalion unit foe uses a gambit. Apply @{condition:Rattled:[Rattled]} to that unit until the end of the phase.",
+  "requires": "Any (Authority B) (Armor B)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 6
+  },
+  "comment": "",
+  "tags": ["tactical", "reaction", "no might", "no hit", "no crit", "no stats"],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "B"
+}

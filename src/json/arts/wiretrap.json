@@ -1,0 +1,33 @@
+{
+  "name": "Wire Trap",
+  "description": "Starting from target space, create one or more @{tile::Tripwires} (at most 1⅌3 Dex) in connection spaces inside of the same column or inside of the same row.\n@{const:variant:Stabilizer Variant:} Range +1 and tiles can be placed in two columns or rows.",
+  "requires": "Bows D+",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tiles": 0,
+    "spcost": 0,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical"
+  ],
+  "hidden": false,
+  "type": "Bows",
+  "rank": "D+"
+}

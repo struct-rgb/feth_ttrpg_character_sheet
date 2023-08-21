@@ -11,15 +11,15 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|lances, 6, 0)",
         "avo": "fill bothif(weapon|type|lances, 6, 0)",
-        "crit": 0,
-        "cravo": "fill bothif(weapon|type|lances, 5, 0)",
+        "crit": "fill bothif(weapon|type|lances, 6, 0)",
+        "cravo": "fill bothif(weapon|type|lances, 6, 0)",
 
         "minrng": 0,
         "maxrng": 0,

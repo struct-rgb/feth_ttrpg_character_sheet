@@ -3,7 +3,7 @@
     "description": "Cannot be traversed by non-Flying units except those with @{ability::Pass} or affected by @{condition:Pass:[Pass]}.",
     "requires": "None",
     "stats": {
-        "hp": 10,
+        "hp": 20,
         "prot": 15,
         "resl": 5,
         "mov": 0
@@ -16,7 +16,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 15,

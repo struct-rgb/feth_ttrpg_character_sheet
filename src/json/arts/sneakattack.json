@@ -1,0 +1,24 @@
+{
+  "name": "Sneak Attack",
+  "description": "Trigger: (before) an adjacent enemy enters combat with an ally two spaces away. Initiate combat with that enemy with equipped Sword at AP 1. In combat, target foe cannot counterattack and damage this unit deals is halved after damage calculation. @{const:variant:Ranged Variant:} If unit is equipped with a sword with the “Ranged” attribute, the attack instead deals full damage.",
+  "requires": "Swords C",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": ["reaction", "tactical", "no might", "no hit", "no crit", "no stats"],
+  "hidden": false,
+  "rank": "C",
+  "type": "Swords"
+}
