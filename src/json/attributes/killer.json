@@ -22,6 +22,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["cost", "forweapon"],
+    "tags": ["cost", "for axes", "for swords", "for lances", "for brawl", "for bows"],
     "hidden": false
 }

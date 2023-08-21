@@ -1,7 +1,7 @@
 {
-    "name": "Tomebreaker",
-    "description": "Grants Hit +20 and Avo +20 in combat against Faith, Reason, or Guile.",
-    "requires": "All (Any (Swords B) (Bows B)) (Level 15)",
+    "name": "Tomebreaker+",
+    "description": "Grants Hit +20 and Avo +20 in combat against Bows. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
+    "requires": "Bows B",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Calm Spirit",
-    "description": "Whenever this unit targets an ally, apply @{const:gbp:[Dex +4]}, @{const:gbp:[Spd +4]}, and @{const:gbp:[Cha +4] to target ally for one turn.",
-    "requires": "Any (Class Bard) (Class Quartermaster)",
+    "description": "When unit targets an ally, apply @{const:gbp:[Avo +10]} and @{const:gbp:[Crit Avo +10]} to target ally for one turn. If target is a battalion unit, instead restore 5 EP to that battalion.",
+    "requires": "Any (Class Warlord) (Class Quartermaster)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

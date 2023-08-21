@@ -1,20 +1,20 @@
 {
     "name": "Crow Knight",
     "description": "A flying class that acts as a squadron leader, leading a flock of battalion units into battle.",
-    "type": ["Flying", "Martial"],
+    "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Authority C+) (Required (Flying C+)) (Required (Level 15))",
     "abilities": ["Lead by Example", "Battalion Plurality +1", "Avo +10"],
     "arts": ["Angle of Attack"],
     "growths": {
-        "hp": 25,
+        "hp": 20,
         "str": 15,
         "mag": 15,
-        "dex": 20,
+        "dex": 5,
         "spd": 30,
         "def": 10,
-        "res": 20,
-        "cha": 5
+        "res": 15,
+        "lck": 20
       },
     "modifiers": {
         "hp": 2,
@@ -24,7 +24,7 @@
         "spd": 5,
         "def": 2,
         "res": 3,
-        "cha": 6,
+        "lck": 6,
         "mov": 4
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 7
     },
 

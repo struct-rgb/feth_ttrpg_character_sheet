@@ -1,7 +1,7 @@
 {
     "name": "Assassin",
     "description": "Bow and Sword martial class focused on damage, stealth, and untility. Choose one Advantage skill on reclass.",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Swords C+) (Bows C+) (Required (Level 15))",
     "abilities": ["Bow Advantage", "Sword Advantage", "Stealth", "Locktouch"],
@@ -10,22 +10,22 @@
         "hp": 20,
         "str": 15,
         "mag": 15,
-        "dex": 25,
+        "dex": 20,
         "spd": 25,
         "def": 0,
         "res": 15,
-        "cha": 15
+        "lck": 20
       },
     "modifiers": {
         "hp": 2,
         "str": 2,
-        "mag": 0,
-        "dex": 5,
+        "mag": 2,
+        "dex": 2,
         "spd": 7,
         "def": 1,
         "res": 2,
-        "cha": 1,
-        "mov": 6
+        "lck": 5,
+        "mov": 5
     },
     "mount": null,
 

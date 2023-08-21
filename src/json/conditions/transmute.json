@@ -1,6 +1,6 @@
 {
     "name": "Transmute",
-    "description": "Str +3, Mag +3, Dex +3, Spd +3, Def +3, Res +3, Cha +3, and affected unit may apply its next attack as magic damage.",
+    "description": "Str +3, Mag +3, Dex +3, Spd +3, Def +3, Res +3, Lck +3, and affected unit may apply its next attack as magic damage.",
 
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 3,
         "def": 3,
         "res": 3,
-        "cha": 3,
+        "lck": 3,
 
         "mt": 0,
         "prot": 0,

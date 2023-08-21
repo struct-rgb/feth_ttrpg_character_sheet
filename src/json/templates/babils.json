@@ -1,9 +1,0 @@
-{
-    "name": "Battalion Ability Template",
-    "description": "This is a template ability; it doesn't do anything.",
-    "requires": "",
-    "tiers": ["Iron", "Bronze", "Silver", "Gold", "Plantinum"],
-    "comment": "Items in modifers can either be integers or string expressions",
-    "tags": [],
-    "hidden": false
-}

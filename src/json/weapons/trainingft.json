@@ -8,7 +8,7 @@
 
     "mttype": "else",
     "modifiers": {
-        "mt": 0,
+        "mt": 1,
         "prot": 0,
         "resl": 0,
         "hit": 90,

@@ -1,7 +1,7 @@
 {
     "name": "Venin",
     "type": "Prompt",
-    "description": "On hit, apply @(Condition)[Poison] to target foe. Consumes 3 TP when dealing damage. Disabled while user has 0 TP and on spells.\n\nDecreases Max TP by 2 when placed in the Unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.)",
+    "description": "On hit, after combat, user may pay 3 TP to apply @{condition:Poisoned:[Poisoned]} to target foe.\n\nDisabled on spells.",
     "rank": 2,
     "price": 2800,
 
@@ -18,11 +18,11 @@
         "maxrng": 0,
         "tpcost": 3,
         "spcost": 0,
-        "tp": -2,
+        "tp": 0,
         "sp": 0
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["cost", "penalty", "forweapon"],
+    "tags": ["cost", "penalty", "for axes", "for brawl", "for swords", "for lances"],
     "hidden": false
 }

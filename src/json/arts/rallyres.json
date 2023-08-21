@@ -1,7 +1,7 @@
 {
   "name": "Rally Res +4",
-  "description": "Apply @{const:gbp:[Res +4]} to target ally for 1 turn.",
-  "requires": "All (Authority C+) (Level 10)",
+  "description": "Apply @{const:gbp:[Res +4]} to target ally for 1 turn or if target is a battalion unit, instead restore 4 EP to that battalion. Consumes half of an arts slot starting at level 15.",
+  "requires": "Authority D+",
   "mttype": "none",
   "modifiers": {
     "mt": 0,
@@ -27,5 +27,5 @@
   ],
   "hidden": false,
   "type": "Authority",
-  "rank": "C+"
+  "rank": "D+"
 }

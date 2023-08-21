@@ -15,7 +15,7 @@
 class LevelAttempt {
 
 	static NAMES = [
-		"hp", "str", "mag", "dex", "spd", "def", "res", "cha",
+		"hp", "str", "mag", "dex", "spd", "def", "res", "lck",
 	];
 
 	static NAME_INDEX = new Map([
@@ -26,7 +26,7 @@ class LevelAttempt {
 		["spd" , 4],
 		["def" , 5],
 		["res" , 6],
-		["cha" , 7],
+		["lck" , 7],
 	]);
 
 	static WEIGHT = [
@@ -1464,6 +1464,7 @@ class Stats {
 		this.names    = stats;
 		this.sheet    = sheet;
 		this.levelups = new LevelHistory(sheet);
+		this.pointbuy = new PointBuy();
 
 		const primes  = element("tbody");
 
@@ -1488,7 +1489,7 @@ class Stats {
 				onclick : (() => {
 					const tabs = this.sheet.tabs;
 					tabs.main.active   = "Assign";
-					tabs.assign.active = "Level Ups";
+					tabs.assign.active = "Levels";
 				}),
 			},
 		});
@@ -1685,6 +1686,7 @@ class Stats {
 				)
 			);
 		}
+		this.sheet.battalion.refresh();
 	}
 
 	/**
@@ -1705,6 +1707,12 @@ class Stats {
 		}
 
 		this.levelups.import(object.levelups || LevelHistory.EMPTY);
+
+		if ("pointbuy" in object) {
+			this.pointbuy.import(object.pointbuy);
+		} else {
+			this.pointbuy.clear();
+		}
 	}
 
 	/**
@@ -1716,6 +1724,7 @@ class Stats {
 		const object = {
 			level    : this.level,
 			levelups : this.levelups.export(),
+			pointbuy : this.pointbuy.export(),
 			bases    : {},
 			growths  : {},
 		};

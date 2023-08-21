@@ -1,7 +1,7 @@
 {
     "name": "Knight Captain",
     "description": "An knight versed in armored combat with expertise in embattlement. Choose one Advantage skill on reclass.",
-    "type": ["Armor", "Martial"], 
+    "type": ["Armor"], 
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
     "abilities": ["Sword Advantage", "Lance Advantage", "Weight -3"],
@@ -14,7 +14,7 @@
         "spd": 15,
         "def": 20,
         "res": 20,
-        "cha": 20
+        "lck": 20
       },
     "modifiers": {
         "hp": 5,
@@ -24,7 +24,7 @@
         "spd": 0,
         "def": 5,
         "res": 3,
-        "cha": 3,
+        "lck": 3,
         "mov": 4
     },
     "mount": null,

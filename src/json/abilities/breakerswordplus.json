@@ -1,6 +1,6 @@
 {
     "name": "Swordbreaker+",
-    "description": "Grants Hit +30 and Avo +30 in combat against Swords. A unit may only equip one \"Swordbreaker\" ability at a time",
+    "description": "Grants Hit +30 and Avo +30 in combat against Swords. If an \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time.",
     "requires": "Lances A",
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

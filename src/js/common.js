@@ -1,4 +1,12 @@
 
+function *chain(...iterables) {
+	for (let iterable of iterables) {
+		for (let item of iterable) {
+			yield item;
+		} 
+	}
+}
+
 Array.prototype.extend = function(...args) {
 	this.push(...args);
 	return this;
@@ -26,6 +34,22 @@ Array.prototype.flatten = function() {
 
 	return final;
 };
+
+Set.prototype.union = function(other) {
+
+	const set = new Set();
+
+	for (let member of this) {
+		set.add(member);
+	}
+
+	for (let member of other) {
+		set.add(member);
+	}
+
+	return set;
+};
+
 
 class TagSetWidget {
 
@@ -143,6 +167,7 @@ class TagSetWidget {
 	values() {
 		return this.map.keys();
 	}
+
 }
 
 class BigButton {
@@ -222,7 +247,6 @@ class Toggle {
 		this.checked = value;
 	}
 
-
 	get checked() {
 		return this._checked;
 	}
@@ -296,7 +320,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("2.3.1");
+	static CURRENT = new Version("3.0.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -638,6 +662,262 @@ class AttributeCell {
 	_shown() {
 		return this._trigger(this.value);
 	}
+}
+
+class VariableTable {
+
+	static CONFIG = {
+		/* edit */
+		true  : {
+			/* comma */
+			true : {
+				edit  : true,
+				root  : "span",
+				value : 0,
+				shown : "0",
+				min   : 0,
+				max   : 999,
+				after : ","
+			},
+			false : {
+				edit  : true,
+				root  : "span",
+				value : 0,
+				shown : "0", 
+				min   : 0,
+				max   : 999
+			},
+			false : {
+				edit  : true,
+				root  : "span",
+				value : 0,
+				shown : "0", 
+				min   : 0,
+				max   : 999
+			},
+			grow : {
+				edit  : true,
+				root  : "span",
+				value : 0,
+				shown : "0",
+				min   : 0,
+				max   : 999,
+				before : "(",
+				after  : ")"
+			},
+		},
+
+		false : {
+			/* comma */
+			true : {
+				edit  : false,
+				root  : "span",
+				value : 0,
+				shown : "0",
+				min   : 0,
+				max   : 999,
+				after : ","
+			},
+			false : {
+				edit  : false,
+				root  : "span",
+				value : 0,
+				shown : "0", 
+				min   : 0,
+				max   : 999
+			},
+			space : {
+				edit  : false,
+				root  : "span",
+				value : 0,
+				shown : "0", 
+				min   : 0,
+				max   : 999
+			},
+			grow : {
+				edit  : false,
+				root  : "span",
+				value : 0,
+				shown : "0", 
+				min   : 0,
+				max   : 999,
+				before : "(",
+				after  : ")"
+			}
+		},
+	};
+
+	constructor(context, obj, length) {
+		this.length  = length;
+		this.obj     = obj;
+		this.context = context;
+		this.CONFIG  = VariableTable.CONFIG;
+	}
+
+	static NOACTION = ((base, variable) => variable());
+
+	func(name, action=VariableTable.NOACTION) {
+		const variable = new Expression.Env(
+			Expression.Env.RUNTIME, this.context
+		).func(name)
+
+		return ((base) => {
+			return action(base, variable);
+		});
+	}
+
+	/**
+	 * Options to pass a SheetValue method for creating a cell
+	 * @typedef  {object}CellOpts -
+	 * @property {string}   var    - the key to use for the variable name
+	 * @property {function} call   - a custom function to execute on finish
+	 * @property {object}   obj    - object to place the AttributeCell in (def)
+	 * @property {string}   key    - a key for the obj
+	 * @property {boolean}  edit   - whether the cell should be editable
+	 * @property {CellOpts} range  - causes the two values to become a range
+	 */
+
+	/**
+	 * Create an AttributeCell for use as a table element
+	 * @param {CellOpts} opt - a set of options
+	 * @param {boolean} comma - should the cell show a trailing comma?
+	 * @returns {AttributeCell} span cell based on params
+	 */
+	cell(opt, comma=false) {
+
+		if (opt instanceof AttributeCell) {
+			/* assume that the caller took care of everything */
+			return opt;
+		}
+
+		if (!("var" in opt) || typeof opt.var != "string") {
+			throw new Error("options must contain {var: <string>}");
+		}
+
+		if (!(opt.var in this.context)) {
+			throw new Error(`'${opt.var}' not defined for context`);
+		}
+
+		const edit   = assume(opt.edit, true);
+		const obj    = opt.obj    || this.obj;
+		const key    = opt.key    || opt.var.split("|").at(-1);
+		const call   = this.func(opt.var, opt.call);
+		const config = this.CONFIG[edit][opt.style || comma];
+
+		return obj[key] = new AttributeCell(config, call);
+	}
+
+	/**
+	 * Creates a row in the variable table
+	 * @param {string|HTMLElement} title - heading for the row
+	 * @param {CellOpts} opts - options for the cells in the row
+	 * @returns {HTMLElement} the created row
+	 */
+	row(title, ...opts) {
+
+		if (opts.length == 0) {
+			throw new Error("row must have one or more options");
+		}
+
+		const colSpan = this.length / opts.length;
+
+		if (!Number.isInteger(colSpan)) {
+			throw new Error(
+				`number of options must be a factor of ${this.length}`
+			);
+		}
+
+		const els  = [element("th", title)];
+		const last = opts.length - 1;
+
+		for (let i = 0; i < opts.length; ++i) {
+
+			const comma = opts.length != 1 && i < last;
+
+			const style_class = (
+				opts.length != 1
+					? i == 0
+						? "padded-cell-left"
+						: i < last
+							? "padded-cell-center"
+							: "padded-cell-right"
+					: "padded-cell"
+			);
+
+			if (opts[i].range) {
+				
+				const min = opts[i];
+				const max = opts[i].range;
+
+				els.push(element("td", {
+					attrs   : {colSpan: colSpan << 1},
+					class   : ["center", style_class],
+					content : [
+						this.cell(min, false).root,
+						element("span", " - ", max.edit ? "datum" : "computed"),
+						this.cell(max, false).root,
+					],
+				}));
+
+				continue;
+			}
+
+			els.push(element("td", {
+				class   : ["center", style_class],
+				attrs   : {colSpan: colSpan}, 
+				content : this.cell(opts[i], comma).root,
+			}));
+		}
+
+		return element("tr", els);
+	}
+
+	span(title, ...opts) {
+
+		if (opts.length == 0) {
+			throw new Error("span must have one or more options");
+		}
+
+		const els  = [element("strong", `${title} `)];
+		const last = opts.length - 1;
+
+		for (let i = 0; i < opts.length; ++i) {
+			const comma = opts.length != 1 && i < last;
+			els.push(this.cell(opts[i], comma).root);
+		}
+
+		return element("span", els);
+	}
+
+	// range(title, key1, key2, edit=true) {
+	// 	return element("tr", [
+	// 		element("th", "GRange"),
+	// 		element("td", {
+	// 			attrs   : {colSpan: 2},
+	// 			class   : ["center", "padded-cell"],
+	// 			content : [
+	// 				this.section(key1, null, edit, false).root,
+	// 				element("span", " - ", edit ? "datum" : "computed"),
+	// 				this.section(key2, null, edit, false).root,
+	// 			],
+	// 		}),
+	// 	]);
+	// }
+
+	range(optsA, optsB) {
+		optsA.range = optsB;
+		return optsA;
+	}
+
+	wideth(content) {
+		return element("tr",
+			element("th", {
+				content : content,
+				attrs   : {colSpan: this.length},
+			})
+		);
+	}
+
 }
 
 const hilight = (function() {

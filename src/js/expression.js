@@ -142,6 +142,8 @@ const Tokens = (function() {
 		BUILTIN_MACROGEN    : "builtins|macrogen",
 		BUILTIN_COMPTIME    : "builtins|comptime",
 		BUILTIN_RUNTIME     : "builtins|runtime",
+		BUILTIN_ALIAS       : "builtins|alias",
+		BUILTIN_LABEL       : "builtins|label",
 	};
 
 	namespace.TERMINALS = TERMINALS;
@@ -218,6 +220,8 @@ const Tokens = (function() {
 			TERMINALS.BUILTIN_MACROGEN,
 			TERMINALS.BUILTIN_COMPTIME,
 			TERMINALS.BUILTIN_RUNTIME,
+			TERMINALS.BUILTIN_ALIAS,
+			TERMINALS.BUILTIN_LABEL,
 		]),
 
 		RESERVED: new Set([
@@ -244,6 +248,8 @@ const Tokens = (function() {
 			TERMINALS.BUILTIN_MACROGEN,
 			TERMINALS.BUILTIN_COMPTIME,
 			TERMINALS.BUILTIN_RUNTIME,
+			TERMINALS.BUILTIN_ALIAS,
+			TERMINALS.BUILTIN_LABEL,
 			TERMINALS.NOT,
 			TERMINALS.DIE,
 			TERMINALS.MACRO,
@@ -497,6 +503,56 @@ const Tokens = (function() {
 			macrogen: function(recurse, node, env) {
 				const [_opcode] = node;
 				return "1";
+			},
+		}),
+
+		[TERMINALS.BUILTIN_ALIAS] : new Operator(0, {
+
+			help: [
+				TERMINALS.BUILTIN_ALIAS,
+				TERMINALS.BUILTIN_ALIAS,
+				wrap(
+					"A builtin variable; Evaluates to 1 during if env is ",
+					"set to generate aliases and evaluates to 0 otherwise.",
+				)
+			],
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode] = node;
+				code.instructions.push(function(env) {
+					env.push(Number(env.alias));
+					return 1;
+				});
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode] = node;
+				return Number(env.alias);
+			},
+		}),
+
+		[TERMINALS.BUILTIN_LABEL] : new Operator(0, {
+
+			help: [
+				TERMINALS.BUILTIN_LABEL,
+				TERMINALS.BUILTIN_LABEL,
+				wrap(
+					"A builtin variable; Evaluates to 1 during if env is ",
+					"set to generate labels and evaluates to 0 otherwise.",
+				)
+			],
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode] = node;
+				code.instructions.push(function(env) {
+					env.push(Number(env.label));
+					return 1;
+				});
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode] = node;
+				return Number(env.label);
 			},
 		}),
 	};
@@ -2870,6 +2926,10 @@ class Env {
 		const value = this.variables[name](this);
 		this.calls.delete(name);
 
+		if (Number.isNaN(value)) {
+			throw new CompilationError(`${name} evaluated to NaN`);
+		}
+
 		return value;
 	}
 
@@ -3092,6 +3152,10 @@ return Object.freeze({
 	highlight: highlight,
 
 	HELP: Tokens.HELP,
+
+	is: function(object) {
+		return object instanceof CompiledExpression;
+	},
 
 	asIdentifier: function(string) {
 		const rep = string.replace(/[^A-Za-z0-9_$|]/, char => "_");
@@ -3439,6 +3503,8 @@ class Parser {
 		if (!(this.token && this.token.match(Tokens.REGEXP.STRING))) return null;
 		const token = this.token.replaceAll("`", () => "");
 		this._toNext();
+
+		this.symbols.add(token);
 
 		return token;
 	}

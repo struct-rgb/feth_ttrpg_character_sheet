@@ -188,7 +188,68 @@ class Feature {
 		this.tags         = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
 		this.comment      = template.comment || "No comment.";
 		this.hidden       = template.hidden || false;
-		// this.requires     = Polish.compile(template.requires || "");
+		this.rows         = [];
+		this.dependancies = new Set();
+
+		const compile = (value, key=null) => {
+			
+			// join an array into a tring
+			if (value instanceof Array) {
+				value = value.join(" ");
+			}
+
+			// see if we need to compile an expression
+			if (typeof value == "number") {
+				return value;
+			}
+
+			// filter out any other bad input
+			if (typeof value != "string") {
+				throw new Error(
+					`${this.name} (${key}): value cannot be ${typeof value}`
+				);
+			}
+
+			// try to compile the expression, if not error and assume default
+			try {
+				const expression = compiler.compile(value);
+
+				// add any dependacies to this feature's dependancy list
+				for (let symbol of expression.symbols) {
+					this.dependancies.add(symbol);
+				}
+
+				// warn in console about any potential circular dependancies
+				if (key && expression.symbols.has(key)) {
+					console.warn(this.name, expression,
+						"Potential circular dependacy detected."
+					);
+				}
+
+				return expression;
+
+			} catch (error) {
+				if (error instanceof Expression.CompilationError) {
+					console.error(this.name, value);
+				}
+				throw error;
+			}
+		};
+
+		if ("rows" in template) {
+			for (let i = 0; i < template.rows.length; ++i) {
+				const line = template.rows[i];
+				this.rows.push(
+					new Macros.CustomRow(
+						line.name || this.name,
+						compile(line.when || "1", i),
+						compile(line.expr || "0", i),
+						line.roll || false,
+					)
+				);
+			}
+		}
+
 		
 		this.requires     = (predicator
 			? predicator.compile(template.requires || "None")
@@ -196,7 +257,6 @@ class Feature {
 		);
 
 		this.tags         = new Set(template.tags || []);
-		this.dependancies = new Set();
 
 		// compile dynamic expressions in the modifiers/multipliers
 		for (let attribute of Feature.STATS_ATTRIBUTES) {
@@ -212,45 +272,8 @@ class Feature {
 
 			// iterate through each element
 			for (let key in stats) {
-
-				let value = stats[key];
-
-				// join an array into a tring
-				if (value instanceof Array) {
-					value = value.join(" ");
-				}
-
-				// see if we need to compile an expression
-				if (typeof value != "string") {
-					continue;
-				}
-
-				// try to compile the expression, if not error and assume default
-				try {
-
-					const expression = compiler.compile(value);
-
-					if (expression.symbols.has(key)) {
-						console.warn(expression, "Potential circular dependacy detected.");
-					}
-
-					stats[key] = expression;
-
-					// add any dependacies to this feature's dependancy list
-					for (let symbol of expression.symbols) {
-						this.dependancies.add(symbol);
-					}
-
-
-				} catch (e) {
-					if (e instanceof Expression.CompilationError) {
-						console.error(value, e);
-						stats[key] = attribute.default;
-					} else {
-						throw e;
-					}
-				}
-			}
+				stats[key] = compile(stats[key], key);
+			}	
 
 			this[attribute.key] = Object.freeze(stats);
 		}
@@ -281,8 +304,13 @@ class Feature {
 		// clear existing values and refill map
 		this.byName.clear();
 		for (let template of iterable[this.kind]) {
-			const instance = new this(template, compiler, predicator);
-			this.byName.set(instance.name, instance);
+			try {
+				const instance = new this(template, compiler, predicator);
+				this.byName.set(instance.name, instance);
+			} catch (error) {
+				console.error(template);
+				throw error;
+			}
 		}
 	}
 
@@ -318,7 +346,7 @@ class Feature {
 		return this.name;
 	}
 
-	static MODEXCLUDE = new Set(["tiles", "tp", "sp", "tpcost", "spcost", "minrng", "maxrng"]);
+	static MODEXCLUDE = new Set(["tiles", "tp", "sp", "tpcost", "spcost", "epcost", "cap", "minrng", "maxrng"]);
 
 	/**
 	 * Generate a feature's {@link CategoryElement} description
@@ -424,7 +452,7 @@ class Feature {
 		return Expression.evaluate(this.modifiers[stat] || 0, env);
 	}
 
-	modifierForUI(stat, sign=false, dead=false) {
+	modifierForUI(stat, sign=false, dead=false, range=false) {
 
 		/* test explicitly for membership */
 		if (!(stat in this.modifiers)) return 0;
@@ -437,7 +465,7 @@ class Feature {
 		if (typeof modifier == "number") {
 			
 			/* we don't care to display these */
-			if (value == 0) return 0;
+			if (!range && value == 0) return 0;
 
 			return element("span", {
 				class   : ["computed"],
@@ -587,6 +615,10 @@ class Preset {
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
 				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
 			],
 		});
 	}
@@ -644,11 +676,17 @@ class AttackFeature extends Feature {
 			]);
 		}
 
+		// const cap = this.modifierForUI("cap", true, dead);
+		// if (cap) mods.push([cap, element("sub", "C", "computed")]);
+
 		const tpcost = this.modifierForUI("tpcost", false, dead);
 		if (tpcost) mods.push([tpcost, element("sub", "TP", "computed")]);
 
 		const spcost = this.modifierForUI("spcost", false, dead);
 		if (spcost) mods.push([spcost, element("sub", "SP", "computed")]);
+
+		const epcost = this.modifierForUI("epcost", false, dead);
+		if (epcost) mods.push([epcost, element("sub", "EP", "computed")]);
 
 		for (let key in this.modifiers) {
 
@@ -670,8 +708,8 @@ class AttackFeature extends Feature {
 		const max = this.modifier("maxrng");
 
 		if (min != max) {
-			const min = this.modifierForUI("minrng", false, dead);
-			const max = this.modifierForUI("maxrng", false, dead);
+			const min = this.modifierForUI("minrng", false, dead, true);
+			const max = this.modifierForUI("maxrng", false, dead, true);
 			mods.push(span("Range:\xA0", min, "\xA0-\xA0", max));
 		} else if (min != 0) {
 			mods.push(span("Range:\xA0", this.modifierForUI("maxrng", false, dead)));
@@ -692,14 +730,9 @@ class AttackFeature extends Feature {
 		}
 
 		return element("span", [
-			// "Requires: ", Polish.highlight(String(this.requires)), "\n",
 			delimit(" ", mods),
 			mods.length ? element("br") : "",
 			hitip[dead ? "dead" : "link"](this.description),
-			// this.requires.source ? element("div", [
-			// 	element("strong", "Usage Requirements"),
-			// 	hitip.toul(this.requires.ast, dead),
-			// ]) : ""
 			this.requires.source ? hitip.toul(this.requires, dead) : ""
 		]);
 	}
@@ -771,6 +804,27 @@ class CombatArt extends AttackFeature {
 			"Element": (op, ...args) => {
 				for (let arg of args) {
 					if (object.weapon.description.includes(arg)) return true;
+				}
+				return false;
+			},
+			"Requires": (op, ...args) => {
+				for (let arg of args) {
+					if (object.weapon.requires.symbols.has(arg)) return true;
+				}
+				return false;
+			},
+			"Modifier": (op, field, value) => {
+				return object.weapon.modifier(field) == Number(value);
+			},
+			"Text": (op, ...args) => {
+				for (let arg of args) {
+					if (object.weapon.description.includes(arg)) return true;
+				}
+				return false;
+			},
+			"AoE": (op, ...args) => {
+				for (let arg of args) {
+					if (object.weapon.aoe == arg) return true;
 				}
 				return false;
 			},
@@ -925,6 +979,10 @@ class CombatArt extends AttackFeature {
 				new Filter.Toggle("E+", false, (feature) => {
 					return feature.requires.symbols.has("E+");
 				}),
+				element("br"),
+				new Filter.Toggle("None", false, (feature) => {
+					return feature.requires.symbols.has("None");
+				}),
 
 				Filter.Group.END,
 
@@ -1022,6 +1080,9 @@ class CombatArt extends AttackFeature {
 					return !feature.hidden;
 				}),
 
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
 			],
 		});
 	}
@@ -1131,6 +1192,20 @@ class Weapon extends AttackFeature {
 
 				new Filter.Toggle("Force", false, (feature) => {
 					return feature.tagged("force");
+				}),
+
+				element("br"),
+
+				new Filter.Toggle("Metal", false, (feature) => {
+					return feature.tagged("metal");
+				}),
+
+				new Filter.Toggle("Beast", false, (feature) => {
+					return feature.tagged("beast");
+				}),
+
+				new Filter.Toggle("Water", false, (feature) => {
+					return feature.tagged("water");
 				}),
 
 				Filter.Group.END,
@@ -1250,6 +1325,10 @@ class Weapon extends AttackFeature {
 					return feature.tagged("aoe");
 				}),
 
+				new Filter.Toggle("Consumable", false, (feature) => {
+					return feature.tagged("break");
+				}),
+
 				element("br"),
 
 				new Filter.Toggle("Effective", false, (feature) => {
@@ -1295,6 +1374,9 @@ class Weapon extends AttackFeature {
 					return !feature.hidden;
 				}),
 
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
 			],
 		});
 	}
@@ -1406,7 +1488,7 @@ class Class extends Feature {
 	body(dead=false, table=true, center=true) {
 
 		const rows = (
-			["hp", "spd", "str", "mag", "dex", "cha", "def", "res"]
+			["hp", "spd", "str", "mag", "dex", "lck", "def", "res"]
 				.map(key => 
 					[
 						element("td", key.toUpperCase()),
@@ -1472,6 +1554,9 @@ class Class extends Feature {
 				new Filter.Toggle("Advanced", false, (feature) => {
 					return feature.tier == "Advanced";
 				}),
+				new Filter.Toggle("Bonus", false, (feature) => {
+					return feature.tier == "Bonus";
+				}),
 
 				Filter.Group.END,
 
@@ -1501,22 +1586,67 @@ class Class extends Feature {
 
 				Filter.Group.END,
 
-				element("br"), element("strong", "Weapon Type"), element("br"),
-				new Filter.Toggle("Caster", false, (feature) => {
-					return feature.type.includes("Caster");
+				// element("br"), element("strong", "Weapon Type"), element("br"),
+				// new Filter.Toggle("Caster", false, (feature) => {
+				// 	return feature.type.includes("Caster");
+				// }),
+				// new Filter.Toggle("Martial", false, (feature) => {
+				// 	return feature.type.includes("Martial");
+				// }),
+				// new Filter.Toggle("Pure", false, (feature) => {
+				// 	const martial = feature.type.includes("Martial");
+				// 	const caster  = feature.type.includes("Caster");
+				// 	return (
+				// 		(caster && !martial)
+				// 			||	
+				// 		(!caster && martial)
+				// 	);
+				// }),
+
+				element("br"), element("strong", "Skill"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Axes", false, (feature) => {
+					return feature.requires.symbols.has("Axes");
 				}),
-				new Filter.Toggle("Martial", false, (feature) => {
-					return feature.type.includes("Martial");
+				new Filter.Toggle("Swords", false, (feature) => {
+					return feature.requires.symbols.has("Swords");
 				}),
-				new Filter.Toggle("Pure", false, (feature) => {
-					const martial = feature.type.includes("Martial");
-					const caster  = feature.type.includes("Caster");
-					return (
-						(caster && !martial)
-							||	
-						(!caster && martial)
-					);
+				new Filter.Toggle("Lances", false, (feature) => {
+					return feature.requires.symbols.has("Lances");
 				}),
+				new Filter.Toggle("Bows", false, (feature) => {
+					return feature.requires.symbols.has("Bows");
+				}),
+				element("br"),
+				new Filter.Toggle("Brawl", false, (feature) => {
+					return feature.requires.symbols.has("Brawl");
+				}),
+				new Filter.Toggle("Faith", false, (feature) => {
+					return feature.requires.symbols.has("Faith");
+				}),
+				new Filter.Toggle("Reason", false, (feature) => {
+					return feature.requires.symbols.has("Reason");
+				}),
+				new Filter.Toggle("Guile", false, (feature) => {
+					return feature.requires.symbols.has("Guile");
+				}),
+				element("br"),
+				new Filter.Toggle("Armor", false, (feature) => {
+					return feature.requires.symbols.has("Armor");
+				}),
+				new Filter.Toggle("Riding", false, (feature) => {
+					return feature.requires.symbols.has("Riding");
+				}),
+				new Filter.Toggle("Flying", false, (feature) => {
+					return feature.requires.symbols.has("Flying");
+				}),
+				new Filter.Toggle("Authority", false, (feature) => {
+					return feature.requires.symbols.has("Authority");
+				}),
+
+				Filter.Group.END,
 
 				element("br"), element("strong", "Other"), element("br"),
 
@@ -1526,6 +1656,10 @@ class Class extends Feature {
 
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
+				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
 				}),
 			],
 		});
@@ -1789,292 +1923,9 @@ class Ability extends Feature {
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
 				}),
-			],
-		});
-	}
-}
 
-
-class _BattalionAbility extends Feature {
-
-	static kind = "babil";
-	static DEFAULT = "";
-
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
-
-		if (new.target === _BattalionAbility) {
-			Object.freeze(this);
-		}
-	}
-
-	/**
-	 * Populate the lookup map for this class
-	 * @param {Object} defintions - json game data
-	 */
-	static setLookupByName(iterable, compiler, predicator) {
-
-		// initialize the "empty" feature on first invocation
-		if (this.EMPTY === undefined) {
-			this.EMPTY = new this(this.EMPTY_OBJECT, compiler, predicator);
-		}
-
-		// initialize the map on first invocation
-		if (this.byName === undefined) {
-			this.byName = new Map();
-		}
-
-		// clear existing values and refill map
-		this.byName.clear();
-		for (let template of iterable[this.kind]) {
-			for (let i = 0; i < template.tiers.length; ++i) {
-				/* todo fix this function */
-			}
-			const instance = new this(template, compiler, predicator);
-			this.byName.set(instance.name, instance);
-		}
-	}
-
-	static select(trigger) {
-
-		trigger = trigger || (() => {});
-
-		return new Filter.Select({
-			value   : this.DEFAULT,
-			trigger : trigger,
-			model   : this,
-			options : definitions[this.kind].map(cls => 
-				element("option", {
-					attrs   : {value: cls.name},
-					content : cls.name,
-				})
-			),
-			content : [
-
-				element("strong", "Source"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Personal", false, (feature) => {
-					return feature.tagged("personal");
-				}),
-				new Filter.Toggle("Class", false, (feature) => {
-					return feature.requires.symbols.has("Class");
-				}),
-				new Filter.Toggle("Skills", false, (feature) => {
-					return (
-						!feature.requires.symbols.has("Class")
-							&&
-						!feature.tagged("personal")
-					);
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Skill"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Axes", false, (feature) => {
-					return feature.requires.symbols.has("Axes");
-				}),
-				new Filter.Toggle("Swords", false, (feature) => {
-					return feature.requires.symbols.has("Swords");
-				}),
-				new Filter.Toggle("Lances", false, (feature) => {
-					return feature.requires.symbols.has("Lances");
-				}),
-				new Filter.Toggle("Bows", false, (feature) => {
-					return feature.requires.symbols.has("Bows");
-				}),
-				element("br"),
-				new Filter.Toggle("Faith", false, (feature) => {
-					return feature.requires.symbols.has("Faith");
-				}),
-				new Filter.Toggle("Reason", false, (feature) => {
-					return feature.requires.symbols.has("Reason");
-				}),
-				new Filter.Toggle("Guile", false, (feature) => {
-					return feature.requires.symbols.has("Guile");
-				}),
-				element("br"),
-				new Filter.Toggle("Armor", false, (feature) => {
-					return feature.requires.symbols.has("Armor");
-				}),
-				new Filter.Toggle("Riding", false, (feature) => {
-					return feature.requires.symbols.has("Riding");
-				}),
-				new Filter.Toggle("Flying", false, (feature) => {
-					return feature.requires.symbols.has("Flying");
-				}),
-				new Filter.Toggle("Authority", false, (feature) => {
-					return feature.requires.symbols.has("Authority");
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Rank"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("S", false, (feature) => {
-					return feature.requires.symbols.has("S");
-				}),
-				new Filter.Toggle("A", false, (feature) => {
-					return feature.requires.symbols.has("A");
-				}),
-				new Filter.Toggle("B", false, (feature) => {
-					return feature.requires.symbols.has("B");
-				}),
-				new Filter.Toggle("C", false, (feature) => {
-					return feature.requires.symbols.has("C");
-				}),
-				new Filter.Toggle("D", false, (feature) => {
-					return feature.requires.symbols.has("D");
-				}),
-				new Filter.Toggle("E", false, (feature) => {
-					return feature.requires.symbols.has("E");
-				}),
-				element("br"),
-				new Filter.Toggle("S+", false, (feature) => {
-					return feature.requires.symbols.has("S+");
-				}),
-				new Filter.Toggle("A+", false, (feature) => {
-					return feature.requires.symbols.has("A+");
-				}),
-				new Filter.Toggle("B+", false, (feature) => {
-					return feature.requires.symbols.has("B+");
-				}),
-				new Filter.Toggle("C+", false, (feature) => {
-					return feature.requires.symbols.has("C+");
-				}),
-				new Filter.Toggle("D+", false, (feature) => {
-					return feature.requires.symbols.has("D+");
-				}),
-				new Filter.Toggle("E+", false, (feature) => {
-					return feature.requires.symbols.has("E+");
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Level"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("None", false, (feature) => {
-					return !feature.requires.symbols.has("Level");
-				}),
-				new Filter.Toggle("5", false, (feature) => {
-					return feature.requires.symbols.has("5");
-				}),
-				new Filter.Toggle("10", false, (feature) => {
-					return feature.requires.symbols.has("10");
-				}),
-				new Filter.Toggle("15", false, (feature) => {
-					return feature.requires.symbols.has("15");
-				}),
-				new Filter.Toggle("20", false, (feature) => {
-					return feature.requires.symbols.has("20");
-				}),
-				new Filter.Toggle("25", false, (feature) => {
-					return feature.requires.symbols.has("25");
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Family"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Advantage", false, (feature) => {
-					return feature.tagged("advantage");
-				}),
-				new Filter.Toggle("Battalion", false, (feature) => {
-					return feature.tagged("battalion");
-				}),
-				new Filter.Toggle("Blow", false, (feature) => {
-					return feature.tagged("blow");
-				}),
-				new Filter.Toggle("Breaker", false, (feature) => {
-					return feature.tagged("breaker");
-				}),
-				new Filter.Toggle("Consumption", false, (feature) => {
-					return feature.tagged("consumption");
-				}),
-				new Filter.Toggle("Defiant", false, (feature) => {
-					return feature.tagged("defiant");
-				}),
-				new Filter.Toggle("Faire", false, (feature) => {
-					return feature.tagged("faire");
-				}),
-				new Filter.Toggle("\"Flight\"-like", false, (feature) => {
-					return feature.tagged("flight");
-				}),
-				new Filter.Toggle("Lull", false, (feature) => {
-					return feature.tagged("lull");
-				}),
-				new Filter.Toggle("Prowess", false, (feature) => {
-					return feature.tagged("prowess");
-				}),
-				new Filter.Toggle("Seal", false, (feature) => {
-					return feature.tagged("seal");
-				}),
-				new Filter.Toggle("Spirit", false, (feature) => {
-					return feature.tagged("spirit");
-				}),
-				new Filter.Toggle("Stance", false, (feature) => {
-					return feature.tagged("stance");
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Effect"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Chance", false, (feature) => {
-					return feature.tagged("chance");
-				}),
-				new Filter.Toggle("Static", false, (feature) => {
-					return feature.tagged("static");
-				}),
-
-				element("br"),
-
-				new Filter.Toggle("In Combat", false, (feature) => {
-					return feature.tagged("in combat");
-				}),
-				new Filter.Toggle("Barrier", false, (feature) => {
-					return feature.requires.symbols.has("Barrier");
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Crests"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Major", false, (feature) => {
-					return feature.tagged("major");
-				}),
-				new Filter.Toggle("Minor", false, (feature) => {
-					return feature.tagged("minor");
-				}),
-
-				Filter.Group.END,
-
-				new Filter.Toggle("None", true, (feature) => {
-					return !feature.tagged("crest");
-				}),
-
-				element("br"), element("strong", "Other"), element("br"),
-
-				new Filter.Toggle("Rework", false, (feature) => {
-					return feature.tagged("rework");
-				}),
-
-				new Filter.Toggle("Hide", true, (feature) => {
-					return !feature.hidden;
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
 				}),
 			],
 		});
@@ -2123,12 +1974,15 @@ class Equipment extends Feature {
 				new Filter.Toggle("Ring", false, (feature) => {
 					return feature.type == "Ring";
 				}),
-				element("br"),
 				new Filter.Toggle("Shield", false, (feature) => {
 					return feature.type == "Shield";
 				}),
+				element("br"),
 				new Filter.Toggle("Staff", false, (feature) => {
 					return feature.type == "Staff";
+				}),
+				new Filter.Toggle("Quiver", false, (feature) => {
+					return feature.type == "Quiver";
 				}),
 
 				Filter.Group.END,
@@ -2161,6 +2015,10 @@ class Equipment extends Feature {
 
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
+				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
 				}),
 			],
 		});
@@ -2248,6 +2106,10 @@ class Tile extends AttackFeature {
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
 				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
 			],
 		});
 	}
@@ -2258,10 +2120,17 @@ class Adjutant extends Feature {
 	static kind    = "adjutants";
 	static DEFAULT = "No Adjutant";
 
-	constructor(template) {
-		super(template);
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
 
-		this.type = "Adjutant";
+		this.type   = "Adjutant";
+		this.gambit = (
+			template.gambit
+				? new Gambit(template.gambit, compiler, predicator)
+				: Gambit.EMPTY
+		);
+
+		this.reactions = template.reactions || [];
 
 		if (new.target === Adjutant) {
 			Object.freeze(this);
@@ -2315,6 +2184,10 @@ class Adjutant extends Feature {
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
 				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
 			],
 		});
 	}
@@ -2322,19 +2195,320 @@ class Adjutant extends Feature {
 
 class Gambit extends AttackFeature {
 
-	static kind = "gambit";
+	static kind = "gambits";
 
-	constructor(template) {
-		super(template);
+	constructor(template, compiler, predicator) {
+		super(template, compiler, predicator);
 
-		this.type    = "Gambit";
-		this.shape   = template.shape || "1x1 Square.";
+		this.aoe = template.aoe || "none";
 
-		if (new.target === Battalion) {
+		if (new.target === Gambit) {
 			Object.freeze(this);
 		}
 	}
 
+	/**
+	 * Generate a feature's {@link CategoryElement} title
+	 * @return {string} title for this item's {@link CategoryElement}
+	 */
+	title() {
+		if (this.tagged("depricated")) {
+			return `${this.name} (DEPRICATED)`;
+		}
+		return `${this.name} (${this.modifier("cap")})`;
+	}
+
+	body(dead=false) {
+		
+		let   tags = 0;
+		const info = [];
+
+		const tagtip = ((tag, text) => {
+
+			if (!this.tagged(tag)) return;
+
+			const name = capitalize(tag);
+
+			info.push(element(
+				"span",
+				dead ? name       : tooltip(name, text),
+				dead ? "computed" : "datum"
+			));
+			tags += 1;
+		});
+
+		tagtip("structure", wrap(
+			"Structure gambits act like passive abilities and ",
+			"multiple may be active at one time."
+		));
+
+		tagtip("measured", wrap(
+			"Measured gambits cannot be extra actions."
+		));
+
+		tagtip("adjutant", wrap(
+			"Adjutant gambits are granted by equipped adjutants."
+		));
+
+		if (!this.tagged("structure")) info.push(
+			element("span",
+				["AoE:\xA0", element("span", this.aoe, "computed")]
+			)
+		);
+
+		if (info.length) return element("div", [
+			delimit(",\xA0", info),
+			tags ? element("br") : "\xA0",
+			super.body(dead),
+		]);
+
+		return super.body(dead);
+	}
+	blurb() {
+
+		const mods = [];
+
+		if (this.price) {
+			mods.push(`${this.price}G`);
+		}
+
+		const info = [];
+
+		const tagtip = ((tag) => {
+			if (!this.tagged(tag)) return;
+			const name = capitalize(tag);
+			info.push(name);
+		});
+
+		tagtip("structure");
+
+		tagtip("measured");
+
+		tagtip("adjutant");
+
+		if (!this.tagged("structure"))
+			info.push(`AoE:\xA0${this.aoe}`);
+
+		for (let key in this.modifiers) {
+
+			// if (Feature.MODEXCLUDE.has(key)) continue;
+
+			const value = this.modifier(key);
+			const isnum = (typeof this.modifiers[key] == "number");
+
+			if (isnum && value == 0) continue;
+
+			const mark  = (isnum ? "" : "*");
+
+			mods.push(`${capitalize(key)}:\xA0${value}${mark}`);
+		}
+
+		return [
+			this.title(), "\n",
+			info.join(",\xA0"), "\n",
+			mods.join(" "), mods.length ? "\n" : "",
+			hitip.text(this),
+			"\nUsage Requirements\n",
+			hitip.totl(this.requires.ast),
+		].join("");
+	}
+
+	static select(trigger) {
+
+		trigger = trigger || (() => {});
+
+		return new Filter.Select({
+			value   : this.DEFAULT,
+			trigger : trigger,
+			model   : this,
+			options : definitions[this.kind].map(cls => 
+				element("option", {
+					attrs   : {value: cls.name},
+					content : cls.name,
+				})
+			),
+			content : [
+
+				element("strong", "Feature Type"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Structure", false, (feature) => {
+					return feature.tagged("structure");
+				}),
+				new Filter.Toggle("Measured", false, (feature) => {
+					return feature.tagged("measured");
+				}),
+				new Filter.Toggle("Other", false, (feature) => {
+					return !feature.tagged("structure") && !feature.tagged("measured");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Capacity Cost"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("0", false, (feature) => {
+					return feature.modifier("cap") == 0;
+				}),
+				new Filter.Toggle("1", false, (feature) => {
+					return feature.modifier("cap") == -1;
+				}),
+				new Filter.Toggle("2", false, (feature) => {
+					return feature.modifier("cap") == -2;
+				}),
+				new Filter.Toggle("3", false, (feature) => {
+					return feature.modifier("cap") == -3;
+				}),
+				new Filter.Toggle("4", false, (feature) => {
+					return feature.modifier("cap") == -4;
+				}),
+				new Filter.Toggle("5", false, (feature) => {
+					return feature.modifier("cap") == -5;
+				}),
+				new Filter.Toggle("6", false, (feature) => {
+					return feature.modifier("cap") == -6;
+				}),
+				new Filter.Toggle("+", false, (feature) => {
+					return feature.modifier("cap") <= -7;
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Rank"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("S", false, (feature) => {
+					return feature.requires.symbols.has("S");
+				}),
+				new Filter.Toggle("A", false, (feature) => {
+					return feature.requires.symbols.has("A");
+				}),
+				new Filter.Toggle("B", false, (feature) => {
+					return feature.requires.symbols.has("B");
+				}),
+				new Filter.Toggle("C", false, (feature) => {
+					return feature.requires.symbols.has("C");
+				}),
+				new Filter.Toggle("D", false, (feature) => {
+					return feature.requires.symbols.has("D");
+				}),
+				new Filter.Toggle("E", false, (feature) => {
+					return feature.requires.symbols.has("E");
+				}),
+				element("br"),
+				new Filter.Toggle("S+", false, (feature) => {
+					return feature.requires.symbols.has("S+");
+				}),
+				new Filter.Toggle("A+", false, (feature) => {
+					return feature.requires.symbols.has("A+");
+				}),
+				new Filter.Toggle("B+", false, (feature) => {
+					return feature.requires.symbols.has("B+");
+				}),
+				new Filter.Toggle("C+", false, (feature) => {
+					return feature.requires.symbols.has("C+");
+				}),
+				new Filter.Toggle("D+", false, (feature) => {
+					return feature.requires.symbols.has("D+");
+				}),
+				new Filter.Toggle("E+", false, (feature) => {
+					return feature.requires.symbols.has("E+");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Training"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Axes", false, (feature) => {
+					return feature.requires.symbols.has("Axes");
+				}),
+				new Filter.Toggle("Swords", false, (feature) => {
+					return feature.requires.symbols.has("Swords");
+				}),
+				new Filter.Toggle("Lances", false, (feature) => {
+					return feature.requires.symbols.has("Lances");
+				}),
+				new Filter.Toggle("Bows", false, (feature) => {
+					return feature.requires.symbols.has("Bows");
+				}),
+				new Filter.Toggle("Mighty Fist", false, (feature) => {
+					return feature.requires.symbols.has("Mighty Fist");
+				}),
+				new Filter.Toggle("Mystic Fist", false, (feature) => {
+					return feature.requires.symbols.has("Mystic Fist");
+				}),
+				new Filter.Toggle("Faith", false, (feature) => {
+					return feature.requires.symbols.has("Faith");
+				}),
+				new Filter.Toggle("Reason", false, (feature) => {
+					return feature.requires.symbols.has("Reason");
+				}),
+				new Filter.Toggle("Guile", false, (feature) => {
+					return feature.requires.symbols.has("Guile");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Outfitting"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Armor", false, (feature) => {
+					return feature.requires.symbols.has("Armor");
+				}),
+				new Filter.Toggle("Cavalry", false, (feature) => {
+					return feature.requires.symbols.has("Cavalry");
+				}),
+				new Filter.Toggle("Flying", false, (feature) => {
+					return feature.requires.symbols.has("Flying");
+				}),
+				new Filter.Toggle("Infantry", false, (feature) => {
+					return feature.requires.symbols.has("Infantry");
+				}),
+
+				Filter.Group.END,
+
+				// element("br"), element("strong", "Family"), element("br"),
+
+				// new Filter.Group(Filter.Group.OR, false),
+
+				
+				// new Filter.Toggle("", false, (feature) => {
+				// 	return feature.tagged("action");
+				// }),
+				// new Filter.Toggle("Aura", false, (feature) => {
+				// 	return feature.tagged("aura");
+				// }),
+				// new Filter.Toggle("Breach", false, (feature) => {
+				// 	return feature.tagged("breach");
+				// }),
+				// new Filter.Toggle("Damage", false, (feature) => {
+				// 	return feature.tagged("damage");
+				// }),
+
+				// Filter.Group.END,
+
+				element("br"), element("strong", "Other"), element("br"),
+
+				new Filter.Toggle("Rework", false, (feature) => {
+					return feature.tagged("rework");
+				}),
+
+				new Filter.Toggle("Hide", true, (feature) => {
+					return !feature.hidden;
+				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
+			],
+		});
+	}
 }
 
 class Battalion extends Feature {
@@ -2375,6 +2549,8 @@ class Battalion extends Feature {
 				+ `${g.title()}:\n${g.body()}`
 		);
 	}
+
+	static MODEXCLUDE = new Set(["contract", "mor", "cap", "total", "auto", "plu"]);
 
 }
 
@@ -2430,11 +2606,38 @@ class Attribute extends AttackFeature {
 
 				new Filter.Group(Filter.Group.OR, false),
 
-				new Filter.Toggle("Weapons", false, (feature) => {
-					return feature.tagged("forweapon");
+				new Filter.Toggle("Axes", false, (feature) => {
+					return feature.tagged("for axes");
 				}),
-				new Filter.Toggle("Spells", false, (feature) => {
-					return feature.tagged("forspell");
+				new Filter.Toggle("Swords", false, (feature) => {
+					return feature.tagged("for swords");
+				}),
+				new Filter.Toggle("Lances", false, (feature) => {
+					return feature.tagged("for lances");
+				}),
+				new Filter.Toggle("Bows", false, (feature) => {
+					return feature.tagged("for bows");
+				}),
+
+				element("br"),
+
+				new Filter.Toggle("Brawl", false, (feature) => {
+					return feature.tagged("for brawl");
+				}),
+				new Filter.Toggle("Faith", false, (feature) => {
+					return feature.tagged("for faith");
+				}),
+				new Filter.Toggle("Reason", false, (feature) => {
+					return feature.tagged("for reason");
+				}),
+				new Filter.Toggle("Guile", false, (feature) => {
+					return feature.tagged("for guile");
+				}),
+
+				element("br"),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return feature.tagged("for other");
 				}),
 
 				Filter.Group.END,
@@ -2495,6 +2698,11 @@ class Attribute extends AttackFeature {
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
 				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
+
 			],
 		});
 	}
@@ -2609,6 +2817,10 @@ class Condition extends Feature {
 				new Filter.Toggle("Hide", true, (feature) => {
 					return !feature.hidden;
 				}),
+
+				new Filter.Toggle("Depricate", true, (feature) => {
+					return !feature.tagged("depricated");
+				}),
 			],
 		});
 	}
@@ -2665,6 +2877,8 @@ const LOOKUP = new Map([
 	[ "tile"      , Tile      ],
 	[ "equipment" , Equipment ],
 	[ "class"     , Class     ],
+	[ "gambit"    , Gambit    ],
+	[ "adjutant"  , Adjutant  ],
 
 	["", {
 		get: function() {
@@ -2908,6 +3122,11 @@ function textfn(table, link, text, userdata) {
 		return text;
 	}
 
+	/* special behavior for style tooltips */
+	if (table == "style") {
+		return text; // TODO make this actually style the text
+	}
+
 	/* here we do the lookup */
 	const feature  = LOOKUP.get(table);
 
@@ -3079,6 +3298,25 @@ function toul(node, dead=false, top=true) {
 
 	case "Permission":
 		return element("strong", fn);
+
+	case "Gambit":
+		return element("span",
+			[(dead ? deadfn : linkfn)("gambit", args[0], args[0]), element("strong", " equipped")]
+		);
+
+	case "Training": {
+		const name = `${args[0]} Training`;
+		return element("span",
+			[(dead ? deadfn : linkfn)("gambit", name, args[0])]
+		);
+	}
+
+	case "Outfitting": {
+		const name = `${args[0]} Outfitting`;
+		return element("span",
+			[(dead ? deadfn : linkfn)("gambit", name, args[0])]
+		);
+	}
 
 	case "Crest": {
 		const name  = `Crest of ${args[0]}`;

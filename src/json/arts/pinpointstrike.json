@@ -21,6 +21,5 @@
   "tags": ["healing"],
   "hidden": false,
   "type": "Brawl",
-  "rank": "C-B",
-  "omit": true
+  "rank": "C-B"
 }

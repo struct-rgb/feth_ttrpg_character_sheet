@@ -1,7 +1,7 @@
 {
     "name": "Def +2",
-    "description": "Grants Def +2.",
-    "requires": "All (Any (Lances C) (Armor C)) (Level 10)",
+    "description": "Grants Def +2; consumes half of an ability slot starting at level 10.",
+    "requires": "All (Any (Lances D+) (Armor D+)) (Level 2)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 2,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

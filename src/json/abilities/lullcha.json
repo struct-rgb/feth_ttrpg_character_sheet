@@ -1,6 +1,6 @@
 {
     "name": "Lull Cha",
-    "description": "In combat, Cha -3 to foe and ignore foe's in combat bonuses granted to Cha by other abilities.",
+    "description": "In combat, Lck -3 to foe and ignore foe's in combat bonuses granted to Lck by other abilities.",
     "requires": "None",
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

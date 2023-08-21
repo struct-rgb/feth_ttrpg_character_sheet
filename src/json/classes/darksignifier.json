@@ -1,7 +1,7 @@
 {
     "name": "Dark Signifier",
     "description": "A armored knight who fights from horseback (I assume no canot was a mistake)",
-    "type": ["Armor", "Cavalry", "Caster", "Martial"],
+    "type": ["Armor", "Cavalry"],
     "tier": "Advanced",
     "requires": "All (Required (Armor C+)) (Required (Riding C+)) (Required (Level 15))",
     "abilities": ["Mask of the Signifier", "Group Lull Def/Cha", "Weight -3", "Canto"],
@@ -14,7 +14,7 @@
         "spd": 5,
         "def": 15,
         "res": 20,
-        "cha": 20
+        "lck": 20
       },
     "modifiers": {
         "hp": 7,
@@ -24,7 +24,7 @@
         "spd": 1,
         "def": 3,
         "res": 4,
-        "cha": 3,
+        "lck": 3,
         "mov": 4
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 3
     },
 

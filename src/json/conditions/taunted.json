@@ -1,6 +1,6 @@
 {
     "name": "Taunted",
-    "description": "Affected unit has Hit -30 in-combat if it initiates combat against a unit other than those in set of applying units. On merge, add applying unit to the set of applying units.",
+    "description": "Affected unit has Hit -30 in-combat if it can initiate combat against a unit in the set of applying units and instead initiates combat against a unit other than those in set of applying units. On merge, add applying unit to the set of applying units.",
 
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

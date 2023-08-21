@@ -1,0 +1,26 @@
+{
+  "name": "Shock Wave",
+  "description": "On hit, after combat, apply @{condition:Halt:[Halt]} to target foe until the end of target foe’s next combat this turn.",
+  "requires": "Any (Brawl C) (Brawl B)",
+  "compatible": "Skill Brawl",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 5,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Brawl",
+  "rank": "C-B",
+  "omit": true
+}

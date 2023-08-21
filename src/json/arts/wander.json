@@ -23,5 +23,6 @@
   ],
   "hidden": true,
   "type": null,
-  "rank": ""
+  "rank": "",
+  "omit": true
 }

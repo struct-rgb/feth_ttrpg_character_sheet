@@ -1,7 +1,7 @@
 {
   "name": "Mortal Savant",
   "description": "One who has mastered both magic and the blade",
-  "type": ["Infantry", "Martial", "Caster"],
+  "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "All (Swords C+) (Any (Reason C+) (Guile C+)) (Required (Level 15))",
   "abilities": ["Sword Advantage", "Warding Stance", "Stamina +10" ],
@@ -14,7 +14,7 @@
     "spd": 15,
     "def": 15,
     "res": 10,
-    "cha": 5
+    "lck": 5
   },
   "modifiers": {
     "hp": 3,
@@ -24,7 +24,7 @@
     "spd": 3,
     "def": 3,
     "res": 4,
-    "cha": 2,
+    "lck": 2,
     "mov": 5
   },
   "mount": null,

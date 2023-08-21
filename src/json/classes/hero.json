@@ -1,7 +1,7 @@
 {
     "name": "Hero",
     "description": "Infantry Axe and Sword unit. Choose one Advantage skill on reclass.",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Axes C+)) (Required (Level 15))",
     "abilities": ["Sword Advantage", "Axe Advantage", "Vantage", "Stamina +10"],
@@ -14,7 +14,7 @@
         "spd": 15,
         "def": 15,
         "res": 10,
-        "cha": 5
+        "lck": 5
       },
     "modifiers": {
         "hp": 5,
@@ -24,7 +24,7 @@
         "spd": 2,
         "def": 3,
         "res": 2,
-        "cha": 2,
+        "lck": 2,
         "mov": 5
     },
     "mount": null,

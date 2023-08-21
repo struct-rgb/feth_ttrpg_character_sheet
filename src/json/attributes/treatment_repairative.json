@@ -22,7 +22,7 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["treatment"],
+    "tags": ["treatment", "for faith", "for other"],
     "hidden": false,
     "omit": true
 }

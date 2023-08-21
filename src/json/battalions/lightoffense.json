@@ -1,0 +1,29 @@
+{
+    "name": "Light/Offense",
+    "description":  "A battalion with low stats and high capacity designed for offensive gambit usage.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 45,
+        "resl": 45
+    },
+
+    "modifiers": {
+        "end": 24,
+        "atk": 8,
+        "prot": 7,
+        "resl": 7,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 2
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

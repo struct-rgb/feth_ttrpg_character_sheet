@@ -1,7 +1,7 @@
 {
   "name": "Spellblade",
   "type": "Any",
-  "description": "Range becomes 1 and TP cost is reduced by 30% of base TP cost.\n\n* A Reason tome may be considered an axe for attribute compatibility  and gains +3 Mt.\n\n* A Guile tome may be considered a lance for attribute compatibility and gains +2 Mt and +5 Hit.\n\n*A Faith tome may be considered a sword for attribute compatibility  and gains +1 Mt and +10 Hit.\n\nThe Ranged attribute is disabled on weapons with this attribute enabled. This attribute is disabled on non-spells and on spells that don’t deal damage on attack.",
+  "description": "Range becomes 1 and TP cost is reduced by 30% of base TP cost. Additional effect depending on weapon type:\n\n • Reason: Mt +3 and tome is compatible with Axe attributes.\n\n • Guile: Mt +2, Hit +5, and tome is compatible with lance attributes.\n\n • Faith: Mt +1, Hit +10, and tome is compatible with sword attributes.\n\nThe @{attribute::Ranged} attribute is disabled on this weapon. This attribute is disabled on non-spells and on spells that don’t deal damage on attack.",
   "rank": 0,
   "price": 0,
 
@@ -67,7 +67,7 @@
   },
 
   "comment": "Items in modifers should be integers",
-  "tags": ["forspell"],
+  "tags": ["for faith", "for reason", "for guile"],
   "hidden": false,
     "omit": true
 }

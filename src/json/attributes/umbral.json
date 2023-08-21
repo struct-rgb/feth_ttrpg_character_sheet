@@ -23,6 +23,6 @@
     },
 
     "comment": "I think this should add +5 or +10 crit.",
-    "tags": ["forweapon"],
-    "hidden": false
+    "tags": ["for axes", "for swords", "for lances", "for faith", "for reason", "for guile", "for brawl", "for bows"],
+    "hidden": true
 }

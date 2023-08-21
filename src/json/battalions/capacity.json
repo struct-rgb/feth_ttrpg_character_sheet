@@ -1,0 +1,29 @@
+{
+    "name": "Capacity",
+    "description": "A battalion with superior Capacity.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 80,
+        "atk": 45,
+        "prot": 45,
+        "resl": 45
+    },
+
+    "modifiers": {
+        "end": 28,
+        "atk": 6,
+        "prot": 6,
+        "resl": 6,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 3
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

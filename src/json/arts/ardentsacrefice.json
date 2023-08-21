@@ -1,6 +1,6 @@
 {
   "name": "Ardent Sacrefice",
-  "description": "Restore 10 HP to target ally, this unit takes 10 nonlethal damage. Consumes half an arts slot from level 15 onward.",
+  "description": "Restore 10 HP to target ally, this unit takes 10 nonlethal damage. Consumes half of an arts slot starting at level 15.",
   "requires": "None",
   "mttype": "else",
   "modifiers": {
@@ -27,6 +27,5 @@
   ],
   "hidden": false,
   "type": "Generic",
-  "rank": "",
-  "omit": true
+  "rank": ""
 }

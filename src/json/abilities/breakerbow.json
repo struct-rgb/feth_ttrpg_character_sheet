@@ -1,7 +1,7 @@
 {
     "name": "Bowbreaker",
-    "description": "Grants Hit +20 and Avo +20 in combat against Bows.",
-    "requires": "All (Reason B+) (Level 20)",
+    "description": "Grants Hit +20 and Avo +20 in combat against Bows. If an \"Brawl Prowess\" ability is the only \"Prowess\" ability equipped, and \"Bowbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
+    "requires": "Brawl B",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,13 +11,13 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "ask [Bowbreaker?], No {0}; Yes {20} end",
-        "avo": "ask [Bowbreaker?], No {0}; Yes {20} end",
+        "hit": "ask [Tomebreaker?], No {0}; Yes {20} end",
+        "avo": "ask [Tomebreaker?], No {0}; Yes {20} end",
         "crit": 0,
         "cravo": 0,
 

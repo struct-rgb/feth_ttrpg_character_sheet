@@ -1,6 +1,6 @@
 {
   "name": "Fading Blow",
-  "description": "Avo +30; after combat unit moves one space back.",
+  "description": "Avo +30; after combat unit moves one space back. @{const:variant:Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value. ",
   "requires": "Brawl D",
   "compatible": "Skill Brawl",
   "mttype": "else",
@@ -21,6 +21,5 @@
   "tags": ["movement"],
   "hidden": false,
   "type": "Brawl",
-  "rank": "D",
-  "omit": true
+  "rank": "D"
 }

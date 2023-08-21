@@ -1,0 +1,25 @@
+{
+  "name": "Faith Healing",
+  "description": "Apply an equipped Faith D metamagic that can apply to @{weapon::Hea}l to @{gambit::Hospital} or @{gambit::Resonant Healing} or apply an equipped Faith metamagic that can apply to @{art::Restore} to @{gambit::Recovery Roar}. Consider each affected ally to have been targeted for the purpose of that art, but this effect does not target. Pay SP equal to the SP cost of the combat art\n\nMay be equipped without consuming an arts slot if this unit equips one other meta gambit of a different rank.",
+  "requires": "Any (Authority C) (Authority B)",
+  "compatible": "Name `Hospital` `Resonant Healing` `Recovery Roar`",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "",
+  "tags": ["combo"],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "C-B"
+}

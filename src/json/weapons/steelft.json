@@ -2,13 +2,13 @@
     "name": "Steel Fist Technique",
     "type": "Brawl",
     "rank": "C",
-    "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+    "description": "A beast technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
     "requires": "Brawl C",
     "price": 0,
 
     "mttype": "else",
     "modifiers": {
-        "mt": 3,
+        "mt": 4,
         "prot": 0,
         "resl": 0,
         "hit": 85,
@@ -24,6 +24,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": [],
+    "tags": ["metal"],
     "hidden": false
 }

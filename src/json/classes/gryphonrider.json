@@ -1,7 +1,7 @@
 {
     "name": "Gryphon Rider",
     "description": "A flyier who specializes in ferrying allies around the battlefield",
-    "type": ["Flying", "Martial"],
+    "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Axes C+) (Required (Flying C+)) (Required (Level 15))",
     "abilities": ["Deliverer", "Avo +10", "Canto"],
@@ -14,7 +14,7 @@
         "spd": 20,
         "def": 15,
         "res": 15,
-        "cha": 10
+        "lck": 10
       },
     "modifiers": {
         "hp": 4,
@@ -24,7 +24,7 @@
         "spd": 3,
         "def": 3,
         "res": 3,
-        "cha": 4,
+        "lck": 4,
         "mov": 6
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
     },
 

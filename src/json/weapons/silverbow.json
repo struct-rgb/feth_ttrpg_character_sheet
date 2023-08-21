@@ -7,7 +7,7 @@
   "price": 2115,
   "mttype": "str",
   "modifiers": {
-    "mt": 12,
+    "mt": 11,
     "prot": 0,
     "resl": 0,
     "hit": "fill bowhit(75)",

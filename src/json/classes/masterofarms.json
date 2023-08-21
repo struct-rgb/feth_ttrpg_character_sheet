@@ -1,7 +1,7 @@
 {
     "name": "Master of Arms",
     "description": "A generalist fighter who dabbles in all kinds of weapons",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Any (Axes C+) (Lances C+)) (Any (Lances C+) (Swords C+)) (Any (Swords C+) (Axes C+)) (Required (Level 15))",
     "abilities": ["Combat Artist", "Stamina +15"],
@@ -14,7 +14,7 @@
         "spd": 15,
         "def": 10,
         "res": 5,
-        "cha": 5
+        "lck": 5
       },
     "modifiers": {
         "hp": 7,
@@ -24,7 +24,7 @@
         "spd": 4,
         "def": 1,
         "res": 1,
-        "cha": 1,
+        "lck": 1,
         "mov": 5
     },
     "mount": null,

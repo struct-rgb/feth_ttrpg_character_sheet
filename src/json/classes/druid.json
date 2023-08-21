@@ -1,7 +1,7 @@
 {
   "name": "Druid",
   "description": "An advanced class that uses Guile.",
-  "type": ["Infantry", "Caster"],
+  "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "All (Guile B) (Required (Level 15))",
   "abilities": [ "Heartseeker", "Guile Consumption 2", "Fiendish Blow" ],
@@ -14,7 +14,7 @@
     "spd": 10,
     "def": 15,
     "res": 15,
-    "cha": 20
+    "lck": 20
   },
   "modifiers": {
     "hp": 5,
@@ -24,7 +24,7 @@
     "spd": 1,
     "def": 0,
     "res": 3,
-    "cha": 2,
+    "lck": 2,
     "mov": 4
   },
   "mount": null,

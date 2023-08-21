@@ -48,6 +48,12 @@ class Row {
 			if (this.sheet && this.sheet.stats) {
 				this.sheet.stats.refreshSecondary(); 
 			}
+
+			/** TODO ugly way to refresh battalion stuff */
+			if (this.name == "Authority" && this.sheet && this.sheet.battalion) {
+				this.sheet.battalion._rank.refresh();
+			}
+
 			this.sheet.character.reclass();
 
 			return this.grade;
@@ -92,13 +98,13 @@ class SkillUserInterface {
 	constructor(skills, sheet) {
 		this._total = new AttributeCell({edit: false}, x => x);
 		this._total.root.colSpan = 2;
-		this.rows   = [];
+		this.rows   = new Map();
 
 		const body = element("tbody", 
 			skills.map(skill => {
 				const row = new Row(skill, this, sheet);
 				this[skill] = row;
-				this.rows.push(row);
+				this.rows.set(skill, row);
 				return row.root;
 			}).extend(
 				element("tr", [
@@ -122,14 +128,34 @@ class SkillUserInterface {
 		return expression.exec(this.context);
 	}
 
+	number(skill) {
+		
+		if (!this.rows.has(skill))
+			throw new Error(`invalid skill name ${skill}`);
+		
+		const row = this.rows.get(skill);
+
+		return Grade.toNumber(Grade.for(row.value, row.aptitude));
+	}
+
+	grade(skill) {
+
+		if (!this.rows.has(skill))
+			throw new Error(`invalid skill name ${skill}`);
+		
+		const row = this.rows.get(skill);
+
+		return Grade.for(row.value, row.aptitude);
+	}
+
 	refresh() {
-		for (let row of this.rows) {
+		for (let row of this.rows.values()) {
 			row.refresh();
 		}
 	}
 
 	clear() {
-		for (let row of this.rows) {
+		for (let row of this.rows.values()) {
 			row.value    = 0;
 			row.aptitude = 0;
 		}
@@ -139,7 +165,7 @@ class SkillUserInterface {
 
 		const object = {};
 
-		for (let row of this.rows) {
+		for (let row of this.rows.values()) {
 			object[row.name] = {
 				value    : row.value,
 				aptitude : Grade.APTITUDE.asString(row.aptitude)
@@ -156,7 +182,7 @@ class SkillUserInterface {
 			return;
 		}
 
-		for (let row of this.rows) {
+		for (let row of this.rows.values()) {
 			row.value    = object[row.name].value || 0;
 			row.aptitude = Grade.APTITUDE.asNumber(object[row.name].aptitude);
 		}

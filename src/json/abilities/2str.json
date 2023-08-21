@@ -1,7 +1,7 @@
 {
     "name": "Str +2",
-    "description": "Grants Str +2.",
-    "requires": "All (Any (Axes C) (Bows C) (Riding C)) (Level 10)",
+    "description": "Grants Str +2; consumes half of an ability slot starting at level 10.",
+    "requires": "All (Any (Axes D+) (Bows D+) (Riding D+)) (Level 2)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

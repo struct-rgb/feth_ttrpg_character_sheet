@@ -1,6 +1,6 @@
 {
     "name": "Axebreaker",
-    "description": "Grants Hit +20 and Avo +20 in combat against Axes. A unit may only equip one \"Axebreaker\" ability at a time",
+    "description": "Grants Hit +20 and Avo +20 in combat against Axes. If an \"Sword Prowess\" ability is the only \"Prowess\" ability equipped, and \"Axebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Axebreaker\" ability at a time",
     "requires": "Swords B",
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

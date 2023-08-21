@@ -20,6 +20,5 @@
   "tags": ["condition", "movement"],
   "hidden": false,
   "type": "Generic",
-  "rank": "",
-  "omit": true
+  "rank": ""
 }

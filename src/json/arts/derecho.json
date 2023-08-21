@@ -1,0 +1,27 @@
+{
+  "name": "Derecho",
+  "description": "Wind metamagic; before attacking, declare a path starting from target foe’s space up to two spaces long that moves away from this unit. Mt +2 in combat if this path would cause a collision (target foe’s allies are considered obstructions). On hit, move target foe along this path. @{const:variant:Cutting Gale Variant:} Collision Mt and Path Length +1. As target foe exits a space, a Wind Torrent is created in that space for two turns.",
+  "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `wind`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "1 + fill affirm([Collision?], 2, 0) + fill affirm([Cutting Wind?], 1, 0)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "wall"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
+}

@@ -1,8 +1,8 @@
 {
   "name": "Pivot",
-  "description": "This unit moves to the opposite side of target ally.",
-  "requires": "Level 5",
-  "mttype": "else",
+  "description": "This unit moves to the opposite side of target ally; consumes half of an arts slot starting at level 10.",
+  "requires": "None",
+  "mttype": "none",
   "modifiers": {
     "mt": 0,
     "prot": 0,

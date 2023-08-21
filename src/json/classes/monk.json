@@ -1,0 +1,39 @@
+{
+    "name": "Monk",
+    "description": "A well-rounded infantry brawling class with high Luck.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Brawl D",
+    "abilities": ["Brawl Consumption 1", "Chain Guard", "Level 10 Mov +1"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 10,
+        "def": 10,
+        "res": 5,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 3,
+        "def": 1,
+        "res": 1,
+        "lck": 4,
+        "mov": 5
+    },
+    "mount": null,
+
+    "default_base": "Monk",
+    "default_preset": "Balance/Balance/Luck",
+    "default_mainarm": "Metal",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

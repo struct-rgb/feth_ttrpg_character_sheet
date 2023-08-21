@@ -1,7 +1,7 @@
 {
     "name": "Axe Prowess 3",
     "description": "Grants Hit +13, Avo +7, and Crit Avo +7 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
-    "requires": "All (Axes C+) (Level 5)",
+    "requires": "Any (Axes C+) (All (Armor C+) (ClassType Armor)) (All (Flying C+) (ClassType Flying)) (All (Riding C+) (ClassType Cavalry))",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,14 +11,14 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": "fill bothif(weapon|type|axes, 13, 0)",
         "avo": "fill bothif(weapon|type|axes, 7, 0)",
-        "crit": 0,
+        "crit": "fill bothif(weapon|type|axes, 13, 0)",
         "cravo": "fill bothif(weapon|type|axes, 7, 0)",
 
         "minrng": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Structure: Shortbow",
     "type": "Any",
-    "description": "Must be added when weapon is first obtained.\n\nWeapon gains a minimum range of 1. The range penalty steps for this weapon begin at Range 2\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+    "description": "Must be added when weapon is first obtained.\n\nWeapon gains a minimum range of 1. This weapon's maximum range cannot be increased by wielder's abilities and combat arts or by other attributes. Disabled on non-Bows and on weapons with another “Structure” attribute.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
     "rank": 0,
     "price": 0,
 
@@ -23,7 +23,7 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["forweapon", "structure"],
+    "tags": ["for bows", "structure"],
     "hidden": false,
     "omit": true
 }

@@ -1,0 +1,29 @@
+{
+    "name": "Adjutant",
+    "description": "A battalion that represents having an adjutant with no battalion equipped otherwise. This battalion has zero capacity regardless of rank.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 60,
+        "atk": 40,
+        "prot": 40,
+        "resl": 40
+    },
+
+    "modifiers": {
+        "end": 10,
+        "atk": 6,
+        "prot": 6,
+        "resl": 6,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 0
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

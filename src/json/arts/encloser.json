@@ -1,6 +1,6 @@
 {
   "name": "Encloser",
-  "description": "Applies @{condition:Halt:[Halt]} to target foe for 1 turn.",
+  "description": "On hit, after combat, applies @{condition:Halt:[Halt]} to target foe for 1 turn.",
   "requires": "Bows A",
   "compatible": "Skill Bows",
   "mttype": "else",
@@ -19,7 +19,7 @@
   },
   "comment": "",
   "tags": [
-    "status"
+    "condition"
   ],
   "hidden": false,
   "type": "Bows",

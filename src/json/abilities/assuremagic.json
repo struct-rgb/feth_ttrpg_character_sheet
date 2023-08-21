@@ -1,7 +1,7 @@
 {
     "name": "Assure Magic",
     "description": "Unit's magic-based attacks deal a minimum of Mt / 4 lethal damage on a hit (round up).",
-    "requires": "Level 15",
+    "requires": "All (Any (Axes D) (Lances D) (Swords D) (Bows D) (Reason D) (Faith D) (Guile D) (Brawl D)) Level 5",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
@@ -29,10 +29,17 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": 0,
-
-        "proc": "ceil((unit|total|mag) / 4)"
+        "mov": 0
     },
+
+    "rows": [
+        {
+            "name": "Minimum Damage",
+            "when": "unit|total|mttype|mag",
+            "expr": "ceil((unit|total|mt) / 4)",
+            "roll": false
+        }
+    ],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["assure", "chance"],

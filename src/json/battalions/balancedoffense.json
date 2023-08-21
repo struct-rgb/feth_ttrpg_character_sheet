@@ -1,0 +1,29 @@
+{
+    "name": "Balanced/Offense",
+    "description": "A battalion with moderate stats and capacity designed for offensive gambit usage.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 45,
+        "resl": 45
+    },
+
+    "modifiers": {
+        "end": 24,
+        "atk": 10,
+        "prot": 7,
+        "resl": 7,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 1
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

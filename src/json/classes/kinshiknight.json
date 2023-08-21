@@ -1,7 +1,7 @@
 {
     "name": "Kinshi Knight",
     "description": "A flying knight who controls the skies",
-    "type": ["Flying", "Martial"],
+    "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Bows C+) (Required (Flying C+)) (Required (Level 15))",
     "abilities": ["Bow Advantage", "Air Superiority", "Canto"],
@@ -14,7 +14,7 @@
         "spd": 30,
         "def": 10,
         "res": 10,
-        "cha": 15
+        "lck": 15
       },
     "modifiers": {
         "hp": 4,
@@ -24,7 +24,7 @@
         "spd": 4,
         "def": 2,
         "res": 2,
-        "cha": 4,
+        "lck": 4,
         "mov": 5
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 2,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
     },
 

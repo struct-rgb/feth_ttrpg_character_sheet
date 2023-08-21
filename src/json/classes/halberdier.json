@@ -1,7 +1,7 @@
 {
     "name": "Halberdier",
     "description": "A foot-soldier with an expertise in polearms",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Lances B) (Required (Level 15))",
     "abilities": ["Lance Advantage", "Lance Crit +10", "Stamina +15"],
@@ -14,7 +14,7 @@
         "spd": 5,
         "def": 20,
         "res": 10,
-        "cha": 15
+        "lck": 15
       },
     "modifiers": {
         "hp": 6,
@@ -24,7 +24,7 @@
         "spd": 1,
         "def": 6,
         "res": 3,
-        "cha": 0,
+        "lck": 0,
         "mov": 5
     },
     "mount": null,

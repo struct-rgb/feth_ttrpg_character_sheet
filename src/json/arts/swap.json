@@ -1,8 +1,8 @@
 {
   "name": "Swap",
-  "description": "User swaps places with target adjacent ally.",
-  "requires": "Level 5",
-  "mttype": "else",
+  "description": "User swaps places with target adjacent ally; consumes half of an arts slot starting at level 10.",
+  "requires": "None",
+  "mttype": "none",
   "modifiers": {
     "mt": 0,
     "prot": 0,

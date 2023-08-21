@@ -17,7 +17,7 @@ class NotebookPage {
 	 */
 	constructor(title, elements, onclick) {
 		this.title     = title;
-		this.elements   = elements;
+		this.elements  = elements;
 
 		const button   = document.createElement("input");
 		button.value   = title;
@@ -26,6 +26,11 @@ class NotebookPage {
 		this.button    = button;
 		button.classList.add("simple-border");
 		button.classList.add("notebook-tab");
+
+		const option       = document.createElement("option");
+		option.value       = title;
+		option.textContent = title;
+		this.option        = option;
 
 		this._active   = false;
 	}
@@ -54,19 +59,32 @@ class NotebookPage {
 
 class Note {
 
-	constructor(parent) {
+	constructor(parent, wide=true) {
 
-		this.tabs   = element("div");
-		this.body   = element("div");
-		this.parent = parent;
-		this.root   = element("div", [
-			this.tabs, this.body
+		this.tabs    = element("div");
+		this.buttons = element("div");
+		this.select  = element("select", "simple-border");
+		this.body    = element("div");
+		this.parent  = parent;
+		this.root    = element("div", [
+			wide ? this.buttons : this.select, this.body
 		]);
+		this._wide   = wide;
 
 		/* external DOM */
 		if (parent) {
 			parent.appendChild(this.root);
 		}
+	}
+
+	get wide() {
+		return this._wide;
+	}
+
+	set wide(value) {
+		this.tabs.removeChild(this.tabs.firstChild);
+		this.tabs.prepend(value ? this.buttons : this.select);
+		this._wide = value;
 	}
 
 }
@@ -80,7 +98,7 @@ class Notebook {
 	 * Create a new notebook
 	 * @param {HTMLElement} parent - an optional parent element
 	 */
-	constructor(parents) {
+	constructor(parents, wide=true) {
 
 		if (parents == null) {
 			parents = element("div");
@@ -96,7 +114,7 @@ class Notebook {
 
 		/* create main elements of notebook */
 		// this.root  = document.createElement("div");
-		this.notes = parents.map(parent => new Note(parent));
+		this.notes = parents.map(parent => new Note(parent, wide));
 		this.first = this.notes[0]; 
 		this.root  = this.first.root;
 	}
@@ -124,7 +142,8 @@ class Notebook {
 		});
 
 		this.pages.set(page.title, page);
-		this.first.tabs.appendChild(page.button);
+		this.first.buttons.appendChild(page.button);
+		this.first.select.appendChild(page.option);
 		
 		if (this.active === null) {
 			this.active = page.name;
@@ -143,6 +162,7 @@ class Notebook {
 
 		const page = this.pages.get(title);
 		page.button.remove();
+		page.option.remove();
 
 		if (this.active == page.title) {
 			for (let element of this.page.elements){
@@ -152,6 +172,14 @@ class Notebook {
 
 		this.pages.delete(title);
 		return true;
+	}
+
+	get wide() {
+		return this.first.wide;
+	}
+
+	set wide(value) {
+		this.first.wide = value;
 	}
 
 	/**

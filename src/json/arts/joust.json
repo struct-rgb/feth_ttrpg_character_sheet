@@ -20,6 +20,5 @@
   "tags": ["effective", "advantage"],
   "hidden": false,
   "rank": "A",
-  "type": "Generic",
-  "omit": true
+  "type": "Generic"
 }

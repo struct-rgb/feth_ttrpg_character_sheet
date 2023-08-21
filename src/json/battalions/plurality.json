@@ -1,0 +1,29 @@
+{
+    "name": "Plurality",
+    "description": "A battalion with superior Plurality.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 60,
+        "atk": 50,
+        "prot": 45,
+        "resl": 45
+    },
+
+    "modifiers": {
+        "end": 26,
+        "atk": 7,
+        "prot": 7,
+        "resl": 7,
+        "auto": 1,
+        "plu" : 2,
+        "cap" : 1
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": true
+}

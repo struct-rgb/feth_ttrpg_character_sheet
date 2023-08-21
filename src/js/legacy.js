@@ -6,6 +6,86 @@
 
 const Legacy = (function() {
 
+function from_2_3_2(old) {
+
+	let o = old.statistics;
+
+	o.bases.lck = o.bases.cha;
+	delete o.bases.cha;
+
+	o.growths.lck = o.growths.cha;
+	delete o.growths.cha;
+
+	if (!("battalions" in old)) {
+		old.battalions = {
+			active: null,
+			elements: {},
+		};
+	}
+
+	let   group  = [null, 1];
+	const levels = [];
+
+	for (let level of o.levelups.levels) {
+
+		const roll = level.rolls[level.index];
+		console.log(roll);
+
+		if (!Class.has(roll[0])) {
+			continue;
+		}
+
+		if (group[0] === null) {
+			group[0] = roll[0];
+			continue;
+		}
+
+		if (group[0] == roll[0]) {
+			group[1] += 1;
+		} else {
+			levels.push(group);
+			group = [roll[0], 1];
+		}
+	}
+	levels.push(group);
+
+	o.pointbuy = {
+		"name"  : "",
+		"bases" : {
+			"hp"  : o.levelups.bases[0] || o.bases.hp,
+			"str" : o.levelups.bases[1] || o.bases.str,
+			"mag" : o.levelups.bases[2] || o.bases.mag,
+			"dex" : o.levelups.bases[3] || o.bases.dex,
+			"spd" : o.levelups.bases[4] || o.bases.spd,
+			"def" : o.levelups.bases[5] || o.bases.def,
+			"res" : o.levelups.bases[6] || o.bases.res,
+			"lck" : o.levelups.bases[7] || o.bases.lck,
+			"mov" : 0
+		},
+		"growths" : {
+			"hp"  : Math.min(Math.max(o.growths.hp, 0), 40),
+			"str" : Math.min(Math.max(o.growths.str, 0), 40),
+			"mag" : Math.min(Math.max(o.growths.mag, 0), 40),
+			"dex" : Math.min(Math.max(o.growths.dex, 0), 40),
+			"spd" : Math.min(Math.max(o.growths.spd, 0), 40),
+			"def" : Math.min(Math.max(o.growths.def, 0), 40),
+			"res" : Math.min(Math.max(o.growths.res, 0), 40),
+			"lck" : Math.min(Math.max(o.growths.lck, 0), 40),
+		},
+		"forecast": {
+			"class": old.class,
+			"levels": levels,
+		},
+		"comment": "",
+		"tags": [],
+		"hidden": false
+	};
+
+	old.version = "2.4.0";
+
+	return old;
+}
+
 function from_2_2_0(old) {
 
 	let o = old.skills;
@@ -164,6 +244,10 @@ function convert(obj, to=Version.CURRENT) {
 
 	if (version.older("2.3.0")) {
 		obj = from_2_2_0(obj);
+	}
+
+	if (version.older("3.0.0")) {
+		obj = from_2_3_2(obj);
 	}
 
 	return obj;

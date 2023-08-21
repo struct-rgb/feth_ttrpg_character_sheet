@@ -1,13 +1,13 @@
 {
     "name": "Brave",
     "type": "Any",
-    "description": "When initiating combat, wielder makes two consecutive hits per normal attack and consumes 3 TP when dealing damage. Disabled on spells.",
+    "description": "Hit -15 and base might is reduced by half. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP +1} to foe if foe’s @{const:ap:AP = 2}. Consumes 2 TP per attack and decreases Max TP by 5 when placed in unit’s inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on spells and Brawl weapons.",
     "rank": 2,
-    "price": 750,
+    "price": 2500,
 
     "mttype": "else",
     "modifiers": {
-        "mt": -3,
+        "mt": "-ceil(weapon|noattr|mt / 2)",
         "prot": 0,
         "resl": 0,
         "hit": -15,
@@ -16,13 +16,13 @@
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": 3,
+        "tpcost": 2,
         "spcost": 0,
-        "tp": 0,
+        "tp": -5,
         "sp": 0
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["forweapon"],
+    "tags": ["for axes", "for bows", "for swords", "for lances"],
     "hidden": true
 }

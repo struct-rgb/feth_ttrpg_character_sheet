@@ -1,0 +1,29 @@
+{
+    "name": "Balanced/Resiliance",
+    "description": "A battalion with moderate stats and capacity designed to withstand magic-based attacks.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 55,
+        "resl": 45
+    },
+
+    "modifiers": {
+        "end": 26,
+        "atk": 9,
+        "prot": 6,
+        "resl": 9,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 1
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

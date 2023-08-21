@@ -1,0 +1,34 @@
+{
+    "name": "Absorption",
+    "description": "On hit, apply 2{condition:Rattled:[Rattled]} to all foes in AoE for one turn and deal nonlethal damage equal to half damage dealt to foe in target tile to all foes in AoE, then battalion regains EP equal to half of total damage dealt.",
+    "requires": "All (Authority B) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`)) (Outfitting Infantry)",
+    "mttype": "none",
+    "price": "",
+    "rank": "B",
+    "aoe": "Circle 2",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -4,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "mt": 4,
+        "hit": 30,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 1,
+
+        "epcost": 20,
+        "capcost": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["measured"],
+    "hidden": false
+}

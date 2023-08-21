@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["effective", "forweapon"],
+    "tags": ["effective", "for axes", "for lance", "for swords", "for brawl"],
     "hidden": false
 }

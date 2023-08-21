@@ -1,0 +1,39 @@
+{
+  "name": "Banshee",
+  "description": "The corrupted soul of a fallen spellcaster.",
+  "type": ["Flying", "Monster"],
+  "tier": "Phantom",
+  "requires": "Innate",
+  "abilities": ["Guile Consumption 1", "Pass"],
+  "arts": ["Draw Back"],
+  "growths": {
+    "hp": 0,
+    "str": 25,
+    "mag": 55,
+    "dex": 50,
+    "spd": 40,
+    "def": 0,
+    "res": 0,
+    "lck": 25
+  },
+  "modifiers": {
+    "hp": 1,
+    "str": 1,
+    "mag": 12,
+    "dex": 9,
+    "spd": 9,
+    "def": 0,
+    "res": 0,
+    "lck": 5,
+    "mov": 4
+  },
+  "mount": null,
+
+  "default_base": "Banshee",
+  "default_preset": "Custom",
+  "default_mainarm": "Banshee",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

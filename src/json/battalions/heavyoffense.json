@@ -1,0 +1,29 @@
+{
+    "name": "Heavy/Offense",
+    "description": "A battalion with high stats and low capacity designed for offensive gambit usage.",
+    "rank": "E",
+    "gambits": [],
+    "requires": "",
+    "price": 0,
+
+    "growths": {
+        "end": 65,
+        "atk": 55,
+        "prot": 45,
+        "resl": 45
+    },
+
+    "modifiers": {
+        "end": 26,
+        "atk": 12,
+        "prot": 8,
+        "resl": 8,
+        "auto": 1,
+        "plu" : 1,
+        "cap" : 0
+    },
+
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

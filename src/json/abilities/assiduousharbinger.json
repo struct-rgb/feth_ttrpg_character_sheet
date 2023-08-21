@@ -1,6 +1,6 @@
 {
     "name": "Assiduous Harbinger",
-    "description": "((Cha + Mag)/2)% chance to disable foe's Faith, Guile, and Reason arts that target this unit.",
+    "description": "((Lck + Mag)/2)% chance to disable foe's Faith, Guile, and Reason arts that target this unit.",
     "requires": "All (Riding B+) (Armor B+) (Level 20)",
     "modifiers": {
         "hp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

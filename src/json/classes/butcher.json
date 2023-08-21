@@ -1,0 +1,39 @@
+{
+  "name": "Butcher",
+  "description": "The lost soul of a fallen brigand.",
+  "type": ["Flying", "Monster"],
+  "tier": "Phantom",
+  "requires": "Innate",
+  "abilities": ["Pass", "Level 10 Mov +1"],
+  "arts": ["Shove"],
+  "growths": {
+    "hp": 0,
+    "str": 65,
+    "mag": 25,
+    "dex": 60,
+    "spd": 30,
+    "def": 0,
+    "res": 0,
+    "lck": 30
+  },
+  "modifiers": {
+    "hp": 1,
+    "str": 16,
+    "mag": 1,
+    "dex": 9,
+    "spd": 8,
+    "def": 0,
+    "res": 0,
+    "lck": 6,
+    "mov": 4
+  },
+  "mount": null,
+
+  "default_base": "Butcher",
+  "default_preset": "Custom",
+  "default_mainarm": "Butcher",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

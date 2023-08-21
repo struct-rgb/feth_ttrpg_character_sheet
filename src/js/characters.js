@@ -303,7 +303,16 @@ class Characters {
 		this.description = object.description || "";
 		this.money       = object.money       || 0;
 
+		this.sheet.weaponz.clear();
 		this.sheet.wb.importAll(object.weapons);
+
+		if (object.battalions) {
+			this.sheet.battalion.clear();
+			this.sheet.bb.importAll(object.battalions);
+		} else {
+			this.sheet.bb.clear();
+			this.sheet.battalion.clear();
+		}
 
 		this.sheet.abilities.equipped.setState(object.abilities.equipped);
 		
@@ -336,11 +345,11 @@ class Characters {
 			clart_active : this.sheet.arts.class.getActive(),
 
 			weapons    : this.sheet.wb.exportAll(),
-			// battalions : this.sheet.bb.exportAll(),
+			battalions : this.sheet.bb.exportAll(),
 
 			abilities    : {
 				equipped    : this.sheet.abilities.equipped.getState(),
-				battlefield : this.sheet.abilities.battlefield.getState(),
+				// battlefield : this.sheet.abilities.battlefield.getState(),
 			},
 			arts  : {
 				equipped    : this.sheet.arts.equipped.getState(),
@@ -402,12 +411,12 @@ class Characters {
 		}
 
 		this.sheet.wb.clear();
-		// this.sheet.bb.clear();
+		this.sheet.bb.clear();
 
 		this.sheet.stats.clear();
 		this.sheet.skills.clear();
 		this.sheet.weaponz.clear();
-		// this.sheet.battalion.clear();
+		this.sheet.battalion.clear();
 
 		this.sheet.abilities.equipped.clear();
 		this.sheet.arts.equipped.clear();

@@ -1,0 +1,33 @@
+{
+  "name": "Dodge and Weave",
+  "description": "Can only be used while a Sword is equipped; swap places with an adjacent unit. This may be done up to three times.\n@{const:variant:Cleaving Variant:} Deal 10% nonlethal damage to one foe this unit swaps with.",
+  "requires": "Sword D+",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tiles": 0,
+    "spcost": 0,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical"
+  ],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "D+"
+}

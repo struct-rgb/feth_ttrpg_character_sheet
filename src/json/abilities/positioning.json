@@ -1,7 +1,7 @@
 {
     "name": "Positioning",
-    "description": "When this unit targets an ally with a Level 5 tactical art, afterwards, that unit may move three spaces, but must move in a cardinal direction @{tooltip:(original):Original text said, \"If this Unit uses a Movement Art on an ally, that ally can choose to move 3 spaces in any cardinal direction. This ability cannot be used across what would be impassable terrain for the affected Unit.\" but this is vague.}",
-    "requires": "Any (Class Bard) (Class Journeyman)",
+    "description": "When this unit targets an ally with a tactical art causes forced movement, after that forced moment that unit may additionally move up to three spaces in a cardinal direction.",
+    "requires": "Class Ronin",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11,7 +11,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,
@@ -33,6 +33,6 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["rework"],
+    "tags": [],
     "hidden": false
 }

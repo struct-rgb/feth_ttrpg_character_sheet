@@ -1,7 +1,7 @@
 {
   "name": "Journeyman",
   "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
-  "type": ["Armor", "Martial"],
+  "type": ["Armor"],
   "tier": "Advanced",
   "requires": "All (Any (Swords C+) (Swords C+)) (Required (Armor C+)) (Required (Level 15))",
   "abilities": ["Duelist's Stance", "Sword Advantage", "Bow Advantage", "Positioning"],
@@ -14,7 +14,7 @@
     "spd": 20,
     "def": 15,
     "res": 5,
-    "cha": 15
+    "lck": 15
   },
   "modifiers": {
     "hp": 5,
@@ -24,7 +24,7 @@
     "spd": 5,
     "def": 2,
     "res": 1,
-    "cha": 2,
+    "lck": 2,
     "mov": 4
   },
   "mount": null,

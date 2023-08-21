@@ -1,7 +1,7 @@
 {
     "name": "Warrior",
     "description": "This axe expert is not just a warrior, but THE warrior",
-    "type": ["Infantry", "Martial"],
+    "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Axes B) (Required (Level 15))",
     "abilities": ["Axe Advantage", "Axe Crit +10", "Stamina +15"],
@@ -14,7 +14,7 @@
         "spd": 10,
         "def": 10,
         "res": 0,
-        "cha": 10
+        "lck": 10
       },
     "modifiers": {
         "hp": 7,
@@ -24,7 +24,7 @@
         "spd": 3,
         "def": 2,
         "res": 0,
-        "cha": 3,
+        "lck": 3,
         "mov": 5
     },
     "mount": null,

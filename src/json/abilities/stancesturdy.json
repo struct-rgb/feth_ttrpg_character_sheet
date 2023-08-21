@@ -1,6 +1,6 @@
 {
     "name": "Sturdy Stance",
-    "description": "Grants Def +5 in combat when foe initiates combat.",
+    "description": "Grants Def +4 in combat when foe initiates combat.",
     "requires": "All (Armor C+) (Level 15)",
     "modifiers": {
         "hp": 0,
@@ -9,9 +9,9 @@
         "mag": 0,
         "dex": 0,
         "spd": 0,
-        "def": "fill stance(5)",
+        "def": "fill stance(4)",
         "res": 0,
-        "cha": 0,
+        "lck": 0,
 
         "mt": 0,
         "prot": 0,

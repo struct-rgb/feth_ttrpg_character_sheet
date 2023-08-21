@@ -20,6 +20,5 @@
   "tags": ["movement", "tactical", "condition"],
   "hidden": false,
   "type": "Riding",
-  "rank": "C",
-  "omit": true
+  "rank": "C"
 }

@@ -1,7 +1,7 @@
 {
     "name": "Valkyrie",
     "description": "A veteran mage who commands the battlefield from horseback. Choose one Range +1 skill on reclass.",
-    "type": ["Cavalry", "Caster"],
+    "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Faith C+)) (Required (Riding C+)) (Required (Level 15))",
     "abilities": ["Reason Range +1", "Faith Range +1", "Canto", "Tactician"],
@@ -14,7 +14,7 @@
         "spd": 10,
         "def": 10,
         "res": 20,
-        "cha": 25
+        "lck": 25
       },
     "modifiers": {
         "hp": 3,
@@ -24,7 +24,7 @@
         "spd": 2,
         "def": 2,
         "res": 1,
-        "cha": 1,
+        "lck": 1,
         "mov": 4
     },
     "mount": {
@@ -35,7 +35,7 @@
         "spd": 0,
         "def": 0,
         "res": 0,
-        "cha": 0,
+        "lck": 0,
         "mov": 2
     },
 

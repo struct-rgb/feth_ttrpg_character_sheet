@@ -1,6 +1,6 @@
 {
   "name": "Summon",
-  "description": "Create an allied phantom unit (Lemure) of the same level as this unit in an empty space within range and roll 1d100 to determine which Weapons, Arts, and Abilities it possesses. Apply @{condition:Summoning Sickness:[Summoning Sickness]} to that unit for one turn. All weapons a phantom is created with have the @{attribute::Bound} attribute, and any other items in a phantom’s inventory go to the convoy when it is defeated. If this unit uses @{art::Summon} again while that unit is not defeated, apply the following effect instead: Do not pay TP or SP for this use of @{art::Summon}; move that allied unit to an empty space within range.",
+  "description": "Create an allied phantom unit (Lemure) of the same level as this unit in an empty space within range and roll 1d100 to determine which Weapons, Arts, and Abilities it possesses. Apply @{condition:Sickness:[Sickness]} to that unit for one turn. All weapons a phantom is created with have the @{attribute::Bound} attribute, and any other items in a phantom’s inventory go to the convoy when it is defeated. If this unit uses @{art::Summon} again while that unit is not defeated, apply the following effect instead: Do not pay TP or SP for this use of @{art::Summon}; move that allied unit to an empty space within range.",
   "requires": "Class Invoker/Summoner",
   "mttype": "none",
   "modifiers": {

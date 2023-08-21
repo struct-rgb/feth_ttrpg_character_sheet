@@ -1,0 +1,42 @@
+{
+    "name": "Regroup",
+    "description": "All of this battalion’s units retreat and this battalion regains 2 + ½ Charm EP.",
+    "requires": "Authority C",
+    "mttype": "none",
+    "price": "",
+    "rank": "C",
+    "aoe": "None",
+    "modifiers": {
+        "atk": 0,
+        "mor": 0,
+        "prot": 0,
+        "resl": 0,
+        "cap": -2,
+        "auto": 0,
+        "plu": 0,
+        
+        "end": 0,
+        "br": 0,
+
+        "mt": 0,
+        "hit": 0,
+        "cost": 0,
+        "minrng": 0,
+        "maxrng": 0,
+
+        "epcost": 0,
+        "capcost": 0
+    },
+
+    "rows": [
+        {
+            "name": "EP Restored",
+            "expr": "2 + floor((unit|charm) / 2)",
+            "roll": false
+        }
+    ],
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["no might", "no hit", "no stats"],
+    "hidden": false
+}
