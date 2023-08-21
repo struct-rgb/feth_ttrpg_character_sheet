@@ -18177,7 +18177,7 @@ const definitions = {
       "rows": [
         {
           "name": "Crest of the Riegen",
-          "when": "art|type|",
+          "when": "art|type|weapon",
           "expr": 30,
           "roll": true
         }
