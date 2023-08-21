@@ -5482,6 +5482,7 @@ const definitions = {
       "type": "Generic",
       "rank": "E"
     },
+    {
       "name": "Martial Dance",
       "description": "Might increases based on user's Charm. Mt +3 if weapon has Max Range = 1.",
       "requires": "All (Class Dancer) (Any (Axes E) (Lances E) (Swords E) (Bows E))",
