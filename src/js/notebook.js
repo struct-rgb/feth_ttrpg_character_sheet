@@ -61,14 +61,12 @@ class Note {
 
 	constructor(parent, wide=true) {
 
-		this.tabs    = element("div");
 		this.buttons = element("div");
-		this.select  = element("select", "simple-border");
+		this.select  = element("select", [], "simple-border");
 		this.body    = element("div");
 		this.parent  = parent;
-		this.root    = element("div", [
-			wide ? this.buttons : this.select, this.body
-		]);
+		this.tabs    = element("div", wide ? this.buttons : this.select);
+		this.root    = element("div", [this.tabs, this.body]);
 		this._wide   = wide;
 
 		/* external DOM */
@@ -117,6 +115,11 @@ class Notebook {
 		this.notes = parents.map(parent => new Note(parent, wide));
 		this.first = this.notes[0]; 
 		this.root  = this.first.root;
+
+		// TODO this is sort of ugly but it works
+		this.first.select.oninput = (() => {
+			this.active = this.first.select.value;
+		});
 	}
 
 	/**
@@ -126,7 +129,7 @@ class Notebook {
 	 * @returns {boolean} true if the page is successfully added, otherwise false
 	 */
 	add(title, elements) {
-		// debugger;
+		
 		if (this.pages.has(title)) return false;
 
 		if (!Array.isArray(elements)) {

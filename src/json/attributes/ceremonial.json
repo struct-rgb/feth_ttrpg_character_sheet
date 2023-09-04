@@ -23,6 +23,5 @@
 
     "comment": "",
     "tags": ["for axe", "for lances", "for swords", "for brawl", "for faith", "for reason", "for guile"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

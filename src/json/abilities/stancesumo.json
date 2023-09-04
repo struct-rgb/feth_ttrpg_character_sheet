@@ -1,7 +1,7 @@
 {
     "name": "Sumo Stance",
     "description": "HP +5. This unit is immune to forced movement effects. The first time a foe would occupy a space adjacent to this unit on that foe’s phase, that foe is forced one space away from this unit. If that unit would experience a collision, it takes 20% HP nonlethal damage.",
-    "requires": "All (Brawl C) (Level 10)",
+    "requires": "All (Brawl D+) (Level 8)",
     "modifiers": {
         "hp": 5,
         "sp": 0,
@@ -34,6 +34,5 @@
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["stance"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

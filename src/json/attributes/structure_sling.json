@@ -23,6 +23,5 @@
 
     "comment": "Items in modifers should be integers",
     "tags": ["for brawl", "structure"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

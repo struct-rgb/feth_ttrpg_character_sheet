@@ -26,6 +26,5 @@
   ],
   "hidden": false,
   "type": "Guile",
-  "rank": "C",
-  "omit": true
+  "rank": "C"
 }

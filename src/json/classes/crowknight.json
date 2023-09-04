@@ -45,6 +45,5 @@
     "default_sidearm": "Swords",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

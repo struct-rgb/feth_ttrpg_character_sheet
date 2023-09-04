@@ -1,6 +1,6 @@
 {
     "name": "Favor",
-    "description": "Before combat, affected unit may end this condition to apply one mode:\n • Affected unit has weapon advantage until the end of combat.\n • End one other condition on affected unit (you choose).\n • Affected unit regains 6 SP.",
+    "description": "Before combat, or when this condition is applied, affected unit may end this condition to apply one mode:\n • Affected unit has weapon advantage until the end of combat (if applicable).\n • End one other condition on affected unit (you choose).\n • Affected unit regains 6 SP.",
 
     "modifiers": {
         "hp": 0,

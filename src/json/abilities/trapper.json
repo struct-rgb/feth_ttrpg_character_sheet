@@ -1,6 +1,6 @@
 {
     "name": "Trapper",
-    "description": "Items and tactical arts that create tiles has Range +1 and cost 1 SP (tactical arts) or TP (items) less.",
+    "description": "Items and tactical arts that create tiles have Range +1 and cost 1 SP (tactical arts) or TP (items) less.",
     "requires": "Any (Class `Witch Hunter`) (Class `Monster Hunter`)",
     "modifiers": {
         "hp": 0,
@@ -40,6 +40,5 @@
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["static"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

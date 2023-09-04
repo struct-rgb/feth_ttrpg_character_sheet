@@ -35,6 +35,5 @@
     "default_sidearm": "Wind",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

@@ -31,8 +31,8 @@
 
     "default_base": "Witch Hunter",
     "default_preset": "Speed/Resistance/Balance",
-    "default_mainarm": "Swords",
-    "default_sidearm": "Bows",
+    "default_mainarm": ["Bows", "Axes", "Fire"],
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

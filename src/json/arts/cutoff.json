@@ -20,6 +20,5 @@
   "tags": ["movement"],
   "hidden": true,
   "type": ["Swords", "Lances"],
-  "rank": "",
-  "omit": true
+  "rank": ""
 }

@@ -27,6 +27,5 @@
   ],
   "hidden": true,
   "type": ["Reason", "Faith", "Guile"],
-  "rank": "",
-  "omit": true
+  "rank": ""
 }

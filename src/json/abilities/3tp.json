@@ -1,7 +1,7 @@
 {
     "name": "TP +3",
     "description": "Grants TP +3; consumes half of an ability slot starting at level 10.",
-    "requires": "All (Faith D+) (Reason D+) (Guile D+) (Brawl D+) (Level 5)",
+    "requires": "All (Any (Faith D+) (Reason D+) (Guile D+) (Brawl D+)) (Level 5)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

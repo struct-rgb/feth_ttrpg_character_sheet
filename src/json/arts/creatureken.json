@@ -20,6 +20,5 @@
   "tags": ["combo", "effective"],
   "hidden": true,
   "rank": "",
-  "type": "Generic",
-  "omit": true
+  "type": "Generic"
 }

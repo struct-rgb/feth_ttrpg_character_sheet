@@ -41,8 +41,8 @@
 
     "default_base": "Troubadour",
     "default_preset": "Power/Resistance/Luck",
-    "default_mainarm": "Ice",
-    "default_sidearm": "Faith",
+    "default_mainarm": ["Faith", "Fire", "Ice", "Wind", "Lightning", "Force"],
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

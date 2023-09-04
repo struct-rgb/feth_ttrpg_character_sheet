@@ -393,8 +393,11 @@ class Battalions {
 
 		/* add each gambit and remove its delete button */
 		for (let name of gambits) {
-			this.gambits.add(name);
-			this.gambits.elements.get(name).removeButton.hidden = true;
+			this.gambits.add(name, {removable: false});
+
+			const element = this.gambits.elements.get(name);
+			element.shiftForward(this.gambits.size);
+			// element.removeButton.hidden = true;
 
 			if (Gambit.get(name).tagged("structure")) {
 				this.gambits.toggleActive(name);

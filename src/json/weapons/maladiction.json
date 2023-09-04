@@ -23,6 +23,5 @@
   },
   "comment": "Incompatible with all Attributes except Refined.",
   "tags": ["condition"],
-  "hidden": false,
-  "omit": true
+  "hidden": false
 }

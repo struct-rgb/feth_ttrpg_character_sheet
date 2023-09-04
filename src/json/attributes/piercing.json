@@ -24,6 +24,5 @@
 
     "comment": "Items in modifers should be integers",
     "tags": ["for lances", "for guile", "for faith", "for bows"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

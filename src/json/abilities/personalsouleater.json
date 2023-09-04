@@ -32,7 +32,7 @@
         "mov": 0
     },
 
-    "comment": "姫子 von Varley's personal.",
-    "tags": ["personal", "action"],
-    "hidden": false
+    "comment": "Regi Durenzo's old personal.",
+    "tags": ["personal", "depricated"],
+    "hidden": true
 }

@@ -32,7 +32,7 @@
         {
             "name": "Pursuit",
             "when": "gambit|is_active|Initiate + gambit|is_active|Counter",
-            "expr": "unit|charm + 20",
+            "expr": "battalion|charm + 20",
             "roll": true
         }
     ],

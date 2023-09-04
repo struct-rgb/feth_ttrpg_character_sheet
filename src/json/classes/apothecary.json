@@ -25,14 +25,14 @@
     "def": 3,
     "res": 3,
     "lck": 3,
-    "mov": 5
+    "mov": 4
   },
   "mount": null,
 
   "default_base": "Apothacary",
   "default_preset": "Balance/Balance/Luck",
-  "default_mainarm": "Bows",
-  "default_sidearm": "None",
+  "default_mainarm": "Item",
+  "default_sidearm": "Bows",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

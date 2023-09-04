@@ -590,7 +590,7 @@ class Category {
 	 * @param {string} name - the name of the element to add
 	 * @returns {boolean} true if an element was added, else false
 	 */
-	add(name) {
+	add(name, options={}) {
 		// prevent adding illegal items
 		if (!this.model.has(name)) {
 			console.error(name);
@@ -604,19 +604,22 @@ class Category {
 			this._textnode.data = "";
 		}
 
-		const element = new CategoryElement({
+		const onremove = assume(options.onremove, this.onremove);
+		const ontoggle = assume(options.ontoggle, this.ontoggle);
+
+		const element  = new CategoryElement({
 			key         : name,
 			title       : this.model.title(name),
 			description : this.model.description(name),
 			triggers    : this.model.triggers(name),
-			reorderable : this.reorderable,
-			removable   : this.removable,
-			hideable    : this.hideable,
+			reorderable : assume(options.reorderable, this.reorderable),
+			removable   : assume(options.removable, this.removable),
+			hideable    : assume(options.hideable, this.hideable),
 			onremove    : (() => {
-				return this.onremove.call(undefined, this, name);
+				return onremove.call(undefined, this, name);
 			}),
 			ontoggle    : (() => {
-				return this.ontoggle.call(undefined, this, name);
+				return ontoggle.call(undefined, this, name);
 			}),
 		});
 

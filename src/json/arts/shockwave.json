@@ -19,8 +19,7 @@
   },
   "comment": "",
   "tags": [],
-  "hidden": false,
+  "hidden": true,
   "type": "Brawl",
-  "rank": "C-B",
-  "omit": true
+  "rank": "C-B"
 }

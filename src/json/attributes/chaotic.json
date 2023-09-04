@@ -24,6 +24,5 @@
 
     "comment": "Items in modifers should be integers",
     "tags": ["for reason"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

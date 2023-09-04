@@ -1,6 +1,6 @@
 {
     "name": "Cornered Animal",
-    "description": "At beginning of unit's phase, if there are four or more units within 2 spaces of unit, applies [Berserk] to unit for two turns. When unit enters combat, unit regains 2 + (number of units within two spaces) HP.",
+    "description": "At beginning of unit's phase, if there are four or more units within 2 spaces of unit, applies @{condition:Berserk:[Berserk]} to unit for two turns. When unit enters combat, unit regains 2 + (number of units within two spaces) HP.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

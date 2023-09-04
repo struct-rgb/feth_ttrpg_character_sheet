@@ -293,37 +293,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Sword"],
 				"abilities" : ["Sword Prowess 2"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Sword"],
 				"abilities" : ["Sword Prowess 2"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Sword"],
 				"abilities" : ["Sword Prowess 3"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 3"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 4"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 5"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 		},
 		3 : {
@@ -331,49 +331,49 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Sword"],
 				"abilities" : ["Sword Prowess 2"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Sword"],
 				"abilities" : ["Sword Prowess 2"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Sword"],
 				"abilities" : ["Sword Prowess 3"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 3"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 4"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 5"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 5", "Sword Crit +10"],
-				"arts": [],
+				"arts": ["Swap"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : ["Silver Sword"],
 				"abilities" : ["Sword Prowess 5", "Sword Crit +10", "Swordfaire"],
-				"arts": [],
+				"arts": ["Swap"],
 			}
 		}
 	},
@@ -429,37 +429,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Lance"],
 				"abilities" : ["Lance Prowess 2"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Lance"],
 				"abilities" : ["Lance Prowess 2"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Lance"],
 				"abilities" : ["Lance Prowess 3"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 3"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 4"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 5"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 		},
 		3 : {
@@ -467,49 +467,49 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Lance"],
 				"abilities" : ["Lance Prowess 2"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Lance"],
 				"abilities" : ["Lance Prowess 2"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Lance"],
 				"abilities" : ["Lance Prowess 3"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 3"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 4"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 5"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 5", "Lance Crit +10"],
-				"arts": [],
+				"arts": ["Reposition"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : ["Silver Lance"],
 				"abilities" : ["Lance Prowess 5", "Lance Crit +10", "Lancefaire"],
-				"arts": [],
+				"arts": ["Reposition"],
 			}
 		}
 	},
@@ -565,37 +565,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Bow"],
 				"abilities" : ["Bow Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Bow"],
 				"abilities" : ["Bow Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Bow"],
 				"abilities" : ["Bow Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 4"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 5"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 		},
 		3 : {
@@ -603,49 +603,49 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Bow"],
 				"abilities" : ["Bow Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Bow"],
 				"abilities" : ["Bow Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Bow"],
 				"abilities" : ["Bow Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 4"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 5"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 5", "Bow Crit +10"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : ["Silver Bow"],
 				"abilities" : ["Bow Prowess 5", "Bow Crit +10", "Axefaire"],
-				"arts": [],
+				"arts": ["Pivot"],
 			}
 		}
 	},
@@ -701,37 +701,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Axe"],
 				"abilities" : ["Axe Prowess 2"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Axe"],
 				"abilities" : ["Axe Prowess 2"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Axe"],
 				"abilities" : ["Axe Prowess 3"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 3"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 4"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 5"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 		},
 		3 : {
@@ -739,49 +739,49 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Iron Axe"],
 				"abilities" : ["Axe Prowess 2"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : ["Steel Axe"],
 				"abilities" : ["Axe Prowess 2"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : ["Steel Axe"],
 				"abilities" : ["Axe Prowess 3"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 3"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 4"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 5"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 5", "Axe Crit +10"],
-				"arts": [],
+				"arts": ["Shove"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : ["Silver Axe"],
 				"abilities" : ["Axe Prowess 5", "Axe Crit +10", "Axefaire"],
-				"arts": [],
+				"arts": ["Shove"],
 			}
 		}
 	},
@@ -837,37 +837,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 5"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 		},
 		3 : {
@@ -875,49 +875,49 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 5"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 5", "Reason Range +1"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : [],
 				"abilities" : ["Reason Prowess 5", "Reason Range +1","Reason Tomefaire"],
-				"arts": [],
+				"arts": ["Draw back"],
 			}
 		},
 	},
@@ -1263,37 +1263,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 4"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 5"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 		},
 		3 : {
@@ -1301,49 +1301,49 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 2"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 3"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 4"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 5"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 5", "Brawl Crit +10"],
-				"arts": [],
+				"arts": ["Pivot"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : [],
 				"abilities" : ["Brawl Prowess 5", "Brawl Crit +10","Fistfaire"],
-				"arts": [],
+				"arts": ["Pivot"],
 			}
 		},
 	},
@@ -1353,13 +1353,18 @@ const KITS = {
 		1 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Iron Fist Technique"],
+				"weapons"   : [
+					["Iron Fist Technique", "Mighty"]
+				],
 				"abilities" : [],
 				"arts": [],
 			},
 			9 : {
 				"points"    : 8,
-				"weapons"   : ["Iron Fist Technique", "Steel Fist Technique"],
+				"weapons"   : [
+					["Iron Fist Technique", "Mighty"],
+					["Steel Fist Technique", "Mighty"],
+				],
 				"abilities" : [],
 				"arts": [],
 			}
@@ -1367,39 +1372,55 @@ const KITS = {
 		2 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Iron Fist Technique"],
+				"weapons"   : [
+					["Iron Fist Technique", "Mighty"]
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Fading Blow"],
 			},
 			4 : {
 				"points"    : 4,
-				"weapons"   : ["Iron Fist Technique", "Steel Fist Technique"],
+				"weapons"   : [
+					["Iron Fist Technique", "Mighty"],
+					["Steel Fist Technique", "Mighty"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Fading Blow"],
 			}
 		},
 		3 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Iron Fist Technique"],
-				"abilities" : [],
-				"arts": [],
+				"weapons"   : [
+					["Iron Fist Technique", "Mighty"]
+				],
+				"abilities" : ["Fading Blow"],
+				"arts": ["Fading Blow"],
 			},
 			3 : {
 				"points"    : 4,
-				"weapons"   : ["Iron Fist Technique", "Steel Fist Technique"],
-				"abilities" : [],
-				"arts": [],
+				"weapons"   : [
+					["Iron Fist Technique", "Mighty"],
+					["Steel Fist Technique", "Mighty"],
+				],
+				"abilities" : ["Fading Blow"],
+				"arts": ["Fading Blow"],
 			},
 			11 : {
 				"points"    : 19,
-				"weapons"   : ["Iron Fist Technique", "Steel Fist Technique", "Silver Fist Technique"],
+				"weapons"   : [
+					["Steel Fist Technique", "Rebinding", "Mighty"],
+					["Silver Fist Technique", "Mighty"]
+				],
 				"abilities" : [],
 				"arts": [],
 			},
 			16 : {
 				"points"    : 34,
-				"weapons"   : ["Iron Fist Technique", "Steel Fist Technique", "Silver Fist Technique"],
+				"weapons"   : [
+					["Steel Fist Technique", "Rebinding", "Mighty"],
+					["Silver Fist Technique", "Mighty"]
+				],
 				"abilities" : [],
 				"arts": [],
 			},
@@ -1411,13 +1432,18 @@ const KITS = {
 		1 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Howling Fist Technique"],
+				"weapons"   : [
+					["Howling Fist Technique", "Mighty"],
+				],
 				"abilities" : [],
 				"arts": [],
 			},
 			9 : {
 				"points"    : 8,
-				"weapons"   : ["Howling Fist Technique", "Bellowing Fist Technique"],
+				"weapons"   : [
+					["Howling Fist Technique", "Mighty"],
+					["Bellowing Fist Technique", "Mighty"]
+				],
 				"abilities" : [],
 				"arts": [],
 			}
@@ -1425,41 +1451,57 @@ const KITS = {
 		2 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Howling Fist Technique"],
+				"weapons"   : [
+					["Howling Fist Technique", "Mighty"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Rushing Blow"],
 			},
 			4 : {
 				"points"    : 4,
-				"weapons"   : ["Howling Fist Technique", "Bellowing Fist Technique"],
+				"weapons"   : [
+					["Howling Fist Technique", "Mighty"],
+					["Bellowing Fist Technique", "Mighty"]
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Rushing Blow"],
 			}
 		},
 		3 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Howling Fist Technique"],
+				"weapons"   : [
+					["Howling Fist Technique", "Mighty"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Rushing Blow"],
 			},
 			3 : {
 				"points"    : 4,
-				"weapons"   : ["Howling Fist Technique", "Bellowing Fist Technique"],
+				"weapons"   : [
+					["Howling Fist Technique", "Mighty"],
+					["Bellowing Fist Technique", "Mighty"]
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Rushing Blow"],
 			},
 			11 : {
 				"points"    : 19,
-				"weapons"   : ["Howling Fist Technique", "Bellowing Fist Technique", "Roaring Fist Technique"],
+				"weapons"   : [
+					["Bellowing Fist Technique", "Rebinding", "Mighty"],
+					["Roaring Fist Technique", "Mighty"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Rushing Blow"],
 			},
 			16 : {
 				"points"    : 34,
-				"weapons"   : ["Howling Fist Technique", "Bellowing Fist Technique", "Roaring Fist Technique"],
+				"weapons"   : [
+					["Bellowing Fist Technique", "Rebinding", "Mighty"],
+					["Roaring Fist Technique", "Mighty"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Rushing Blow"],
 			},
 		},
 	},
@@ -1469,13 +1511,18 @@ const KITS = {
 		1 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Swift Fist Technique"],
+				"weapons"   : [
+					["Swift Fist Technique", "Mystic"],
+				],
 				"abilities" : [],
 				"arts": [],
 			},
 			9 : {
 				"points"    : 8,
-				"weapons"   : ["Swift Fist Technique", "Graceful Fist Technique"],
+				"weapons"   : [
+					["Swift Fist Technique", "Mystic"],
+					["Graceful Fist Technique", "Mystic"],
+				],
 				"abilities" : [],
 				"arts": [],
 			}
@@ -1483,41 +1530,57 @@ const KITS = {
 		2 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Swift Fist Technique"],
+				"weapons"   : [
+					["Swift Fist Technique", "Mystic"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Dive Kick"],
 			},
 			4 : {
 				"points"    : 4,
-				"weapons"   : ["Swift Fist Technique", "Graceful Fist Technique"],
+				"weapons"   : [
+					["Swift Fist Technique", "Mystic"],
+					["Graceful Fist Technique", "Mystic"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Dive Kick"],
 			}
 		},
 		3 : {
 			1 : {
 				"points"    : 2,
-				"weapons"   : ["Swift Fist Technique"],
+				"weapons"   : [
+					["Swift Fist Technique", "Mystic"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Dive Kick"],
 			},
 			3 : {
 				"points"    : 4,
-				"weapons"   : ["Swift Fist Technique", "Graceful Fist Technique"],
+				"weapons"   : [
+					["Swift Fist Technique", "Mystic"],
+					["Graceful Fist Technique", "Mystic"],
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Dive Kick"],
 			},
 			11 : {
 				"points"    : 19,
-				"weapons"   : ["Swift Fist Technique", "Graceful Fist Technique", "Serene Fist Technique"],
+				"weapons"   : [
+					["Graceful Fist Technique", "Rebinding", "Mystic"],
+					["Serene Fist Technique", "Mystic"]
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Dive Kick"],
 			},
 			16 : {
 				"points"    : 34,
-				"weapons"   : ["Swift Fist Technique", "Graceful Fist Technique", "Serene Fist Technique"],
+				"weapons"   : [
+					["Graceful Fist Technique", "Rebinding", "Mystic"],
+					["Serene Fist Technique", "Mystic"]
+				],
 				"abilities" : [],
-				"arts": [],
+				"arts": ["Dive Kick"],
 			},
 		},
 	},
@@ -1573,37 +1636,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Banish", "Heal"],
 				"abilities" : ["Faith Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : ["Banish", "Heal"],
 				"abilities" : ["Faith Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 5"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 		},
 		3 : {
@@ -1611,55 +1674,55 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Banish", "Heal"],
 				"abilities" : ["Faith Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : ["Banish", "Heal", "Seraphim"],
 				"abilities" : ["Faith Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			16 : {
 				"points"    : 31,
 				"weapons"   : ["Banish", "Heal", "Seraphim", "Aura"],
 				"abilities" : ["Faith Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : ["Banish", "Heal", "Seraphim", "Aura"],
 				"abilities" : ["Faith Prowess 5"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : ["Banish", "Heal", "Seraphim", "Aura"],
 				"abilities" : ["Faith Prowess 5", "Faith Range +1"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : ["Banish", "Heal", "Seraphim", "Aura"],
 				"abilities" : ["Faith Prowess 5", "Faith Range +1", "Faith Tomefaire"],
-				"arts": [],
+				"arts": ["Draw back"],
 			}
 		}
 	},
@@ -1715,37 +1778,37 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Miasma"],
 				"abilities" : ["Guile Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			4 : {
 				"points"    : 4,
 				"weapons"   : ["Miasma", "Banshee"],
 				"abilities" : ["Guile Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			9 : {
 				"points"    : 8,
 				"weapons"   : ["Miasma", "Banshee"],
 				"abilities" : ["Guile Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			16 : {
 				"points"    : 18,
 				"weapons"   : ["Miasma", "Banshee", "Mire"],
 				"abilities" : ["Guile Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			21 : {
 				"points"    : 26,
 				"weapons"   : ["Miasma", "Banshee", "Mire"],
 				"abilities" : ["Guile Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			28 : {
 				"points"    : 40,
 				"weapons"   : ["Miasma", "Banshee", "Mire"],
 				"abilities" : ["Guile Prowess 5"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 		},
 		3 : {
@@ -1753,57 +1816,243 @@ const KITS = {
 				"points"    : 2,
 				"weapons"   : ["Miasma"],
 				"abilities" : ["Guile Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			3 : {
 				"points"    : 4,
 				"weapons"   : ["Miasma", "Banshee"],
 				"abilities" : ["Guile Prowess 2"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			6 : {
 				"points"    : 8,
 				"weapons"   : ["Miasma", "Banshee"],
 				"abilities" : ["Guile Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			11 : {
 				"points"    : 19,
 				"weapons"   : ["Miasma", "Banshee", "Mire"],
 				"abilities" : ["Guile Prowess 3"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			15 : {
 				"points"    : 31,
 				"weapons"   : ["Miasma", "Banshee", "Mire"],
 				"abilities" : ["Guile Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			16 : {
 				"points"    : 34,
 				"weapons"   : ["Miasma", "Banshee", "Mire", "Hades"],
 				"abilities" : ["Guile Prowess 4"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			25 : {
 				"points"    : 66,
 				"weapons"   : ["Miasma", "Banshee", "Mire", "Hades"],
 				"abilities" : ["Guile Prowess 5"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			28 : {
 				"points"    : 78,
 				"weapons"   : ["Miasma", "Banshee", "Mire", "Hades"],
 				"abilities" : ["Guile Prowess 5", "Guile Range +1"],
-				"arts": [],
+				"arts": ["Draw back"],
 			},
 			33 : {
 				"points"    : 101,
 				"weapons"   : ["Miasma", "Banshee", "Mire", "Hades"],
 				"abilities" : ["Guile Prowess 5", "Guile Range +1", "Guile Tomefaire"],
-				"arts": [],
+				"arts": ["Draw back"],
 			}
 		},
+	},
+	"Item": {
+		parent: null,
+		hide: false,
+		1 : {
+			1 : {
+				"points"    : 2,
+				"weapons"   : ["Poison Flask"],
+				"abilities" : ["Other Prowess 1"],
+				"arts": [],
+			},
+			5 : {
+				"points"    : 4,
+				"weapons"   : ["Poison Flask"],
+				"abilities" : ["Other Prowess 2"],
+				"arts": [],
+			},
+			9 : {
+				"points"    : 8,
+				"weapons"   : ["Poison Flask", "First Aid Kit"],
+				"abilities" : ["Other Prowess 2"],
+				"arts": [],
+			},
+			15 : {
+				"points"    : 16,
+				"weapons"   : ["Poison Flask", "First Aid Kit"],
+				"abilities" : ["Other Prowess 3"],
+				"arts": [],
+			},
+			26 : {
+				"points"    : 40,
+				"weapons"   : ["Poison Flask", "First Aid Kit", "Jar of Grease"],
+				"abilities" : ["Other Prowess 3"],
+				"arts": [],
+			},
+			31 : {
+				"points"    : 53,
+				"weapons"   : ["Poison Flask", "First Aid Kit", "Jar of Grease"],
+				"abilities" : ["Other Prowess 4"],
+				"arts": [],
+			},
+			37 : {
+				"points"    : 80,
+				"weapons"   : ["Poison Flask", "First Aid Kit", "Jar of Grease", "Pyrotechnics"],
+				"abilities" : ["Other Prowess 5"],
+				"arts": [],
+			},
+		},
+		2 : {
+			1 : {
+				"points"    : 2,
+				"weapons"   : ["Poison Flask"],
+				"abilities" : ["Other Prowess 2"],
+				"arts": [],
+			},
+			4 : {
+				"points"    : 4,
+				"weapons"   : ["Poison Flask", "First Aid Kit"],
+				"abilities" : ["Other Prowess 2"],
+				"arts": [],
+			},
+			9 : {
+				"points"    : 8,
+				"weapons"   : ["Poison Flask", "First Aid Kit"],
+				"abilities" : ["Other Prowess 3"],
+				"arts": [],
+			},
+			16 : {
+				"points"    : 18,
+				"weapons"   : ["Poison Flask", "First Aid Kit", "Jar of Grease"],
+				"abilities" : ["Other Prowess 3"],
+				"arts": [],
+			},
+			21 : {
+				"points"    : 26,
+				"weapons"   : ["Poison Flask", "First Aid Kit", "Jar of Grease"],
+				"abilities" : ["Other Prowess 4"],
+				"arts": [],
+			},
+			28 : {
+				"points"    : 40,
+				"weapons"   : ["Poison Flask", "First Aid Kit", "Jar of Grease", "Pyrotechnics"],
+				"abilities" : ["Other Prowess 5"],
+				"arts": [],
+			},
+		},
+		3 : {
+			1 : {
+				"points"    : 2,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire"],
+				"abilities" : ["Other Prowess 2"],
+				"arts": [],
+			},
+			3 : {
+				"points"    : 4,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire", "First Aid Kit"],
+				"abilities" : ["Other Prowess 2"],
+				"arts": [],
+			},
+			6 : {
+				"points"    : 8,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire", "First Aid Kit"],
+				"abilities" : ["Other Prowess 3"],
+				"arts": [],
+			},
+			11 : {
+				"points"    : 19,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire", "First Aid Kit", "Jar of Grease"],
+				"abilities" : ["Other Prowess 3"],
+				"arts": [],
+			},
+			15 : {
+				"points"    : 31,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire", "First Aid Kit", "Jar of Grease"],
+				"abilities" : ["Other Prowess 4"],
+				"arts": [],
+			},
+			16 : {
+				"points"    : 34,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire", "First Aid Kit", "Jar of Grease", "Pyrotechnics"],
+				"abilities" : ["Other Prowess 4"],
+				"arts": [],
+			},
+			25 : {
+				"points"    : 66,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire", "First Aid Kit", "Jar of Grease", "Pyrotechnics"],
+				"abilities" : ["Other Prowess 5"],
+				"arts": [],
+			},
+			28 : {
+				"points"    : 78,
+				"weapons"   : ["Poison Flask", "Alchemist's Fire", "First Aid Kit", "Jar of Grease", "Pyrotechnics", "Enchanted Music Box"],
+				"abilities" : ["Other Prowess 5"],
+				"arts": [],
+			},
+		},
+	},
+	"Armor": {
+		parent: null,
+		hide: false,
+		1 : {
+			1 : {
+				"points"    : 2,
+				"weapons"   : [],
+				"abilities" : [],
+				"arts": ["Hustle"],
+			},
+			5 : {
+				"points"    : 4,
+				"weapons"   : [],
+				"abilities" : [],
+				"arts": ["Hustle"],
+			},
+			9 : {
+				"points"    : 8,
+				"weapons"   : [],
+				"abilities" : [],
+				"arts": ["Hustle", "Taunt"],
+			},
+			15 : {
+				"points"    : 16,
+				"weapons"   : [],
+				"abilities" : [],
+				"arts": ["Sprint", "Taunt"],
+			},
+			26 : {
+				"points"    : 40,
+				"weapons"   : [],
+				"abilities" : [],
+				"arts": ["Sprint", "Taunt"],
+			},
+			31 : {
+				"points"    : 53,
+				"weapons"   : [],
+				"abilities" : [],
+				"arts": ["Sprint", "Taunt"],
+			},
+			37 : {
+				"points"    : 80,
+				"weapons"   : [],
+				"abilities" : [],
+				"arts": ["Sprint", "Taunt"],
+			},
+		},
+		2: {},
+		3: {},
 	},
 	"None": {
 		parent: null,
@@ -2289,6 +2538,18 @@ class Presetter {
 		return presets;
 	}
 
+	static getKit(kits) {
+
+		/* only one option so return it */
+		if (typeof kits == "string") return kits;
+
+		/* choose one option at random */
+		if (kits instanceof Array) return kits.random();
+
+		/* we got an invalid input, so error */
+		throw Error("kits must be string or array");
+	}
+
 	constructor() {
 
 		this._preset  = Preset.select();
@@ -2300,8 +2561,8 @@ class Presetter {
 			);
 
 			this._preset._select.value = build.default_preset;
-			this._mainarm.value        = build.default_mainarm;
-			this._sidearm.value        = build.default_sidearm;
+			this._mainarm.value        = Presetter.getKit(build.default_mainarm);
+			this._sidearm.value        = Presetter.getKit(build.default_sidearm);
 			console.log(build);
 		});
 

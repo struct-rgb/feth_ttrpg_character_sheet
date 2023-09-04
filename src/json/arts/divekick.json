@@ -21,6 +21,5 @@
   "tags": ["movement"],
   "hidden": false,
   "type": "Brawl",
-  "rank": "D",
-  "omit": true
+  "rank": "D"
 }

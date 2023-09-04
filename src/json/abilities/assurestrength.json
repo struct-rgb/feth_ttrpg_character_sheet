@@ -1,7 +1,7 @@
 {
     "name": "Assure Strength",
     "description": "Unit's strength-based attacks deal a minimum of Mt / 4 lethal damage on a hit (round up).",
-    "requires": "All (Any (Axes D) (Lances D) (Swords D) (Bows D) (Reason D) (Faith D) (Guile D) (Brawl D)) Level 5",
+    "requires": "Level 5",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -44,6 +44,4 @@
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["assure", "chance"],
     "hidden": false
-    ,
-    "omit": true
 }

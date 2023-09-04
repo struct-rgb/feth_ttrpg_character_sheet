@@ -5,7 +5,7 @@
   "tier": "Advanced",
   "requires": "All (Swords C+) (Faith C+) (Required (Level 15))",
   "abilities": [ "Locktouch", "Stealth", "Lucky Seven" ],
-    "arts": [],
+    "arts": ["Steal"],
   "growths": {
     "hp": 20,
     "str": 15,

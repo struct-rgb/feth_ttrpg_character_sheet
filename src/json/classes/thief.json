@@ -5,7 +5,7 @@
     "tier": "Starting",
     "requires": "Any (Swords D) (Bows D)",
     "abilities": ["Locktouch", "Stealth", "Level 10 Mov +1"],
-    "arts": [],
+    "arts": ["Steal"],
     "growths": {
         "hp": 10,
         "str": 10,

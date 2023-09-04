@@ -1,7 +1,7 @@
 {
   "name": "Sprint",
   "description": "Unit may move up to 2 additional spaces.",
-  "requires": "Armor B",
+  "requires": "Armor C+",
   "mttype": "none",
   "modifiers": {
     "mt": 0,
@@ -25,7 +25,7 @@
     "no crit",
     "no stats"
   ],
-  "hidden": true,
-  "type": null,
-  "rank": ""
+  "hidden": false,
+  "type": "Armor",
+  "rank": "C+"
 }

@@ -31,10 +31,9 @@
 
   "default_base": "Myrmidon",
   "default_preset": "Speed/Balance/Luck",
-  "default_mainarm": "Swords",
-  "default_sidearm": "Bows",
+  "default_mainarm": ["Swords", "Bows"],
+  "default_sidearm": "Armor",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
-  "hidden": false,
-  "omit": true
+  "hidden": false
 }

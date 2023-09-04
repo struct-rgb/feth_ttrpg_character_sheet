@@ -1,7 +1,7 @@
 {
     "name": "Seal Spd 4",
     "description": "After combat, this unit may apply @{const:gbp:[Spd -4]} to target foe for one turn. (Only apply the effect of up to one \"Seal\" ability after combat.)",
-    "requires": "All (Swords D+) (Brawl D+) (Level 5)",
+    "requires": "All (Any (Swords D+) (Brawl D+)) (Level 5)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

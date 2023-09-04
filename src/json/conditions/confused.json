@@ -1,6 +1,6 @@
 {
     "name": "Confused",
-    "description": "At the beginning of affected unit’s phase, roll 1d4: 1=North, 2=East, 3=South, 4=West. Affected unit moves as far as possible in the direction corresponding to the roll, up to its maximum movement, and afterwards can't move for the rest of the phase.",
+    "description": "Affected unit must use all movement when possible and when it does, roll 1d4 (1=North, 2=South, 3=East, 4=West) to determine the direction for each space of movement used. On collision, affected unit takes 10% nonlethal damage.",
 
     "modifiers": {
         "hp": 0,

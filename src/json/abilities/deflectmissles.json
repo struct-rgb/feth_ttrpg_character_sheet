@@ -35,6 +35,5 @@
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["chance"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

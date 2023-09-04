@@ -1,7 +1,7 @@
 {
     "name": "Armored Blow",
-    "description": "Grants Def +6 in combat when unit initiates combat.",
-    "requires": "All (Any (Armor B) (Bows B)) (Level 15)",
+    "description": "Grants Def +5 in combat when unit initiates combat.",
+    "requires": "All (Any (Armor D+) (Bows D+)) (Level 8)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9,7 +9,7 @@
         "mag": 0,
         "dex": 0,
         "spd": 0,
-        "def": "fill blow(6)",
+        "def": "fill blow(5)",
         "res": 0,
         "lck": 0,
 

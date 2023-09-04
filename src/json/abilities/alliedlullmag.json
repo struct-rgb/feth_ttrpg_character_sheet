@@ -34,7 +34,5 @@
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["lull", "in combat"],
-    "hidden": false,
-    "omit": true
-    
+    "hidden": false
 }

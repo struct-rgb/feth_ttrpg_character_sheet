@@ -1,0 +1,39 @@
+{
+    "name": "Merciless Executioner",
+    "description": "Crit +10; if this unit crits a foe, apply any status conditions that would be applied to that foe after combat and up to one condition currently affecting that foe (you choose which) to up to two additional foes within 5 spaces of that foe after combat (even if that foe is defeated).",
+    "requires": "Innate",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Regi Durenzo's personal",
+    "tags": ["personal"],
+    "hidden": false,
+    "omit": false
+}

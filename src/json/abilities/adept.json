@@ -1,6 +1,6 @@
 {
     "name": "Adept",
-    "description": "In combat, after @{tooltip:first:originally specified it happens once per combat, but this wording takes care of that already} attack this unit makes with a Sword, Lance, or Axe, Dex% chance to immediately make a consecutive attack.",
+    "description": "In combat, after first attack this unit makes with a Sword, Lance, or Axe, Dex% chance to immediately make a consecutive attack.",
     "requires": "All (Swords B+) (Level 20)",
     "modifiers": {
         "hp": 0,

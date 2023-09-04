@@ -23,6 +23,5 @@
 
     "comment": "Items in modifers should be integers",
     "tags": ["for axes", "for lances", "for swords"],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

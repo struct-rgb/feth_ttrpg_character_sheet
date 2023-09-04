@@ -35,6 +35,10 @@ Array.prototype.flatten = function() {
 	return final;
 };
 
+Array.prototype.random = function() {
+	return this[Math.floor(Math.random() * this.length)];
+};
+
 Set.prototype.union = function(other) {
 
 	const set = new Set();
@@ -320,7 +324,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("3.0.0");
+	static CURRENT = new Version("3.1.0");
 
 	constructor(string) {
 		if (string == null) {

@@ -32,7 +32,7 @@
         {
             "name": "Wrath",
             "when": "gambit|is_active|Initiate + gambit|is_active|Counter",
-            "expr": "unit|charm + fill affirm([EP ≤ ½?], 50, 0)",
+            "expr": "battalion|charm + fill affirm([EP ≤ ½?], 50, 0)",
             "roll": true
         }
     ],

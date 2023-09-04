@@ -31,10 +31,9 @@
 
     "default_base": "Grappler",
     "default_preset": "Balance/Defense/Dexterity",
-    "default_mainarm": "Metal",
+    "default_mainarm": ["Metal", "Beast"],
     "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

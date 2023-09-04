@@ -1,7 +1,7 @@
 {
     "name": "Poison Strike",
     "description": "If unit initates combat and hits, target foe takes 20% nonlethal damage after combat.",
-    "requires": "All (Guile B) (Level 15)",
+    "requires": "All (Guile D+) (Level 8)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

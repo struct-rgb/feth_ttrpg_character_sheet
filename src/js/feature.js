@@ -191,9 +191,26 @@ class Feature {
 		this.rows         = [];
 		this.dependancies = new Set();
 
+		// parse file-local template definitions if present
+		const locals = new Set();
+
+		if (template.locals) {
+			
+			const defines   = compiler.macros;
+
+			for (let each of template.locals) {
+				const string      = each.join("\n");
+				const [name, tmp] = Expression.Template.parse(string, defines);
+				const id          = `locals|${name}`;
+				defines[id]       = tmp;
+				locals.add(id);
+			}
+		}
+
+		// function to compile dynamic modifiers
 		const compile = (value, key=null) => {
 			
-			// join an array into a tring
+			// join an array into a string
 			if (value instanceof Array) {
 				value = value.join(" ");
 			}
@@ -249,7 +266,6 @@ class Feature {
 				);
 			}
 		}
-
 		
 		this.requires     = (predicator
 			? predicator.compile(template.requires || "None")
@@ -276,6 +292,13 @@ class Feature {
 			}	
 
 			this[attribute.key] = Object.freeze(stats);
+		}
+
+		// delete any local templates that were created since we're done
+		if (locals.size > 0) {
+			for (let each of locals) {
+				delete compiler.macros[each];
+			}
 		}
 		
 		// These objects are just references for value and as such should not
@@ -331,6 +354,17 @@ class Feature {
 
 	static has(name) {
 		return name && this.byName.has(name);
+	}
+
+	static where(predicate) {
+		
+		const features = [];
+		
+		for (let feature of this.byName.values()) {
+			if (predicate(feature)) features.push(feature);
+		}
+
+		return features;
 	}
 
 	/**
@@ -830,6 +864,19 @@ class CombatArt extends AttackFeature {
 			},
 			"True": (op, ...args) => true,
 			"False": (op, ...args) => false,
+			"Match": (op, ...args) => {
+
+				const odd   = args.length & 1;
+				const other = odd ? Boolean(args.pop()) : false;
+				const pairs = args.chunk(2); 
+
+				for (let [cls, val] of pairs) {
+					const name = object.weapon.constructor.name;
+					if (name == cls) return val;
+				}
+
+				return other;
+			},
 		};
 	}
 
@@ -1329,7 +1376,9 @@ class Weapon extends AttackFeature {
 					return feature.tagged("break");
 				}),
 
-				element("br"),
+				new Filter.Toggle("Wall", false, (feature) => {
+					return feature.tagged("wall");
+				}),
 
 				new Filter.Toggle("Effective", false, (feature) => {
 					return feature.tagged("effective");
@@ -1735,6 +1784,9 @@ class Ability extends Feature {
 					return feature.requires.symbols.has("Bows");
 				}),
 				element("br"),
+				new Filter.Toggle("Brawl", false, (feature) => {
+					return feature.requires.symbols.has("Brawl");
+				}),
 				new Filter.Toggle("Faith", false, (feature) => {
 					return feature.requires.symbols.has("Faith");
 				}),
@@ -1808,23 +1860,29 @@ class Ability extends Feature {
 
 				new Filter.Group(Filter.Group.OR, false),
 
-				new Filter.Toggle("None", false, (feature) => {
+				new Filter.Toggle("1", false, (feature) => {
 					return !feature.requires.symbols.has("Level");
+				}),
+				new Filter.Toggle("2", false, (feature) => {
+					return feature.requires.symbols.has("2");
 				}),
 				new Filter.Toggle("5", false, (feature) => {
 					return feature.requires.symbols.has("5");
 				}),
-				new Filter.Toggle("10", false, (feature) => {
-					return feature.requires.symbols.has("10");
+				new Filter.Toggle("8", false, (feature) => {
+					return feature.requires.symbols.has("8");
 				}),
-				new Filter.Toggle("15", false, (feature) => {
-					return feature.requires.symbols.has("15");
+				new Filter.Toggle("11", false, (feature) => {
+					return feature.requires.symbols.has("11");
 				}),
-				new Filter.Toggle("20", false, (feature) => {
-					return feature.requires.symbols.has("20");
+				new Filter.Toggle("14", false, (feature) => {
+					return feature.requires.symbols.has("14");
 				}),
-				new Filter.Toggle("25", false, (feature) => {
-					return feature.requires.symbols.has("25");
+				new Filter.Toggle("17", false, (feature) => {
+					return feature.requires.symbols.has("17");
+				}),
+				new Filter.Toggle("21", false, (feature) => {
+					return feature.requires.symbols.has("21");
 				}),
 
 				Filter.Group.END,

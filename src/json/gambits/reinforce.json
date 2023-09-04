@@ -31,7 +31,7 @@
     "rows": [
         {
             "name": "EP Restored",
-            "expr": "floor((unit|charm)/2) + 2",
+            "expr": "floor((battalion|charm)/2) + 2",
             "roll": false
         }
     ],

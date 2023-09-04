@@ -1,7 +1,7 @@
 {
     "name": "Steady Stance",
     "description": "Grants Hit +20 in combat when foe initiates combat.",
-    "requires": "All (Lances E) (Level 0)",
+    "requires": "All (Lances C) (Level 8)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

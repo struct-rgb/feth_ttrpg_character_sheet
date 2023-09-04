@@ -24,8 +24,6 @@
 
 /* global Notebook */
 
-/* global PointBuy */
-
 /* global Presetter */
 
 /* global Ability */
@@ -844,7 +842,6 @@ class Sheet {
 
 		this.bb = battalion_bb;
 
-		/* TODO figure out what to do with battalions for patch #6 */
 		buildnb.add("Battalion", [battalion_bb.root, this.battalion.root]);
 
 		buildnb.active = "Character";
@@ -902,7 +899,7 @@ class Sheet {
 
 		notebook.add("Glossary", gloss.root);
 
-		const tools = new Notebook();
+		const tools = new Notebook(undefined, true);
 
 		tools.add("Macros", element("div", this.macros.root));
 
@@ -2420,11 +2417,21 @@ class Sheet {
 		}
 
 		add({
-			name  : "unit|charm",
+			name  : "battalion|charm",
 			about : wrap(
-				"Higher of dexterity and luck.",
+				"Higher of dexterity and luck; this variable gets replaced ",
+				"with a Roll20 variable called \"Charm\" when variables are ",
+				"enabled within macrogen. Use for battalion macros."
 			),
 			expr  : "[Charm] {more unit|total|lck else unit|total|dex end}" 
+		});
+
+		add({
+			name  : "unit|charm",
+			about : wrap(
+				"Higher of dexterity and luck. Use for non-battalion macros.",
+			),
+			expr  : "more unit|total|lck else unit|total|dex end" 
 		});
 
 		add({

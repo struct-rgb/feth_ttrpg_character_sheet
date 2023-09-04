@@ -1,6 +1,6 @@
 {
     "name": "Reason Training",
-    "description": "Battalion's weapon type is Guile and deals damage vs Resl; grants Atk +6 and Range 1-2. A battalion can only possess one \"Training\" gambit.",
+    "description": "Battalion's weapon type is Reason and deals damage vs Resl; grants Atk +6 and Range 1-2. A battalion can only possess one \"Training\" gambit.",
     "requires": "Authority E",
     "mttype": "mag",
     "price": "",

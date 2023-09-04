@@ -1,7 +1,7 @@
 {
     "name": "Seal Mag 4",
     "description": "After combat, this unit may apply @{const:gbp:[Mag -4]} to target foe for one turn. (Only apply the effect of up to one \"Seal\" ability after combat.)",
-    "requires": "All (Faith D+) (Flying D+) (Level 5)",
+    "requires": "All (Any (Faith D+) (Flying D+)) (Level 5)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

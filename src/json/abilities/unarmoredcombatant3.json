@@ -1,7 +1,7 @@
 {
     "name": "Unarmored Combatant 3",
     "description": "HP +30, Avo +10, and Def -12.",
-    "requires": "Any (Brawl B) (Axes B)",
+    "requires": "Any (Any (Brawl D+) (Axes D+)) (Level 17)",
     "modifiers": {
         "hp": 30,
         "sp": 0,
@@ -34,6 +34,5 @@
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": [],
-    "hidden": false,
-    "omit": true
+    "hidden": false
 }

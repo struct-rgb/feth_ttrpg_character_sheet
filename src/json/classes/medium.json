@@ -31,8 +31,8 @@
 
     "default_base": "Medium",
     "default_preset": "Balance/Defense/Balance",
-    "default_mainarm": "Force",
-    "default_sidearm": "Guile",
+    "default_mainarm": ["Faith", "Guile", "Fire", "Ice", "Wind", "Lightning", "Force"],
+    "default_sidearm": "Armor",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

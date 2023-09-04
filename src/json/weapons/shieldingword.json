@@ -25,6 +25,5 @@
   "tags": [
     "reaction", "no crit", "no stats", "no hit", "no might", "no triangle", "condition"
   ],
-  "hidden": false,
-  "omit": true
+  "hidden": false
 }

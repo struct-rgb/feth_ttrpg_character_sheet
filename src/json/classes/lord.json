@@ -31,7 +31,7 @@
 
     "default_base": "Lord",
     "default_preset": "Balance/Balance/Luck",
-    "default_mainarm": "Swords",
+    "default_mainarm": ["Swords", "Lances", "Axes", "Fire"],
     "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
