@@ -6,7 +6,7 @@
 
     "mttype": "else",
     "modifiers": {
-        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged + weapon|has_attribute|Stabilizer), 0, -3)",
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged) + (weapon|type|bows) * (weapon|has_attribute|Stabilizer), 0, -3)",
         "prot": 0,
         "resl": 0,
         "hit": 0,

@@ -1,6 +1,6 @@
 {
   "name": "Dive Kick",
-  "description": "If able, unit moves one space toward target foe before combat and combat occurs at Range 1, and if not, combat occurs at Range 2 and this attack misses.",
+  "description": "If able, unit moves one space toward target foe before combat and combat occurs at Range 1, and if not, combat occurs at Range 2 and this attack misses. @{const:variant:Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
   "requires": "Brawl D",
   "compatible": "Skill Brawl",
   "mttype": "else",

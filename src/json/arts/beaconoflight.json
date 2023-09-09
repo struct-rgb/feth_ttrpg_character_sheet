@@ -1,6 +1,6 @@
 {
   "name": "Beacon of Light",
-  "description": "When casting @{art::Restore}, apply @{condition:Divine Ward:[Divine Ward]} to affected allies for 2 turns.",
+  "description": "When casting @{art::Restore}, apply @{condition:Divine Protection:[Divine Protection]} to affected allies for 2 turns.",
   "requires": "Faith C",
   "compatible": "Name Restore",
   "mttype": "else",

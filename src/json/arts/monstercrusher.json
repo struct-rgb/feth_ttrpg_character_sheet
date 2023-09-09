@@ -1,6 +1,6 @@
 {
   "name": "Monster Crusher",
-  "description": "Effective against Monster units.",
+  "description": "Effective against Monster units. @{const:variant:Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
   "requires": "Any (Brawl C) (Brawl B)",
   "compatible": "Skill Brawl",
   "mttype": "else",

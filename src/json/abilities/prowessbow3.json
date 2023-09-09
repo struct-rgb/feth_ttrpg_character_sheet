@@ -1,6 +1,6 @@
 {
     "name": "Bow Prowess 3",
-    "description": "Grants Hit +10, Avo +10, and Crit Avo +7 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
+    "description": "Grants Hit +10, Avo +10, Crit +10, and Crit Avo +10 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
     "requires": "Any (All (Bows C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
     "modifiers": {
         "hp": 0,

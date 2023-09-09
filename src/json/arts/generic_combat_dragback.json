@@ -1,6 +1,7 @@
 {
   "name": "Drag Back",
   "description": "After combat, unit moves one space back, and target foe moves into units previous space. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+  "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 1 (Modifier `maxrng`))",
   "requires": "None",
   "mttype": "else",
   "modifiers": {

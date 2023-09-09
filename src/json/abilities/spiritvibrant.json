@@ -1,7 +1,7 @@
 {
     "name": "Vibrant Spirit",
     "description": "When unit targets an ally, apply @{const:gbp:[Hit +10]} and @{const:gbp:[Crit +10]} to target ally for one turn. If target is a battalion unit, instead restore 5 EP to that battalion.",
-    "requires": "Authority B+",
+    "requires": "All (Authority C) (Level 8)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

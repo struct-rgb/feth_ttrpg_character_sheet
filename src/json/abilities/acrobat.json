@@ -1,7 +1,7 @@
 {
     "name": "Acrobat",
-    "description": "While unmounted, unit ignores movement costs and penalties for difficult terrain.",
-    "requires": "All (Any (Swords B) (Bows B)) (Armor B) (Level 20)",
+    "description": "While unmounted:\n• Unit ignores movement penalties from difficult terrain.\n• Unit ignores damage and status conditions from foe's AOE effects.\n• Unit has (Spd + 10)% chance to apply 2{const:gbp:[Mov +2]} to itself for one turn at the start of its phase.",
+    "requires": "All (Brawl C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -31,6 +31,13 @@
 
         "mov": 0
     },
+
+    "rows": [
+        {
+            "expr": "unit|total|spd + 10 + other|trigger",
+            "roll": true
+        }
+    ],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": [],

@@ -1,6 +1,6 @@
 {
   "name": "Telekinesis",
-  "description": "When casting a Force Spell, on hit, move target foe up to 2 spaces in any cardinal direction after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def.",
+  "description": "Force metamagic; restores HP to target Force Wall instead of dealing damage to it.\n\nOn hit, after combat, choose a cardinal direction and apply one of the following modes:\n\u00A0• Move target up to one space in that direction then deal 20% nonlethal damage to a foe adjacent to target in that direction.\n\u00A0• Move target up to two spaces that direction\n@{const:variant:Pugni Variant:} Increase maximum movement of each mode by one, and nonlethal damage by 20%.",
   "requires": "Reason C",
   "compatible": "All (Skill Reason) (Tag `force`)",
   "mttype": "else",
@@ -12,10 +12,10 @@
     "avo": 0,
     "crit": 0,
     "cravo": 0,
-    "minrng": 0,
-    "maxrng": 0,
+    "minrng": 1,
+    "maxrng": 2,
     "tiles": 0,
-    "spcost": 8,
+    "spcost": 3,
     "tpcost": 0,
     "sp": 0,
     "tp": 0

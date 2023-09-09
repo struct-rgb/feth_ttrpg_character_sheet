@@ -1,7 +1,7 @@
 {
     "name": "Harrying Blow",
     "description": "If unit initiated combat at Range = 1 while mounted, then on hit, after combat, apply @{condition:Taunted:[Taunted]} to target foe for one turn.",
-    "requires": "Any (Riding C+) (Flying C+)",
+    "requires": "All (Any (Riding C) (Flying C)) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

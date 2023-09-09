@@ -1,7 +1,7 @@
 {
     "name": "Commanding Blow",
     "description": "If this unit has initiated combat this phase, it may use a tactical art as an additional action this phase.",
-    "requires": "All (Any (Lances E) (Bows)) (Level 0)",
+    "requires": "All (Any (Lances C) (Bows C)) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -33,6 +33,6 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["blow", "rework"],
+    "tags": ["blow"],
     "hidden": false
 }

@@ -1,6 +1,6 @@
 {
     "name": "Other Prowess 1",
-    "description": "Grants Hit +6, Avo +6, and Crit Avo +5 when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+    "description": "Grants Hit +6, Avo +6, Crit +6, and Crit Avo +6, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
     "requires": "Other E+",
     "modifiers": {
         "hp": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Fierce Stance",
     "description": "Grants Str +4 in combat when foe initiates combat.",
-    "requires": "All (Lances B) (Level 15)",
+    "requires": "All (Lances C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

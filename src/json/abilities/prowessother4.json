@@ -1,6 +1,6 @@
 {
     "name": "Other Prowess 4",
-    "description": "Grants Hit +12, Avo +12, and Crit Avo +8 when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+    "description": "Grants Hit +12, Avo +12, Crit +12, and Crit Avo +12, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
     "requires": "All (Other B+) (Level 15)",
     "modifiers": {
         "hp": 0,

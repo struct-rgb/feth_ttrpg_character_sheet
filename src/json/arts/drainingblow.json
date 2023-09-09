@@ -1,6 +1,6 @@
 {
   "name": "Draining Blow",
-  "description": "Restores HP equal to 50% of damage dealt.",
+  "description": "Restores HP equal to 50% of damage dealt. @{const:variant:Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
   "requires": "Brawl A",
   "compatible": "Skill Brawl",
   "mttype": "else",

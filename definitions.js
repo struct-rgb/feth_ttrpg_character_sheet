@@ -215,7 +215,7 @@ const definitions = {
     {
       "define": [
         "template bowhit(base)",
-        "  base + other|range_penalty|prompt",
+        "  base",
         "end"
       ],
       "about": [
@@ -338,6 +338,82 @@ const definitions = {
         "Generates the appriate tile number scaling for the Reason wall spells."
       ],
       "args": []
+    },
+    {
+      "define": [
+        "template range_penalty_1()",
+        "  ask [Range Penalty?]",
+        "    ; [Range +0] {+ 0}",
+        "    , [Range +1] {-20}",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Max +1)."
+      ],
+      "args": []
+    },
+    {
+      "define": [
+        "template range_penalty_2()",
+        "  ask [Range Penalty?]",
+        "  ; [Range +0] {+ 0}",
+        "  , [Range +1] {-20}",
+        "  , [Range +2] {-40}",
+        " end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Max +2)."
+      ],
+      "args": []
+    },
+    {
+      "define": [
+        "template range_penalty_3()",
+        "  ask [Range Penalty?]",
+        "  ; [Range +0] {+ 0}",
+        "  , [Range +1] {-20}",
+        "  , [Range +2] {-40}",
+        "  , [Further]  {-60}",
+        " end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Max +3 or more)."
+      ],
+      "args": []
+    },
+    {
+      "define": [
+        "template range_penalty(difference)",
+        "  metaif builtins|macrogen == 1 then",
+        "    metaif difference <= 0",
+        "      then 0",
+        "    elseif difference == 1",
+        "      then fill range_penalty_1()",
+        "    elseif difference == 2",
+        "      then fill range_penalty_2()",
+        "      else fill range_penalty_3()",
+        "    end",
+        "  else",
+        "    if     difference <= 0",
+        "      then 0",
+        "    elseif difference == 1",
+        "      then fill range_penalty_1()",
+        "    elseif difference == 2",
+        "      then fill range_penalty_2()",
+        "      else fill range_penalty_3()",
+        "    end",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Variable Range)."
+      ],
+      "args": [
+        "typically the difference between weapon max range and unit max range"
+      ]
     }
   ],
   "tooltips": {
@@ -2470,7 +2546,7 @@ const definitions = {
     },
     {
       "name": "Rushing Blow",
-      "description": "Avo +10; after combat, unit moves to opposite side of target foe (if able).",
+      "description": "Avo +10; after combat, unit moves to opposite side of target foe (if able). @{const:variant:Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
       "requires": "Brawl D",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2497,7 +2573,7 @@ const definitions = {
     },
     {
       "name": "Fading Blow",
-      "description": "Avo +30; after combat unit moves one space back. @{const:variant:Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value. ",
+      "description": "Avo +30; after combat unit moves one space back. @{const:variant:Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
       "requires": "Brawl D",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2524,7 +2600,7 @@ const definitions = {
     },
     {
       "name": "Dive Kick",
-      "description": "If able, unit moves one space toward target foe before combat and combat occurs at Range 1, and if not, combat occurs at Range 2 and this attack misses.",
+      "description": "If able, unit moves one space toward target foe before combat and combat occurs at Range 1, and if not, combat occurs at Range 2 and this attack misses. @{const:variant:Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
       "requires": "Brawl D",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2631,6 +2707,13 @@ const definitions = {
         "tpcost": 0,
         "spcost": 4
       },
+      "rows": [
+        {
+          "name": "AP",
+          "expr": "fill affirm([First Attack?], ceil((2 die 6)/2) - 1, 0)",
+          "roll": false
+        }
+      ],
       "comment": "",
       "tags": [],
       "hidden": false,
@@ -2639,7 +2722,7 @@ const definitions = {
     },
     {
       "name": "Cavitation Wave",
-      "description": "No special effect.",
+      "description": "No special effect. @{const:variant:Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
       "requires": "Brawl A",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2664,7 +2747,7 @@ const definitions = {
     },
     {
       "name": "Mystic Blow",
-      "description": "Mt +30% of user's Mag.",
+      "description": "Mt +30% of user's Mag. @{const:variant:Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
       "requires": "Brawl A",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2689,7 +2772,7 @@ const definitions = {
     },
     {
       "name": "Draining Blow",
-      "description": "Restores HP equal to 50% of damage dealt.",
+      "description": "Restores HP equal to 50% of damage dealt. @{const:variant:Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
       "requires": "Brawl A",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2716,7 +2799,7 @@ const definitions = {
     },
     {
       "name": "Mighty Blow",
-      "description": "Mt +30% of user's Str.",
+      "description": "Mt +30% of user's Str. @{const:variant:Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
       "requires": "Brawl A",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2859,9 +2942,7 @@ const definitions = {
         "spcost": 3
       },
       "comment": "",
-      "tags": [
-        "healing"
-      ],
+      "tags": [],
       "hidden": false,
       "type": "Brawl",
       "rank": "C-B"
@@ -2896,7 +2977,7 @@ const definitions = {
     },
     {
       "name": "Nimble Combo",
-      "description": "@{const:ap:AP 3} (two consecutive attacks); Avo +20.",
+      "description": "@{const:ap:AP 3} (two consecutive attacks); Avo +20. @{const:variant:Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
       "requires": "Any (Brawl C) (Brawl B)",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -2971,7 +3052,7 @@ const definitions = {
     },
     {
       "name": "Monster Crusher",
-      "description": "Effective against Monster units.",
+      "description": "Effective against Monster units. @{const:variant:Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
       "requires": "Any (Brawl C) (Brawl B)",
       "compatible": "Skill Brawl",
       "mttype": "else",
@@ -3208,7 +3289,7 @@ const definitions = {
     },
     {
       "name": "Beacon of Light",
-      "description": "When casting @{art::Restore}, apply @{condition:Divine Ward:[Divine Ward]} to affected allies for 2 turns.",
+      "description": "When casting @{art::Restore}, apply @{condition:Divine Protection:[Divine Protection]} to affected allies for 2 turns.",
       "requires": "Faith C",
       "compatible": "Name Restore",
       "mttype": "else",
@@ -4407,6 +4488,35 @@ const definitions = {
       "rank": "D"
     },
     {
+      "name": "Hypothermic",
+      "description": "Ice metamagic; Crit +5 in combat for each @{tile::Ice Block} adjacent to target foe. @{const:variant:Frostbite Variant:} Hit +10 and after combat, if target foe was defeated, create an @{tile::Ice Block} in target foe\u2019s space.",
+      "requires": "Reason D",
+      "compatible": "All (Skill Reason) (Tag `ice`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill affirm([Frostbite?], 10, 0)",
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "wall",
+        "ice",
+        "variant"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "D"
+    },
+    {
       "name": "Daylight",
       "description": "Fire metamagic; effective against @{tooltip:Monster:Originally said Undead units, but tbh, Undead creatures are traditionally Monster units, and specifying only Undead creates an unneccesary unit type and makes a niche art even more niche.} units. On hit, apply @{condition:Exposed:[Exposed]} to target foe and foes within 2 spaces of target foe for one turn.",
       "requires": "Reason D",
@@ -4435,6 +4545,35 @@ const definitions = {
         "fire",
         "aoe",
         "rework"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "D"
+    },
+    {
+      "name": "Wildfire",
+      "description": "Fire metamagic; weapon advantage and Mt +2 against foes occupying @{tile::Fire Patch} or @{tile::Foliage} tiles.@{const:variant:Bolganone Variant:} After combat, create up to two connecting @{tile::Fire Patch} tiles starting from that space.",
+      "requires": "Reason D",
+      "compatible": "All (Skill Reason) (Tag `fire`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": "1 + fill affirm([Fire or Foliage?], 2, 0)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "wall",
+        "fire",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -4776,7 +4915,7 @@ const definitions = {
     },
     {
       "name": "Incineration",
-      "description": "Fire metamagic; after combat, create a 3x3 area of @{tile:Fire Patch:Fire Patches} centered on a space within Range \u2264 4. @{art::Fire Wall} @{const:variant:Variant}: created @{tile:Fire Patch:Fire Patches} also apply their effect to spaces adjacent to them.",
+      "description": "Create a 3x3 +-shape of Fire Patches centered on target foe after combat. @{const:variant:Fire Wall Variant:} After placing all Fire Patches, create Fire Patches in each space adjacent to a fire patch created by this spell.",
       "requires": "Reason C",
       "compatible": "All (Skill Reason) (Tag `fire`)",
       "mttype": "else",
@@ -4801,6 +4940,38 @@ const definitions = {
         "wall",
         "aoe",
         "fire",
+        "variant"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C"
+    },
+    {
+      "name": "Avalanche",
+      "description": "Ice metamagic; after combat, create @{tile::Ice Block} tiles in each empty space adjacent to target foe. @{const:variant:Ice Wall Variant:} @{tile:Ice Blocks:Ice Blocks} may connect through occupied tiles and pre-existing @{tile::Ice Block} tiles as though they were newly created @{tile::Ice Block} tiles.",
+      "requires": "Reason C",
+      "compatible": "All (Skill Reason) (Tag `ice`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 7,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "wall",
+        "ice",
         "variant"
       ],
       "hidden": false,
@@ -4871,6 +5042,64 @@ const definitions = {
       "rank": "C"
     },
     {
+      "name": "Electrostasis",
+      "description": "Lightning metamagic; create a @{tile::Lightning Arc} in target foe\u2019s space after combat for one turn. @{const:variant:Lightning Wall Variant:} The initial tile that you target may be occupied by a foe; restore an equal dividend of the total SP paid to each ally adjacent to a created @{tile::Lightning Arc} (round up).",
+      "requires": "Reason C",
+      "compatible": "All (Skill Reason) (Tag `lightning`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 7
+      },
+      "comment": "",
+      "tags": [
+        "wall",
+        "lightning",
+        "variant"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C"
+    },
+    {
+      "name": "Hurricane",
+      "description": "Wind metamagic; create a 3x3 ring of @{tile::Wind Torrent} tiles centered around target foe after combat. @{constvariant:Wind Wall Variant:} All current and created @{tile:Wind Torrent:Wind Torrents} have +1 or +2 (user\u2019s choice) duration.",
+      "requires": "Reason C",
+      "compatible": "All (Skill Reason) (Tag `wind`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 7
+      },
+      "comment": "",
+      "tags": [
+        "wall",
+        "wind",
+        "variant"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C"
+    },
+    {
       "name": "Manifest: Force",
       "description": "Force metamagic; after combat, apply @{const:gbp:[Prot +X]} to this unit or an ally within 2 spaces for one turn, where X = 4 + the spell's original Mt. @{art::Force Wall} @{const:variant:Variant}: after combat, apply @{const:gbp:[Prot +10]} to this unit or an ally within Range = 2 and also to every ally that ends this phase adjacent to any a tile created by a @{tooltip:Reason \"Wall\" spell:Specifically, an Ice Block, Fire Patch, Wind Torrent, Lightning Arc, or Force Wall} for one turn.",
       "requires": "Reason C",
@@ -4904,7 +5133,7 @@ const definitions = {
     },
     {
       "name": "Telekinesis",
-      "description": "When casting a Force Spell, on hit, move target foe up to 2 spaces in any cardinal direction after combat. If target foe would enter an occupied or impassable space, target foe stops and takes damage equal to this unit's Mag - target unit's Def.",
+      "description": "Force metamagic; restores HP to target Force Wall instead of dealing damage to it.\n\nOn hit, after combat, choose a cardinal direction and apply one of the following modes:\n\u00a0\u2022 Move target up to one space in that direction then deal 20% nonlethal damage to a foe adjacent to target in that direction.\n\u00a0\u2022 Move target up to two spaces that direction\n@{const:variant:Pugni Variant:} Increase maximum movement of each mode by one, and nonlethal damage by 20%.",
       "requires": "Reason C",
       "compatible": "All (Skill Reason) (Tag `force`)",
       "mttype": "else",
@@ -4916,10 +5145,10 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
-        "spcost": 8,
+        "spcost": 3,
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -5334,6 +5563,232 @@ const definitions = {
       "rank": "A"
     },
     {
+      "name": "Aegis of Ashes",
+      "description": "Create a @{tile::Fire Patch} in this unit\u2019s space. This unit and all allies occupying or adjacent to @{tile:Fire Patch:Fire Patches} regain 20% HP. For one turn, create a @{tile::Fire Patch} in the space of any foe that targets a unit occupying a @{tile::Fire Patch}.",
+      "requires": "Reason C-B",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 4,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "fire"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Energy Flux",
+      "description": "Each foe within three spaces must pay 5 SP or a @{tile::Lighting Arc} is created in their space for one turn. Each ally within three spaces regains an equal dividend of this art\u2019s cost added to the total SP paid (round up).",
+      "requires": "Reason C-B",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 5,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "lighting"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Cryotherapy",
+      "description": "Allies adjacent to @{tile:Ice Block:Ice Blocks} regain HP equal to 1 + user\u2019s Mag/2. If this healing restores an ally to full HP, that ally may create an @{tile::Ice Block} in an adjacent space.",
+      "requires": "Reason C-B",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 6,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "ice",
+        "healing"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Rising Light",
+      "description": "Force metamagic; on hit, after combat, foes in a 3x3 X-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Pugni Variant:} X-shape is 5x5.",
+      "requires": "Reason C-B",
+      "compatible": "All (Skill Reason) (Tag `force`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 8,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "aoe",
+        "force"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Rising Wind",
+      "description": "Wind metamagic; on hit, after combat, foes in a 3x3 +-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Wind Variant:} +-shape is 5x5.",
+      "requires": "Reason C-B",
+      "compatible": "All (Skill Reason) (Tag `wind`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 8,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "aoe",
+        "wind"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Rising Flame",
+      "description": "Fire metamagic; on hit, after combat, foes in a 1x5 horizontal line centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Fire Variant:} Line is 1x9.",
+      "requires": "Reason C-B",
+      "compatible": "All (Skill Reason) (Tag `fire`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 8,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "aoe",
+        "fire"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Rising Thunder",
+      "description": "Lightning metamagic; on hit, after combat, foes in a 5x1 vertical line centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Thunder Variant:} Line is 9x1.",
+      "requires": "Reason C-B",
+      "compatible": "All (Skill Reason) (Tag `lightning`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 8,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "aoe",
+        "lightning"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
       "name": "Wind Wall",
       "description": "Starting from target tile, create one or more @{tile:Wind Torrent:Wind Torrents} (at most 1 per 5 Mag) in connecting tiles for one turn.",
       "requires": "Any (Reason C) (Reason B)",
@@ -5399,6 +5854,71 @@ const definitions = {
         "wall",
         "condition",
         "fire"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Rising Frost",
+      "description": "Ice metamagic; on hit, after combat, foes in a 3x3 reverse S-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Blizzard Variant:} Shape is a 3x3 ring.",
+      "requires": "Reason C-B",
+      "compatible": "All (Skill Reason) (Tag `ice`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 8,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "aoe",
+        "ice"
+      ],
+      "hidden": false,
+      "type": "Reason",
+      "rank": "C-B"
+    },
+    {
+      "name": "Slipstream",
+      "description": "During this phase, @{tile:Wind Torrent:Wind Torrents} tiles cost 0 movement to traverse for allied units.",
+      "requires": "Reason C-B",
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tiles": 0,
+        "spcost": 0,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
+        "tactical",
+        "wind"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5511,7 +6031,7 @@ const definitions = {
       "name": "Above and Beyond",
       "description": "Use a gambit that costs zero EP and doesn\u2019t have the Measured tag immediately before or after a different gambit. @{style:italic:(}@{gambit::Regroup}@{style:italic: cancels the second gambit if used before.)}",
       "requires": "Authority D",
-      "compatible": "All (Not (Tag `measured`)) (Modifier `epcost` `0`) (Not (Name `Counter`))",
+      "compatible": "All (Not (Tag `measured`)) (== (Modifier `epcost`) 0) (Not (Name `Counter`))",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -5870,6 +6390,31 @@ const definitions = {
       "rank": "C"
     },
     {
+      "name": "Dual Strike R",
+      "description": "@{const:ap:AP 2}; unit\u2019s sheltered or adjacent ally may pay 3 SP to make the follow-up with their equipped weapon as though they were in this unit\u2019s space. Unit\u2019s adjacent allies may also use this art as though they had it equipped. A unit may only make one attack as part of this art per phase.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "requires": "Riding C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Riding",
+      "rank": "C"
+    },
+    {
       "name": "Rally Dex +8",
       "description": "Apply @{const:gbp:[Dex +8]} to target ally for 1 turn or if target is a battalion unit, instead restore 8 EP to that battalion. Consumes half of an arts slot starting at level 15.",
       "requires": "Authority C",
@@ -5985,6 +6530,34 @@ const definitions = {
       ],
       "hidden": false,
       "type": "Authority",
+      "rank": "C"
+    },
+    {
+      "name": "Run Down",
+      "description": "Can only be equipped by Cavalry units, and can only be used while mounted. Unit swaps spaces with target foe after combat (if able). On hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn. ",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "requires": "Riding C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 15,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [
+        "condition",
+        "movement"
+      ],
+      "hidden": false,
+      "type": "Riding",
       "rank": "C"
     },
     {
@@ -6292,6 +6865,31 @@ const definitions = {
       "rank": "B"
     },
     {
+      "name": "Dual Strike F",
+      "description": "@{const:ap:AP 2}; unit\u2019s sheltered or adjacent ally may pay 3 SP to make the follow-up with their equipped weapon as though they were in this unit\u2019s space. Unit\u2019s adjacent allies may also use this art as though they had it equipped. A unit may only make one attack as part of this art per phase.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+      "requires": "Flying B",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 3
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Flying",
+      "rank": "B"
+    },
+    {
       "name": "Artillary Strike",
       "description": "Gambit Hit -30 and Gambit Range +1. This art may not be used with gambits that don\u2019t roll to hit.",
       "requires": "Authority B",
@@ -6323,7 +6921,7 @@ const definitions = {
       "name": "Assume Responsibility",
       "description": "Pay X SP, where X this gambit\u2019s EP cost. Do not pay EP to use this gambit. Can be used with one other meta gambit.",
       "requires": "Authority B",
-      "compatible": "All (Not (Modifier `epcost` 0)) (Not (Name `Counter`))",
+      "compatible": "All (<> (Modifier `epcost`) 0) (Not (Name `Counter`))",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -6584,6 +7182,7 @@ const definitions = {
     {
       "name": "Joust",
       "description": "Can only target foes within range to counter attack. Cavalry units have weapon advantage; units deal effective damage against Cavalry units.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
       "requires": "Cavalry A",
       "mttype": "else",
       "modifiers": {
@@ -6606,7 +7205,7 @@ const definitions = {
       ],
       "hidden": false,
       "rank": "A",
-      "type": "Generic"
+      "type": "Riding"
     },
     {
       "name": "Dragonbreath",
@@ -6898,30 +7497,6 @@ const definitions = {
       ],
       "hidden": false,
       "type": null,
-      "rank": ""
-    },
-    {
-      "name": "Lunge",
-      "description": "After combat, unit and target foe swap places. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
-      "requires": "None",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0
-      },
-      "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Generic",
       "rank": ""
     },
     {
@@ -7268,6 +7843,31 @@ const definitions = {
       "rank": ""
     },
     {
+      "name": "Knock Back",
+      "description": "After combat, target foe is pushed one space away. Cannot be used with weapons that have incompatible range.  Consumes half of an arts slot starting at level 10.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 1 (Modifier `maxrng`))",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
       "name": "Kick Up Dust",
       "description": "Can only be equipped by Cavalry units and can only be used while mounted. Choose one mode for this unit:\n- Move to an adjacent space.\n- Swap places with an adjacent ally.\nThen, create a @{tile::Wind Torrent} or a @{tile::Smoke Screen} for one turn in this unit\u2019s previous space (unit chooses); this unit cannot end its movement in that tile.",
       "requires": "Riding D+",
@@ -7297,30 +7897,6 @@ const definitions = {
       ],
       "hidden": false,
       "type": "",
-      "rank": ""
-    },
-    {
-      "name": "Drag Back",
-      "description": "After combat, unit moves one space back, and target foe moves into units previous space. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
-      "requires": "None",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0
-      },
-      "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Generic",
       "rank": ""
     },
     {
@@ -7447,6 +8023,31 @@ const definitions = {
       ],
       "hidden": false,
       "type": "",
+      "rank": ""
+    },
+    {
+      "name": "Suplex",
+      "description": "After combat, target foe is moved to the other side of unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 1 (Modifier `maxrng`))",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
       "rank": ""
     },
     {
@@ -7685,10 +8286,10 @@ const definitions = {
       "rank": "C-B"
     },
     {
-      "name": "Suplex",
-      "description": "After combat, target foe is moved to the other side of unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "name": "Lunge",
+      "description": "After combat, unit and target foe swap places. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 1 (Modifier `maxrng`))",
       "requires": "None",
-      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -7710,33 +8311,9 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Dual Strike R",
-      "description": "@{const:ap:AP 2}; unit\u2019s sheltered or adjacent ally may pay 3 SP to make the follow-up with their equipped weapon as though they were in this unit\u2019s space. Unit\u2019s adjacent allies may also use this art as though they had it equipped. A unit may only make one attack as part of this art per phase.",
-      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
-      "requires": "Riding C",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 3
-      },
-      "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Generic",
-      "rank": ""
-    },
-    {
-      "name": "Reel In",
-      "description": "After combat, target foe moves one space closer to unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "name": "Drag Back",
+      "description": "After combat, unit moves one space back, and target foe moves into units previous space. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 1 (Modifier `maxrng`))",
       "requires": "None",
       "mttype": "else",
       "modifiers": {
@@ -7747,8 +8324,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 2,
-        "maxrng": 2,
+        "minrng": 1,
+        "maxrng": 1,
         "tpcost": 0,
         "spcost": 0
       },
@@ -7882,6 +8459,31 @@ const definitions = {
       "rank": ""
     },
     {
+      "name": "Reel In",
+      "description": "After combat, target foe moves one space closer to unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 2 (Modifier `maxrng`))",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
+      "rank": ""
+    },
+    {
       "name": "Ice Breath",
       "description": "Can only be used while mounted. Create up to 3 @{tile:Ice Block:Ice Blocks} in empty spaces a 1x3 or 3x1 line starting from target adjacent tile.",
       "requires": "Any (Class `Wyvern Rider`) (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
@@ -7916,31 +8518,6 @@ const definitions = {
       "rank": ""
     },
     {
-      "name": "Dual Strike F",
-      "description": "@{const:ap:AP 2}; unit\u2019s sheltered or adjacent ally may pay 3 SP to make the follow-up with their equipped weapon as though they were in this unit\u2019s space. Unit\u2019s adjacent allies may also use this art as though they had it equipped. A unit may only make one attack as part of this art per phase.",
-      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
-      "requires": "Flying B",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 3
-      },
-      "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Generic",
-      "rank": ""
-    },
-    {
       "name": "Pivot",
       "description": "This unit moves to the opposite side of target ally; consumes half of an arts slot starting at level 10.",
       "requires": "None",
@@ -7969,6 +8546,31 @@ const definitions = {
       ],
       "hidden": false,
       "type": null,
+      "rank": ""
+    },
+    {
+      "name": "Push Aside",
+      "description": "After combat, target foe is moved one space in a direction perpendicular to unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+      "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 1 (Modifier `maxrng`))",
+      "requires": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Generic",
       "rank": ""
     },
     {
@@ -8030,30 +8632,6 @@ const definitions = {
       ],
       "hidden": true,
       "type": "Flying",
-      "rank": ""
-    },
-    {
-      "name": "Push Aside",
-      "description": "After combat, target foe is moved one space in a direction perpendicular to unit. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
-      "requires": "None",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0
-      },
-      "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Generic",
       "rank": ""
     },
     {
@@ -8144,33 +8722,6 @@ const definitions = {
       "hidden": true,
       "rank": "",
       "type": "Generic"
-    },
-    {
-      "name": "Run Down",
-      "description": "Can only be equipped by Cavalry units, and can only be used while mounted. Unit swaps spaces with target foe after combat (if able). On hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn. ",
-      "requires": "Riding C",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 3,
-        "prot": 0,
-        "resl": 0,
-        "hit": 15,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 3
-      },
-      "comment": "",
-      "tags": [
-        "condition",
-        "movement"
-      ],
-      "hidden": false,
-      "type": "Generic",
-      "rank": ""
     },
     {
       "name": "Galeforce",
@@ -8348,37 +8899,13 @@ const definitions = {
       "hidden": true,
       "rank": "",
       "type": ""
-    },
-    {
-      "name": "Knock Back",
-      "description": "After combat, target foe is pushed one space away. Cannot be used with weapons that have incompatible range.  Consumes half of an arts slot starting at level 10.",
-      "requires": "None",
-      "mttype": "else",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0
-      },
-      "comment": "",
-      "tags": [],
-      "hidden": false,
-      "type": "Generic",
-      "rank": ""
     }
   ],
   "abilities": [
     {
       "name": "Acrobat",
-      "description": "While unmounted, unit ignores movement costs and penalties for difficult terrain.",
-      "requires": "All (Any (Swords B) (Bows B)) (Armor B) (Level 20)",
+      "description": "While unmounted:\n\u2022 Unit ignores movement penalties from difficult terrain.\n\u2022 Unit ignores damage and status conditions from foe's AOE effects.\n\u2022 Unit has (Spd + 10)% chance to apply 2{const:gbp:[Mov +2]} to itself for one turn at the start of its phase.",
+      "requires": "All (Brawl C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -8403,6 +8930,12 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "rows": [
+        {
+          "expr": "unit|total|spd + 10 + other|trigger",
+          "roll": true
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
       "hidden": false
@@ -8581,7 +9114,7 @@ const definitions = {
     },
     {
       "name": "Alert Stance",
-      "description": "Grants Avo +15 in combat when foe initiates combat if unit took the wait action on their phase. A unit may only equip one \"Alert Stance\" ability at a time.",
+      "description": "Grants Avo +15 in combat when foe initiates combat.",
       "requires": "Flying B",
       "modifiers": {
         "hp": 0,
@@ -9101,8 +9634,8 @@ const definitions = {
     },
     {
       "name": "Armor March",
-      "description": "At the beginning of this unit's phase, if unit's HP \u2265 50% and unit is adjacent to one or more allied armor units, grants this unit and adjacent allied armor units @{const:gbp:[Mov +1]} and @{const:gbp:[Def +2]} for one turn.",
-      "requires": "All (Armor E) (Level 0)",
+      "description": "At the beginning of this unit's phase, if this unit is within 2 range of one or more allied Armor units, grants this unit and allied Armor units within 2 range @{const:gbp:[Mov +1]} for one turn.",
+      "requires": "All (Armor D) (Level 5)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -9129,8 +9662,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "condition",
-        "rework"
+        "condition"
       ],
       "hidden": false
     },
@@ -9682,7 +10214,7 @@ const definitions = {
     },
     {
       "name": "Axe Prowess 1",
-      "description": "Grants Hit +7, Avo +5, and Crit Avo +5 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
+      "description": "Grants Hit +7, Avo +5, Crit +7, and Crit Avo +5 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
       "requires": "Any (Axes E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -9717,7 +10249,7 @@ const definitions = {
     },
     {
       "name": "Axe Prowess 2",
-      "description": "Grants Hit +10, Avo +6, and Crit Avo +6 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +6, Crit +10, and Crit Avo +6 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
       "requires": "Any (Axes D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -9752,7 +10284,7 @@ const definitions = {
     },
     {
       "name": "Axe Prowess 3",
-      "description": "Grants Hit +13, Avo +7, and Crit Avo +7 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
+      "description": "Grants Hit +13, Avo +7, Crit +13, and Crit Avo +7 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
       "requires": "Any (Axes C+) (All (Armor C+) (ClassType Armor)) (All (Flying C+) (ClassType Flying)) (All (Riding C+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -9787,7 +10319,7 @@ const definitions = {
     },
     {
       "name": "Axe Prowess 4",
-      "description": "Grants Hit +16, Avo +8, and Crit Avo +8 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
+      "description": "Grants Hit +16, Avo +8, Crit +16, and Crit Avo +8 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
       "requires": "Any (All (Axes B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
@@ -9822,7 +10354,7 @@ const definitions = {
     },
     {
       "name": "Axe Prowess 5",
-      "description": "Grants Hit +20, Avo +10, and Crit Avo +10 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
+      "description": "Grants Hit +20, Avo +10, Crit +20, and Crit Avo +10 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
       "requires": "Any (All (Axes A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
@@ -10190,8 +10722,8 @@ const definitions = {
     },
     {
       "name": "Beheading Blow",
-      "description": "Grants Crit +30 in combat when unit initiates combat. @{tooltip:(note):Possibly nerf to +25 if too strong.}",
-      "requires": "All (Axes E) (Level 0)",
+      "description": "Grants Crit +20 in combat when unit initiates combat.",
+      "requires": "All (Axes C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -10257,6 +10789,41 @@ const definitions = {
         "personal"
       ],
       "hidden": true
+    },
+    {
+      "name": "Blessed Hand",
+      "description": "If this unit has a Faith tome equipped, this unit\u2019s SBAC\u2019s have a +20% chance to activate.",
+      "requires": "All (Faith C) (Level 8)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "trigger": "fill bothif(weapon|type|faith + art|type|faith, 20, 0)"
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "hand"
+      ],
+      "hidden": false
     },
     {
       "name": "Book & Chain",
@@ -10374,7 +10941,7 @@ const definitions = {
     },
     {
       "name": "Bow Prowess 1",
-      "description": "Grants Hit +6, Avo +6, and Crit Avo +5 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
+      "description": "Grants Hit +6, Avo +6, Crit +6, and Crit Avo +6 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
       "requires": "Any (Bows E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -10409,7 +10976,7 @@ const definitions = {
     },
     {
       "name": "Bow Prowess 2",
-      "description": "Grants Hit +8, Avo +8, and Crit Avo +6 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
+      "description": "Grants Hit +8, Avo +8, Crit +8, and Crit Avo +8 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
       "requires": "Any (Bows D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -10444,7 +11011,7 @@ const definitions = {
     },
     {
       "name": "Bow Prowess 3",
-      "description": "Grants Hit +10, Avo +10, and Crit Avo +7 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +10, Crit +10, and Crit Avo +10 when unit uses Bows.  A unit may only equip one \"Bow Prowess\" ability at a time.",
       "requires": "Any (All (Bows C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
       "modifiers": {
         "hp": 0,
@@ -10479,7 +11046,7 @@ const definitions = {
     },
     {
       "name": "Bow Prowess 4",
-      "description": "Grants Hit +12, Avo +12, and Crit Avo +8 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
+      "description": "Grants Hit +12, Avo +12, Crit +12, and Crit Avo +12 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
       "requires": "Any (All (Bows B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
@@ -10514,7 +11081,7 @@ const definitions = {
     },
     {
       "name": "Bow Prowess 5",
-      "description": "Grants Hit +15, Avo +15, and Crit Avo +10 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
+      "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
       "requires": "Any (All (Bows A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
@@ -11268,6 +11835,40 @@ const definitions = {
       "hidden": true
     },
     {
+      "name": "Chaintrigger",
+      "description": "When unit\u2019s SBAC triggers, apply @{condition:Lucky:[Lucky]} to this unit for one turn.",
+      "requires": "Level 8",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "hand"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Charge",
       "description": "Unit may initiate attacks as though it were in the space of its deployed battalion unit(s).",
       "requires": "Any (Authority B+) (Armor B+)",
@@ -11489,7 +12090,7 @@ const definitions = {
     {
       "name": "Commanding Blow",
       "description": "If this unit has initiated combat this phase, it may use a tactical art as an additional action this phase.",
-      "requires": "All (Any (Lances E) (Bows)) (Level 0)",
+      "requires": "All (Any (Lances C) (Bows C)) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -11516,8 +12117,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "blow",
-        "rework"
+        "blow"
       ],
       "hidden": false
     },
@@ -11869,6 +12469,40 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Cursed Hand",
+      "description": "If this unit has a Guile tome equipped, foes within 2 spaces are inflicted with a -20% SBAC activation chance. ",
+      "requires": "All (Guile C) (Level 8)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "hand"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Darting Blow",
       "description": "Grants Spd +5 in combat when unit initiates combat.",
       "requires": "All (Any (Swords C) (Lances C)) (Flying C) (Level 15)",
@@ -11906,7 +12540,7 @@ const definitions = {
     {
       "name": "Darting Stance",
       "description": "Grants Spd +4 in combat when foe initiates combat.",
-      "requires": "All (Swords B) (Level 15)",
+      "requires": "All (Swords C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -12423,7 +13057,7 @@ const definitions = {
     {
       "name": "Desperation",
       "description": "@{const:ap:AP +1} if unit\u2019s HP is \u2264 50% and unit\u2019s @{const:ap:AP = 2}.",
-      "requires": "All (Riding C+) (Level 15)",
+      "requires": "All (Any (Swords C+) (Riding C+)) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -13062,7 +13696,7 @@ const definitions = {
     },
     {
       "name": "Faith Prowess 1",
-      "description": "Grants Hit +5, Avo +7, and Crit Avo +5 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
+      "description": "Grants Hit +5, Avo +7, Crit +5, and Crit Avo +7, when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
       "requires": "Any (Faith E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -13097,7 +13731,7 @@ const definitions = {
     },
     {
       "name": "Faith Prowess 2",
-      "description": "Grants Hit +6, Avo +10, and Crit Avo +6 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
+      "description": "Grants Hit +6, Avo +10, Crit +6, and Crit Avo +10, when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
       "requires": "Any (Faith D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -13132,7 +13766,7 @@ const definitions = {
     },
     {
       "name": "Faith Prowess 3",
-      "description": "Grants Hit +7, Avo +13, and Crit Avo +7 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
+      "description": "Grants Hit +7, Avo +13, Crit +7, and Crit Avo +13, when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
       "requires": "Any (All (Faith C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
       "modifiers": {
         "hp": 0,
@@ -13167,7 +13801,7 @@ const definitions = {
     },
     {
       "name": "Faith Prowess 4",
-      "description": "Grants Hit +8, Avo +16, and Crit Avo +8 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
+      "description": "Grants Hit +8, Avo +16, Crit +8, and Crit Avo +16, when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
       "requires": "Any (All (Faith B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
@@ -13202,7 +13836,7 @@ const definitions = {
     },
     {
       "name": "Faith Prowess 5",
-      "description": "Grants Hit +10, Avo +20, and Crit Avo +10 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +20, Crit +10, and Crit Avo +20, when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
       "requires": "Any (All (Faith A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
@@ -13442,7 +14076,7 @@ const definitions = {
     {
       "name": "Fiendish Stance",
       "description": "Grants Mag +4 in combat when foe initiates combat.",
-      "requires": "All (Reason B) (Level 15)",
+      "requires": "All (Reason C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -13477,7 +14111,7 @@ const definitions = {
     {
       "name": "Fierce Stance",
       "description": "Grants Str +4 in combat when foe initiates combat.",
-      "requires": "All (Lances B) (Level 15)",
+      "requires": "All (Lances C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -13951,9 +14585,10 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "personal"
+        "personal",
+        "depricated"
       ],
-      "hidden": false,
+      "hidden": true,
       "omit": false
     },
     {
@@ -14302,7 +14937,7 @@ const definitions = {
     },
     {
       "name": "Guile Prowess 1",
-      "description": "Grants Hit +7, Avo +5, and Crit Avo +5 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
+      "description": "Grants Hit +7, Avo +5, Crit +7, and Crit Avo +5 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
       "requires": "Any (Guile E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -14337,7 +14972,7 @@ const definitions = {
     },
     {
       "name": "Guile Prowess 2",
-      "description": "Grants Hit +10, Avo +6, and Crit Avo +6 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +6, Crit +10, and Crit Avo +6 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
       "requires": "Any (Guile D+) (All (Armor D+) (ClassType Armor)) (All (Flying D+) (ClassType Flying)) (All (Riding D+) (ClassType Cavalry))",
       "modifiers": {
         "hp": 0,
@@ -14372,7 +15007,7 @@ const definitions = {
     },
     {
       "name": "Guile Prowess 3",
-      "description": "Grants Hit +13, Avo +7, and Crit Avo +7 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
+      "description": "Grants Hit +13, Avo +7, Crit +13, and Crit Avo +7, when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
       "requires": "Any (All (Guile C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
       "modifiers": {
         "hp": 0,
@@ -14407,7 +15042,7 @@ const definitions = {
     },
     {
       "name": "Guile Prowess 4",
-      "description": "Grants Hit +16, Avo +8, and Crit Avo +8 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
+      "description": "Grants Hit +16, Avo +8, Crit +16, and Crit Avo +8, when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
       "requires": "Any (All (Guile B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
       "modifiers": {
         "hp": 0,
@@ -14442,7 +15077,7 @@ const definitions = {
     },
     {
       "name": "Guile Prowess 5",
-      "description": "Grants Hit +20, Avo +10, and Crit Avo +10 when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
+      "description": "Grants Hit +20, Avo +10, Crit +20, and Crit Avo +10, when unit uses Guile. A unit may only equip one \"Guile Prowess\" ability at a time.",
       "requires": "Any (All (Guile A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
       "modifiers": {
         "hp": 0,
@@ -14649,7 +15284,7 @@ const definitions = {
     {
       "name": "Harrying Blow",
       "description": "If unit initiated combat at Range = 1 while mounted, then on hit, after combat, apply @{condition:Taunted:[Taunted]} to target foe for one turn.",
-      "requires": "Any (Riding C+) (Flying C+)",
+      "requires": "All (Any (Riding C) (Flying C)) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -15166,6 +15801,75 @@ const definitions = {
       "hidden": true
     },
     {
+      "name": "Improvisationalist",
+      "description": "This unit can equip weapons ignoring rank requirements.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Indirect Kiss",
+      "description": "The first time this unit is targeted by an ally on each phase, apply @{condition:Favor:[Favor]} to that ally; the first time this unit targets an ally each phase, apply @{condition:Favor:[Favor]} to this unit.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false,
+      "omit": false
+    },
+    {
       "name": "Inspiration",
       "description": "Before unit or adjacent ally enters combat, (Luc + 10)% chance to grant unit or adjacent ally @{const:ap:AP \u2265 2} in the combat.",
       "requires": "All (Authority D) (Level 5)",
@@ -15478,7 +16182,7 @@ const definitions = {
     },
     {
       "name": "Lance Prowess 1",
-      "description": "Grants Hit +6, Avo +6, and Crit Avo +5 when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
+      "description": "Grants Hit +6, Avo +6, Crit +6, and Crit Avo +6, when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
       "requires": "Lances E+",
       "modifiers": {
         "hp": 0,
@@ -15513,7 +16217,7 @@ const definitions = {
     },
     {
       "name": "Lance Prowess 2",
-      "description": "Grants Hit +8, Avo +8, and Crit Avo +6 when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
+      "description": "Grants Hit +8, Avo +8, Crit +8, and Crit Avo +8, when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
       "requires": "Lances D+",
       "modifiers": {
         "hp": 0,
@@ -15548,7 +16252,7 @@ const definitions = {
     },
     {
       "name": "Lance Prowess 3",
-      "description": "Grants Hit +10, Avo +10, and Crit Avo +7 when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +10, Crit +10, and Crit Avo +10, when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
       "requires": "All (Lances C+) (Level 5)",
       "modifiers": {
         "hp": 0,
@@ -15583,7 +16287,7 @@ const definitions = {
     },
     {
       "name": "Lance Prowess 4",
-      "description": "Grants Hit +12, Avo +12, and Crit Avo +8 when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
+      "description": "Grants Hit +12, Avo +12, Crit +12, and Crit Avo +12, when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
       "requires": "All (Lances B+) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -15618,7 +16322,7 @@ const definitions = {
     },
     {
       "name": "Lance Prowess 5",
-      "description": "Grants Hit +15, Avo +15, and Crit Avo +10 when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
+      "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15, when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
       "requires": "All (Lances A+) (Level 25)",
       "modifiers": {
         "hp": 0,
@@ -16007,7 +16711,7 @@ const definitions = {
     {
       "name": "Logistical Support",
       "description": "Can only be equipped by Flying units. While mounted, healing received by allies within Range 2 is increased by 5 while unit\u2019s level \u2264 10 or 10 if unit\u2019s level > 10. ",
-      "requires": "Flying C",
+      "requires": "All (Flying C) (Level 8)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -16035,6 +16739,40 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "healing"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Lone Wanderer",
+      "description": "Grants Avo +15 in combat when foe initiates combat.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "personal"
       ],
       "hidden": false
     },
@@ -18819,6 +19557,181 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Omniprowess 1",
+      "description": "Grants Hit +6, Avo +6, Crit +6, and Crit Avo +6. Unit cannot equip \"Prowess\" abilities. A unit may only equip one \"Omniprowess\" ability at a time.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 6,
+        "avo": 6,
+        "crit": 6,
+        "cravo": 6,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Omniprowess 2",
+      "description": "Grants Hit +8, Avo +8, Crit +8, and Crit Avo +8. Unit cannot equip \"Prowess\" abilities. A unit may only equip one \"Omniprowess\" ability at a time.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 8,
+        "avo": 8,
+        "crit": 8,
+        "cravo": 8,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Omniprowess 3",
+      "description": "Grants Hit +10, Avo +10, Crit +10, and Crit Avo +10. Unit cannot equip \"Prowess\" abilities. A unit may only equip one \"Omniprowess\" ability at a time.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 10,
+        "crit": 10,
+        "cravo": 10,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Omniprowess 4",
+      "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15. Unit cannot equip \"Prowess\" abilities. A unit may only equip one \"Omniprowess\" ability at a time.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 15,
+        "avo": 15,
+        "crit": 15,
+        "cravo": 15,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Omniprowess 4",
+      "description": "Grants Hit +12, Avo +12, Crit +12, and Crit Avo +12. Unit cannot equip \"Prowess\" abilities. A unit may only equip one \"Omniprowess\" ability at a time.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 12,
+        "avo": 12,
+        "crit": 12,
+        "cravo": 12,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "prowess",
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Opportunit\u00e9",
       "description": "Before unit enters combat, (Dex + 20)% chance to grant unit @{const:ap:AP \u2265 2} in combat.",
       "requires": "All (Any (Reason D) (Guile D) (Swords D) (Bows D)) (Level 5)",
@@ -18861,7 +19774,7 @@ const definitions = {
     },
     {
       "name": "Other Prowess 1",
-      "description": "Grants Hit +6, Avo +6, and Crit Avo +5 when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+      "description": "Grants Hit +6, Avo +6, Crit +6, and Crit Avo +6, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
       "requires": "Other E+",
       "modifiers": {
         "hp": 0,
@@ -18896,7 +19809,7 @@ const definitions = {
     },
     {
       "name": "Other Prowess 2",
-      "description": "Grants Hit +8, Avo +8, and Crit Avo +6 when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+      "description": "Grants Hit +8, Avo +8, Crit +8, and Crit Avo +8, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
       "requires": "Other D+",
       "modifiers": {
         "hp": 0,
@@ -18931,7 +19844,7 @@ const definitions = {
     },
     {
       "name": "Other Prowess 3",
-      "description": "Grants Hit +10, Avo +10, and Crit Avo +7 when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +10, Crit +10, and Crit Avo +10, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
       "requires": "All (Other C+) (Level 5)",
       "modifiers": {
         "hp": 0,
@@ -18966,7 +19879,7 @@ const definitions = {
     },
     {
       "name": "Other Prowess 4",
-      "description": "Grants Hit +12, Avo +12, and Crit Avo +8 when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+      "description": "Grants Hit +12, Avo +12, Crit +12, and Crit Avo +12, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
       "requires": "All (Other B+) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -19001,7 +19914,7 @@ const definitions = {
     },
     {
       "name": "Other Prowess 5",
-      "description": "Grants Hit +15, Avo +15, and Crit Avo +10 when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+      "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
       "requires": "All (Other A+) (Level 25)",
       "modifiers": {
         "hp": 0,
@@ -19368,7 +20281,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "hand"
       ],
       "hidden": false
     },
@@ -19409,7 +20323,7 @@ const definitions = {
     {
       "name": "Rangefinder",
       "description": "Can only be equipped by Flying units. While mounted, adjacent foes have @{condition:Spotted:[Spotted +1]}.",
-      "requires": "Flying C+",
+      "requires": "All (Flying C+) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -19614,7 +20528,7 @@ const definitions = {
     },
     {
       "name": "Reason Prowess 1",
-      "description": "Grants Hit +7, Avo +5, and Crit Avo +5 when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
+      "description": "Grants Hit +7, Avo +5, Crit +7, and Crit Avo +5, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
       "requires": "Reason E+",
       "modifiers": {
         "hp": 0,
@@ -19649,7 +20563,7 @@ const definitions = {
     },
     {
       "name": "Reason Prowess 2",
-      "description": "Grants Hit +10, Avo +6, and Crit Avo +6 when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +6, Crit +10, and Crit Avo +6, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
       "requires": "Reason D+",
       "modifiers": {
         "hp": 0,
@@ -19684,7 +20598,7 @@ const definitions = {
     },
     {
       "name": "Reason Prowess 3",
-      "description": "Grants Hit +13, Avo +7, and Crit Avo +7 when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
+      "description": "Grants Hit +13, Avo +7, Crit +13, and Crit Avo +7, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
       "requires": "All (Reason C+) (Level 5)",
       "modifiers": {
         "hp": 0,
@@ -19719,7 +20633,7 @@ const definitions = {
     },
     {
       "name": "Reason Prowess 4",
-      "description": "Grants Hit +16, Avo +8, and Crit Avo +8 when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
+      "description": "Grants Hit +16, Avo +8, Crit +16, and Crit Avo +8, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
       "requires": "All (Reason B+) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -19754,7 +20668,7 @@ const definitions = {
     },
     {
       "name": "Reason Prowess 5",
-      "description": "Grants Hit +20, Avo +10, and Crit Avo +10 when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
+      "description": "Grants Hit +20, Avo +10, Crit +20, and Crit Avo +10, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
       "requires": "All (Reason A+) (Level 25)",
       "modifiers": {
         "hp": 0,
@@ -19919,6 +20833,40 @@ const definitions = {
         "mov": 0
       },
       "comment": "Zeva Aurelia's peronsal.",
+      "tags": [
+        "personal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Reckless Rage",
+      "description": "Before this unit rolls an attack, it may pay 5 HP to apply @{condition:Broken:[Broken]} on hit. Armor units are affected by @{condition:Broken:[Broken]} when it is applied by this ability.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Ragnar Rahman's personal",
       "tags": [
         "personal"
       ],
@@ -20165,7 +21113,7 @@ const definitions = {
     {
       "name": "Scattering Blow",
       "description": "If unit initiated combat, any status conditions applied to target foe during or after combat are also applied to foes adjacent to target foe.",
-      "requires": "Riding C+",
+      "requires": "All (Riding C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -20336,8 +21284,8 @@ const definitions = {
     },
     {
       "name": "Seal Movement",
-      "description": "After combat, apply @{const:gbp:[Mov -1]} to target foe for one turn. @{tooltip:(note):Possibly buff to [Mov -2] it too weak.}",
-      "requires": "All (Bows E) (Level 0)",
+      "description": "On hit, after combat, apply @{const:gbp:[Mov -2]} to target foe for one turn.",
+      "requires": "All (Bows C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -20365,7 +21313,7 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "seal",
-        "rework"
+        "condition"
       ],
       "hidden": false
     },
@@ -20849,7 +21797,7 @@ const definitions = {
     {
       "name": "Stone Stance",
       "description": "When foe initiates combat, after that combat, regain HP equal to half of damage taken by unit during combat.",
-      "requires": "All (Any (Axes C+) (Brawl C+)) (Level 10)",
+      "requires": "All (Brawling C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -20946,6 +21894,41 @@ const definitions = {
       "tags": [
         "condition",
         "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Strategic Hand",
+      "description": "This unit may choose to disallow its SBACs from activating before their next combat this turn. If they choose to do so and a SBAC would have activated, this unit gains @{condition:Ace in the Hole:[Ace in the Hole]}.\n\nCannot be equipped with another \u201cHand\u201d ability.",
+      "requires": "All (Any (Bows C) (Reason C) (Riding C)) (Level 11)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "trigger": "fill bothif(weapon|type|faith + art|type|faith, 20, 0)"
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "hand"
       ],
       "hidden": false
     },
@@ -21158,7 +22141,7 @@ const definitions = {
     },
     {
       "name": "Sword Prowess 1",
-      "description": "Grants Hit +5, Avo +7, and Crit Avo +5 when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
+      "description": "Grants Hit +5, Avo +7, Crit +5, and Crit Avo +7, when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
       "requires": "Swords E+",
       "modifiers": {
         "hp": 0,
@@ -21193,7 +22176,7 @@ const definitions = {
     },
     {
       "name": "Sword Prowess 2",
-      "description": "Grants Hit +6, Avo +10, and Crit Avo +6 when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
+      "description": "Grants Hit +6, Avo +10, Crit +6, and Crit Avo +10, when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
       "requires": "Swords D+",
       "modifiers": {
         "hp": 0,
@@ -21228,7 +22211,7 @@ const definitions = {
     },
     {
       "name": "Sword Prowess 3",
-      "description": "Grants Hit +7, Avo +13, and Crit Avo +7 when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
+      "description": "Grants Hit +7, Avo +13, Crit +7, and Crit Avo +13, when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
       "requires": "All (Swords C+) (Level 5)",
       "modifiers": {
         "hp": 0,
@@ -21263,7 +22246,7 @@ const definitions = {
     },
     {
       "name": "Sword Prowess 4",
-      "description": "Grants Hit +8, Avo +16, and Crit Avo +8 when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
+      "description": "Grants Hit +8, Avo +16, Crit +8, and Crit Avo +16, when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
       "requires": "All (Swords B+) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -21298,7 +22281,7 @@ const definitions = {
     },
     {
       "name": "Sword Prowess 5",
-      "description": "Grants Hit +10, Avo +20, and Crit Avo +10 when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
+      "description": "Grants Hit +10, Avo +20, Crit +10, and Crit Avo +20, when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
       "requires": "All (Swords A+) (Level 25)",
       "modifiers": {
         "hp": 0,
@@ -21707,6 +22690,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Trapped Hand",
+      "description": "Whenever this unit rolls a SBAC during combat, choose to force foe to roll instead using their appropriate stat + 50, if applicable. On a success, this unit\u2019s stat based activation ability activates.\n\nCannot be equipped with another \u201cHand\u201d ability.",
+      "requires": "All (Any (Swords C) (Brawl C) (Flying C)) (Level 11)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "trigger": "fill bothif(weapon|type|faith + art|type|faith, 20, 0)"
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "hand"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Trapper",
       "description": "Items and tactical arts that create tiles have Range +1 and cost 1 SP (tactical arts) or TP (items) less.",
       "requires": "Any (Class `Witch Hunter`) (Class `Monster Hunter`)",
@@ -21913,7 +22931,7 @@ const definitions = {
     {
       "name": "Uncanny Blow",
       "description": "Grants Hit +20 in combat when unit initiates combat.",
-      "requires": "All (Any (Reason B) (Faith B)) (Riding B) (Level 20)",
+      "requires": "All (Any (Axes C) (Brawl C) (Reason C) (Faith C)) (Riding C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -22014,7 +23032,7 @@ const definitions = {
     {
       "name": "Vibrant Spirit",
       "description": "When unit targets an ally, apply @{const:gbp:[Hit +10]} and @{const:gbp:[Crit +10]} to target ally for one turn. If target is a battalion unit, instead restore 5 EP to that battalion.",
-      "requires": "Authority B+",
+      "requires": "All (Authority C) (Level 8)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -23950,7 +24968,7 @@ const definitions = {
       "name": "Steel Shield",
       "description": "No special effect.",
       "requires": "None",
-      "price": 500,
+      "price": 1500,
       "type": "Shield",
       "modifiers": {
         "hp": 0,
@@ -25052,7 +26070,7 @@ const definitions = {
       "price": 900,
       "mttype": "else",
       "modifiers": {
-        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged + weapon|has_attribute|Stabilizer), 0, -3)",
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged) + (weapon|type|bows) * (weapon|has_attribute|Stabilizer), 0, -3)",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -25424,7 +26442,7 @@ const definitions = {
       "price": 1250,
       "mttype": "else",
       "modifiers": {
-        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged + weapon|has_attribute|Stabilizer), 0, -3)",
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged) + (weapon|type|bows) * (weapon|has_attribute|Stabilizer), 0, -3)",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -25820,7 +26838,7 @@ const definitions = {
       "price": 450,
       "mttype": "else",
       "modifiers": {
-        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged + weapon|has_attribute|Stabilizer), 0, -3)",
+        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged) + (weapon|type|bows) * (weapon|has_attribute|Stabilizer), 0, -3)",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -27812,31 +28830,31 @@ const definitions = {
       "tier": "Advanced",
       "requires": "All (Any (Swords C+) (Bows C+)) (Required (Armor C+)) (Required (Level 15))",
       "abilities": [
-        "Duelist's Stance",
+        "Alert Stance",
         "Sword Advantage",
         "Bow Advantage",
         "Positioning"
       ],
       "arts": [],
       "growths": {
-        "hp": 30,
-        "str": 20,
+        "hp": 25,
+        "str": 15,
         "mag": 15,
-        "dex": 20,
+        "dex": 10,
         "spd": 20,
         "def": 15,
-        "res": 5,
-        "lck": 15
+        "res": 10,
+        "lck": 20
       },
       "modifiers": {
-        "hp": 5,
+        "hp": 15,
         "str": 4,
         "mag": 2,
-        "dex": 5,
-        "spd": 5,
+        "dex": 2,
+        "spd": 3,
         "def": 2,
-        "res": 1,
-        "lck": 2,
+        "res": 2,
+        "lck": 4,
         "mov": 4
       },
       "mount": null,
@@ -34694,7 +35712,7 @@ const definitions = {
     {
       "name": "Pyrotechnics",
       "type": "Other",
-      "description": "On hit, apply @{condition:Break:[Break]} to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability). Has a 30% chance to break after each use.",
+      "description": "On hit, apply @{condition:Broken:[Broken]} to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability). Has a 30% chance to break after each use.",
       "requires": "None",
       "rank": "E",
       "price": 1000,
@@ -35273,6 +36291,39 @@ const definitions = {
   ],
   "conditions": [
     {
+      "name": "Ace in the Hole",
+      "description": "In combat, unit may choose to have one of its SBACs to function with a 100% success rate and this condition ends.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "bonus"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Aegis",
       "description": "Affected unit reduces the damage taken from Faith, Guile, Reason, Bows by 50%. Can stack with @{ability::Aegis}.",
       "modifiers": {
@@ -35475,6 +36526,39 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "bonus",
+        "penalty"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Broken",
+      "description": "Affected unit cannot counterattack during the combat that this condition was applied. Unit cannot counterattack during its next combat and this condition is removed. This condition cannot be extended or transferred by other effects.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
         "penalty"
       ],
       "hidden": false
@@ -35723,7 +36807,7 @@ const definitions = {
     },
     {
       "name": "Divine Protection",
-      "description": "Affected unit is also affected by @{condition:Warded:[Warded]} and ignores pure negative status modifiers. When the condition ends, so does @{condition:Warded:[Warded]}.",
+      "description": "Affected unit is also affected by @{condition:Warded:[Warded]} and ignores negative statistic modifiers in combat and from conditions. When the condition ends, so does @{condition:Warded:[Warded]}.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -35752,6 +36836,39 @@ const definitions = {
       "tags": [
         "bonus",
         "interaction"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Doomed",
+      "description": "Affected unit is defeated when this condition\u2019s duration expires.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "penalty"
       ],
       "hidden": false
     },
@@ -35991,6 +37108,39 @@ const definitions = {
       "tags": [
         "bonus",
         "movement"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Lucky",
+      "description": "When affected unit would roll 1d100, it may choose to roll a second 1d100 and keep either value rolled, then end this condition.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "bonus"
       ],
       "hidden": false
     },

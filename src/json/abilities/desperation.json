@@ -1,7 +1,7 @@
 {
     "name": "Desperation",
     "description": "@{const:ap:AP +1} if unit’s HP is ≤ 50% and unit’s @{const:ap:AP = 2}.",
-    "requires": "All (Riding C+) (Level 15)",
+    "requires": "All (Any (Swords C+) (Riding C+)) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

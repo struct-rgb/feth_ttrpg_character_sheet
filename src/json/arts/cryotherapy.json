@@ -1,0 +1,34 @@
+{
+  "name": "Cryotherapy",
+  "description": "Allies adjacent to @{tile:Ice Block:Ice Blocks} regain HP equal to 1 + user’s Mag/2. If this healing restores an ally to full HP, that ally may create an @{tile::Ice Block} in an adjacent space.",
+  "requires": "Reason C-B",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": 6,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "ice",
+    "healing"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C-B"
+}

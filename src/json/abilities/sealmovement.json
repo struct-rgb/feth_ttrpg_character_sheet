@@ -1,7 +1,7 @@
 {
     "name": "Seal Movement",
-    "description": "After combat, apply @{const:gbp:[Mov -1]} to target foe for one turn. @{tooltip:(note):Possibly buff to [Mov -2] it too weak.}",
-    "requires": "All (Bows E) (Level 0)",
+    "description": "On hit, after combat, apply @{const:gbp:[Mov -2]} to target foe for one turn.",
+    "requires": "All (Bows C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -33,6 +33,6 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["seal", "rework"],
+    "tags": ["seal", "condition"],
     "hidden": false
 }

@@ -1,6 +1,6 @@
 {
     "name": "Divine Protection",
-    "description": "Affected unit is also affected by @{condition:Warded:[Warded]} and ignores pure negative status modifiers. When the condition ends, so does @{condition:Warded:[Warded]}.",
+    "description": "Affected unit is also affected by @{condition:Warded:[Warded]} and ignores negative statistic modifiers in combat and from conditions. When the condition ends, so does @{condition:Warded:[Warded]}.",
 
     "modifiers": {
         "hp": 0,

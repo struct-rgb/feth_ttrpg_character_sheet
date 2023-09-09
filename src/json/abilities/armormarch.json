@@ -1,7 +1,7 @@
 {
     "name": "Armor March",
-    "description": "At the beginning of this unit's phase, if unit's HP ≥ 50% and unit is adjacent to one or more allied armor units, grants this unit and adjacent allied armor units @{const:gbp:[Mov +1]} and @{const:gbp:[Def +2]} for one turn.",
-    "requires": "All (Armor E) (Level 0)",
+    "description": "At the beginning of this unit's phase, if this unit is within 2 range of one or more allied Armor units, grants this unit and allied Armor units within 2 range @{const:gbp:[Mov +1]} for one turn.",
+    "requires": "All (Armor D) (Level 5)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -33,6 +33,6 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["condition", "rework"],
+    "tags": ["condition"],
     "hidden": false
 }

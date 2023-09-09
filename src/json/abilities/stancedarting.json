@@ -1,7 +1,7 @@
 {
     "name": "Darting Stance",
     "description": "Grants Spd +4 in combat when foe initiates combat.",
-    "requires": "All (Swords B) (Level 15)",
+    "requires": "All (Swords C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

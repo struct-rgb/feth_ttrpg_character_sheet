@@ -1,7 +1,7 @@
 {
     "name": "Fiendish Stance",
     "description": "Grants Mag +4 in combat when foe initiates combat.",
-    "requires": "All (Reason B) (Level 15)",
+    "requires": "All (Reason C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

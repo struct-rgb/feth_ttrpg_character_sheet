@@ -1,6 +1,6 @@
 {
   "name": "Rushing Blow",
-  "description": "Avo +10; after combat, unit moves to opposite side of target foe (if able).",
+  "description": "Avo +10; after combat, unit moves to opposite side of target foe (if able). @{const:variant:Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
   "requires": "Brawl D",
   "compatible": "Skill Brawl",
   "mttype": "else",

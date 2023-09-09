@@ -812,6 +812,24 @@ class CombatArt extends AttackFeature {
 	}
 
 	static compatibles(object) {
+
+		const relative = (symbol, func) => {
+			return (op, ...args) => {
+				if (args.length < 2) throw Error(
+					`Expected two or more arguments for '${symbol}' predicate.`
+				);
+
+				let x = Number(args.pop());
+				
+				while (args.length) {
+					const y = Number(args.pop());
+					if (!func(x, y)) return false;
+					x = y;
+				}
+				return true;
+			};
+		};
+
 		return {
 			"All": (op, ...args) => args.reduce((x, y) => x && y),
 			"Any": (op, ...args) => args.reduce((x, y) => x || y),
@@ -847,9 +865,17 @@ class CombatArt extends AttackFeature {
 				}
 				return false;
 			},
-			"Modifier": (op, field, value) => {
-				return object.weapon.modifier(field) == Number(value);
+			"Modifier": (op, field) => {
+				return object.weapon.modifier(field);
 			},
+
+			">": relative(">", (x, y) => x > y),
+			"<": relative("<", (x, y) => x < y),
+			"==": relative("==", (x, y) => x == y),
+			"<>": relative("<>", (x, y) => x != y),
+			">=": relative(">=", (x, y) => x >= y),
+			"<=": relative("<=", (x, y) => x <= y),
+			
 			"Text": (op, ...args) => {
 				for (let arg of args) {
 					if (object.weapon.description.includes(arg)) return true;
@@ -876,13 +902,21 @@ class CombatArt extends AttackFeature {
 				}
 
 				return other;
-			},
+			}
 		};
 	}
 
-	compatible(weapon) {
-		if (!(weapon instanceof Weapon)) {
-			throw new Error("expected Weapon as argument");
+	compatible(feature) {
+		if (
+			!(feature instanceof Weapon)
+				&&
+			!(feature instanceof Gambit)
+				&&
+			!(feature instanceof CombatArt)
+		) {
+			throw new Error(
+				"expected Weapon, Art, or Gambit as argument"
+			);
 		}
 
 

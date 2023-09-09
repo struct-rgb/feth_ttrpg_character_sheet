@@ -1,0 +1,27 @@
+{
+  "name": "Electrostasis" ,
+  "description": "Lightning metamagic; create a @{tile::Lightning Arc} in target foe’s space after combat for one turn. @{const:variant:Lightning Wall Variant:} The initial tile that you target may be occupied by a foe; restore an equal dividend of the total SP paid to each ally adjacent to a created @{tile::Lightning Arc} (round up).",
+  "requires": "Reason C",
+  "compatible": "All (Skill Reason) (Tag `lightning`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 7
+  },
+  "comment": "",
+  "tags": [
+    "wall", "lightning", "variant"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C"
+}

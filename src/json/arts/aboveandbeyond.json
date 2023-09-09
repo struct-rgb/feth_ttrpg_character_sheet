@@ -2,7 +2,7 @@
   "name": "Above and Beyond",
   "description": "Use a gambit that costs zero EP and doesn’t have the Measured tag immediately before or after a different gambit. @{style:italic:(}@{gambit::Regroup}@{style:italic: cancels the second gambit if used before.)}",
   "requires": "Authority D",
-  "compatible": "All (Not (Tag `measured`)) (Modifier `epcost` `0`) (Not (Name `Counter`))",
+  "compatible": "All (Not (Tag `measured`)) (== (Modifier `epcost`) 0) (Not (Name `Counter`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Logistical Support",
     "description": "Can only be equipped by Flying units. While mounted, healing received by allies within Range 2 is increased by 5 while unit’s level ≤ 10 or 10 if unit’s level > 10. ",
-    "requires": "Flying C",
+    "requires": "All (Flying C) (Level 8)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

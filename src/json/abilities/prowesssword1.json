@@ -1,6 +1,6 @@
 {
     "name": "Sword Prowess 1",
-    "description": "Grants Hit +5, Avo +7, and Crit Avo +5 when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
+    "description": "Grants Hit +5, Avo +7, Crit +5, and Crit Avo +7, when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
     "requires": "Swords E+",
     "modifiers": {
         "hp": 0,

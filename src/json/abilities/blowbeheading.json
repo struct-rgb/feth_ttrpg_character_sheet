@@ -1,7 +1,7 @@
 {
     "name": "Beheading Blow",
-    "description": "Grants Crit +30 in combat when unit initiates combat. @{tooltip:(note):Possibly nerf to +25 if too strong.}",
-    "requires": "All (Axes E) (Level 0)",
+    "description": "Grants Crit +20 in combat when unit initiates combat.",
+    "requires": "All (Axes C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

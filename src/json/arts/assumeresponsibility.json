@@ -2,7 +2,7 @@
   "name": "Assume Responsibility",
   "description": "Pay X SP, where X this gambit’s EP cost. Do not pay EP to use this gambit. Can be used with one other meta gambit.",
   "requires": "Authority B",
-  "compatible": "All (Not (Modifier `epcost` 0)) (Not (Name `Counter`))",
+  "compatible": "All (<> (Modifier `epcost`) 0) (Not (Name `Counter`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

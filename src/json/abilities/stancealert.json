@@ -1,6 +1,6 @@
 {
     "name": "Alert Stance",
-    "description": "Grants Avo +15 in combat when foe initiates combat if unit took the wait action on their phase. A unit may only equip one \"Alert Stance\" ability at a time.",
+    "description": "Grants Avo +15 in combat when foe initiates combat.",
     "requires": "Flying B",
     "modifiers": {
         "hp": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Rangefinder",
     "description": "Can only be equipped by Flying units. While mounted, adjacent foes have @{condition:Spotted:[Spotted +1]}.",
-    "requires": "Flying C+",
+    "requires": "All (Flying C+) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

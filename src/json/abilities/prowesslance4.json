@@ -1,6 +1,6 @@
 {
     "name": "Lance Prowess 4",
-    "description": "Grants Hit +12, Avo +12, and Crit Avo +8 when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
+    "description": "Grants Hit +12, Avo +12, Crit +12, and Crit Avo +12, when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
     "requires": "All (Lances B+) (Level 15)",
     "modifiers": {
         "hp": 0,

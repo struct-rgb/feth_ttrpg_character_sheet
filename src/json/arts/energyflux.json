@@ -1,0 +1,34 @@
+{
+  "name": "Energy Flux",
+  "description": "Each foe within three spaces must pay 5 SP or a @{tile::Lighting Arc} is created in their space for one turn. Each ally within three spaces regains an equal dividend of this art’s cost added to the total SP paid (round up).",
+  "requires": "Reason C-B",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": 5,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "lighting"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C-B"
+}

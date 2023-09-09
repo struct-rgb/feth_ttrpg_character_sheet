@@ -2531,7 +2531,13 @@ class Sheet {
 				about : wrap(
 					"The unit's chance to score a hit."
 				),
-				expr  : "unit|total|dex + unit|modifier|hit",
+				expr  : `
+					unit|total|dex
+						+ unit|modifier|hit
+						+ fill range_penalty(
+							unit|total|maxrng - weapon|total|maxrng
+						)
+				`,
 			});
 
 			add({
@@ -2756,9 +2762,9 @@ class Sheet {
 		}
 
 		add({
-			name  : `gambit|is_active|Counter`,
+			name  : "gambit|is_active|Counter",
 			about : wrap(
-				`Evaluates to 1 if Counter in an active gambit, `,
+				"Evaluates to 1 if Counter in an active gambit, ",
 				"and otherwise evaluates to 0."
 			),
 			expr  : ((env) => {
@@ -2938,7 +2944,7 @@ class Sheet {
 			about : wrap(
 				"The battalion's total charm statistic."
 			),
-			expr  : funcsum((env) => env.read("unit|charm"), gambitfunc("cha")),
+			expr  : funcsum((env) => env.read("battalion|charm"), gambitfunc("cha")),
 		});
 
 		add({
@@ -3002,7 +3008,7 @@ class Sheet {
 			about : wrap(
 				"The battalion's hit statistic."
 			),
-			expr  : "unit|charm + battalion|modifier|hit + battalion|modifier|ghit",
+			expr  : "battalion|charm + battalion|modifier|hit + battalion|modifier|ghit",
 		});
 
 		add({
@@ -3010,7 +3016,7 @@ class Sheet {
 			about : wrap(
 				"The battalion's endurance statistic."
 			),
-			expr  : "unit|charm + battalion|total|end",
+			expr  : "battalion|charm + battalion|total|end",
 		});
 
 		add({
@@ -3018,7 +3024,7 @@ class Sheet {
 			about : wrap(
 				"The battalion's charm statistic."
 			),
-			expr  : "unit|charm",
+			expr  : "battalion|charm",
 		});
 
 		add({

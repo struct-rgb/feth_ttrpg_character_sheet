@@ -1,7 +1,7 @@
 {
     "name": "Scattering Blow",
     "description": "If unit initiated combat, any status conditions applied to target foe during or after combat are also applied to foes adjacent to target foe.",
-    "requires": "Riding C+",
+    "requires": "All (Riding C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

@@ -17,6 +17,13 @@
     "tpcost": 0,
     "spcost": 4
   },
+  "rows": [
+    {
+      "name": "AP",
+      "expr": "fill affirm([First Attack?], ceil((2 die 6)/2) - 1, 0)",
+      "roll": false
+    }
+  ],
   "comment": "",
   "tags": [],
   "hidden": false,

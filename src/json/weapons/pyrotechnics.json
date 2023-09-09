@@ -1,7 +1,7 @@
 {
   "name": "Pyrotechnics",
   "type": "Other",
-  "description": "On hit, apply @{condition:Break:[Break]} to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability). Has a 30% chance to break after each use.",
+  "description": "On hit, apply @{condition:Broken:[Broken]} to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability). Has a 30% chance to break after each use.",
   "requires": "None",
   "rank": "E",
   "price": 1000,

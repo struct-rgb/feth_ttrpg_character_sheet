@@ -216,7 +216,7 @@
     {
       "define": [
         "template bowhit(base)",
-        "  base + other|range_penalty|prompt",
+        "  base",
         "end"
       ],
       "about": [
@@ -339,6 +339,82 @@
         "Generates the appriate tile number scaling for the Reason wall spells."
       ],
       "args": []
+    },
+    {
+      "define": [
+        "template range_penalty_1()",
+        "  ask [Range Penalty?]",
+        "    ; [Range +0] {+ 0}",
+        "    , [Range +1] {-20}",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Max +1)."
+      ],
+      "args": []
+    },
+    {
+      "define": [
+        "template range_penalty_2()",
+        "  ask [Range Penalty?]",
+        "  ; [Range +0] {+ 0}",
+        "  , [Range +1] {-20}",
+        "  , [Range +2] {-40}",
+        " end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Max +2)."
+      ],
+      "args": []
+    },
+    {
+      "define": [
+        "template range_penalty_3()",
+        "  ask [Range Penalty?]",
+        "  ; [Range +0] {+ 0}",
+        "  , [Range +1] {-20}",
+        "  , [Range +2] {-40}",
+        "  , [Further]  {-60}",
+        " end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Max +3 or more)."
+      ],
+      "args": []
+    },
+    {
+      "define": [
+        "template range_penalty(difference)",
+        "  metaif builtins|macrogen == 1 then",
+        "    metaif difference <= 0",
+        "      then 0",
+        "    elseif difference == 1",
+        "      then fill range_penalty_1()",
+        "    elseif difference == 2",
+        "      then fill range_penalty_2()",
+        "      else fill range_penalty_3()",
+        "    end",
+        "  else",
+        "    if     difference <= 0",
+        "      then 0",
+        "    elseif difference == 1",
+        "      then fill range_penalty_1()",
+        "    elseif difference == 2",
+        "      then fill range_penalty_2()",
+        "      else fill range_penalty_3()",
+        "    end",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Generates a prompt for Range Penalty (Variable Range)."
+      ],
+      "args": [
+        "typically the difference between weapon max range and unit max range"
+      ]
     }
   ],
   "tooltips" : {

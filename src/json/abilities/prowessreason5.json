@@ -1,6 +1,6 @@
 {
     "name": "Reason Prowess 5",
-    "description": "Grants Hit +20, Avo +10, and Crit Avo +10 when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
+    "description": "Grants Hit +20, Avo +10, Crit +20, and Crit Avo +10, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
     "requires": "All (Reason A+) (Level 25)",
     "modifiers": {
         "hp": 0,

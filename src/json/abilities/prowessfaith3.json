@@ -1,6 +1,6 @@
 {
     "name": "Faith Prowess 3",
-    "description": "Grants Hit +7, Avo +13, and Crit Avo +7 when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
+    "description": "Grants Hit +7, Avo +13, Crit +7, and Crit Avo +13, when unit uses Faith. A unit may only equip one \"Faith Prowess\" ability at a time.",
     "requires": "Any (All (Faith C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
     "modifiers": {
         "hp": 0,

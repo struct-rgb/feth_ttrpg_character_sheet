@@ -1,6 +1,6 @@
 {
     "name": "Bow Prowess 4",
-    "description": "Grants Hit +12, Avo +12, and Crit Avo +8 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
+    "description": "Grants Hit +12, Avo +12, Crit +12, and Crit Avo +12 when unit uses Bows. A unit may only equip one \"Bow Prowess\" ability at a time.",
     "requires": "Any (All (Bows B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
     "modifiers": {
         "hp": 0,

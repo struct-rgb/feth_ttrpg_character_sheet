@@ -1,6 +1,7 @@
 {
-  "name": "Lunge",
-  "description": "After combat, unit and target foe swap places. Cannot be used with weapons that have incompatible range. Consumes half of an arts slot starting at level 10.",
+  "name": "Knock Back",
+  "description": "After combat, target foe is pushed one space away. Cannot be used with weapons that have incompatible range.  Consumes half of an arts slot starting at level 10.",
+  "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`)) (<= (Modifier `minrng`) 1 (Modifier `maxrng`))",
   "requires": "None",
   "mttype": "else",
   "modifiers": {

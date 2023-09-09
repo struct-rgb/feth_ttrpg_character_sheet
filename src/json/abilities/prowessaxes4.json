@@ -1,6 +1,6 @@
 {
     "name": "Axe Prowess 4",
-    "description": "Grants Hit +16, Avo +8, and Crit Avo +8 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
+    "description": "Grants Hit +16, Avo +8, Crit +16, and Crit Avo +8 when unit uses Axes. A unit may only equip one \"Axe Prowess\" ability at a time.",
     "requires": "Any (All (Axes B+) (Level 15)) (All (Armor B+) (ClassType Armor) (Level 15)) (All (Flying B+) (ClassType Flying) (Level 15)) (All (Riding B+) (ClassType Cavalry) (Level 15))",
     "modifiers": {
         "hp": 0,

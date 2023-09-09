@@ -1,7 +1,7 @@
 {
     "name": "Uncanny Blow",
     "description": "Grants Hit +20 in combat when unit initiates combat.",
-    "requires": "All (Any (Reason B) (Faith B)) (Riding B) (Level 20)",
+    "requires": "All (Any (Axes C) (Brawl C) (Reason C) (Faith C)) (Riding C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,
