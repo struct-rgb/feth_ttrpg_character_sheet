@@ -15944,7 +15944,7 @@ const definitions = {
     },
     {
       "name": "Item Expertise",
-      "description": "This unit gains the following benefits:\n \u2022 Ignore break chances.\n  \u2022 Items with Range 0 have Range +1\n* Consumable items and nonspell weapons cost 1 less TP.\n \u2022 This unit has an additional inventory slot that can only hold consumable items.",
+      "description": "This unit gains the following benefits:\n \u2022 Ignore break chances.\n  \u2022 Items with Range 0 have Range +1\n \u2022 Consumable items and nonspell weapons cost 1 less TP.\n \u2022 This unit has an additional inventory slot that can only hold consumable items.",
       "requires": "Any (Class Apothecary) (Class Quartermaster)",
       "modifiers": {
         "hp": 0,
@@ -23341,7 +23341,7 @@ const definitions = {
     },
     {
       "name": "Wrestler",
-      "description": "On hit, after combat at Range \u2264 1, (Dex or Luc + 20)% chance this unit may choose one of the following:\n- Move target foe up to two spaces in a cardinal direction (you choose).\n- Apply @{condition:Rattled:[Rattled]} to target foe for one turn.\n- Apply @{condition:[Taunted] to target foe for one turn.\n-Apply @{const:gbp:[Str -3]} to target foe for one turn.",
+      "description": "On hit, after combat at Range \u2264 1, (Dex or Luc + 20)% chance this unit may choose one of the following:\n \u2022 Move target foe up to two spaces in a cardinal direction (you choose).\n \u2022 Apply @{condition:Rattled:[Rattled]} to target foe for one turn.\n \u2022 Apply @{condition::[Taunted]} to target foe for one turn.\n \u2022 Apply @{const:gbp:[Str -3]} to target foe for one turn.",
       "requires": "All (Brawl D+) (Level 8)",
       "modifiers": {
         "hp": 0,
@@ -23371,7 +23371,7 @@ const definitions = {
         {
           "name": "Wrestler",
           "when": "if unit|total|minrng <= 1 then 1 else 0 end",
-          "expr": "20 + unit|charm",
+          "expr": "20 + unit|charm + other|trigger",
           "roll": true
         }
       ],
@@ -25315,7 +25315,7 @@ const definitions = {
       "name": "Blunt",
       "type": "Any",
       "description": "Grants weapon [Effective against Armor Units] and Hit -10. Disabled on spells and on weapons with Range > 1.",
-      "rank": 1,
+      "rank": 2,
       "price": 450,
       "mttype": "else",
       "modifiers": {
@@ -25921,7 +25921,7 @@ const definitions = {
       "name": "Long Blade",
       "type": "Any",
       "description": "Grants weapon [Effective against Cavalry] and -5 Hit. Disabled on spells and on weapons with Range > 1.",
-      "rank": 1,
+      "rank": 2,
       "price": 550,
       "mttype": "else",
       "modifiers": {

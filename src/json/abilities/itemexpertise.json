@@ -1,6 +1,6 @@
 {
     "name": "Item Expertise",
-    "description": "This unit gains the following benefits:\n • Ignore break chances.\n  • Items with Range 0 have Range +1\n* Consumable items and nonspell weapons cost 1 less TP.\n • This unit has an additional inventory slot that can only hold consumable items.",
+    "description": "This unit gains the following benefits:\n • Ignore break chances.\n  • Items with Range 0 have Range +1\n • Consumable items and nonspell weapons cost 1 less TP.\n • This unit has an additional inventory slot that can only hold consumable items.",
     "requires": "Any (Class Apothecary) (Class Quartermaster)",
     "modifiers": {
         "hp": 0,

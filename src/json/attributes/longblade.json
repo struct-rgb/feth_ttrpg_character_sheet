@@ -2,7 +2,7 @@
     "name": "Long Blade",
     "type": "Any",
     "description": "Grants weapon [Effective against Cavalry] and -5 Hit. Disabled on spells and on weapons with Range > 1.",
-    "rank": 1,
+    "rank": 2,
     "price": 550,
 
     "mttype": "else",
