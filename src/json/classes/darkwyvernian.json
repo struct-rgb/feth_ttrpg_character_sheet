@@ -4,7 +4,7 @@
     "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": ["Reason Advantage", "Guile Advantage", "Canto", "Savage Blow"],
+    "abilities": [["Reason Advantage", "Guile Advantage"], "Canto", "Savage Blow"],
     "arts": [],
     "growths": {
         "hp": 25,

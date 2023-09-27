@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Dominic",
-            "when": "weapon|type|spell",
+            "name": "Null TP",
+            "when": "item|type|spell",
             "expr": 20,
             "roll": true
         }

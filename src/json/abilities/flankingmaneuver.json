@@ -17,7 +17,7 @@
         "prot": 0,
         "resl": 0,
         "hit": [
-            "fill bothif(",
+            "fill when(",
             "  not(unit|total|maxrng - 1),",
             "  ask [Flanking?], No {0}; Yes {15} end,",
             "  0",

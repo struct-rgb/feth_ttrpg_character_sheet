@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["cost", "for axes", "for swords", "for lances"],
+    "tags": ["cost", "for axes", "for swords", "for lances", "explain"],
     "hidden": false
 }

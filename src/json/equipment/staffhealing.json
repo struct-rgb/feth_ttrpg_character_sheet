@@ -14,7 +14,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill bothif(unit|tagged|healing * unit|total|mttype|mag, 10, 0)",
+        "mt": "fill when(unit|tagged|healing * unit|total|mttype|mag, 10, 0)",
         "prot": 0,
         "resl": 0,
         "hit": 0,

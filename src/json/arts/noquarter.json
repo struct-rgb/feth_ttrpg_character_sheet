@@ -2,7 +2,7 @@
   "name": "No Quarter",
   "description": "Gambit Mt +2; deal lethal damage equal to half of damage dealt to foe in target tile to each of foe in target tile’s other HP bars, its employer, and its battalion. @{style:italic:(Units with multiple HP bars aren’t defeated until all bars are reduced to 0.)}",
   "requires": "Authority A",
-  "compatible": "All (Not (Tag `no might`)) (Not (Tag `no hit`)) (Not (Name `Counter`))",
+  "compatible": "Match Gambit (All (Not (Tag `no might`)) (Not (Tag `no hit`)) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

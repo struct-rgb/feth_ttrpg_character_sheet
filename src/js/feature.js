@@ -5,6 +5,7 @@
 
 /* global Expression */
 /* global Polish */
+/* global Macros */
 
 /* global ConfigEnum */
 /* global Filter */
@@ -20,7 +21,7 @@
 /* TODO this directive is to condense the many
  * violations that not having this here makes below
  * I probably don't want to use defintions globally,
- * but until I decide to chance this, this todo will
+ * but until I decide to change this, this todo will
  * remain here to remind me of the various uses below.
  */
  
@@ -596,63 +597,62 @@ class Preset {
 				})
 			),
 			content : [
-
-				element("strong", "Class Type"), element("br"),
+				element("strong", "Offense"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
-				new Filter.Toggle("Armor", false, (feature) => {
-					return feature.tagged("Armor");
+				new Filter.Toggle("Power", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[0] == "Power";
 				}),
-				new Filter.Toggle("Cavalry", false, (feature) => {
-					return feature.tagged("Cavalry");
+				new Filter.Toggle("Balance", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[0] == "Balance";
 				}),
-				new Filter.Toggle("Flying", false, (feature) => {
-					return feature.tagged("Flying");
-				}),
-				element("br"),
-				new Filter.Toggle("Infantry", false, (feature) => {
-					return feature.tagged("Infantry");
-				}),
-				new Filter.Toggle("Monster", false, (feature) => {
-					return feature.tagged("Monster");
-				}),
-				new Filter.Toggle("Other", false, (feature) => {
-					return feature.tagged("Monster");
+				new Filter.Toggle("Speed", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[0] == "Speed";
 				}),
 
 				Filter.Group.END,
 
-				element("br"), element("strong", "Weapon Type"), element("br"),
-				new Filter.Toggle("Caster", false, (feature) => {
-					return feature.tagged("Caster");
+				element("br"), element("strong", "Defense"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Defense", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[1] == "Defense";
 				}),
-				new Filter.Toggle("Martial", false, (feature) => {
-					return feature.tagged("Martial");
+				new Filter.Toggle("Balance", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[1] == "Balance";
 				}),
-				new Filter.Toggle("Pure", false, (feature) => {
-					const martial = feature.tagged("Martial");
-					const caster  = feature.tagged("Caster");
-					return (
-						(caster && !martial)
-							||	
-						(!caster && martial)
-					);
+				new Filter.Toggle("Resistance", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[1] == "Resistance";
 				}),
 
-				element("br"), element("strong", "Other"), element("br"),
+				Filter.Group.END,
 
-				new Filter.Toggle("Rework", false, (feature) => {
-					return feature.tagged("rework");
+				element("br"), element("strong", "Chance"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Dexterity", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[2] == "Dexterity";
+				}),
+				new Filter.Toggle("Balance", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[2] == "Balance";
+				}),
+				new Filter.Toggle("Luck", false, (feature) => {
+					const  fields = feature.name.split("/");
+					return fields.length == 3 && fields[2] == "Luck";
 				}),
 
-				new Filter.Toggle("Hide", true, (feature) => {
-					return !feature.hidden;
-				}),
-
-				new Filter.Toggle("Depricate", true, (feature) => {
-					return !feature.tagged("depricated");
-				}),
+				Filter.Group.END,
 			],
 		});
 	}
@@ -776,7 +776,7 @@ class AttackFeature extends Feature {
  * An extension of {@link Feature} that adds a skill rank attribute, additional
  * optional damage scaling based off of a stat, and boolean tags.
  */
-class CombatArt extends AttackFeature {
+class Art extends AttackFeature {
 
 	static kind = "arts";
 
@@ -784,10 +784,14 @@ class CombatArt extends AttackFeature {
 
 	constructor(template, compiler, predicator) {
 		super(template, compiler, predicator);
-		this.compatible = template.compatible || "False";
+
+		let value = template.compatible || "False";
+		if (value instanceof Array) value = value.join("\n");
+
+		this.compatible = value;
 
 		// If this is not a super() call, freeze the object.
-		if (new.target === CombatArt) {
+		if (new.target === Art) {
 			Object.freeze(this);
 		}
 	}
@@ -836,37 +840,37 @@ class CombatArt extends AttackFeature {
 			"Not": (op, arg) => !arg,
 			"Skill": (op, ...args) => {
 				for (let arg of args) {
-					if (object.weapon.type == arg) return true;
+					if (object.target.type == arg) return true;
 				}
 				return false;
 			},
 			"Name": (op, ...args) => {
 				for (let arg of args) {
-					if (object.weapon.name == arg) return true;
+					if (object.target.name == arg) return true;
 				}
 				return false;
 			},
 			"Tag": (op, ...args) => {
 				let has = true;
 				for (let arg of args) {
-					has = has && object.weapon.tagged(arg);
+					has = has && object.target.tagged(arg);
 				}
 				return has;
 			},
 			"Element": (op, ...args) => {
 				for (let arg of args) {
-					if (object.weapon.description.includes(arg)) return true;
+					if (object.target.description.includes(arg)) return true;
 				}
 				return false;
 			},
 			"Requires": (op, ...args) => {
 				for (let arg of args) {
-					if (object.weapon.requires.symbols.has(arg)) return true;
+					if (object.target.requires.symbols.has(arg)) return true;
 				}
 				return false;
 			},
 			"Modifier": (op, field) => {
-				return object.weapon.modifier(field);
+				return object.target.modifier(field);
 			},
 
 			">": relative(">", (x, y) => x > y),
@@ -878,13 +882,13 @@ class CombatArt extends AttackFeature {
 			
 			"Text": (op, ...args) => {
 				for (let arg of args) {
-					if (object.weapon.description.includes(arg)) return true;
+					if (object.target.description.includes(arg)) return true;
 				}
 				return false;
 			},
 			"AoE": (op, ...args) => {
 				for (let arg of args) {
-					if (object.weapon.aoe == arg) return true;
+					if (object.target.aoe == arg) return true;
 				}
 				return false;
 			},
@@ -892,12 +896,26 @@ class CombatArt extends AttackFeature {
 			"False": (op, ...args) => false,
 			"Match": (op, ...args) => {
 
+				// If odd, use the last expression as a default.
 				const odd   = args.length & 1;
 				const other = odd ? Boolean(args.pop()) : false;
-				const pairs = args.chunk(2); 
 
-				for (let [cls, val] of pairs) {
-					const name = object.weapon.constructor.name;
+				// Process the other arguments as pairs.
+				for (let [cls, val] of args.chunk(2)) {
+					
+					const name = object.target.constructor.name;
+
+					// Special case for arts specifically.
+					if (name == "Art") {
+						// target is an art, but is it tactical?
+						const tactic = object.target.isTactical();
+						if (tactic ? cls == "Tactic" : cls == "Art")
+							return val;
+
+						continue; // Skip the normal case.
+					}
+
+					// Normal case, just check the type.
 					if (name == cls) return val;
 				}
 
@@ -908,18 +926,30 @@ class CombatArt extends AttackFeature {
 
 	compatible(feature) {
 		if (
-			!(feature instanceof Weapon)
+			!(feature instanceof Item)
 				&&
 			!(feature instanceof Gambit)
 				&&
-			!(feature instanceof CombatArt)
+			!(feature instanceof Art)
 		) {
 			throw new Error(
-				"expected Weapon, Art, or Gambit as argument"
+				"expected Item, Art, or Gambit as argument"
 			);
 		}
 
 
+	}
+
+	isTactical() {
+		return this.tagged("tactical");
+	}
+
+	isCombo() {
+		return this.tagged("combo");
+	}
+
+	isNormal() {
+		return !(this.tagged("combo") || this.tagged("tactical"));
 	}
 
 	static select(trigger) {
@@ -1172,15 +1202,15 @@ class CombatArt extends AttackFeature {
 /**
  * An extension of {@link Feature} that adds a skill rank attribute
  */
-class Weapon extends AttackFeature {
+class Item extends AttackFeature {
 
-	static kind = "weapons";
+	static kind = "items";
 
 	static DEFAULT = "Unarmed";
 
 	/**
-	 * Generate a weapon's {@link CategoryElement} title
-	 * @return {string} title for this weapon's {@link CategoryElement}
+	 * Generate a item's {@link CategoryElement} title
+	 * @return {string} title for this item's {@link CategoryElement}
 	 */
 	title() {
 
@@ -1501,6 +1531,106 @@ class Class extends Feature {
 		}
 	}
 
+	/**
+	 * This expects the state object created by MultiActiveCategory
+	 */
+	validate(category, items) {
+
+		/* Assume this is the special case for loading a save. */
+		if (typeof category == "object" && items == null) {
+			for (let each of ["abilities", "arts"]) {
+				if (!this.validate(each, category[each])) return false;
+			}
+			return true;
+		}
+
+		/* This is programmer error and as such warrants an exception. */
+		if (!["arts", "abilities"].includes(category)) throw Error(
+			"category must be either 'arts' or 'abilities'"
+		);
+
+		/* Defensive guard against malformed input. */
+		if (items == null) return false;
+
+		/* Validate active arts separate from all else...*/
+		if (category == "arts") {
+			const active   = items.filter(a => a.active).map(a => Art.get(a));
+
+			/* Note: "tactical" and "combo" must be mutually exclusive. */
+			const tactical = active.count(x => x.tagged("tactical"));
+			const combo    = active.count(x => x.tagged("combo"));
+
+			switch (active.length) {
+			case 0:
+			case 1:
+				/* These two cases are always valid. */
+				break;
+			case 2: 
+				/* Has to be one of:
+				 * tactical == 1 && other == 1
+				 * tactical == 1 && combo == 1
+				 * combo    == 1 && other == 1
+				 * combo    == 2
+				 * 
+				 * These fail (and also fail 3):
+				 * other    == 2
+				 * tactical == 2
+				 */
+				if (tactical == 1 || combo >= 1) break;
+				/* fallthrough */
+			case 3:
+				/* Has to be one of:
+				 * tactical == 1 && combo == 1 && other == 1
+				 * tactical == 1 && combo == 2
+				 */
+				if (tactical == 1 && combo >= 1) break;
+				/* fallthrough */
+			default:
+				/* this is fixable, so we will do so */
+				for (let item of items) item.active = false;
+			}
+		}
+
+		/* Now we validate class features. */
+		const here = new Set(
+			items.filter(x => x.group == "class").map(x => x.id)
+		);
+
+		/* Make sure only item from the list is in the set. */
+		const only = (list, set) => {
+			let result = false;
+			for (let each of list) {
+				if (set.has(each)){
+					if (result) {
+						return false;
+					} else {
+						result = true;
+					}
+				}
+			}
+			return result;
+		};
+
+		/* Check to make sure that each feature is present. */
+		for (let each of this[category]) {
+			if (each instanceof Array) {
+				/* Ensure one options is present. */
+				if (!only(each, here)) return false;
+				for (let one of each) here.delete(one); 
+			} else {
+				/* Ensure this required feature is present. */
+				if (!here.has(each)) return false;
+				here.delete(each);
+			}
+		}
+
+		/* Make sure there are no additional 'class' features. */
+		if (here.size != 0) return false;
+
+		/* The state is valid. */
+		return true;
+	}
+
 	modifierForUI(stat, sign=false, dead=false) {
 
 		/* test explicitly for membership */
@@ -1669,23 +1799,6 @@ class Class extends Feature {
 
 				Filter.Group.END,
 
-				// element("br"), element("strong", "Weapon Type"), element("br"),
-				// new Filter.Toggle("Caster", false, (feature) => {
-				// 	return feature.type.includes("Caster");
-				// }),
-				// new Filter.Toggle("Martial", false, (feature) => {
-				// 	return feature.type.includes("Martial");
-				// }),
-				// new Filter.Toggle("Pure", false, (feature) => {
-				// 	const martial = feature.type.includes("Martial");
-				// 	const caster  = feature.type.includes("Caster");
-				// 	return (
-				// 		(caster && !martial)
-				// 			||	
-				// 		(!caster && martial)
-				// 	);
-				// }),
-
 				element("br"), element("strong", "Skill"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
@@ -1758,7 +1871,7 @@ class Ability extends Feature {
 
 	constructor(template, compiler, predicator) {
 		super(template, compiler, predicator);
-		this.weapon = template.weapon || "";
+		// this.weapon = template.weapon || "";
 
 		if (new.target === Ability) {
 			Object.freeze(this);
@@ -2961,10 +3074,10 @@ function deadfn(table, link, text) {
 const dead = parser(deadfn, (merge) => element("span", merge));
 
 const LOOKUP = new Map([
-	[ "weapon"    , Weapon    ],
+	[ "item"      , Item    ],
 	[ "condition" , Condition ],
 	[ "ability"   , Ability   ],
-	[ "art"       , CombatArt ],
+	[ "art"       , Art ],
 	[ "attribute" , Attribute ],
 	[ "tile"      , Tile      ],
 	[ "equipment" , Equipment ],
@@ -3216,7 +3329,7 @@ function textfn(table, link, text, userdata) {
 
 	/* special behavior for style tooltips */
 	if (table == "style") {
-		return text; // TODO make this actually style the text
+		return text; // TODO make this actually style the text in markdown
 	}
 
 	/* here we do the lookup */
@@ -3334,7 +3447,7 @@ function totl(node, top=true) {
 	case "Class":
 		return `Class is ${args[0]}`;
 
-	case "Weapon":
+	case "Item":
 	case "Equipment":
 		return `${args[0]} equipped`;
 
@@ -3428,9 +3541,9 @@ function toul(node, dead=false, top=true) {
 			? element("strong", ["Class is ", args[0]])
 			: element("strong", "Class");
 
-	case "Weapon":
+	case "Item":
 		return element("span",
-			[(dead ? deadfn : linkfn)("weapon", args[0], args[0]), element("strong", " equipped")]
+			[(dead ? deadfn : linkfn)("item", args[0], args[0]), element("strong", " equipped")]
 		);
 
 	case "Equipment":
@@ -3555,9 +3668,13 @@ class TagAdder {
 					this._span.appendChild(this._map.get(data).root);
 					this._tips.firstChild.remove();
 					this._tips.appendChild(TagAdder.TIPS[
-						data == "tooltip" ? "custom" :
-						data == "style"   ? "style"  :
-						data == "const"   ? "const"  : "combo"
+						data == "tooltip"
+							? "custom"
+							: data == "style"
+								? "style"
+								: data == "const"
+									? "const"
+									: "combo"
 					]);
 				})
 			}
@@ -3571,7 +3688,7 @@ class TagAdder {
 				.map(e => { e[1] = new Thorax(e[1]); return e; })
 		);
 
-		this._span = element("span", this._map.get("weapon").root);
+		this._span = element("span", this._map.get("item").root);
 
 		this._tool = element("input", {
 			class : ["simple-border", "selectable", "adder-field"],
@@ -3609,7 +3726,7 @@ class TagAdder {
 					},
 				}),
 				wrap(
-					"Add your own tooltips to your custom weapon description; ",
+					"Add your own tooltips to your custom item description; ",
 					"mouse over the highlighted text to the right to select ",
 					"a feature to add."
 				)
@@ -3672,7 +3789,7 @@ return {
 /* exported Ability */
 /* exported Class */
 /* exported CombartArt */
-/* exported Weapon */ 
+/* exported Item */ 
 /* exported Equipment */
 /* exported Attribute */
 /* exported Condition */

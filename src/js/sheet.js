@@ -16,6 +16,9 @@
 /* global Grade */
 /* global uniqueLabel */
 /* global BigButton */
+/* global chain */
+/* global Theme */
+/* global Toggle */
 
 /* global Expression */
 /* global Polish */
@@ -28,8 +31,8 @@
 
 /* global Ability */
 /* global Class */
-/* global CombatArt */
-/* global Weapon */
+/* global Art */
+/* global Item */
 /* global Equipment */
 /* global Attribute */
 /* global AttackFeature */
@@ -38,41 +41,34 @@
 /* global Battalion */
 /* global Adjutant */
 /* global Preset */
+/* global Gambit */
 
 /* global Legacy */
 
 /* global Skills */
 /* global Stats */
-/* global Weapons */
+/* global Items */
 /* global Characters */
 
 /* global CategoryModel */
 /* global MultiActiveCategory */
 /* global SingleActiveCategory */
 
+/* global Forecast   */
+
 /* global Battalions */
 
+/* TODO this directive is to condense the many
+ * violations that not having this here makes below
+ * I probably don't want to use defintions globally,
+ * but until I decide to change this, this todo will
+ * remain here to remind me of the various uses below.
+ */
+ 
+/* global definitions */
+
+
 const V3 = true;
-
-class Theme {
-
-	static list = [
-		new Theme("Classic", "The classic look and feel.", "./src/css/light.css"),
-		new Theme("Dark", "The ever popular alternative.", "./src/css/dark.css"),
-		new Theme("Golden Deer", "A bad theme for the best house.", "./src/css/deer.css"),
-		new Theme("Boneless", "For when you want to play as the protagonist.", "./src/css/boneless.css"),
-		new Theme("Golden Fear", "Boneless mode but yellow.", "./src/css/golden_fear.css"),
-		new Theme("Golden Egg", "Serious attempt at a gold theme.", "./src/css/golden_egg.css"),
-		new Theme("Document", "The most minimal theme.", "./src/css/document.css"),
-		new Theme("Toast", "Designed by Toast, for Toast.", "./src/css/toast.css"),
-	];
-
-	constructor(name, description, stylesheet) {
-		this.name        = name;
-		this.description = description;
-		this.stylesheet  = stylesheet;
-	}
-}
 
 class AutosaveConfiguration {
 
@@ -270,18 +266,15 @@ class Buildables {
 			this.select = this._sf._select;
 			this.root.appendChild(this._sf.root); 
 		} else {
-			const select = element("select");
-			select.classList.add("simple-border");
-
-			for (let template of options.templates) {
-				const option       = element("option");
-				option.value       = template;
-				option.textContent = template;
-				select.appendChild(option);
-			}
-
-			this.select = select;
-			this.root.appendChild(this.select);
+			this.root.appendChild(this.select = element("select", {
+				class   : ["simple-border"],
+				content : options.templates.map(template =>
+					element("option", {
+						content : template,
+						attrs   : {value: template},
+					})
+				),
+			}));
 		}
 
 		const getTitle = ((x) => {
@@ -313,9 +306,17 @@ class Buildables {
 		});
 	}
 
+	get activeID() {// TODO see if this can be replaced with this.category.getActive()
+		return this.category.getActive() ? this._activeID : null;
+	}
+
+	set activeID(value) {
+		this._activeID = value;
+	}
+
 	add() {
 		if (this.category.size > 0) {
-			this.map.set(this.activeID, this.model.export());
+			this.map.set(this._activeID, this.model.export());
 		}
 
 		const activeID = uniqueID();
@@ -328,22 +329,24 @@ class Buildables {
 		this.category.add(activeID);
 		this.category.toggleActive(activeID);
 
-		this.activeID = activeID;
+		this._activeID = activeID;
 
 		this.model.clear(this.select.value);
 	}
 
 	get active() {
-		return this.map.get(this.activeID);
+		return this.map.get(this._activeID);
 	}
 
 	change(key) {
-		
-		/* Guard against a stale activeID in importAll */
-		if (this.map.has(this.activeID))
-			this.map.set(this.activeID, this.model.export());
 
-		this.activeID = key;
+		// Nothing to do for a null key.
+		if (key == null) return key;
+		
+		// Guard against a stale activeID in importAll
+		this.sync();
+
+		this._activeID = key;
 		this.category.toggleActive(key);
 
 		this.model.import(this.map.get(key));
@@ -351,8 +354,13 @@ class Buildables {
 		return key;
 	}
 
+	sync() {
+		if (this.map.has(this._activeID))
+			this.map.set(this._activeID, this.model.export());
+	}
+
 	remove(key) {
-		if (key == this.activeID) {
+		if (key == this._activeID) {
 			alert("You cannot delete the active item.");
 			return;
 		}
@@ -368,11 +376,11 @@ class Buildables {
 
 	copy(key) {
 
-		key = key || this.activeID;
+		key = key || this._activeID;
 
 		const activeID = uniqueID();
 
-		const item = (key == this.activeID
+		const item = (key == this._activeID
 			? this.model.export()
 			: JSON.parse(JSON.stringify(this.map.get(key)))
 		);
@@ -412,6 +420,7 @@ class Buildables {
 
 		this.map.clear();
 		this.category.clear();
+		this._activeID = null;
 
 		for (let element in elements) {
 			this.map.set(element, this._updatefn(elements[element]));
@@ -543,6 +552,10 @@ class Sheet {
 		this.context(context, this.macros.varopts);
 		this.definez   = context;
 
+		this.runenv    = new Expression.Env(
+			Expression.Env.RUNTIME, this.definez
+		);
+
 		const predicates = {};
 		const predicator = new Polish.Compiler(predicates, new Set());
 		this.predicator  = predicator;
@@ -553,7 +566,7 @@ class Sheet {
 
 		/* set lookup tables for each feature class */
 		for (let each of [
-			Ability, Weapon, CombatArt, Equipment, Class, Attribute, Condition,
+			Ability, Item, Art, Equipment, Class, Attribute, Condition,
 			Tile, Battalion, Adjutant, Preset, Gambit
 		]) {
 			each.setLookupByName(data, compiler, predicator);
@@ -586,6 +599,39 @@ class Sheet {
 			this.stats.refresh();
 		};
 
+		const unequip = (type) => {
+
+			/* type should be "abilities" or "arts" */
+
+			return (category, key) => {
+				console.log("unequip", key);
+
+				/* get the element in questions from the category */
+				const element = category.element(key);
+				
+				/* either the classes abilites or arts array */
+				const array   = this.character.class[type];
+				
+				/* check if this element is a class ability/art */
+				const index   = array.findIndex(name => name == key);
+
+				/* element is a class ability listed as an equipped */
+				if (element.group == "equip" && index != -1) {
+					element.group       = "class";
+					element.reorderable = false;
+					element.hidden      = true;
+					element.removable   = false;
+
+					element.shiftForward(category.size);
+					element.shiftBackward(index);
+				} else {
+					category.delete(key);
+				}
+
+				this.stats.refresh();
+			};
+		};
+
 		this.tabs = {};
 
 		const myFeatureTitle = ((feature) => feature.title()); 
@@ -593,44 +639,12 @@ class Sheet {
 		const myTriggers     = ((feature) => feature.dependancies);
 
 		let   sidebook = new Notebook(equip_section);
-		let   inner    = new Notebook();
 
 		this.tabs.assign = sidebook;
 
-		/* Level Ups tab */
-
-		// inner.add("Deterministic", element("div", [
-		// 	element("input", {
-		// 		class : ["simple-border"],
-		// 		attrs : {
-		// 			type    : "button",
-		// 			value   : "Use Bases",
-		// 			onclick : (() => this.copy_point_buy())
-		// 		}
-		// 	}),
-		// 	element("input", {
-		// 		class : ["simple-border"],
-		// 		attrs : {
-		// 			type    : "button",
-		// 			value   : "Use Level",
-		// 			onclick : (() => this.copy_point_buy_stats())
-		// 		}
-		// 	}),
-		// 	element("input", {
-		// 		class : ["simple-border"],
-		// 		attrs : {
-		// 			type    : "button",
-		// 			value   : "Clear Points",
-		// 			onclick : (() => this.clear_point_buy())
-		// 		}
-		// 	}),
-		// 	element("br"),
-		// 	this.stats.pointbuy.root,
-		// ]));
-		// inner.add("Random", this.stats.levelups.root);
-		// inner.active = "Deterministic";
-
-		// sidebook.add("Levels", inner.root);
+		this.animate = new Toggle("Play Animation when Preview Changes?", true, (value) => {
+			this.myPointBuy.setAnimated(value);
+		});
 
 		sidebook.add("Levels", element("div", [
 			element("input", {
@@ -658,6 +672,8 @@ class Sheet {
 				}
 			}),
 			element("br"),
+			this.animate.root,
+			element("br"),
 			this.stats.pointbuy.root,
 		]));
 
@@ -667,108 +683,85 @@ class Sheet {
 			Ability.kind, Ability.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 		
-		this.abilities = {};
-
-		// inner = new Notebook();
-		this.addCategory(new MultiActiveCategory(model, {
-			name        : "class",
-			empty       : "This class has no class abilities",
-			selectable  : false,
-			reorderable : false,
-			removable   : false,
-			hideable    : true,
-			ontoggle    : refresh,
-			onremove    : null,
-		}));
-		inner.add("From Class", this.abilities.class.root);
-
-		this.addCategory(new MultiActiveCategory(model, {
-			name        : "equipped",
+		this.abilities = new MultiActiveCategory(model, {
+			name        : "equip",
 			empty       : "No abilities are equipped",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
 			hideable    : true,
 			ontoggle    : refresh,
-			onremove    : forget,
+			onremove    : unequip("abilities"),
 			select      : Ability.select(),
-		}));
-		inner.add("Equipped", this.abilities.equipped.root);
+		});
 
-		// this.addCategory(new MultiActiveCategory(model, {
-		// 	name        : "battlefield",
-		// 	empty       : "There are no battlefield abilities",
-		// 	selectable  : true,
-		// 	reorderable : true,
-		// 	removable   : true,
-		// 	hideable    : true,
-		// 	ontoggle    : refresh,
-		// 	onremove    : forget,
-		// 	select      : Ability.select(),
-		// }));
-		// inner.add("On Battlefield", this.abilities.battlefield.root);
+		sidebook.add("Abilities", this.abilities.root);
 
-		inner.active = "From Class";
+		/* Art category */
 
-		this.tabs.abilities = inner;
-
-		sidebook.add("Abilities", inner.root);
-
-		/* CombatArt category */
-
-		inner = new Notebook();
 		model = new CategoryModel(
-			CombatArt.kind, CombatArt.byName, myFeatureTitle, myFeatureBody, myTriggers
+			Art.kind, Art.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this.arts = {};
-
-		this.addCategory(new SingleActiveCategory(model, {
-			name        : "class",
-			empty       : "No arts are equipped",
-			selectable  : false,
-			reorderable : false,
-			removable   : false,
-			hideable    : true,
-			ontoggle    : ((category, key) => {
-
-				/* only one art can be active at a time */
-				this.arts.equipped.clearActive();
-
-				console.log("refresh", key);
-				category.toggleActive(key);
-				this.stats.refresh();
-			}),
-			onremove    : null,
-		}));
-		inner.add("From Class", this.arts.class.root);
-
-		this.addCategory(new SingleActiveCategory(model, {
-			name        : "equipped",
+		this.arts = new MultiActiveCategory(model, {
+			name        : "equip",
 			empty       : "No arts are equipped",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
 			hideable    : true,
 			ontoggle    : ((category, key) => {
-
-				/* only one art can be active at a time */
-				this.arts.class.clearActive();
-
 				console.log("refresh", key);
+
+				// It's always fine to deactivate an art; nothing to break.
+				if (category.isActive(key)) {
+					category.toggleActive(key);
+					this.stats.refresh();
+					return;
+				}
+
+				// Alright so we're activating one now, it seems.
+				const art      = Art.get(key);
+				const active   = category.getActiveValues();				
+
+				// Assumes zero or one tactical arts active.
+				if (art.isTactical()) {
+					const swap = active.find(x => x.isTactical());
+					if (swap) category.toggleActive(swap.name);
+				}
+
+				// Assumes zero or one normal arts active.
+				else if (art.isNormal()) {
+					const swap = active.find(x => x.isNormal());
+					if (swap) category.toggleActive(swap.name);
+
+					// Guard againt a third being activated.
+					if (active.count(x => x.isCombo()) == 2) return;
+				}
+
+				// At most two combo (and if two, no normal)
+				else {
+					const swap = active.filter(x => x.isCombo());
+
+					// If there's two we can't do much, but if there's one
+					// and a normal we can swap the two combos around.
+					if (swap.length == 1 && active.find(x => x.isNormal())) {
+						category.toggleActive(swap[0].name);
+					}
+
+					// Guard against a third being activated.
+					if (swap.length == 2) return;
+				}
+				
+				// Then just activate this one.
 				category.toggleActive(key);
 				this.stats.refresh();
 			}),
-			onremove    : forget,
-			select      : CombatArt.select(),
-		}));
-		inner.add("Equipped", this.arts.equipped.root);
+			onremove    : unequip("arts"),
+			select      : Art.select(),
+		});
 
-		inner.active = "From Class";
-
-		this.tabs.arts = inner;
-
-		sidebook.add("Arts", inner.root);
+		sidebook.add("Arts", this.arts.root);
 
 		/* Equipment category */
 
@@ -776,10 +769,8 @@ class Sheet {
 			Equipment.kind, Equipment.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this.equipment = {};
-
-		this.addCategory(new SingleActiveCategory(model, {
-			name        : "known",
+		this.equipment = new SingleActiveCategory(model, {
+			name        : "equip",
 			empty       : "No equipment is owned",
 			selectable  : true,
 			reorderable : true,
@@ -788,9 +779,9 @@ class Sheet {
 			ontoggle    : refresh,
 			onremove    : forget,
 			select      : Equipment.select(),
-		}));
+		});
 
-		sidebook.add("Equipment", this.equipment.known.root);
+		sidebook.add("Equipment", this.equipment.root);
 
 		/* battalions tab for test */
 		this.battalion  = new Battalions(this);
@@ -809,10 +800,9 @@ class Sheet {
 		const character_bb = new Buildables({
 			name       : "characters",
 			empty      : "If you're reading this, something has gone wrong",
-			// templates  : data.presets.map(x => x.name),
 			model      : this.character,
 			sortfilter : Preset.select(),
-			update     : Legacy.convert,
+			update     : Legacy.character,
 		});
 
 		const battalion_bb = new Buildables({
@@ -820,25 +810,26 @@ class Sheet {
 			empty     : "Not leading a battalion",
 			templates : data.battalions.filter(x => !x.hidden).map(x => x.name),
 			model     : this.battalion,
+			update    : Legacy.battalion,
 		});
 
-		this.weaponz = new Weapons(this);
+		this.item = new Items(this);
 
-		const weapon_bb = new Buildables({
-			name       : "weapons",
-			empty      : "No weapons or spells",
-			// templates : data.weapons.filter(x => !x.hidden).map(x => x.name),
-			model      : this.weaponz,
-			sortfilter : Weapon.select(),
+		const item_bb = new Buildables({
+			name       : "items",
+			empty      : "No items",
+			model      : this.item,
+			sortfilter : Item.select(),
+			update     : Legacy.item,
 		});
 
 		this.cb = character_bb;
 
 		buildnb.add("Character", [character_bb.root, this.character.root]);
 
-		this.wb = weapon_bb;
+		this.wb = item_bb;
 
-		buildnb.add("Inventory", [weapon_bb.root, this.weaponz.root]);
+		buildnb.add("Inventory", [item_bb.root, this.item.root]);
 
 		this.bb = battalion_bb;
 
@@ -855,13 +846,11 @@ class Sheet {
 
 		const gloss = new Notebook();
 
-		this.conditions = {};
-
 		model = new CategoryModel(
 			Condition.kind, Condition.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this.addCategory(new MultiActiveCategory(model, {
+		this.conditions = new MultiActiveCategory(model, {
 			name        : "unit",
 			empty       : "No conditions",
 			selectable  : true,
@@ -871,16 +860,14 @@ class Sheet {
 			ontoggle    : (() => void(0)),
 			onremove    : forget,
 			select      : Condition.select(),
-		}));
-		gloss.add("Conditions", this.conditions.unit.root);
-
-		this.tiles = {};
+		});
+		gloss.add("Conditions", this.conditions.root);
 
 		model = new CategoryModel(
 			Tile.kind, Tile.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this.addCategory(new MultiActiveCategory(model, {
+		this.tiles = new MultiActiveCategory(model, {
 			name        : "map",
 			empty       : "No tiles",
 			selectable  : true,
@@ -890,8 +877,9 @@ class Sheet {
 			ontoggle    : (() => void(0)),
 			onremove    : forget,
 			select      : Tile.select(),
-		}));
-		gloss.add("Tiles", this.tiles.map.root);
+		});
+
+		gloss.add("Tiles", this.tiles.root);
 
 		gloss.active = "Conditions";
 
@@ -992,16 +980,15 @@ class Sheet {
 			legacy_bb.root,
 		]));
 
-		this.myThemeMap = new Map();
-		model           = new CategoryModel(
-			"themes", this.myThemeMap, (x) => x.name, (x) => x.description, () => []
+		model = new CategoryModel(
+			"themes", Theme.MAP, (x) => x.name, (x) => x.description, () => []
 		);
 
-		const themes = element("div");
+		const configure = element("div");
 
 		this._autosave_conf = new AutosaveConfiguration(this);
 
-		themes.appendChild(this._autosave_conf.root);
+		configure.appendChild(this._autosave_conf.root);
 
 		this.themes  = new SingleActiveCategory(model, {
 			name        : "themes",
@@ -1020,24 +1007,17 @@ class Sheet {
 			}),
 		});
 
-		for (let theme of Theme.list) {
-			this.myThemeMap.set(theme.name, theme);
-			this.themes.add(theme.name);
-		}
+		for (let theme of Theme.MAP.keys()) this.themes.add(theme);
+		this.themes.toggleActive(Theme.get());
 
-		this.themes.toggleActive("Classic");
-		// this.themes.addTo(themes);
-		
-		themes.appendChild(
+		configure.appendChild(
 			element("fieldset", [
 				element("legend", element("strong", "Themes")),
 				this.themes.root,
 			])
 		);
 
-		themes.remove();
-
-		tools.add("Configure", themes);
+		tools.add("Configure", configure);
 
 		tools.active = "Configure";
 
@@ -1046,9 +1026,6 @@ class Sheet {
 		notebook.add("Tools", tools.root);
 
 		notebook.active = "Create";
-
-		/* set theme */
-		this.theme();
 
 		/* prompt user to reload last session */
 		Object.prototype.hasOwnProperty.call(localStorage, "v2session")
@@ -1063,6 +1040,8 @@ class Sheet {
 
 		/* autosave current sheet every five minutes */
 		this._autosave_conf.setInterval();
+
+		this.myPointBuy.setAnimated(this.animate.checked);
 
 		this.root = element("div", {
 			class   : ["container"],
@@ -1082,44 +1061,6 @@ class Sheet {
 				}),
 			]
 		});
-	}
-
-	/* this was a workaround the fact two arts cats weren't expected */
-	getActiveArt() {
-
-		const fromclass = this.arts.class.getActive();
-
-		if (fromclass) return fromclass;
-
-		const equipped = this.arts.equipped.getActive();
-
-		if (equipped) return equipped;
-
-		return null;
-	}
-
-	getActiveArtCategory() {
-		const fromclass = this.arts.class.getActive();
-
-		if (fromclass) return [this.arts.class, fromclass];
-
-		const equipped = this.arts.equipped.getActive();
-
-		if (equipped) return [this.arts.equipped, equipped];
-
-		return [null, null];
-	}
-
-	setActiveArtCategory(category, art) {
-		if (!(category || art)) return;
-		this.clearActiveArt();
-		category.toggleActive(art);
-	}
-
-	clearActiveArt() {
-		for (let key in this.arts) {
-			this.arts[key].clearActive();
-		}
 	}
 
 	predicates(base) {
@@ -1214,7 +1155,7 @@ class Sheet {
 
 		add("Equipment", (op, name) => {
 
-			const active = this.equipment.known.active;
+			const active = this.equipment.active;
 
 			return {
 				require: true,
@@ -1223,7 +1164,7 @@ class Sheet {
 			};
 		});
 
-		add("Weapon", (op, name) => {
+		add("Item", (op, name) => {
 
 			const active = this.wb.active;
 
@@ -1281,7 +1222,7 @@ class Sheet {
 		add("Crest", (op, name) => {
 
 			let found = false;
-			for (let each of this.abilities.equipped.active) {
+			for (let each of this.abilities.getActiveKeys()) {
 				if (each.includes(name)) found = true;
 			}
 
@@ -1404,42 +1345,35 @@ class Sheet {
 			};
 		}
 
-		const abilityfunc = (desig) => {
-			const name = desig;
+		const multisum = (getter, filter) => {
 
-			return ((env) => {
+			if (!filter) filter = (x => true);
 
-				let a = 0;
-				const cats = ["class", "equipped"];
+			return (field) => {
+				return (env) => {
 
-				for (let cat of cats) {
-					for (let each of this.abilities[cat].getActive()) {
+					// Unfortunate but necessary; uninitialized in outer scope.
+					const category = getter();
 
-						const ability  = Ability.get(each);
-						const modifier = ability.modifier(name, env);
+					let a = 0;
+					for (let each of category.getActive()) {
+						const feature  = category.model.get(each);
+						if (!filter(feature)) continue;
+						const modifier = feature.modifier(field, env);
 						if (modifier == 0) continue;
 
-						a = sum(env, a, label(env, ability.name, modifier));
+						a = sum(env, a, label(env, feature.name, modifier)); 
 					}
-				}
 
-				return a;
-			});
+					return a;
+				};
+			};
 		};
 
-		const artfunc = (desig) => {
-			const name = desig;
-
-			return ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-				
-				const art = CombatArt.get(key);
-
-				return label(env, art.name, art.modifier(name));
-			});
-		};
+		const abilityfunc = multisum(() => this.abilities);
+		const artfunc     = multisum(() => this.arts);
+		const combatfunc  = multisum(() => this.arts, (art) => !art.isTactical());
+		const tacticfunc  = multisum(() => this.arts, (art) =>  art.isTactical());
 
 		const gambitfunc = (desig, onlyActive=true) => {
 			const name   = desig;
@@ -1524,7 +1458,6 @@ class Sheet {
 			expr  : ((env) => this.stats.level)
 		});
 
-
 		add({
 			name  : "other|recursion",
 			about : "If the interpreter is broken this will freeze the page.",
@@ -1605,18 +1538,18 @@ class Sheet {
 				"Takes into account whether this is codegen, in which case it ",
 				"evaluates to other|triangle, or macrogen, in which cast it ",
 				"evaluates to other|triangle|prompt. Additionally, if an art or ",
-				"weapon that has the 'no triangle' tag is equipped, instead ",
+				"item that has the 'no triangle' tag is equipped, instead ",
 				"evaluates to 0."
 			),
 			expr  : `
 				metaif builtins|macrogen == 1 then
-					metaif weapon|tagged|no_triangle + art|tagged|no_triangle == 0 then
+					metaif item|tagged|no_triangle + arts|tagged|no_triangle == 0 then
 						other|triangle|prompt
 					else
 						0
 					end
 				else
-					if weapon|tagged|no_triangle + art|tagged|no_triangle == 0 then
+					if item|tagged|no_triangle + arts|tagged|no_triangle == 0 then
 						other|triangle
 					else
 						0
@@ -1775,7 +1708,7 @@ class Sheet {
 					"equipment. If none is equipped then evaluates to 0.",
 				),
 				expr  : ((env) => {
-					const key   = this.equipment.known.getActive();
+					const key   = this.equipment.getActive();
 					if (key == null) return 0;
 					const equip = Equipment.get(key); 
 					return label(env, equip.name, equip.modifier(name, env));
@@ -1814,37 +1747,38 @@ class Sheet {
 				"or as damage. Used in the macro builder.",
 			),
 			expr  : ((env) => 
-				env.read("weapon|tagged|healing")
+				env.read("item|tagged|healing")
 					||
-				env.read("art|tagged|healing")
+				env.read("arts|tagged|healing")
 			),
 		});
 
-		let weapon_tags = new Set();
+		let item_tags = new Set();
 
-		for (let weapon of chain(definitions.weapons, definitions.attributes)) {
-			for (let tag of weapon.tags) {
+		for (let item of chain(definitions.items, definitions.attributes)) {
+			for (let tag of item.tags) {
 				
 				const name = tag;
-				if (weapon_tags.has(tag)) continue;
+				if (item_tags.has(tag)) continue;
 
 				add({
-					name  : `weapon|tagged|${Expression.asIdentifier(tag)}`,
+					name  : `item|tagged|${Expression.asIdentifier(tag)}`,
 					about : wrap(
-						`A flag; 1 if weapon is tagged with '${tag}' and 0 if `,
-						`weapon is not tagged with '${tag}'.`
+						`A flag; 1 if item is tagged with '${tag}' and 0 if `,
+						`item is not tagged with '${tag}'.`
 					),
 					expr  : ((env) => {
+						const active = this.item.attributes.getActiveValues();
 
-						for (let each of this.weaponz.attributes.values()) {
+						for (let each of active) {
 							if (each.tagged(name)) return true;
 						}
 
-						return Number(this.weaponz.tagged(name));
+						return Number(this.item.tagged(name));
 					}),
 				});
 
-				weapon_tags.add(tag);
+				item_tags.add(tag);
 			}
 		}
 
@@ -1856,18 +1790,33 @@ class Sheet {
 				const name = tag;
 				if (art_tags.has(tag)) continue;
 
+				const id = Expression.asIdentifier(tag);
+
 				add({
-					name  : `art|tagged|${Expression.asIdentifier(tag)}`,
+					name  : `arts|tagged|${id}`,
 					about : wrap(
-						`A flag; 1 if art is tagged with '${tag}' and 0 if `,
-						`art is not tagged with '${tag}'.`
+						`A flag; 1 if any active art is tagged with '${tag}' and 0 otherwise.`
+					),
+					expr : ((env) => {
+						const active = this.arts.getActiveValues();
+
+						for (let each of active) {
+							if (each.tagged(name)) return 1;
+						}
+
+						return 0;
+					}),
+				});
+
+				add({
+					name  : `tactical|tagged|${id}`,
+					about : wrap(
+						`A flag; 1 if any active tactical art is tagged with '${tag}' and 0 otherwise.`
 					),
 					expr  : ((env) => {
-						const key = this.getActiveArt();
-
-						if (key == null) return 0;
-					
-						return CombatArt.get(key).tagged(name);
+						return Number(this.arts.getActiveValues().any((art) =>
+							art.isTactical() && art.tagged(name)
+						));
 					}),
 				});
 
@@ -1875,18 +1824,28 @@ class Sheet {
 			}
 		}
 
+		for (let each of item_tags.union(art_tags)) {
+
+			const tag = Expression.asIdentifier(each);
+
+			add({
+				name  : `host|tagged|${tag}`,
+				about : wrap(
+					`A flag; 1 if host is tagged with '${tag}' and 0 otherwise.`
+				),
+				expr  : `item|tagged|${tag} + tactical|tagged|${tag}`,
+			});
+		}
+
 		add({
 			name  : "unit|multiplier|healing",
 			about : wrap(
 				"Used to halve base magic for healing spell might; value is ",
-				"0.5 if weapon is tagged with 'healing' and is 1.0 if not."
+				"0.5 if item is tagged with 'healing' and is 1.0 if not."
 			),
-			expr  : ((env) => {
-				const key = this.getActiveArt();
-				const art = key && CombatArt.get(key).tagged("healing");
-				const wpn = this.weaponz.tagged("healing");
-				return art || wpn ? 0.5 : 1.0;
-			}),
+			expr  : `
+				fill when(arts|tagged|healing + item|tagged|healing, 0.5, 1.0) 
+			`,
 		});
 
 		// d88888b db       .d8b.   d888b  .d8888.
@@ -1896,19 +1855,34 @@ class Sheet {
 		// 88      88booo. 88   88 88. ~8~ db   8D
 		// YP      Y88888P YP   YP  Y888P  `8888Y'
 
-		for (let each of Weapon.TYPE.strings.entries()) {
+		add({
+			name  : "item|passes",
+			about : wrap(
+				"A flag; whether a the equipped item passes requirements."
+			),
+			expr  : ((env) => {
+				const item      = this.item;
+				const rank      = item._rank._trigger(item.rank);
+				const type      = item.template.type;
+				const source    = type ? `${type} ${rank}` : "None";
+				const predicate = this.predicator.compile(source);
+				return Number(predicate.exec().boolean);
+			}),
+		});
+
+		for (let each of Item.TYPE.strings.entries()) {
 
 			const [num, str] = each;
 
 			add({
-				name  : `weapon|type|${str.toLowerCase()}`,
+				name  : `item|type|${str.toLowerCase()}`,
 				about : wrap(
-					`Evaluates to 1 if weapon type is ${str}, and otherwise `,
+					`Evaluates to 1 if item type is ${str}, and otherwise `,
 					"evaluates to 0."
 				),
 				expr  : ((env) => {
-					const string = this.weaponz.template.type;
-					const number = Weapon.TYPE.asNumber(string);
+					const string = this.item.template.type;
+					const number = Item.TYPE.asNumber(string);
 					return number == num;
 				}),
 			});
@@ -1921,120 +1895,148 @@ class Sheet {
 			const identifier = Expression.asIdentifier(name);
 
 			add({
-				name  : `weapon|has_attribute|${identifier}`,
+				name  : `item|has_attribute|${identifier}`,
 				about : wrap(
-					`Evaluates to 1 if weapon has the ${name} attribute, `,
+					`Evaluates to 1 if item has the ${name} attribute, `,
 					"and otherwise evaluates to 0."
 				),
 				expr  : ((env) => {
-					return Number(this.weaponz.attributes.active.has(name));
+					return Number(this.item.attributes.active.has(name));
 				}),
 			});
 		}
 
 		add({
-			name  : "weapon|type|weapon",
+			name  : "item|type|weapon",
 			about : wrap(
-				"Evaluates to 1 if weapon type is Axes, Swords, Lances, ",
+				"Evaluates to 1 if item skill type is Axes, Swords, Lances, ",
 				"Brawling, or Bows, and otherwise evaluates to 0.",
 			),
 			expr  : ((env) => {
-				const string = this.weaponz.template.type;
-				const number = Weapon.TYPE.asNumber(string);
+				const string = this.item.template.type;
+				const number = Item.TYPE.asNumber(string);
 				return 1 <= number && number <= 5;
 			}),
 		});
 
 		add({
-			name  : "weapon|type|spell",
+			name  : "item|type|spell",
 			about : wrap(
-				"Evaluates to 1 if weapon type is Faith, Guile, or Reason, ",
+				"Evaluates to 1 if item skill type is Faith, Guile, or Reason, ",
 				"and otherwise evaluates to 0.",
 			),
 			expr  : ((env) => {
-				const string = this.weaponz.template.type;
-				const number = Weapon.TYPE.asNumber(string);
+				const string = this.item.template.type;
+				const number = Item.TYPE.asNumber(string);
 				return 6 <= number && number <= 8;
 			}),
 		});
 
-		for (let each of Weapon.TYPE.strings.entries()) {
+		for (let each of Item.TYPE.strings.entries()) {
 
-			const [num, str] = each;
+			const [_num, str] = each;
 
 			add({
-				name  : `art|type|${str.toLowerCase()}`,
+				name  : `arts|type|${str.toLowerCase()}`,
 				about : wrap(
-					`Evaluates to 1 if art type is ${str}, and otherwise `,
-					"evaluates to 0."
+					`The number of combat arts with the ${str} skill type.`
 				),
 				expr  : ((env) => {
-					const string = this.weaponz.template.type;
-					const number = Weapon.TYPE.asNumber(string);
-					return number == num;
+					const type = Item.TYPE.asNumber(str);
+					return this.arts.getActiveValues().count((art) =>{
+						const number = Item.TYPE.asNumber(art.type);
+						return !art.isTactical() && type == number;
+					});
 				}),
+			});
+
+			add({
+				name  : `tactical|type|${str.toLowerCase()}`,
+				about : wrap(
+					`The whether an active tactical art is ${str} skill type.`
+				),
+				expr  : ((env) => {
+					const type = Item.TYPE.asNumber(str);
+					return this.arts.getActiveValues().count((art) =>{
+						const number = Item.TYPE.asNumber(art.type);
+						return art.isTactical() && type == number;
+					});
+				}),
+			});
+
+			add({
+				name  : `host|type|${str.toLowerCase()}`,
+				about : wrap(
+					`The whether equipped item or active tactical art is ${str} skill type.`
+				),
+				expr  : `
+					bothif arts|tactical <> 0
+						then tactical|type|${str.toLowerCase()}
+						else item|type|${str.toLowerCase()}
+					end
+				`,
 			});
 		}
 
 		add({
-			name  : "art|type|weapon",
+			name  : "arts|type|weapon",
 			about : wrap(
-				"Evaluates to 1 if weapon type is Axes, Swords, Lances, ",
-				"Brawling, or Bows, and otherwise evaluates to 0.",
+				"The number of combat arts with an Axes, Swords, Lances, Brawl, ",
+				"or Bows skill type."
+			),
+			expr  : ((env) => 
+				this.arts.getActiveValues().count((art) => {
+					const number = Item.TYPE.asNumber(art.type);
+					return !art.isTactical() && 1 <= number && number <= 5;
+				})
+			)
+		});
+
+		add({
+			name  : "arts|type|spell",
+			about : wrap(
+				"The number of combat arts with a Faith, Guile, or Reason skill type."
+			),
+			expr  : ((env) => 
+				this.arts.getActiveValues().count((art) => {
+					const number = Item.TYPE.asNumber(art.type);
+					return !art.isTactical() && 6 <= number && number <= 8;
+				})
+			)
+		});
+		add({
+			name  : "arts|combat",
+			about : wrap(
+				"Number of combat arts active.",
 			),
 			expr  : ((env) => {
-				const string = this.weaponz.template.type;
-				const number = Weapon.TYPE.asNumber(string);
-				return 1 <= number && number <= 5;
+				return Number(this.arts.getActiveValues().any(
+					art => !art.tagged("tactical")
+				));
 			}),
 		});
 
 		add({
-			name  : "art|type|spell",
+			name  : "arts|tactical",
 			about : wrap(
-				"Evaluates to 1 if weapon type is Faith, Guile, or Reason, ",
-				"and otherwise evaluates to 0.",
+				"A flag; 1 if a tactial art is active and 0 otherwise.",
 			),
-			expr  : ((env) => {
-				const string = this.weaponz.template.type;
-				const number = Weapon.TYPE.asNumber(string);
-				return 6 <= number && number <= 8;
+			expr  : ((env) => { // TODO make more efficient
+				return Number(this.arts.getActiveValues().any(
+					art => art.tagged("tactical")
+				));
 			}),
 		});
 
 		add({
-			name  : "art|type|combat",
+			name  : "arts|active",
 			about : wrap(
-				"Evaluates to 1 if unit has a combat art active, ",
-				"and otherwise evaluates to 0.",
+				"Number of arts equipped."
 			),
 			expr  : ((env) => {
-				const name = this.getActiveArt();
-				return name ? !CombatArt.get(name).tagged("tactical") : false;
+				return this.arts.getActive().size;
 			}),
 		});
-
-		add({
-			name  : "art|type|tactical",
-			about : wrap(
-				"Evaluates to 1 if unit has a tactical art active, ",
-				"and otherwise evaluates to 0.",
-			),
-			expr  : ((env) => {
-				const name = this.getActiveArt();
-				return name ? CombatArt.get(name).tagged("tactical") : false;
-			}),
-		});
-
-		add({
-			name  : "art|active",
-			about : wrap(
-				"Evaluates to 1 if unit has an art active, ",
-				"and otherwise evaluates to 0.",
-			),
-			expr  : ((env) => this.getActiveArt() != null),
-		});
-
 		
 		// d8888b. .88b  d88.  d888b    d8888b.  .d8b.  .d8888. d88888b
 		// 88  `8D 88'YbdP`88 88' Y8b   88  `8D d8' `8b 88'  YP 88'
@@ -2044,102 +2046,80 @@ class Sheet {
 		// Y8888D' YP  YP  YP  Y888P    Y8888P' YP   YP `8888Y' Y88888P
 
 		add({
-			name  : "weapon|attributes|mttype",
+			name  : "item|attributes|mttype",
 			about : wrap(
-				"What statistic this weapon's might is based off of; either ",
-				"unit|total|str or unit|total|mag or none. If multiple ",
-				"have this effect, on the first listed active one is used. ",
-				"Overrides weapon|template|mttype.",
+				"Which statistic this item uses to calculate Mt: str, mag, ",
+				"none, or else (no effect). Taken from the first attribute ",
+				"listed to have a value other than else."
 			),
 			expr  : ((env) => {
 				let a = 0;
-				for (let attr of this.weaponz.attributes.getActive()) {
-					const attribute = Attribute.get(attr);
-					const flag      = (
-						AttackFeature.MTTYPE.asNumber(attribute.mttype)
-					);
-
-					/* take the first one that's true */
-					a = a || flag;
+				for (let each of this.item.attributes.getActiveValues()) {
+					a = a || AttackFeature.MTTYPE.asNumber(each.mttype);
 				}
-
 				return a;
 			}),
 		});
 
 		add({
-			name  : "weapon|template|mttype",
+			name  : "item|template|mttype",
 			about : wrap(
-				"What statistic this weapon's might is based off of; either ",
+				"What statistic this item's might is based off of; either ",
 				"unit|total|str or unit|total|mag or none. This is the ",
 				"base might type variable, every other overrides it.",
 			),
 			expr  : ((env) => {
 				return  (
-					AttackFeature.MTTYPE.asNumber(this.weaponz.template.mttype)
+					AttackFeature.MTTYPE.asNumber(this.item.template.mttype)
 				);
 			}),
 		});
 
 		add({
-			name  : "weapon|base|mttype",
+			name  : "item|custom|mttype",
 			about : wrap(
-				"What statistic this weapon's might is based off of; either ",
+				"What statistic this item's might is based off of; either ",
 				"unit|total|str or unit|total|mag or none. Overrides both ",
-				"weapon|template|mttype and weapon|attributes|mttype.",
+				"item|template|mttype and item|attributes|mttype.",
 			),
 			expr  : ((env) => {
-				return this.weaponz.mttype;
+				return this.item.mttype;
 			}),
 		});
 
 		add({
-			name  : "weapon|total|mttype",
+			name  : "item|total|mttype",
 			about : wrap(
-				"What statistic this weapon's might is based off of; either ",
+				"What statistic this item's might is based off of; either ",
 				"unit|total|str or unit|total|mag or none.",
 			),
 			expr  : ((env) => {
 				return  (
 					/* manual entry overrides all others */
-					env.read("weapon|base|mttype")
+					env.read("item|custom|mttype")
 						||
 					/* attributes override template */
-					env.read("weapon|attributes|mttype")
+					env.read("item|attributes|mttype")
 						||
 					/* fallback value is template value */
-					env.read("weapon|template|mttype")
+					env.read("item|template|mttype")
 				);
 			}),
 		});
 
 		add({
-			name  : "art|equipped",
+			name  : "arts|mttype",
 			about : wrap(
-				"Evaluates to 1 if an Art is equipped; otherwise 0."
+				"Which statistic equipped arts use to calculate Mt: str, mag, ",
+				"none, or else (no effect). Taken from the first art listed ",
+				"to have a value other than else."
 			),
 			expr  : ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-
-				return 1;				
-			}),
-		});
-
-		add({
-			name  : "art|mttype",
-			about : wrap(
-				"What statistic this art's might is based off of; either ",
-				"unit|total|str or unit|total|mag or none. Overrides ",
-				"weapon|total|mttype.",
-			),
-			expr  : ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-				
-				return AttackFeature.MTTYPE.asNumber(CombatArt.get(key).mttype);
+				let a = 0;
+				for (let each of this.arts.getActiveValues()) {
+					a = a || AttackFeature.MTTYPE.asNumber(each.mttype);
+				}
+				return a;
 			}),
 		});
 
@@ -2183,20 +2163,17 @@ class Sheet {
 		});
 
 		add({
-			name  : "gambit|art|mttype",
+			name  : "gambit|arts|mttype",
 			about : wrap(
 				"What statistic a metagambit's might is based off of.",
 			),
 			expr  : ((env) => {
-				const key = this.getActiveArt();
-
-				if (key == null) return 0;
-
-				const art = CombatArt.get(key);
-
-				if (!art.tagged("metagambit")) return 0;
-				
-				return AttackFeature.MTTYPE.asNumber(art.mttype);
+				let a = 0;
+				for (let each of this.arts.getActiveValues()) {
+					if (!each.tagged("metagambit")) continue;
+					a = a || AttackFeature.MTTYPE.asNumber(each.mttype);
+				}
+				return a;
 			}),
 
 		});
@@ -2209,7 +2186,7 @@ class Sheet {
 			expr  : ((env) => {
 				return (
 					/* meta gambit overrides active gambit */
-					env.read("gambit|art|mttype")
+					env.read("gambit|arts|mttype")
 						||
 					/* active gambit overrides structure value */
 					env.read("gambit|active|mttype")
@@ -2232,11 +2209,11 @@ class Sheet {
 			),
 			expr  : ((env) => {
 				return (
-					/* art overrides weapon value */
-					env.read("art|mttype")
+					/* art overrides item value */
+					env.read("arts|mttype")
 						||
-					/* weapon value serves as fallback */
-					env.read("weapon|total|mttype")
+					/* item value serves as fallback */
+					env.read("item|total|mttype")
 						||
 					/* fallback is not to assume N/A */
 					3 
@@ -2273,56 +2250,48 @@ class Sheet {
 			const second = [];
 
 			second.push(add({
-				name  : `weapon|base|${name}`,
+				name  : `item|custom|${name}`,
 				about : wrap(
-					`The equipped weapon/spells's base ${name} statistic `,
-					"value entered into the table under Create => Weapons & ",
-					"Spells before modifiers. If none is equipped then ",
-					"evaluates to 0."
+					`User provided ${name} modifier for equipped item under `,
+					"Create => Inventory => Customize Statistics."
 				),
 				expr  : ((env) => {
 					return label(env, 
-						`${this.weaponz.name} base`,
-						this.weaponz.stats[name].value,
+						`${this.item.name} base`,
+						this.item.stats[name].value,
 					);
 				}),
 			}));
 
 			second.push(add({
-				name  : `weapon|template|${name}`,
+				name  : `item|template|${name}`,
 				about : wrap(
-					`The equipped weapon/spells's base ${name} statistic `,
-					"value from the template weapon/spell it's based on.",
-					"If none is equipped then evaluates to 0.",
+					`Equipped item's ${name} from the template it uses.`
 				),
 				expr  : ((env) => {
 					return label(env, 
-						this.weaponz.name,
-						this.weaponz.template.modifier(name, env),
+						this.item.name,
+						this.item.template.modifier(name, env),
 					);
 				}),
 			}));
 
 			add({
-				name  : `weapon|noattr|${name}`,
+				name  : `item|noattr|${name}`,
 				about : wrap(
-					`The equipped weapon/spells's ${name} statistic without `,
-					"attributes taken into account. If none is equipped then ",
-					"evaluates to 0.",
+					`Equipped item's ${name} without modifiers from attributes.`
 				),
-				expr  : `weapon|template|${name} + weapon|base|${name}`,
+				expr  : `item|template|${name} + item|custom|${name}`,
 			});
 
 			second.push(add({
-				name  : `weapon|attributes|${name}`,
+				name  : `item|attributes|${name}`,
 				about : wrap(
-					`The sum of all ${name} modifiers from the equipped `,
-					"weapon/spell's active attributes. If none are active ",
-					"then evaluates to 0."
+					`Sum of equipped item's ${name} modifiers from attributes.`
 				),
 				expr  : ((env) => {
 					let a = 0;
-					for (let attr of this.weaponz.attributes.getActive()) {
+					for (let attr of this.item.attributes.getActive()) {
 
 						const attribute = Attribute.get(attr);
 						const modifier  = attribute.modifier(name, env);
@@ -2336,24 +2305,22 @@ class Sheet {
 			}));
 
 			add({
-				name  : `weapon|total|${name}`,
+				name  : `item|total|${name}`,
 				about : wrap(
-					`The total ${name} modifier provided by the equipped `,
-					"weapon/spell. If none is equipped then evaluates to 0.",
+					`Equipped item's total ${name} after all modifiers.`
 				),
 				expr  : funcsum(...second),
 			});
 
 			add({
-				name  : `weapon|dynamic|${name}`,
+				name  : `item|dynamic|${name}`,
 				about : wrap(
-					`Evaluates to 1 if weapon's ${name} has any dynamic `,
-					"components and to 0 otherwise.",
+					`A flag; 1 if equipped item has dynamic modifiers to ${name}, otherwise 0.`
 				),
 				expr  : ((env) => {
 
 					let a = false;
-					for (let attr of this.weaponz.attributes.getActive()) {
+					for (let attr of this.item.attributes.getActive()) {
 
 						const attribute = Attribute.get(attr);
 						const modifier  = (
@@ -2364,19 +2331,56 @@ class Sheet {
 					}
 
 					return a || (
-						typeof this.weaponz.template.modifiers[name] != "number"
+						typeof this.item.template.modifiers[name] != "number"
 					);
 				}),
 			});
 
+			add({
+				name  : `tactical|${name}`,
+				about : wrap(
+					`Active tactical art's ${name} statistic (zero if none).`
+				),
+				expr  : tacticfunc(name),
+			});
+
+			/* clear what we have so far */
+			second.length = 0;
+
+			second.push(add({
+				name  : `host|${name}`,
+				about : wrap(
+					`Equal to item|total|${name} if no tactical art is `,
+					"active, but if one is active, equal to 0."
+				),
+				expr  : `
+					fill when(arts|tactical, tactical|${name}, item|total|${name})
+				`,
+			}));
+
+			add({ // TODO remove this when possible
+				name  : `arts|${name}`,
+				about : wrap(
+					`Total ${name} from active arts.`
+				),
+				expr  : artfunc(name),
+			});
+
+			second.push(add({
+				name  : `combatarts|${name}`,
+				about : wrap(
+					`Total ${name} from active combat arts.`
+				),
+				expr  : combatfunc(name),
+			}));
+
 			second.push(add({
 				name  : `equipment|${name}`,
 				about : wrap(
-					`The total ${name} modifier provided by the equipped `,
-					"equipment. If none is equipped then evaluates to 0.",
+					`Total ${name} from equipped equipment.`
 				),
 				expr  : ((env) => {
-					const key   = this.equipment.known.getActive();
+					const key   = this.equipment.getActive();
 					if (key == null) return 0;
 					const equip = Equipment.get(key); 
 					return label(env, equip.name, equip.modifier(name, env));
@@ -2384,27 +2388,9 @@ class Sheet {
 			}));
 
 			second.push(add({
-				name  : `art|${name}`,
-				about : wrap(
-					`The total ${name} modifier provided by the active `,
-					"combat art/tactical art/metamagic. If none is active, ",
-					"then evaluates to 0."
-				),
-				expr  : ((env) => {
-					const key = this.getActiveArt();
-
-					if (key == null) return 0;
-
-					const art = CombatArt.get(key);
-
-					return label(env, art.name, art.modifier(name, env));
-				}),
-			}));
-
-			second.push(add({
 				name  : `abilities|${name}`,
 				about : 
-					`The sum of all ${name} modifiers from active abilities.`
+					`Total ${name} from active abilities.`
 				,
 				expr  : abilityfunc(name),
 			}));
@@ -2463,9 +2449,9 @@ class Sheet {
 						*
 					unit|multiplier|healing
 				)
-					+ weapon|total|mt
+					+ item|total|mt
 					+ abilities|mt
-					+ art|mt
+					+ arts|mt
 					+ equipment|mt
 			`,
 		});
@@ -2535,7 +2521,7 @@ class Sheet {
 					unit|total|dex
 						+ unit|modifier|hit
 						+ fill range_penalty(
-							unit|total|maxrng - weapon|total|maxrng
+							unit|total|maxrng - host|maxrng
 						)
 				`,
 			});
@@ -2619,13 +2605,13 @@ class Sheet {
 		add({
 			name  : "unit|base|maxrng",
 			about : wrap(
-				"The base maximum range at which this unit can use a weapon ",
-				"or art. This defaults to the maximum range of the weapon, ",
+				"The base maximum range at which this unit can use a item ",
+				"or art. This defaults to the maximum range of the item, ",
 				"but if an art is used, the art's maximum range supercedes it.",
 			),
 			expr  : ((env) => {
 				return (
-					env.read("art|maxrng") || env.read("weapon|total|maxrng")
+					env.read("arts|maxrng") || env.read("item|total|maxrng")
 				);
 			}),
 		});
@@ -2633,7 +2619,7 @@ class Sheet {
 		add({
 			name  : "unit|total|maxrng",
 			about : wrap(
-				"The maximum range at which this unit can use a weapon or art."
+				"The maximum range at which this unit can use a item or art."
 			),
 			expr  : `
 				unit|base|maxrng
@@ -2645,13 +2631,13 @@ class Sheet {
 		add({
 			name  : "unit|base|minrng",
 			about : wrap(
-				"The base minimum range at which this unit can use a weapon ",
-				"or art. This defaults to the minimum range of the weapon, ",
+				"The base minimum range at which this unit can use a item ",
+				"or art. This defaults to the minimum range of the item, ",
 				"but if an art is used, the art's minimum range supercedes it.",
 			),
 			expr  : ((env) => {
 				return (
-					env.read("art|minrng") || env.read("weapon|total|minrng")
+					env.read("arts|minrng") || env.read("item|total|minrng")
 				);
 			}),
 		});
@@ -2659,7 +2645,7 @@ class Sheet {
 		add({
 			name  : "unit|total|minrng",
 			about : wrap(
-				"The minimum range at which this unit can use a weapon or art."
+				"The minimum range at which this unit can use a item or art."
 			),
 			expr  : `
 				unit|base|minrng
@@ -2730,7 +2716,7 @@ class Sheet {
 
 		add({
 			name  : "unit|total|tpcost",
-			about : "The total cost in technique points to use a weapon/spell.",
+			about : "The total cost in technique points to use an item.",
 			expr  : "unit|modifier|tpcost",
 		});
 
@@ -3096,56 +3082,29 @@ class Sheet {
 		return ctx;
 	}
 
-	/* methods relating to initialization */
-
-	/**
-	 * Add a {@link Category} to this sheet at sheet[feature][category]
-	 * @param {Category} category - the category to add 
-	 */
-	addCategory(category) {
-		this[category.model.name][category.name] = category;
-	}
-
-	/** todo check if uneeded remove this if uneeded
-	 * Compute the value of a secondary stat using the cached value of a primary
-	 * stat and the values of all active modifiers and mulitpliers that apply
-	 * @param {string} prime - name of a primary stat
-	 * @param {string} second - name of a secondary stat
-	 * @returns {number} the value of the secondary stat
-	 */
-	calcSecondaryStat(second) {
-
-		const env    = new Expression.Env(
-			Expression.Env.RUNTIME, this.definez
-		);
-
-		return env.read(`unit|total|${second}`);
-	}
-
-	*iterCustomRows() {
+	*iterCustomRows(includeItem=true) {
 
 		let row = undefined;
 		let tmp = undefined;
 
-		for (row of this.weaponz.template.rows) yield row;
+		if (includeItem) {
+			for (row of this.item.template.rows) yield row;
 
-		for (let each of this.weaponz.attributes.getActiveValues()) {
+			for (let each of this.item.attributes.getActiveValues()) {
+				for (row of each.rows) yield row;
+			}
+		}
+
+		for (let each of this.abilities.getActiveValues()) {
 			for (row of each.rows) yield row;
 		}
 
-		for (let each of this.abilities.class.getActiveValues()) {
+		for (let each of this.arts.getActiveValues()) {
+			if (each.tagged("metagambit")) continue;
 			for (row of each.rows) yield row;
-		}
-
-		for (let each of this.abilities.equipped.getActiveValues()) {
-			for (row of each.rows) yield row;
-		}
-
-		if ((tmp = this.getActiveArt())) {
-			for (row of CombatArt.get(tmp).rows) yield row;
 		}
 		
-		if ((tmp = this.equipment.known.getActive())) {
+		if ((tmp = this.equipment.getActive())) {
 			for (row of Equipment.get(tmp).rows) yield row;
 		}
 	}
@@ -3170,7 +3129,7 @@ class Sheet {
 		if (!confirm(message)) return;
 
 		for (let old of this.lb.category) {
-			const char = Legacy.convert(old, Version.CURRENT);
+			const char = Legacy.character(old, Version.CURRENT);
 			this.cb.importObject(char);
 		}
 	}
@@ -3205,23 +3164,11 @@ class Sheet {
 	}
 
 	theme(name) {
-
-		if (name == null) {
-			name = localStorage.getItem("theme");
-			if (name == null) return false;
-		}
-
-		if (!this.myThemeMap.has(name)) return false;
-
-		const theme      = this.myThemeMap.get(name);
-		const stylesheet = document.getElementById("theme-link");
-		stylesheet.setAttribute("href", theme.stylesheet);
+		if (!Theme.set(name)) return false;
 		this.themes.toggleActive(name);
-
-		localStorage.setItem("theme", name);
-
 		return true;
 	}
+
 
 	/* Methods relating to Point Buy */
 
@@ -3274,7 +3221,37 @@ class Sheet {
 		}
 	}
 
+	copy_stats_to_point_buy(doClass=true) {
+
+		this.myPointBuy.forecast.clear();
+		this.myPointBuy.forecast.class = (
+			doClass ? this.character.class.name : "None"
+		);
+
+		for (let [name, cell] of this.myPointBuy.cells("value")) {
+			cell.value = this.stats.stats[name].value;
+
+		}
+
+		for (let [name, cell] of this.myPointBuy.cells("growth")) {
+			cell.value = Math.floor(this.stats.growths[name].value / 5);
+		}
+	}
+
 	create_npc() {
+
+		this.character._sf.reset();
+		this.item._sf.reset();
+		this.abilities._sf.reset();
+		this.equipment._sf.reset();
+		this.arts._sf.reset();
+		this.battalion.gambits._sf.reset();
+		this.myPointBuy.forecast._sf.reset();
+		this.myPointBuy.forecast._cc.reset();
+		this.wb._sf.reset();
+		this.cb._sf.reset();
+
+		const animate = this.myPointBuy.setAnimated(false);
 
 		/* set preset to custom and add a new sheet */
 		this.cb.select.value = "Custom";
@@ -3305,7 +3282,7 @@ class Sheet {
 		/* copy stats over to main sheet */
 		this.copy_point_buy_stats(false);
 
-		/* add weapons and abilties to sheet */
+		/* add items and abilties to sheet */
 
 		const addKit = (skill, scale) => {
 			
@@ -3322,33 +3299,33 @@ class Sheet {
 
 			if (kit === null) return;
 
-			/* add weapons */
-			for (let each of kit.weapons) {
+			/* add items */
+			for (let each of kit.items) {
 
-				const weapon = each instanceof Array ? each[0]       : each;
-				const attrs  = each instanceof Array ? each.slice(1) : [];
+				const item  = each instanceof Array ? each[0]       : each;
+				const attrs = each instanceof Array ? each.slice(1) : [];
 
-				if (!Weapon.has(weapon)){
-					throw new Error(`weapon '${weapon}' is undefined`);
+				if (!Item.has(item)){
+					throw new Error(`item '${item}' is undefined`);
 				}
 
-				this.wb.select.value = weapon;
+				this.wb.select.value = item;
 				this.wb.add();
 
-				/* add any attributes to the weapon */
+				/* add any attributes to the item */
 				for (let attr of attrs) {
-					this.weaponz.attributes.add(attr);
-					this.weaponz.attributes.toggleActive(attr);
+					this.item.attributes.add(attr);
+					this.item.attributes.toggleActive(attr);
 				}
 
-				/* include any attributes in the weapon's name */
+				/* include any attributes in the item's name */
 				if (attrs.length) {
-					this.weaponz.name = (
-						attrs.join(" ") + " " + this.weaponz.name
+					this.item.name = (
+						attrs.join(" ") + " " + this.item.name
 					);
 				}
 
-				this.weaponz.inInventory = true;
+				this.item.inInventory = true;
 			}
 
 			/* add abilities */
@@ -3357,17 +3334,17 @@ class Sheet {
 					throw new Error(`ability '${ability}' is undefined`);
 				}
 
-				this.abilities.equipped.add(ability);
-				this.abilities.equipped.toggleActive(ability);
+				this.abilities.add(ability);
+				this.abilities.toggleActive(ability);
 			}
 
 			/* add arts */
 			for (let art of kit.arts) {
-				if (!CombatArt.has(art)) {
+				if (!Art.has(art)) {
 					throw new Error(`art '${art}' is undefined`);
 				}
 
-				this.arts.equipped.add(art);
+				this.arts.add(art);
 			}
 
 			/* set skill level */
@@ -3402,6 +3379,8 @@ class Sheet {
 
 		/* refresh */
 		this.character.refresh();
+
+		this.myPointBuy.setAnimated(animate);
 	}
 }
 

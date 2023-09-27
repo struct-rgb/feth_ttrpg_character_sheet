@@ -2,7 +2,7 @@
   "name": "Arts Instruction",
   "description": "Replace the effect of @{gambit::Initiate} with the effect of an equipped combat art that applies to attacks made with a weapon, so long as the weapon type of the combat art matches the weapon type of this battalion. Consider each affected foe to have been targeted for the purpose of that art, but this effect does not target. Pay SP equal to the SP cost of the combat art.\n\nMay be equipped without consuming an arts slot if this unit equips one other meta gambit of a different rank.",
   "requires": "Any (Authority C) (Authority B)",
-  "compatible": "Name `Initiate`",
+  "compatible": "Match Gambit (Name `Initiate`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
@@ -18,7 +18,7 @@
     "spcost": 0
   },
   "comment": "",
-  "tags": ["combo", "metagambit"],
+  "tags": ["metagambit"],
   "hidden": false,
   "type": "Authority",
   "rank": "C-B"

@@ -2,7 +2,11 @@
   "name": "Anathema",
   "description": "On hit, apply @{const:gbp:[(Statistic) -X]} to target foe for one turn, where (Statistic) is one of Str, Mag, Dex, Spd, Def, Res, or Lck (choose one) and X is a number of additional SP paid for this metamagic (max of 5). This metamagic ability can be used with one other one.",
   "requires": "Guile A",
-  "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
+  "compatible": [
+    "Match",
+    "  Art    (All (Skill Guile) (Not (Name `Crafty`)))",
+    "  Weapon (All (Skill Guile) (Not (Tag `no hit`)))"
+  ],
   "mttype": "else",
   "modifiers": {
     "mt": 0,

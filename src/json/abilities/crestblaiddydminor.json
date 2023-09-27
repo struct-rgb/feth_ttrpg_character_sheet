@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Blaiddyd",
-            "when": "art|type|weapon",
+            "name": "Mt & SP x2",
+            "when": "arts|type|weapon",
             "expr": 10,
             "roll": true
         }

@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Goneril",
-            "when": "art|type|weapon",
+            "name": "Null Counter",
+            "when": "arts|type|weapon",
             "expr": 50,
             "roll": true
         }

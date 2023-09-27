@@ -2,7 +2,7 @@
   "name": "Wings of Mercy",
   "description": "Can only be equipped by a Flying unit and only if that unit has a Flying battalion equipped.\n\nBefore gambit, move a battalion unit into the space of or adjacent to any non-battalion ally that has already moved this turn with HP < 100%. After gambit, move that battalion unit again with normal Auto.",
   "requires": "Authority A",
-  "compatible": "True",
+  "compatible": "Match Gambit (Not (Name `Counter`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

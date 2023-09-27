@@ -34,7 +34,7 @@
 
     "rows": [
         {
-            "name": "Crest of the Timotheos",
+            "name": "Null TP & SP",
             "when": "unit|tagged|healing",
             "expr": 20,
             "roll": true

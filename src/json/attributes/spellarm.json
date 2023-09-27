@@ -15,26 +15,19 @@
         "crit": 0,
         "cravo": 0,
         "minrng": [
-            "metaif builtins|macrogen == 1 then",
-            "  metaif not(weapon|has_attribute|Spellblade) <> 0",
-            "    then -(weapon|noattr|minrng) + (weapon|noattr|maxrng)",
-            "    else 0",
-            "  end",
-            "else",
-            "  if     not(weapon|has_attribute|Spellblade) <> 0",
-            "    then -(weapon|noattr|minrng) + (weapon|noattr|maxrng)",
-            "    else 0",
-            "  end",
+            "bothif not(item|has_attribute|Spellblade) <> 0",
+            "  then -(item|noattr|minrng) + (item|noattr|maxrng)",
+            "  else 0",
             "end"
         ],
         "maxrng": 0,
-        "tpcost": "-floor((weapon|noattr|tpcost) * 0.2)",
+        "tpcost": "-floor((item|noattr|tpcost) * 0.2)",
         "spcost": 0,
         "tp": 0,
         "sp": 0
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["cost", "for faith", "for reason", "for guile"],
-    "hidden": false
+    "tags": ["cost", "for faith", "for reason", "for guile", "depricated"],
+    "hidden": true
 }

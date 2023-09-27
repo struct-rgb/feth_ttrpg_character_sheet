@@ -22,9 +22,7 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
-    "condition",
-    "combo",
-    "rework"
+    "condition"
   ],
   "hidden": false,
   "type": "Faith",

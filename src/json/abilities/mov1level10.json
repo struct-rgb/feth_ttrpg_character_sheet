@@ -29,19 +29,7 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": [
-            "metaif builtins|macrogen == 1 then",
-            "  metaif unit|level >= 10",
-            "    then 1",
-            "    else 0",
-            "  end",
-            "else",
-            "  if     unit|level >= 10",
-            "    then 1",
-            "    else 0",
-            "  end",
-            "end"
-        ]
+        "mov": "bothif unit|level >= 10 then 1 else 0 end"
     },
 
     "comment": "Items in modifers can either be integers or string expressions",

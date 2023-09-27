@@ -2,7 +2,7 @@
   "name": "Thundering Hooves",
   "description": "Can only be equipped by a Cavalry unit and only if that unit has a Cavalry battalion equipped.\n\nBattalion’s units have [Auto +1] until the end of the turn. You may move all battalion units before and after this gambit.",
   "requires": "Authority A",
-  "compatible": "Not (Name `Counter`)",
+  "compatible": "Match Gambit (Not (Name `Counter`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

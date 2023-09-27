@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Chevalier",
-            "when": "art|type|weapon",
+            "name": "HP +30% Damage",
+            "when": "arts|type|weapon",
             "expr": 50,
             "roll": true
         }

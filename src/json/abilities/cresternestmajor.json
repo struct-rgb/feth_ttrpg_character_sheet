@@ -36,8 +36,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Ernest",
-            "when": "weapon|type|weapon",
+            "name": "Null Counter",
+            "when": "item|type|weapon",
             "expr": 20,
             "roll": true
         }

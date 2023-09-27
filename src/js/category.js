@@ -6,6 +6,7 @@
 
 /* global SwapText */
 /* global element */
+/* global assume */
 
 /**
  * @typedef {function() : boolean} CategoryElementCallback
@@ -44,10 +45,12 @@ class CategoryElement {
 
 		// assign attributes
 		this._active      = false;
+		this._hidden      = false;
 		this._title       = document.createTextNode(options.title || "");
 		this._description = element("span", options.description || "");
 		this.onremove     = options.onremove || CategoryElement.pass;
 		this.ontoggle     = options.ontoggle || CategoryElement.pass;
+		this.group        = options.group    || "";
 
 		// go about building the DOM nodes
 		this.dt = document.createElement("dt");
@@ -56,104 +59,65 @@ class CategoryElement {
 			this.dt.setAttribute("data-key", options.key);
 		}
 
-		if (options.reorderable) {
-
-			const updown    = document.createElement("input");
-			updown.type     = "number";
-			updown.value    =  0;
-			updown.max      = +1;
-			updown.min      = -1;
-			updown.onchange = (() => {
-				switch (Number(updown.value)) {
-				case +1:
-					this.shiftForward(1);
-					break;
-				case -1:
-					this.shiftBackward(1);
-					break;
-				default:
-					break;
-				}
-				updown.value = 0;
-				updown.focus();
-			});
-
-			updown.classList.add("updown-buttons");
-			this.dt.appendChild(updown);
-			this.updown = updown;
-		} else {
-			this.updown = null;
-		}
-
-		// add title content
-		const span = document.createElement("span");
-		span.appendChild(this._title);
-		span.classList.add("selectable");
-		this.doToggleEvent = (() => {
-			this.ontoggle.call();
-			// Giving the number input focus allows it to be controlled by, and
-			// this element to be moved up and down via, the arrow keys.
-			if (this.updown) this.updown.focus();
+		this.updown = element("input", {
+			class : ["updown-buttons"],
+			attrs : {
+				type     : "number",
+				value    :  0,
+				max      : +1,
+				min      : -1,
+				onchange :  (() => {
+					this.shift(Number(this.updown.value));
+					this.updown.value = 0;
+					this.updown.focus();
+				}),
+				hidden   : !options.reorderable,
+			}
 		});
 
-		span.onclick = this.doToggleEvent;
+		this.dt.appendChild(this.updown);
 
-		this.span = span;
-		this.dt.appendChild(span);
+		// add title content
+		this.span = element("span", {
+			content : this._title,
+			class   : ["selectable"],
+			attrs   : {
+				onclick : (() => {
+					this.ontoggle.call();
+					this.updown.focus(); // allows movement with arrow keys
+				}),
+			}
+		});
 
-		// if remove function is defined, make a "remove" button
-		if (options.removable) {
+		this.dt.appendChild(this.span);
 
-			this.doRemoveEvent = (() => {
-				this.onremove.call();
-			});
+		// make a "remove" button
+		this.removeButton = element("button",  {
+			class   : ["toggle-off", "smol"],
+			content : "Delete",
+			attrs   : {
+				onclick : (() => void this.onremove.call()),
+				hidden  : !options.removable,
+			},
+		});
 
-			this.removeButton = element("button",  {
-				class   : ["toggle-off", "smol"],
-				content : "Delete",
-				attrs   : {
-					onclick: this.doRemoveEvent,
-				}
-			});
-
-			this.dt.appendChild(this.removeButton);
-		} else {
-			this.removeButton = null;
-		}
+		this.dt.appendChild(this.removeButton);
 
 		const hidden = element("span", "\xA0", "punctuation");
 		this.swap    = new SwapText([this._description, hidden], true);
 
+		this._hidetext = document.createTextNode("Hide");
 
-		if (options.hideable) {
+		this.hideButton = element("button",  {
+			class   : ["toggle-off", "smol"],
+			content : this._hidetext,
+			attrs   : {
+				onclick : (() => void this.hide()),
+				hidden  : !options.hideable,
+			}
+		});
 
-			const content = document.createTextNode("Hide");
-
-			this.hideButton = element("button",  {
-				class   : ["toggle-off", "smol"],
-				content : content,
-				attrs   : {
-					onclick : (() => {
-						this.swap.next();
-
-						const list = this.hideButton.classList;
-						if (list.contains("toggle-on")) {
-							list.remove("toggle-on");
-							list.add("toggle-off");
-							content.data = "Hide";
-						} else {
-							list.remove("toggle-off");
-							list.add("toggle-on");
-							content.data = "Show";
-						}
-					}),
-				}
-			});
-
-			this.dt.appendChild(this.hideButton);
-		} else {
-			this.hideable = null;
-		}
+		this.dt.appendChild(this.hideButton);
 
 		// add entry content description
 		this.dd = document.createElement("dd");
@@ -161,6 +125,9 @@ class CategoryElement {
 
 		// this belongs to no category by default
 		this.parent = null;
+
+		// hide the text if it is mean to be hidden
+		this.hidden = assume(options.hidden, false);
 	}
 
 	/* getters and setters */
@@ -196,11 +163,10 @@ class CategoryElement {
 		if (last) last.remove();
 
 		this._description.appendChild(value);
-		// this._description.data = value;
 	}
 
 	/**
-	 * Whether this element is active or not; controls title styling
+	 * Whether this element is active or not; controls title styling.
 	 * @type {boolean}
 	 */
 	get active() {
@@ -221,12 +187,75 @@ class CategoryElement {
 	}
 
 	/**
+	 * Whether the user should be able to hide the body of this element.
+	 * @type {boolean}
+	 */
+	get hideable() {
+		return !this.hideButton.hidden;
+	}
+
+	set hideable(value) {
+		this.hideButton.hidden = !value;
+	}
+
+	/**
+	 * Whether the user should be able to reorder this element in the list.
+	 * @type {boolean}
+	 */
+	get reorderable() {
+		return !this.updown.hidden;
+	}
+
+	set reorderable(value) {
+		this.updown.hidden = !value;
+	}
+
+	/**
+	 * Whether the usser should be able to remove thie element from the list.
+	 * @type {boolean}
+	 */
+	get removable() {
+		return !this.removeButton.hidden;
+	}
+
+	set removable(value) {
+		this.removeButton.hidden = !value;
+	}
+
+	/**
 	 * Toggle the active state of this element
 	 * @returns the new active state after the toggle is performed
 	 */
 	toggle() {
 		this.active = !this.active;
 		return this.active;
+	}
+
+	get hidden() {
+		return this._hidden;
+	}
+
+	set hidden(value) {
+		if (value == this._hidden) return;
+		this.hide();
+	}
+
+	hide() {
+		this.swap.next();
+
+		const list = this.hideButton.classList;
+
+		if (this._hidden) {
+			list.remove("toggle-on");
+			list.add("toggle-off");
+			this._hidetext.data = "Hide";
+			this._hidden = false;
+		} else {
+			list.remove("toggle-off");
+			list.add("toggle-on");
+			this._hidetext.data = "Show";
+			this._hidden = true;
+		}
 	}
 
 	/**
@@ -272,6 +301,21 @@ class CategoryElement {
 
 				sibling.insertAdjacentElement("afterEnd", element);
 			}
+		}
+	}
+
+	/**
+	 * Shift this element offset elements backwards or fowards.
+	 * If the offset is too large, the element is placed as far as possible.
+	 * @param {number} offset - number of places to shift
+	 */
+	shift(offset) {
+		if (offset > 0) {
+			this.shiftForward(offset);
+		} else if (offset < 0) {
+			this.shiftBackward(-offset);
+		} else {
+			/* do nothing */
 		}
 	}
 
@@ -401,9 +445,7 @@ class Category {
 		this.selectable  = Boolean(options.selectable);
 		this.addActive   = Boolean(options.addActive || false);
 		this.parent      = null;
-		this.next        = null;
-		this.prev        = null;
-		this.elements    = new Map();
+		this._elements   = new Map();
 		this.root        = document.createElement("div");
 		this.triggers    = new Map();
 
@@ -420,7 +462,7 @@ class Category {
 				
 				const name = category.select.value;
 
-				category.add(name);
+				category.add(name, {group: this.name});
 
 				if (this.addActive) {
 					this.ontoggle.call(undefined, this, name);
@@ -463,7 +505,7 @@ class Category {
 	}
 
 	get size() {
-		return this.elements.size;
+		return this._elements.size;
 	}
 
 	/* methods for attaching to the DOM */
@@ -527,8 +569,16 @@ class Category {
 	 * Make it so that no element is active
 	 * @abstract
 	 */
-	clearActive () {
+	clearActive() {
 		
+	}
+
+	/* modify what is and is not hidden */
+
+	toggleHide(name) {
+		// user cannot hide an element that isn't present
+		if (!this.has(name)) return false;
+		this.element(name).hide();
 	}
 
 	/* modify the state from an object */
@@ -537,8 +587,13 @@ class Category {
 		
 		const elements = [];
 
-		for (let element of this.names()) {
-			elements.push(element);
+		for (let name of this.names()) {
+			const element = this.element(name);
+			elements.push({
+				id     : name,
+				group  : element.group || "",
+				hidden : element.hidden,
+			});
 		}
 		
 		return elements;
@@ -549,29 +604,15 @@ class Category {
 		let added = 0;
 
 		this.clear();
-		for (let element of elements) {
-			added += Number(this.add(element));
+		for (let each of elements) {
+			added += Number(this.add(each.id, {
+				group  : assume(each.group, ""),
+				hidden : assume(each.hidden, false)
+			}));
 		}
 
 		return added;
 	}
-
-	/* link to categories to allow certain operations to cascade */
-
-	/**
-	 * Joins this to another category as elements of a doubly linked list in
-	 * order to allow some actions to cascade from one category to the other.
-	 * This object forms the head and the other forms the tail.
-	 * @param {Category} that - the other category
-	 */
-	link(that) {
-		this.next = that;
-		that.prev = this;
-	}
-
-	// unlink(that) {
-	// 	if (this.next == that && that.prev)
-	// }
 
 	/* methods for adding and removing elements */
 
@@ -581,7 +622,16 @@ class Category {
 	 * @returns {boolean} true if it is present, else false
 	 */
 	has(name) {
-		return this.elements.has(name);
+		return this._elements.has(name);
+	}
+
+	get(name) {
+		if (!this.has(name)) return undefined;
+		return this.model.get(name);
+	}
+
+	element(name) {
+		return this._elements.get(name);
 	}
 
 	/**
@@ -598,7 +648,7 @@ class Category {
 		}
 
 		// prevent the addition of duplicate items
-		if (this.elements.has(name)) return false;
+		if (this.has(name)) return false;
 
 		if (this.size == 0) {
 			this._textnode.data = "";
@@ -621,11 +671,12 @@ class Category {
 			ontoggle    : (() => {
 				return ontoggle.call(undefined, this, name);
 			}),
+			group       : assume(options.group, ""),
+			hidden      : assume(options.hidden, false),
 		});
 
-		this.elements.set(name, element);
+		this._elements.set(name, element);
 		element.addTo(this.dl);
-		this._addTriggers(name);
 
 		return true;
 	}
@@ -638,21 +689,15 @@ class Category {
 	delete(name) {
 
 		// can't delete an element that isn't present
-		if (!this.elements.has(name)) return false;
+		if (!this.has(name)) return false;
 
 		// if the element is active, deactivate it 
 		if (this.isActive(name)) {
 			this.toggleActive(name, false);
 		}
 
-		// if there is a cascade, delete the from the next category first
-		if (this.next && this.next.elements.has(name)) {
-			this.next.delete(name);
-		}
-
-		this.elements.get(name).remove();
-		this.elements.delete(name);
-		this._deleteTriggers(name);
+		this.element(name).remove();
+		this._elements.delete(name);
 
 		if (this.size == 0) {
 			this._textnode.data = this.empty;
@@ -669,49 +714,11 @@ class Category {
 	refresh(name) {
 
 		// can't refresh an element that isn't present
-		if (!this.elements.has(name)) return false;
+		if (!this.has(name)) return false;
 
-		const element       = this.elements.get(name);
+		const element       = this.element(name);
 		// element.title       = this.model.title(name);
 		element.description = this.model.description(name);
-
-		return true;
-	}
-
-	_addTriggers(name) {
-		for (let trigger of this.model.triggers(name)) {
-
-			if (this.triggers.has(trigger)) {
-				this.triggers.get(trigger).add(name);
-			} else {
-				this.triggers.set(trigger, new Set([name]));
-			}
-
-		}
-	}
-
-	_deleteTriggers(name) {
-
-		for (let trigger of this.model.triggers(name)) {
-
-			if (!this.triggers.has(trigger)) continue;
-			const triggers = this.triggers.get(trigger);
-			triggers.delete(name);
-
-			if (triggers.size == 0) {
-				this.triggers.delete(trigger);
-			}
-			
-		}
-	}
-
-	trigger(trigger) {
-
-		if (!this.triggers.has(trigger)) return false;
-
-		for (let name of this.triggers.get(trigger)) {
-			this.refresh(name);
-		}
 
 		return true;
 	}
@@ -721,10 +728,10 @@ class Category {
 	 */
 	clear() {
 		this.clearActive();
-		for (let element of this.elements.values()) {
+		for (let element of this._elements.values()) {
 			element.remove();
 		}
-		this.elements.clear();
+		this._elements.clear();
 		this._textnode.data = this.empty;
 	}
 
@@ -734,10 +741,12 @@ class Category {
 	 * Get an iterator of all of the names of the feature elements in this category in display order
 	 * @return iterator over the names of the feature elements of this category in display order
 	 */
-	*names() {
+	*names(group) {
 		for (let child of this.dl.children) {
-			const name = child.getAttribute("data-key");
-			if (name) yield name;
+			const name    = child.getAttribute("data-key");
+			const element = this.element(name); 
+			const matches = name && (!group || element.group === group);
+			if (matches) yield name;
 		}
 	}
 
@@ -745,9 +754,24 @@ class Category {
 	 * Get an iterator of all of the feature elements of this category in display order
 	 * @return iterator over the feature elements of this category in display order
 	 */
-	*values() {
-		for (let name of this.names()) {
+	*values(group) {
+		for (let name of this.names(group)) {
 			yield this.model.get(name);
+		}
+	}
+
+	*elements(group) {
+		for (let child of this.dl.children) {
+			const name    = child.getAttribute("data-key");
+			const element = this.element(name);
+			const matches = name && (!group || element.group === group);
+			if (matches) yield element;
+		}
+	}
+
+	*entries(group) {
+		for (let name of this.names(group)) {
+			yield [name, this.model.get(name)];
 		}
 	}
 
@@ -798,16 +822,16 @@ class SingleActiveCategory extends Category {
 	 */
 	toggleActive(name) {
 		// user cannot toggle an element that isn't present
-		if (!this.elements.has(name)) return false;
+		if (!this.has(name)) return false;
 
-		const element = this.elements.get(name);
+		const element = this.element(name);
 
 		if (this.active !== null) {
 			if (this.active == name) {
 				element.active = false;
 				this.active    = null;
 			} else {
-				const previous = this.elements.get(this.active);
+				const previous = this.element(this.active);
 				
 				console.log(this.active, previous);
 				
@@ -849,7 +873,7 @@ class SingleActiveCategory extends Category {
 		this.clearActive();
 
 		super.setState(added);
-		if (active !== null && this.elements.has(active)) {
+		if (active !== null && this.has(active)) {
 			this.toggleActive(active, true);
 		}
 	}
@@ -895,9 +919,9 @@ class MultiActiveCategory extends Category {
 	 */
 	toggleActive(name) {
 		// user cannot toggle an element that isn't present
-		if (!this.elements.has(name)) return false;
+		if (!this.has(name)) return false;
 
-		const element = this.elements.get(name);
+		const element = this.element(name);
 
 		if (this.isActive(name)) {
 			this.active.delete(name);
@@ -926,12 +950,16 @@ class MultiActiveCategory extends Category {
 		return Array.from(this.active).map(key => this.model.get(key));
 	}
 
+	getActiveElements() {
+		return Array.from(this.active).map(key => this._elements.get(key));
+	}
+
 	/**
 	 * Make it so that no elements are active
 	 */
 	clearActive() {
 		this.active.clear();
-		for (let element of this) {
+		for (let element of this.elements()) {
 			if (element.active) {
 				element.active = false;
 			}
@@ -939,21 +967,20 @@ class MultiActiveCategory extends Category {
 	}
 
 	setState(state) {
-		const {added, active} = state;
-		super.setState(added);
+		super.setState(state);
 
-		for (let element of active) {
-			if (this.elements.has(element)) {
-				this.toggleActive(element);
+		for (let element of state) {
+			if (this.has(element.id) && element.active) {
+				this.toggleActive(element.id);
 			}
 		}
 	}
 
 	getState() {
-		return {
-			added: super.getState(),
-			active: Array.from(this.getActive()),
-		};
+		return super.getState().map(element => {
+			element.active = this.isActive(element.id);
+			return element;
+		});
 	}
 }
 

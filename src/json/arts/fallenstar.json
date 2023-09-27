@@ -1,6 +1,6 @@
 {
   "name": "Fallen Star",
-  "description": "@{weapon::Failnaught} only; applies [unit avoids all attacks] to unit until end of unit's next combat; effective against Dragon units.",
+  "description": "@{item::Failnaught} only; applies [unit avoids all attacks] to unit until end of unit's next combat; effective against Dragon units.",
   "requires": "All (Weapon Failnaught) (Crest Riegen) (Bows E)",
   "compatible": "Name Failnaught",
   "mttype": "else",

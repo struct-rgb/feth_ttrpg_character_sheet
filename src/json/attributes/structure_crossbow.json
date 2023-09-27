@@ -1,13 +1,13 @@
 {
     "name": "Structure: Crossbow",
     "type": "Any",
-    "description": "Must be added when weapon is first obtained.\n\nMt +4. Crit +10. This weapon can only attack once per combat @{const:ap:(Max AP = 1)}.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+    "description": "Must be added when weapon is first obtained.\n\nMt +2. Crit +10. This weapon can only attack once per combat @{const:ap:(Max AP = 1)}.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
     "rank": 0,
     "price": 0,
 
     "mttype": "else",
     "modifiers": {
-        "mt": 4,
+        "mt": 2,
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["for bows", "structure"],
+    "tags": ["for bows", "structure", "explain"],
     "hidden": false
 }

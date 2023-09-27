@@ -13,7 +13,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill bothif(art|equipped, fill affirm([Hero Complex?], 5, 0), 0)",
+        "mt": "fill when(arts|active, fill affirm([Hero Complex?], 5, 0), 0)",
         "prot": 0,
         "resl": 0,
         "hit": 0,

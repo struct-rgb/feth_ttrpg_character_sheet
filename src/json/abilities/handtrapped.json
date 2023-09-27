@@ -31,7 +31,7 @@
 
         "mov": 0,
 
-        "trigger": "fill bothif(weapon|type|faith + art|type|faith, 20, 0)"
+        "trigger": "fill when(item|type|faith + arts|type|faith, 20, 0)"
     },
 
     "comment": "Items in modifers can either be integers or string expressions",

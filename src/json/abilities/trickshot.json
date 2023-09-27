@@ -26,7 +26,7 @@
 
         "tpcost": 0,
         "spcost": [
-            "fill bothif(weapon|tagged|target_foe + weapon|tagged|condition, -(weapon|total|tpcost), 0)"
+            "fill when(item|tagged|target_foe + item|tagged|condition, -(item|total|tpcost), 0)"
         ],
         "tp": 0,
         "sp": 0,

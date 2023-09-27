@@ -1,0 +1,27 @@
+{
+  "name": "Steel Bow",
+  "type": "Bows",
+  "description": "Effective against Flying units. Costs 550G to upgrade from @{item::Iron Bow}.",
+  "requires": "Bows C",
+  "rank": "C",
+  "price": 1390,
+  "mttype": "str",
+  "modifiers": {
+    "mt": 9,
+    "prot": 0,
+    "resl": 0,
+    "hit": "fill bowhit(80)",
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": ["effective"],
+  "hidden": false
+}

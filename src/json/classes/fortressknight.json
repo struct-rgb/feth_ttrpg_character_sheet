@@ -4,7 +4,7 @@
     "type": ["Armor"],
     "tier": "Advanced",
     "requires": "All (Any (Axes C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
-    "abilities": ["Axe Advantage", "Lance Advantage", "Weight -5"],
+    "abilities": [["Axe Advantage", "Lance Advantage"], "Weight -5"],
     "arts": ["Barricade"],
     "growths": {
         "hp": 35,

@@ -4,7 +4,7 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Guile C+) (Reason C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Reason Advantage", "Guile Advantage", "Sword Advantage", "Lance Advantage", "Despair Aura", "Canto"],
+    "abilities": [["Reason Advantage", "Guile Advantage"], ["Sword Advantage", "Lance Advantage"], "Despair Aura", "Canto"],
     "arts": [],
     "growths": {
         "hp": 30,

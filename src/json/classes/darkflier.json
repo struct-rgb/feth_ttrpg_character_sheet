@@ -4,7 +4,7 @@
     "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": ["Reason Advantage", "Guile Advantage", "Transmute", "Canto"],
+    "abilities": [["Reason Advantage", "Guile Advantage"], "Transmute", "Canto"],
     "arts": [],
     "growths": {
         "hp": 15,

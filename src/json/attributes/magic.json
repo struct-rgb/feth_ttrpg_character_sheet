@@ -1,9 +1,9 @@
 {
     "name": "Magic",
     "type": "Prompt",
-    "description": "Grants weapon [Deals magic-based damage] and +1 Range.\n\nIf attacking from Range > 1, consumes 2 TP after combat. If the wielder has 0 TP, grants weapon -1 Range. Disabled on spells and Brawl weapons.",
-    "rank": 3,
-    "price": 1200,
+    "description": "Weapon deals magic-based damage.\n\nIf attacking from Range > 1, consumes 2 TP after combat. Disabled on spells and Brawl weapons.",
+    "rank": 1,
+    "price": 800,
 
     "mttype": "mag",
     "modifiers": {
@@ -15,14 +15,14 @@
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
-        "maxrng": 1,
-        "tpcost": 2,
+        "maxrng": 0,
+        "tpcost": 0,
         "spcost": 0,
         "tp": 0,
         "sp": 0
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["cost", "for axes", "for swords", "for lances", "for bows"],
+    "tags": ["cost", "for axes", "for swords", "for lances", "for bows", "explain"],
     "hidden": false
 }

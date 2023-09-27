@@ -1,6 +1,6 @@
 {
     "name": "Fiendish Blow",
-    "description": "Grants Mag +5 in combat when unit initiates combat. A unit may only equip one \"Fiendish Blow\" ability at a time.",
+    "description": "Grants Mag +5 in combat when unit initiates combat.",
     "requires": "All (Any (Reason B) (Guile B)) (Level 15)",
     "modifiers": {
         "hp": 0,

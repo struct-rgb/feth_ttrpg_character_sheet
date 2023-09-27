@@ -6,9 +6,9 @@
 
     "mttype": "else",
     "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
+        "mt": "fill affirm([Avoided Crit?], 5, 0)",
+        "prot": "fill affirm([Avoided Crit?], 5, 0)",
+        "resl": "fill affirm([Avoided Crit?], 5, 0)",
         "hit": 0,
         "avo": 0,
         "crit": 0,
@@ -22,6 +22,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["for axes", "for swords", "for lances", "for brawl"],
+    "tags": ["for axes", "for swords", "for lances", "for brawl", "explain"],
     "hidden": false
 }

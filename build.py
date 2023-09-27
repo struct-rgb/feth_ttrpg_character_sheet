@@ -84,7 +84,7 @@ SORTING_FUNCS = {
 		)
 	),
 
-	"weapons": lambda item: (
+	"items": lambda item: (
 		(
 			"first" not in item["tags"],
 			SKILL_ORDER.get(item["type"], 8),
@@ -93,7 +93,6 @@ SORTING_FUNCS = {
 			"relic" in item["tags"],
 			"sacred" in item["tags"],
 			RANK_ORDER.get(item["rank"], OVERMAX_RANK),
-			# item["name"],
 		)
 	),
 

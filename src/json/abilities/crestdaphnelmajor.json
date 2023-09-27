@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Daphnel",
-            "when": "art|type|weapon",
+            "name": "Mt +5",
+            "when": "arts|type|weapon",
             "expr": 70,
             "roll": true
         }

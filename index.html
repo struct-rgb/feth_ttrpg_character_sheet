@@ -5,10 +5,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Three Houses TTRPG Character Sheet</title>
 
-	<link href="./src/css/style.css" rel="stylesheet" />
-	<link id="theme-link" href="./src/css/light.css" rel="stylesheet" />
-	<script type="text/javascript" src="./definitions.js"></script>
+	<!-- This needs to be compiled to load the style. -->
 	<script type="text/javascript" src="./src/js/common.js"></script>
+
+	<!-- Dynamically load the style set by the user. -->
+	<link id="theme-link" rel="stylesheet" />
+	<script type="text/javascript">Theme.set()</script>
+	<link href="./src/css/style.css" rel="stylesheet" />
+
+	<!-- Load the rest of the scripts. --->
+	<script type="text/javascript" src="./definitions.js"></script>
 	<script type="text/javascript" src="./src/js/notebook.js"></script>
 	<script type="text/javascript" src="./src/js/presetter.js"> </script>
 	<script type="text/javascript" src="./src/js/pointbuy.js"></script>
@@ -23,24 +29,22 @@
 	<script type="text/javascript" src="./src/js/feature.js"></script>
 	<script type="text/javascript" src="./src/js/legacy.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.1.0/ajv7.bundle.js" integrity="sha512-PuzkO+wOBh6m/Jux4nXgl2ItRzed77lFDidDX500DUNlvuzr4OrXtsFhN4q0CCxPoXjTFfiw1z4FmED9J/MMdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 </head>
 <body class="base">
 
+	<!-- This is the main body of the application -->
 	<script type="text/javascript">
+		// create and add the actual sheet dynamically
 		const sheet = new Sheet(definitions);
-
 		document.getElementsByTagName("body")[0].appendChild(sheet.root);
 
-		// Show a "Leave site?" dialog */
-		window.onbeforeunload = () => {
+		// Show a "Leave site?" dialog
+		window.onbeforeunload = (() => {
 			sheet.macros.historySave();
 			return true;
-		};
+		});
 	</script>
 
-	<noscript>
-		This webpage needs javascript to run.
-	</noscript>
+	<noscript>This webpage needs javascript to run.</noscript>
 </body>
 </html>

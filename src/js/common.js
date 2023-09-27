@@ -1,4 +1,6 @@
 
+/* global Expression */
+
 function *chain(...iterables) {
 	for (let iterable of iterables) {
 		for (let item of iterable) {
@@ -39,6 +41,20 @@ Array.prototype.random = function() {
 	return this[Math.floor(Math.random() * this.length)];
 };
 
+Array.prototype.count = function(predicate) {
+	return this.reduce((a, b) => a + Number(predicate(b)), 0);
+};
+
+Array.prototype.any = function(predicate) {
+	for (let each of this) if (predicate(each)) return true;
+	return false;
+};
+
+Array.prototype.all = function(predicate) {
+	for (let each of this) if (!predicate(each)) return false;
+	return true;
+};
+
 Set.prototype.union = function(other) {
 
 	const set = new Set();
@@ -53,6 +69,50 @@ Set.prototype.union = function(other) {
 
 	return set;
 };
+
+Set.prototype.intersect = function(other) {
+
+	const set = new Set();
+
+	for (let member of this) {
+		if (other.has(member)) set.add(member);
+	}
+
+	for (let member of other) {
+		if (this.has(member)) set.add(member);
+	}
+
+	return set;
+};
+
+function choice(options) {
+
+	/* if not asked to choose return the passed object */
+	if (!(options instanceof Array)) return options;
+
+	/* if given no options choose none */
+	if (options.length == 0) return null;
+
+	/* if given one option choose it */
+	if (options.length == 1) return options[1];
+
+	/* put together a prompt of choices */
+	const list = options.map((item, index) => `${index + 1}. ${item}`);
+	const text = "Enter the number of your choice:\n" + list.join("\n");
+
+	/* keep asking until given a valid choice */
+	for (;;) {
+		const response = prompt(text);
+
+		if (response == null || response == "") return options[0];
+
+		const num = Number(response);
+
+		if (Number.isNaN(num) || num < 1 || options.length < num) continue;
+
+		return options[response - 1];
+	}
+}
 
 
 class TagSetWidget {
@@ -324,7 +384,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("3.2.0");
+	static CURRENT = new Version("3.3.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -418,12 +478,8 @@ const element = (function () {
  */
 function content_action(element, content) {
 
-	// if (content === undefined) {
-	// 	debugger;
-	// }
-
 	if (content === null) {
-		// console.warn("make sure null content is intented behavior");
+		console.warn("make sure null content is intented behavior");
 		return;
 	}
 
@@ -436,7 +492,7 @@ function content_action(element, content) {
 		element.appendChild(content);
 	} else if (content instanceof Array) {
 		for (let each of content) {
-			content_action(element, each);
+			if (each != null) content_action(element, each);
 		}
 	} else {
 
@@ -572,6 +628,27 @@ function attrinput(textnode, options, oninput) {
 	return [input, element("span", [label, input])];
 }
 
+function attrselect(textnode, options, oninput) {
+	const select = element("select", {
+
+		class: ["simple-border", "hidden-field"],
+
+		content: options.select.map((name, index) => 
+			element("option", {attrs: {value: index}, content: name})
+		),
+
+		attrs: {
+			value   : assume(options.value, assume(options.def, 0)),
+			oninput : oninput,
+		}
+	});
+
+	const label = uniqueLabel(textnode, select);
+	label.classList.add("datum");
+
+	return [select, element("span", [label, select])];
+}
+
 /**
  * A configurable table cell with a number input.
  */
@@ -582,7 +659,7 @@ class AttributeCell {
 		this.text     = document.createTextNode(assume(options.shown, ""));
 		this._trigger = trigger || options.trigger || (x => x);
 
-		const [input, span] = attrinput(this.text, options, (() => {
+		const [input, span] = (options.select ? attrselect : attrinput)(this.text, options, (() => {
 			this.value = this.input.value;
 		}));
 
@@ -691,7 +768,7 @@ class VariableTable {
 				min   : 0,
 				max   : 999
 			},
-			false : {
+			space : {
 				edit  : true,
 				root  : "span",
 				value : 0,
@@ -763,7 +840,7 @@ class VariableTable {
 	func(name, action=VariableTable.NOACTION) {
 		const variable = new Expression.Env(
 			Expression.Env.RUNTIME, this.context
-		).func(name)
+		).func(name);
 
 		return ((base) => {
 			return action(base, variable);
@@ -959,7 +1036,7 @@ class Toggle {
 			attrs   : {
 				onclick: () => {
 					this.checked = !this.checked;
-					this.refresh();
+					this.refresh(this.checked);
 				},
 			},
 			content : title,
@@ -973,8 +1050,8 @@ class Toggle {
 		this.fn   = check;
 	}
 
-	refresh() {
-
+	refresh(value) {
+		this.fn.call(this, value);
 	}
 
 	get checked() {
@@ -1034,6 +1111,13 @@ class Group extends Array {
 
 	get checked() {
 		return this.reduce((a, b) => a || b.checked, false);
+	}
+
+
+	reset() {
+		for (let item of this) {
+			item.reset();
+		}
 	}
 
 }
@@ -1165,9 +1249,6 @@ class Grade {
 		return (number) => map.get(number);
 	})();
 
-	static budThreshold     = 32;
-	static budThresholdWeak = 25;
-
 	/**
 	 * Converts a number of points to the corresponding letter grade
 	 * @static
@@ -1175,17 +1256,33 @@ class Grade {
 	 * @returns {string} the letter grade
 	 */
 	static for(points, aptitude) {
-		const final = points * Grade.multiplier(points, aptitude);
+		const t     = Grade.threshold(aptitude);
+		const m     = Grade.multiplier(aptitude);
+		const final = (
+			(t && points >= t) ? m * t + 2.0 * (points - t) : m * points
+		);
+
 		return Grade.list.reduce((a, b) => b.points > final ? a : b).name;
 	}
 
-	static multiplier(points, aptitude) {
+	static threshold(aptitude) {
+		switch (aptitude) {
+		case 0  : return  0;
+		case 1  : return  0;
+		case 2  : return  0;
+		case 3  : return 16;
+		case 4  : return 10;
+		default : throw new Error("Invalid aptitude.");
+		}
+	}
+
+	static multiplier(aptitude) {
 		switch (aptitude) {
 		case 0  : return 1.0;
 		case 1  : return 2.0;
 		case 2  : return 0.5;
-		case 3  : return points >= Grade.budThreshold     ? 2.0 : 1.0;
-		case 4  : return points >= Grade.budThresholdWeak ? 2.0 : 0.5;
+		case 3  : return 1.0;
+		case 4  : return 0.5;
 		default : throw new Error("Invalid aptitude.");
 		}
 	}
@@ -1270,24 +1367,53 @@ return function(iterations, stop=8) {
 
 })();
 
-function statups(level, growth) {
-	let   total = 0;
-	let   value = 0;
-	const ups   = [0];
-	for (let i = 1; i <= level; ++i) {
-		total += growth;
-		if (total > 100) {
-			ups.push(1);
-			value += 1;
-			total -= 100;
-		} else {
-			ups.push(0);
-		}
+class Theme {
+
+	constructor(name, description, stylesheet) {
+		this.name        = name;
+		this.description = description;
+		this.stylesheet  = stylesheet;
 	}
-	ups[0] = value;
-	return ups;
+
+	static MAP = function() {
+
+		const map = new Map();
+		const add = (name, description, stylesheet) => (
+			void map.set(name, new Theme(name, description, stylesheet))
+		);
+
+		add("Classic", "The classic look and feel.", "./src/css/light.css");
+		add("Dark", "The ever popular alternative.", "./src/css/dark.css");
+		add("Golden Deer", "A bad theme for the best house.", "./src/css/deer.css");
+		add("Boneless", "For when you want to play as the protagonist.", "./src/css/boneless.css");
+		add("Golden Fear", "Boneless mode but yellow.", "./src/css/golden_fear.css");
+		add("Golden Egg", "Serious attempt at a gold theme.", "./src/css/golden_egg.css");
+		add("Document", "The most minimal theme.", "./src/css/document.css");
+		add("Toast", "Designed by Toast, for Toast.", "./src/css/toast.css");
+		add("Hacker", "Boneless mode but green.", "./src/css/hacker.css");
+
+		return map;
+	}();
+
+	static DEFAULT = "Classic";
+
+	static get() {
+		const store = localStorage.getItem("theme");
+		return store && this.MAP.has(store) ? store : this.DEFAULT;
+	}
+
+	static set(key) {
+		// DO reload if given the one we're using; good for css debug
+		const theme = this.MAP.get(key || this.get());
+		const style = document.getElementById("theme-link");
+		style.setAttribute("href", theme.stylesheet);
+		localStorage.setItem("theme", theme.name);
+		return theme;
+	}
 }
 
+/* exported chain */
+/* exported choice */
 /* exported wrap */
 /* exported capitalize */
 /* exported uniqueID */
@@ -1308,3 +1434,5 @@ function statups(level, growth) {
 /* exported BigButton */
 /* exported TagSetWidget */
 /* exported Toggle */
+/* exported VariableTable */
+/* exported Theme */

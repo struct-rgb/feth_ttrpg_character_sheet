@@ -21,9 +21,7 @@
     "tp": 0
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [
-    "combo"
-  ],
+  "tags": [],
   "hidden": false,
   "type": "Faith",
   "rank": "C"

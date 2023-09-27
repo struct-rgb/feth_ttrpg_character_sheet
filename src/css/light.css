@@ -147,6 +147,15 @@ button.toggle-off {
 	border-style: solid;
 }
 
+button.toggle-not { 
+	/* in case I implement exclude filters */
+	color: white;
+	background: orange;
+	border-radius: 5px;
+	border-color: black;
+	border-style: solid;
+}
+
 /* these control calculator expression syntaxt highlighting */
 
 .hl-identifier {

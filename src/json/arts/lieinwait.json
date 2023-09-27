@@ -1,8 +1,8 @@
 {
   "name": "Lie in Wait",
-  "description": "Can only be equipped by an Armor unit and only if that unit has an Armor battalion equipped.\n\nTrigger: once per phase, after foe enters, before foe exits, or before foe initiates combat with ally in a space within Range 0-1 of this unit’s deployed battalion unit. Use a gambit with an attack and the Measured tag as a reaction, targeting that foe’s space and following the same restrictions as adjutant reactions.",
+  "description": "Can only be equipped by an Armor unit and only if that unit has an Armor battalion equipped.\n\nTrigger: once per turn, after foe enters, before foe exits, or before foe initiates combat with ally in a space within Range 0-1 of this unit’s deployed battalion unit. Use a gambit with an attack and the Measured tag as a reaction, targeting that foe’s space and following the same restrictions as adjutant reactions.",
   "requires": "Authority A",
-  "compatible": "All (Tag `measured`) (Not (Tag `no hit`)) (Not (Tag `no might`)) (Not (Name `Counter`))",
+  "compatible": "Match Gambit (All (Tag `measured`) (Not (Tag `no hit`)) (Not (Tag `no might`)) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
@@ -18,7 +18,7 @@
     "spcost": 6
   },
   "comment": "",
-  "tags": ["combo", "reaction", "metagambit"],
+  "tags": ["reaction", "metagambit"],
   "hidden": false,
   "type": "Authority",
   "rank": "A"

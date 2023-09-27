@@ -4,7 +4,7 @@
   "type": ["Armor"],
   "tier": "Advanced",
   "requires": "All (Any (Swords C+) (Swords C+)) (Required (Armor C+)) (Required (Level 15))",
-  "abilities": ["Duelist's Stance", "Sword Advantage", "Bow Advantage", "Positioning"],
+  "abilities": ["Duelist's Stance", ["Sword Advantage", "Bow Advantage"], "Positioning"],
     "arts": [],
   "growths": {
     "hp": 30,

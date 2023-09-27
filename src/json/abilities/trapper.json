@@ -23,15 +23,15 @@
 
         "minrng": 0,
         "maxrng": [
-            "fill bothif(",
-            "  weapon|tagged|wall + (art|tagged|tactical * art|tagged|wall),",
+            "fill when(",
+            "  item|tagged|wall + (art|tagged|tactical * art|tagged|wall),",
             "  1,",
             "  0",
             ")"
         ],
 
-        "tpcost": "fill bothif(weapon|tagged|wall, -1, 0)",
-        "spcost": "fill bothif(art|tagged|tactical * art|tagged|wall, -1, 0)",
+        "tpcost": "fill when(item|tagged|wall, -1, 0)",
+        "spcost": "fill when(art|tagged|tactical * art|tagged|wall, -1, 0)",
         "tp": 0,
         "sp": 0,
 

@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Macuil",
-            "when": "weapon|type|spell",
+            "name": "Mt +5",
+            "when": "item|type|spell",
             "expr": 10,
             "roll": true
         }

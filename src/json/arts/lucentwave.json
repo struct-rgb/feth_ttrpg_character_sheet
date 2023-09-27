@@ -1,6 +1,6 @@
 {
   "name": "Lucent Wave",
-  "description": "@{weapon::Pinakla} only; Unit recovers HP equal to 25% of damage dealt after combat, effective against Dragon units.",
+  "description": "@{item::Pinakla} only; Unit recovers HP equal to 25% of damage dealt after combat, effective against Dragon units.",
   "requires": "All (Weapon `Pinakla`) (Crest Indech) (Bows E)",
   "compatible": "Name Pinakla",
   "mttype": "else",

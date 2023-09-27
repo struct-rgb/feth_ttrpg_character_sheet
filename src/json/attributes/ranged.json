@@ -1,27 +1,13 @@
 {
     "name": "Ranged",
     "type": "Any",
-    "description": "Grants weapon Range +1, -3 Mt, -10 Hit.\n\nIf the weapon already has Range > 1 without Attributes, ignore Mt penalty. Disabled on spells, Bows, and Brawl.",
+    "description": "Grants Range +1, -3 Mt, -10 Hit.\n\nDisabled on spells, Bows, and Brawl.",
     "rank": 0,
     "price": 1500,
 
     "mttype": "else",
     "modifiers": {
-        "mt": [
-            "metaif builtins|macrogen == 1 then",
-                "metaif weapon|noattr|maxrng < 2 then",
-                    "-3",
-                "else",
-                    "+0",
-                "end",
-            "else",
-                "if     weapon|noattr|maxrng < 2 then",
-                    "-3",
-                "else",
-                    "+0",
-                "end",
-            "end"
-        ],
+        "mt": "bothif item|noattr|maxrng < 2 then -3 else +0 end",
         "prot": 0,
         "resl": 0,
         "hit": -10,
@@ -37,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["penalty", "for axes", "for swords", "for lances"],
+    "tags": ["penalty", "for axes", "for swords", "for lances", "explain"],
     "hidden": false
 }

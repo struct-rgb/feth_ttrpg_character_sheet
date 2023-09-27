@@ -34,12 +34,12 @@
 
     "rows": [
         {
-            "name": "Crest of the Flames (HP)",
+            "name": "HP +30% Damage",
             "expr": 20,
             "roll": true
         },
         {
-            "name": "Crest of the Flames (Mt)",
+            "name": "Mt +5 & Null Counter",
             "expr": 20,
             "roll": true
         }

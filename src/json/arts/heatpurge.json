@@ -1,6 +1,6 @@
 {
   "name": "Heat Purge",
-  "description": "Fire metamagic; after combat, apply @{condition:Purged:[Purged]} to target foe for one turn. @{weapon::Ragnarok} @{const:variant:Variant}: after combat, apply @{condition:Purged:[Purged]} to target foe and all foes within 2 spaces of target foe for one turn.",
+  "description": "Fire metamagic; after combat, apply @{condition:Purged:[Purged]} to target foe for one turn. @{item::Ragnarok} @{const:variant:Variant}: after combat, apply @{condition:Purged:[Purged]} to target foe and all foes within 2 spaces of target foe for one turn.",
   "requires": "Reason D",
   "compatible": "All (Skill Reason) (Tag `fire`)",
   "mttype": "else",

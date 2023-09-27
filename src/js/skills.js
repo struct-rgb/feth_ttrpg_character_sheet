@@ -18,6 +18,8 @@ class Row {
 
 	static ICONS = ["—", "⮝", "⮟", "⮙", "⮛"];
 
+	static NAMES = ["None", "Talent", "Weakness", "Budding Talent", "Budding Weakness"];
+
 	constructor(name, section, sheet) {
 		this.name      = name;
 		this.section   = section;
@@ -25,7 +27,7 @@ class Row {
 		this.old_value = 0;
 		this.grade     = "E";
 
-		const adoptions = {edit: true, shown: "—", min: 0, max: 4};
+		const adoptions = {edit: true, shown: "—", min: 0, max: 4, select: Row.NAMES};
 
 		this.aptcell  = new AttributeCell(adoptions, (x) => {
 			this.cell.refresh();

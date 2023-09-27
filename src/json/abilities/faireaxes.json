@@ -1,6 +1,6 @@
 {
     "name": "Axefaire",
-    "description": "Grants Mt +5 when unit uses associated weapon type.",
+    "description": "Grants Mt +5 when unit attacks with associated weapon type.",
     "requires": "Axes S+",
     "modifiers": {
         "hp": 0,
@@ -13,7 +13,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill faire(weapon|type|axes)",
+        "mt": "fill faire(item|type|axes)",
         "prot": 0,
         "resl": 0,
         "hit": 0,

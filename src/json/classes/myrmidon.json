@@ -4,7 +4,7 @@
     "type": ["Infantry"],
     "tier": "Starting",
     "requires": "Swords D",
-    "abilities": ["Crit +5", "Level 10 Mov +1"],
+    "abilities": ["Avo +5", "Flashing Blade", "Level 10 Mov +1"],
     "arts": [],
     "growths": {
         "hp": 15,

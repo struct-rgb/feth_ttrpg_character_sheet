@@ -6,11 +6,12 @@
 /* global Version */
 /* global Toggle */
 /* global ellipse */
+/* global choice */
 
 /* global Class */
 /* global Preset */
 /* global Ability */
-/* global CombatArt */
+/* global Art */
 /* global Equipment */
 
 class Characters {
@@ -32,7 +33,7 @@ class Characters {
 					const activeID = this.sheet.cb.category.getActive();
 					if (activeID === null) return;
 
-					const element = this.sheet.cb.category.elements.get(activeID);
+					const element = this.sheet.cb.category.element(activeID);
 					element.title = this.name;
 				}),
 			},
@@ -80,7 +81,7 @@ class Characters {
 					const activeID = sheet.cb.category.getActive();
 					if (activeID === null) return;
 
-					const element = sheet.cb.category.elements.get(activeID);
+					const element = sheet.cb.category.element(activeID);
 					element.description = this.body();
 				}),
 			},
@@ -88,7 +89,7 @@ class Characters {
 
 		this._sf    = Class.select(() => {
 			this.class = this._class.value;
-			this.refresh([], []);
+			this.refresh();
 		});
 
 		this._class = this._sf._select;
@@ -141,7 +142,7 @@ class Characters {
 		const activeID = this.sheet.cb.category.getActive();
 		if (activeID === null) return;
 
-		const element = this.sheet.cb.category.elements.get(activeID);
+		const element = this.sheet.cb.category.element(activeID);
 		element.title = this.name;
 	}
 
@@ -155,7 +156,7 @@ class Characters {
 		const activeID = this.sheet.cb.category.getActive();
 		if (activeID === null) return;
 
-		const element = this.sheet.cb.category.elements.get(activeID);
+		const element = this.sheet.cb.category.element(activeID);
 		element.description = this.body();
 	}
 
@@ -190,9 +191,7 @@ class Characters {
 		if (value === undefined) throw Error();
 
 		this._class.value     = value;
-		this._mounted.checked = this.class.hasMount();
-		// this.refresh();
-		
+		this._mounted.checked = this.class.hasMount();	
 	}
 
 	get triangle() {
@@ -203,22 +202,46 @@ class Characters {
 		this._advantage.value = value;
 	}
 
-	refresh(
-		active=this.sheet.abilities.class.getState().active,
-		clart=this.sheet.arts.class.getState().active
-	) {
+	refresh() {
 
-		this.sheet.abilities.class.setState({
-			added: this.class.abilities,
-			active: active
-		});
+		const options = {removable: false, group: "class", hidden: true};
 
-		this.sheet.arts.class.setState({
-			added: this.class.arts,
-			active: clart
-		});
+		const load    = (category, items, active) => {
 
-		// this.sheet.skills.refresh()
+			/* Remove all current class arts/abilities. */
+			const names = Array.from(category.names("class"));
+			for (let item of names) category.delete(item);
+
+			/* Add in the new class arts/abilities. */
+			let added = 1;
+			for (let item of items) {
+				item = choice(item);
+				if (!category.has(item)) category.add(item, options);
+
+				const element = category.element(item);
+				element.shiftForward(category.size - added);
+				added++;
+
+				if (active) category.toggleActive(item);
+			}
+		};
+
+		const cls = this.class;
+
+		for (let key of ["abilities", "arts"]) {
+
+			const category = this.sheet[key];
+
+			if (!cls.validate(key, category.getState())) {
+				load(category, this.class[key], key == "abilities");
+			} else {
+				/* TODO low priority; find a better place to do this. */
+				for (let each of category.elements("class")) {
+					each.removable = false;
+				}
+			}
+		}
+
 		this.sheet.stats.refresh();
 
 		this.reclass();
@@ -290,6 +313,11 @@ class Characters {
 			throw Error(`expected object but got type ${typeof object}`);
 		}
 
+		/* Prevents refreshing secondary stats 1000 times */
+		this.sheet.stats.pause = true;
+		/* Prevents stat change animation from playing */
+		const animate = this.sheet.myPointBuy.setAnimated(false);
+
 		this.sheet.stats.import(object.statistics);
 		this.sheet.skills.import(object.skills);
 
@@ -303,8 +331,8 @@ class Characters {
 		this.description = object.description || "";
 		this.money       = object.money       || 0;
 
-		this.sheet.weaponz.clear();
-		this.sheet.wb.importAll(object.weapons);
+		this.sheet.item.clear();
+		this.sheet.wb.importAll(object.items);
 
 		if (object.battalions) {
 			this.sheet.battalion.clear();
@@ -313,16 +341,20 @@ class Characters {
 			this.sheet.bb.clear();
 			this.sheet.battalion.clear();
 		}
-
-		this.sheet.abilities.equipped.setState(object.abilities.equipped);
 		
-		this.sheet.arts.equipped.setState(object.arts.equipped);
+		this.sheet.abilities.setState(object.abilities);
+		this.sheet.arts.setState(object.arts);
 
-		this.sheet.equipment.known.setState(object.equipment.known);
+		this.sheet.equipment.setState(object.equipment);
 
 		this.triangle = 0;
 
-		this.refresh(object.class_active, object.clart_active);
+		/* We do want to refresh secondary stats now */
+		this.sheet.stats.pause = false;
+		this.refresh();
+
+		// Put this setting back to what it was.
+		this.sheet.myPointBuy.setAnimated(animate);
 	}
 
 	export() {
@@ -334,30 +366,11 @@ class Characters {
 			class        : this.class.name,
 			statistics   : this.sheet.stats.export(),
 			skills       : this.sheet.skills.export(),
-
-			/*
-			 * don't save the actual state for class since this will be
-			 * loaded when the class is assigned; only save active abilites
-			 * yes, I realize it's a little clunky but that's how it is
-			 */
-			class_active : Array.from(this.sheet.abilities.class.getActive()),
-
-			clart_active : this.sheet.arts.class.getActive(),
-
-			weapons    : this.sheet.wb.exportAll(),
-			battalions : this.sheet.bb.exportAll(),
-
-			abilities    : {
-				equipped    : this.sheet.abilities.equipped.getState(),
-				// battlefield : this.sheet.abilities.battlefield.getState(),
-			},
-			arts  : {
-				equipped    : this.sheet.arts.equipped.getState(),
-			},
-
-			equipment   : {
-				known       : this.sheet.equipment.known.getState()
-			}
+			items        : this.sheet.wb.exportAll(),
+			battalions   : this.sheet.bb.exportAll(),
+			abilities    : this.sheet.abilities.getState(),
+			arts         : this.sheet.arts.getState(),
+			equipment    : this.sheet.equipment.getState(),
 		};
 	}
 
@@ -369,17 +382,13 @@ class Characters {
 
 		this.clear();
 
-		this.class = (
-			Class.has(preset.class)
-				? preset.class
-				: Characters.DEFAULT_CLASS
-		);
-
 		this.name        = preset.name        || Characters.DEFAULT;
-		this.description = preset.description || "";
-		this.sheet.stats.import(preset);
+		this.description = preset.description || "Preset for a custom character.";
 
-		this.refresh([], []);
+		this.sheet.stats.import(preset);
+		this.sheet.copy_stats_to_point_buy(false);
+
+		this.refresh();
 	}
 
 	/**
@@ -403,7 +412,7 @@ class Characters {
 		this.money       = 0;
 		this.triangle    = 0;
 
-		for (let feature of [Ability, CombatArt, Equipment]) {
+		for (let feature of [Ability, Art, Equipment]) {
 			for (let category in this[feature.kind]) {
 				if (category == "class") continue;
 				this[feature.kind][category].clear();
@@ -415,16 +424,16 @@ class Characters {
 
 		this.sheet.stats.clear();
 		this.sheet.skills.clear();
-		this.sheet.weaponz.clear();
+		this.sheet.item.clear();
 		this.sheet.battalion.clear();
 
-		this.sheet.abilities.equipped.clear();
-		this.sheet.arts.equipped.clear();
-		this.sheet.equipment.known.clear();
+		this.sheet.abilities.clear();
+		this.sheet.arts.clear();
+		this.sheet.equipment.clear();
 
 		this.sheet.stats.levelups.clear();
 
-		this.refresh([], []);
+		this.refresh();
 		this.sheet.skills.refresh();
 	}
 

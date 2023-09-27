@@ -4,7 +4,7 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Faith C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Reason Range +1", "Faith Range +1", "Canto", "Tactician"],
+    "abilities": [["Reason Range +1", "Faith Range +1"], "Canto", "Tactician"],
     "arts": [],
     "growths": {
         "hp": 20,

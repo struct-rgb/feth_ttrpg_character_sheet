@@ -21,7 +21,7 @@
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "tpcost": "fill bothif(weapon|type|bows, fill confirm([Antimagic?], +2), 0)",
+        "tpcost": "fill when(item|type|bows, fill confirm([Antimagic?], +2), 0)",
         "spcost": 0,
         "tp": 1,
         "sp": 0,

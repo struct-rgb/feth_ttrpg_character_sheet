@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Fraldarius",
-            "when": "weapon|type|weapon",
+            "name": "Mt +5",
+            "when": "item|type|weapon",
             "expr": 40,
             "roll": true
         }

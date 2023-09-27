@@ -1,8 +1,12 @@
 {
   "name": "Blessed",
-  "description": "When casting @{weapon::Heal}, this unit may target itself. Can be used along with one other metamagic art.",
+  "description": "When casting @{item::Heal}, this unit may target itself. Can be used along with one other metamagic art.",
   "requires": "Faith B",
-  "compatible": "Name Heal",
+  "compatible": [
+    "Match",
+    "  Art    (Text `Heal`)",
+    "  Weapon (Name `Heal`)"
+  ],
   "mttype": "else",
   "modifiers": {
     "mt": 0,

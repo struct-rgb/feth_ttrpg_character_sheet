@@ -4,7 +4,7 @@
     "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Axes C+)) (Required (Level 15))",
-    "abilities": ["Sword Advantage", "Axe Advantage", "Vantage", "Stamina +10"],
+    "abilities": [["Sword Advantage", "Axe Advantage"], "Vantage", "Stamina +10"],
     "arts": [],
     "growths": {
         "hp": 25,

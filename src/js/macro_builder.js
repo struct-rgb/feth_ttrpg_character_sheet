@@ -1,6 +1,5 @@
 
-
-
+/* global chain */
 /* global wrap */
 /* global tooltip */
 /* global element */
@@ -8,9 +7,10 @@
 
 /* global Expression */
 
-/* global CombatArt */
-/* global Ability */
+/* global Art */
 /* global hitip */
+
+/* global Polish */
 
 /**
  * A module that implements a builder for Roll20 Macros
@@ -281,7 +281,7 @@ class UserInterface {
 				this._labels.root,
 				wrap(
 					"Label each modifier in the macro to make it easier to ",
-					"tell what weapon, attribute, ability, art, etc. that it ",
+					"tell what item, attribute, ability, art, etc. that it ",
 					"comes from. This is mostly useful for verifying output.",
 				),
 			),
@@ -440,13 +440,12 @@ class UserInterface {
 
 	gambit(display=true) {
 
-		const m   = new Builder();
-		const gam = this.sheet.battalion.getGambit();
-		const art = (() => {
-			/* If art is tactical just ignore it altogether */
-			const art = CombatArt.get(this.sheet.getActiveArt());
-			return art.tagged("tactical") ? CombatArt.EMPTY : art;
-		})();
+		const m      = new Builder();
+		const gambit = this.sheet.battalion.getGambit();
+		const arts   = (
+			this.sheet.arts.getActiveValues()
+				.filter(art => !art.isTactical() && art.tagged("metagambit"))
+		);
 
 		/* Set up macro-generation environment */
 		const env = new Expression.Env(
@@ -466,23 +465,29 @@ class UserInterface {
 				: m.sum("1d100")
 		);
 
-		if (art != CombatArt.EMPTY && art.tagged("depricated")) {
-			alert(`${art.name}\n${art.description}`);
-			return;
+		for (let art of arts) {
+			if (art.tagged("depricated")) {
+				alert(`${art.name}\n${art.description}`);
+				return "";
+			}
 		}
+
+		const tagged = [gambit].concat(arts);
 
 		(m
 			.me("(FLAVOR TEXT GOES HERE)")
 			.table()
 			.row("name",
-				(art != CombatArt.EMPTY
-					? `${gam.name} w/ ${art.name}`
-					: gam.name))
+				(arts.length
+					? `${gambit.name} w/ ${
+						arts.map(art => art.name).join(" & ")
+					}`
+					:    gambit.name))
 		);
 
 		/* no hit, no might, no stats, no cost */
 
-		if (!(gam.tagged("no hit") || art.tagged("no hit"))) {
+		if (tagged.count(f => f.tagged("no hit")) == 0) {
 			(m
 				.row("To Hit",
 					m.merge(
@@ -493,7 +498,7 @@ class UserInterface {
 			);
 		}
 
-		if (gam.tagged("no might") || art.tagged("no might")) {
+		if (tagged.count(f => f.tagged("no might")) >= 1) {
 			/* exclude the might row */
 		} else {
 			(m
@@ -513,7 +518,7 @@ class UserInterface {
 			);
 		}
 
-		if (!(gam.tagged("no stats") || art.tagged("no stats"))) {
+		if (tagged.count(f => f.tagged("no stats")) == 0) {
 			(m
 				.row("Prot/Resl/Barrier",
 					m.merge(
@@ -525,7 +530,7 @@ class UserInterface {
 			);
 		}
 
-		if (!(gam.tagged("no cost") || art.tagged("no cost"))) {
+		if (tagged.count(f => f.tagged("no cost")) == 0) {
 			(m
 				.row("SP/EP Cost",
 					m.merge(
@@ -535,22 +540,22 @@ class UserInterface {
 			);
 		}
 
-		for (let row of this.sheet.battalion.iterCustomRows()) {
+		for (let row of this.sheet.battalion.iterCustomRows(false)) {
 			if (row.check(env)) row.create(m, env);
 		}
 
 		m.line("");
 
-		const set = new Set([gam.name]);
+		const set = new Set([gambit.name]);
 
 		/* Gambit description */
-		for (let line of hitip.text(gam, set, false)) {
+		for (let line of hitip.text(gambit, set, false)) {
 			m.line(m.italic(line));
 		}
 
 		/* Arts description */
-		if (art != CombatArt.EMPTY) {
-			for (let line of hitip.text(art, set, false)) {
+		for (let art of arts) {
+			for (let line of hitip.text(art, set, false, true)) {
 				m.line(m.italic(line));
 			}
 		}
@@ -567,9 +572,9 @@ class UserInterface {
 
 	macro(display=true) {
 
-		const m   = new Builder();
-		const art = CombatArt.get(this.sheet.getActiveArt());
-		const wpn = this.sheet.weaponz;
+		const m    = new Builder();
+		const arts = this.sheet.arts.getActiveValues();
+		const wpn  = this.sheet.item;
 
 		/* Set up macro-generation environment */
 		const env = new Expression.Env(
@@ -589,31 +594,28 @@ class UserInterface {
 				: m.sum("1d100")
 		);
 
-		if (art != CombatArt.EMPTY && art.tagged("depricated")) {
-			alert(`${art.name}\n${art.description}`);
-			return;
+		for (let art of arts) {
+			if (art.tagged("depricated")) {
+				alert(`${art.name}\n${art.description}`);
+				return "";
+			}
 		}
 
-		/* Make use of a blank default weapon for tactical arts */
-		let tactical = null;
-		if (art.tagged("tactical")) {
-			tactical = this.sheet.wb.activeID;
-			this.sheet.wb.add();
-			this.sheet.weaponz.template = "Tactical Art";
-		}
+		const tactic = arts.filter(art =>  art.isTactical()).at(0);
+		const meta   = arts.filter(art => !art.isTactical());
+		const base   = tactic ? tactic : wpn;
+		const tagged = [base].concat(meta);
 
 		(m
 			.me("(FLAVOR TEXT GOES HERE)")
 			.table()
 			.row("name",
-				(art != CombatArt.EMPTY
-					? (tactical
-						? art.name
-						: `${wpn.name} w/ ${art.name}`)
-					: wpn.name))
+				(meta.length
+					? `${base.name} w/ ${meta.map(art => art.name).join(" & ")}`
+					:    base.name))
 		);
 
-		if (!(wpn.tagged("no hit") || art.tagged("no hit"))) {
+		if (tagged.count(f => f.tagged("no hit")) == 0) {
 			(m
 				.row("To Hit",
 					m.merge(
@@ -624,7 +626,7 @@ class UserInterface {
 			);
 		}
 
-		if (!(wpn.tagged("no crit") || art.tagged("no crit"))) {
+		if (tagged.count(f => f.tagged("no crit")) == 0) {
 			(m
 				.row("To Crit",
 					m.merge(
@@ -635,11 +637,10 @@ class UserInterface {
 			);
 		}
 
-		if (wpn.tagged("no might") || art.tagged("no might")) {
+		if (tagged.count(f => f.tagged("no might")) >= 1) {
 			/* exclude the might row */
-		} else if (wpn.tagged("healing") || (tactical && art.tagged("healing"))) {
+		} else if (tagged.count(f => f.tagged("healing")) >= 1) {
 			/* this is a healing effect */
-			
 			(m
 				.row("Healing",
 					m.sum(env.read("unit|total|mt")))
@@ -662,7 +663,7 @@ class UserInterface {
 			);
 		}
 
-		if (!(wpn.tagged("no stats") || art.tagged("no stats"))) {
+		if (tagged.count(f => f.tagged("no stats")) == 0) {
 			(m
 				.row("Hit/Crit Avo",
 					m.merge(
@@ -684,7 +685,7 @@ class UserInterface {
 			);
 		}
 
-		if (!(wpn.tagged("no cost") || art.tagged("no cost"))) {
+		if (tagged.count(f => f.tagged("no cost")) == 0) {
 			(m
 				.row("SP/TP Cost",
 					m.merge(
@@ -694,45 +695,44 @@ class UserInterface {
 			);
 		}
 
-		for (let row of this.sheet.iterCustomRows()) {
+		for (let row of this.sheet.iterCustomRows(!tactic)) {
 			if (row.check(env)) row.create(m, env);
 		}
 
 		m.line("");
 
-		const set = new Set([wpn.name]);
+		const set = new Set([base.name]);
 
-		const feature = [wpn.name, wpn.fullInfo()];
+		const feature = [base.name, tactic ? base.description : wpn.fullInfo()];
 
-		/* Weapon description */
-		if (!tactical) {
-			for (let line of hitip.text(feature, set, false)) {
-				m.line(m.italic(line));
+		/* Base description */
+		for (let line of hitip.text(feature, set, false)) {
+			m.line(m.italic(line));
+		}
+		
+		if (tactic) {
+			/* TODO maybe include something here for tactical arts
+			   that have attribute variants (doesn't seem necessary but idk */
+		} else {
+			/* Include any attributes on the item if we're using one. */
+			const explain = wpn.attributes.getActiveValues().filter(
+				attribute => attribute.tagged("explain")
+			);
+
+			for (let attribute of explain) {
+				const text = hitip.text(attribute, set, false, true);
+				for (let line of text) m.line(m.italic(line));
 			}
 		}
 
-		/* Arts description */
-		if (art != CombatArt.EMPTY) {
-			for (let line of hitip.text(art, set, false)) {
+		/* Meta description */
+		for (let art of meta) {
+			for (let line of hitip.text(art, set, false, true)) {
 				m.line(m.italic(line));
 			}
 		}
-
-		// /* Proc chance ability descriptions */
-		// for (let ability of procs) {
-		// 	for (let line of hitip.text(ability, set, false, true)) {
-		// 		m.line(m.italic(line));
-		// 	}
-		// }
 
 		const macro = m.macro();
-
-		/* Reset weapon to equipped weapon after tactical art generation */
-		if (tactical) {
-			const tmp = this.sheet.wb.activeID;
-			this.sheet.wb.change(tactical);
-			this.sheet.wb.remove(tmp);
-		}
 
 		if (display) {
 			console.log(macro);
@@ -743,124 +743,144 @@ class UserInterface {
 	}
 
 	macros(display=true) {
-		/* experimental function to make macros for all possible combos */
 
-		const macros   = [];
-		const weapons  = this.sheet.wb;
-		const weapon   = this.sheet.weaponz;
-		const wselect  = weapons.activeID;
-		const acats    = [this.sheet.arts.class, this.sheet.arts.equipped];
-		const aselect  = this.sheet.getActiveArtCategory();
-
-		const ref      = {weapon: null};
-		const compiler = new Polish.Compiler(CombatArt.compatibles(ref));
-
-		/* Create a macro for each weapon in inventory */
-		for (let key of Array.from(weapons.map.keys())) {
-			weapons.change(key);
-
-			/* We only want macros for weapons in the inventory */
-			if (!weapon.inInventory) continue;
-
-			/* First we needs a macro for the plain weapon */
-			this.sheet.clearActiveArt();
-			macros.push(this.macro(false));
-
-			/* Now we need ones for its compatible arts */
-			ref.weapon = weapon.template;
-			for (let arts of acats) {
-				for (let art of arts.values()) {
-
-					/* Skip these. We'll get them once at the end */
-					if (art.tagged("tactical")) continue;
-
-					/* Skip these, we'll get them when we do gambits */
-					if (art.tagged("metagambit")) continue;
-
-					/* Check whether this combat art and weapon are compatible */
-					if (!compiler.compile(art.compatible).exec()) continue;
-
-					/* Create the macro */
-					this.sheet.setActiveArtCategory(arts, art.name);
-					macros.push(this.macro(false));
-				}
-			}
-		}
-
-		/* Now to make macros for the tactical arts */
-		for (let arts of acats) {
-			for (let art of arts.values()) {
-
-				/* Skip these. We already made macros for all of them */
-				if (!art.tagged("tactical")) continue;
-
-				/* Skip these, we'll get them when we do gambits */
-				if (art.tagged("metagambit")) continue;
-			
-				/* Create the macro */
-				this.sheet.setActiveArtCategory(arts, art.name);
-				macros.push(this.macro(false));
-			}
-		}
-
-		macros.push("[!] GAMBITS [!]\n");
-
+		const macros  = [];
+		const items   = this.sheet.wb;
+		const arts    = this.sheet.arts;
+		const item    = this.sheet.item;
 		const gambits = this.sheet.battalion.gambits;
-		const agambit = this.sheet.battalion.getGambit();
 
-		/* Deactivate whichever active gambit is active */
-		if (agambit.name != "Counter") {
-			gambits.toggleActive(agambit.name);
-		}
+		// sync to prevent the item in the list from being stale
+		items.sync();
 
-		/* Create a counterattack macro */
-		this.sheet.clearActiveArt();
+		const state  = {
+			arts   : arts.getState(),
+			item   : items.activeID,
+			gambit : this.sheet.battalion.getGambit(),
+		};
+
 		gambits.add("Counter");
 
-		/* Now to make macros for the gambits */
-		for (let gambit of gambits.values()) {
+		const targets = chain(
+			["==========  ITEMS  ========="],
+			Array.from(items.category.entries()),
+			["========== TACTICS =========="],
+			arts.values(),
+			["========== GAMBITS =========="],
+			gambits.values(),
+		);
 
-			/* Structure gambits don't need macros */
-			if (gambit.tagged("structure")) continue;
+		const ref      = {target: null};
+		const compiler = new Polish.Compiler(Art.compatibles(ref));
+		const metaarts = Array.from(arts.values()).filter(art => !art.isTactical());
+		const combos   = metaarts.filter(art => art.isCombo());
 
-			/* First we want a macro for the plain gambit */
-			this.sheet.clearActiveArt();
-			gambits.toggleActive(gambit.name);
-			macros.push(this.gambit(false));
+		for (let target of targets) {
 
-			/* Now we need ones for its compatible arts */
-			ref.weapon = gambit; // TODO may be a source of errors
-			for (let arts of acats) {
-				for (let art of arts.values()) {
+			// Method to be used to create the macro.
+			let generate = null;
 
-					/* Skip these. We already made macros for all of them */
-					if (art.tagged("tactical")) continue;
-
-					/* Skip these. We only want macros for metagambits */
-					if (!art.tagged("metagambit")) continue;
-
-					/* Check whether this combat art and gambit are compatible */
-					if (!compiler.compile(art.compatible).exec()) continue;
-
-					/* Create the macro */
-					this.sheet.setActiveArtCategory(arts, art.name);
-					macros.push(this.gambit(false));
-				}
+			// This is used to generate the section separators.
+			if (typeof target == "string") {
+				macros.push(target);
+				continue;
 			}
 
-			gambits.toggleActive(gambit.name);
+			// We need the plain macro to start with.
+			arts.clearActive();
+
+			switch (target.constructor.name) {
+			case "Art": {
+
+				// Only tactical arts among arts can host macros.
+				if (!target.isTactical()) continue;
+
+				arts.toggleActive(target.name);
+
+				generate   = this.macro;
+				ref.target = target;
+				break;
+			}
+			case "Gambit": {
+
+				// Structure gambits can't host macros.
+				if (target.tagged("structure")) continue;
+
+				// Make sure that this is the only active non-structure.
+				this.sheet.battalion.toggleGambit(target.name);
+
+				generate   = this.gambit;
+				ref.target = target;
+				break;
+			}
+			case "Array": { // Items are handled here.
+
+				// Unpack the array.
+				const [key, value] = target;
+
+				// Just don't load it if not in inventory.
+				if (!value.inventory) continue;
+
+				// This behaves more like a feature.
+				items.change(key);
+				target = item;
+
+				generate   = this.macro;
+				ref.target = target.template;
+				break;
+			}
+			default:
+				throw new Error(
+					`invalid host constructor '${target.constructor.name}'`
+				);
+			}
+
+			// Create the plain macro for this target.
+			macros.push(generate.call(this, false));
+
+			for (let art of metaarts) {
+				if (!compiler.compile(art.compatible).exec()) continue;
+
+				// Activate this art.
+				arts.toggleActive(art.name);
+
+				// Create a macro with this combat art.
+				macros.push(generate.call(this, false));
+
+				// TODO there are technically combos where the one art
+				// restricts the other one, but we'll ignore those for
+				// now because I do not feel like dealing with that.
+
+				for (let combo of combos) {
+					// We neither need nor can handle doubles.
+					if (art == combo) continue;
+
+					// Check if this is compatible as well.
+					if (!compiler.compile(combo.compatible).exec()) continue;
+				
+					// Activate this combo art.
+					arts.toggleActive(combo.name);
+
+					// Create a macro with this combination of combat arts.
+					macros.push(generate.call(this, false));
+
+					// Deactive the combo art for the next one.
+					arts.toggleActive(combo.name);
+				}
+
+				// Disable the art for next run.
+				arts.toggleActive(art.name);
+			}
 		}
 
-		/* Remove the counterattack now that we're done with it */
+		// Restore the state of things to how we found them.
 		gambits.delete("Counter");
+		this.sheet.battalion.toggleGambit(state.gambit.name);
+		items.change(state.item);
+		arts.setState(state.arts);
 
-		/* If we had an active gambit before this then activate it again */
-		if (agambit.name != "Counter") {
-			gambits.toggleActive(agambit.name);
-		}
-
-		if (wselect) weapons.change(wselect);
-		this.sheet.setActiveArtCategory(...aselect);
+		// This will prevent a phantom "Counter" from remaining.
+		this.sheet.battalion.refresh();
 
 		if (display) this._display.value = macros.join("\n\n");
 		return macros;
@@ -895,7 +915,7 @@ class UserInterface {
 		text.push("## Description\n\n");
 		text.push(sheet.character.description, "\n\n");
 
-		/* Weapons and Spells */
+		/* Inventory */
 
 		let   added = 0;
 		const hole  = text.length;
@@ -914,28 +934,24 @@ class UserInterface {
 
 		sheet.wb.change(active);
 
-		if (added) text[hole] = "## Weapons & Spells\n\n";
+		if (added) text[hole] = "## Inventory\n\n";
 
 		/* Other Features */
 
-		list("## Equipment", sheet.equipment.known.values());
+		list("## Equipment", sheet.equipment.values());
 
 		const className = sheet.character.class.name;
 		if (className != "None") text.push(`## ${className}\n\n`);
 
-		list("### Class Abilities", sheet.abilities.class.values());
+		list("## Abilities", sheet.abilities.values());
 
-		list("### Class Arts", sheet.arts.class.values());
-
-		list("## Equipped Abilities", sheet.abilities.equipped.values());
-
-		list("## Equipped Arts", sheet.arts.equipped.values());
+		list("## Arts", sheet.arts.values());
 
 		/* Battalion */
 
 		if (sheet.bb.category.active) {
 			text.push("## Battalion\n\n", sheet.battalion.blurb(), "\n\n");
-			list("### Equipped Gambits", sheet.battalion.gambits.values());
+			list("### Gambits", sheet.battalion.gambits.values());
 		}
 
 		/* The End */

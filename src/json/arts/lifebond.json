@@ -1,6 +1,6 @@
 {
   "name": "Life Bond",
-  "description": "After casting @{art::Restore}, you may then cast @{weapon::Heal} or @{art::Recover} (if available) on one affected ally within range.",
+  "description": "After casting @{art::Restore}, you may then cast @{item::Heal} or @{art::Recover} (if available) on one affected ally within range.",
   "requires": "Faith B",
   "compatible": "Name Restore",
   "mttype": "else",
@@ -21,9 +21,7 @@
     "tp": 0
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [
-    "combo"
-  ],
+  "tags": [],
   "hidden": false,
   "type": "Faith",
   "rank": "B"

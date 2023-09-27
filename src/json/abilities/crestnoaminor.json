@@ -36,8 +36,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Noa",
-            "when": "weapon|type|spell",
+            "name": "Null TP",
+            "when": "item|type|spell",
             "expr": 10,
             "roll": true
         }

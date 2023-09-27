@@ -1,6 +1,6 @@
 {
     "name": "Invocation",
-    "description": "Units created by this unit’s use of @{art::Summon} have the @{ability::Disquiet} ability (including those created using a @{weapon::Summon} tome).",
+    "description": "Units created by this unit’s use of @{art::Summon} have the @{ability::Disquiet} ability (including those created using a @{item::Summon} tome).",
     "requires": "Class Summoner/Invoker",
     "modifiers": {
         "hp": 0,

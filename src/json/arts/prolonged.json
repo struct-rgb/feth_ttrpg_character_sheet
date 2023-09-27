@@ -1,6 +1,6 @@
 {
   "name": "Prolonged",
-  "description": "Extend duration of stat changes and conditions applied by this attack by 1 turn per additional 2 SP used.",
+  "description": "One condition applied by this spell (you choose) has an infinite duration.",
   "requires": "Guile D",
   "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
   "mttype": "else",
@@ -15,15 +15,13 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-    "spcost": "(ask [Turns to prolong?], 1 end * 2)",
+    "spcost": 3,
     "tpcost": 0,
     "sp": 0,
     "tp": 0
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [
-    "scales"
-  ],
+  "tags": [],
   "hidden": false,
   "type": "Guile",
   "rank": "D"

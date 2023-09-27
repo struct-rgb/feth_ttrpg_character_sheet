@@ -1,8 +1,12 @@
 {
   "name": "Conserved",
-  "description": "Reduce the SP cost of your healing spell by 3 (minimum of 1). A spell performed this way has a 25% chance of being lost.",
+  "description": "Reduce the SP cost of your healing spell by 3 (minimum of 1). A spell performed this way has a 25% chance of being lost. This combat art can be used with another one.",
   "requires": "Faith C",
-  "compatible": "All (Skill Faith) (Tag `healing`)",
+  "compatible": [
+    "Match",
+    "  Art    (Any (Text `Heal`) (Text `Restore`) (Text `healing spell`))",
+    "  Weapon (All (Skill Faith) (Tag `healing`))"
+  ],
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -46,6 +46,7 @@
         "grouped-accessor-pairs": ["error", "getBeforeSet"],
         "init-declarations": ["error", "always"],
         "no-implicit-coercion": "error",
-        "no-implied-eval": "error"
+        "no-implied-eval": "error",
+        "multiline-ternary": "off"
     }
 }

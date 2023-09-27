@@ -2,7 +2,7 @@
   "name": "Intellectual Warfare",
   "description": "Gambit that applies a condition to foes in its AoE also applies @{condition:Exposed:[Exposed]} for one turn. Can be used with one other meta gambit.",
   "requires": "Any (Authority C) (Authority B)",
-  "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+  "compatible": "Match Gambit (All (Text `Rattled`) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

@@ -14,6 +14,118 @@
  * @property {function} trigger - callback of oninput behavior
  */
 
+/**
+ * Data necessary for the level up animation for {@link LevelHistory}
+ */
+class ChangeAnimation {
+
+	/**
+	 * Create an instance
+	 * @param {Array.HTMLElement} titles - array of HTMLElements to animate 
+	 * @param {Array.HTMLElement} inputs - inputs to disable as animation plays
+	 */
+	constructor(titles, inputs=[], incr_cls="incr-bell", decr_cls="decr-bell") {
+
+		this.titles    = titles;
+		this.inputs    = inputs;
+		this._incrBell = new Audio("./resources/ding-126626_trimmed.wav");
+		this._decrBell = new Audio("./resources/cowbell_os_1-89685.mp3");
+		this._dings    = [];
+		this.disabled  = false;
+		this._incr_cls = incr_cls;
+		this._decr_cls = decr_cls;
+
+		this._incrBell.addEventListener("ended", (event) => this.next());
+		this._decrBell.addEventListener("ended", (event) => this.next());
+	}
+
+	/**
+	 * Add input to disable while animation plays
+	 * @param {HTMLElement} input - input to disable
+	 */
+	// addLock(input) {
+	// 	this.inputs.push(input);
+	// 	return input;
+	// }
+
+	/**
+	 * Disable inputs; used to prevent interference while animation plays
+	 * @param {boolean} value - whether to lock or unlock
+	 */
+	lock(value) {
+		for (let input of this.inputs()) {
+			input.disabled = value;
+		}
+	}
+
+	/**
+	 * Play the animation
+	 * @param {LevelAttempt} levelattempt - levelattempt to animate
+	 */
+	async play(array) {
+		if (this.disabled) return;
+		this.set(array);
+		this.next();
+	}
+
+	/**
+	 * Queue which of the titles to highlight when animation plays next
+	 * @param {LevelAttempt} levelattempt - levelattempt to animate
+	 */
+	set(array) {
+		this.lock(true);
+
+		this._dings.length = 0;
+		for(let i = array.length; i >= 0; --i) {
+			if (array[i]) this._dings.push(i, array[i]);
+		}
+	}
+
+	/**
+	 * Clear applied styles on all highlighted elements
+	 */
+	clear() {
+		for (let [title, node] of this.titles) {
+			const classes = title.classList;
+			if (classes.contains(this._incr_cls)) {
+				classes.remove(this._incr_cls);
+			}
+			if (classes.contains(this._decr_cls)) {
+				classes.remove(this._decr_cls);
+			}
+			node.data = "";
+		}
+		this.lock(false);
+	}
+
+	/**
+	 * Play the next sound effect/highligh in the queue
+	 */
+	async next() {
+		if (this._dings.length) {
+
+			const color         = this._dings.pop();
+			const [title, node] = this.titles[this._dings.pop()];
+
+			if (color > 0) {
+				title.classList.add(this._incr_cls);
+				node.data = `+${color}`;
+				this._incrBell.play();
+			} else if (color < 0) {
+				title.classList.add(this._decr_cls);
+				node.data = color;
+				this._decrBell.play();
+			} else {
+				// throw new Error(
+				// 	`recieved invalid bell modifier ${color}`
+				// );
+				console.log("zero");
+			}
+		} else {
+			setTimeout(() => this.lock(false), 2000);
+		}
+	}
+}
 
 /**
  * Options for initializing a new AttributePair
@@ -41,6 +153,13 @@ class AttributePair {
 			trigger : options.trigger    || (x => x),
 		});
 
+		const text = document.createTextNode("");
+
+		this.center = {
+			root: element("td", text, "monospace"),
+			text: text,
+		};
+
 		this.cattr  = new AttributeCell({
 			edit    : false,
 			before  : "( ",
@@ -49,12 +168,12 @@ class AttributePair {
 			trigger : (cost) => "$" + String(cost), 
 		});
 
-		this.roots  = [this.value.root, this.cattr.root];
+		this.roots  = [this.value.root, this.center.root, this.cattr.root];
 		this.costs  = [];
 	}
 
 	costSum() {
-		return this.costs.reduce((a, b) => a + b, 0);
+		return this.costs.r9educe((a, b) => a + b, 0);
 	}
 
 }
@@ -217,7 +336,7 @@ class ForecastRecord {
 			]
 		});
 
-		const del   = element("button", {
+		this._delete = element("button", {
 			class   : ["simple-border", "smol"],
 			content : "Delete",
 			attrs   : {
@@ -226,7 +345,7 @@ class ForecastRecord {
 		});
 
 		this.root = element("tr",
-			element("td", [block, del])
+			element("td", [block, this._delete])
 		);
 	}
 
@@ -273,8 +392,8 @@ class Forecast {
 
 		let total = 0;
 
-		for (let [clas, levels] of cls_levels) {
-			const template  = Class.get(clas);
+		for (let [cls, levels] of cls_levels) {
+			const template  = Class.get(cls);
 			const sum       = Math.max(growth + template.growths[name], 0);
 			const multi     = sum + this.diminish(sum, name);
 			const delta     = multi * levels;
@@ -342,6 +461,17 @@ class Forecast {
 
 			element("span", "Now", "simple-border"), this._cc.root
 		]);
+	}
+
+	*inputs() {
+		yield this._toadd;
+		yield this._button;
+		yield this._sf._select;
+		yield this._cc._select;
+		for (let record of this.records.values()) {
+			yield record.cell.input;
+			yield record._delete;
+		}
 	}
 
 	get class() {
@@ -490,28 +620,7 @@ class PointBuy {
 
 		const rows = Array.from(this.rows.values());
 
-		this.bells = new LevelAnimation(
-			rows.map(
-				x => x.title
-			),
-			rows.map(
-				x => [x._value.value.input, x._growth.value.input]
-			).flatten()
-		);
-
-		// this.totalBuild  = new AttributeCell({
-		// 		edit : false,
-		// 		root : "span",
-		// 	},
-		// 	(x => {
-		// 		const str = this.rows.get("STR")._value.value.value;
-		// 		const mag = this.rows.get("MAG")._value.value.value;
-		// 		const spd = this.rows.get("SPD")._value.value.value;
-		// 		return Math.abs(10 - Math.floor((Math.max(str, mag) + spd)/2));
-		// 	})
-		// );
-
-		this.pairs    = {
+		this.pairs = {
 			value  : this.totalValue,
 			growth : this.totalGrowth,
 			final  : this.totalFinal,
@@ -531,13 +640,6 @@ class PointBuy {
 				...this.totalGrowth.roots,
 				...this.totalFinal.roots,
 			]),
-			// element("tr", [
-			// 	element("th", "Build"),
-			// 	element("td", {
-			// 		content : this.totalBuild.root,
-			// 		attrs   : {colSpan: 6}
-			// 	})
-			// ])
 		], "simple-border");
 
 		this.forecast = new Forecast(this);
@@ -546,7 +648,37 @@ class PointBuy {
 			table, this.forecast.root,
 		]);
 
+		const that = this;
+
+		this.bells = new ChangeAnimation(
+			Array.from(this.rows.values()).map(row => 
+				[row._final.center.root, row._final.center.text]
+			).concat([
+				[this.pairs.final.center.root, this.pairs.final.center.text]
+			]),
+			function*() {for (let each of that.inputs()) yield each;},
+			"hl-reserved",
+			"hl-operator",
+		);
+
+		this.animate = false;
 		this.clear();
+	}
+
+	setAnimated(value) {
+		const old    = this.animate;
+		this.animate = value;
+		return old;
+	}
+
+	*inputs() {
+		for (let row of this.rows.values()) {
+			yield row._value.value.input;
+			yield row._growth.value.input;
+		}
+		for (let input of this.forecast.inputs()) {
+			yield input;
+		}
 	}
 
 	static COST_SCALE = 60;
@@ -558,6 +690,8 @@ class PointBuy {
 	}
 
 	clear(column) {
+
+		const animate = this.setAnimated(false);
 
 		if (column == null) {
 			this.forecast.clear();
@@ -575,6 +709,21 @@ class PointBuy {
 		this.pairs[column].value.value = 0;
 		this.pairs[column].cattr.value = 0;
 		this.update(column);
+
+		this.setAnimated(animate);
+		this.bells.clear();
+	}
+
+	diffset(center, diff) {
+		const root = center.root.classList;
+		
+		root.remove("hl-reserved");
+		root.remove("hl-operator");
+
+		center.text.data = (
+			diff > 0 ? (root.add("hl-reserved"), `+${diff}`) : // eslint-disable-next-line indent
+			diff < 0 ? (root.add("hl-operator"),     diff  ) : ""
+		);
 	}
 
 	update(column) {
@@ -584,11 +733,11 @@ class PointBuy {
 			return;
 		}
 
+		const array   = [];
 		const getter  = (key) => PointBuy.COST_SCALE * this.rows.get(key)[column];
 		const privacy = "_" + column; 
 
-		let costSum = 0;
-		let baseSum = 0;
+		let costSum = 0, baseSum = 0, diffSum = 0;
 		for (let [_key, row] of this.rows.entries()) {
 			if (column != "final") {
 				const cost = costfunctions[column][row.name](getter);
@@ -599,6 +748,7 @@ class PointBuy {
 			} else {
 				const old  = row[privacy].value.value;
 				const pts  = this.forecast.statistic(this, row.name);
+				const diff = pts - old;
 				
 				const vcost = costfunctions.value[row.name](
 					(key) => PointBuy.COST_SCALE * this.rows.get(key).value
@@ -611,25 +761,41 @@ class PointBuy {
 				const cost = gcost + vcost;
 				
 				row[privacy].value.value = pts;
-				row[privacy].cattr.value = cost;
+				row[privacy].cattr.value = (cost / PointBuy.COST_SCALE).toFixed(2);
 
-				/* underline the numbers that have increased */
-				const root = row[privacy].value.root.classList;
-				if (root.contains("underline")) root.remove("underline");
-				if (old < pts) root.add("underline");
-				
+				if (this.animate) {
+					array.push(diff);
+				} else {
+					this.diffset(row[privacy].center, diff);
+				}
+
 				costSum += cost;
 				baseSum += pts;
+				diffSum += diff;
 			}
 		}
-		this.pairs[column].value.value = baseSum;
-		this.pairs[column].cattr.value = Math.trunc(costSum / PointBuy.COST_SCALE);
-		// this.totalBuild.refresh();
+
+		const row       = this.pairs[column];
+		row.value.value = baseSum;
+		row.cattr.value = Math.trunc(costSum / PointBuy.COST_SCALE);
+		if (!this.animate) this.diffset(row.center, diffSum);
+		array.push(diffSum);
+
+		if (this.animate && array) {
+			this.bells.clear();
+			this.bells.play(array);
+		}
 	}
 
 	*column(column) {
 		for (let [name, row] of this.rows.entries()) {
 			yield [name.toLowerCase(), row["_" + column].value.value];
+		}
+	}
+
+	*cells(column) {
+		for (let [name, row] of this.rows.entries()) {
+			yield [name.toLowerCase(), row["_" + column].value];
 		}
 	}
 

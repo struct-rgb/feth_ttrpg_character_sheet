@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["for lances", "for guile", "for faith", "for bows"],
+    "tags": ["for lances", "for guile", "for faith", "for bows", "explain"],
     "hidden": false
 }

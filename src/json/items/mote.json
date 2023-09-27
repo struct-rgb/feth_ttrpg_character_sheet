@@ -1,0 +1,27 @@
+{
+  "name": "Mote",
+  "type": "Faith",
+  "description": "No special effects.",
+  "requires": "Faith E",
+  "rank": "E",
+  "price": 450,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 2,
+    "prot": 0,
+    "resl": 0,
+    "hit": 90,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": [],
+  "hidden": false
+}

@@ -13,7 +13,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill advantage(weapon|type|guile)",
+        "mt": "fill advantage(item|type|guile)",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -33,6 +33,6 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["rework", "advantage", "in combat"],
+    "tags": ["advantage", "in combat"],
     "hidden": false
 }

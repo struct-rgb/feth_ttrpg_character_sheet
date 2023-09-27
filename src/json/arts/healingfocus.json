@@ -24,8 +24,7 @@
     "no stats",
     "healing",
     "tactical",
-    "condition",
-    "combo"
+    "condition"
   ],
   "hidden": false,
   "type": "Axes",

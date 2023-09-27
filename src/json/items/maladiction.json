@@ -1,0 +1,27 @@
+{
+  "name": "Maladiction",
+  "type": "Guile",
+  "description": "If target foe is affected by one or more conditions, grants Mt +4 in combat. After combat, if target foe was defeated, apply up to one condition that target foe was affected by before combat or that unit would have applied to target foe after combat to a foe within two spaces of target foe's space for one turn, otherwise increase the duration of up to one of those conditions by one turn.",
+  "requires": "Guile D",
+  "rank": "D",
+  "price": 900,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": "2 + ask [Foe Affect by a Condition?]; No {0}, Yes {4} end",
+    "prot": 0,
+    "resl": 0,
+    "hit": 70,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": ["condition"],
+  "hidden": false
+}

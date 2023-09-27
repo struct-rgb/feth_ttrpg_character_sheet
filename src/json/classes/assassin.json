@@ -4,7 +4,7 @@
     "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Swords C+) (Bows C+) (Required (Level 15))",
-    "abilities": ["Bow Advantage", "Sword Advantage", "Stealth", "Locktouch"],
+    "abilities": [["Bow Advantage", "Sword Advantage"], "Stealth", "Locktouch"],
     "arts": [],
     "growths": {
         "hp": 20,

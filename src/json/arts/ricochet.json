@@ -2,7 +2,11 @@
   "name": "Ricochet",
   "description": "Can target units through wind torrents. Cannot target foes unless an Armor unit or a tile impassable to non-Flying units exists at an intersection of perpendicular lines between this unit and target foe. Can be used with one other combat art, replacing that art’s range and AP.",
   "requires": "Bows D",
-  "compatible": "Skill Bows",
+  "compatible": [
+    "Match",
+    "  Art    (Skill Bows)",
+    "  Weapon (Skill Bows)"
+  ],
   "mttype": "else",
   "modifiers": {
     "mt": -1,
@@ -18,7 +22,7 @@
     "spcost": 1
   },
   "comment": "",
-  "tags": [],
+  "tags": ["combo"],
   "hidden": false,
   "type": "Bows",
   "rank": "D"

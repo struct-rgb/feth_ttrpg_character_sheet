@@ -2,7 +2,7 @@
   "name": "Psychological Warfare",
   "description": "Gambit that applies @{condition:Rattled:[Rattled]} to foes in its AoE applies @{condition:Confused:[Confused]} instead.",
   "requires": "Authority C",
-  "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+  "compatible": "Match Gambit (All (Text `Rattled`) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
@@ -15,7 +15,7 @@
     "minrng": 0,
     "maxrng": 0,
     "tpcost": 0,
-    "spcost": 6
+    "spcost": 4
   },
   "comment": "",
   "tags": ["metagambit"],

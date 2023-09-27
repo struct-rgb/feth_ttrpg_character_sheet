@@ -1,11 +1,11 @@
 {
     "name": "Wyvern Lord",
-    "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern. Choose one Advantage and Breath skill on reclass.",
+    "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern. Choose one Advantage ability and Breath art on reclass.",
     "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Axes C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": ["Axe Advantage", "Lance Advantage", "Avo +10", "Canto"],
-    "arts": ["Frost Breath", "Flame Breath", "Fog Breath"],
+    "abilities": [["Axe Advantage", "Lance Advantage"], "Avo +10", "Canto"],
+    "arts": [["Frost Breath", "Flame Breath", "Fog Breath"]],
     "growths": {
         "hp": 30,
         "str": 20,

@@ -1,0 +1,50 @@
+{
+  "name": "Devil (Alt)",
+  "type": "Any",
+  "description": "Grants weapon Mt +6. When an attack made with this weapon misses, it hits its wielder instead. Weapon's base accuracy changes based on its type:\n\n • Swords, Hit: 70\n • Lances, Hit: 65\n • Axes, Hit: 60\n • Brawl, Hit: 55\n\nDisable on spells, Bows, and if weapon has any other attributes except for @{attribute::Spellblade}.",
+  "rank": 0,
+  "price": 330,
+
+  "mttype": "else",
+  "modifiers": {
+    "mt": 6,
+    "prot": 0,
+    "resl": 0,
+    "hit": [
+      "-(item|noattr|hit)",
+      "  +",
+      "bothif fill locals|sb(item|type|faith, item|type|swords) <> 0 then",
+      "  70",
+      "elseif fill locals|sb(item|type|guile, item|type|lances) <> 0 then",
+      "  65",
+      "elseif fill locals|sb(item|type|reason, item|type|axes)  <> 0 then",
+      "  60",
+      "elseif item|type|brawl <> 0 then",
+      "  55",
+      "else",
+      "  0",
+      "end"
+    ],
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+
+  "locals": [
+    [
+      "template sb(spell, weapon)",
+      "  (item|has_attribute|Spellblade * (spell)) + (weapon)",
+      "end"
+    ]
+  ],
+
+  "comment": "Items in modifers should be integers",
+  "tags": ["for axes", "for swords", "for brawl", "for lances"],
+  "hidden": false
+}

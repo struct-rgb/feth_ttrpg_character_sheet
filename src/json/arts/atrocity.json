@@ -1,6 +1,6 @@
 {
   "name": "Atrocity",
-  "description": "@{weapon::Areadbhar} only; effective against all units.",
+  "description": "@{item::Areadbhar} only; effective against all units.",
   "requires": "All (Weapon Areadbhar) (Crest Blaiddyd) (Lances E)",
   "compatible": "Name Areadbhar",
   "mttype": "else",

@@ -6,7 +6,7 @@
 
     "mttype": "else",
     "modifiers": {
-        "mt": "fill bothif((weapon|type|axes + weapon|type|lances + weapon|type|swords) * (weapon|has_attribute|Ranged) + (weapon|type|bows) * (weapon|has_attribute|Stabilizer), 0, -3)",
+        "mt": "fill when(fill is_hidden(), 0, -3)",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -22,6 +22,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["for axes", "for swords", "for lances", "for brawl", "for bows", "for faith", "for reason", "for guile"],
+    "tags": ["for axes", "for swords", "for lances", "for brawl", "for bows", "for faith", "for reason", "for guile","explain"],
     "hidden": false
 }

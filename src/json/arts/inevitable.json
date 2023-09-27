@@ -1,8 +1,8 @@
 {
   "name": "Inevitable",
-  "description": "Hit +20. This metamagic ability can be used with another one.",
+  "description": "Hit +20. Costs 2 SP less when used with a spell that has the effect to apply a status condition on hit, after combat. This combat art can be used with one other one.",
   "requires": "Guile D",
-  "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
+  "compatible": "All (Skill Guile) (Not (Tag `no hit`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
@@ -15,7 +15,7 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-    "spcost": 5,
+    "spcost": "fill when(host|tagged|condition, 4, 6)",
     "tpcost": 0,
     "sp": 0,
     "tp": 0

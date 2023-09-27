@@ -90,7 +90,7 @@ class Note {
 /**
  * An element that allows switching between content using tabs
  */
-class Notebook {
+class Notebook { // TODO finish implementing wide mode
 
 	/**
 	 * Create a new notebook

@@ -2,7 +2,7 @@
   "name": "Total Warfare",
   "description": "Gambit that applies @{condition:Rattled:[Rattled]} to foes in its AoE also deals nonlethal damage to foes in AoE @{style:italic:(other than foe in target tile)} equal to half of the damage dealt to foe in target tile.",
   "requires": "Authority B",
-  "compatible": "All (Text `Rattled`) (Not (Name `Counter`))",
+  "compatible": "Match Gambit (All (Text `Rattled`) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

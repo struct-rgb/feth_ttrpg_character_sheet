@@ -4,7 +4,7 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Faith C+) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Sword Advantage", "Lance Advantage", "Faith Advantage", "Canto"],
+    "abilities": [["Sword Advantage", "Lance Advantage"], "Faith Advantage", "Canto"],
     "arts": [],
     "growths": {
         "hp": 25,

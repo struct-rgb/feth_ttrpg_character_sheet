@@ -1,0 +1,159 @@
+.base {
+	color: #DDDDDD;
+	background: black
+}
+
+.simple-border {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 3px;
+	border-width: 2px;
+	border-color: #008800;
+	border-style: ridge;
+	margin: 3px;
+}
+
+.selected-text {
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.datum {
+	font-weight: bold;
+	color: #00DD00;
+	padding: 0px;
+	margin: 0px;
+}
+
+.computed {
+	font-style: italic;
+	font-weight: bold;
+	color: DD;
+	padding: 0px;
+	margin: 0px;
+}
+
+.parenthesis {
+	color: #008800;
+}
+
+.punctuation {
+	color: #008800;
+	font-style: italic;
+	font-weight: bold;
+}
+
+input[type=checkbox] {
+	color: #00DD00;
+}
+
+hr {
+	background-color: #008800;
+	border-color: #008800;
+}
+
+dt {
+	color: #AAAAAA;
+}
+
+dd {
+	color: #AAAAAA;
+}
+
+.tts {
+	border-bottom: 1px dotted #008800;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.ttts {
+	color: #AAAAAA;
+	outline: none;
+	background: #222222;
+	border-radius: 6px;
+	/*border-width: 2px;*/
+	/*border-color: #008800;*/
+	/*border-style: ridge;*/
+}
+
+.attempt-enabled {
+
+}
+
+.attempt-disabled {
+	color: darkgrey;
+}
+
+meter::-webkit-meter-bar {
+	background: black;
+}
+
+meter::-webkit-meter-optimum-value {
+	background: #00DD00;
+}
+
+meter::-webkit-meter-suboptimum-value {
+	background: #008800;
+}
+
+meter::-webkit-meter-even-less-good-value {
+	background: #006600;
+}
+
+input[type="checkbox"]:checked {
+	color: #222222;
+}
+
+.level-table th.incr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #00DD00;
+	border-style: outset;
+	background: #00DD00;
+	color: #222222;
+	font-weight: bolder;
+}
+
+.level-table th.decr-bell {
+	border-radius: 3px 3px 15px 15px;
+	border-width: 3px;
+	border-color: #222222;
+	border-style: outset;
+	background: #222222;
+	color: #00DD00;
+	font-weight: bolder;
+}
+
+button.toggle-on {
+	border-radius: 5px;
+	border-color: #222222;
+	background: #00DD00;
+	border-style: solid;
+	color: #222222;
+}
+
+button.toggle-off {
+	border-radius: 5px;
+	border-color: #222222;
+	background: black;
+	border-style: solid;
+	color: #00DD00;
+}
+
+.hl-identifier {
+	color: lightgrey;
+}
+
+.hl-reserved {
+	/*color: #008800;*/
+}
+
+.hl-operator {
+	color: #008800;
+}
+
+.hl-literal {
+	color: #00DD00;
+}

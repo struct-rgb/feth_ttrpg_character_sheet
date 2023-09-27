@@ -1,8 +1,8 @@
 {
-  "name": "Artillary Strike",
+  "name": "Artillery Strike",
   "description": "Gambit Hit -30 and Gambit Range +1. This art may not be used with gambits that don’t roll to hit.",
   "requires": "Authority B",
-  "compatible": "All (Not (Tag `no hit`)) (Not (Name `Counter`))",
+  "compatible": "Match Gambit (All (Not (Tag `no hit`)) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

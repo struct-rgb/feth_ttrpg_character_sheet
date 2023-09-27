@@ -3,11 +3,15 @@
 /* global uniqueLabel */
 /* global AttributeCell */
 
+/* global Art */
+/* global Gambit */
 /* global Battalion */
 /* global Adjutant */
 
 /* global CategoryModel */
 /* global MultiActiveCategory */
+
+/* global Expression */
 
 /* global VariableTable */
 
@@ -15,9 +19,19 @@
 /* global hitip */
 /* global Toggle */
 /* global tooltip */
-
-/* global Gambit */
 /* global Grade */
+/* global capitalize */
+/* global delimit */
+/* global Version */
+
+/* TODO this directive is to condense the many
+ * violations that not having this here makes below
+ * I probably don't want to use defintions globally,
+ * but until I decide to change this, this todo will
+ * remain here to remind me of the various uses below.
+ */
+ 
+/* global definitions */
 
 class Battalions {
 	
@@ -43,11 +57,10 @@ class Battalions {
 				type     : "text", 
 				value    : "Blank Battalion",
 				onchange : (() => {
-					/* TODO find better way to do this */
 					const activeID = this.sheet.bb.category.getActive();
 					if (activeID === null) return;
 
-					const element = this.sheet.bb.category.elements.get(activeID);
+					const element = this.sheet.bb.category.element(activeID);
 					element.title = this.name;
 				}),
 			},
@@ -304,7 +317,7 @@ class Battalions {
 			this._preview,
 
 			tooltip(this._refr, [
-				"Refresh the weapon preview."
+				"Refresh the battalion preview."
 			].join("")),
 
 			element("br"),
@@ -327,7 +340,7 @@ class Battalions {
 				tooltip(this._replace.root, wrap(
 					"If checked, replaces the template battalion's original ",
 					"description. If not, appends the custom description to ",
-					"the end of the template weapon's original description."
+					"the end of the template battalion's original description."
 				)),
 			]),
 		]);
@@ -344,7 +357,7 @@ class Battalions {
 		const activeID = this.sheet.bb.category.getActive();
 		if (activeID === null) return;
 
-		const element = this.sheet.bb.category.elements.get(activeID);
+		const element = this.sheet.bb.category.element(activeID);
 		element.title = this.name;
 	}
 
@@ -362,7 +375,7 @@ class Battalions {
 		const activeID = this.sheet.bb.category.getActive();
 		if (activeID === null) return;
 
-		const elemenn       = this.sheet.bb.category.elements.get(activeID);
+		const elemenn       = this.sheet.bb.category.element(activeID);
 		elemenn.description = this.body();
 	}
 
@@ -395,10 +408,9 @@ class Battalions {
 		for (let name of gambits) {
 			this.gambits.add(name, {removable: false});
 
-			const element = this.gambits.elements.get(name);
+			const element = this.gambits.element(name);
 			element.shiftForward(this.gambits.size);
-			// element.removeButton.hidden = true;
-
+			
 			if (Gambit.get(name).tagged("structure")) {
 				this.gambits.toggleActive(name);
 			}
@@ -434,6 +446,24 @@ class Battalions {
 		return Gambit.get("Counter");
 	}
 
+	clearGambit() {
+		for (let gambit of this.gambits.getActiveValues()) {
+			if (!gambit.tagged("structure"))
+				this.gambits.toggleActive(gambit.name);
+		}
+	}
+
+	toggleGambit(name) {
+
+		const gambit = this.gambits.get(name);
+
+		if (!gambit || gambit.tagged("structure")) return false;
+
+		this.clearGambit();
+
+		return this.gambits.toggleActive(name);
+	}
+
 	refreshFirst() {
 		for (let stat in this.stats.first) {
 			this.stats.first[stat].refresh();
@@ -452,16 +482,18 @@ class Battalions {
 		}
 	}
 
-	refresh(key) {
+	refresh(key=true) {
 		this.refreshFirst();
 		this.refreshSecond();
 		this.refreshGrowths();
 
-		if (this._preview.hasChildNodes()) {
-			this._preview.lastChild.remove();
-		}
+		if (key) {
+			if (this._preview.hasChildNodes()) {
+				this._preview.lastChild.remove();
+			}
 
-		this._preview.appendChild(this.preview());
+			this._preview.appendChild(this.preview());
+		}
 	}
 
 	*iterCustomRows() {
@@ -471,12 +503,11 @@ class Battalions {
 
 		for (let each of this.gambits.getActiveValues()) {
 			for (row of each.rows) yield row;
-		}		
+		}
 
-		tmp = this.sheet.getActiveArt();
-
-		if (tmp && (tmp = CombatArt.get(tmp)).tagged("metagambit")) {
-			for (row of tmp.rows) yield row;
+		for (let each of this.sheet.arts.getActiveValues()) {
+			if (!each.tagged("metagambit")) continue;
+			for (row of each.rows) yield row;
 		}
 
 	}
@@ -527,26 +558,29 @@ class Battalions {
 			Expression.Env.RUNTIME, sheet.definez
 		);
 
-		function uimod(name, sign=false, dead=false) {
+		// TODO find a better way to display these because refreshing
+		// the preview every
 
-			const num = env.read(`battalion|total|${name}`);
+		// function uimod(name, sign=false, dead=false) {
 
-			if (num <= 1) return 0;
+		// 	const num = env.read(`battalion|total|${name}`);
 
-			return element("span", {
-				class   : ["computed"],
-				content : String(num),
-			});
-		}
+		// 	if (num <= 1) return 0;
 
-		for (let key of [
-			"ep", "atk", "prot", "resl", "cap", "br", "auto", "plu"
-		]) {
+		// 	return element("span", {
+		// 		class   : ["computed"],
+		// 		content : String(num),
+		// 	});
+		// }
 
-			if ((star = uimod(key, true, dead))) {
-				mods.push(span(capitalize(key), ":\xA0", star));
-			}
-		}
+		// for (let key of [
+		// 	"ep", "atk", "prot", "resl", "cap", "br", "auto", "plu"
+		// ]) {
+
+		// 	if ((star = uimod(key, true, dead))) {
+		// 		mods.push(span(capitalize(key), ":\xA0", star));
+		// 	}
+		// }
 
 		const rank  = this._rank._trigger(this.rank);
 		const attrs = Array.from(this.gambits.names());
@@ -596,11 +630,9 @@ class Battalions {
 
 	blurb() {
 
-		let star = undefined;
-
 		const mods = [];
 		const env  = new Expression.Env(
-			Expression.Env.RUNTIME, sheet.definez
+			Expression.Env.RUNTIME, this.sheet.definez
 		);
 
 		for (let key of [
@@ -645,13 +677,9 @@ class Battalions {
 	export() {
 
 		/* filter all adjutant abilites off of the gambit state */
-		const state = this.gambits.getState();
-
-		for (let each of ["added", "active"]) {
-			state[each] = state[each].filter(
-				x => !Gambit.get(x).tagged("adjutant")
-			);
-		}
+		const state = this.gambits.getState().filter(
+			x => !Gambit.get(x).tagged("adjutant")
+		);
 
 		return {
 			version     : Version.CURRENT.toString(),

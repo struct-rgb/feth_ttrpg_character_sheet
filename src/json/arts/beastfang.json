@@ -1,6 +1,6 @@
 {
   "name": "Beast Fang",
-  "description": "@{weapon::Blutgang} only; effective against Cavalry and Dragon units.",
+  "description": "@{item::Blutgang} only; effective against Cavalry and Dragon units.",
   "requires": "All (Weapon Blutgang) (Crest `the Beast`) (Swords E)",
   "compatible": "Name Blutgang",
   "mttype": "else",

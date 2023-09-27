@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of Aubin",
-            "when": "weapon|type|weapon",
+            "name": "Null Counter",
+            "when": "item|type|weapon",
             "expr": 10,
             "roll": true
         }

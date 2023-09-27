@@ -2,7 +2,7 @@
   "name": "All Out",
   "description": "Gambit Hit +20; if foe in target tile is in range to, it may counterattack this battalion unit ignoring its barrier. Can be used with one other meta gambit.",
   "requires": "Authority D",
-  "compatible": "Not (Tag `no hit`)",
+  "compatible": "Match Gambit (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

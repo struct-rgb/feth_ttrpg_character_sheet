@@ -22,8 +22,7 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
-    "reaction",
-    "combo"
+    "reaction"
   ],
   "hidden": false,
   "type": "Guile",

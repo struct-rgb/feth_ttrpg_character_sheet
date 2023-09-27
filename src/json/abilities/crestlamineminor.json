@@ -36,7 +36,7 @@
 
     "rows": [
         {
-            "name": "Crest of the Lamine",
+            "name": "Null TP & SP",
             "when": "unit|tagged|healing",
             "expr": 10,
             "roll": true

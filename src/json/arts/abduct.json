@@ -1,6 +1,7 @@
 {
   "name": "Abduct",
   "description": "Can only be equipped by Flying units and can only be used while mounted. Unit may choose to deal nonlethal damage. On hit, apply @{condition:Levitated:[Levitated]} to target Infantry or Armor foe until the end of the phase; for the duration, when this unit moves, target foe moves into this unit’s previous space.",
+  "compatible": "Match Weapon (True)",
   "requires": "Flying A",
   "mttype": "else",
   "modifiers": {

@@ -22,9 +22,9 @@
         "cravo": 0,
 
         "minrng": 0,
-        "maxrng": "fill bothif(not(weapon|template|maxrng), 1, 0)",
+        "maxrng": "fill when(not(item|template|maxrng), 1, 0)",
 
-        "tpcost": "fill bothif(not(weapon|type|spell) * weapon|total|tpcost, -1, 0)",
+        "tpcost": "fill when(not(item|type|spell) * item|total|tpcost, -1, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0,

@@ -7,7 +7,7 @@
 
     "mttype": "else",
     "modifiers": {
-        "mt": "-ceil(weapon|noattr|mt / 2)",
+        "mt": "-ceil(item|noattr|mt / 2)",
         "prot": 0,
         "resl": 0,
         "hit": -15,
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["for axes", "for bows", "for swords", "for lances"],
+    "tags": ["for axes", "for bows", "for swords", "for lances", "explain"],
     "hidden": true
 }

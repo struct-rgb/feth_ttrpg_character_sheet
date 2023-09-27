@@ -1,6 +1,6 @@
 {
     "name": "Sword Crit +10",
-    "description": "Grants Crit +10 when unit uses associated weapon type.",
+    "description": "Grants Crit +10 when unit uses associated skill type.",
     "requires": "Swords S",
     "modifiers": {
         "hp": 0,
@@ -18,7 +18,7 @@
         "resl": 0,
         "hit": 0,
         "avo": 0,
-        "crit": "fill bothif(weapon|type|swords, 10, 0)",
+        "crit": "fill when(host|type|swords, 10, 0)",
         "cravo": 0,
 
         "minrng": 0,

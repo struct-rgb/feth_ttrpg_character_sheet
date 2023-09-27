@@ -1,6 +1,6 @@
 {
     "name": "HP +5",
-    "description": "Grants Max HP +5; consumes half of an ability slot starting at level 10.",
+    "description": "Grants Max HP +5.",
     "requires": "Level 5",
     "modifiers": {
         "hp": 5,

@@ -34,7 +34,7 @@
 
     "rows": [
         {
-            "name": "Crest of the Cethleann",
+            "name": "Mt +5",
             "when": "unit|tagged|healing",
             "expr": 30,
             "roll": true

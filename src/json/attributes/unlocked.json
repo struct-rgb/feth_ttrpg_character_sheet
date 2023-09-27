@@ -1,7 +1,7 @@
 {
     "name": "Unlocked",
     "type": "Any",
-    "description": "Weapon can be equipped by a unit that does not meet its required skill rank; in this case, consumes 2 TP after combat or after use (as applies). Disabled while wielder has 0 TP. This attribute cannot be purchased.",
+    "description": "Item can be equipped by a unit that does not meet its required skill rank; in this case, consumes 2 TP after combat or after use (as applies). Disabled while wielder has 0 TP. This attribute cannot be purchased.",
     "rank": 0,
     "price": 0,
 
@@ -16,7 +16,7 @@
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": 2,
+        "tpcost": "fill when(not(item|passes), 2, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0

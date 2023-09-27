@@ -1,6 +1,6 @@
 {
   "name": "Beaming",
-  "description": "When @{weapon::Rescue} or @{weapon::Warp} is used, create a @{tile::Wormhole} in tile where targeted unit was teleported from. The next unit that enters this tile is teleported to the target’s location and the wormhole disappears. If the tile is occupied it teleports to an adjacent tile of its choice instead.",
+  "description": "When @{item::Rescue} or @{item::Warp} is used, create a @{tile::Wormhole} in tile where targeted unit was teleported from. The next unit that enters this tile is teleported to the target’s location and the wormhole disappears. If the tile is occupied it teleports to an adjacent tile of its choice instead.",
   "requires": "Faith A",
   "mttype": "else",
   "modifiers": {

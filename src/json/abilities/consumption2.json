@@ -25,9 +25,9 @@
         "maxrng": 0,
 
         "tpcost": [
-            "fill bothif(weapon|type|spell + weapon|type|brawl, -1, 0)",
+            "fill when(item|type|spell + item|type|brawl, -1, 0)",
             "  +",
-            "fill bothif(art|type|combat * (weapon|type|spell + weapon|type|brawl), -1, 0)"
+            "fill when(arts|combat * (item|type|spell + item|type|brawl), -1, 0)"
         ],
         "spcost": 0,
         "tp": 0,

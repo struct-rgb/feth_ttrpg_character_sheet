@@ -21,7 +21,7 @@
         "crit": 0,
         "cravo": 0,
 
-        "minrng": "fill bothif(weapon|type|bows, -1, 0)",
+        "minrng": "fill when(item|type|bows, -1, 0)",
         "maxrng": 0,
 
         "tpcost": 0,

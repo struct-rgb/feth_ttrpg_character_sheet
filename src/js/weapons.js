@@ -16,7 +16,7 @@
 /* global MultiActiveCategory */
 
 /* global Feature */
-/* global Weapon */
+/* global Item */
 /* global Attribute */
 /* global AttackFeature */
 
@@ -24,7 +24,7 @@
 
 /* global Expression */
 
-class Weapons {
+class Items {
 
 	constructor(sheet) {
 		this.root  = document.createElement("div");
@@ -34,19 +34,19 @@ class Weapons {
 			class : ["simple-border"],
 			attrs : {
 				type     : "text", 
-				value    : Weapon.DEFAULT,
+				value    : Item.DEFAULT,
 				onchange : (() => {
 					const activeID = this.sheet.wb.category.getActive();
 					if (activeID === null) return;
 
-					const element = this.sheet.wb.category.elements.get(activeID);
+					const element = this.sheet.wb.category.element(activeID);
 					element.title       = this.name;
 					element.description = this.body();
 				}),
 			},
 		});
 
-		this._sf = Weapon.select(() => {
+		this._sf = Item.select(() => {
 			this.template = this._select.value;
 			this.refresh();
 		});
@@ -55,13 +55,13 @@ class Weapons {
 			const activeID = this.sheet.wb.category.getActive();
 			if (activeID === null) return;
 
-			const element = this.sheet.wb.category.elements.get(activeID);
+			const element = this.sheet.wb.category.element(activeID);
 			element.description = this.body();
 		});
 
 		this._select = this._sf._select;
 
-		this._template = Weapon.get(Weapon.DEFAULT);
+		this._template = Item.get(Item.DEFAULT);
 
 		const model = new CategoryModel(
 			Attribute.kind,
@@ -73,7 +73,7 @@ class Weapons {
 
 		this.attributes = new MultiActiveCategory(model, {
 			name        : "themes",
-			empty       : "Weapon has no attributes",
+			empty       : "Item has no attributes",
 			selectable  : true,
 			reorderable : true,
 			removable   : true,
@@ -111,7 +111,7 @@ class Weapons {
 		const makefn = (name) => {
 			const baseFunction = new Expression.Env(
 				Expression.Env.RUNTIME, this.sheet.definez
-			).func(`weapon|total|${name}`);
+			).func(`item|total|${name}`);
 
 			return ((base) => {
 				this.sheet.stats.refreshSecondary();
@@ -207,7 +207,7 @@ class Weapons {
 
 		const baseFunction = new Expression.Env(
 			Expression.Env.RUNTIME, this.sheet.definez
-		).func("weapon|total|mttype");
+		).func("item|total|mttype");
 
 		const second = element("tbody", [
 			wide("Might", "mt", makefn("mt")),
@@ -254,7 +254,7 @@ class Weapons {
 			]),
 		]);
 
-		/* I won't allow these to be added to weapons so they can rot here */
+		/* I won't allow these to be added to items so they can rot here */
 		this._WeIgHt = dual("Doubles/Doubled", "doubles", "doubled");
 		/* --------------------------------------------------------------- */
 
@@ -304,7 +304,7 @@ class Weapons {
 		};
 
 		this.root = element("div", [
-			uniqueLabel("Spell or Weapon Name", this._name), element("br"),
+			uniqueLabel("Item Name", this._name), element("br"),
 			this._name, element("br"),
 
 			uniqueLabel("Template", this._select), element("br"),
@@ -313,13 +313,12 @@ class Weapons {
 			this._preview,
 
 			tooltip(this._refr, [
-				"Refresh the weapon preview."
+				"Refresh the item preview."
 			].join("")),
 
 			tooltip(this._inInventory.root, [
-				"This only really affects what gets put into the blurb for ",
-				"now, but in the future it might affect weapons with ",
-				"attributes that give you penalties for holding them."
+				"Check this box so that this item shows up when you generate ",
+				"a blurb or when you batch generate macros."
 			].join("")),
 
 			element("br"), 
@@ -335,9 +334,9 @@ class Weapons {
 				this._adder.root,
 				this._description,
 				tooltip(this._replace.root, [
-					"If checked, replaces the template weapon's original ",
+					"If checked, replaces the template item's original ",
 					"description. If not, appends the custom description to ",
-					"the end of the template weapon's original description."
+					"the end of the template item's original description."
 				].join(""))
 			]),
 
@@ -351,7 +350,7 @@ class Weapons {
 				this._template_tags.root, this._custom_tags.root,
 				element("p", wrap(
 					"You can add the following tags in order to change how ",
-					"this weapon generates macros:",
+					"this item generates macros:",
 				)),
 				defs(
 					"healing",
@@ -402,7 +401,7 @@ class Weapons {
 		const activeID = this.sheet.wb.category.getActive();
 		if (activeID === null) return;
 
-		const element = this.sheet.wb.category.elements.get(activeID);
+		const element = this.sheet.wb.category.element(activeID);
 		element.title = this.name;
 	}
 
@@ -432,7 +431,7 @@ class Weapons {
 
 	set template(value) {
 
-		this._template     = Weapon.get(value);
+		this._template     = Item.get(value);
 		this._select.value = value;
 
 		this.refresh();
@@ -440,7 +439,7 @@ class Weapons {
 		const activeID = this.sheet.wb.category.getActive();
 		if (activeID === null) return;
 
-		const elemenn       = this.sheet.wb.category.elements.get(activeID);
+		const elemenn       = this.sheet.wb.category.element(activeID);
 		elemenn.description = this.body();
 
 		this._template_tags.clear();
@@ -476,7 +475,7 @@ class Weapons {
 		const activeID = this.sheet.wb.category.getActive();
 		if (activeID === null) return;
 
-		const element = this.sheet.wb.category.elements.get(activeID);
+		const element = this.sheet.wb.category.element(activeID);
 		element.description = this.body();
 	}
 
@@ -503,32 +502,36 @@ class Weapons {
 		this._preview.appendChild(this.preview());
 	}
 
-	import(weapon) {
+	import(item) {
 
-		this.name        = weapon.name        || Weapon.DEFAULT;
-		this.rank        = weapon.rank        || 0;
-		this.mttype      = weapon.mttype      || 0;
-		this.price       = weapon.price       || 0;
-		this.inInventory = weapon.inventory   || false;
-		this.replaceInfo = weapon.replace     || false;
-		this.template    = weapon.template    || Weapon.DEFAULT;
-		this.information = weapon.description || "";
-		this.attributes.setState(weapon.attributes);
+		this.sheet.stats.pause = true;
 
-		for (let stat in weapon.modifiers) {
+		this.name        = item.name        || Item.DEFAULT;
+		this.rank        = item.rank        || 0;
+		this.mttype      = item.mttype      || 0;
+		this.price       = item.price       || 0;
+		this.inInventory = item.inventory   || false;
+		this.replaceInfo = item.replace     || false;
+		this.template    = item.template    || Item.DEFAULT;
+		this.information = item.description || "";
+		this.attributes.setState(item.attributes);
+
+		for (let stat in item.modifiers) {
 			
 			/* guard against malformed input */
 			if (!(stat in this.stats)) continue;
 
-			this.stats[stat].value = weapon.modifiers[stat];
+			this.stats[stat].value = item.modifiers[stat];
 		}
 
-		if (weapon.tags instanceof Array) {
+		if (item.tags instanceof Array) {
 			this._custom_tags.clear();
-			for (let tag of weapon.tags) {
+			for (let tag of item.tags) {
 				this._custom_tags.add(tag);
 			}
 		}
+
+		this.sheet.stats.pause = false;
 
 		this.refresh();
 	}
@@ -570,8 +573,8 @@ class Weapons {
 		this.information = "";
 		this.rank        = 0;
 		this.price       = 0;
-		this.name        = preset || Weapon.DEFAULT;
-		this.template    = preset || Weapon.DEFAULT;
+		this.name        = preset || Item.DEFAULT;
+		this.template    = preset || Item.DEFAULT;
 		this._custom_tags.clear();
 	}
 
@@ -617,12 +620,12 @@ class Weapons {
 
 		function uimod(name, sign=false, dead=false) {
 
-			const dyn = env.read(`weapon|dynamic|${name}`);
+			const dyn = env.read(`item|dynamic|${name}`);
 
 			/* it it's a number just give a static html */
 			if (!dyn) {
 
-				const num = env.read(`weapon|total|${name}`);
+				const num = env.read(`item|total|${name}`);
 
 				/* we don't care to display these */
 				if (num == 0) return 0;
@@ -634,7 +637,7 @@ class Weapons {
 			}
 
 			/* made a modifier expression for this value */
-			const modifier = sheet.compiler.compile(`weapon|total|${name}`);
+			const modifier = sheet.compiler.compile(`item|total|${name}`);
 
 			/* handle an expression by returning a ModWidget */
 			return (new ModWidget(modifier, sign, !dead)).root;
@@ -661,7 +664,7 @@ class Weapons {
 				continue;
 			}
 
-			/* weapons shouldn't modify this */
+			/* items shouldn't modify this */
 			if (key == "doubles" || key == "doubled") {
 				continue;
 			}
@@ -671,8 +674,8 @@ class Weapons {
 			}
 		}
 
-		const min = env.read("weapon|total|minrng");
-		const max = env.read("weapon|total|maxrng");
+		const min = env.read("item|total|minrng");
+		const max = env.read("item|total|maxrng");
 
 		if (min != max) {
 			const min = uimod("minrng", false, dead);
@@ -736,7 +739,7 @@ class Weapons {
 
 		return element("div", [dt, dd]);
 	}
-
+	
 	blurb() {
 
 		let star = undefined;
@@ -747,19 +750,19 @@ class Weapons {
 
 		const mods = [];
 		const env  = new Expression.Env(
-			Expression.Env.RUNTIME, sheet.definez
+			Expression.Env.RUNTIME, this.sheet.definez
 		);
 
 		if ((star = this._price._trigger(this.price))) {
 			mods.push(`${star}G`);
 		}
 
-		if ((star = env.read("weapon|dynamic|tpcost"))) {
-			mods.push([env.read("weapon|total|tpcost"), "TP", star]);
+		if ((star = env.read("item|dynamic|tpcost"))) {
+			mods.push([env.read("item|total|tpcost"), "TP", star]);
 		}
 
-		if ((star = env.read("weapon|dynamic|spcost"))) {
-			mods.push([env.read("weapon|total|spcost"), "SP", star]);
+		if ((star = env.read("item|dynamic|spcost"))) {
+			mods.push([env.read("item|total|spcost"), "SP", star]);
 		}
 
 		for (let key in this.stats) {
@@ -768,13 +771,13 @@ class Weapons {
 				continue;
 			}
 
-			/* weapons shouldn't modify this */
+			/* items shouldn't modify this */
 			if (key == "doubles" || key == "doubled") {
 				continue;
 			}
 
-			const value = env.read(`weapon|total|${key}`);
-			const isdyn = env.read(`weapon|dynamic|${key}`);
+			const value = env.read(`item|total|${key}`);
+			const isdyn = env.read(`item|dynamic|${key}`);
 
 			if (!isdyn && value == 0) continue;
 
@@ -783,10 +786,10 @@ class Weapons {
 			mods.push(`${capitalize(key)}:\xA0${value}${mark}`);
 		}
 
-		const min  = env.read("weapon|total|minrng");
-		const max  = env.read("weapon|total|maxrng");
-		const mind = d(env.read("weapon|dynamic|minrng"));
-		const maxd = d(env.read("weapon|dynamic|maxrng"));
+		const min  = env.read("item|total|minrng");
+		const max  = env.read("item|total|maxrng");
+		const mind = d(env.read("item|dynamic|minrng"));
+		const maxd = d(env.read("item|dynamic|maxrng"));
 
 		if (min != max) {
 			mods.push("Range:\xA0", min, mind, "\xA0-\xA0", max, maxd);
@@ -794,12 +797,12 @@ class Weapons {
 			mods.push("Range:\xA0", max, (mind || maxd));
 		}
 
-		if ((star = d(env.read("weapon|dynamic|tp")))) {
-			mods.push("Max TP:\xA0", env.read("weapon|total|tp"), star);
+		if ((star = d(env.read("item|dynamic|tp")))) {
+			mods.push("Max TP:\xA0", env.read("item|total|tp"), star);
 		}
 
-		if ((star = d(env.read("weapon|dynamic|sp")))) {
-			mods.push("Max SP:\xA0", env.read("weapon|total|sp"), star);
+		if ((star = d(env.read("item|dynamic|sp")))) {
+			mods.push("Max SP:\xA0", env.read("item|total|sp"), star);
 		}
 
 		const set  = new Set();
@@ -820,4 +823,4 @@ class Weapons {
 
 }
 
-/* exported Weapons */
+/* exported Items */

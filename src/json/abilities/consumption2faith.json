@@ -24,7 +24,7 @@
         "minrng": 0,
         "maxrng": 0,
 
-        "tpcost": "fill bothif(weapon|type|faith, -1, 0)",
+        "tpcost": "fill when(item|type|faith, -1, 0) + fill when(arts|combat * item|type|faith, -1, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0,

@@ -135,6 +135,7 @@ const Tokens = (function() {
 		MACRO    : "fill",
 		TEMPLATE : "template",
 		CONCAT   : "cat",
+		BOTHIF   : "bothif",
 		// IN       : "in",
 
 		/* builtin variables */
@@ -255,6 +256,7 @@ const Tokens = (function() {
 			TERMINALS.MACRO,
 			TERMINALS.TEMPLATE,
 			// TERMINALS.IN,
+			TERMINALS.BOTHIF,
 		]),
 	};
 
@@ -1357,7 +1359,7 @@ const Tokens = (function() {
 
 	namespace.OPERATORS[3] =  {
 
-		"if": new Operator(4, {
+		[TERMINALS.IF]: new Operator(4, {
 
 			help: [
 				TERMINALS.IF,
@@ -1576,6 +1578,33 @@ const Tokens = (function() {
 					}
 					throw error;
 				}
+			},
+		}),
+
+		[TERMINALS.BOTHIF] : new Operator(0, {
+
+			help: [
+				TERMINALS.BOTHIF,
+				"bothof {1} then {2} else {3} end",
+				wrap(
+					"If builtins|macrogen then behaves like [metaif], ",
+					"otherwise behaves like [if]."
+				),
+				"any relative expression",
+				"any expression",
+				"any expression",
+			],
+
+			codegen: function(recurse, code, node, env) {
+				return namespace.OPERATORS[3][TERMINALS.IF].codegen(
+					recurse, code, node, env
+				);
+			},
+
+			macrogen: function(recurse, node, env) {
+				return namespace.OPERATORS[3][TERMINALS.METAIF].macrogen(
+					recurse, node, env
+				);
 			},
 		}),
 	};
@@ -2335,6 +2364,13 @@ class Parser {
 		);
 	}
 
+	_parseBothIfExpression() {
+
+		return this._parseGenericConditionalExpression(
+			Tokens.TERMINALS.BOTHIF, Tokens.TERMINALS.BOTHIF
+		);
+	}
+
 	_parseConditionalExpression() {		
 
 		if (this.token != Tokens.TERMINALS.IF) {
@@ -2614,6 +2650,14 @@ class Parser {
 			if (out != null) return out;
 			this._index = save;
 
+		} else if (token == Tokens.TERMINALS.BOTHIF) {
+
+			/* check whether this is a bothif expression */
+			const save  = this._index;
+			const out   = this._parseBothIfExpression();
+			if (out != null) return out;
+			this._index = save;
+
 		} else if (token == Tokens.TERMINALS.PROMPT) {
 
 			/* check whether this is a prompt expression */
@@ -2845,7 +2889,6 @@ class Env {
 		this.stack     = [];
 		this.variables = variables;
 		this.calls     = new Set();
-		this.uid       = uniqueID();
 		this.macros    = macros || new Map();
 	}
 

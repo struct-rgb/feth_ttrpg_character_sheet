@@ -1,9 +1,9 @@
 {
     "name": "Flyswatter",
     "type": "Any",
-    "description": "Grants weapon [Effective against Flying] and -5 Hit. Disabled on spells and on weapons with Range > 1.\n\n(THIS IS ONLY FOR ENEMY WEAPONS, DO NOT GIVE THIS TO PLAYERS)",
-    "rank": 1,
-    "price": 550,
+    "description": "Grants weapon [Effective against Flying] and -5 Hit. Disabled on spells and on weapons with Range > 1.\n\n(This is delibrately not available for purchase.)",
+    "rank": 2,
+    "price": 0,
 
     "mttype": "else",
     "modifiers": {
@@ -23,6 +23,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["effective", "for axes", "for swords", "for lances", "for brawl"],
+    "tags": ["effective", "for axes", "for swords", "for lances", "for brawl", "explain"],
     "hidden": true
 }

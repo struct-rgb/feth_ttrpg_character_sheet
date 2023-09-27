@@ -34,8 +34,8 @@
 
     "rows": [
         {
-            "name": "Crest of the Indech",
-            "when": "weapon|type|weapon",
+            "name": "Consecutive Attack",
+            "when": "item|type|weapon",
             "expr": 10,
             "roll": true
         }

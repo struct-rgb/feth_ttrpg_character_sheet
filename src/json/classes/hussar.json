@@ -4,7 +4,7 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Sword Advantage", "Lance Advantage", "Canto", "Flanking Maneuver"],
+    "abilities": [["Sword Advantage", "Lance Advantage", "Axe Advantage"], "Canto", "Flanking Maneuver"],
     "arts": [],
     "growths": {
         "hp": 25,

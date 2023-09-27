@@ -1,6 +1,6 @@
 {
   "name": "Electroshock Therapy",
-  "description": "Lightning metamagic; on hit, apply @{condition:Shocked:[Shocked]} to target foe for one turn. @{weapon::Thoron} @{const:variant:Variant}: apply @{condition:Shocked:[Shocked]} to target foe and all foes between this unit and target foe for one turn.",
+  "description": "Lightning metamagic; on hit, apply @{condition:Shocked:[Shocked]} to target foe for one turn. @{item::Thoron} @{const:variant:Variant}: apply @{condition:Shocked:[Shocked]} to target foe and all foes between this unit and target foe for one turn.",
   "requires": "Reason B",
   "compatible": "All (Skill Reason) (Tag `lightning`)",
   "mttype": "else",

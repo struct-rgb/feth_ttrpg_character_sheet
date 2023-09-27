@@ -1,12 +1,74 @@
 
-
 /* global Version */
 /* global Class */
 /* global Characters */
 
 const Legacy = (function() {
 
-function from_2_3_2(old) {
+function MToM_v3_3_0(state, group="") {
+	return state.added.map(element => {
+		return {
+			id     : element,
+			group  : group,
+			active : state.active.includes(element),
+		};
+	});
+}
+
+function SToM_v3_3_0(state, group="") {
+	return state.added.map(element => {
+		return {
+			id     : element,
+			group  : group,
+			active : element == state.active,
+		};
+	});
+}
+
+function WToI_v3_3_0(text) {
+	return text.replace("@{weapon:", "@{item:");
+}
+
+function character_from_3_2_0(old) {
+
+	if (old.clart_active === null) {
+		old.clart_active = [];
+	}
+
+	if (old.arts.equipped.active === null) {
+		old.arts.equipped.active = [];
+	}
+
+	/* We're going to delibrately skip class features. */
+	old.abilities = MToM_v3_3_0(old.abilities.equipped, "equip");
+	
+	/* Same with these, skip the class ones. */
+	old.arts      = SToM_v3_3_0(old.arts.equipped, "equip");
+	
+	/* We also have to get all of these! */
+	const weapons = old.weapons.elements;
+	
+	for (let key in weapons)
+		weapons[key] = item_from_3_2_0(weapons[key]);
+
+	old.items = old.weapons;
+	delete old.weapons;
+
+	const battalions = old.battalions.elements;
+	
+	for (let key in battalions)
+		battalions[key] = battalion_from_3_2_0(battalions[key]);
+
+	old.equipment = old.equipment.known;
+
+	if (old.class == "Lord") old.class = "Banneret";
+
+	old.version = "3.3.0";
+
+	return old;
+}
+
+function character_from_2_3_2(old) {
 
 	let o = old.statistics;
 
@@ -86,7 +148,7 @@ function from_2_3_2(old) {
 	return old;
 }
 
-function from_2_2_0(old) {
+function character_from_2_2_0(old) {
 
 	let o = old.skills;
 
@@ -118,7 +180,7 @@ function from_2_2_0(old) {
 	return old;
 }
 
-function from_1_18_0(old) {
+function character_from_1_18_0(old) {
 
 	let o = undefined;
 
@@ -224,7 +286,7 @@ function from_1_18_0(old) {
 	};
 }
 
-function convert(obj, to=Version.CURRENT) {
+function character(obj, to=Version.CURRENT) {
 
 	if (obj.version === undefined) {
 		throw new TypeError (
@@ -239,22 +301,84 @@ function convert(obj, to=Version.CURRENT) {
 	const version = new Version(obj.version);
 
 	if (version.older("2.0.0")) {
-		obj = from_1_18_0(obj);
+		obj = character_from_1_18_0(obj);
 	}
 
 	if (version.older("2.3.0")) {
-		obj = from_2_2_0(obj);
+		obj = character_from_2_2_0(obj);
 	}
 
 	if (version.older("3.0.0")) {
-		obj = from_2_3_2(obj);
+		obj = character_from_2_3_2(obj);
+	}
+
+	if (version.older("3.3.0")) {
+		obj = character_from_3_2_0(obj);
+	}
+
+	return obj;
+}
+
+function item_from_3_2_0(old) {
+	old.attributes  = MToM_v3_3_0(old.attributes);
+	old.description = WToI_v3_3_0(old.description);
+	old.version     = "3.3.0";
+	return old; 
+}
+
+function item(obj, to=Version.CURRENT) {
+
+	if (obj.version === undefined) {
+		throw new TypeError (
+			"undefined version is not supported"
+		);
+	}
+
+	if (typeof to == "string") {
+		to = new Version(to);
+	}
+
+	const version = new Version(obj.version);
+
+	if (version.older("3.3.0")) {
+		obj = item_from_3_2_0(obj);
+	}
+
+	return obj;
+}
+
+function battalion_from_3_2_0(old) {
+	old.gambits     = MToM_v3_3_0(old.gambits);
+	old.description = WToI_v3_3_0(old.description);
+	old.version     = "3.3.0";
+	return old;
+}
+
+function battalion(obj, to=Version.CURRENT) {
+
+	if (obj.version === undefined) {
+		throw new TypeError (
+			"undefined version is not supported"
+		);
+	}
+
+	if (typeof to == "string") {
+		to = new Version(to);
+	}
+
+	const version = new Version(obj.version);
+
+	if (version.older("3.3.0")) {
+		obj = battalion_from_3_2_0(obj);
 	}
 
 	return obj;
 }
 
 return {
-	convert,
+	character,
+	item,
+	battalion,
 };
 
 })();

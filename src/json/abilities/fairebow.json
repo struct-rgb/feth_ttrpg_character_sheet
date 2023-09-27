@@ -1,6 +1,6 @@
 {
     "name": "Bowfaire",
-    "description": "Grants Mt +5 when unit uses associated weapon type.",
+    "description": "Grants Mt +5 when unit attacks with associated weapon type.",
     "requires": "Bows S+",
     "modifiers": {
         "hp": 0,
@@ -13,7 +13,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill faire(weapon|type|bows)",
+        "mt": "fill faire(item|type|bows)",
         "prot": 0,
         "resl": 0,
         "hit": 0,

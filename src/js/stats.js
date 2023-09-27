@@ -9,6 +9,8 @@
 /* global Expression */
 /* global AttackFeature */
 
+/* global PointBuy */
+
 /**
  * Record of the statistical information associated with a level up
  */
@@ -178,7 +180,7 @@ class LevelAnimation {
 	 * @param {Array.HTMLElement} titles - array of HTMLElements to animate 
 	 * @param {Array.HTMLElement} inputs - inputs to disable as animation plays
 	 */
-	constructor(titles, inputs=[]) {
+	constructor(titles, inputs=[], incr_cls="incr-bell", decr_cls="decr-bell") {
 
 		this.titles    = titles;
 		this.inputs    = inputs;
@@ -186,6 +188,8 @@ class LevelAnimation {
 		this._decrBell = new Audio("./resources/cowbell_os_1-89685.mp3");
 		this._dings    = [];
 		this.disabled  = false;
+		this._incr_cls = incr_cls;
+		this._decr_cls = decr_cls;
 
 		this._incrBell.addEventListener("ended", (event) => this.next());
 		this._decrBell.addEventListener("ended", (event) => this.next());
@@ -240,11 +244,11 @@ class LevelAnimation {
 	clear() {
 		for (let title of this.titles) {
 			const classes = title.classList;
-			if (classes.contains("incr-bell")) {
-				classes.remove("incr-bell");
+			if (classes.contains(this._incr_cls)) {
+				classes.remove(this._incr_cls);
 			}
-			if (classes.contains("decr-bell")) {
-				classes.remove("decr-bell");
+			if (classes.contains(this._decr_cls)) {
+				classes.remove(this._decr_cls);
 			}
 		}
 		this.lock(false);
@@ -260,10 +264,10 @@ class LevelAnimation {
 			const title = this.titles[this._dings.pop()];
 
 			if (color > 0) {
-				title.classList.add("incr-bell");
+				title.classList.add(this._incr_cls);
 				this._incrBell.play();
 			} else if (color < 0) {
-				title.classList.add("decr-bell");
+				title.classList.add(this._decr_cls);
 				this._decrBell.play();
 			} else {
 				throw new Error(
@@ -1511,7 +1515,13 @@ class Stats {
 			).func(`unit|total|${stat}`);
 
 			const base = new AttributeCell(Stats.BASE_OPTIONS, (base) => {
+				
 				this.refreshSecondary();
+				
+				if (stat == "dex" || stat == "lck") {
+					this.sheet.battalion.refresh(false);
+				}
+
 				return Math.max(baseFunction(), 0);
 			});
 
@@ -1640,7 +1650,7 @@ class Stats {
 
 	/**
 	 * Set all stats and growths to zero. Secondary stats may not become zero
-	 * depending on equipped abilities, weapons, and/or arts.
+	 * depending on equipped abilities, items, and/or arts.
 	 */
 	clear() {
 		this.level = 1;
@@ -1663,30 +1673,41 @@ class Stats {
 	 * Recompute display values for primary stats.
 	 */
 	refreshPrimary() {
-		// console.log(this.stats, this.growths);
+		this.pause = true;
+
 		for (let name of this.names) {
-			// this.stats.cells[name].refresh();
 			this.stats[name].refresh();
 			if (name == "mov") continue;
-			// this.growths.cells[name].refresh();
 			this.growths[name].refresh();
 		}
+
+		this.pause = false;
 	}
 
 	/**
 	 * Recompute display values for secondary stats.
 	 */
 	refreshSecondary() {
-		for (let key in this.secondary) {
+
+		/* This should improve load times a bit. */
+		if (this.pause) return;
+
+		if (!this.VarS) {
+			this.VarS = [];
+			for (let key in this.secondary) {
+				this.VarS.push([key, `unit|total|${key}`]);
+			}
+		}
+
+		for (let [key, variable] of this.VarS) {
 			this.secondary[key].value = Math.max(
-				this.sheet.calcSecondaryStat(key), (
+				this.sheet.runenv.read(variable), (
 					key == "spcost" || key == "tpcost"
 						? -100
 						: 0
 				)
 			);
 		}
-		this.sheet.battalion.refresh();
 	}
 
 	/**
@@ -1713,6 +1734,9 @@ class Stats {
 		} else {
 			this.pointbuy.clear();
 		}
+
+		// We want it to look fresh, not have modifiers.
+		this.pointbuy.bells.clear();
 	}
 
 	/**

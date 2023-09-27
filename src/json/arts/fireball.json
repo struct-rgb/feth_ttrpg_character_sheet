@@ -1,6 +1,6 @@
 {
   "name": "Fireball",
-  "description": "Fire metamagic; attack each foe adjacent to target foe in addition to target foe. @{weapon::Meteor} @{const:variant:Variant}: instead, attack with @{weapon::Meteor} twice, but the same unit cannot take damage from both attacks.",
+  "description": "Fire metamagic; attack each foe adjacent to target foe in addition to target foe. @{item::Meteor} @{const:variant:Variant}: instead, attack with @{item::Meteor} twice, but the same unit cannot take damage from both attacks.",
   "compatible": "All (Skill Reason) (Tag `fire`)",
   "requires": "Reason B",
   "mttype": "else",

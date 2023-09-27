@@ -2,7 +2,7 @@
   "name": "Absorb Casualties",
   "description": "Can only be equipped by an Infantry unit and only if that unit has an Infantry battalion equipped.\n\nApply @{condition::[Null Effect]} to non-employer allies in this gambit’s AoE for one turn; for the duration, this battalion has the Infantry, Flying, Armored, and Cavalry unit types while in combat. Can be used with one other meta gambit.",
   "requires": "Authority A",
-  "compatible": "All (Not (AoE `None` ``)) (Not (Name `Counter`))",
+  "compatible": "Match Gambit (All (Not (AoE `None` ``)) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

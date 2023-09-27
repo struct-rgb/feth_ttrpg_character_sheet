@@ -348,3 +348,7 @@ fieldset {
 .underline {
 	text-decoration: underline;
 }
+
+.monospace {
+	font-family: monospace;
+}
