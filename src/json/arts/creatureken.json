@@ -11,8 +11,8 @@
     "avo": 0,
     "crit": 0,
     "cravo": 0,
-    "minrng": "more weapon|total|minrng else 1 end",
-    "maxrng": "less weapon|total|maxrng else 2 end",
+    "minrng": "more item|total|minrng else 1 end",
+    "maxrng": "less item|total|maxrng else 2 end",
     "tpcost": 0,
     "spcost": 3
   },

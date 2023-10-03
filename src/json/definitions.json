@@ -398,9 +398,9 @@
     {
       "define": [
         "template is_thrown()",
-        "    (weapon|type|axes + weapon|type|lances + weapon|type|swords)",
+        "    (item|type|axes + item|type|lances + item|type|swords)",
         "  *",
-        "    (weapon|has_attribute|Ranged)",
+        "    (item|has_attribute|Ranged)",
         "end"
       ],
       "about": [
@@ -413,7 +413,7 @@
         "template is_hidden()",
         "    (fill is_thrown())",
         "  +",
-        "    (weapon|type|bows) * (weapon|has_attribute|Stabilizer)",
+        "    (item|type|bows) * (item|has_attribute|Stabilizer)",
         "end"
       ],
       "about": [

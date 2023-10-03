@@ -397,9 +397,9 @@ const definitions = {
     {
       "define": [
         "template is_thrown()",
-        "    (weapon|type|axes + weapon|type|lances + weapon|type|swords)",
+        "    (item|type|axes + item|type|lances + item|type|swords)",
         "  *",
-        "    (weapon|has_attribute|Ranged)",
+        "    (item|has_attribute|Ranged)",
         "end"
       ],
       "about": [
@@ -412,7 +412,7 @@ const definitions = {
         "template is_hidden()",
         "    (fill is_thrown())",
         "  +",
-        "    (weapon|type|bows) * (weapon|has_attribute|Stabilizer)",
+        "    (item|type|bows) * (item|has_attribute|Stabilizer)",
         "end"
       ],
       "about": [
@@ -2479,8 +2479,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": "weapon|total|minrng",
-        "maxrng": "weapon|total|maxrng",
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tpcost": 0,
         "spcost": 3
       },
@@ -7228,12 +7228,12 @@ const definitions = {
       "requires": "Flying A",
       "mttype": "else",
       "modifiers": {
-        "mt": "-(weapon|total|mt) + 15",
+        "mt": "-(item|total|mt) + 15",
         "prot": 0,
         "resl": 0,
-        "hit": "-(weapon|total|hit) + 85",
-        "avo": "-(weapon|total|avo)",
-        "crit": "-(weapon|total|crit) + 10",
+        "hit": "-(item|total|hit) + 85",
+        "avo": "-(item|total|avo)",
+        "crit": "-(item|total|crit) + 10",
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -8727,8 +8727,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": "more weapon|total|minrng else 1 end",
-        "maxrng": "less weapon|total|maxrng else 2 end",
+        "minrng": "more item|total|minrng else 1 end",
+        "maxrng": "less item|total|maxrng else 2 end",
         "tpcost": 0,
         "spcost": 3
       },
