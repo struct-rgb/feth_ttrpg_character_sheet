@@ -14,7 +14,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill when(not(unit|tagged|healing) * unit|total|mttype|mag, 3, 0)",
+        "mt": "bothif not(unit|tagged|healing) and unit|total|mttype|mag then 3 else 0 end",
         "prot": 0,
         "resl": 0,
         "hit": 0,

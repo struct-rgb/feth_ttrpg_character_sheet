@@ -1,5 +1,5 @@
 {
-    "name": "Omniprowess 4",
+    "name": "Omniprowess 5",
     "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15. Unit cannot equip \"Prowess\" abilities. A unit may only equip one \"Omniprowess\" ability at a time.",
     "requires": "Innate",
     "modifiers": {

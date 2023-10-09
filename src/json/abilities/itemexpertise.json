@@ -22,9 +22,9 @@
         "cravo": 0,
 
         "minrng": 0,
-        "maxrng": "fill when(not(item|template|maxrng), 1, 0)",
+        "maxrng": "bothif not(item|template|maxrng) then 1 else 0 end",
 
-        "tpcost": "fill when(not(item|type|spell) * item|total|tpcost, -1, 0)",
+        "tpcost": "bothif not(item|type|spell) and item|total|tpcost then -1 else 0 end",
         "spcost": 0,
         "tp": 0,
         "sp": 0,

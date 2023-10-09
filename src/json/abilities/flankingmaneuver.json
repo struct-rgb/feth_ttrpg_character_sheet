@@ -17,11 +17,10 @@
         "prot": 0,
         "resl": 0,
         "hit": [
-            "fill when(",
-            "  not(unit|total|maxrng - 1),",
-            "  ask [Flanking?], No {0}; Yes {15} end,",
-            "  0",
-            ")"
+            "bothif not(unit|total|maxrng - 1)",
+            "  then ask [Flanking?], No {0}; Yes {15} end",
+            "  else 0",
+            "end"
         ],
         "avo": 0,
         "crit": 0,

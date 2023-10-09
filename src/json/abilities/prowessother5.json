@@ -1,6 +1,6 @@
 {
     "name": "Other Prowess 5",
-    "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time.",
+    "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15, when unit uses Other. A unit may only equip one \"Other Prowess\" ability at a time. Does not consume a skill slot.",
     "requires": "All (Other A+) (Level 25)",
     "modifiers": {
         "hp": 0,
@@ -16,10 +16,10 @@
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill when(host|type|other, 15, 0)",
-        "avo": "fill when(host|type|other, 15, 0)",
-        "crit": "fill when(host|type|other, 15, 0)",
-        "cravo": "fill when(host|type|other, 15, 0)",
+        "hit": "bothif host|type|other then 15 else 0 end",
+        "avo": "bothif host|type|other then 15 else 0 end",
+        "crit": "bothif host|type|other then 15 else 0 end",
+        "cravo": "bothif host|type|other then 15 else 0 end",
 
         "minrng": 0,
         "maxrng": 0,

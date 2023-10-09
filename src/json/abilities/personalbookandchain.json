@@ -13,7 +13,12 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill when(item|type|spell, ask [Book & Chain?], No {0}; Yes {4} end, 0)",
+        "mt": [
+            "bothif item|type|spell",
+            "  then ask [Book & Chain?], No {0}; Yes {4} end",
+            "  else 0",
+            "end"
+        ],
         "prot": 0,
         "resl": 0,
         "hit": 0,

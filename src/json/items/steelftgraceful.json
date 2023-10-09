@@ -2,9 +2,9 @@
     "name": "Graceful Fist Technique",
     "type": "Brawl",
     "rank": "C",
-    "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+    "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}. Costs 550G to upgrade from @{item::Swift Fist Technique}.",
     "requires": "Brawl C",
-    "price": 0,
+    "price": 1330,
 
     "mttype": "else",
     "modifiers": {

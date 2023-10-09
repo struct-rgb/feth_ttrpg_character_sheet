@@ -6,7 +6,7 @@
 
     "mttype": "else",
     "modifiers": {
-        "mt": "fill when(fill is_hidden(), 0, -3)",
+        "mt": "bothif fill is_hidden() then 0 else -3 end",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -15,7 +15,7 @@
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill affirm([Paralyze?], label [On Hit, After Combat] {3}, 0)",
+        "tpcost": "fill affirm([Paralyze?], 3, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0

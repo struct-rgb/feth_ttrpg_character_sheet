@@ -24,7 +24,7 @@
         "minrng": 0,
         "maxrng": 0,
 
-        "tpcost": "fill when(arts|combat * item|type|reason, -1, 0)",
+        "tpcost": "bothif arts|combat and item|type|reason then -1 else 0 end",
         "spcost": 0,
         "tp": 0,
         "sp": 0,

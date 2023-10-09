@@ -2,9 +2,9 @@
     "name": "Serene Fist Technique",
     "type": "Brawl",
     "rank": "B",
-    "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+    "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}. Costs 725G to upgrade from @{item::Graceful Fist Technique}.",
     "requires": "Brawl B",
-    "price": 0,
+    "price": 2055,
 
     "mttype": "else",
     "modifiers": {

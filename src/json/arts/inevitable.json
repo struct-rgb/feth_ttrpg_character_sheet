@@ -15,7 +15,7 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-    "spcost": "fill when(host|tagged|condition, 4, 6)",
+    "spcost": "bothif host|tagged|condition then 4 else 6 end",
     "tpcost": 0,
     "sp": 0,
     "tp": 0

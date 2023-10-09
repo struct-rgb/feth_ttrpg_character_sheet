@@ -136,6 +136,9 @@ const Tokens = (function() {
 		TEMPLATE : "template",
 		CONCAT   : "cat",
 		BOTHIF   : "bothif",
+		AND      : "and",
+		OR       : "or",
+		BOOLEAN  : "boolean",
 		// IN       : "in",
 
 		/* builtin variables */
@@ -152,6 +155,12 @@ const Tokens = (function() {
 	/* a namespace for sets of terminals */
 
 	namespace.SET = {
+
+		LOGICAL: new Set([
+			TERMINALS.AND,
+			TERMINALS.OR,
+		]),
+
 		RELATIVE: new Set([
 			TERMINALS.GT,
 			TERMINALS.LT,
@@ -193,6 +202,8 @@ const Tokens = (function() {
 			TERMINALS.ALIAS,
 			TERMINALS.BEGIN,
 			TERMINALS.END,
+			TERMINALS.AND,
+			TERMINALS.OR,
 		]),
 
 		CALL: new Set([
@@ -204,6 +215,7 @@ const Tokens = (function() {
 			TERMINALS.META,
 			TERMINALS.INSPECT,
 			TERMINALS.NOT,
+			TERMINALS.BOOLEAN,
 		]),
 
 		UNARY: new Set([
@@ -226,6 +238,7 @@ const Tokens = (function() {
 		]),
 
 		RESERVED: new Set([
+			TERMINALS.BOOLEAN,
 			TERMINALS.ELSE,
 			TERMINALS.ELSEIF,
 			TERMINALS.STOP,
@@ -380,6 +393,10 @@ const Tokens = (function() {
 				return 1;
 			};
 
+			if (template.macrogen) {
+				this.macrogen = template.macrogen;
+			}
+
 			if (new.target === Binary) {
 				Object.freeze(this);
 			}
@@ -416,7 +433,8 @@ const Tokens = (function() {
 	 * MULT  => 1
 	 * ADDI  => 2
 	 * REL   => 3
-	 * COND  => 4
+	 * LOGIC => 4
+	 * COND  => 5
 	 */
 
 	namespace.OPERATORS = {};
@@ -627,11 +645,42 @@ const Tokens = (function() {
 
 		/* from here on, these to have associate terminals */
 
+		[TERMINALS.BOOLEAN]: new Operator(0, {
+
+			help: [
+				TERMINALS.BOOLEAN,
+				`${TERMINALS.BOOLEAN}({1})`,
+				wrap(
+					"Returns 1 if {1} is nonzero and zero otherwise.",
+				),
+				"any expression"
+			],
+			
+			opcode: function(env) {
+				return 1;
+			},
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, argument] = node;
+				recurse(argument);
+				code.instructions.push(this.opcode);
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				// const meta = namespace.OPERATORS[1][TERMINALS.META].macrogen;
+				// const tmp  = [TERMINALS.META, argument];
+				// return `${Number(meta(recurse, tmp, env))}`;
+				return recurse(argument);
+			},
+
+		}),
+
 		[TERMINALS.FLOOR]: new Unary(0, {
 
 			help: [
 				TERMINALS.FLOOR,
-				"floor({1})",
+				`${TERMINALS.FLOOR}({1})`,
 				wrap(
 					"Returns {1} rounded down to the nearest ",
 					"whole number.",
@@ -647,7 +696,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.ABS,
-				"abs({1})",
+				`${TERMINALS.ABS}({1})`,
 				wrap(
 					"If {1} is positive or 0, returns {1}; ",
 					"otherwise returns -{1}"
@@ -663,7 +712,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.CEIL,
-				"ceil({1})",
+				`${TERMINALS.CEIL}({1})`,
 				wrap(
 					"Returns {1} rounded up to the nearest ",
 					"whole number."
@@ -679,7 +728,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.ROUND,
-				"round({1})",
+				`${TERMINALS.ROUND}({1})`,
 				"Returns {1} rounded to the nearest whole number.",
 				"any expression",
 			],
@@ -692,7 +741,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.SIGN,
-				"sign({1})",
+				"{TERMINALS.SIGN}({1})",
 				wrap(
 					"Returns 1 if {1} is positive, -1 if {1} is negative, ",
 					"and 0 if {1} is 0. Use with caution inside of Roll20 ",
@@ -723,7 +772,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.NOT,
-				"not({1})",
+				`${TERMINALS.NOT}({1})`,
 				wrap(
 					"Returns 1 if {1} == 0 and 0 if {1} <> 0. Use with ",
 					"caution inside of Roll20 macro generation; creates a ",
@@ -754,7 +803,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.UMINUS,
-				"-{1}",
+				`${TERMINALS.UMINUS}{1}`,
 				"Return the negation of {1}",
 				"any expression",
 			],
@@ -788,7 +837,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.UPLUS,
-				"+{1}",
+				`${TERMINALS.UPLUS}{1}`,
 				"Return {1} (explicity mark that it's positive)",
 				"any expression"
 			],
@@ -819,7 +868,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.INSPECT,
-				"inspect({1})",
+				`${TERMINALS.INSPECT}({1})`,
 				wrap(
 					"Prints the value of {1}, the compilation options, and ",
 					"the associate position in the AST to the browser ",
@@ -853,7 +902,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.META,
-				"meta({1})",
+				`${TERMINALS.META}({1})`,
 				wrap(
 					"Evaluate {1} at compile time and returns the ",
 					"result to be used in the expression. Compile ",
@@ -912,7 +961,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.CONCAT,
-				"cat({1})",
+				`${TERMINALS.CONCAT}({1})`,
 				wrap(
 					"Concatenate each item in {1} into a single string."
 				),
@@ -950,7 +999,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.LABEL,
-				"label {1} {{2}}",
+				`${TERMINALS.LABEL} {1} {{2}}`,
 				wrap(
 					"Labels {2}'s result with {1} in the generated ",
 					"Roll20 macro",
@@ -1008,7 +1057,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.MIN,
-				"less {1} else {2}",
+				`${TERMINALS.MIN} {1} else {2}`,
 				wrap(
 					"Returns the lesser of {1} and {2}. Cannot ",
 					"appear inside of [ask] options.",
@@ -1039,7 +1088,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.MAX,
-				"more {1} else {2}",
+				`${TERMINALS.MAX} {1} else {2}`,
 				wrap(
 					"Returns the greater of {1} and {2}. Cannot ",
 					"appear inside of [ask] options.",
@@ -1070,7 +1119,7 @@ const Tokens = (function() {
 			
 			help: [
 				TERMINALS.GT,
-				"{1} > {2}",
+				`{1} ${TERMINALS.GT} {2}`,
 				wrap(
 					"Returns 1 if {1} is greater than {2} and 0 ",
 					"otherwise; can only be used in the condition of ",
@@ -1081,12 +1130,21 @@ const Tokens = (function() {
 			],
 
 			fn: ((x, y) => x > y),
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff  = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.GT, argA, argB], ["#", 1], ["#", 0]
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
 		}),
 
 		[TERMINALS.LT]  : new Binary(3, undefined, {
 			help: [
 				TERMINALS.LT,
-				"{1} < {2}",
+				`{1} ${TERMINALS.LT} {2}`,
 				wrap(
 					"Returns 1 if {1} is less than {2} and 0 ",
 					"otherwise; can only be used in the condition of ",
@@ -1095,13 +1153,23 @@ const Tokens = (function() {
 				"any expression",
 				"any expression",
 			],
+
 			fn: ((x, y) => x < y),
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff  = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.LT, argA, argB], ["#", 1], ["#", 0]
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
 		}),
 
 		[TERMINALS.LE]  : new Binary(3, undefined, {
 			help: [
 				TERMINALS.LE,
-				"{1} <= {2}",
+				`{1} ${TERMINALS.LE} {2}`,
 				wrap(
 					"Returns 1 if {1} is less than or equal to {2}",
 					"and 0 otherwise; can only be used in the ",
@@ -1110,13 +1178,23 @@ const Tokens = (function() {
 				"any expression",
 				"any expression",
 			],
+
 			fn: ((x, y) => x <= y),
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff  = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.LE, argA, argB], ["#", 1], ["#", 0]
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
 		}),
 
 		[TERMINALS.GE]: new Binary(3, undefined,  {
 			help: [
 				TERMINALS.GE,
-				"{1} >= {2}",
+				`{1} ${TERMINALS.GE} {2}`,
 				wrap(
 					"Returns 1 if {1} is greater than or equal to {2}",
 					"and 0 otherwise; can only be used in the ",
@@ -1125,13 +1203,23 @@ const Tokens = (function() {
 				"any expression",
 				"any expression",
 			],
+
 			fn: ((x, y) => x >= y),
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff  = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.GE, argA, argB], ["#", 1], ["#", 0]
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
 		}),
 
 		[TERMINALS.EQ]  : new Binary(3, undefined,  {
 			help: [
 				TERMINALS.EQ,
-				"{1} == {2}",
+				`{1} ${TERMINALS.EQ} {2}`,
 				wrap(
 					"Returns 1 if {1} is equal to {2} and 0 otherwise",
 					"; can only be used in the condition of an [if] ",
@@ -1140,13 +1228,23 @@ const Tokens = (function() {
 				"any expression",
 				"any expression",
 			],
+			
 			fn: ((x, y) => x == y),
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff  = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.EQ, argA, argB], ["#", 1], ["#", 0]
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
 		}),
 
 		[TERMINALS.NE]  : new Binary(3, undefined,  {
 			help: [
 				TERMINALS.NE,
-				"{1} <> {2}",
+				`{1} ${TERMINALS.NE} {2}`,
 				wrap(
 					"Returns 1 if {1} is not equal to {2} and 0 ",
 					"otherwise; can only be used in the condition of ",
@@ -1155,13 +1253,23 @@ const Tokens = (function() {
 				"any expression",
 				"any expression",
 			],
+
 			fn: ((x, y) => x != y),
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff  = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.NE, argA, argB], ["#", 1], ["#", 0]
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
 		}),
 
 		[TERMINALS.ADD] : new Binary(2, 0,  {
 			help: [
 				TERMINALS.ADD,
-				"{1} + {2}",
+				`{1} ${TERMINALS.ADD} {2}`,
 				"Return the sum of {1} and {2}",
 				"any expression",
 				"any expression",
@@ -1172,7 +1280,7 @@ const Tokens = (function() {
 		[TERMINALS.SUB] : new Binary(2, 0, {
 			help: [
 				TERMINALS.SUB,
-				"{1} - {2}",
+				`{1} ${TERMINALS.SUB} {2}`,
 				"Return the difference between {1} and {2}",
 				"any expression",
 				"any expression",
@@ -1183,7 +1291,7 @@ const Tokens = (function() {
 		[TERMINALS.MUL] : new Binary(1, 1, {
 			help: [
 				TERMINALS.MUL,
-				"{1} * {2}",
+				`{1} ${TERMINALS.MUL} {2}`,
 				"Return the product of {1} and {2}",
 				"any expression",
 				"any expression",
@@ -1194,7 +1302,7 @@ const Tokens = (function() {
 		[TERMINALS.DIV] : new Binary(1, 1, {
 			help: [
 				TERMINALS.DIV,
-				"{1} / {2}",
+				`{1} ${TERMINALS.DIV} {2}`,
 				"Return the quotient of {1} divided by {2}",
 				"any expression",
 				"any expression",
@@ -1205,7 +1313,7 @@ const Tokens = (function() {
 		[TERMINALS.MOD] : new Binary(1, undefined, {
 			help: [
 				TERMINALS.MOD,
-				"{1} % {2}",
+				`{1} ${TERMINALS.MOD} {2}`,
 				"Return the remainder of {1} divided by {2}",
 				"any expression",
 				"any expression",
@@ -1213,10 +1321,92 @@ const Tokens = (function() {
 			fn: ((x, y) => x % y),
 		}),
 
+		[TERMINALS.AND] : new Operator(4, {
+			help: [
+				TERMINALS.AND,
+				`{1} ${TERMINALS.AND} {2}`,
+				"Return 1 if both {1} and {2} are nonzero and zero otherwise.",
+				"any expression",
+				"any expression",
+			],
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, argA, argB] = node;
+
+				recurse(argA); // compute first argument
+				
+				// mark location and allocate space for a conditional
+				// branch past the second argument 
+				const branch = code.instructions.length;
+				code.instructions.push(null); 
+
+				recurse(argB); // compute second argument
+
+				// this is the place we jump to if we shortcircuit
+				const label  = code.instructions.length;
+
+				// add back in the conditional branch
+				const offset = label - branch;
+				code.instructions[branch] = function (env) {
+					return env.peek() ? (env.pop(), 1) : offset;
+				};
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff    = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.NE, argA, ["#", 0]], argB, ["#", 0]
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
+		}),
+
+		[TERMINALS.OR] : new Operator(4, {
+			help: [
+				TERMINALS.OR,
+				`{1} ${TERMINALS.OR} {2}`,
+				"Return 1 if at least one of {1} and {2} are nonzero and zero otherwise",
+				"any expression",
+				"any expression",
+			],
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, argA, argB] = node;
+
+				recurse(argA); // compute first argument
+				
+				// mark location and allocate space for a conditional
+				// branch past the second argument 
+				const branch = code.instructions.length;
+				code.instructions.push(null); 
+
+				recurse(argB); // compute second argument
+
+				// this is the place we jump to if we shortcircuit
+				const label  = code.instructions.length;
+
+				// add back in the conditional branch
+				const offset = label - branch;
+				code.instructions[branch] = function (env) {
+					return env.peek() ? offset : (env.pop(), 1);
+				};
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+				const iff    = namespace.OPERATORS[3][TERMINALS.IF].macrogen;
+				const tmp  = [TERMINALS.IF,
+					[TERMINALS.EQ, argA, ["#", 0]], argB, argA
+				];
+				return `${iff(recurse, tmp, env)}`;
+			},
+		}),
+
 		[TERMINALS.DIE] : new Operator(0, {
 			help: [
 				TERMINALS.DIE,
-				"{1} die {2}",
+				`{1} ${TERMINALS.DIE} {2}`,
 				wrap(
 					"Roll {1} die {2}s. In Roll20 macro generation this ",
 					"creates a macro that actually rolls the dice, but in ",
@@ -1261,7 +1451,7 @@ const Tokens = (function() {
 		[TERMINALS.MACRO] : new Operator(0, {
 			help: [
 				TERMINALS.MACRO,
-				"fill {1}({2})",
+				`${TERMINALS.MACRO} {1}({2})`,
 				wrap(
 					"Instantiate a character builder macro (not Roll20 macro) ",
 					"with the name {1}, and arguments {2}. This replaces the ",
@@ -1319,7 +1509,7 @@ const Tokens = (function() {
 		[TERMINALS.TEMPLATE] : new Operator(0, {
 			help: [
 				TERMINALS.TEMPLATE,
-				"template {1}({2}) {3} end",
+				`${TERMINALS.TEMPLATE} {1}({2}) {3} end`,
 				wrap(
 					"Define a character builder macro (not Roll20 macro) ",
 					"with the name {1}, and arguments {2} that evaluates to ",
@@ -1359,11 +1549,11 @@ const Tokens = (function() {
 
 	namespace.OPERATORS[3] =  {
 
-		[TERMINALS.IF]: new Operator(4, {
+		[TERMINALS.IF]: new Operator(5, {
 
 			help: [
 				TERMINALS.IF,
-				"if {1} {2} {3} then {4} else {5} end",
+				`${TERMINALS.IF} {1} {2} {3} then {4} else {5} end`,
 				wrap(
 					"Compare {1} and {3} using relative operator {2}, ",
 					"if the result is true, then return {4} otherwise ",
@@ -1465,11 +1655,11 @@ const Tokens = (function() {
 			}
 		}),
 
-		[TERMINALS.PROMPT]: new Operator(4, {
+		[TERMINALS.PROMPT]: new Operator(5, {
 
 			help: [
 				TERMINALS.PROMPT,
-				"ask {1}, {2}, {3}; {4} end",
+				`${TERMINALS.PROMPT} {1}, {2}, {3}; {4} end`,
 				wrap(
 					"Creates a prompt in the generated Roll20 macro ",
 					"with {1} as a title. Only the [ask] {1} part is ",
@@ -1521,7 +1711,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.METAIF,
-				"metaif {1} then {2} else {3} end",
+				`${TERMINALS.METAIF} {1} then {2} else {3} end`,
 				wrap(
 					"Evaluates relative expression {1} at compile ",
 					"time (compile time is defined as both code ",
@@ -1585,7 +1775,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.BOTHIF,
-				"bothof {1} then {2} else {3} end",
+				`${TERMINALS.BOTHIF} {1} then {2} else {3} end`,
 				wrap(
 					"If builtins|macrogen then behaves like [metaif], ",
 					"otherwise behaves like [if]."
@@ -1704,6 +1894,11 @@ class Parser {
 		this._prompt  = false;
 		this._macros  = macros;
 
+		// setting this internal flag to true kneecaps the parser to not 
+		// understand relative or logical operators so that it can generate
+		// hacky conditional expressions to execute in roll20 macros
+		this._strict  = false;
+
 		// this.symbols = symbols;
 	}
 
@@ -1793,7 +1988,11 @@ class Parser {
 		let save = this._index;
 
 		this._index = save;
-		out = this._parseAdditiveExpression();
+		out = (
+			this._strict // this guards roll20 compatible conditions
+				? this._parseAdditiveExpression()
+				: this._parseLogicalExpression()
+		);
 		return out;
 	}
 
@@ -1936,7 +2135,7 @@ class Parser {
 		}
 
 		this._index = save;
-		out = this._parseAdditiveExpression();
+		out = this._parseLogicalExpression();
 		return out;
 	}
 
@@ -2393,23 +2592,40 @@ class Parser {
 		}
 
 		return this._parseGenericConditionalExpression(
-			Tokens.TERMINALS.IF, Tokens.TERMINALS.IF
+			Tokens.TERMINALS.IF, Tokens.TERMINALS.IF, true
 		);
 	}
 
-	_parseGenericConditionalExpression(expected, parent) {
+	_parseGenericConditionalExpression(expected, parent, strict=false) {
 
 		if (this.token != expected) {
 			return null;
 		}
 		this._toNext();
 
-		const comparison = this._parseRelativeExpression();
+		// setting this internal flag to true kneecaps the parser to not 
+		// understand relative or logical operators so that it can generate
+		// hacky conditional expressions to execute in roll20 macros
+		const save   = this._strict;
+		this._strict = strict;
 
+		// if this is a raw conditinal that's supposed to appear in a rol20
+		// macro, then use a dumb version that only understand a single
+		// relative operator; otherwise parse things intelligently
+		const comparison = (
+			strict
+				? this._parseStrictRelativeExpression()
+				: this._parseExpression()
+		);
+
+		// return the parser's kneecaps if the were taken
+		this._strict = save;
+
+		// alright, done with the nonsense
 		if (comparison == null) {
 			this._toPrev();
 			throw new CompilationError(
-				`Expected relative expression after '${this.token}'`,
+				`Expected expression after '${this.token}'`,
 				this.position
 			);
 		}
@@ -2481,7 +2697,11 @@ class Parser {
 		return [parent, comparison, tBranch, fBranch];
 	}
 
-	_parseRelativeExpression() {
+	_parseLogicalExpression(){
+		return this._parseOrExpression();
+	}
+
+	_parseStrictRelativeExpression() {
 
 		const lhs = this._parseExpression();
 		if (lhs == null) return lhs;
@@ -2514,6 +2734,13 @@ class Parser {
 
 		return [operator, lhs, rhs];
 	}
+
+	_parseRelativeExpression = (
+		Parser.BinaryOperatorFactory(
+			Tokens.SET.RELATIVE,
+			"_parseAdditiveExpression",
+		)
+	);
 
 	static BinaryOperatorFactory(operators, operands) {
 		return function() {
@@ -2564,6 +2791,20 @@ class Parser {
 			return lhs;
 		};
 	}
+
+	_parseAndExpression = (
+		Parser.BinaryOperatorFactory(
+			new Set([Tokens.TERMINALS.AND]),
+			"_parseRelativeExpression",
+		)
+	);
+
+	_parseOrExpression = (
+		Parser.BinaryOperatorFactory(
+			new Set([Tokens.TERMINALS.OR]),
+			"_parseAndExpression",
+		)
+	);
 
 	_parseMultiplicativeExpression = (
 		Parser.BinaryOperatorFactory(
@@ -2688,6 +2929,32 @@ class Parser {
 			const save  = this._index;
 			const out   = this._parseTemplateDefinition();
 			if (out != null) return out;
+			this._index = save;
+
+		} else if (token == Tokens.TERMINALS.BOOLEAN) {
+
+			/* this exists mostly for debug */
+			this._toNext();
+
+			const save  = this._index;
+			
+			if (this.token != Tokens.TERMINALS.BEGIN) return null;
+			const fpos = this.position;
+			this._toNext();
+
+			this._sink();
+			const inner = this._parseOrExpression();
+			if (inner == null) return inner;
+			this._swim();
+
+			if (this.token != Tokens.TERMINALS.END) {
+				throw new CompilationError(
+					`unclosed nested expression starting at ${fpos}`, fpos
+				);
+			}
+			this._toNext();
+
+			if (inner != null) return [token, inner];
 			this._index = save;
 
 		} else if (Tokens.SET.CALL.has(token)) {
@@ -2995,6 +3262,10 @@ class Env {
 
 	pop() {
 		return this.stack.pop();
+	}
+
+	peek() {
+		return this.stack.at(-1);
 	}
 
 	/**

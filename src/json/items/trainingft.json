@@ -4,7 +4,7 @@
     "rank": "E",
     "description": "Has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
     "requires": "Brawl E",
-    "price": 0,
+    "price": 300,
 
     "mttype": "else",
     "modifiers": {

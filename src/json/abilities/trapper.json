@@ -23,15 +23,14 @@
 
         "minrng": 0,
         "maxrng": [
-            "fill when(",
-            "  item|tagged|wall + (art|tagged|tactical * art|tagged|wall),",
-            "  1,",
-            "  0",
-            ")"
+            "bothif item|tagged|wall or (art|tagged|tactical and art|tagged|wall)",
+            "  then 1",
+            "  else 0",
+            "end"
         ],
 
-        "tpcost": "fill when(item|tagged|wall, -1, 0)",
-        "spcost": "fill when(art|tagged|tactical * art|tagged|wall, -1, 0)",
+        "tpcost": "bothif item|tagged|wall then -1 else 0 end",
+        "spcost": "bothif art|tagged|tactical and art|tagged|wall then -1 else 0 end",
         "tp": 0,
         "sp": 0,
 

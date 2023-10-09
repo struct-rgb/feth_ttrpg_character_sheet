@@ -24,7 +24,11 @@
         "minrng": 0,
         "maxrng": 0,
 
-        "tpcost": "fill when(item|type|brawl, -1, 0) + fill when(arts|combat * item|type|brawl, -1, 0)",
+        "tpcost": [
+            "  bothif item|type|brawl then -1 else 0 end",
+            "+",
+            "  bothif arts|combat and item|type|brawl then -1 else 0 end"
+        ],
         "spcost": 0,
         "tp": 0,
         "sp": 0,

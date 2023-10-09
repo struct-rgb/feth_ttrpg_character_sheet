@@ -35,7 +35,7 @@
     "rows": [
         {
             "when": "not(item|tagged|no_might) * not(item|tagged|no_hit)",
-            "expr": "unit|total|luc + 20 + other|trigger",
+            "expr": "unit|total|lck + 20 + other|trigger",
             "roll": true
         }
     ],

@@ -29,7 +29,7 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": "fill when(1, 2, 0)"
+        "mov": "bothif 1 then 2 else 0 end"
     },
 
     "comment": "Items in modifers can either be integers or string expressions",

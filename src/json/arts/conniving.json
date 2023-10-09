@@ -15,7 +15,7 @@
     "minrng": 1,
     "maxrng": 5,
     "tiles": 0,
-    "spcost": "fill when(not(unit|total|mttype|none * (unit|total|mt)), 6, 4)",
+    "spcost": "bothif not(unit|total|mttype|none and (unit|total|mt)) then 6 else 4 end",
     "tpcost": 0,
     "sp": 0,
     "tp": 0

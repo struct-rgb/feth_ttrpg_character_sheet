@@ -26,7 +26,10 @@
 
         "tpcost": 0,
         "spcost": [
-            "fill when(item|tagged|target_foe + item|tagged|condition, -(item|total|tpcost), 0)"
+            "bothif item|tagged|target_foe + item|tagged|condition",
+            "  then -(item|total|tpcost)",
+            "  else 0",
+            "end"
         ],
         "tp": 0,
         "sp": 0,

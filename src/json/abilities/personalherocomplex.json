@@ -13,7 +13,12 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "fill when(arts|active, fill affirm([Hero Complex?], 5, 0), 0)",
+        "mt": [
+            "bothif arts|active",
+            "  then fill affirm([Hero Complex?], 5, 0)",
+            "  else 0",
+            "end"
+        ],
         "prot": 0,
         "resl": 0,
         "hit": 0,

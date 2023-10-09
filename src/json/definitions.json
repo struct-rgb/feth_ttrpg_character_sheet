@@ -85,25 +85,6 @@
   "macros": [
     {
       "define": [
-        "template when(condition, true, false)",
-        "  bothif condition <> 0 then true else false end",
-        "end"
-      ],
-      "about": [
-        "Generates an compound conditional expression that evaluates as a ",
-        "[metaif] expression during Roll20 macro generation and as a normal ",
-        "[if] expression during runtime in the character builder. The values ",
-        "provided by the [condition] argument are tested to see whether ",
-        "[condition] [<>] 0 in the embedded conditionals."
-      ],
-      "args": [
-        "expression for condtion to test",
-        "expression to insert if condtion is true",
-        "expression to insert if condtion is false"
-      ]
-    },
-    {
-      "define": [
         "template affirm(title, yes, no)",
         "  ask [title]",
         "    , No  { no  }",
@@ -186,13 +167,11 @@
     },
     {
       "define": [
-        "template blow(modifier)",
-        "  fill when(not(unit|tagged|healing),",
-        "    fill affirm(",
-        "      cat([Unit Initiated? #], modifier), modifier, 0",
-        "    ),",
-        "    0",
-        "  )",
+        "template blow(mod)",
+        "  bothif not(unit|tagged|healing)",
+        "    then fill affirm(cat([Unit Initiated? #], mod), mod, 0)",
+        "    else 0",
+        "  end",
         "end"
       ],
       "about": [
@@ -233,15 +212,10 @@
     {
       "define": [
         "template advantage(variable)",
-        "  fill when(",
-        "    variable,",
-        "    (more",
-        "      other|triangle|prompt",
-        "    else",
-        "      0",
-        "    end / 3),",
-        "    0",
-        "  )",
+        "  bothif variable",
+        "    then more other|triangle|prompt else 0 end / 3",
+        "    else 0",
+        "  end",
         "end"
       ],
       "about": [
@@ -272,7 +246,7 @@
     {
       "define": [
         "template faire(variable)",
-        "  fill when(variable, 5, 0)",
+        "  bothif variable then 5 else 0 end",
         "end"
       ],
       "about": [

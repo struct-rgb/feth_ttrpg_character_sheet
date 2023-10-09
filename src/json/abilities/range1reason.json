@@ -22,7 +22,7 @@
         "cravo": 0,
 
         "minrng": 0,
-        "maxrng": "fill when(host|type|reason, 1, 0)",
+        "maxrng": "bothif host|type|reason then 1 else 0 end",
 
         "tpcost": 0,
         "spcost": 0,

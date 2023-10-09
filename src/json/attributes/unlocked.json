@@ -16,7 +16,7 @@
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill when(not(item|passes), 2, 0)",
+        "tpcost": "bothif not(item|passes) then 2 else 0 end",
         "spcost": 0,
         "tp": 0,
         "sp": 0

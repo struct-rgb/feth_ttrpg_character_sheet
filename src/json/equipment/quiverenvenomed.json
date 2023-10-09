@@ -21,7 +21,7 @@
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "tpcost": "fill when(item|type|bows, fill confirm([Envenomed?], +1), 0)",
+        "tpcost": "bothif item|type|bows then fill confirm([Envenomed?], 1) else 0 end",
         "spcost": 0,
         "tp": 1,
         "sp": 0,

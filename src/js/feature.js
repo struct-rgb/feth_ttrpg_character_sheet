@@ -1412,7 +1412,7 @@ class Item extends AttackFeature {
 					);
 				}),
 
-				new Filter.Toggle("Siege", false, (feature) => {
+				new Filter.Toggle("3-10", false, (feature) => {
 					return (
 						feature.modifier("maxrng") == 10
 							&&
@@ -1446,6 +1446,10 @@ class Item extends AttackFeature {
 
 				new Filter.Toggle("Effective", false, (feature) => {
 					return feature.tagged("effective");
+				}),
+
+				new Filter.Toggle("Shield", false, (feature) => {
+					return feature.tagged("shield");
 				}),
 
 				new Filter.Toggle("Reaction", false, (feature) => {
@@ -3032,6 +3036,11 @@ class Condition extends Feature {
 
 }
 
+Feature.SUBCLASSES = [
+	Ability, Item, Art, Equipment, Class, Attribute, Condition,
+	Tile, Battalion, Adjutant, Preset, Gambit
+];
+
 const hitip = (function() {
 
 const HLREGEX = /(@){([^:]*):([^:]*):([^}]*)}/;
@@ -3522,7 +3531,7 @@ function toul(node, dead=false, top=true) {
 			[(dead ? deadfn : linkfn)("gambit", name, args[0])]
 		);
 	}
-
+	
 	case "Crest": {
 		const name  = `Crest of ${args[0]}`;
 		const major = `Major ${name}`;

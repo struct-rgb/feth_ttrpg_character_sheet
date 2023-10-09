@@ -29,6 +29,7 @@
 
 /* global Presetter */
 
+/* global Feature */
 /* global Ability */
 /* global Class */
 /* global Art */
@@ -565,10 +566,7 @@ class Sheet {
 		data.presets = Presetter.generate_presets();
 
 		/* set lookup tables for each feature class */
-		for (let each of [
-			Ability, Item, Art, Equipment, Class, Attribute, Condition,
-			Tile, Battalion, Adjutant, Preset, Gambit
-		]) {
+		for (let each of Feature.SUBCLASSES) {
 			each.setLookupByName(data, compiler, predicator);
 		}
 
@@ -1108,7 +1106,7 @@ class Sheet {
 		}));
 
 		add("None", autopass());
-		add("Other", autopass());
+		// add("Other", autopass());
 		add("Barrier", autopass());
 		add("Innate", autopass());
 		add("Unfinished", autopass());
@@ -1136,6 +1134,25 @@ class Sheet {
 				};
 			});
 		}
+
+		add("Other", (op, grade) => {
+			let diff = 0;
+			for (let each of definitions.skills) {
+				diff = (
+					Grade.toNumber(this.skills[each].grade)
+						-
+					Grade.toNumber(grade)
+				);
+
+				if (diff <= 0) break;
+			}
+
+			return {
+				require: false,
+				succeed: false,
+				boolean: diff <= 0,
+			};		
+		});
 
 		add("ClassType", (op, type) => {
 			return {
@@ -1541,21 +1558,13 @@ class Sheet {
 				"item that has the 'no triangle' tag is equipped, instead ",
 				"evaluates to 0."
 			),
-			expr  : `
-				metaif builtins|macrogen == 1 then
-					metaif item|tagged|no_triangle + arts|tagged|no_triangle == 0 then
-						other|triangle|prompt
-					else
-						0
-					end
+			expr : `
+				bothif not(item|tagged|no_triangle or arts|tagged|no_triangle) then
+					other|triangle|prompt
 				else
-					if item|tagged|no_triangle + arts|tagged|no_triangle == 0 then
-						other|triangle
-					else
-						0
-					end
+					0
 				end
-			`,
+			`
 		});
 
 		// d8888b. d8888b. d888888b .88b  d88.  .d8b.  d8888b. db    db
@@ -1678,8 +1687,8 @@ class Sheet {
 					`of class|mount|${name} is not 0.`,
 				),
 				expr  : `
-					metaif builtins|macrogen == 1 then
-						metaif class|mount|${name} <> 0 then 
+					metaif builtins|macrogen then
+						metaif class|mount|${name} then 
 							ask cat([Mounted? #], class|mount|${name})
 								; Yes {class|mount|${name}}
 								, No  {0}
@@ -1833,7 +1842,7 @@ class Sheet {
 				about : wrap(
 					`A flag; 1 if host is tagged with '${tag}' and 0 otherwise.`
 				),
-				expr  : `item|tagged|${tag} + tactical|tagged|${tag}`,
+				expr  : `item|tagged|${tag} or tactical|tagged|${tag}`,
 			});
 		}
 
@@ -1844,7 +1853,10 @@ class Sheet {
 				"0.5 if item is tagged with 'healing' and is 1.0 if not."
 			),
 			expr  : `
-				fill when(arts|tagged|healing + item|tagged|healing, 0.5, 1.0) 
+				bothif arts|tagged|healing or item|tagged|healing
+					then 0.5
+					else 1.0
+				end
 			`,
 		});
 
@@ -1970,7 +1982,7 @@ class Sheet {
 					`The whether equipped item or active tactical art is ${str} skill type.`
 				),
 				expr  : `
-					bothif arts|tactical <> 0
+					bothif arts|tactical
 						then tactical|type|${str.toLowerCase()}
 						else item|type|${str.toLowerCase()}
 					end
@@ -2281,7 +2293,7 @@ class Sheet {
 				about : wrap(
 					`Equipped item's ${name} without modifiers from attributes.`
 				),
-				expr  : `item|template|${name} + item|custom|${name}`,
+				expr  : `item|template|${name} or item|custom|${name}`,
 			});
 
 			second.push(add({
@@ -2354,7 +2366,10 @@ class Sheet {
 					"active, but if one is active, equal to 0."
 				),
 				expr  : `
-					fill when(arts|tactical, tactical|${name}, item|total|${name})
+					bothif arts|tactical
+						then tactical|${name}
+						else item|total|${name}
+					end
 				`,
 			}));
 
@@ -2429,25 +2444,13 @@ class Sheet {
 			),
 			expr  : `
 				floor(
-					(
-						metaif builtins|macrogen == 1 then
-							metaif unit|total|mttype|mag == 1
-								then unit|total|mag
-							elseif unit|total|mttype|str == 1
-								then unit|total|str
-								else 0
-							end
-						else
-							if     unit|total|mttype|mag == 1
-								then unit|total|mag
-							elseif unit|total|mttype|str == 1
-								then unit|total|str
-								else 0
-							end
-						end
-					)
-						*
-					unit|multiplier|healing
+					bothif unit|total|mttype|mag
+						then unit|total|mag
+					elseif unit|total|mttype|str
+						then unit|total|str
+						else 0
+					end
+						* unit|multiplier|healing
 				)
 					+ item|total|mt
 					+ abilities|mt
@@ -2464,15 +2467,9 @@ class Sheet {
 				"feature does not heal or do damage and to 0 if it is equal.",
 			),
 			expr  : `
-				metaif builtins|macrogen == 1
-					then metaif unit|total|mttype|none == 1
-						then 0
-						else unit|total|mt
-					end
-					else     if unit|total|mttype|none == 1
-						then 0
-						else unit|total|mt
-					end
+				bothif unit|total|mttype|none
+					then 0
+					else unit|total|mt
 				end
 			`,
 		});
@@ -2574,7 +2571,7 @@ class Sheet {
 				expr  : `
 					(unit|total|spd
 						+ unit|modifier|avo
-						+ metaif builtins|codegen == 1
+						+ metaif builtins|codegen
 							then other|triangle
 							else 0
 						end)

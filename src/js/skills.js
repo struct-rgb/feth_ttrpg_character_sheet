@@ -20,25 +20,25 @@ class Row {
 
 	static NAMES = ["None", "Talent", "Weakness", "Budding Talent", "Budding Weakness"];
 
-	constructor(name, section, sheet) {
+	constructor(name, section, sheet, fix=null) {
 		this.name      = name;
 		this.section   = section;
 		this.sheet     = sheet;
 		this.old_value = 0;
 		this.grade     = "E";
 
-		const adoptions = {edit: true, shown: "—", min: 0, max: 4, select: Row.NAMES};
+		const adoptions = {edit: !fix, shown: "—", min: 0, max: 4, select: Row.NAMES};
 
 		this.aptcell  = new AttributeCell(adoptions, (x) => {
 			this.cell.refresh();
 			return Row.ICONS[x];
 		});
 
-		this.aptcell.root.firstChild.firstChild.classList.add("arrowhead");
+		if (!fix)
+			this.aptcell.root.firstChild.firstChild.classList.add("arrowhead");
 
-		const options = {edit: true, shown: "E "};
-		this.cell     = new AttributeCell(options, (x) => {
-
+		const options = {edit: !fix, shown: "E "};
+		this.cell     = new AttributeCell(options, fix ? fix : (x) => {
 			const points   = this.cell.value;
 			const diff     = points - this.old_value;
 			const total    = this.section._total;
@@ -57,6 +57,7 @@ class Row {
 			}
 
 			this.sheet.character.reclass();
+			section._other.cell.refresh();
 
 			return this.grade;
 		});
@@ -102,13 +103,20 @@ class SkillUserInterface {
 		this._total.root.colSpan = 2;
 		this.rows   = new Map();
 
+		this._other = new Row("Other", this, sheet, (x) => 
+			Array
+				.from(this.rows.values())
+				.reduce((a, b) => a.cell.value > b.cell.value ? a : b)
+				.grade
+		);
+
 		const body = element("tbody", 
 			skills.map(skill => {
 				const row = new Row(skill, this, sheet);
 				this[skill] = row;
 				this.rows.set(skill, row);
 				return row.root;
-			}).extend(
+			}).extend(this._other.root).extend(
 				element("tr", [
 					element("th", "Total"),
 					this._total.root

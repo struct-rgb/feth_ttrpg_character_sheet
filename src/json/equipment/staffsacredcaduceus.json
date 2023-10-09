@@ -25,7 +25,7 @@
     "tp": 0,
     "sp": 0,
     "minrng": 0,
-    "maxrng": "fill when(not(unit|tagged|healing) * unit|total|mttype|mag, 1, 0)",
+    "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype|mag then 1 else 0 end",
     "mov": 0
   },
   "comment": "Items in modifers can either be integers or string expressions",

@@ -2,9 +2,9 @@
     "name": "Swift Fist Technique",
     "type": "Brawl",
     "rank": "D",
-    "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}.",
+    "description": "A water technique; has either the @{attribute::Mighty} or @{attribute::Mystic} attribute when obtained. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP = 1} and @{const:ap:AP +1} to foe if foe's @{const:ap:AP = 2}. Costs 480G to upgrade from @{item::Training Fist Technique}.",
     "requires": "Brawl D",
-    "price": 0,
+    "price": 780,
 
     "mttype": "else",
     "modifiers": {
