@@ -210,6 +210,7 @@ class UserInterface {
 		this._alias    = new Toggle("Roll20 Variables?", false);
 		this._compact  = new Toggle("Compact Macro Expressions?", true);
 		this._testroll = new Toggle("Test Roll Prompt?", false);
+		this._ranges   = new Toggle("Explicit Attack Range?", false);
 		
 		this._input   = element("input", {
 			class: ["simple-border", "calculator"],
@@ -289,12 +290,11 @@ class UserInterface {
 			element("br"),
 
 			tooltip(
-				this._compact.root,
+				this._ranges.root,
 				wrap(
-					"Make generated macros more compact by eliminating ",
-					"extraneous operations such as adding or subtracting zero ",
-					"and multiplying or dividing by one. This may or may not ",
-					"eliminate these operations if labels are also enabled.",
+					"Always include a prompt asking the user to input the ",
+					"range that an attack is being made at, even if no range ",
+					"penalty could possibly apply.",
 				),
 			),
 
@@ -304,6 +304,18 @@ class UserInterface {
 					"Generated macros will include a prompt on whether this ",
 					"this roll is a test roll or a real roll. Dice will not ",
 					"be rolled for a test roll."
+				),
+			),
+
+			element("br"),
+
+			tooltip(
+				this._compact.root,
+				wrap(
+					"Make generated macros more compact by eliminating ",
+					"extraneous operations such as adding or subtracting zero ",
+					"and multiplying or dividing by one. This may or may not ",
+					"eliminate these operations if labels are also enabled.",
 				),
 			),
 
@@ -824,6 +836,29 @@ class UserInterface {
 				// This behaves more like a feature.
 				items.change(key);
 				target = item;
+
+				// If this item is a brawl weapon with no Mystic or Mighty
+				// attribute then stop macrogen and ask the user to add one
+				const brawl = item.template.type == "Brawl";
+				const attrs = item.attributes;
+
+				if (brawl && !(attrs.has("Mighty") || attrs.has("Mystic"))) {
+					const text = wrap(
+						`${item.name} isn't Mighy or Mystic. `,
+						"Abort macro generation?"
+					);
+
+					if (confirm(text)) {
+						// Take the user to the location of the issue.
+						items.category.toggleActive(item.name);
+						this.sheet.tabs.create.active = "Inventory";
+						this.sheet.tabs.main.active   = "Create";
+
+						// No special cleanup is needed because we
+						// always process all items before other features.
+						return [];
+					}
+				}
 
 				generate   = this.macro;
 				ref.target = target.template;

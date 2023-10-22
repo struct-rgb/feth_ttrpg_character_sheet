@@ -69,6 +69,10 @@ input[type=button].remove-button:hover {
 	display: none;
 }
 
+.hidden {
+	visibility: hidden;
+}
+
 .custom-file-input {
 	display: inline-block;
 	padding: 3px 6px;

@@ -1,7 +1,7 @@
 {
   "name": "Rising Thunder",
   "description": "Lightning metamagic; on hit, after combat, foes in a 5x1 vertical line centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Thunder Variant:} Line is 9x1.",
-  "requires": "Reason C-B",
+  "requires": "Any (Reason C) (Reason B)",
   "compatible": "All (Skill Reason) (Tag `lightning`)",
   "mttype": "else",
   "modifiers": {

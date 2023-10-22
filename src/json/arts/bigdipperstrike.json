@@ -1,7 +1,7 @@
  {
   "name": "Big Dipper Strike",
-  "description": "Effective against Infantry units; on hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn.",
-  "requires": "Brawl C-B",
+  "description": "Effective against Infantry units.",
+  "requires": "Any (Brawl C) (Brawl B)",
   "compatible": "Skill Brawl",
   "mttype": "else",
   "modifiers": {
@@ -15,7 +15,7 @@
     "minrng": 1,
     "maxrng": 1,
     "tpcost": 0,
-    "spcost": 4
+    "spcost": 7
   },
   "comment": "",
   "tags": ["condition", "effective"],

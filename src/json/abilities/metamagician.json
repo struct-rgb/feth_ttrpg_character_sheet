@@ -17,7 +17,7 @@
             "bothif",
             "  arts|active",
             "    and",
-            "  not(art|tagged|tactical)",
+            "  not(arts|tagged|tactical)",
             "    and",
             "    (",
             "      host|type|faith",

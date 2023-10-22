@@ -1,6 +1,6 @@
 {
     "name": "Hallowed Effigy",
-    "description": "When this unit targets another unit, it may choose to end @{condition:Branded:[Branded]} on all of affected units and then apply @{condition:Branded:[Branded]} to that unit.",
+    "description": "At the beginning of this unit's phase, it may target two different units within five spaces (including this unit) and apply @{condition:Seclude:[Seclude]} to both for one turn.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

@@ -1,7 +1,7 @@
 {
   "name": "Rising Flame",
   "description": "Fire metamagic; on hit, after combat, foes in a 1x5 horizontal line centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Fire Variant:} Line is 1x9.",
-  "requires": "Reason C-B",
+  "requires": "Any (Reason C) (Reason B)",
   "compatible": "All (Skill Reason) (Tag `fire`)",
   "mttype": "else",
   "modifiers": {

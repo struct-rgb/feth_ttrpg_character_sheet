@@ -214,41 +214,65 @@ class Buildables {
 
 		let button = undefined;
 
-		/* Save button */
-		this._save     = new BigButton("Save", () => void this.save());
-		this.root.appendChild(tooltip(this._save.label,
-			"Save all sheet data to this web browser's local storage."
-		));
-		this.root.appendChild(this._save.input);
-
-		/* Copy button */
-		this._copy     = new BigButton("Copy", () => void this.copy());
-		this.root.appendChild(tooltip(this._copy.label,
-			"Create a copy of the selected item."
-		));
-		this.root.appendChild(this._copy.input);
-
-		/* Import button */
-		this._import     = new BigButton("Import");
-		this.root.appendChild(tooltip(this._import.label,
-			"Upload a file from the disk to edit."
-		));
-
+		this._save         = new BigButton("Save", () => void this.save());
+		this._export       = new BigButton("Export", () => void this.export());
+		this._batch_export = new BigButton("Batch Export", () => void this.exportBatch());
+		this._copy         = new BigButton("Copy", () => void this.copy());
+		
+		this._import       = new BigButton("Import");
 		this._import.input.type   = "file";
 		this._import.input.accept = ".json";
-		this._import.input.addEventListener("change", (e) => {this.import(e);}, false);
+		this._import.input.addEventListener("change", (e) => {
+			this.import(e);
+			this._import.input.value = null;
+		}, false);
 
-		this.root.appendChild(this._import.input);
+		this._batch_import = new BigButton("Batch Import");
+		this._batch_import.input.type   = "file";
+		this._batch_import.input.accept = ".batch.json";
+		this._batch_import.input.addEventListener("change",  (e) => {
+			const warn = "This action will wipe out your current data. Continue?";
+			if (!confirm(warn)) {
+				this._batch_import.input.value = null;
+				return;
+			}
+			this.importBatch(e);
+			this._batch_import.input.value = null;
+		}, false);
 
-		/* Export button */
-		this._export     = new BigButton("Export", () => void this.export());
-		this.root.appendChild(tooltip(this._export.label,
-			"Download the selected item as a file."
-		));
-		this.root.appendChild(this._export.input);
+		// this.root.appendChild(this._batch_import.input);
 
-		/* Can't use the category select since those must be predefined */
-		this.root.appendChild(element("br"));
+		const cell = ((bigbutton, tooltiptext) => {
+			return element("td", [
+				tooltip(bigbutton.label, tooltiptext),
+				bigbutton.input
+			]);
+		});
+
+		this.root.appendChild(element("table", [
+			element("tr", [
+				cell(this._save, 
+					"Save all sheet data to this web browser's local storage."
+				),
+				cell(this._export,
+					"Download the selected item as a file."
+				),
+				cell(this._batch_export,
+					"Download all items as a group file."
+				),
+			]),
+			element("tr", [
+				cell(this._copy,
+					"Create a copy of the selected item."
+				),
+				cell(this._import,
+					"Upload a file from the disk to edit."
+				),
+				cell(this._batch_import,
+					"Upload a group file from the disk to edit."
+				),
+			]),
+		]));
 
 		/* Add button */
 		button         = element("input");
@@ -435,7 +459,7 @@ class Buildables {
 		return this.model.export();
 	}
 
-	export() {
+	export(batch=false) {
 		const a    = element("a");
 		const item = this.model.export();
 		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
@@ -443,7 +467,16 @@ class Buildables {
 		a.download = this.model.name.replace(/ /g, "_") + ".json";
 		a.click();
 		URL.revokeObjectURL(a.href);
-		// this._export.onclick.call();
+	}
+
+	exportBatch() {
+		const a    = element("a");
+		const item = this.exportAll();
+		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
+		a.href     = URL.createObjectURL(file);
+		a.download = this.model.constructor.name + ".batch.json";
+		a.click();
+		URL.revokeObjectURL(a.href);
 	}
 
 	importObject(object) {
@@ -462,6 +495,20 @@ class Buildables {
 		reader.onload = (e) => {
 			const item     = JSON.parse(e.target.result);
 			this.importObject(this._updatefn(item));
+		};
+		
+		reader.readAsText(file);
+	}
+
+	importBatch(e) {
+		const file = e.target.files[0];
+		if (!file) return;
+
+		const reader = new FileReader();
+
+		reader.onload = (e) => {
+			const item = JSON.parse(e.target.result);
+			this.importAll(item);
 		};
 		
 		reader.readAsText(file);
@@ -938,11 +985,12 @@ class Sheet {
 		});
 
 		/* don't want users adding any new sheets here */
-		legacy_bb._add.disabled          = true;
-		legacy_bb._copy.input.disabled   = true;
-		legacy_bb._save.input.disabled   = true;
-		legacy_bb._import.input.disabled = true;
-		legacy_bb.category.removable     = false;
+		legacy_bb._add.disabled                = true;
+		legacy_bb._copy.label.disabled         = true;
+		legacy_bb._save.label.disabled         = true;
+		legacy_bb._import.label.disabled       = true;
+		legacy_bb._batch_import.label.disabled = true;
+		legacy_bb.category.removable           = false;
 
 		/* fill the legacy buildables if there's data for it */
 		const legacy_storage = localStorage.getItem("session");
@@ -1482,20 +1530,83 @@ class Sheet {
 		});
 
 		add({
-			name  : "other|range_penalty|prompt",
+			name  : "other|range_penalty",
 			about : wrap(
-				"The hit penalty for attacking past maximum bow range. This ",
-				"isn't available in the builder proper, but you can use it ",
-				"in a macro to prompt for values.",
+				"The hit penalty for attacking past maximum weapon range."
 			),
-			expr  : `
-				ask [Range Penalty?]
-					; [Range +0] {+ 0}
-					, [Range +1] {-20}
-					, [Range +2] {-40}
-					, [Further]  {-60}
-				end
-			`,
+			expr : (env) => {
+
+				// this is only ever relevant in macrogen
+				if (env.runtime) return 0;
+
+				const rnv    = env.clone(Expression.Env.RUNTIME);
+				const max    = rnv.read("unit|total|maxrng");
+				const cut    = rnv.read("host|maxrng");
+				const diff   = max - cut;
+
+				// we don't need anything for this unless the user asks
+				// us to explicitly put it in, so otherwise save on clutter
+				const hasCloseCounter = (
+					this.abilities.active.has("Close Counter")
+						&&
+					rnv.read("host|type|bows")
+				);
+
+				const hasFarCounter = (
+					this.abilities.active.has("Far Counter")
+						&&
+					rnv.read("host|type|brawl")
+				);
+
+				if (
+					diff == 0
+						&&
+					!this.macros._ranges.checked
+						&&
+					!hasCloseCounter
+						&&
+					!hasFarCounter
+				) return "0";
+
+				const m      = new Macros.Builder();
+				const min    = rnv.read("unit|total|minrng");
+				const prompt = ["Range?"];
+
+				const option = ((start, stop, penalty) => {
+					if (start == stop) {
+						return `Range ${start} (Hit -${penalty})`;
+					}
+					return `Range ${start}-${stop} (Hit -${penalty}`;
+				});
+
+				let range = min, start = min, last = 0;
+				for (range = min; range <= max; ++range) {
+					const raw     = 20 * (range - cut);
+					const penalty = Math.min(60, Math.max(0, raw));
+
+					if (last !== penalty) {
+						prompt.push(option(start, range - 1, last), -last);
+						start = range;
+					}
+
+					last = penalty;
+				}
+				prompt.push(option(start, range - 1, last), -last);
+
+				if (hasCloseCounter) {
+					prompt.push("Close Counter (Hit -0)", -0);
+				}
+
+				if (hasFarCounter) {
+					prompt.push("Far Counter (Hit -0)", -0);
+				}
+
+				// in case we only end up with one range grouping such as
+				// at times when this.macros._ranges.checked is set to true
+				if (prompt.length == 3) prompt.push("No Penalty", 0);
+
+				return m.merge(m.prompt(...prompt)).join("");
+			}
 		});
 
 		// d888888b d8888b. d888888b  .d8b.  d8b   db  d888b  db      d88888b
@@ -2517,9 +2628,7 @@ class Sheet {
 				expr  : `
 					unit|total|dex
 						+ unit|modifier|hit
-						+ fill range_penalty(
-							unit|total|maxrng - host|maxrng
-						)
+						+ other|range_penalty
 				`,
 			});
 
@@ -3174,6 +3283,9 @@ class Sheet {
 	}
 
 	copy_point_buy() {
+
+		const animate = this.myPointBuy.setAnimated(false);
+
 		for (let [name, value] of this.myPointBuy.column("value")) {
 			this.stats.stats[name].value = value;
 			this.stats.stats[name].refresh();
@@ -3184,9 +3296,12 @@ class Sheet {
 		}
 
 		this.stats.level = 0;
+		this.myPointBuy.setAnimated(animate);
 	}
 
 	copy_point_buy_stats(doClass=true) {
+
+		const animate = this.myPointBuy.setAnimated(false);
 
 		/* set the class to "None" so we don't bring over bonuses */
 		const cls = this.myPointBuy.forecast.class;
@@ -3216,6 +3331,8 @@ class Sheet {
 			this.character.class = cls;
 			this.character.refresh();
 		}
+
+		this.myPointBuy.setAnimated(animate);
 	}
 
 	copy_stats_to_point_buy(doClass=true) {

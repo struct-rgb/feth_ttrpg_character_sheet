@@ -2,7 +2,7 @@
   "name": "Smash",
   "description": "No special effect.",
   "requires": "Axes D",
-  "compatible": "Skill Axes",
+  "compatible": "All (Skill Axe) (Not (Tag `no hit`)))",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

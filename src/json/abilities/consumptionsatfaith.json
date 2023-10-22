@@ -1,6 +1,6 @@
 {
     "name": "Faith Satiation",
-    "description": "Restores 1 TP after unit uses Guile combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+    "description": "Restores 1 TP after unit uses Faith combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
     "requires": "All (Faith C+) (Level 15)",
     "modifiers": {
         "hp": 0,

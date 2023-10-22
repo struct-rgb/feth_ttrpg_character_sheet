@@ -1,7 +1,7 @@
 {
   "name": "Slipstream",
   "description": "During this phase, @{tile:Wind Torrent:Wind Torrents} tiles cost 0 movement to traverse for allied units.",
-  "requires": "Reason C-B",
+  "requires": "Any (Reason C) (Reason B)",
   "mttype": "none",
   "modifiers": {
     "mt": 0,

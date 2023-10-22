@@ -305,71 +305,6 @@ const definitions = {
     },
     {
       "define": [
-        "template range_penalty_1()",
-        "  ask [Range Penalty?]",
-        "    ; [Range +0] {+ 0}",
-        "    , [Range +1] {-20}",
-        "  end",
-        "end"
-      ],
-      "about": [
-        "Generates a prompt for Range Penalty (Max +1)."
-      ],
-      "args": []
-    },
-    {
-      "define": [
-        "template range_penalty_2()",
-        "  ask [Range Penalty?]",
-        "  ; [Range +0] {+ 0}",
-        "  , [Range +1] {-20}",
-        "  , [Range +2] {-40}",
-        " end",
-        "end"
-      ],
-      "about": [
-        "Generates a prompt for Range Penalty (Max +2)."
-      ],
-      "args": []
-    },
-    {
-      "define": [
-        "template range_penalty_3()",
-        "  ask [Range Penalty?]",
-        "  ; [Range +0] {+ 0}",
-        "  , [Range +1] {-20}",
-        "  , [Range +2] {-40}",
-        "  , [Further]  {-60}",
-        " end",
-        "end"
-      ],
-      "about": [
-        "Generates a prompt for Range Penalty (Max +3 or more)."
-      ],
-      "args": []
-    },
-    {
-      "define": [
-        "template range_penalty(difference)",
-        "  bothif difference <= 0",
-        "    then 0",
-        "  elseif difference == 1",
-        "    then fill range_penalty_1()",
-        "  elseif difference == 2",
-        "    then fill range_penalty_2()",
-        "    else fill range_penalty_3()",
-        "  end",
-        "end"
-      ],
-      "about": [
-        "Generates a prompt for Range Penalty (Variable Range)."
-      ],
-      "args": [
-        "typically the difference between weapon max range and unit max range"
-      ]
-    },
-    {
-      "define": [
         "template is_thrown()",
         "    (item|type|axes + item|type|lances + item|type|swords)",
         "  *",
@@ -474,7 +409,7 @@ const definitions = {
       "name": "Smash",
       "description": "No special effect.",
       "requires": "Axes D",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axe) (Not (Tag `no hit`)))",
       "mttype": "else",
       "modifiers": {
         "mt": 3,
@@ -2859,7 +2794,7 @@ const definitions = {
     {
       "name": "Wolf Fang Fist",
       "description": "@{const:ap:AP 3} (two consecutive attacks); weapon advantage against Cavalry units.",
-      "requires": "Brawl C-B",
+      "requires": "Any (Brawl C) (Brawl B)",
       "compatible": "Skill Brawl",
       "mttype": "else",
       "modifiers": {
@@ -2933,8 +2868,8 @@ const definitions = {
     },
     {
       "name": "Big Dipper Strike",
-      "description": "Effective against Infantry units; on hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn.",
-      "requires": "Brawl C-B",
+      "description": "Effective against Infantry units.",
+      "requires": "Any (Brawl C) (Brawl B)",
       "compatible": "Skill Brawl",
       "mttype": "else",
       "modifiers": {
@@ -2948,7 +2883,7 @@ const definitions = {
         "minrng": 1,
         "maxrng": 1,
         "tpcost": 0,
-        "spcost": 4
+        "spcost": 7
       },
       "comment": "",
       "tags": [
@@ -4073,12 +4008,12 @@ const definitions = {
     },
     {
       "name": "Brutal",
-      "description": "Do not apply conditions after combat. Grants Mt +X in combat, where X is the negative modifier with the greatest magnitude out of the condition(s) that would have been applied after combat. Costs additional SP equal to half of X.",
+      "description": "Apply one condition applied by this spell or @{condition:Severed:[Severed 4]} @{style:italic:(you choose)} to target foe before combat for the duration of combat. @{style:italic:(If a condition applied by this spell was chosen, that condition may still be applied again on hit after combat as normal.)}",
       "requires": "Guile C",
       "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
-        "mt": "ask [Modifier Magnitude?] end",
+        "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -4088,7 +4023,7 @@ const definitions = {
         "minrng": 0,
         "maxrng": 0,
         "tiles": 0,
-        "spcost": "1 + floor(ask [Modifier Magnitude?] end / 2)",
+        "spcost": 4,
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -4873,7 +4808,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "wall"
+        "wall",
+        "lightning"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5562,7 +5498,7 @@ const definitions = {
     {
       "name": "Aegis of Ashes",
       "description": "Create a @{tile::Fire Patch} in this unit\u2019s space. This unit and all allies occupying or adjacent to @{tile:Fire Patch:Fire Patches} regain 20% HP. For one turn, create a @{tile::Fire Patch} in the space of any foe that targets a unit occupying a @{tile::Fire Patch}.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "mttype": "none",
       "modifiers": {
         "mt": 0,
@@ -5596,7 +5532,7 @@ const definitions = {
     {
       "name": "Energy Flux",
       "description": "Each foe within three spaces must pay 5 SP or a @{tile::Lighting Arc} is created in their space for one turn. Each ally within three spaces regains an equal dividend of this art\u2019s cost added to the total SP paid (round up).",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "mttype": "none",
       "modifiers": {
         "mt": 0,
@@ -5630,7 +5566,7 @@ const definitions = {
     {
       "name": "Cryotherapy",
       "description": "Allies adjacent to @{tile:Ice Block:Ice Blocks} regain HP equal to 1 + user\u2019s Mag/2. If this healing restores an ally to full HP, that ally may create an @{tile::Ice Block} in an adjacent space.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "mttype": "none",
       "modifiers": {
         "mt": 1,
@@ -5664,7 +5600,7 @@ const definitions = {
     {
       "name": "Rising Light",
       "description": "Force metamagic; on hit, after combat, foes in a 3x3 X-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Pugni Variant:} X-shape is 5x5.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `force`)",
       "mttype": "else",
       "modifiers": {
@@ -5695,7 +5631,7 @@ const definitions = {
     {
       "name": "Rising Wind",
       "description": "Wind metamagic; on hit, after combat, foes in a 3x3 +-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Wind Variant:} +-shape is 5x5.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `wind`)",
       "mttype": "else",
       "modifiers": {
@@ -5726,7 +5662,7 @@ const definitions = {
     {
       "name": "Rising Flame",
       "description": "Fire metamagic; on hit, after combat, foes in a 1x5 horizontal line centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Fire Variant:} Line is 1x9.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `fire`)",
       "mttype": "else",
       "modifiers": {
@@ -5757,7 +5693,7 @@ const definitions = {
     {
       "name": "Rising Thunder",
       "description": "Lightning metamagic; on hit, after combat, foes in a 5x1 vertical line centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Thunder Variant:} Line is 9x1.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `lightning`)",
       "mttype": "else",
       "modifiers": {
@@ -5859,7 +5795,7 @@ const definitions = {
     {
       "name": "Rising Frost",
       "description": "Ice metamagic; on hit, after combat, foes in a 3x3 reverse S-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Blizzard Variant:} Shape is a 3x3 ring.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `ice`)",
       "mttype": "else",
       "modifiers": {
@@ -5890,7 +5826,7 @@ const definitions = {
     {
       "name": "Slipstream",
       "description": "During this phase, @{tile:Wind Torrent:Wind Torrents} tiles cost 0 movement to traverse for allied units.",
-      "requires": "Reason C-B",
+      "requires": "Any (Reason C) (Reason B)",
       "mttype": "none",
       "modifiers": {
         "mt": 0,
@@ -11590,7 +11526,7 @@ const definitions = {
     },
     {
       "name": "Brawl Satiation",
-      "description": "Restores 1 TP after unit uses Guile combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+      "description": "Restores 1 TP after unit uses Brawl combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
       "requires": "All (Brawl C+) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -12075,7 +12011,7 @@ const definitions = {
           "bothif",
           "  arts|active",
           "    and",
-          "  not(art|tagged|tactical)",
+          "  not(arts|tagged|tactical)",
           "    and",
           "    (",
           "      host|type|axes",
@@ -13943,7 +13879,7 @@ const definitions = {
     },
     {
       "name": "Faith Satiation",
-      "description": "Restores 1 TP after unit uses Guile combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+      "description": "Restores 1 TP after unit uses Faith combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
       "requires": "All (Faith C+) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -15289,7 +15225,7 @@ const definitions = {
     },
     {
       "name": "Hallowed Effigy",
-      "description": "When this unit targets another unit, it may choose to end @{condition:Branded:[Branded]} on all of affected units and then apply @{condition:Branded:[Branded]} to that unit.",
+      "description": "At the beginning of this unit's phase, it may target two different units within five spaces (including this unit) and apply @{condition:Seclude:[Seclude]} to both for one turn.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -18222,7 +18158,7 @@ const definitions = {
           "bothif",
           "  arts|active",
           "    and",
-          "  not(art|tagged|tactical)",
+          "  not(arts|tagged|tactical)",
           "    and",
           "    (",
           "      host|type|faith",
@@ -19305,6 +19241,38 @@ const definitions = {
         "personal"
       ],
       "hidden": true
+    },
+    {
+      "name": "Monster Effect Null",
+      "description": "Nullifies any extra effectiveness against Monster units.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
     },
     {
       "name": "Mounted Precision",
@@ -22785,13 +22753,13 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": [
-          "bothif item|tagged|wall or (art|tagged|tactical and art|tagged|wall)",
+          "bothif item|tagged|wall or (arts|tagged|tactical and arts|tagged|wall)",
           "  then 1",
           "  else 0",
           "end"
         ],
         "tpcost": "bothif item|tagged|wall then -1 else 0 end",
-        "spcost": "bothif art|tagged|tactical and art|tagged|wall then -1 else 0 end",
+        "spcost": "bothif arts|tagged|tactical and arts|tagged|wall then -1 else 0 end",
         "tp": 0,
         "mov": 0
       },
@@ -25349,7 +25317,7 @@ const definitions = {
     {
       "name": "Bloodthirsty",
       "type": "Any",
-      "description": "When this weapon deals damage, 30% chance to apply @{condition:Berserk:[Berserk]} to wielder for one turn. Cannot be unequipped for one turn after it damages a unit. Disables all other attributes except for @{attribute::Magic}.",
+      "description": "When this weapon deals damage, 30% chance to apply @{condition:Berserk:[Berserk]} to wielder for one turn. Cannot be unequipped while wielder is affected by @{condition:Berserk:[Berserk]}. Disables all other attributes except for @{attribute::Magic}.",
       "rank": 0,
       "price": 0,
       "mttype": "else",
@@ -25929,14 +25897,14 @@ const definitions = {
     },
     {
       "name": "Flexible Blade",
-      "description": "When user is hit in combat at 1 range but avoids a critical hit due to CrAvo, user takes 5 less damage and has Mt +5 for the remainder of the combat.\n\nDisabled on weapons that are not Axes, Swords, Lances, or Brawl.",
+      "description": "When user is hit in combat at 1 range but avoids a critical hit due to CrAvo, user takes 3 less damage and has Mt +3 for the remainder of the combat.\n\nDisabled on weapons that are not Axes, Swords, Lances, or Brawl.",
       "rank": 1,
       "price": 1250,
       "mttype": "else",
       "modifiers": {
-        "mt": "fill affirm([Avoided Crit?], 5, 0)",
-        "prot": "fill affirm([Avoided Crit?], 5, 0)",
-        "resl": "fill affirm([Avoided Crit?], 5, 0)",
+        "mt": "fill affirm([Avoided Crit?], 3, 0)",
+        "prot": "fill affirm([Avoided Crit?], 3, 0)",
+        "resl": "fill affirm([Avoided Crit?], 3, 0)",
         "hit": 0,
         "avo": 0,
         "crit": 0,
@@ -31481,40 +31449,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Branded",
-      "description": "When applying unit deals zero or more damage to affected unit, that damage is increased by 4, and when affected unit deals 4 or more damage to applying unit, that damage is decreased by 4.",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 3,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "bonus",
-        "penalty"
-      ],
-      "hidden": false
-    },
-    {
       "name": "Broken",
       "description": "Affected unit cannot counterattack during the combat that this condition was applied. Unit cannot counterattack during its next combat and this condition is removed. This condition cannot be extended or transferred by other effects.",
       "modifiers": {
@@ -32528,6 +32462,40 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "bonus"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Seclude",
+      "description": "Affected unit cannot target other units affected by this condition.",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 3,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "bonus",
+        "penalty"
       ],
       "hidden": false
     },
@@ -35505,6 +35473,33 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Solidarity",
+      "type": "Faith",
+      "description": "Mt +3 in combat for each adjacent ally.",
+      "requires": "Faith C",
+      "rank": "C",
+      "price": 1250,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": "4 + (ask [Adjacent Allies?]; 0 end * 3)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 3,
+        "tpcost": 4,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Guiding Bolt",
       "type": "Faith",
       "description": "@{const:ap:AP = 1}; on hit, apply @{condition:Marked:[Marked]} to target foe for 1 turn.",
@@ -35585,6 +35580,33 @@ const definitions = {
         "minrng": 1,
         "maxrng": 2,
         "tpcost": 5,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Perdition",
+      "type": "Faith",
+      "description": "If this unit initiated combat, on hit, after combat, target foe is removed from the battlefield until the start of its next phase.",
+      "requires": "Faith B",
+      "rank": "B",
+      "price": 3200,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 12,
+        "prot": 0,
+        "resl": 0,
+        "hit": 65,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 6,
         "spcost": 0,
         "tp": 0,
         "sp": 0
@@ -36100,7 +36122,7 @@ const definitions = {
         "mt": 3,
         "prot": 0,
         "resl": 0,
-        "hit": 70,
+        "hit": 80,
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -36155,16 +36177,74 @@ const definitions = {
       "price": 2000,
       "mttype": "mag",
       "modifiers": {
-        "mt": 4,
+        "mt": 6,
         "prot": 0,
         "resl": 0,
-        "hit": 70,
+        "hit": 80,
         "avo": 0,
         "crit": 0,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
-        "tpcost": 5,
+        "tpcost": 4,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "condition"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Omen",
+      "type": "Guile",
+      "description": "On hit, apply @{const:gbp:[Lck -20]} to target foe after combat for 1 turn.",
+      "requires": "Guile B",
+      "rank": "B",
+      "price": 2200,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 6,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 3,
+        "tpcost": 6,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "condition"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Tremor",
+      "type": "Guile",
+      "description": "On hit, apply @{const:gbp:[Dex -20]} to target foe after combat for 1 turn.",
+      "requires": "Guile B",
+      "rank": "B",
+      "price": 2200,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 5,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 20,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 6,
         "spcost": 0,
         "tp": 0,
         "sp": 0
@@ -36553,7 +36633,7 @@ const definitions = {
         "mt": 2,
         "prot": 0,
         "resl": 0,
-        "hit": 95,
+        "hit": 90,
         "avo": 0,
         "crit": 5,
         "cravo": 0,
@@ -36579,12 +36659,12 @@ const definitions = {
       "price": 840,
       "mttype": "mag",
       "modifiers": {
-        "mt": 3,
+        "mt": 4,
         "prot": 0,
         "resl": 0,
         "hit": 70,
         "avo": 0,
-        "crit": 10,
+        "crit": 15,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -36608,7 +36688,7 @@ const definitions = {
       "price": 780,
       "mttype": "mag",
       "modifiers": {
-        "mt": 2,
+        "mt": 1,
         "prot": 0,
         "resl": 0,
         "hit": 100,
@@ -36671,7 +36751,7 @@ const definitions = {
         "resl": 0,
         "hit": 80,
         "avo": 0,
-        "crit": 5,
+        "crit": 10,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -36695,12 +36775,12 @@ const definitions = {
       "price": 1350,
       "mttype": "mag",
       "modifiers": {
-        "mt": 7,
+        "mt": 5,
         "prot": 0,
         "resl": 0,
         "hit": 95,
         "avo": 0,
-        "crit": 10,
+        "crit": 5,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -36724,12 +36804,12 @@ const definitions = {
       "price": 1390,
       "mttype": "mag",
       "modifiers": {
-        "mt": 5,
+        "mt": 7,
         "prot": 0,
         "resl": 0,
         "hit": 70,
         "avo": 0,
-        "crit": 15,
+        "crit": 20,
         "cravo": 0,
         "minrng": 1,
         "maxrng": 2,
@@ -36782,7 +36862,7 @@ const definitions = {
       "price": 1390,
       "mttype": "mag",
       "modifiers": {
-        "mt": 9,
+        "mt": 8,
         "prot": 0,
         "resl": 0,
         "hit": 75,

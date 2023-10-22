@@ -1,7 +1,7 @@
 {
   "name": "Rising Frost",
   "description": "Ice metamagic; on hit, after combat, foes in a 3x3 reverse S-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Blizzard Variant:} Shape is a 3x3 ring.",
-  "requires": "Reason C-B",
+  "requires": "Any (Reason C) (Reason B)",
   "compatible": "All (Skill Reason) (Tag `ice`)",
   "mttype": "else",
   "modifiers": {

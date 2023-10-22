@@ -1,6 +1,6 @@
 {
-    "name": "Seclude",
-    "description": "Affected unit cannot target other units affected by this condition.",
+    "name": "Beast Terror",
+    "description": "If affected unit has a mount, it is forced to dismount upon application and cannot remount while affected by this condition.",
 
     "modifiers": {
         "hp": 0,
@@ -13,7 +13,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": 3,
+        "mt": 0,
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -33,6 +33,7 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["bonus", "penalty"],
-    "hidden": false
+    "tags": ["penalty"],
+    "hidden": false,
+    "omit": true
 }

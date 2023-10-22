@@ -1,11 +1,11 @@
 {
   "name": "Brutal",
-  "description": "Do not apply conditions after combat. Grants Mt +X in combat, where X is the negative modifier with the greatest magnitude out of the condition(s) that would have been applied after combat. Costs additional SP equal to half of X.",
+  "description": "Apply one condition applied by this spell or @{condition:Severed:[Severed 4]} @{style:italic:(you choose)} to target foe before combat for the duration of combat. @{style:italic:(If a condition applied by this spell was chosen, that condition may still be applied again on hit after combat as normal.)}",
   "requires": "Guile C",
   "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
-    "mt": "ask [Modifier Magnitude?] end",
+    "mt": 0,
     "prot": 0,
     "resl": 0,
     "hit": 0,
@@ -15,7 +15,7 @@
     "minrng": 0,
     "maxrng": 0,
     "tiles": 0,
-    "spcost": "1 + floor(ask [Modifier Magnitude?] end / 2)",
+    "spcost": 4,
     "tpcost": 0,
     "sp": 0,
     "tp": 0

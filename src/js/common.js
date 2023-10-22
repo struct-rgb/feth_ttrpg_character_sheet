@@ -242,8 +242,11 @@ class BigButton {
 		this.onclick = onclick;
 
 		this.idno          = uniqueID();
-		this.label         = element("label", text);
+		this.label         = element("button", text);
 		this.label.htmlFor = this.idno;
+		this.label.onclick = (e) => {
+			this.input.click();
+		};
 		this.label.classList.add("custom-file-input", "simple-border");
 
 		this.input         = element("input");
@@ -384,7 +387,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("3.4.0");
+	static CURRENT = new Version("3.5.0");
 
 	constructor(string) {
 		if (string == null) {

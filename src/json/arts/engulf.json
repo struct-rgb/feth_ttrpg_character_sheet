@@ -1,0 +1,27 @@
+{
+  "name": "Engulf",
+  "description": "Unit may choose to deal nonlethal damage. On hit, after combat, if target foe was not defeated, remove target foe. While removed, target foe can still initiate combat with this unit as though it were at Range 1. When this unit is defeated, applied with @{condition:Broken:[Broken]}, before this unit initiates combat, or if it chooses to as an action, return all non-defeated foes that this unit has removed with @{art::Engulf} to the nearest empty space to the most recent space this unit has occupied (their choice if multiple). Cannot be used with weapons that have incompatible range.",
+  "requires": "Innate",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "",
+  "tags": [
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Other",
+  "rank": "E",
+  "omit": true
+}

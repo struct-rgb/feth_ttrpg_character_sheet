@@ -23,14 +23,14 @@
 
         "minrng": 0,
         "maxrng": [
-            "bothif item|tagged|wall or (art|tagged|tactical and art|tagged|wall)",
+            "bothif item|tagged|wall or (arts|tagged|tactical and arts|tagged|wall)",
             "  then 1",
             "  else 0",
             "end"
         ],
 
         "tpcost": "bothif item|tagged|wall then -1 else 0 end",
-        "spcost": "bothif art|tagged|tactical and art|tagged|wall then -1 else 0 end",
+        "spcost": "bothif arts|tagged|tactical and arts|tagged|wall then -1 else 0 end",
         "tp": 0,
         "sp": 0,
 

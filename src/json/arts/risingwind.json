@@ -1,7 +1,7 @@
 {
   "name": "Rising Wind",
   "description": "Wind metamagic; on hit, after combat, foes in a 3x3 +-shape centered on target foe take nonlethal damage equal to 50% dealt to target foe. @{const:variant:Wind Variant:} +-shape is 5x5.",
-  "requires": "Reason C-B",
+  "requires": "Any (Reason C) (Reason B)",
   "compatible": "All (Skill Reason) (Tag `wind`)",
   "mttype": "else",
   "modifiers": {

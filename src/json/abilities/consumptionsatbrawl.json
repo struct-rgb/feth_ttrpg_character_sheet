@@ -1,6 +1,6 @@
 {
     "name": "Brawl Satiation",
-    "description": "Restores 1 TP after unit uses Guile combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
+    "description": "Restores 1 TP after unit uses Brawl combat art. Consumes half of an ability slot. Cannot be equipped with another \"Satiation\" ability and cannot be equipped with a \"Consumption 2\" ability.",
     "requires": "All (Brawl C+) (Level 15)",
     "modifiers": {
         "hp": 0,

@@ -7,7 +7,7 @@
   "price": 780,
   "mttype": "mag",
   "modifiers": {
-    "mt": 2,
+    "mt": 1,
     "prot": 0,
     "resl": 0,
     "hit": 100,

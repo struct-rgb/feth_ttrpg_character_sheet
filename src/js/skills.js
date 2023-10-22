@@ -104,10 +104,12 @@ class SkillUserInterface {
 		this.rows   = new Map();
 
 		this._other = new Row("Other", this, sheet, (x) => 
-			Array
-				.from(this.rows.values())
-				.reduce((a, b) => a.cell.value > b.cell.value ? a : b)
-				.grade
+			Grade.fromNumber(
+				Array
+					.from(this.rows.values())
+					.map(row => Grade.toNumber(row.cell.shown))
+					.reduce((a, b) => Math.max(a, b))
+			)	
 		);
 
 		const body = element("tbody", 
