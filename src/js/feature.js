@@ -17,6 +17,7 @@
 /* global tooltip */
 /* global delimit */
 /* global capitalize */
+/* global Theme */
 
 /* TODO this directive is to condense the many
  * violations that not having this here makes below
@@ -179,6 +180,10 @@ class Feature {
 		Object.freeze({key: "multipliers", default: 1}),
 	]);
 
+	getVariableName(key) {
+		return null;
+	}
+
 	/**
 	 * Create a feature from a template object
 	 */
@@ -186,11 +191,12 @@ class Feature {
 		this.name         = template.name || "";
 		this.description  = template.description || "";
 		this.type         = template.type || "";
-		this.tags         = Object.freeze(template.tags || Feature.EMPTY_OBJECT);
+		this.tags         = new Set(template.tags || []);
 		this.comment      = template.comment || "No comment.";
 		this.hidden       = template.hidden || false;
 		this.rows         = [];
 		this.dependancies = new Set();
+		this.affects      = new Set();
 
 		// parse file-local template definitions if present
 		const locals = new Set();
@@ -208,8 +214,13 @@ class Feature {
 			}
 		}
 
+		const cls    = new.target;
+		const kind   = new.target.kind;
+
 		// function to compile dynamic modifiers
 		const compile = (value, key=null) => {
+
+			const variable = this.getVariableName(key);
 			
 			// join an array into a string
 			if (value instanceof Array) {
@@ -218,6 +229,7 @@ class Feature {
 
 			// see if we need to compile an expression
 			if (typeof value == "number") {
+				if (variable && value) this.affects.add(variable);
 				return value;
 			}
 
@@ -230,12 +242,12 @@ class Feature {
 
 			// try to compile the expression, if not error and assume default
 			try {
-				const expression = compiler.compile(value);
+				const identifier = Expression.asIdentifier(this.name);
+				const member     = `${kind}|${identifier}|${key}`;
+				const expression = compiler.compile(value, member);
+				const defined    = !(typeof key == "number");
 
-				// add any dependacies to this feature's dependancy list
-				for (let symbol of expression.symbols) {
-					this.dependancies.add(symbol);
-				}
+				if (variable && defined) this.affects.add(variable);
 
 				// warn in console about any potential circular dependancies
 				if (key && expression.symbols.has(key)) {
@@ -273,8 +285,6 @@ class Feature {
 			: Polish.compile("")
 		);
 
-		this.tags         = new Set(template.tags || []);
-
 		// compile dynamic expressions in the modifiers/multipliers
 		for (let attribute of Feature.STATS_ATTRIBUTES) {
 
@@ -290,7 +300,7 @@ class Feature {
 			// iterate through each element
 			for (let key in stats) {
 				stats[key] = compile(stats[key], key);
-			}	
+			}
 
 			this[attribute.key] = Object.freeze(stats);
 		}
@@ -357,15 +367,23 @@ class Feature {
 		return name && this.byName.has(name);
 	}
 
-	static where(predicate) {
+	static where(predicate=(() => true), map=(f => f)) {
 		
 		const features = [];
 		
 		for (let feature of this.byName.values()) {
-			if (predicate(feature)) features.push(feature);
+			if (predicate(feature)) features.push(map(feature));
 		}
 
 		return features;
+	}
+
+
+	static dependancies(compiler, key) {
+		return this.where(
+			f => Expression.is(f.modifiers[key]),
+			f => f.modifiers[key].symbols,
+		).reduce((x, y) => x.extend(y), new Set());
 	}
 
 	/**
@@ -381,13 +399,16 @@ class Feature {
 		return this.name;
 	}
 
-	static MODEXCLUDE = new Set(["tiles", "tp", "sp", "tpcost", "spcost", "epcost", "cap", "minrng", "maxrng"]);
+	static MODEXCLUDE = new Set([
+		"tiles", "tp", "sp", "tpcost", "spcost",
+		"epcost", "cap", "minrng", "maxrng"
+	]);
 
 	/**
 	 * Generate a feature's {@link CategoryElement} description
 	 * @return {string} description for this item's {@link CategoryElement}
 	 */
-	body(dead=false) {
+	body(dead=false, dynamics=null) {
 		// return this.description;
 
 		function span(...args) {
@@ -407,43 +428,38 @@ class Feature {
 
 			if (Feature.MODEXCLUDE.has(key)) continue;
 
-			const value = this.modifierForUI(key, true, dead);
+			const value = this.modifierForUI(key, true, dead, false, dynamics);
 			if (value) mods.push(span(capitalize(key), ":\xA0", value));
 		}
 
-		const tiles = this.modifierForUI("tiles", true, dead);
+		const tiles = this.modifierForUI("tiles", true, dead, false, dynamics);
 		if (tiles) mods.push(span("Tiles:\xA0", tiles));
 
-		const maxrng = this.modifierForUI("maxrng", true, dead);
+		const maxrng = this.modifierForUI("maxrng", true, dead, false, dynamics);
 		if (maxrng) mods.push(span("Max Range:\xA0", maxrng));
 
-		const minrng = this.modifierForUI("minrng", true, dead);
+		const minrng = this.modifierForUI("minrng", true, dead, false, dynamics);
 		if (minrng) mods.push(span("Min Range:\xA0", minrng));
 
-		const tp = this.modifierForUI("tp", true, dead);
+		const tp = this.modifierForUI("tp", true, dead, false, dynamics);
 		if (tp) mods.push(span("Max TP:\xA0", tp));
 
-		const sp = this.modifierForUI("sp", true, dead);
+		const sp = this.modifierForUI("sp", true, dead, false, dynamics);
 		if (sp) mods.push(span("Max SP:\xA0", sp));
 
-		const tpcost = this.modifierForUI("tpcost", true, dead);
+		const tpcost = this.modifierForUI("tpcost", true, dead, false, dynamics);
 		if (tpcost) mods.push(span("TP Cost:\xA0", tpcost));
 
-		const spcost = this.modifierForUI("spcost", true, dead);
+		const spcost = this.modifierForUI("spcost", true, dead, false, dynamics);
 		if (spcost) mods.push(span("SP Cost:\xA0", spcost));
 
 		return element("span", [
-			// "Requires: ", Polish.highlight(String(this.requires)), "\n",
 			delimit(" ", mods),
 			mods.length ? element("br") : "",
 			dead
 				? hitip.dead(this.description)
 				: hitip.link(this.description),
-			// this.requires.source ? element("div", [
-			// 	element("strong", "Usage Requirements"),
-			// 	hitip.toul(this.requires.ast, dead),
-			// ]) : ""
-			this.requires.source ? hitip.toul(this.requires, dead) : ""
+			this.requires.source ? hitip.toul(this.requires, dead, dynamics) : ""
 		]);
 	}
 
@@ -487,7 +503,7 @@ class Feature {
 		return Expression.evaluate(this.modifiers[stat] || 0, env);
 	}
 
-	modifierForUI(stat, sign=false, dead=false, range=false) {
+	modifierForUI(stat, sign=false, dead=false, range=false, resources=null) {
 
 		/* test explicitly for membership */
 		if (!(stat in this.modifiers)) return 0;
@@ -511,8 +527,17 @@ class Feature {
 			});
 		}
 
+		const widget   = new ModWidget(modifier, sign, !dead);
+
+		// TODO ungly hack remove internal sheet ref from this replace with context ref in expr env? (or make context a formal class in Expression)
+		if (resources != null) resources.register(
+			widget,
+			resources.sheet.compiler.dependancies(modifier),
+			[this.getVariableName(stat)],
+		);
+
 		/* handle an expression by returning a ModWidget */
-		return (new ModWidget(modifier, sign, !dead)).root;
+		return widget.root;
 	}
 
 	/**
@@ -582,11 +607,15 @@ class Preset {
 		return name && this.byName.has(name);
 	}
 
+	static where() {
+		return [];
+	}
+
 	static select(trigger) {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -653,8 +682,20 @@ class Preset {
 				}),
 
 				Filter.Group.END,
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 
 	/**
@@ -671,19 +712,20 @@ class Preset {
 /**
  * A {@link Feature} subclass that heavily governs attack calculations.
  */
-class AttackFeature extends Feature {
+class Action extends Feature {
 
 	/**
-	 * Create an AttackFeature from a template object
+	 * Create an Action from a template object
 	 */
 	constructor(template, compiler, predicator) {
 		super(template, compiler, predicator);
 		this.rank    = template.rank   || "E";
 		this.mttype  = template.mttype || 0;
 		this.price   = template.price  || 0;
+		this.aoe     = template.aoe    || "None";
 
 		// If this is not a super() call, freeze the object.
-		if (new.target === AttackFeature) {
+		if (new.target === Action) {
 			Object.freeze(this);
 		}
 	}
@@ -695,12 +737,12 @@ class AttackFeature extends Feature {
 	 * @return {string} description for this feature's {@link CategoryElement}
 	 */
 
-	body(dead=false) {
+	body(dead=false, dynamics=null) {
 
 		function span(...args) {
 			return element("span", args);
 		}
-		
+
 		const mods  = [];
 
 		if (this.price) {
@@ -710,16 +752,13 @@ class AttackFeature extends Feature {
 			]);
 		}
 
-		// const cap = this.modifierForUI("cap", true, dead);
-		// if (cap) mods.push([cap, element("sub", "C", "computed")]);
-
-		const tpcost = this.modifierForUI("tpcost", false, dead);
+		const tpcost = this.modifierForUI("tpcost", false, dead, false, dynamics);
 		if (tpcost) mods.push([tpcost, element("sub", "TP", "computed")]);
 
-		const spcost = this.modifierForUI("spcost", false, dead);
+		const spcost = this.modifierForUI("spcost", false, dead, false, dynamics);
 		if (spcost) mods.push([spcost, element("sub", "SP", "computed")]);
 
-		const epcost = this.modifierForUI("epcost", false, dead);
+		const epcost = this.modifierForUI("epcost", false, dead, false, dynamics);
 		if (epcost) mods.push([epcost, element("sub", "EP", "computed")]);
 
 		for (let key in this.modifiers) {
@@ -728,55 +767,588 @@ class AttackFeature extends Feature {
 				continue;
 			}
 
-			const value = this.modifierForUI(key, true, dead);
+			const value = this.modifierForUI(key, true, dead, false, dynamics);
 
 			if (value) {
 				mods.push(span(capitalize(key), ":\xA0", value));
 			}
 		}
 
-		const tiles = this.modifierForUI("tiles", false, dead);
+		const tiles = this.modifierForUI("tiles", false, dead, false, dynamics);
 		if (tiles) mods.push(span("Tiles:\xA0", tiles));
 
 		const min = this.modifier("minrng");
 		const max = this.modifier("maxrng");
 
 		if (min != max) {
-			const min = this.modifierForUI("minrng", false, dead, true);
-			const max = this.modifierForUI("maxrng", false, dead, true);
+			const min = this.modifierForUI("minrng", false, dead, true, dynamics);
+			const max = this.modifierForUI("maxrng", false, dead, true, dynamics);
 			mods.push(span("Range:\xA0", min, "\xA0-\xA0", max));
 		} else if (min != 0) {
-			mods.push(span("Range:\xA0", this.modifierForUI("maxrng", false, dead)));
+			mods.push(span("Range:\xA0", this.modifierForUI("maxrng", false, dead, false, dynamics)));
 		}
 
 		const tp = this.modifier("tp");
 
 		if (tp) {
-			const tp = this.modifierForUI("tp", false, dead);
+			const tp = this.modifierForUI("tp", false, dead, false, dynamics);
 			mods.push(span("Max TP:\xA0", tp));
 		}
 
 		const sp = this.modifier("sp");
 
 		if (sp) {
-			const sp = this.modifierForUI("sp", false, dead);
+			const sp = this.modifierForUI("sp", false, dead, false, dynamics);
 			mods.push(span("Max SP:\xA0", sp));
+		}
+
+		if (this.aoe && this.aoe != "None" && this.aoe != "Variable") {
+			const va = new Action.VisualAid(this);
+			if (dynamics) dynamics.register(va, ["theme", "unit|total|maxrng", "unit|total|minrng"]);
+			mods.push(element("br"), va.root);
 		}
 
 		return element("span", [
 			delimit(" ", mods),
 			mods.length ? element("br") : "",
 			hitip[dead ? "dead" : "link"](this.description),
-			this.requires.source ? hitip.toul(this.requires, dead) : ""
+			this.requires.source ? hitip.toul(this.requires, dead, dynamics) : ""
 		]);
 	}
+
+	static TILE_SIZE = 12;
+	static HALF_TILE = Action.TILE_SIZE / 2;
+	static QRTR_TILE = Action.HALF_TILE / 2;
+	static ORIG_TILE = Action.TILE_SIZE;
+
+
+	static tile(ctx, x, y, xtheme, penalty=0) {
+		const theme = xtheme || Theme.active();
+		const size  = Action.TILE_SIZE;
+		const half  = Action.HALF_TILE;
+		ctx.beginPath();
+		ctx.strokeStyle = theme.border;
+		ctx.rect(x - half, y - half, size, size);
+		ctx.fillStyle = theme.hit_penalty(penalty);
+		ctx.fillRect(x - half, y - half, size, size);
+		ctx.stroke();
+	}
+
+	static bgtile(ctx, x, y, xtheme) {
+		const theme = xtheme || Theme.active();
+		const size  = Action.TILE_SIZE;
+		const half  = Action.HALF_TILE;
+		ctx.beginPath();
+		ctx.strokeStyle = theme.border;
+		ctx.rect(x - half, y - half, size, size);
+		ctx.stroke();
+	}
+
+	static AoETile(ctx, x, y, xtheme) {
+		const theme = xtheme || Theme.active();
+		const size  = Action.TILE_SIZE;
+		const half  = Action.HALF_TILE;
+		ctx.beginPath();
+		ctx.strokeStyle = theme.border;
+
+		ctx.moveTo(x, y - half + 1);
+		ctx.lineTo(x, y + half - 1);
+		ctx.moveTo(x + half - 1, y);
+		ctx.lineTo(x - half + 1, y);
+		ctx.moveTo(x - half + 1, y - half + 1);
+		ctx.lineTo(x + half - 1, y + half - 1);
+		ctx.moveTo(x + half - 1, y - half + 1);
+		ctx.lineTo(x - half + 1, y + half - 1);
+		ctx.stroke();
+	}
+
+	static arrow(ctx, x, y, start) {
+		const theme  = Theme.active();
+		const half   = Action.HALF_TILE;
+
+		ctx.beginPath();
+		ctx.moveTo(x + half * Math.sin(start), y + half * Math.cos(start));
+		ctx.strokeStyle = theme.border;
+
+		start += Math.PI / 2;
+		ctx.lineTo(x + half * Math.sin(start), y + half * Math.cos(start));
+		ctx.lineTo(x + 0.2 * half * Math.sin(start), y + 0.2 * half * Math.cos(start));
+
+		start += Math.PI / 2;
+		ctx.lineTo(x + half * Math.sin(start - (Math.PI/8)), y + half * Math.cos(start - (Math.PI/8)));
+		ctx.lineTo(x + half * Math.sin(start + (Math.PI/8)), y + half * Math.cos(start + (Math.PI/8)));
+
+		start += Math.PI / 2;
+		ctx.lineTo(x + 0.2 * half * Math.sin(start), y + 0.2 * half * Math.cos(start));
+		ctx.lineTo(x + half * Math.sin(start), y + half * Math.cos(start));
+
+		start += Math.PI / 2;
+		ctx.lineTo(x + half * Math.sin(start), y + half * Math.cos(start));
+
+		ctx.fillStyle = theme.unit;
+		ctx.fill();
+		ctx.stroke();
+	}
+
+	static unit(ctx, x, y, border, fill) {
+		const theme = Theme.active();
+		const qrtr  = Action.QRTR_TILE;
+		ctx.beginPath();
+		ctx.strokeStyle = theme.border;
+		ctx.arc(x, y, qrtr, 0, 2 * Math.PI);
+		ctx.fillStyle = theme.unit;
+		ctx.fill();
+		ctx.stroke();
+	}
+
+	static line(ctx, x, y, length, bits, fn=Action.AoETile) {
+		const size = Action.TILE_SIZE;
+		// North: 0, South: 2, East: 3, West: 1
+		const sign  = size * (((bits & 0x2) >> 1) || -1);
+		const xsize = sign * (  bits  & 0x1);
+		const ysize = sign * (~ bits  & 0x1);
+		for (let i = 0; i < length; ++i)
+			fn(ctx, x + xsize * i, y + ysize * i);
+	}
+
+	static box(ctx, x, y, w, h, bits, fn=Action.AoETile) {
+		const size      = Action.TILE_SIZE;
+		const direction = bits & 0x3;
+
+		switch (direction) {
+		case 0x0:   // North
+		case 0x2: { // South
+			const centerX   = (x - (Math.floor(w / 2) * size));
+			const centerY   = y;
+			for (let i = 0; i < w; ++i) {
+				Action.line(ctx, centerX + (i * size), centerY, h, direction, fn);
+			}
+		} break;
+		case 0x1:   // East
+		case 0x3: { // West
+			const centerX   = x;
+			const centerY   = (y - (Math.floor(w / 2) * size));
+			for (let i = 0; i < w; ++i) {
+				Action.line(ctx, centerX, centerY + (i * size), h, direction, fn);
+			}
+		}	break;
+		default:
+			throw new Error("Impossible direction.");
+		}
+	}
+
+	static rectangle(ctx, x, y, w, h, fn=Action.AoETile) {
+		const size  = Action.TILE_SIZE;
+		const centerX   = x - (Math.floor(w / 2) * size);
+		const centerY   = y + (Math.floor(h / 2) * size);
+		for (let i = 0; i < w; ++i) {
+			Action.line(ctx, centerX + (i * size), centerY, h, 0, fn);
+		}
+	}
+
+	static circle(ctx, x, y, min, max, fn=Action.AoETile) {
+		const size = Action.TILE_SIZE;
+		for (let i = -max; i <= max; ++i) {
+			for (let j = -max; j <= max; ++j) {
+				const distance = Math.abs(i) + Math.abs(j);
+				if (distance < min || max < distance) continue;
+				fn(ctx, x + size * i, y + size * j);
+			}
+		}
+	}
+
+	static xcross(ctx, x, y, min, max, fn=Action.AoETile) {
+		const size = Action.TILE_SIZE;
+		for (let i = -max; i <= max; ++i) {
+			for (let j = -max; j <= max; ++j) {
+				const distance = Math.abs(i) + Math.abs(j);
+				if (distance < min * 2) continue;
+				if (Math.abs(i) != Math.abs(j)) continue;
+				fn(ctx, x + size * i, y + size * j);
+			}
+		}
+	}
+
+	static plus(ctx, x, y, min, max, fn=Action.AoETile) {
+		const size = Action.TILE_SIZE;
+		for (let i = -max; i <= max; ++i) {
+			for (let j = -max; j <= max; ++j) {
+				if (!(i == 0 || j == 0)) continue;
+				const distance = Math.abs(i) + Math.abs(j);
+				if (distance < min || max < distance) continue;
+				fn(ctx, x + size * i, y + size * j);
+			}
+		}
+	}
+
+	static frost(ctx, x, y, min, max, fn=Action.AoETile) {
+		const size = Action.TILE_SIZE;
+		for (let i = -max; i <= max; ++i) {
+			for (let j = -max; j <= max; ++j) {
+
+				if (!(
+					(j == -max && i <= 0) || (j == max && i >= 0) || i == 0
+				)) continue;
+
+				fn(ctx, x + size * i, y + size * j);
+			}
+		}
+	}
+
+	static half_circle(ctx, x, y, min, max, bits, fn=Action.AoETile) {
+		const size      = Action.TILE_SIZE;
+		const direction = bits & 0x3;
+		const iStart    = direction == 0x3 ? 0 : -max;
+		const iStop     = direction == 0x1 ? 0 :  max;
+		const jStart    = direction == 0x2 ? 0 : -max;
+		const jStop     = direction == 0x0 ? 0 :  max;
+
+		for (let i = iStart; i <= iStop; ++i) {
+			for (let j = jStart; j <= jStop; ++j) {
+				const distance = Math.abs(i) + Math.abs(j);
+				if (distance < min || max < distance) continue;
+				fn(ctx, x + size * i, y + size * j);
+			}
+		}
+	}
+
+	static cutRange(min, cut, max) {
+		const section = [];
+
+		let range = min, start = min, last = 0;
+		for (range = min; range <= max; ++range) {
+			const raw     = 20 * (range - cut);
+			const penalty = Math.min(60, Math.max(0, raw));
+
+			if (last !== penalty) {
+				section.push([start, range - 1, last]);
+				start = range;
+			}
+
+			last = penalty;
+		}
+
+		section.push([start, range - 1, last]);
+		return section;
+	}
+
+	static findRange(range, cuts) {
+		for (let [min, max, mod] of cuts) {
+			if (min <= range && range <= max)
+				return mod;
+		}
+		return -1;
+	}
+
+	static draw(canvas, action, offsetX, offsetY, mouseX, mouseY) {
+
+		const x = Math.floor(((mouseX - offsetX) + Action.HALF_TILE) / Action.TILE_SIZE);
+		const y = Math.floor(((mouseY - offsetY) + Action.HALF_TILE) / Action.TILE_SIZE);
+
+		const theme = Theme.active();
+		const ctx   = canvas.getContext("2d");
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		if (!action) return;
+
+		let match  = undefined;
+		const min  = action.modifier("minrng");
+		const max  = action.modifier("maxrng");
+		const cut  = action.modifier("cutrng");
+		const cuts = Action.cutRange(min, cut ? cut : max, max);
+
+		const distance = Math.abs(x) + Math.abs(y);
+		const inRange  = min <= distance && distance <= max;
+		const i        = inRange ? offsetX + x * Action.TILE_SIZE : offsetX;
+		const j        = inRange ? offsetY + y * Action.TILE_SIZE : offsetY - (max * Action.TILE_SIZE);
+
+		for (let i = cuts.length - 1; i >= 0; --i) {
+			const [start, stop, penalty] = cuts[i];
+			const fn = (ctx, x, y) => Action.tile(ctx, x, y, theme, penalty);
+			Action.circle(ctx, offsetX, offsetY, start, stop, fn);
+		}
+
+		const angle = Math.atan2(
+			(inRange ? mouseX : i) - offsetX,
+			(inRange ? mouseY : j) - offsetY,
+		);
+
+		const radian = Math.round(angle / (Math.PI / 2));
+		const round  = radian * (Math.PI / 2);
+		const faces  = (radian + 2) % 4;
+
+		const composite = ctx.globalCompositeOperation;
+		ctx.globalCompositeOperation = "xor";
+
+		if ((match = action.aoe.match(/^(None||Variable)$/))) {
+			/* do nothing */
+		}
+		else
+		if ((match = action.aoe.match(/^Centered-Box (\d)x(\d)$/))) {
+			Action.rectangle(ctx, i, j, Number(match[1]), Number(match[2]));
+		}
+		else
+		if ((match = action.aoe.match(/^Ring (\d)-(\d)$/))) {
+			Action.circle(ctx, i, j, Number(match[1]), Number(match[2]));
+		}
+		else
+		if ((match = action.aoe.match(/^X (\d)-(\d)$/))) {
+			Action.xcross(ctx, i, j, Number(match[1]), Number(match[2]));
+		}
+		else
+		if ((match = action.aoe.match(/^Plus (\d)-(\d)$/))) {
+			Action.plus(ctx, i, j, Number(match[1]), Number(match[2]));
+		}
+		else
+		if ((match = action.aoe.match(/^Box (\d)x(\d)$/))) {
+			Action.box(ctx, i, j, Number(match[1]), Number(match[2]), faces);
+		}
+		else
+		if ((match = action.aoe.match(/^Frost (\d)$/))) {
+			Action.frost(ctx, i, j, 0, Number(match[1]));
+		}
+		else
+		if ((match = action.aoe.match(/^Half Circle (\d)$/))) {
+			Action.half_circle(ctx, i, j, 0, Number(match[1]), faces);
+		} else {
+			/* do nothing */
+		}
+
+		ctx.globalCompositeOperation = composite;
+
+		Action.unit(ctx, i, j);
+
+		Action.arrow(ctx, offsetX, offsetY, round);
+
+		const text = `Range ${inRange ? distance : max} (${
+			["North", "West", "South", "East", "North"][faces]
+		}), Hit -${
+			Action.findRange(inRange ? distance : max, cuts)
+		}, Zoom ${
+			((Action.TILE_SIZE / Action.ORIG_TILE) * 100).toFixed(0)
+		}%`;
+
+		ctx.beginPath();
+		ctx.fillStyle   = theme.background;
+		ctx.strokeStyle = theme.background;
+		ctx.rect(0, 0, canvas.width, Action.ORIG_TILE);
+		ctx.fill();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.strokeStyle = theme.border;
+		ctx.moveTo(0, Action.ORIG_TILE);
+		ctx.lineTo(canvas.width, Action.ORIG_TILE);
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.fillStyle = theme.border;
+		ctx.fillText(text, 0, 10);
+		ctx.fill();
+	}
+
+	static setTileSize(pixels=this.ORIG_TILE) {
+		this.TILE_SIZE = pixels;
+		this.HALF_TILE = this.TILE_SIZE / 2;
+		this.QRTR_TILE = this.HALF_TILE / 2;
+
+		// TODO this is a super hack; fix this either by making scale a
+		// property of the instance so that we don't need to globaly refresh
+		// or figure out a different way to do this because this could crash
+		// the page if this function is called before sheet is initialized.
+		sheet.refresher.refresh("theme");
+	}
+
+	static VisualAid = class {
+		
+		constructor(action, template) {
+
+			template           = template || {};
+
+			this.action        = action;
+			this.canvas        = element("canvas", [], "simple-border");
+			this.canvas.width  = Math.floor(
+				(template.width || 230) / Action.ORIG_TILE
+			) * Action.TILE_SIZE;
+			this.canvas.height = 10 * Action.ORIG_TILE;
+
+			this.center();
+			this.setBorders(this.x, this.y, 2);
+
+			this.interval      = null;
+
+			this.mouseX        = this.x;
+			this.mouseY        = this.y;
+
+			this.collapsed     = false;
+
+			// console.log(this.xMin, this.xMax, this.yMin, this.yMax);
+
+			this.canvas.addEventListener("mouseenter", (event) => {
+				this.interval = setInterval(() => {
+					this.refresh();
+				}, 10);
+			});
+
+			this.canvas.addEventListener("mouseleave", (event) => {
+				clearInterval(this.interval);
+			});
+
+			this.canvas.addEventListener("dblclick", (event) => {
+				this.collapse();
+			});
+
+			// zoom in or out on the portait with the mouse wheel
+			this.canvas.addEventListener("wheel", (event) => {
+
+				// zoom in or out on the animation
+				const delta       = Math.sign(event.deltaY) * Number(this.scale.step);
+				const old         = Number(this.scale.value);
+				const scale       = delta + old;
+
+				Action.setTileSize(scale * Action.ORIG_TILE);
+				const coe = Action.ORIG_TILE * action.modifier("maxrng") * 0.5;
+				const off = (coe * old) - (coe * scale);
+
+				this.x   += off;
+				this.y   += off;
+
+				this.scale.value  = scale;
+				this.scale.onchange();
+
+				// stop the page from scolling
+				event.preventDefault();
+				event.stopPropagation();
+			}, false);
+
+			this.scale         = element("input", {
+				class: ["simple-border", "no-display"],
+				attrs: {
+					type     : "number",
+					min      : 0.02,
+					max      : 4.00,
+					step     : 0.05,
+					value    : 1.00,
+					onchange : ((event) => {
+						if (this.scale.value < this.scale.min)
+							this.scale.value = this.scale.min;
+						if (this.scale.value > this.scale.max)
+							this.scale.value = this.scale.max;
+						this.refresh();
+					}),
+				}
+			});
+
+
+			// drag in order to move portrait
+
+			this.dragging      = false;
+			this.dragStartX    = null;
+			this.dragStartY    = null;
+			this.dragOffsetX   = null;
+			this.dragOffsetY   = null;
+			
+			this.canvas.addEventListener("mousedown", (event) => {
+
+				if (event.which == 1) {
+					this.dragging    = true;
+					this.dragStartX  = event.offsetX;
+					this.dragStartY  = event.offsetY;
+					this.dragOffsetX = this.x;
+					this.dragOffsetY = this.y
+				}
+			}, false);
+
+			this.canvas.addEventListener("mouseup", (event) => {
+
+				if (event.which == 1) {
+					this.dragging = false;
+					this.x = this.dragOffsetX + (event.offsetX - this.dragStartX);
+					this.y = this.dragOffsetY + (event.offsetY - this.dragStartY);
+					this.refresh();
+				}
+			}, false);
+
+			this.canvas.addEventListener("mousemove", (event) => {
+
+				this.mouseX = event.offsetX;
+				this.mouseY = event.offsetY;
+
+				if (this.dragging) {
+					this.x  = this.dragOffsetX + (event.offsetX - this.dragStartX);
+					this.y  = this.dragOffsetY + (event.offsetY - this.dragStartY);
+					this.refresh();
+				}
+			}, false);
+
+			this.collapse_button = element("button", {
+				class   : ["simple-border"],
+				content : "View Range",
+				attrs   : {onclick: () => this.collapse()}
+			});
+
+			this.root = element("span", [this.canvas]);
+			
+			if (assume(template.draw, true))
+				Action.draw(this.canvas, this.action, this.x, this.y);
+		}
+
+		center() {
+			this.x = this.canvas.width  / 2;
+			this.y = this.canvas.height / 2;
+		}
+
+		setBorders(centerX, centerY, tiles) {
+
+			this.xMin       = centerX + -Action.TILE_SIZE * 12;
+			this.xMax       = centerX +  Action.TILE_SIZE * 12;
+			this.yMin       = centerY + -Action.TILE_SIZE * 8;
+			this.yMax       = centerY +  Action.TILE_SIZE * 8;
+
+			const [w, h] = this.tileAt(this.canvas.width, this.canvas.height);
+
+			this.xMinScroll = tiles;
+			this.xMaxScroll = w - tiles;
+			this.yMinScroll = tiles;
+			this.yMaxScroll = h - tiles;
+		}
+
+		collapse() {
+			if (this.interval) {
+				clearInterval(this.interval);
+			}
+
+			if (this.collapsed) {
+				this.collapse_button.remove();
+				this.root.appendChild(this.canvas);
+				this.center();
+				this.refresh();
+			} else {
+				this.canvas.remove();
+				this.root.appendChild(this.collapse_button);
+			}
+
+			this.collapsed = !this.collapsed;
+		}
+
+		refresh() {
+			Action.draw(this.canvas, this.action, this.x, this.y, this.mouseX, this.mouseY);
+		}
+
+		tileAt(x, y) {
+			return [
+				Math.floor((x + Action.HALF_TILE) / Action.TILE_SIZE),
+				Math.floor((y + Action.HALF_TILE) / Action.TILE_SIZE),
+			];
+		}
+	};
 }
 
 /**
  * An extension of {@link Feature} that adds a skill rank attribute, additional
  * optional damage scaling based off of a stat, and boolean tags.
  */
-class Art extends AttackFeature {
+class Art extends Action {
 
 	static kind = "arts";
 
@@ -789,6 +1361,9 @@ class Art extends AttackFeature {
 		if (value instanceof Array) value = value.join("\n");
 
 		this.compatible = value;
+
+		if (template.mttype != "else")
+			this.affects.add("item|total|mttype");
 
 		// If this is not a super() call, freeze the object.
 		if (new.target === Art) {
@@ -956,7 +1531,7 @@ class Art extends AttackFeature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -1045,6 +1620,20 @@ class Art extends AttackFeature {
 
 				new Filter.Toggle("Force", false, (feature) => {
 					return feature.tagged("force");
+				}),
+
+				element("br"),
+
+				new Filter.Toggle("Metal", false, (feature) => {
+					return feature.tagged("metal");
+				}),
+
+				new Filter.Toggle("Beast", false, (feature) => {
+					return feature.tagged("beast");
+				}),
+
+				new Filter.Toggle("Water", false, (feature) => {
+					return feature.tagged("water");
 				}),
 
 				Filter.Group.END,
@@ -1151,6 +1740,10 @@ class Art extends AttackFeature {
 					return feature.tagged("combo");
 				}),
 
+				new Filter.Toggle("Half-Slot", false, (feature) => {
+					return feature.tagged("halfslot");
+				}),
+
 				// new Filter.Toggle("Rally", false, (feature) => {
 				// 	return feature.tagged("rally");
 				// }),
@@ -1194,17 +1787,39 @@ class Art extends AttackFeature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
+	}
+
+	getVariableName(key) {
+		const tag    = this.tagged("tactical");
+		const prefix = tag ? "tactical" : "combatarts";
+		return	`${prefix}|${key}`;
 	}
 }
 
 /**
  * An extension of {@link Feature} that adds a skill rank attribute
  */
-class Item extends AttackFeature {
+class Item extends Action {
 
 	static kind = "items";
+
+	getVariableName(key) {
+		return `item|template|${key}`;
+	}
 
 	static DEFAULT = "Unarmed";
 
@@ -1229,7 +1844,7 @@ class Item extends AttackFeature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -1494,8 +2109,20 @@ class Item extends AttackFeature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
@@ -1702,7 +2329,7 @@ class Class extends Feature {
 	 * Generate a feature's {@link CategoryElement} description
 	 * @return {string} description for this item's {@link CategoryElement}
 	 */
-	body(dead=false, table=true, center=true) {
+	body(dead=false, table=true, center=true, dynamics=null) {
 
 		const rows = (
 			["hp", "spd", "str", "mag", "dex", "lck", "def", "res"]
@@ -1742,7 +2369,7 @@ class Class extends Feature {
 			table
 				? element("table", element("tbody", rows), center ? "center-table" : undefined)
 				: "",
-			this.requires.source ? hitip.toul(this.requires, dead) : ""
+			this.requires.source ? hitip.toul(this.requires, dead, dynamics) : ""
 		]);
 	}
 
@@ -1750,7 +2377,7 @@ class Class extends Feature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -1861,8 +2488,20 @@ class Class extends Feature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
@@ -1873,9 +2512,17 @@ class Ability extends Feature {
 
 	static kind = "abilities";
 
+	getVariableName(key) {
+		return `abilities|${key}`;
+	}
+
 	constructor(template, compiler, predicator) {
 		super(template, compiler, predicator);
 		// this.weapon = template.weapon || "";
+
+		if (this.name.includes("Crest")) {
+			this.affects.add("Crest");
+		}
 
 		if (new.target === Ability) {
 			Object.freeze(this);
@@ -1886,7 +2533,7 @@ class Ability extends Feature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -2094,6 +2741,9 @@ class Ability extends Feature {
 				new Filter.Toggle("Static", false, (feature) => {
 					return feature.tagged("static");
 				}),
+				new Filter.Toggle("Half-Slot", false, (feature) => {
+					return feature.tagged("halfslot");
+				}),
 
 				element("br"),
 
@@ -2136,8 +2786,20 @@ class Ability extends Feature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
@@ -2148,6 +2810,10 @@ class Equipment extends Feature {
 
 	static kind = "equipment";
 	static DEFAULT = "";
+
+	getVariableName(key) {
+		return `equipment|${key}`;
+	}
 
 	constructor(template, compiler, predicator) {
 		super(template, compiler, predicator);
@@ -2162,7 +2828,7 @@ class Equipment extends Feature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -2229,15 +2895,27 @@ class Equipment extends Feature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
 /**
  * A Feature subclass to represent map tiles
  */
-class Tile extends AttackFeature {
+class Tile extends Action {
 
 	static kind = "tiles";
 	static DEFAULT = "";
@@ -2264,7 +2942,7 @@ class Tile extends AttackFeature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -2319,8 +2997,20 @@ class Tile extends AttackFeature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
@@ -2350,7 +3040,7 @@ class Adjutant extends Feature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -2397,19 +3087,40 @@ class Adjutant extends Feature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
-class Gambit extends AttackFeature {
+class Gambit extends Action {
 
 	static kind = "gambits";
+
+	getVariableName(key) {
+		return `battalion|modifier|${key}`;
+	}
 
 	constructor(template, compiler, predicator) {
 		super(template, compiler, predicator);
 
-		this.aoe = template.aoe || "none";
+		if (this.name.includes("Training"))
+			this.affects.add("Training");
+		if (this.name.includes("Outfitting"))
+			this.affects.add("Outfitting");
+
+		this.affects.add("gambits");
 
 		if (new.target === Gambit) {
 			Object.freeze(this);
@@ -2427,7 +3138,7 @@ class Gambit extends AttackFeature {
 		return `${this.name} (${this.modifier("cap")})`;
 	}
 
-	body(dead=false) {
+	body(dead=false, dynamics=null) {
 		
 		let   tags = 0;
 		const info = [];
@@ -2468,11 +3179,12 @@ class Gambit extends AttackFeature {
 		if (info.length) return element("div", [
 			delimit(",\xA0", info),
 			tags ? element("br") : "\xA0",
-			super.body(dead),
+			super.body(dead, dynamics),
 		]);
 
-		return super.body(dead);
+		return super.body(dead, dynamics);
 	}
+
 	blurb() {
 
 		const mods = [];
@@ -2526,7 +3238,7 @@ class Gambit extends AttackFeature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -2553,6 +3265,12 @@ class Gambit extends AttackFeature {
 				}),
 
 				Filter.Group.END,
+
+				element("br"),
+
+				new Filter.Toggle("Costs 0 EP, Not Structure", false, (feature) => {
+					return feature.modifier("epcost") == 0 && !feature.tagged("structure");
+				}),
 
 				element("br"), element("strong", "Capacity Cost"), element("br"),
 
@@ -2682,26 +3400,6 @@ class Gambit extends AttackFeature {
 
 				Filter.Group.END,
 
-				// element("br"), element("strong", "Family"), element("br"),
-
-				// new Filter.Group(Filter.Group.OR, false),
-
-				
-				// new Filter.Toggle("", false, (feature) => {
-				// 	return feature.tagged("action");
-				// }),
-				// new Filter.Toggle("Aura", false, (feature) => {
-				// 	return feature.tagged("aura");
-				// }),
-				// new Filter.Toggle("Breach", false, (feature) => {
-				// 	return feature.tagged("breach");
-				// }),
-				// new Filter.Toggle("Damage", false, (feature) => {
-				// 	return feature.tagged("damage");
-				// }),
-
-				// Filter.Group.END,
-
 				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("Rework", false, (feature) => {
@@ -2715,8 +3413,20 @@ class Gambit extends AttackFeature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
@@ -2763,10 +3473,14 @@ class Battalion extends Feature {
 
 }
 
-class Attribute extends AttackFeature {
+class Attribute extends Action {
 
 	static kind = "attributes";
 	static DEFAULT = "";
+
+	getVariableName(key) {
+		return `item|attributes|${key}`;
+	}
 
 	constructor(template, compiler, predicator) {
 		super(template, compiler, predicator);
@@ -2774,7 +3488,10 @@ class Attribute extends AttackFeature {
 		this.price  = template.price || 0;
 		this.rank   = template.rank  || 0;
 
-		if (new.target === Ability) {
+		if (template.mttype != "else")
+			this.affects.add("item|total|mttype");
+
+		if (new.target === Attribute) {
 			Object.freeze(this);
 		}
 	}
@@ -2799,7 +3516,7 @@ class Attribute extends AttackFeature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -2912,8 +3629,19 @@ class Attribute extends AttackFeature {
 					return !feature.tagged("depricated");
 				}),
 
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 }
 
@@ -2933,7 +3661,7 @@ class Condition extends Feature {
 
 		trigger = trigger || (() => {});
 
-		return new Filter.Select({
+		const filter = new Filter.Select({
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
@@ -3030,8 +3758,20 @@ class Condition extends Feature {
 				new Filter.Toggle("Depricate", true, (feature) => {
 					return !feature.tagged("depricated");
 				}),
+
+				element("br"),
+
+				element("button", {
+					class   : ["simple-border"],
+					content : "Reset Filter",
+					attrs   : {
+						onclick: (() => void filter.reset())
+					}
+				})
 			],
 		});
+
+		return filter;
 	}
 
 }
@@ -3246,7 +3986,7 @@ const LOOKUP = new Map([
 
 ]);
 
-function linkfn(table, link, text) {
+function linkfn(table, link, text, dynamics) {
 
 	/* special behavior for literal tooltips */
 	if (table == "tooltip") {
@@ -3313,7 +4053,7 @@ function linkfn(table, link, text) {
 		con.push(
 			element("div", [
 				element("strong", instance.name), element("br"),
-				instance.body(true)
+				instance.body(true, dynamics)
 			])
 		);
 	}
@@ -3465,17 +4205,20 @@ function totl(node, top=true) {
 	}
 }
 
-function toul(node, dead=false, top=true) {
+function toul(node, dead=false, dynamics=null, top=true) {
 
 	if (top) {
 
-		const ast = node.ast;
+		const ast  = node.ast;
+
+		const reqs = new ReqWidget(node, "", andblurb(), dead);
+		if (dynamics) dynamics.register(reqs, Array.from(node.depends));
 
 		const title = element("span", [
 			element("strong", `Requires ${ast[0]} `),
 			element("span", [
 				element("strong", "("),
-				(new ReqWidget(node, "", andblurb(), dead)).root,
+				reqs.root,
 				element("strong", ")"),
 			])
 		]);
@@ -3483,8 +4226,8 @@ function toul(node, dead=false, top=true) {
 		const body  = element("ul", {
 			class    : ["compact-list"],
 			content : LISTPRED.has(ast[0])
-				? ast.slice(1).map(e => element("li", toul(e, dead, false)))
-				: element("li", toul(ast, dead, false)),
+				? ast.slice(1).map(e => element("li", toul(e, dead, dynamics, false)))
+				: element("li", toul(ast, dead, dynamics, false)),
 		});
 
 		return element("div", [title, body]);
@@ -3497,17 +4240,17 @@ function toul(node, dead=false, top=true) {
 
 	case "All":
 		return delimit(" and ",
-			args.map(e => toul(e, dead, false))
+			args.map(e => toul(e, dead, dynamics, false))
 		);
 
 	case "Any":
 		return delimit(" or ",
-			args.map(e => toul(e, dead, false))
+			args.map(e => toul(e, dead, dynamics, false))
 		);
 
 	case "Required":
 		return element("span",
-			[toul(args[0], dead, false), " (required)"]
+			[toul(args[0], dead, dynamics, false), " (required)"]
 		);
 
 	case "Permission":

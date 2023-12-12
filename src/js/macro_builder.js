@@ -617,6 +617,7 @@ class UserInterface {
 		const meta   = arts.filter(art => !art.isTactical());
 		const base   = tactic ? tactic : wpn;
 		const tagged = [base].concat(meta);
+		const skill  = Item.TYPE.asString(env.read("host|type"));
 
 		(m
 			.me("(FLAVOR TEXT GOES HERE)")

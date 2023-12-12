@@ -33,6 +33,6 @@
     },
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["static"],
+    "tags": ["static", "halfslot"],
     "hidden": false
 }

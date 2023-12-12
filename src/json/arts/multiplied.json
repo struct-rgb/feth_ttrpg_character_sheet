@@ -1,9 +1,10 @@
 {
   "name": "Multiplied",
-  "description": "When casting@{item::Heal}, allies adjacent to you are also affected.",
+  "description": "When casting@{item::Heal}, all allies adjacent to this unit are affected.",
   "requires": "Faith D",
   "compatible": "Name Heal",
   "mttype": "else",
+  "aoe": "Ring 1-1",
   "modifiers": {
     "mt": 0,
     "prot": 0,

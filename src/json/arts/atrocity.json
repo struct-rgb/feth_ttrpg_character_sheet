@@ -1,7 +1,7 @@
 {
   "name": "Atrocity",
   "description": "@{item::Areadbhar} only; effective against all units.",
-  "requires": "All (Weapon Areadbhar) (Crest Blaiddyd) (Lances E)",
+  "requires": "All (Item Areadbhar) (Crest Blaiddyd) (Lances E)",
   "compatible": "Name Areadbhar",
   "mttype": "else",
   "modifiers": {
@@ -19,6 +19,7 @@
   },
   "comment": "",
   "tags": [
+    "all effective",
     "effective",
     "relic"
   ],

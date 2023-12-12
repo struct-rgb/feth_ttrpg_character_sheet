@@ -5,6 +5,49 @@
 
 const Legacy = (function() {
 
+function rename(state, map) {
+
+	if (!state) return;
+
+	if (!map) throw Error("Can't rename without map!");
+
+	if (typeof state == "string") {
+		return map.get(state) || state;
+	} else {
+		for (let element of state) {
+			if (map.has(element.id)) {
+				element.id = map.get(element.id);
+			}
+		}
+	}
+}
+
+
+function character_from_3_5_0(old) {
+
+	rename(old.abilities, new Map([
+		["Lead by Example", "Lead by Example 1"]
+	]));
+
+	rename(old.abilities, new Map([
+		["Lead by Example", "Lead by Example 1"]
+	]));
+
+	old.class = rename(old.class, new Map([
+		[ "Apothacary"         , "Apothecary"   ],
+		[ "Swordmaster"        , "Swordsmaster" ],
+		[ "War Cleric/Priest"  , "War Priest"   ],
+		[ "Summoner/Invoker"   , "Summoner"     ],
+		[ "Gremory/Guru"       , "Gremory"      ],
+		[ "Crow Knight"        , "Raven Knight" ],
+		[ "Knight Captain"     , "General"      ],
+	]));
+
+	old.version = "3.6.0";
+
+	return old;
+}
+
 function MToM_v3_3_0(state, group="") {
 	return state.added.map(element => {
 		return {
@@ -314,6 +357,10 @@ function character(obj, to=Version.CURRENT) {
 
 	if (version.older("3.3.0")) {
 		obj = character_from_3_2_0(obj);
+	}
+
+	if (version.older("3.6.0")) {
+		obj = character_from_3_5_0(obj);
 	}
 
 	return obj;

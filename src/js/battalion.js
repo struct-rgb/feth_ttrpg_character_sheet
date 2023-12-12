@@ -33,6 +33,94 @@
  
 /* global definitions */
 
+class BattalionPreview {
+
+	constructor(battalion) {
+		this.battalion = battalion;
+		this.root      = element("div");
+		this._pregroup = null;
+
+		this.battalion.refresher.register(this,
+			Array.from(this.battalion.sheet.compiler.variables(
+				/battalion\|total\|.*/
+			)).map(f => f.called).concat([
+				"gambits"
+			])
+		);
+	}
+
+	generate(dead=false) {
+
+		let   star  = undefined;
+		const sheet = this.battalion.sheet;
+
+		function span(...args) {
+			return element("span", args);
+		}
+		
+		const mods  = [];
+		const env   =  new Expression.Env(
+			Expression.Env.RUNTIME, sheet.definez
+		);
+
+		const rank  = this.battalion._rank._trigger(this.battalion.rank);
+		const attrs = Array.from(this.battalion.gambits.names());
+
+		let link = undefined;
+
+		try {
+			link = hitip.link(this.battalion.fullInfo());
+		} catch (error) {
+			console.log(error);
+			return element("div", [
+				element("dt", "Error Parsing Custom Description"),
+				element("dd", String(error)),
+			]);
+		}
+
+		const predicate = `Authority ${rank}`;
+
+		const dd = element("dd", [
+			hitip.link(
+				`(With @{adjutant::${this.battalion.adjutant.name}})\xA0`
+			),
+			delimit(" ", mods), mods.length ? element("br") : "",
+			link,
+			attrs.length ? element("div", [
+				element("strong", "Gambits"),
+				element("ul",
+					attrs.map(a => element("li",
+						tooltip(
+							element("span", Gambit.get(a).name, "datum"),
+							Gambit.get(a).body(true, this.battalion.refresher)
+						)
+					))
+				)
+			]) : "",
+			element("div",
+				hitip.toul(sheet.predicator.compile(predicate), dead, this.battalion.refresher)
+			)
+		]);
+
+		const dt = element("dt", [
+			this.battalion.name, " (Authority ", rank, ")"
+		]);
+
+		return element("div", [dt, dd]);
+	}
+
+	refresh() {
+		if (this.root.hasChildNodes()) {
+			this.root.lastChild.remove();
+		}
+
+		if (this._pregroup) this.battalion.refresher.delete(this._pregroup);
+		this._pregroup = this.battalion.refresher.createGroup();
+		this.root.appendChild(this.generate());
+	}
+
+}
+
 class Battalions {
 	
 	constructor(sheet) {
@@ -46,10 +134,11 @@ class Battalions {
 			growth : {},
 		};
 
-		this._preview = element("div");
+		this.refresher = sheet.refresher;
+		this._preview  = new BattalionPreview(this);
 
-		const sf = new VariableTable(sheet.definez, this.stats.first,  4);
-		const ss = new VariableTable(sheet.definez, this.stats.second, 4);
+		const sf = new VariableTable(sheet.refresher, sheet.definez, this.stats.first,  4);
+		const ss = new VariableTable(sheet.refresher, sheet.definez, this.stats.second, 4);
 
 		this._name = element("input", {
 			class : ["simple-border"],
@@ -62,15 +151,15 @@ class Battalions {
 
 					const element = this.sheet.bb.category.element(activeID);
 					element.title = this.name;
+
+					this.refresher.refresh("gambits");
 				}),
 			},
 		});
 
-		this._adder = new hitip.Adder(
-			this._description, () => this.refresh()
-		);
-
-		this._replace = new Toggle("Replace original?", false, () => {});
+		this._replace = new Toggle("Replace original?", false, () => {
+			this.refresher.refresh("gambits");
+		});
 
 		this._refr    = element("input", {
 			class : ["simple-border"],
@@ -89,6 +178,10 @@ class Battalions {
 				onchange    : (() => this.refresh()),
 			}
 		});
+
+		this._adder = new hitip.Adder(
+			this._description, () => this.refresh()
+		);
 
 		this._select = element("select", {
 			class: ["simple-border"],
@@ -126,12 +219,12 @@ class Battalions {
 			Gambit.kind,
 			Gambit.byName,
 			((feature) => feature.title()),
-			((feature) => feature.body()),
+			((feature, refresher) => feature.body(false, refresher)),
 			((feature) => feature.dependancies)
 		);
 
 		this.gambits = new MultiActiveCategory(model, {
-			name        : "themes",
+			name        : "gambit",
 			empty       : "This battalion has not been trained.",
 			selectable  : true,
 			reorderable : true,
@@ -149,18 +242,18 @@ class Battalions {
 						if (tag) category.toggleActive(each);
 					}
 				}
-
 				category.toggleActive(key);
-				this.refresh();
+
+				this.refresher.refresh(gambit.affects);
 			}),
 			onremove    : ((category, key) => {
-				// const wasActive = category.isActive(key);
 				category.delete(key);
 
-				// if (wasActive) this.refresh();
-				this.refresh();
+				const feature = Gambit.get(key);
+				this.refresher.refresh(feature.affects);
 			}),
 			select      : Gambit.select(),
+			refresher   : sheet.refresher,
 		});
 
 		this._rank  = new AttributeCell({
@@ -180,22 +273,8 @@ class Battalions {
 			}),
 		});
 
-		this._level = new AttributeCell({
-			edit    : true,
-			value   : 1,
-			shown   : "1",
-			min     : 1,
-			max     : 100,
-			step    : 1,
-			root    : "span",
-			trigger : ((base) => {
-				this.refresh();
-				return base;
-			}),
-		});
-
 		const fn = ((base, variable) => {
-			this.refreshSecond();
+			// this.refreshSecond();
 			return variable();
 		});
 
@@ -216,11 +295,11 @@ class Battalions {
 						"stat. TODO make this us the main sheet's level stat ",
 						"instead of this custom box."
 					)), "/",
-					tooltip("Mor", wrap(
+					tooltip("Charm", wrap(
 						"The higher of this unit’s employer’s Dex or Luc."
 					))
 				],
-				this._level,
+				{var: "battalion|level", call: fn, edit: false},
 				{var: "battalion|total|cha", call: fn, edit: false}),
 			sf.row(
 				[
@@ -304,6 +383,10 @@ class Battalions {
 		this._template = Battalion.get(Battalion.DEFAULT);
 		this._adjutant = Adjutant.get(Adjutant.DEFAULT);
 
+		this.canvas = element("canvas", {
+			attrs: {width: 100, height: 100}
+		});
+
 		this.root = element("div", [
 			uniqueLabel("Battalion Name", this._name), element("br"),
 			this._name, element("br"),
@@ -314,7 +397,7 @@ class Battalions {
 			uniqueLabel("Adjutant", this._aselect), element("br"),
 			this._aselect, element("br"), element("br"),
 
-			this._preview,
+			this._preview.root,
 
 			tooltip(this._refr, [
 				"Refresh the battalion preview."
@@ -343,8 +426,9 @@ class Battalions {
 					"the end of the template battalion's original description."
 				)),
 			]),
-		]);
 
+			this.canvas,
+		]);
 	}
 
 	get name() {
@@ -421,11 +505,11 @@ class Battalions {
 	}
 
 	get level() {
-		return this._level.value;
+		return this.sheet.runenv.read("unit|level");
 	}
 
 	set level(value) {
-		this._level.value = value;
+		// this._level.value = value;
 	}
 
 	get rank() {
@@ -487,13 +571,7 @@ class Battalions {
 		this.refreshSecond();
 		this.refreshGrowths();
 
-		if (key) {
-			if (this._preview.hasChildNodes()) {
-				this._preview.lastChild.remove();
-			}
-
-			this._preview.appendChild(this.preview());
-		}
+		this.refresher.refresh("gambits");
 	}
 
 	*iterCustomRows() {
@@ -542,90 +620,6 @@ class Battalions {
 
 	set replaceInfo(value) {
 		this._replace.checked = value;
-	}
-
-	preview(dead=false) {
-
-		let   star  = undefined;
-		const sheet = this.sheet;
-
-		function span(...args) {
-			return element("span", args);
-		}
-		
-		const mods  = [];
-		const env   =  new Expression.Env(
-			Expression.Env.RUNTIME, sheet.definez
-		);
-
-		// TODO find a better way to display these because refreshing
-		// the preview every
-
-		// function uimod(name, sign=false, dead=false) {
-
-		// 	const num = env.read(`battalion|total|${name}`);
-
-		// 	if (num <= 1) return 0;
-
-		// 	return element("span", {
-		// 		class   : ["computed"],
-		// 		content : String(num),
-		// 	});
-		// }
-
-		// for (let key of [
-		// 	"ep", "atk", "prot", "resl", "cap", "br", "auto", "plu"
-		// ]) {
-
-		// 	if ((star = uimod(key, true, dead))) {
-		// 		mods.push(span(capitalize(key), ":\xA0", star));
-		// 	}
-		// }
-
-		const rank  = this._rank._trigger(this.rank);
-		const attrs = Array.from(this.gambits.names());
-
-		let link = undefined;
-
-		try {
-			link = hitip.link(this.fullInfo());
-		} catch (error) {
-			console.log(error);
-			return element("div", [
-				element("dt", "Error Parsing Custom Description"),
-				element("dd", String(error)),
-			]);
-		}
-
-		const predicate = `Authority ${rank}`;
-
-		const dd = element("dd", [
-			hitip.link(
-				`(With @{adjutant::${this.adjutant.name}})\xA0`
-			),
-			delimit(" ", mods), mods.length ? element("br") : "",
-			link,
-			attrs.length ? element("div", [
-				element("strong", "Gambits"),
-				element("ul",
-					attrs.map(a => element("li",
-						tooltip(
-							element("span", Gambit.get(a).name, "datum"),
-							Gambit.get(a).body(true)
-						)
-					))
-				)
-			]) : "",
-			element("div",
-				hitip.toul(this.sheet.predicator.compile(predicate), dead)
-			)
-		]);
-
-		const dt = element("dt", [
-			this.name, " (Authority ", rank, ")"
-		]);
-
-		return element("div", [dt, dd]);
 	}
 
 	blurb() {

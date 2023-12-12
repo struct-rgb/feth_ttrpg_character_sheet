@@ -213,7 +213,13 @@
       "define": [
         "template advantage(variable)",
         "  bothif variable",
-        "    then more other|triangle|prompt else 0 end / 3",
+        "    then",
+        "      more",
+        "        metaif builtins|macrogen",
+        "          then other|triangle|prompt",
+        "          else other|triangle",
+        "        end",
+        "      else 0 end / 3",
         "    else 0",
         "  end",
         "end"

@@ -85,6 +85,15 @@ Set.prototype.intersect = function(other) {
 	return set;
 };
 
+Set.prototype.extend = function(other) {
+
+	for (let each of other) {
+		this.add(each);
+	}
+
+	return this;
+};
+
 function choice(options) {
 
 	/* if not asked to choose return the passed object */
@@ -113,7 +122,6 @@ function choice(options) {
 		return options[response - 1];
 	}
 }
-
 
 class TagSetWidget {
 
@@ -387,7 +395,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("3.5.0");
+	static CURRENT = new Version("3.6.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -444,7 +452,12 @@ function wrap(...args) {
 function ellipse(string, limit) {
 	if (limit == null) throw new Error("limit argument is mandatory");
 	return string.length > limit ?  `${string.slice(0, limit)}...` : string;
-} 
+}
+
+function nameof(value) {
+	const type = typeof value;
+	return type == "object" ? type : type.constructor.name;
+}
 
 const capitalize = (function() {
 
@@ -572,7 +585,7 @@ function assume(first, other) {
 	return first == null ? other : first;
 }
 
-function tooltip(content, tooltip) {
+function tooltip(content, tooltip, ondisplay=null) {
 
 	const tip = element("span", {
 		class   : ["ttt", "ttts"],
@@ -585,7 +598,10 @@ function tooltip(content, tooltip) {
 			content instanceof Array
 				? content.concat([tip])
 				: [content, tip]
-		)
+		),
+		attrs: {
+			onpointerenter: ondisplay ? ondisplay : undefined,
+		}
 	});
 }
 
@@ -831,11 +847,12 @@ class VariableTable {
 		},
 	};
 
-	constructor(context, obj, length) {
-		this.length  = length;
-		this.obj     = obj;
-		this.context = context;
-		this.CONFIG  = VariableTable.CONFIG;
+	constructor(refresher, context, obj, length) {
+		this.refresher = refresher;
+		this.length    = length;
+		this.obj       = obj;
+		this.context   = context;
+		this.CONFIG    = VariableTable.CONFIG;
 	}
 
 	static NOACTION = ((base, variable) => variable());
@@ -888,7 +905,14 @@ class VariableTable {
 		const call   = this.func(opt.var, opt.call);
 		const config = this.CONFIG[edit][opt.style || comma];
 
-		return obj[key] = new AttributeCell(config, call);
+		const cell   = new AttributeCell(config, call);
+		obj[key]     = cell;
+
+		// TODO find a cleaner way to accomplish this
+		this.refresher.register(cell,
+			this.refresher.sheet.compiler.dependancies(opt.var), [opt.var]);
+
+		return cell;
 	}
 
 	/**
@@ -1239,7 +1263,7 @@ class Grade {
 		new Grade("B",  6,  36), new Grade("B+",  7,  50),
 		new Grade("A",  8,  64), new Grade("A+",  9,  80),
 		new Grade("S", 10, 150), new Grade("S+", 11, 200),
-		new Grade("X", 12, 201),
+		new Grade("X", 12, 300),
 	];
 
 	static toNumber = (function () {
@@ -1291,9 +1315,9 @@ class Grade {
 	}
 
 	static TPTABLE = [
-		[15, 0, 0, 1, 2, 1, 2, 1, 2, 1, 10, 9],
-		[ 0, 0, 0, 0, 0, 1, 2, 1, 2, 1,  2, 1],
-		[ 0, 0, 0, 0, 0, 0, 0, 1, 2, 1,  2, 1],
+		[15, 0, 0, 1, 2, 1, 2, 1, 2, 1, 10, 9, 0],
+		[ 0, 0, 0, 0, 0, 1, 2, 1, 2, 1,  2, 1, 0],
+		[ 0, 0, 0, 0, 0, 0, 0, 1, 2, 1,  2, 1, 0],
 	];
 
 	/**
@@ -1372,10 +1396,31 @@ return function(iterations, stop=8) {
 
 class Theme {
 
-	constructor(name, description, stylesheet) {
+	constructor(name, description, stylesheet, canvasStyles) {
 		this.name        = name;
 		this.description = description;
 		this.stylesheet  = stylesheet;
+	}
+
+	get unit() {
+		return getComputedStyle(document.body).getPropertyValue("--gambit-unit");
+	}
+
+	get tile() {
+		return getComputedStyle(document.body).getPropertyValue("--gambit-tile");
+	}
+
+	get border() {
+		return getComputedStyle(document.body).getPropertyValue("--gambit-border");
+	}
+
+	get background() {
+		return getComputedStyle(document.body).getPropertyValue("--gambit-background");
+	}
+
+	hit_penalty(penalty) {
+		return getComputedStyle(document.body)
+			.getPropertyValue(`--gambit-hit-${penalty}`);
 	}
 
 	static MAP = function() {
@@ -1403,6 +1448,10 @@ class Theme {
 	static get() {
 		const store = localStorage.getItem("theme");
 		return store && this.MAP.has(store) ? store : this.DEFAULT;
+	}
+
+	static active() {
+		return this.MAP.get(this.get());
 	}
 
 	static set(key) {
@@ -1439,3 +1488,4 @@ class Theme {
 /* exported Toggle */
 /* exported VariableTable */
 /* exported Theme */
+/* exported nameof */

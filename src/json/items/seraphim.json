@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": ["effective"],
+  "tags": ["effective", "monster effective"],
   "hidden": false
 }

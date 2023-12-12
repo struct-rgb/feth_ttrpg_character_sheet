@@ -1,7 +1,7 @@
 {
   "name": "Heaven's Fall",
   "description": "@{item::Dark Creator Sword} only; Mt +30% of user's Mag.",
-  "requires": "All (Weapon `Dark Creator Sword`) (Crest Flames) (Swords A)",
+  "requires": "All (Item `Dark Creator Sword`) (Crest Flames) (Swords A)",
   "compatible": "Name `Dark Creator Sword`",
   "mttype": "else",
   "modifiers": {

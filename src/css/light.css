@@ -1,4 +1,15 @@
 
+:root {
+	--gambit-unit: orange;
+	--gambit-border: black;
+	--gambit-tile: blue;
+	--gambit-background: white;
+	--gambit-hit-60: #CCCCCC;
+	--gambit-hit-40: #888888;
+	--gambit-hit-20: #555555;
+	--gambit-hit-0: #222222;
+}
+
 /* This class is on the body element. */
 
 .base {

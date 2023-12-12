@@ -48,9 +48,11 @@ class CategoryElement {
 		this._hidden      = false;
 		this._title       = document.createTextNode(options.title || "");
 		this._description = element("span", options.description || "");
-		this.onremove     = options.onremove || CategoryElement.pass;
-		this.ontoggle     = options.ontoggle || CategoryElement.pass;
-		this.group        = options.group    || "";
+		this.onremove     = options.onremove  || CategoryElement.pass;
+		this.ontoggle     = options.ontoggle  || CategoryElement.pass;
+		this.onreorder    = options.onreorder || CategoryElement.pass;
+		this.group        = options.group     || "";
+		this.resources    = options.resources || null;
 
 		// go about building the DOM nodes
 		this.dt = document.createElement("dt");
@@ -70,6 +72,9 @@ class CategoryElement {
 					this.shift(Number(this.updown.value));
 					this.updown.value = 0;
 					this.updown.focus();
+
+					// TODO maybe make this work like onremove and ontoggle?
+					this.onreorder.call();
 				}),
 				hidden   : !options.reorderable,
 			}
@@ -388,8 +393,8 @@ class CategoryModel {
 		return this._title.call(undefined, this._lookup.get(key));
 	}
 
-	description(key) {
-		return this._body.call(undefined, this._lookup.get(key));
+	description(key, refresher) {
+		return this._body.call(undefined, this._lookup.get(key), refresher);
 	}
 
 	triggers(key) {
@@ -435,10 +440,11 @@ class Category {
 		const category = this;
 
 		this.model       = model;
-		this.name        = options.name     || "";
-		this.empty       = options.empty    || "";
-		this.ontoggle    = options.ontoggle || Category.succeed;
-		this.onremove    = options.onremove || Category.succeed;
+		this.name        = options.name      || "";
+		this.empty       = options.empty     || "";
+		this.ontoggle    = options.ontoggle  || Category.succeed;
+		this.onremove    = options.onremove  || Category.succeed;
+		this.onreorder   = options.onreorder || Category.succeed;
 		this.reorderable = Boolean(options.reorderable);
 		this.removable   = Boolean(options.removable);
 		this.hideable    = Boolean(options.hideable);
@@ -447,7 +453,7 @@ class Category {
 		this.parent      = null;
 		this._elements   = new Map();
 		this.root        = document.createElement("div");
-		this.triggers    = new Map();
+		this.refresher   = options.refresher || new Refresher();
 
 		// go about building the DOM nodes
 		if (!this.selectable) {
@@ -460,9 +466,9 @@ class Category {
 			this.addButton.type    = "button";
 			this.addButton.onclick = () => {
 				
-				const name = category.select.value;
-
-				category.add(name, {group: this.name});
+				const name  = category.select.value;
+				const added = category.add(name, {group: this.name});
+				if (!added) return;
 
 				if (this.addActive) {
 					this.ontoggle.call(undefined, this, name);
@@ -477,21 +483,29 @@ class Category {
 				this.root.appendChild(this._sf.root);
 			} else {
 				// create a selector of valid values
-				this.select = document.createElement("select");
-				this.select.classList.add("simple-border");
-				for (let item of this.model.values()) {
-					if ("hidden" in item && item.hidden) continue;
-					const option = document.createElement("option");
-					option.value = item.name;
-					option.appendChild(document.createTextNode(item.name));
-					this.select.appendChild(option);
-				}
+				// this.select = document.createElement("select");
+				// this.select.classList.add("simple-border");
+				// for (let item of this.model.values()) {
+				// 	if ("hidden" in item && item.hidden) continue;
+				// 	const option = document.createElement("option");
+				// 	option.value = item.name;
+				// 	option.appendChild(document.createTextNode(item.name));
+				// 	this.select.appendChild(option);
+				// }
+				// this.root.appendChild(this.select);
+
+				this.select = element("select", {
+					class   : ["simple-border"],
+					content : Array.from(this.model._lookup.keys()).map(key => 
+						element("option", {content: key, attrs: {src: key}})
+					),
+				});
 				this.root.appendChild(this.select);
 			}	
 		}
 
 		this._textnode  = document.createTextNode(this.empty);
-		const paragraph = document.createElement("p");
+		const paragraph = document.createElement("div");
 		paragraph.appendChild(this._textnode);
 		this.root.appendChild(paragraph); 
 
@@ -654,13 +668,18 @@ class Category {
 			this._textnode.data = "";
 		}
 
-		const onremove = assume(options.onremove, this.onremove);
-		const ontoggle = assume(options.ontoggle, this.ontoggle);
+		const refresher   = assume(options.refresher, this.refresher);
+		const onremove    = assume(options.onremove, this.onremove);
+		const onreorder   = assume(options.onreorder, this.onreorder);
+		const ontoggle    = assume(options.ontoggle, this.ontoggle);
+		const resources   = refresher.createGroup();
+		const description = this.model.description(name, refresher);
 
 		const element  = new CategoryElement({
 			key         : name,
 			title       : this.model.title(name),
-			description : this.model.description(name),
+			description : description,
+			resources   : [resources, refresher],
 			triggers    : this.model.triggers(name),
 			reorderable : assume(options.reorderable, this.reorderable),
 			removable   : assume(options.removable, this.removable),
@@ -670,6 +689,9 @@ class Category {
 			}),
 			ontoggle    : (() => {
 				return ontoggle.call(undefined, this, name);
+			}),
+			onreorder   : (() => {
+				return onreorder.call(undefined, this, name);
 			}),
 			group       : assume(options.group, ""),
 			hidden      : assume(options.hidden, false),
@@ -696,7 +718,14 @@ class Category {
 			this.toggleActive(name, false);
 		}
 
-		this.element(name).remove();
+		const element = this.element(name);
+
+		if (element.resources) {
+			const [resources, refresher] = element.resources;
+			refresher.delete(resources);
+		}
+
+		element.remove();
 		this._elements.delete(name);
 
 		if (this.size == 0) {
@@ -729,6 +758,10 @@ class Category {
 	clear() {
 		this.clearActive();
 		for (let element of this._elements.values()) {
+			if (element.resources) {
+				const [resources, refresher] = element.resources;
+				// console.log(`${element._title.data}: `, refresher.delete(resources));
+			}
 			element.remove();
 		}
 		this._elements.clear();
@@ -832,9 +865,7 @@ class SingleActiveCategory extends Category {
 				this.active    = null;
 			} else {
 				const previous = this.element(this.active);
-				
-				console.log(this.active, previous);
-				
+								
 				/*@TODO this is a hack to cover an issue, figure out what causes it */
 				if (previous != null) {
 					previous.active = false;

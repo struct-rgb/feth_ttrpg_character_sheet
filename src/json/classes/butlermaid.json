@@ -1,0 +1,39 @@
+{
+  "name": "Butler/Maid",
+  "description": "An advanced class that makes good use of items.",
+  "type": ["Infantry"],
+  "tier": "Advanced",
+  "requires": "All (Any (Swords B) (Lances B) (Axes B) (Bows B) (Brawl B) (Faith B) (Reason B) (Guile B)) (Required (Level 15))",
+  "abilities": ["Item Expertise", "Stealth"],
+    "arts": [],
+  "growths": {
+    "hp": 15,
+    "str": 15,
+    "mag": 25,
+    "dex": 20,
+    "spd": 5,
+    "def": 0,
+    "res": 30,
+    "lck": 20
+  },
+  "modifiers": {
+    "hp": 3,
+    "str": 1,
+    "mag": 5,
+    "dex": 2,
+    "spd": 0,
+    "def": 1,
+    "res": 7,
+    "lck": 4,
+    "mov": 4
+  },
+  "mount": null,
+
+  "default_base": "Thief",
+  "default_preset": "Balance/Resistance/Luck",
+  "default_mainarm": "Item",
+  "default_sidearm": ["Swords", "Lances", "Axes", "Fire", "Guile", "Faith", "Bows", "Metal"],
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": true
+}

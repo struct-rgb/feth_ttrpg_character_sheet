@@ -5,7 +5,7 @@
     "mttype": "else",
     "price": "",
     "rank": "C+",
-    "aoe": "Circle 1",
+    "aoe": "Ring 0-1",
     "modifiers": {
         "atk": 0,
         "mor": 0,

@@ -17,7 +17,8 @@
     "tpcost": 0,
     "spcost": 4,
 
-    "ghit": -30
+    "ghit": -30,
+    "gmaxrng": 1
   },
   "comment": "",
   "tags": ["metagambit"],

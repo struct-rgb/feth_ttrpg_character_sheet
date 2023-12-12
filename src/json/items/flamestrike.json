@@ -4,6 +4,7 @@
   "description": "@{const:ap:AP = 1}; on hit, deal half damage dealt to target foe to foes within two spaces of target foe.",
   "requires": "Faith A",
   "rank": "A",
+  "aoe": "Ring 1-2",
   "price": 4350,
   "mttype": "mag",
   "modifiers": {

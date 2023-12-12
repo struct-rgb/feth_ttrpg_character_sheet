@@ -6,6 +6,15 @@
 	--wash:#989eb5;
 	--egg:#fff6e6;
 	--goldl:#f1e5ac;
+
+	--gambit-unit: #000000;
+	--gambit-border: var(--goldl);
+	--gambit-tile: var(--gold);
+	--gambit-background: #222222;
+	--gambit-hit-0: #CCCC00;
+	--gambit-hit-20: #888800;
+	--gambit-hit-40: #555500;
+	--gambit-hit-60: #222200;
 }
 
 .base {

@@ -4,7 +4,7 @@
     "type": ["Infantry"],
     "tier": "Starting",
     "requires": "Authority D",
-    "abilities": ["Lead by Example", "Level 10 Mov +1"],
+    "abilities": ["Lead by Example 1", "Level 10 Mov +1"],
     "arts": [],
     "growths": {
         "hp": 15,
@@ -29,7 +29,7 @@
     },
     "mount": null,
 
-    "default_base": "Lord",
+    "default_base": "Banneret",
     "default_preset": "Balance/Balance/Luck",
     "default_mainarm": ["Swords", "Lances", "Axes", "Fire"],
     "default_sidearm": "None",

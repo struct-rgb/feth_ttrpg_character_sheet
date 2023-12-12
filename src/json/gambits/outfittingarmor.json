@@ -1,6 +1,6 @@
 {
     "name": "Armor Outfitting",
-    "description": "Grants Prot/Resl +3; battalion’s units are Armor units. This battalion may not possess another \"Outfitting\" gambit, unless that gambit is \"Cavalry Outfitting.\"",
+    "description": "Grants Prot/Resl +2; battalion’s units are Armor units. This battalion may not possess another \"Outfitting\" gambit, unless that gambit is \"Cavalry Outfitting.\"",
     "requires": "Authority E",
     "mttype": "else",
     "price": "",
@@ -27,6 +27,7 @@
         "epcost": 0,
         "capcost": 0
     },
+    "events": ["Outfitting"],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["structure"],

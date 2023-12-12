@@ -1,5 +1,5 @@
 {
-    "name": "Summoner/Invoker",
+    "name": "Summoner",
     "description": "A mystic who calls on spirits to aid in battle",
     "type": ["Infantry"],
     "tier": "Advanced",

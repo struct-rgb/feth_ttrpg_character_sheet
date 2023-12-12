@@ -7,7 +7,7 @@
   "price": 780,
   "mttype": "none",
   "modifiers": {
-    "mt": "floor((unit|charm) / 2) + 8",
+    "mt": "floor((unit|charm) / 2) + 4",
     "prot": 0,
     "resl": 0,
     "hit": 0,
@@ -16,7 +16,7 @@
     "cravo": 0,
     "minrng": 1,
     "maxrng": 1,
-    "tpcost": 1,
+    "tpcost": 2,
     "spcost": 0,
     "tp": 0,
     "sp": 0

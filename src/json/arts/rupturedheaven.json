@@ -1,7 +1,7 @@
 {
   "name": "Ruptured Heaven",
   "description": "@{item::Sword of the Creator} only; Mt +30% of user's Mag, effective against Dragon units.",
-  "requires": "All (Weapon `Sword of the Creator`) (Crest Flames) (Swords E)",
+  "requires": "All (Item `Sword of the Creator`) (Crest Flames) (Swords E)",
   "compatible": "Name `Sword of the Creator`",
   "mttype": "else",
   "modifiers": {
@@ -19,6 +19,7 @@
   },
   "comment": "",
   "tags": [
+    "dragon effective",
     "scales",
     "effective",
     "relic"

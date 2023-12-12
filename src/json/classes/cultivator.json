@@ -32,7 +32,7 @@
     "default_base": "Brawler",
     "default_preset": "Speed/Balance/Balance",
     "default_mainarm": "Water",
-    "default_sidearm": "Wind",
+    "default_sidearm": ["Faith", "Wind", "Guile"],
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

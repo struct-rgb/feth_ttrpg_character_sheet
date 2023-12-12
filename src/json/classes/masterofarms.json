@@ -31,8 +31,8 @@
 
     "default_base": "Mercenary",
     "default_preset": "Balance/Balance/Dexterity",
-    "default_mainarm": "Lances",
-    "default_sidearm": "Axes",
+    "default_mainarm": ["Swords", "Lances", "Axes"],
+    "default_sidearm": ["Swords", "Lances", "Axes"],
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

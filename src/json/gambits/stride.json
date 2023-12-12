@@ -5,7 +5,7 @@
     "mttype": "none",
     "price": "",
     "rank": "A+",
-    "aoe": "Radius 2",
+    "aoe": "Ring 0-2",
     "modifiers": {
         "atk": 0,
         "mor": 0,

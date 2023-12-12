@@ -27,7 +27,7 @@
         "sp": 0,
 
         "minrng": 0,
-        "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype|mag then 2 else 0 end",
+        "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype == mttype|mag then 2 else 0 end",
 
         "mov": 0
     },

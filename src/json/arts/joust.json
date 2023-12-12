@@ -2,7 +2,7 @@
   "name": "Joust",
   "description": "Can only target foes within range to counter attack. Cavalry units have weapon advantage; units deal effective damage against Cavalry units.",
   "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
-  "requires": "Cavalry A",
+  "requires": "Riding A",
   "mttype": "else",
   "modifiers": {
     "mt": 4,
@@ -12,13 +12,13 @@
     "avo": 0,
     "crit": 0,
     "cravo": 0,
-    "minrng": 0,
-    "maxrng": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|maxrng",
     "tpcost": 0,
     "spcost": 4
   },
   "comment": "",
-  "tags": ["effective", "advantage"],
+  "tags": ["effective", "advantage", "cavalry effective"],
   "hidden": false,
   "rank": "A",
   "type": "Riding"

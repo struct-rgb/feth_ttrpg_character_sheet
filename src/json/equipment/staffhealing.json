@@ -14,7 +14,7 @@
         "res": 0,
         "lck": 0,
 
-        "mt": "bothif unit|tagged|healing and unit|total|mttype|mag then 10 else 0 end",
+        "mt": "bothif unit|tagged|healing and unit|total|mttype == mttype|mag then 10 else 0 end",
         "prot": 0,
         "resl": 0,
         "hit": 0,

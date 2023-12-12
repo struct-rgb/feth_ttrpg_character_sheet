@@ -1,7 +1,7 @@
 {
   "name": "Relentless Magic",
   "description": "@{item::Suttungr's Mystery} only; halves the cost of user's Guile metamagic this combat, effective against Dragon units. This metamagic ability can be used with one other one.",
-  "requires": "All (Weapon `Suttungr's Mystery`) (Crest Charon) (Guile E)",
+  "requires": "All (Item `Suttungr's Mystery`) (Crest Charon) (Guile E)",
   "compatible": [
     "Match",
     "  Art    (Skill Guile)",
@@ -23,6 +23,7 @@
   },
   "comment": "",
   "tags": [
+    "dragon effective",
     "relic",
     "effective",
     "combo"

@@ -212,7 +212,13 @@ const definitions = {
       "define": [
         "template advantage(variable)",
         "  bothif variable",
-        "    then more other|triangle|prompt else 0 end / 3",
+        "    then",
+        "      more",
+        "        metaif builtins|macrogen",
+        "          then other|triangle|prompt",
+        "          else other|triangle",
+        "        end",
+        "      else 0 end / 3",
         "    else 0",
         "  end",
         "end"
@@ -512,6 +518,43 @@ const definitions = {
       "rank": "C"
     },
     {
+      "name": "Field Forge",
+      "description": "Create a @{tile::Fire Patch} in an empty adjacent space for one turn. Pay up to 5 SP; target ally adjacent to that tile regains TP equal to the number of SP paid. @{const:variant:Blunt Variant:} Target ally regains TP equal to twice the number of SP paid",
+      "requires": "Axes C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 2,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": "2 + ask [Extra SP to Pay?]; 1, 2, 3, 4, 5 end"
+      },
+      "rows": [
+        {
+          "name": "TP Restored",
+          "expr": "ask [Extra SP to Pay?]; 1, 2, 3, 4, 5 end * item|has_attribute|Blunt",
+          "roll": false
+        }
+      ],
+      "comment": "",
+      "tags": [
+        "tactical",
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats"
+      ],
+      "hidden": false,
+      "rank": "C",
+      "type": "Axes"
+    },
+    {
       "name": "Battle Frenzy",
       "description": "Apply @{condition:Berserk:[Berserk]} to this unit for four turns.",
       "requires": "Axes B",
@@ -524,8 +567,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 5,
+        "minrng": 0,
+        "maxrng": 0,
         "tiles": 0,
         "spcost": 2,
         "tpcost": 0,
@@ -707,6 +750,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "monster effective",
         "effective"
       ],
       "hidden": false,
@@ -786,7 +830,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "effective"
+        "effective",
+        "armor effective"
       ],
       "hidden": false,
       "type": "Axes",
@@ -822,7 +867,7 @@ const definitions = {
     {
       "name": "Raging Storm",
       "description": "@{item::Aymr} only; if attack lands, user can move again, effective against Dragon units.",
-      "requires": "All (Weapon Aymr) (Crest Seiros) (Axes E)",
+      "requires": "All (Item Aymr) (Crest Seiros) (Axes E)",
       "compatible": "Name Aymr",
       "mttype": "else",
       "modifiers": {
@@ -840,6 +885,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "effective",
         "movement",
         "relic"
@@ -851,7 +897,7 @@ const definitions = {
     {
       "name": "Dust",
       "description": "@{item::Crusher} only; applies @{const:gbp:[Def -5]} to target for 1 turn and effective against Dragon units.",
-      "requires": "All (Weapon Crusher) (Crest Dominic) (Axes E)",
+      "requires": "All (Item Crusher) (Crest Dominic) (Axes E)",
       "compatible": "Name Crusher",
       "mttype": "else",
       "modifiers": {
@@ -869,6 +915,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "effective",
         "condition",
         "relic"
@@ -880,7 +927,7 @@ const definitions = {
     {
       "name": "Apocalyptic Flame",
       "description": "@{item::Freikugel} only; apply @{const:gbp:[Str -5]} to target foe for one turn, effective against Dragon units.",
-      "requires": "All (Weapon Freikugel) (Crest Goneril) (Axes E)",
+      "requires": "All (Item Freikugel) (Crest Goneril) (Axes E)",
       "compatible": "Name Freikugel",
       "mttype": "else",
       "modifiers": {
@@ -899,7 +946,8 @@ const definitions = {
       "comment": "",
       "tags": [
         "relic",
-        "effective"
+        "effective",
+        "dragon effective"
       ],
       "hidden": false,
       "rank": "E",
@@ -926,7 +974,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "relic"
+        "relic",
+        "effective",
+        "all effective"
       ],
       "hidden": true,
       "type": "Axes",
@@ -952,7 +1002,9 @@ const definitions = {
         "spcost": 3
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": false,
       "type": "Lances",
       "rank": "E"
@@ -1041,6 +1093,33 @@ const definitions = {
       "hidden": false,
       "type": "Lances",
       "rank": "D+"
+    },
+    {
+      "name": "Hollow Square",
+      "description": "For one turn, you may use the following reaction up to two times per phase. Trigger: a foe enters an adjacent space. Initiate combat against that foe with equipped Lance. @{const:variant:Long Blade Variant:} Foe\u2019s counter attacks are prevented during combat.",
+      "requires": "Lances C",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "reaction",
+        "tactical"
+      ],
+      "hidden": false,
+      "type": "Lances",
+      "rank": "C"
     },
     {
       "name": "Lance Jab",
@@ -1142,7 +1221,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "effective"
+        "effective",
+        "monster effective"
       ],
       "hidden": false,
       "type": "Lances",
@@ -1310,7 +1390,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "effective"
+        "effective",
+        "cavalry effective"
       ],
       "hidden": false,
       "type": "Lances",
@@ -1344,7 +1425,7 @@ const definitions = {
     {
       "name": "Atrocity",
       "description": "@{item::Areadbhar} only; effective against all units.",
-      "requires": "All (Weapon Areadbhar) (Crest Blaiddyd) (Lances E)",
+      "requires": "All (Item Areadbhar) (Crest Blaiddyd) (Lances E)",
       "compatible": "Name Areadbhar",
       "mttype": "else",
       "modifiers": {
@@ -1362,6 +1443,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "all effective",
         "effective",
         "relic"
       ],
@@ -1372,7 +1454,7 @@ const definitions = {
     {
       "name": "Ruined Sky",
       "description": "@{item::Lance of Ruin} only; effective against Flying and Dragon units.",
-      "requires": "All (Weapon `Lance of Ruin`) (Crest Gautier) (Lances E)",
+      "requires": "All (Item `Lance of Ruin`) (Crest Gautier) (Lances E)",
       "compatible": "Name `Lance of Ruin`",
       "mttype": "else",
       "modifiers": {
@@ -1390,6 +1472,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "effective",
         "relic"
       ],
@@ -1400,7 +1483,7 @@ const definitions = {
     {
       "name": "Trinity Gore",
       "description": "@{item::Trishul} only; Effective against Cavalry, effective against Dragon units.",
-      "requires": "All (Weapon `Trishul`) (Crest Lamine) (Lances E)",
+      "requires": "All (Item `Trishul`) (Crest Lamine) (Lances E)",
       "compatible": "Name Trishul",
       "mttype": "else",
       "modifiers": {
@@ -1418,6 +1501,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "cavalry effective",
+        "dragon effective",
+        "effective",
         "relic"
       ],
       "hidden": false,
@@ -1427,7 +1513,7 @@ const definitions = {
     {
       "name": "Burning Quake",
       "description": "@{item::L\u00fain} only; Mt +30% of user's Spd; effective against Dragon units.",
-      "requires": "All (Weapon L\u00fain) (Crest Daphnel) (Lances E)",
+      "requires": "All (Item L\u00fain) (Crest Daphnel) (Lances E)",
       "compatible": "Name L\u00fain",
       "mttype": "else",
       "modifiers": {
@@ -1445,6 +1531,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "scales",
         "effective",
         "relic"
@@ -1532,7 +1619,7 @@ const definitions = {
     {
       "name": "Dodge and Weave",
       "description": "Can only be used while a Sword is equipped; swap places with an adjacent unit. This may be done up to three times.\n@{const:variant:Cleaving Variant:} Deal 10% nonlethal damage to one foe this unit swaps with.",
-      "requires": "Sword D+",
+      "requires": "Swords D+",
       "mttype": "none",
       "modifiers": {
         "mt": 0,
@@ -1702,7 +1789,7 @@ const definitions = {
       "compatible": "Skill Swords",
       "mttype": "else",
       "modifiers": {
-        "mt": "(-(item|total|mt + abilities|mt + equipment|mt) / 2)",
+        "mt": "floor(-(item|total|mt + abilities|mt + equipment|mt) / 2)",
         "prot": 0,
         "resl": 0,
         "hit": -10,
@@ -1768,6 +1855,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "monster effective",
         "effective"
       ],
       "hidden": false,
@@ -1795,7 +1883,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false,
       "type": "Swords",
@@ -1831,7 +1920,7 @@ const definitions = {
     {
       "name": "Mercy's End",
       "description": "@{item::Curtana} only; Foe loses up to 20% of max HP after combat, effective against Dragon units.",
-      "requires": "All (Weapon `Curtana`) (Crest Fraldarius) (Swords E)",
+      "requires": "All (Item `Curtana`) (Crest Fraldarius) (Swords E)",
       "compatible": "Name Curtana",
       "mttype": "else",
       "modifiers": {
@@ -1849,7 +1938,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "relic"
+        "relic",
+        "effective",
+        "dragon effective"
       ],
       "hidden": false,
       "type": "Swords",
@@ -1858,7 +1949,7 @@ const definitions = {
     {
       "name": "Ruptured Heaven",
       "description": "@{item::Sword of the Creator} only; Mt +30% of user's Mag, effective against Dragon units.",
-      "requires": "All (Weapon `Sword of the Creator`) (Crest Flames) (Swords E)",
+      "requires": "All (Item `Sword of the Creator`) (Crest Flames) (Swords E)",
       "compatible": "Name `Sword of the Creator`",
       "mttype": "else",
       "modifiers": {
@@ -1876,6 +1967,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "scales",
         "effective",
         "relic"
@@ -1887,7 +1979,7 @@ const definitions = {
     {
       "name": "Foudroyant Strike",
       "description": "Thunderbrand only; effective against Armor and Dragon foes.",
-      "requires": "All (Weapon Thunderbrand) (Crest Charon) (Swords E)",
+      "requires": "All (Item Thunderbrand) (Crest Charon) (Swords E)",
       "compatible": "Name Thunderbrand",
       "mttype": "else",
       "modifiers": {
@@ -1905,6 +1997,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
+        "armor effective",
         "effective",
         "relic"
       ],
@@ -1915,7 +2009,7 @@ const definitions = {
     {
       "name": "Beast Fang",
       "description": "@{item::Blutgang} only; effective against Cavalry and Dragon units.",
-      "requires": "All (Weapon Blutgang) (Crest `the Beast`) (Swords E)",
+      "requires": "All (Item Blutgang) (Crest `the Beast`) (Swords E)",
       "compatible": "Name Blutgang",
       "mttype": "else",
       "modifiers": {
@@ -1934,6 +2028,8 @@ const definitions = {
       "comment": "",
       "tags": [
         "effective",
+        "cavalry effective",
+        "dragon effective",
         "relic"
       ],
       "hidden": false,
@@ -1943,7 +2039,7 @@ const definitions = {
     {
       "name": "Sublime Heaven",
       "description": "@{item::Sublime Creator Sword} only; Mt +30% of user\u2019s Mag, effective against Dragon units.",
-      "requires": "All (Weapon `Sublime Creator Sword`) (Crest Flames) (Swords E)",
+      "requires": "All (Item `Sublime Creator Sword`) (Crest Flames) (Swords E)",
       "compatible": "Name `Sublime Creator Sword`",
       "mttype": "else",
       "modifiers": {
@@ -1961,6 +2057,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "scales",
         "effective",
         "relic"
@@ -1972,7 +2069,7 @@ const definitions = {
     {
       "name": "Heaven's Fall",
       "description": "@{item::Dark Creator Sword} only; Mt +30% of user's Mag.",
-      "requires": "All (Weapon `Dark Creator Sword`) (Crest Flames) (Swords A)",
+      "requires": "All (Item `Dark Creator Sword`) (Crest Flames) (Swords A)",
       "compatible": "Name `Dark Creator Sword`",
       "mttype": "else",
       "modifiers": {
@@ -2344,7 +2441,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "effective"
+        "effective",
+        "monster effective"
       ],
       "hidden": false,
       "type": "Bows",
@@ -2410,7 +2508,7 @@ const definitions = {
     {
       "name": "Lucent Wave",
       "description": "@{item::Pinakla} only; Unit recovers HP equal to 25% of damage dealt after combat, effective against Dragon units.",
-      "requires": "All (Weapon `Pinakla`) (Crest Indech) (Bows E)",
+      "requires": "All (Item `Pinakla`) (Crest Indech) (Bows E)",
       "compatible": "Name Pinakla",
       "mttype": "else",
       "modifiers": {
@@ -2428,7 +2526,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "relic"
+        "relic",
+        "effective",
+        "dragon effective"
       ],
       "hidden": false,
       "type": "Bows",
@@ -2437,7 +2537,7 @@ const definitions = {
     {
       "name": "Fallen Star",
       "description": "@{item::Failnaught} only; applies [unit avoids all attacks] to unit until end of unit's next combat; effective against Dragon units.",
-      "requires": "All (Weapon Failnaught) (Crest Riegen) (Bows E)",
+      "requires": "All (Item Failnaught) (Crest Riegen) (Bows E)",
       "compatible": "Name Failnaught",
       "mttype": "else",
       "modifiers": {
@@ -2455,6 +2555,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "effective",
         "condition",
         "relic"
@@ -2484,7 +2585,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "movement"
+        "movement",
+        "variant",
+        "beast"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -2659,7 +2762,10 @@ const definitions = {
         "spcost": 4
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "variant",
+        "water"
+      ],
       "hidden": false,
       "type": "Brawl",
       "rank": "A"
@@ -2684,7 +2790,10 @@ const definitions = {
         "spcost": 3
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "variant",
+        "metal"
+      ],
       "hidden": false,
       "type": "Brawl",
       "rank": "A"
@@ -2710,7 +2819,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "healing"
+        "healing",
+        "variant",
+        "beast"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -2736,7 +2847,10 @@ const definitions = {
         "spcost": 3
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "metal",
+        "variant"
+      ],
       "hidden": false,
       "type": "Brawl",
       "rank": "A"
@@ -2836,7 +2950,10 @@ const definitions = {
         "spcost": 4
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "metal",
+        "variant"
+      ],
       "hidden": false,
       "type": "Brawl",
       "rank": "C-B"
@@ -2888,7 +3005,8 @@ const definitions = {
       "comment": "",
       "tags": [
         "condition",
-        "effective"
+        "effective",
+        "infantry effective"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -2914,7 +3032,10 @@ const definitions = {
         "spcost": 4
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "water",
+        "variant"
+      ],
       "hidden": false,
       "type": "Brawl",
       "rank": "C-B"
@@ -2990,7 +3111,10 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "effective"
+        "effective",
+        "monster effective",
+        "beast",
+        "variant"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -2999,7 +3123,7 @@ const definitions = {
     {
       "name": "Eviscerate",
       "description": "@{item::Vajra-Mushti} only; calculates damage against the lower of foe\u2019s Prot or Resl. Effective against Dragon units.",
-      "requires": "All (Weapon Vajra-Mushti) (Crest Chevalier) (Brawl E)",
+      "requires": "All (Item Vajra-Mushti) (Crest Chevalier) (Brawl E)",
       "compatible": "Name Vajra-Mushti",
       "mttype": "else",
       "modifiers": {
@@ -3018,6 +3142,7 @@ const definitions = {
       "comment": "",
       "tags": [
         "effective",
+        "dragon effective",
         "relic"
       ],
       "hidden": false,
@@ -3038,8 +3163,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 3,
         "tpcost": 0,
@@ -3068,8 +3193,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 3,
         "tpcost": 0,
@@ -3162,8 +3287,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 2,
         "tpcost": 0,
@@ -3178,10 +3303,11 @@ const definitions = {
     },
     {
       "name": "Multiplied",
-      "description": "When casting@{item::Heal}, allies adjacent to you are also affected.",
+      "description": "When casting@{item::Heal}, all allies adjacent to this unit are affected.",
       "requires": "Faith D",
       "compatible": "Name Heal",
       "mttype": "else",
+      "aoe": "Ring 1-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -3250,8 +3376,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 4,
         "tpcost": 0,
@@ -3401,6 +3527,7 @@ const definitions = {
       "description": "End one or more status conditions applied to target adjacent ally(s). (You may choose which conditions to end.)",
       "requires": "Faith C",
       "mttype": "else",
+      "aoe": "Ring 1-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -3409,8 +3536,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
+        "minrng": 0,
+        "maxrng": 0,
         "tiles": 0,
         "spcost": 2,
         "tpcost": 0,
@@ -3447,8 +3574,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 0,
         "tpcost": 0,
@@ -3478,8 +3605,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 3,
         "tpcost": 0,
@@ -3534,8 +3661,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -3659,8 +3786,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -3688,8 +3815,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 1,
         "tiles": 0,
         "spcost": 10,
         "tpcost": 0,
@@ -3722,8 +3849,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 7,
         "tpcost": 0,
@@ -3764,7 +3891,7 @@ const definitions = {
     {
       "name": "Radiance",
       "description": "@{item::Ichor Scroll} only; restores HP equal to 50% of damage dealt, effective against Dragon units.",
-      "requires": "All (Weapon `Ichor Scroll`) (Crest Lamine) (Faith E)",
+      "requires": "All (Item `Ichor Scroll`) (Crest Lamine) (Faith E)",
       "compatible": "Name `Ichor Scroll`",
       "mttype": "else",
       "modifiers": {
@@ -3782,6 +3909,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "relic",
         "effective"
       ],
@@ -3803,8 +3931,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -3834,8 +3962,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": "bothif host|tagged|condition then 4 else 6 end",
         "tpcost": 0,
@@ -3898,8 +4026,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 3,
         "tpcost": 0,
@@ -3952,6 +4080,7 @@ const definitions = {
       "requires": "Guile D",
       "compatible": "All (Skill Guile) (Tag `condition`) (Not (Tag `no hit`))",
       "mttype": "else",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -3960,8 +4089,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 2,
         "tpcost": 0,
@@ -4020,8 +4149,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 4,
         "tpcost": 0,
@@ -4050,8 +4179,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -4112,10 +4241,10 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 5,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
-        "spcost": "bothif not(unit|total|mttype|none and (unit|total|mt)) then 6 else 4 end",
+        "spcost": "bothif not(unit|total|mttype == mttype|none and (unit|total|mt)) then 6 else 4 end",
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -4178,8 +4307,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 3,
         "tpcost": 0,
@@ -4244,8 +4373,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 12,
         "tpcost": 0,
@@ -4264,6 +4393,7 @@ const definitions = {
       "requires": "Guile A",
       "compatible": "All (Skill Guile) (Not (Tag `no hit`))",
       "mttype": "else",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4272,8 +4402,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 10,
         "tpcost": 0,
@@ -4306,8 +4436,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": "1 + ask [Anathema Modifier?], 1, 2, 3, 4; 5 end",
         "tpcost": 0,
@@ -4326,7 +4456,7 @@ const definitions = {
     {
       "name": "Relentless Magic",
       "description": "@{item::Suttungr's Mystery} only; halves the cost of user's Guile metamagic this combat, effective against Dragon units. This metamagic ability can be used with one other one.",
-      "requires": "All (Weapon `Suttungr's Mystery`) (Crest Charon) (Guile E)",
+      "requires": "All (Item `Suttungr's Mystery`) (Crest Charon) (Guile E)",
       "compatible": [
         "Match",
         "  Art    (Skill Guile)",
@@ -4348,6 +4478,7 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
         "relic",
         "effective",
         "combo"
@@ -4359,7 +4490,7 @@ const definitions = {
     {
       "name": "Naturebender",
       "description": "@{item::Hrotti} only; @{tooltip:calculates:I changed this to match Eviscerate} damage against the lower of foe\u2019s Prot or Resl. Effective against Cavalry and Dragon units.",
-      "requires": "All (Weapon Hrotti) (Crest Timotheos) (Guile E)",
+      "requires": "All (Item Hrotti) (Crest Timotheos) (Guile E)",
       "compatible": "Name Hrotti",
       "mttype": "else",
       "modifiers": {
@@ -4377,6 +4508,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "dragon effective",
+        "cavalry effective",
         "relic",
         "effective"
       ],
@@ -4454,6 +4587,7 @@ const definitions = {
       "requires": "Reason D",
       "compatible": "All (Skill Reason) (Tag `fire`)",
       "mttype": "else",
+      "aoe": "Ring 0-2",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4462,8 +4596,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -4472,6 +4606,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "monster effective",
         "effective",
         "condition",
         "fire",
@@ -4525,8 +4660,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 7,
         "tpcost": 0,
@@ -4567,7 +4702,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "movement",
-        "wind"
+        "wind",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -4587,8 +4723,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -4612,6 +4748,7 @@ const definitions = {
       "requires": "Reason D",
       "compatible": "All (Skill Reason) (Tag `ice`)",
       "mttype": "else",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4620,8 +4757,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -4686,7 +4823,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "wall"
+        "wall",
+        "variant",
+        "wind"
       ],
       "hidden": false,
       "type": "Reason",
@@ -4706,8 +4845,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 6,
         "tpcost": 0,
@@ -4738,8 +4877,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 6,
         "tpcost": 0,
@@ -4770,8 +4909,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 5,
         "tpcost": 0,
@@ -4809,7 +4948,8 @@ const definitions = {
       "comment": "",
       "tags": [
         "wall",
-        "lightning"
+        "lightning",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -4829,8 +4969,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 7,
         "tpcost": 0,
@@ -4852,6 +4992,7 @@ const definitions = {
       "requires": "Reason C",
       "compatible": "All (Skill Reason) (Tag `fire`)",
       "mttype": "else",
+      "aoe": "Plus 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -4860,8 +5001,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
         "spcost": 7,
         "tpcost": 0,
@@ -4881,7 +5022,7 @@ const definitions = {
     },
     {
       "name": "Avalanche",
-      "description": "Ice metamagic; after combat, create @{tile::Ice Block} tiles in each empty space adjacent to target foe. @{const:variant:Ice Wall Variant:} @{tile:Ice Blocks:Ice Blocks} may connect through occupied tiles and pre-existing @{tile::Ice Block} tiles as though they were newly created @{tile::Ice Block} tiles.",
+      "description": "Ice metamagic; after combat, create @{tile::Ice Block} tiles in each empty space adjacent to target foe. @{const:variant:Ice Wall Variant:} @{tile:Ice Block:Ice Blocks} may connect through occupied tiles and pre-existing @{tile::Ice Block} tiles as though they were newly created @{tile::Ice Block} tiles.",
       "requires": "Reason C",
       "compatible": "All (Skill Reason) (Tag `ice`)",
       "mttype": "else",
@@ -4893,8 +5034,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
         "spcost": 7,
         "tpcost": 0,
@@ -4925,8 +5066,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 8,
         "tpcost": 0,
@@ -4956,8 +5097,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 9,
         "tpcost": 0,
@@ -5046,8 +5187,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 6,
         "tpcost": 0,
@@ -5089,7 +5230,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "movement",
-        "force"
+        "force",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5109,8 +5251,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 12,
         "tpcost": 5,
@@ -5141,8 +5283,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 9,
         "tpcost": 0,
@@ -5209,8 +5351,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 10,
         "tpcost": 5,
@@ -5242,8 +5384,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 9,
         "tpcost": 0,
@@ -5301,6 +5443,7 @@ const definitions = {
       "requires": "Reason B",
       "compatible": "All (Skill Reason) (Tag `ice`)",
       "mttype": "else",
+      "aoe": "CenterBox 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5309,8 +5452,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 9,
         "tpcost": 5,
@@ -5341,8 +5484,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 11,
         "tpcost": 0,
@@ -5397,6 +5540,7 @@ const definitions = {
       "requires": "Reason A",
       "compatible": "All (Skill Reason) (Tag `fire`)",
       "mttype": "else",
+      "aoe": "Ring 0-2",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5405,8 +5549,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 9,
         "tpcost": 5,
@@ -5464,6 +5608,7 @@ const definitions = {
       "description": "Apply @{condition:Levitation:[Levitation]} to this unit and adjacent allies for 3 turns.",
       "requires": "Reason A",
       "mttype": "else",
+      "aoe": "Plus 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5531,9 +5676,10 @@ const definitions = {
     },
     {
       "name": "Energy Flux",
-      "description": "Each foe within three spaces must pay 5 SP or a @{tile::Lighting Arc} is created in their space for one turn. Each ally within three spaces regains an equal dividend of this art\u2019s cost added to the total SP paid (round up).",
+      "description": "Each foe within three spaces must pay 5 SP or a @{tile::Lightning Arc} is created in their space for one turn. Each ally within three spaces regains an equal dividend of this art\u2019s cost added to the total SP paid (round up).",
       "requires": "Any (Reason C) (Reason B)",
       "mttype": "none",
+      "aoe": "Ring 1-3",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5557,7 +5703,7 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "lighting"
+        "lightning"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5603,6 +5749,7 @@ const definitions = {
       "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `force`)",
       "mttype": "else",
+      "aoe": "X 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5611,8 +5758,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
         "spcost": 8,
         "tpcost": 0,
@@ -5622,7 +5769,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "aoe",
-        "force"
+        "force",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5634,6 +5782,7 @@ const definitions = {
       "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `wind`)",
       "mttype": "else",
+      "aoe": "Plus 0-1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5642,8 +5791,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
         "spcost": 8,
         "tpcost": 0,
@@ -5653,7 +5802,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "aoe",
-        "wind"
+        "wind",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5665,6 +5815,7 @@ const definitions = {
       "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `fire`)",
       "mttype": "else",
+      "aoe": "Centered-Box 5x1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5673,8 +5824,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
         "spcost": 8,
         "tpcost": 0,
@@ -5684,7 +5835,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "aoe",
-        "fire"
+        "fire",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5696,6 +5848,7 @@ const definitions = {
       "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `lightning`)",
       "mttype": "else",
+      "aoe": "Centered-Box 1x5",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5704,8 +5857,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
         "spcost": 8,
         "tpcost": 0,
@@ -5715,7 +5868,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "aoe",
-        "lightning"
+        "lightning",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -5798,6 +5952,7 @@ const definitions = {
       "requires": "Any (Reason C) (Reason B)",
       "compatible": "All (Skill Reason) (Tag `ice`)",
       "mttype": "else",
+      "aoe": "Frost 1",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -5806,8 +5961,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 2,
         "tiles": 0,
         "spcost": 8,
         "tpcost": 0,
@@ -5817,7 +5972,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "aoe",
-        "ice"
+        "ice",
+        "variant"
       ],
       "hidden": false,
       "type": "Reason",
@@ -6005,7 +6161,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition"
+        "condition",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Authority",
@@ -6036,7 +6193,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition"
+        "condition",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Authority",
@@ -6067,7 +6225,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition"
+        "condition",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Authority",
@@ -6098,7 +6257,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition"
+        "condition",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Authority",
@@ -6129,7 +6289,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition"
+        "condition",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Authority",
@@ -6191,7 +6352,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition"
+        "condition",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Authority",
@@ -6329,8 +6491,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tpcost": 0,
         "spcost": 3
       },
@@ -6365,7 +6527,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "condition"
+        "condition",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Authority",
@@ -6460,7 +6623,7 @@ const definitions = {
     },
     {
       "name": "Run Down",
-      "description": "Can only be equipped by Cavalry units, and can only be used while mounted. Unit swaps spaces with target foe after combat (if able). On hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn. ",
+      "description": "Can only be equipped by Cavalry units, and can only be used while mounted. Unit swaps spaces with target foe after combat (if able). On hit, applies @{condition:Halt:[Halt]} to target Infantry foe for one turn. ",
       "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
       "requires": "Riding C",
       "mttype": "else",
@@ -6562,13 +6725,17 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": "unit|total|mov + item|total|maxrng",
         "tpcost": 0,
         "spcost": 2
       },
       "comment": "movement",
       "tags": [
+        "no might",
+        "no hit",
+        "no crit",
+        "no stats",
         "movement",
         "tactical",
         "condition",
@@ -6591,8 +6758,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 5,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 6,
         "tpcost": 0,
@@ -6655,8 +6822,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": "unit|total|mov + unit|total|maxrng",
         "tpcost": 0,
         "spcost": 4
       },
@@ -6803,8 +6970,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tpcost": 0,
         "spcost": 3
       },
@@ -6832,7 +6999,8 @@ const definitions = {
         "maxrng": 0,
         "tpcost": 0,
         "spcost": 4,
-        "ghit": -30
+        "ghit": -30,
+        "gmaxrng": 1
       },
       "comment": "",
       "tags": [
@@ -7023,7 +7191,7 @@ const definitions = {
     },
     {
       "name": "Absorb Casualties",
-      "description": "Can only be equipped by an Infantry unit and only if that unit has an Infantry battalion equipped.\n\nApply @{condition::[Null Effect]} to non-employer allies in this gambit\u2019s AoE for one turn; for the duration, this battalion has the Infantry, Flying, Armored, and Cavalry unit types while in combat. Can be used with one other meta gambit.",
+      "description": "Can only be equipped by an Infantry unit and only if that unit has an Infantry battalion equipped.\n\nApply @{condition:Null Effect:[Null Effect]} to non-employer allies in this gambit\u2019s AoE for one turn; for the duration, this battalion has the Infantry, Flying, Armored, and Cavalry unit types while in combat. Can be used with one other meta gambit.",
       "requires": "Authority A",
       "compatible": "Match Gambit (All (Not (AoE `None` ``)) (Not (Name `Counter`)))",
       "mttype": "else",
@@ -7108,7 +7276,7 @@ const definitions = {
       "name": "Joust",
       "description": "Can only target foes within range to counter attack. Cavalry units have weapon advantage; units deal effective damage against Cavalry units.",
       "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
-      "requires": "Cavalry A",
+      "requires": "Riding A",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -7118,15 +7286,16 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tpcost": 0,
         "spcost": 4
       },
       "comment": "",
       "tags": [
         "effective",
-        "advantage"
+        "advantage",
+        "cavalry effective"
       ],
       "hidden": false,
       "rank": "A",
@@ -7261,8 +7430,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 3,
         "tpcost": 0,
@@ -7295,7 +7464,7 @@ const definitions = {
         "crit": 0,
         "cravo": 15,
         "minrng": 1,
-        "maxrng": 3,
+        "maxrng": 2,
         "tpcost": 0,
         "spcost": 10
       },
@@ -7318,8 +7487,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 1,
         "tpcost": 0,
         "spcost": 2
       },
@@ -7339,7 +7508,7 @@ const definitions = {
     {
       "name": "Displaced Strike",
       "description": "Only usable with ethereal weapons.",
-      "requires": "Weapon `Ethreal Lance`",
+      "requires": "Item `Ethreal Lance`",
       "mttype": "else",
       "modifiers": {
         "mt": 3,
@@ -7570,6 +7739,7 @@ const definitions = {
       "description": "Apply @{const:gbp:[Mov +1]} and the conditions applied by all other equipped \"Rally\" arts to all allies within 2 spaces for one turn.",
       "requires": "All (Axes B+) (Faith B+) (Level 25)",
       "mttype": "else",
+      "aoe": "Ring 1-2",
       "modifiers": {
         "mt": 0,
         "prot": 0,
@@ -7578,8 +7748,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 1,
-        "maxrng": 2,
+        "minrng": 0,
+        "maxrng": 0,
         "tiles": 0,
         "spcost": 2,
         "tpcost": 0,
@@ -7594,9 +7764,10 @@ const definitions = {
         "no stats",
         "tactical",
         "condition",
-        "rally"
+        "rally",
+        "depricated"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": "Axes-Faith",
       "rank": "B+-B+"
     },
@@ -7613,8 +7784,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 1,
         "tpcost": 0,
         "spcost": 2
       },
@@ -7785,7 +7956,9 @@ const definitions = {
         "spcost": 0
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "halfslot"
+      ],
       "hidden": false,
       "type": "Generic",
       "rank": ""
@@ -7803,8 +7976,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 1,
         "tpcost": 0,
         "spcost": 0
       },
@@ -7877,7 +8050,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "movement"
+        "movement",
+        "halfslot"
       ],
       "hidden": false,
       "type": null,
@@ -7968,7 +8142,9 @@ const definitions = {
         "spcost": 0
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "halfslot"
+      ],
       "hidden": false,
       "type": "Generic",
       "rank": ""
@@ -7998,7 +8174,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "movement"
+        "movement",
+        "halfslot"
       ],
       "hidden": false,
       "type": null,
@@ -8046,8 +8223,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tpcost": 0,
         "spcost": 6
       },
@@ -8113,7 +8290,8 @@ const definitions = {
         "no might",
         "no hit",
         "no crit",
-        "no stats"
+        "no stats",
+        "halfslot"
       ],
       "hidden": false,
       "type": null,
@@ -8227,7 +8405,9 @@ const definitions = {
         "spcost": 0
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "halfslot"
+      ],
       "hidden": false,
       "type": "Generic",
       "rank": ""
@@ -8252,7 +8432,9 @@ const definitions = {
         "spcost": 0
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "halfslot"
+      ],
       "hidden": false,
       "type": "Generic",
       "rank": ""
@@ -8340,7 +8522,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "movement"
+        "movement",
+        "halfslot"
       ],
       "hidden": false,
       "type": null,
@@ -8400,7 +8583,9 @@ const definitions = {
         "spcost": 0
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "halfslot"
+      ],
       "hidden": false,
       "type": "Generic",
       "rank": ""
@@ -8464,7 +8649,8 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
-        "movement"
+        "movement",
+        "halfslot"
       ],
       "hidden": false,
       "type": null,
@@ -8490,7 +8676,9 @@ const definitions = {
         "spcost": 0
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "halfslot"
+      ],
       "hidden": false,
       "type": "Generic",
       "rank": ""
@@ -8513,8 +8701,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|maxrng",
         "tiles": 0,
         "spcost": 3,
         "tpcost": 0,
@@ -8645,7 +8833,8 @@ const definitions = {
       "comment": "",
       "tags": [
         "combo",
-        "effective"
+        "effective",
+        "monster effective"
       ],
       "hidden": true,
       "rank": "",
@@ -8764,7 +8953,8 @@ const definitions = {
         "no crit",
         "no stats",
         "movement",
-        "tactical"
+        "tactical",
+        "halfslot"
       ],
       "hidden": false,
       "type": "",
@@ -8795,7 +8985,8 @@ const definitions = {
         "no crit",
         "no stats",
         "healing",
-        "tactical"
+        "tactical",
+        "halfslot"
       ],
       "hidden": false,
       "type": "Generic",
@@ -8814,8 +9005,8 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
+        "minrng": 1,
+        "maxrng": 3,
         "tpcost": 0,
         "spcost": "5 + ask [Cost of Guile Metamagic], 0 end"
       },
@@ -8870,7 +9061,7 @@ const definitions = {
     },
     {
       "name": "Adept",
-      "description": "In combat, after first attack this unit makes with a Sword, Lance, or Axe, Dex% chance to immediately make a consecutive attack.",
+      "description": "When not using a combat art in combat, after the first attack this unit makes with a Sword, Lance, or Axe, it has a Dex% chance to immediately make a consecutive attack.",
       "requires": "All (Swords B+) (Level 20)",
       "modifiers": {
         "hp": 0,
@@ -9496,7 +9687,7 @@ const definitions = {
     },
     {
       "name": "Arcane Architect",
-      "description": "Once per turn on this unit's phase, at any point aside from mid-combat, Castiel may apply one mode to @{tooltip:Reason tile(s):Ice Block, Fire Patch, Wind Torrent, Lighting Arc, or Force Wall} within Range 10:\n\u00a01. Destroy up to X target tiles and regain 1 SP per tile destroyed.\n\u00a02. Move X target tiles X spaces.\n\u00a03. Convert X target tiles of one type into Reason tiles of another type (besides @{tile:Force Wall:Force Walls}).\n\u00a04. Extend the duration of X wall tiles by one turn. \n\u00a05. Deal (Castiel's Mag - target's Res) nonlethal damage to up to X targets adjacent to target tile and destroy target tile.\nWhere X is 1d4 rolled before choosing a mode.",
+      "description": "Once per turn on this unit's phase, at any point aside from mid-combat, Castiel may apply one mode to @{tooltip:Reason tile(s):Ice Block, Fire Patch, Wind Torrent, Lightning Arc, or Force Wall} within Range 10:\n\u00a01. Destroy up to X target tiles and regain 1 SP per tile destroyed.\n\u00a02. Move X target tiles X spaces.\n\u00a03. Convert X target tiles of one type into Reason tiles of another type (besides @{tile:Force Wall:Force Walls}).\n\u00a04. Extend the duration of X wall tiles by one turn. \n\u00a05. Deal (Castiel's Mag - target's Res) nonlethal damage to up to X targets adjacent to target tile and destroy target tile.\nWhere X is 1d4 rolled before choosing a mode.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -9727,7 +9918,7 @@ const definitions = {
       "rows": [
         {
           "name": "Minimum Damage",
-          "when": "unit|total|mttype|mag",
+          "when": "unit|total|mttype == mttype|mag",
           "expr": "ceil((unit|total|mt) / 4)",
           "roll": false
         }
@@ -9770,7 +9961,7 @@ const definitions = {
       "rows": [
         {
           "name": "Minimum Damage",
-          "when": "unit|total|mttype|str",
+          "when": "unit|total|mttype == mttype|str",
           "expr": "ceil((unit|total|mt) / 4)",
           "roll": false
         }
@@ -10379,7 +10570,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -10414,7 +10606,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -10625,7 +10818,7 @@ const definitions = {
     },
     {
       "name": "Battle Stance",
-      "description": "At the start of its phase, this unit can choose to enter into 1 of 6 Battle stances:\n\u00a0\u2022 Solar: Str +5/Def -5\n\u00a0\u2022 Lunar: Mag +5/Res -5\n\u00a0\u2022 Earth: Def +5/Str -5\n\u00a0\u2022 Water: Res +5/Mag -5\n\u00a0\u2022 Wind: Avo +5 / Hit -5\n\u00a0\u2022 Fire: Hit +5/Avo -5",
+      "description": "At the start of its phase, this unit can choose to enter into 1 of 6 Battle stances:\n\u00a0\u2022 Solar: Str +5/Def -5\n\u00a0\u2022 Lunar: Mag +5/Res -5\n\u00a0\u2022 Earth: Def +5/Str -5\n\u00a0\u2022 Water: Res +5/Mag -5\n\u00a0\u2022 Wind: Avo +15 / Hit -5\n\u00a0\u2022 Fire: Hit +5/Avo -15",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -10640,8 +10833,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "5 * fill locals|multiplier(6, 5)",
-        "avo": "5 * fill locals|multiplier(5, 6)",
+        "hit": "15 * fill locals|multiplier(6, 5)",
+        "avo": "15 * fill locals|multiplier(5, 6)",
         "crit": 0,
         "cravo": 0,
         "minrng": 0,
@@ -10676,8 +10869,7 @@ const definitions = {
       ],
       "comment": "Aaron von Rogue School's personal.",
       "tags": [
-        "personal",
-        "action"
+        "personal"
       ],
       "hidden": false
     },
@@ -10712,8 +10904,7 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "blow",
-        "in combat",
-        "rework"
+        "in combat"
       ],
       "hidden": false
     },
@@ -10839,7 +11030,7 @@ const definitions = {
         "def": 0,
         "res": 0,
         "lck": 0,
-        "mt": "fill advantage(item|type|bow)",
+        "mt": "fill advantage(item|type|bows)",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -11134,7 +11325,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -11169,7 +11361,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -11273,7 +11466,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -11554,7 +11748,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -12262,7 +12457,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -12296,7 +12492,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -12608,7 +12805,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -12952,8 +13150,7 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
-        "proc": "10 + more unit|total|dex else unit|total|lck end"
+        "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
@@ -13087,13 +13284,14 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
     {
       "name": "Dirty Fighter",
-      "description": "Duration of conditions applied to target foe after combat increases by 1. After combat apply @{const:gbp:[Stat +(X/2)]} to this unit matching the @{const:gbp:[Stat -X]} with the highest value of X applied to foe after combat.",
+      "description": "Duration of conditions applied to target foe after combat increases by 1. After combat apply @{const:gbp:[Stat +(X/2)]} to this unit matching the @{const:gbp:[Stat -X]} with the highest value of X applied to foe after combat for the same duration.",
       "requires": "All (Any (Swords D+) (Riding D+)) (Level 8)",
       "modifiers": {
         "hp": 0,
@@ -13124,6 +13322,74 @@ const definitions = {
         "static"
       ],
       "hidden": false
+    },
+    {
+      "name": "Discipline Master",
+      "description": "While unit has three or more Reason or Brawl weapons of the same element in-inventory, once per turn, unit may halve the TP or SP cost of one attack made using a weapon of that element.",
+      "requires": "All (Any (Reason D+) (Brawl D+)) (Level 8)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "fill locals|three_of_a_kind(locals|halve_tp)",
+        "spcost": "fill locals|three_of_a_kind(locals|halve_sp)",
+        "tp": 0,
+        "mov": 0
+      },
+      "locals": [
+        [
+          "template halve_tp()",
+          "  fill affirm([Half Cost (TP)? (once/turn)], -ceil((item|total|tpcost) / 2), 0)",
+          "end"
+        ],
+        [
+          "template halve_sp()",
+          "  fill affirm([Half Cost (SP)? (once/turn)], -ceil((combatarts|spcost) / 2), 0)",
+          "end"
+        ],
+        [
+          "template three_of_a_kind(macro)",
+          "  bothif item|tagged|fire      and 3 <= inventory|fire then",
+          "    fill macro()",
+          "  elseif item|tagged|lightning and 3 <= inventory|lightning then",
+          "    fill macro()",
+          "  elseif item|tagged|ice       and 3 <= inventory|ice then",
+          "    fill macro()",
+          "  elseif item|tagged|force     and 3 <= inventory|force then",
+          "    fill macro()",
+          "  elseif item|tagged|wind      and 3 <= inventory|wind then",
+          "    fill macro()",
+          "  elseif item|tagged|beast     and 3 <= inventory|beast then",
+          "    fill macro()",
+          "  elseif item|tagged|water     and 3 <= inventory|water then",
+          "    fill macro()",
+          "  elseif item|tagged|metal     and 3 <= inventory|metal then",
+          "    fill macro()",
+          "  else",
+          "    0",
+          "  end",
+          "end"
+        ]
+      ],
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false,
+      "omit": false
     },
     {
       "name": "Disquiet",
@@ -13294,6 +13560,38 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Effect Reduction",
+      "description": "Damage effectiveness multiplier for attacks against this unit is 1.5 instead of 2.0. Does not consume an ability slot.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Emergency Invigoration",
       "description": "When unit targets an ally, apply @{const:ap:[AP \u2265 2]} to target ally for one turn. (Ally's minimum AP becomes 2 for one turn.)",
       "requires": "Class Quartermaster",
@@ -13458,7 +13756,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -13907,7 +14206,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -14148,7 +14448,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -14183,7 +14484,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -14801,7 +15103,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -15150,7 +15453,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -16366,7 +16670,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -16401,7 +16706,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -16470,13 +16776,49 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
     {
-      "name": "Lead by Example",
-      "description": "After this unit uses a gambit without the Measured tag, this unit may immediately use a tactical art without the Measured tag, or initiate combat with a foe in weapon range. Both instances of forced movement may apply to battalion units and ignore Auto range.",
+      "name": "Lead by Example 1",
+      "description": "After this unit uses a gambit Rank C or lower gambit without the Measured tag, this unit may immediately use a tactical art without the Measured tag, or initiate combat with a foe in weapon range.",
+      "requires": "Any (Authority A) (Class Lord) (Class Banneret) (Class General) (Class `Crow Knight`)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "combo",
+        "extra action"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Lead by Example 2",
+      "description": "After this unit uses a gambit without the Measured tag, this unit may immediately use a tactical art without the Measured tag, or initiate combat with a foe in weapon range.",
       "requires": "Any (Authority A) (Class Lord) (Class Banneret) (Class General) (Class `Crow Knight`)",
       "modifiers": {
         "hp": 0,
@@ -16610,6 +16952,38 @@ const definitions = {
       "tags": [
         "static"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Lifedrinker",
+      "description": "Whenever this unit or a status condition applied by this unit deals to one or more foes, this unit regains HP equal to half of the total damage dealt. @{style:italic:(Effect damage is damage dealt when an effect directly states that a unit takes damage, for example: aoe damage, Poison Strike, the Poisoned condition, etc...)}",
+      "requires": "All (Guile C) (Level 11)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
       "hidden": false
     },
     {
@@ -16747,7 +17121,7 @@ const definitions = {
     {
       "name": "Lucky Seven",
       "description": "At the beginning of this unit's phase, roll 1d7 and apply the corresonding condition to this unit for one turn: 1=@{const:gbp:[Str +5]}, 2=@{const:gbp:[Mag +5]}, 3=@{const:gbp:[Spd +5]}, 4=@{const:gbp:[Def +5]}, 5=@{const:gbp:[Res +5]}, 6=@{const:gbp:[Hit +5]}, 7=@{const:gbp:[Avo +5]}. If this unit has more than once instance of @{ability::Lucky Seven} equipped, the effect of each instance beyond the first becomes: Once per turn, at the beginning of this units phase, this unit may reroll its Lucky Seven die result.",
-      "requires": "All (Swords B+) (Faith B+)",
+      "requires": "All (Faith C) (Any (Axes C) (Swords C) (Bows C)) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -17015,7 +17389,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -17082,6 +17457,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -17126,6 +17504,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt & SP x2",
@@ -17170,6 +17551,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17215,6 +17599,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17260,6 +17647,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "HP +30% Damage",
@@ -17304,6 +17694,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -17348,6 +17741,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17393,6 +17789,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP",
@@ -17438,6 +17837,9 @@ const definitions = {
         "mov": 0,
         "proc": 20
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -17482,6 +17884,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "HP +30% Damage",
@@ -17531,6 +17936,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17577,6 +17985,9 @@ const definitions = {
         "mov": 0,
         "proc": 70
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17622,6 +18033,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17667,6 +18081,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -17711,6 +18128,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Consecutive Attack",
@@ -17756,6 +18176,9 @@ const definitions = {
         "mov": 0,
         "proc": 20
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP & SP",
@@ -17800,6 +18223,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17845,6 +18271,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP",
@@ -17889,6 +18318,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "HP +30% Damage",
@@ -17933,6 +18365,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -17978,6 +18413,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP & SP",
@@ -18022,6 +18460,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18043,6 +18484,38 @@ const definitions = {
       "name": "Mask of the Signifier",
       "description": "Grants one additional combat/tactical slot that can be used to equip a Faith, Guile, or Reason art.",
       "requires": "Class `Dark Signifier`",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Mass Rally",
+      "description": "When using a \"Rally\" tactical art, apply the effects of all equipped \"Rally\" tactical arts to all allies within two spaces.",
+      "requires": "Any (Authority C) (All (Axes C) (Faith C)) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -18218,6 +18691,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -18262,6 +18738,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt & SP x2",
@@ -18306,6 +18785,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18351,6 +18833,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18396,6 +18881,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "HP +30% Damage",
@@ -18440,6 +18928,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -18484,6 +18975,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18529,6 +19023,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP",
@@ -18573,6 +19070,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -18617,6 +19117,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "HP +30% Damage",
@@ -18666,6 +19169,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18711,6 +19217,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18756,6 +19265,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18801,6 +19313,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null Counter",
@@ -18845,6 +19360,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Consecutive Attack",
@@ -18890,6 +19408,9 @@ const definitions = {
         "mov": 0,
         "proc": 10
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP & SP",
@@ -18934,6 +19455,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -18980,6 +19504,9 @@ const definitions = {
         "mov": 0,
         "proc": 10
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP",
@@ -19024,6 +19551,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "HP +30% Damage",
@@ -19068,6 +19598,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -19113,6 +19646,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Null TP & SP",
@@ -19157,6 +19693,9 @@ const definitions = {
         "tp": 0,
         "mov": 0
       },
+      "events": [
+        "Crest"
+      ],
       "rows": [
         {
           "name": "Mt +5",
@@ -20418,7 +20957,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -20767,7 +21307,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -20936,7 +21477,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -21078,7 +21620,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "consumption"
+        "consumption",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -21593,7 +22136,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -21695,7 +22239,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -21804,7 +22349,7 @@ const definitions = {
     {
       "name": "Stone Stance",
       "description": "When foe initiates combat, after that combat, regain HP equal to half of damage taken by unit during combat.",
-      "requires": "All (Brawling C) (Level 11)",
+      "requires": "All (Brawl C) (Level 11)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -21865,7 +22410,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -22351,7 +22897,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -22386,7 +22933,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -22455,7 +23003,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "static",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -22624,7 +23173,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -22659,7 +23209,8 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "breaker",
-        "in combat"
+        "in combat",
+        "halfslot"
       ],
       "hidden": false
     },
@@ -23349,7 +23900,7 @@ const definitions = {
     },
     {
       "name": "Wrestler",
-      "description": "On hit, after combat at Range \u2264 1, (Dex or Luc + 20)% chance this unit may choose one of the following:\n \u2022 Move target foe up to two spaces in a cardinal direction (you choose).\n \u2022 Apply @{condition:Rattled:[Rattled]} to target foe for one turn.\n \u2022 Apply @{condition::[Taunted]} to target foe for one turn.\n \u2022 Apply @{const:gbp:[Str -3]} to target foe for one turn.",
+      "description": "On hit, after combat at Range \u2264 1, (Dex or Luc + 20)% chance this unit may choose one of the following:\n \u2022 Move target foe up to two spaces in a cardinal direction (you choose).\n \u2022 Apply @{condition:Rattled:[Rattled]} to target foe for one turn.\n \u2022 Apply @{condition:Taunted:[Taunted]} to target foe for one turn.\n \u2022 Apply @{const:gbp:[Str -3]} to target foe for one turn.",
       "requires": "All (Brawl D+) (Level 8)",
       "modifiers": {
         "hp": 0,
@@ -25103,7 +25654,7 @@ const definitions = {
         "tp": 0,
         "sp": 0,
         "minrng": 0,
-        "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype|mag then 1 else 0 end",
+        "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype == mttype|mag then 1 else 0 end",
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
@@ -25127,7 +25678,7 @@ const definitions = {
         "def": 0,
         "res": 0,
         "lck": 0,
-        "mt": "bothif unit|tagged|healing and unit|total|mttype|mag then 10 else 0 end",
+        "mt": "bothif unit|tagged|healing and unit|total|mttype == mttype|mag then 10 else 0 end",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -25161,7 +25712,7 @@ const definitions = {
         "def": 0,
         "res": 0,
         "lck": 0,
-        "mt": "bothif not(unit|tagged|healing) and unit|total|mttype|mag then 3 else 0 end",
+        "mt": "bothif not(unit|tagged|healing) and unit|total|mttype == mttype|mag then 3 else 0 end",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -25207,7 +25758,7 @@ const definitions = {
         "tp": 0,
         "sp": 0,
         "minrng": 0,
-        "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype|mag then 2 else 0 end",
+        "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype == mttype|mag then 2 else 0 end",
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
@@ -25317,7 +25868,7 @@ const definitions = {
     {
       "name": "Bloodthirsty",
       "type": "Any",
-      "description": "When this weapon deals damage, 30% chance to apply @{condition:Berserk:[Berserk]} to wielder for one turn. Cannot be unequipped while wielder is affected by @{condition:Berserk:[Berserk]}. Disables all other attributes except for @{attribute::Magic}.",
+      "description": "When this weapon deals damage, 30% chance to apply @{condition:Berserk:[Berserk]} to wielder for two turns. Cannot be unequipped while wielder is affected by @{condition:Berserk:[Berserk]}. Disables all other attributes except for @{attribute::Magic}.",
       "rank": 0,
       "price": 0,
       "mttype": "else",
@@ -25382,7 +25933,8 @@ const definitions = {
         "for lance",
         "for swords",
         "for brawl",
-        "explain"
+        "explain",
+        "armor effective"
       ],
       "hidden": false
     },
@@ -25543,6 +26095,7 @@ const definitions = {
       "description": "When this unit initiates combat, after the resolution of that combat, deal nonlethal damage equal to 50% of the damage dealt to target foe that combat to a foe adjacent to but not behind target foe. For 4 TP, this effect may occur after a combat on enemy phase.\n\nDisabled on weapons that are not Axes, Reason, Brawl or Swords.",
       "rank": 2,
       "price": 2000,
+      "aoe": "Box 3x1",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -25955,9 +26508,45 @@ const definitions = {
         "for swords",
         "for lances",
         "for brawl",
-        "explain"
+        "explain",
+        "flying effective"
       ],
       "hidden": true
+    },
+    {
+      "name": "Giant Primitive",
+      "type": "Any",
+      "description": "Grants weapon Mt +2 and Avo -15.",
+      "rank": 0,
+      "price": 0,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": -15,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for bows",
+        "for axes",
+        "for lance",
+        "for swords",
+        "for brawl",
+        "for guile",
+        "for reason",
+        "for faith"
+      ],
+      "hidden": false
     },
     {
       "name": "Improvised",
@@ -26056,7 +26645,8 @@ const definitions = {
         "for swords",
         "for lances",
         "for brawl",
-        "explain"
+        "explain",
+        "cavalry effective"
       ],
       "hidden": false
     },
@@ -26216,6 +26806,7 @@ const definitions = {
       "type": "Any",
       "description": "When this unit initiates combat, after the resolution of that combat, deal nonlethal damage equal to 50% of the damage dealt to target foe that combat to the nearest enemy in a three space perpendicular (3x1 line) behind target foe. For 4 TP, this effect may occur after a combat on enemy phase.\n\nDisabled on weapons that are not Lances, Guile, Faith or Bows.",
       "rank": 2,
+      "aoe": "Box 1x3",
       "price": 2000,
       "mttype": "else",
       "modifiers": {
@@ -27209,7 +27800,7 @@ const definitions = {
     {
       "name": "Unlocked",
       "type": "Any",
-      "description": "Item can be equipped by a unit that does not meet its required skill rank; in this case, consumes 2 TP after combat or after use (as applies). Disabled while wielder has 0 TP. This attribute cannot be purchased.",
+      "description": "Item can be equipped by a unit that does not meet its required skill rank; in this case, it costs two additional TP to use. Disabled while wielder has 0 TP. This attribute cannot be purchased.",
       "rank": 0,
       "price": 0,
       "mttype": "else",
@@ -27329,7 +27920,6 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective",
         "for axes",
         "for lances",
         "for swords",
@@ -28072,7 +28662,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Apothacary",
+      "name": "Apothecary",
       "description": "A versatile infantry class with decent defensive stats and the ability to make greater use of consumable items.",
       "type": [
         "Infantry"
@@ -28166,7 +28756,7 @@ const definitions = {
       "tier": "Starting",
       "requires": "Authority D",
       "abilities": [
-        "Lead by Example",
+        "Lead by Example 1",
         "Level 10 Mov +1"
       ],
       "arts": [],
@@ -28192,7 +28782,7 @@ const definitions = {
         "mov": 4
       },
       "mount": null,
-      "default_base": "Lord",
+      "default_base": "Banneret",
       "default_preset": "Balance/Balance/Luck",
       "default_mainarm": [
         "Swords",
@@ -28795,54 +29385,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Journeyman",
-      "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
-      "type": [
-        "Armor"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Any (Swords C+) (Swords C+)) (Required (Armor C+)) (Required (Level 15))",
-      "abilities": [
-        "Duelist's Stance",
-        [
-          "Sword Advantage",
-          "Bow Advantage"
-        ],
-        "Positioning"
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 30,
-        "str": 20,
-        "mag": 15,
-        "dex": 20,
-        "spd": 20,
-        "def": 15,
-        "res": 5,
-        "lck": 15
-      },
-      "modifiers": {
-        "hp": 5,
-        "str": 4,
-        "mag": 2,
-        "dex": 5,
-        "spd": 5,
-        "def": 2,
-        "res": 1,
-        "lck": 2,
-        "mov": 4
-      },
-      "mount": null,
-      "default_base": "Journeyman",
-      "default_preset": "Balance/Balance/Balance",
-      "default_mainarm": "Sword",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
-      "name": "Knight Captain",
+      "name": "General",
       "description": "An knight versed in armored combat with expertise in embattlement. Choose one Advantage skill on reclass.",
       "type": [
         "Armor"
@@ -28888,6 +29431,53 @@ const definitions = {
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
+    },
+    {
+      "name": "Journeyman",
+      "description": "An advanced class fights with swords or bows in heavy armor. Choose one Advantage skill on reclass.",
+      "type": [
+        "Armor"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords C+) (Swords C+)) (Required (Armor C+)) (Required (Level 15))",
+      "abilities": [
+        "Duelist's Stance",
+        [
+          "Sword Advantage",
+          "Bow Advantage"
+        ],
+        "Positioning"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 15,
+        "dex": 20,
+        "spd": 20,
+        "def": 15,
+        "res": 5,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 5,
+        "str": 4,
+        "mag": 2,
+        "dex": 5,
+        "spd": 5,
+        "def": 2,
+        "res": 1,
+        "lck": 2,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Journeyman",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Swords",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": true
     },
     {
       "name": "Pugilist",
@@ -29495,62 +30085,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Crow Knight",
-      "description": "A flying class that acts as a squadron leader, leading a flock of battalion units into battle.",
-      "type": [
-        "Flying"
-      ],
-      "tier": "Advanced",
-      "requires": "All (Authority C+) (Required (Flying C+)) (Required (Level 15))",
-      "abilities": [
-        "Lead by Example",
-        "Battalion Plurality +1",
-        "Avo +10"
-      ],
-      "arts": [
-        "Angle of Attack"
-      ],
-      "growths": {
-        "hp": 20,
-        "str": 15,
-        "mag": 15,
-        "dex": 5,
-        "spd": 30,
-        "def": 10,
-        "res": 15,
-        "lck": 20
-      },
-      "modifiers": {
-        "hp": 2,
-        "str": 3,
-        "mag": 3,
-        "dex": 1,
-        "spd": 5,
-        "def": 2,
-        "res": 3,
-        "lck": 6,
-        "mov": 4
-      },
-      "mount": {
-        "hp": 0,
-        "str": 1,
-        "mag": 0,
-        "dex": 0,
-        "spd": 2,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mov": 7
-      },
-      "default_base": "Lord",
-      "default_preset": "Speed/Resistance/Luck",
-      "default_mainarm": "Lances",
-      "default_sidearm": "Swords",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
       "name": "Dark Flier",
       "description": "A mage who slings spells from upon the back of a pegasus. Choose one Advantage skill on reclass.",
       "type": [
@@ -29600,7 +30134,7 @@ const definitions = {
         "mov": 2
       },
       "default_base": "Pegasus Knight",
-      "default_preset": "Speed/Resistane/Luck",
+      "default_preset": "Speed/Resistance/Luck",
       "default_mainarm": "Wind",
       "default_sidearm": "Guile",
       "comment": "Items in growth, modifiers, and mount should be integers",
@@ -29895,6 +30429,62 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Raven Knight",
+      "description": "A flying class that acts as a squadron leader, leading a flock of battalion units into battle.",
+      "type": [
+        "Flying"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Authority C+) (Required (Flying C+)) (Required (Level 15))",
+      "abilities": [
+        "Lead by Example",
+        "Battalion Plurality +1",
+        "Avo +10"
+      ],
+      "arts": [
+        "Angle of Attack"
+      ],
+      "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 5,
+        "spd": 30,
+        "def": 10,
+        "res": 15,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 2,
+        "str": 3,
+        "mag": 3,
+        "dex": 1,
+        "spd": 5,
+        "def": 2,
+        "res": 3,
+        "lck": 6,
+        "mov": 4
+      },
+      "mount": {
+        "hp": 0,
+        "str": 1,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 7
+      },
+      "default_base": "Lord",
+      "default_preset": "Speed/Resistance/Luck",
+      "default_mainarm": "Lances",
+      "default_sidearm": "Swords",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Wyvern Lord",
       "description": "A lord of the skies who rules the battlefield from atop the back of a wyvern. Choose one Advantage ability and Breath art on reclass.",
       "type": [
@@ -30090,6 +30680,58 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Butler/Maid",
+      "description": "An advanced class that makes good use of items.",
+      "type": [
+        "Infantry"
+      ],
+      "tier": "Advanced",
+      "requires": "All (Any (Swords B) (Lances B) (Axes B) (Bows B) (Brawl B) (Faith B) (Reason B) (Guile B)) (Required (Level 15))",
+      "abilities": [
+        "Item Expertise",
+        "Stealth"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 15,
+        "str": 15,
+        "mag": 25,
+        "dex": 20,
+        "spd": 5,
+        "def": 0,
+        "res": 30,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 3,
+        "str": 1,
+        "mag": 5,
+        "dex": 2,
+        "spd": 0,
+        "def": 1,
+        "res": 7,
+        "lck": 4,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Thief",
+      "default_preset": "Balance/Resistance/Luck",
+      "default_mainarm": "Item",
+      "default_sidearm": [
+        "Swords",
+        "Lances",
+        "Axes",
+        "Fire",
+        "Guile",
+        "Faith",
+        "Bows",
+        "Metal"
+      ],
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": true
+    },
+    {
       "name": "Cultivator",
       "description": "A practioner of arts both martial and mystical.",
       "type": [
@@ -30127,7 +30769,11 @@ const definitions = {
       "default_base": "Brawler",
       "default_preset": "Speed/Balance/Balance",
       "default_mainarm": "Water",
-      "default_sidearm": "Wind",
+      "default_sidearm": [
+        "Faith",
+        "Wind",
+        "Guile"
+      ],
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
@@ -30227,7 +30873,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Gremory/Guru",
+      "name": "Gremory",
       "description": "A generalist mage who dabbles in multiple varieties of magic",
       "type": [
         "Infantry"
@@ -30413,8 +31059,16 @@ const definitions = {
       "mount": null,
       "default_base": "Mercenary",
       "default_preset": "Balance/Balance/Dexterity",
-      "default_mainarm": "Lances",
-      "default_sidearm": "Axes",
+      "default_mainarm": [
+        "Swords",
+        "Lances",
+        "Axes"
+      ],
+      "default_sidearm": [
+        "Swords",
+        "Lances",
+        "Axes"
+      ],
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
@@ -30605,7 +31259,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Summoner/Invoker",
+      "name": "Summoner",
       "description": "A mystic who calls on spirits to aid in battle",
       "type": [
         "Infantry"
@@ -30651,7 +31305,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Swordmaster",
+      "name": "Swordsmaster",
       "description": "These Sword fighters prefer Strong, quick, Strikes",
       "type": [
         "Infantry"
@@ -30708,7 +31362,8 @@ const definitions = {
         "Lucky Seven"
       ],
       "arts": [
-        "Steal"
+        "Steal",
+        "Foul Play"
       ],
       "growths": {
         "hp": 20,
@@ -30741,7 +31396,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "War Cleric/Priest",
+      "name": "War Priest",
       "description": "An advanced class that uses Axes and Faith.",
       "type": [
         "Infantry"
@@ -31239,6 +31894,49 @@ const definitions = {
         "depricated"
       ],
       "hidden": true
+    },
+    {
+      "name": "Giant Crawler",
+      "description": "This massive worm has grown to an unnatural size through the absorption of magic",
+      "type": [
+        "Monster"
+      ],
+      "tier": "Monster",
+      "requires": "Innate",
+      "abilities": [
+        "Seal Speed",
+        "Seal Defense"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 10,
+        "dex": 10,
+        "spd": 0,
+        "def": 15,
+        "res": 15,
+        "lck": 20
+      },
+      "modifiers": {
+        "hp": 2,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 0,
+        "def": 3,
+        "res": 3,
+        "lck": 3,
+        "mov": 4
+      },
+      "mount": null,
+      "default_base": "Apothacary",
+      "default_preset": "Balance/Balance/Luck",
+      "default_mainarm": "Item",
+      "default_sidearm": "Bows",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
     }
   ],
   "conditions": [
@@ -32146,7 +32844,7 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": -30,
+        "hit": 0,
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -33190,7 +33888,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "armor effective"
       ],
       "hidden": false
     },
@@ -33303,7 +34002,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "sacred",
-        "effective"
+        "effective",
+        "armor effective"
       ],
       "hidden": false
     },
@@ -33638,7 +34338,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "sacred",
-        "effective"
+        "effective",
+        "cavalry effective"
       ],
       "hidden": false
     },
@@ -34352,7 +35053,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "effective",
-        "custom"
+        "custom",
+        "cavalry effective",
+        "armor effective"
       ],
       "hidden": true
     },
@@ -34410,7 +35113,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34440,7 +35144,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "template",
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34469,7 +35174,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34527,7 +35233,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34556,7 +35263,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34585,7 +35293,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34614,7 +35323,8 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34671,7 +35381,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "sacred",
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34701,7 +35412,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "sacred",
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -34731,7 +35443,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "relic",
-        "effective"
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -35199,13 +35912,13 @@ const definitions = {
     {
       "name": "Rebuke",
       "type": "Faith",
-      "description": "Before combat, wielder may end a condition on an ally within 4 spaces of target foe and apply it to target foe for one turn. If so, grants Mt +4 in combat.",
+      "description": "On hit, after combat, wielder may end a condition on an ally within 4 space of target foe and apply it to target foe for one turn.",
       "requires": "Faith D",
       "rank": "D",
       "price": 900,
       "mttype": "mag",
       "modifiers": {
-        "mt": "1 + ask [Moved Condition?]; No {0}, Yes {4} end",
+        "mt": 2,
         "prot": 0,
         "resl": 0,
         "hit": 85,
@@ -35406,7 +36119,8 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "effective"
+        "effective",
+        "monster effective"
       ],
       "hidden": false
     },
@@ -35678,7 +36392,7 @@ const definitions = {
     {
       "name": "Fortify",
       "type": "Faith",
-      "description": "Restores HP to all allies within range = The spell\ufffds Mt + the user\ufffds Mag/2. The range of this spell is 1-(User\ufffds Mag/4, rounded up.).",
+      "description": "Restores HP to all allies within range = The spell's Mt + the user's Mag/2. The range of this spell is 1-(User's Mag/4, rounded up.).",
       "requires": "Faith A",
       "rank": "A",
       "price": 3760,
@@ -35692,7 +36406,7 @@ const definitions = {
         "crit": 0,
         "cravo": 0,
         "minrng": 1,
-        "maxrng": 1,
+        "maxrng": "ceil(unit|total|mag / 4)",
         "tpcost": 8,
         "spcost": 0,
         "tp": 0,
@@ -35714,6 +36428,7 @@ const definitions = {
       "description": "@{const:ap:AP = 1}; on hit, deal half damage dealt to target foe to foes within two spaces of target foe.",
       "requires": "Faith A",
       "rank": "A",
+      "aoe": "Ring 1-2",
       "price": 4350,
       "mttype": "mag",
       "modifiers": {
@@ -35998,7 +36713,7 @@ const definitions = {
     {
       "name": "Hex",
       "type": "Guile",
-      "description": "Apply @{condition:Hexed:[Hexed]} to target ally for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: once per turn, foe in range enters combat.",
+      "description": "Apply @{condition:Hexed:[Hexed]} to target foe for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: once per turn, foe in range enters combat.",
       "requires": "Guile D",
       "rank": "D",
       "price": 780,
@@ -36280,7 +36995,8 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "effective"
+        "effective",
+        "cavalry effective"
       ],
       "hidden": false
     },
@@ -37053,7 +37769,8 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "effective",
-        "wind"
+        "wind",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -37150,6 +37867,7 @@ const definitions = {
       "description": "A fire spell; @{const:ap:AP = 1}. On hit, deal half damage dealt to target foe to foes within one space of target foe.",
       "requires": "Reason A",
       "rank": "A",
+      "aoe": "Ring 1-1",
       "price": 3820,
       "mttype": "mag",
       "modifiers": {
@@ -37209,6 +37927,7 @@ const definitions = {
       "description": "An ice spell; @{const:ap:AP = 1}. On hit, deal half damage dealt to target foe to foes within one space of target foe and apply @{const:gbp:[Mov -1]} to target and adjacent foes after combat for 1 turn.",
       "requires": "Reason A",
       "rank": "A",
+      "aoe": "Ring 1-1",
       "price": 3960,
       "mttype": "mag",
       "modifiers": {
@@ -37364,6 +38083,46 @@ const definitions = {
         "break"
       ],
       "hidden": true
+    },
+    {
+      "name": "Confusion Powder",
+      "type": "Other",
+      "description": "Apply the @{condition:Confused:[Confused]} condition to target foe. (Apply Other Prowess equal to your highest equipped Prowess ability) Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no stats",
+        "no triangle",
+        "break"
+      ],
+      "hidden": false
     },
     {
       "name": "Lockpick",
@@ -37838,11 +38597,11 @@ const definitions = {
         "avo": 0,
         "crit": 0,
         "cravo": 0,
-        "minrng": 0,
+        "minrng": 2,
         "maxrng": 2,
         "tpcost": 2,
         "spcost": 0,
-        "tp": 5,
+        "tp": 0,
         "sp": 0
       },
       "rows": [
@@ -38378,7 +39137,7 @@ const definitions = {
       "price": 780,
       "mttype": "none",
       "modifiers": {
-        "mt": "floor((unit|charm) / 2) + 8",
+        "mt": "floor((unit|charm) / 2) + 4",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -38387,7 +39146,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 1,
         "maxrng": 1,
-        "tpcost": 1,
+        "tpcost": 2,
         "spcost": 0,
         "tp": 0,
         "sp": 0
@@ -38572,6 +39331,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38604,6 +39366,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38636,6 +39401,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38668,6 +39436,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38700,6 +39471,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38732,6 +39506,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38764,6 +39541,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38796,6 +39576,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38828,6 +39611,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Training"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38836,7 +39622,7 @@ const definitions = {
     },
     {
       "name": "Armor Outfitting",
-      "description": "Grants Prot/Resl +3; battalion\u2019s units are Armor units. This battalion may not possess another \"Outfitting\" gambit, unless that gambit is \"Cavalry Outfitting.\"",
+      "description": "Grants Prot/Resl +2; battalion\u2019s units are Armor units. This battalion may not possess another \"Outfitting\" gambit, unless that gambit is \"Cavalry Outfitting.\"",
       "requires": "Authority E",
       "mttype": "else",
       "price": "",
@@ -38860,6 +39646,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Outfitting"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38892,6 +39681,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Outfitting"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38924,6 +39716,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Outfitting"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38956,6 +39751,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Outfitting"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -38988,6 +39786,9 @@ const definitions = {
         "epcost": 0,
         "capcost": 0
       },
+      "events": [
+        "Outfitting"
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "structure"
@@ -39277,7 +40078,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "D",
-      "aoe": "Radius 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39318,7 +40119,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "D",
-      "aoe": "1x2 Par. Line",
+      "aoe": "Box 1x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39384,7 +40185,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "D",
-      "aoe": "Circle 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39416,7 +40217,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "D",
-      "aoe": "Circle 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39682,7 +40483,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C",
-      "aoe": "1x2 Par. Line",
+      "aoe": "Box 1x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39851,7 +40652,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C",
-      "aoe": "1x2 Par. Line",
+      "aoe": "Box 1x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39883,7 +40684,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C",
-      "aoe": "1x3 Perp. Line",
+      "aoe": "Box 3x1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39915,7 +40716,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C",
-      "aoe": "1x2 Par. Line",
+      "aoe": "Box 1x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -39979,7 +40780,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C",
-      "aoe": "Circle 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40011,7 +40812,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C",
-      "aoe": "1x3 Perp. Line",
+      "aoe": "Box 3x1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40125,7 +40926,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C",
-      "aoe": "1x2 Par. Line",
+      "aoe": "Box 1x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40223,7 +41024,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C+",
-      "aoe": "Circle 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40257,7 +41058,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C+",
-      "aoe": "Circle 2",
+      "aoe": "Ring 0-2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40292,7 +41093,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C+",
-      "aoe": "Circle 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40326,7 +41127,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "C+",
-      "aoe": "Radius 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40355,12 +41156,12 @@ const definitions = {
     },
     {
       "name": "Absorption",
-      "description": "On hit, apply 2{condition:Rattled:[Rattled]} to all foes in AoE for one turn and deal nonlethal damage equal to half damage dealt to foe in target tile to all foes in AoE, then battalion regains EP equal to half of total damage dealt.",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and deal nonlethal damage equal to half damage dealt to foe in target tile to all foes in AoE, then battalion regains EP equal to half of total damage dealt.",
       "requires": "All (Authority B) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`)) (Outfitting Infantry)",
       "mttype": "none",
       "price": "",
       "rank": "B",
-      "aoe": "Circle 2",
+      "aoe": "Ring 0-2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40392,7 +41193,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "B",
-      "aoe": "1x4 Par. Line",
+      "aoe": "Box 1x4",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40419,12 +41220,12 @@ const definitions = {
     },
     {
       "name": "Blaze",
-      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn. After combat, create @{tiles:Fire Patch:Fire Patches} in all empty spaces in AoE.",
+      "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn. After combat, create @{tile:Fire Patch:Fire Patches} in all empty spaces in AoE.",
       "requires": "Authority B",
       "mttype": "else",
       "price": "",
       "rank": "B",
-      "aoe": "Half Circle 2",
+      "aoe": "Half-Circle 2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40522,7 +41323,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "B",
-      "aoe": "1x4 Par. Line",
+      "aoe": "Box 1x4",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40554,7 +41355,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "B",
-      "aoe": "1x3 Perp. Line",
+      "aoe": "Box 3x1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40655,7 +41456,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "B",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40690,7 +41491,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "B",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40732,7 +41533,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "B",
-      "aoe": "Circle 2",
+      "aoe": "Ring 0-2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40764,7 +41565,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "B",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40799,7 +41600,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "B",
-      "aoe": "1x3 Perp. Line",
+      "aoe": "Box 3x1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40914,7 +41715,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -40978,7 +41779,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41010,7 +41811,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "Circle 2",
+      "aoe": "Ring 0-2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41045,7 +41846,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "A",
-      "aoe": "Radius 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41080,7 +41881,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41112,7 +41913,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41144,7 +41945,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "A",
-      "aoe": "1x3 Perp. Line",
+      "aoe": "Box 3x1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41179,7 +41980,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41211,7 +42012,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41243,7 +42044,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41278,7 +42079,7 @@ const definitions = {
       "mttype": "else",
       "price": "",
       "rank": "A",
-      "aoe": "2x3 Perp. Line",
+      "aoe": "Box 3x2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41310,7 +42111,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "A+",
-      "aoe": "Radius 2",
+      "aoe": "Ring 0-2",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41345,7 +42146,7 @@ const definitions = {
       "mttype": "none",
       "price": "",
       "rank": "S",
-      "aoe": "Radius 1",
+      "aoe": "Ring 0-1",
       "modifiers": {
         "atk": 0,
         "mor": 0,
@@ -41373,5 +42174,356 @@ const definitions = {
       ],
       "hidden": false
     }
-  ]
+  ],
+  "icons": {
+    "item": [
+      "./resources/icons/item/Authority.png",
+      "./resources/icons/item/Axes.png",
+      "./resources/icons/item/Bows.png",
+      "./resources/icons/item/Brawl.png",
+      "./resources/icons/item/Faith.png",
+      "./resources/icons/item/Guile.png",
+      "./resources/icons/item/Lances.png",
+      "./resources/icons/item/Other.png",
+      "./resources/icons/item/Reason.png",
+      "./resources/icons/item/Shield.png",
+      "./resources/icons/item/Stone.png",
+      "./resources/icons/item/Swords.png"
+    ],
+    "type": [
+      "./resources/icons/type/Armor.png",
+      "./resources/icons/type/Battalion.png",
+      "./resources/icons/type/Cavalry.png",
+      "./resources/icons/type/Dragon.png",
+      "./resources/icons/type/Flying.png",
+      "./resources/icons/type/Infantry.png",
+      "./resources/icons/type/Monster.png"
+    ],
+    "effective": [
+      "./resources/icons/effective/All.png",
+      "./resources/icons/effective/Armor.png",
+      "./resources/icons/effective/Cavalry.png",
+      "./resources/icons/effective/Dragon.png",
+      "./resources/icons/effective/Flying.png",
+      "./resources/icons/effective/Infantry.png",
+      "./resources/icons/effective/Monster.png"
+    ],
+    "portraits": [
+      "./resources/icons/portraits/Apothecary.png",
+      "./resources/icons/portraits/Archer (1).png",
+      "./resources/icons/portraits/Archer (2).png",
+      "./resources/icons/portraits/Archer (3).png",
+      "./resources/icons/portraits/Archer (4).png",
+      "./resources/icons/portraits/Archer (5).png",
+      "./resources/icons/portraits/Archer (6).png",
+      "./resources/icons/portraits/Archer (7).png",
+      "./resources/icons/portraits/Archer (8).png",
+      "./resources/icons/portraits/Archer (9).png",
+      "./resources/icons/portraits/Archer (10).png",
+      "./resources/icons/portraits/Armored Knight (1).png",
+      "./resources/icons/portraits/Armored Knight (2).png",
+      "./resources/icons/portraits/Assassin (1).png",
+      "./resources/icons/portraits/Assassin (3).png",
+      "./resources/icons/portraits/Assassin (4).png",
+      "./resources/icons/portraits/Assassin (5).png",
+      "./resources/icons/portraits/Assassin (8).png",
+      "./resources/icons/portraits/Assassin (9).png",
+      "./resources/icons/portraits/Assassin (10).png",
+      "./resources/icons/portraits/Assassin (11).png",
+      "./resources/icons/portraits/Assassin (12).png",
+      "./resources/icons/portraits/Banneret.png",
+      "./resources/icons/portraits/Banshee (1).png",
+      "./resources/icons/portraits/Banshee (2).png",
+      "./resources/icons/portraits/Bishop (1).png",
+      "./resources/icons/portraits/Bishop (4).png",
+      "./resources/icons/portraits/Bishop (5).png",
+      "./resources/icons/portraits/Bishop (6).png",
+      "./resources/icons/portraits/Bishop (7).png",
+      "./resources/icons/portraits/Bishop (8).png",
+      "./resources/icons/portraits/Bishop (11).png",
+      "./resources/icons/portraits/Bishop (13).png",
+      "./resources/icons/portraits/Bishop (14).png",
+      "./resources/icons/portraits/Bow Knight (1).png",
+      "./resources/icons/portraits/Bow Knight (4).png",
+      "./resources/icons/portraits/Bow Knight (6).png",
+      "./resources/icons/portraits/Bow Knight (7).png",
+      "./resources/icons/portraits/Bow Knight (10).png",
+      "./resources/icons/portraits/Bow Knight (12).png",
+      "./resources/icons/portraits/Brawler (1).png",
+      "./resources/icons/portraits/Brawler (2).png",
+      "./resources/icons/portraits/Brigand (1).png",
+      "./resources/icons/portraits/Brigand (2).png",
+      "./resources/icons/portraits/Brigand (4).png",
+      "./resources/icons/portraits/Brigand (6).png",
+      "./resources/icons/portraits/Brigand (8).png",
+      "./resources/icons/portraits/Brigand (9).png",
+      "./resources/icons/portraits/Brigand (11).png",
+      "./resources/icons/portraits/Butcher (1).png",
+      "./resources/icons/portraits/Butcher (2).png",
+      "./resources/icons/portraits/Cavalier (1).png",
+      "./resources/icons/portraits/Cavalier (2).png",
+      "./resources/icons/portraits/Cultivator.png",
+      "./resources/icons/portraits/Dancer (1).png",
+      "./resources/icons/portraits/Dancer (3).png",
+      "./resources/icons/portraits/Dark Flier (1).png",
+      "./resources/icons/portraits/Dark Flier (2).png",
+      "./resources/icons/portraits/Dark Flier (3).png",
+      "./resources/icons/portraits/Dark Flier (4).png",
+      "./resources/icons/portraits/Dark Knight (1).png",
+      "./resources/icons/portraits/Dark Knight (2).png",
+      "./resources/icons/portraits/Dark Knight (3).png",
+      "./resources/icons/portraits/Dark Knight (4).png",
+      "./resources/icons/portraits/Dark Knight (5).png",
+      "./resources/icons/portraits/Dark Knight (6).png",
+      "./resources/icons/portraits/Dark Knight (7).png",
+      "./resources/icons/portraits/Dark Knight (8).png",
+      "./resources/icons/portraits/Dark Knight (9).png",
+      "./resources/icons/portraits/Dark Knight (10).png",
+      "./resources/icons/portraits/Dark Knight (11).png",
+      "./resources/icons/portraits/Dark Knight (12).png",
+      "./resources/icons/portraits/Dark Mage.png",
+      "./resources/icons/portraits/Dark Signifier.png",
+      "./resources/icons/portraits/Druid.png",
+      "./resources/icons/portraits/Falcon Knight (1).png",
+      "./resources/icons/portraits/Falcon Knight (2).png",
+      "./resources/icons/portraits/Falcon Knight (4).png",
+      "./resources/icons/portraits/Fighter (1).png",
+      "./resources/icons/portraits/Fighter (2).png",
+      "./resources/icons/portraits/Fighter (3).png",
+      "./resources/icons/portraits/Fighter (4).png",
+      "./resources/icons/portraits/Fighter (5).png",
+      "./resources/icons/portraits/Fighter (6).png",
+      "./resources/icons/portraits/Fighter (7).png",
+      "./resources/icons/portraits/Fighter (8).png",
+      "./resources/icons/portraits/Fighter (9).png",
+      "./resources/icons/portraits/Fighter (11).png",
+      "./resources/icons/portraits/Fortress Knight (1).png",
+      "./resources/icons/portraits/Fortress Knight (2).png",
+      "./resources/icons/portraits/General.png",
+      "./resources/icons/portraits/Grappler (1).png",
+      "./resources/icons/portraits/Grappler (2).png",
+      "./resources/icons/portraits/Grappler (7).png",
+      "./resources/icons/portraits/Great Knight (1).png",
+      "./resources/icons/portraits/Great Knight (2).png",
+      "./resources/icons/portraits/Gremory (1).png",
+      "./resources/icons/portraits/Gremory (2).png",
+      "./resources/icons/portraits/Gremory (3).png",
+      "./resources/icons/portraits/Gremory (4).png",
+      "./resources/icons/portraits/Gryphon Rider.png",
+      "./resources/icons/portraits/Halberdier.png",
+      "./resources/icons/portraits/Hero (1).png",
+      "./resources/icons/portraits/Hero (2).png",
+      "./resources/icons/portraits/Hero (3).png",
+      "./resources/icons/portraits/Hero (6).png",
+      "./resources/icons/portraits/Holy Knight (1).png",
+      "./resources/icons/portraits/Holy Knight (2).png",
+      "./resources/icons/portraits/Holy Knight (4).png",
+      "./resources/icons/portraits/Holy Knight (5).png",
+      "./resources/icons/portraits/Holy Knight (6).png",
+      "./resources/icons/portraits/Holy Knight (7).png",
+      "./resources/icons/portraits/Holy Knight (8).png",
+      "./resources/icons/portraits/Holy Knight (9).png",
+      "./resources/icons/portraits/Holy Knight (10).png",
+      "./resources/icons/portraits/Holy Knight (11).png",
+      "./resources/icons/portraits/Holy Knight (12).png",
+      "./resources/icons/portraits/Holy Knight (13).png",
+      "./resources/icons/portraits/Hussar.png",
+      "./resources/icons/portraits/Impaler (1).png",
+      "./resources/icons/portraits/Impaler (2).png",
+      "./resources/icons/portraits/Juggernaut.png",
+      "./resources/icons/portraits/Kinshi Knight.png",
+      "./resources/icons/portraits/Lemure (1).png",
+      "./resources/icons/portraits/Lemure (2).png",
+      "./resources/icons/portraits/Lemure (3).png",
+      "./resources/icons/portraits/Lemure (4).png",
+      "./resources/icons/portraits/Lemure (5).png",
+      "./resources/icons/portraits/Lemure (6).png",
+      "./resources/icons/portraits/Lemure (7).png",
+      "./resources/icons/portraits/Lemure (8).png",
+      "./resources/icons/portraits/Mage (1).png",
+      "./resources/icons/portraits/Mage (2).png",
+      "./resources/icons/portraits/Mage (3).png",
+      "./resources/icons/portraits/Mage (4).png",
+      "./resources/icons/portraits/Mage (5).png",
+      "./resources/icons/portraits/Mage (6).png",
+      "./resources/icons/portraits/Mage (7).png",
+      "./resources/icons/portraits/Mage (8).png",
+      "./resources/icons/portraits/Mage (9).png",
+      "./resources/icons/portraits/Mage (10).png",
+      "./resources/icons/portraits/Malig Knight.png",
+      "./resources/icons/portraits/Martyr (1).png",
+      "./resources/icons/portraits/Martyr (2).png",
+      "./resources/icons/portraits/Master of Arms (1).png",
+      "./resources/icons/portraits/Master of Arms (2).png",
+      "./resources/icons/portraits/Master of Arms (3).png",
+      "./resources/icons/portraits/Master of Arms (4).png",
+      "./resources/icons/portraits/Master of Arms (5).png",
+      "./resources/icons/portraits/Master of Arms (6).png",
+      "./resources/icons/portraits/Master of Arms (7).png",
+      "./resources/icons/portraits/Master of Arms (8).png",
+      "./resources/icons/portraits/Medium (1).jpg",
+      "./resources/icons/portraits/Medium (2).jpg",
+      "./resources/icons/portraits/Mercenary (1).png",
+      "./resources/icons/portraits/Mercenary (2).png",
+      "./resources/icons/portraits/Mercenary (3).png",
+      "./resources/icons/portraits/Mercenary (4).png",
+      "./resources/icons/portraits/Mercenary (5).png",
+      "./resources/icons/portraits/Mercenary (6).png",
+      "./resources/icons/portraits/Mercenary (7).png",
+      "./resources/icons/portraits/Mercenary (8).png",
+      "./resources/icons/portraits/Mercenary (9).png",
+      "./resources/icons/portraits/Mercenary (11).png",
+      "./resources/icons/portraits/Monk (1).png",
+      "./resources/icons/portraits/Monk (2).png",
+      "./resources/icons/portraits/Monk (3).png",
+      "./resources/icons/portraits/Monk (4).png",
+      "./resources/icons/portraits/Monk (5).png",
+      "./resources/icons/portraits/Monk (6).png",
+      "./resources/icons/portraits/Monk (7).png",
+      "./resources/icons/portraits/Monk (8).png",
+      "./resources/icons/portraits/Monk (9).png",
+      "./resources/icons/portraits/Monk (10).png",
+      "./resources/icons/portraits/Monster Hunter.png",
+      "./resources/icons/portraits/Mortal Savant (1).png",
+      "./resources/icons/portraits/Mortal Savant (2).png",
+      "./resources/icons/portraits/Myrmidon (1).png",
+      "./resources/icons/portraits/Myrmidon (2).png",
+      "./resources/icons/portraits/Myrmidon (3).png",
+      "./resources/icons/portraits/Myrmidon (4).png",
+      "./resources/icons/portraits/Myrmidon (5).png",
+      "./resources/icons/portraits/Myrmidon (6).png",
+      "./resources/icons/portraits/Myrmidon (7).png",
+      "./resources/icons/portraits/Myrmidon (8).png",
+      "./resources/icons/portraits/Myrmidon (9).png",
+      "./resources/icons/portraits/Myrmidon (10).png",
+      "./resources/icons/portraits/Myrmidon (11).png",
+      "./resources/icons/portraits/Myrmidon (12).png",
+      "./resources/icons/portraits/Myrmidon (15).png",
+      "./resources/icons/portraits/Myrmidon (16).png",
+      "./resources/icons/portraits/Myrmidon (17).png",
+      "./resources/icons/portraits/Paladin (1).png",
+      "./resources/icons/portraits/Paladin (2).png",
+      "./resources/icons/portraits/Pegasus Knight (1).png",
+      "./resources/icons/portraits/Pegasus Knight (2).png",
+      "./resources/icons/portraits/Pegasus Knight (3).png",
+      "./resources/icons/portraits/Pegasus Knight (4).png",
+      "./resources/icons/portraits/Poltergeist (1).png",
+      "./resources/icons/portraits/Poltergeist (2).png",
+      "./resources/icons/portraits/Priest (1).png",
+      "./resources/icons/portraits/Priest (2).png",
+      "./resources/icons/portraits/Priest (3).png",
+      "./resources/icons/portraits/Priest (4).png",
+      "./resources/icons/portraits/Priest (5).png",
+      "./resources/icons/portraits/Priest (6).png",
+      "./resources/icons/portraits/Priest (7).png",
+      "./resources/icons/portraits/Priest (8).png",
+      "./resources/icons/portraits/Priest (9).png",
+      "./resources/icons/portraits/Priest (10).png",
+      "./resources/icons/portraits/Priest (11).png",
+      "./resources/icons/portraits/Priest (12).png",
+      "./resources/icons/portraits/Pugilist.png",
+      "./resources/icons/portraits/Quartermaster.png",
+      "./resources/icons/portraits/Raider.png",
+      "./resources/icons/portraits/Raven Knight.png",
+      "./resources/icons/portraits/Ronin.png",
+      "./resources/icons/portraits/Sage.png",
+      "./resources/icons/portraits/Slasher (1).png",
+      "./resources/icons/portraits/Slasher (2).png",
+      "./resources/icons/portraits/Sniper (1).png",
+      "./resources/icons/portraits/Sniper (5).png",
+      "./resources/icons/portraits/Sniper (9).png",
+      "./resources/icons/portraits/Sniper (10).png",
+      "./resources/icons/portraits/Sniper (12).png",
+      "./resources/icons/portraits/Soldier (1).png",
+      "./resources/icons/portraits/Soldier (2).png",
+      "./resources/icons/portraits/Soldier (3).png",
+      "./resources/icons/portraits/Soldier (4).png",
+      "./resources/icons/portraits/Soldier (5).png",
+      "./resources/icons/portraits/Soldier (6).png",
+      "./resources/icons/portraits/Soldier (7).png",
+      "./resources/icons/portraits/Soldier (8).png",
+      "./resources/icons/portraits/Soldier (9).png",
+      "./resources/icons/portraits/Soldier (10).png",
+      "./resources/icons/portraits/Soldier (11).png",
+      "./resources/icons/portraits/Sorcerer.png",
+      "./resources/icons/portraits/Summoner.png",
+      "./resources/icons/portraits/Swashbuckler.png",
+      "./resources/icons/portraits/Swordsmaster (1).png",
+      "./resources/icons/portraits/Swordsmaster (4).png",
+      "./resources/icons/portraits/Swordsmaster (9).png",
+      "./resources/icons/portraits/Swordsmaster (10).png",
+      "./resources/icons/portraits/Swordsmaster (11).png",
+      "./resources/icons/portraits/Swordsmaster (12).png",
+      "./resources/icons/portraits/Thief (1).png",
+      "./resources/icons/portraits/Thief (2).png",
+      "./resources/icons/portraits/Thief (3).png",
+      "./resources/icons/portraits/Thief (4).png",
+      "./resources/icons/portraits/Thief (5).png",
+      "./resources/icons/portraits/Thief (6).png",
+      "./resources/icons/portraits/Thief (7).png",
+      "./resources/icons/portraits/Thief (8).png",
+      "./resources/icons/portraits/Thief (9).png",
+      "./resources/icons/portraits/Thief (10).png",
+      "./resources/icons/portraits/Trickster (1).png",
+      "./resources/icons/portraits/Trickster (2).png",
+      "./resources/icons/portraits/Trickster (3).png",
+      "./resources/icons/portraits/Trickster (4).png",
+      "./resources/icons/portraits/Trickster (5).png",
+      "./resources/icons/portraits/Trickster (6).png",
+      "./resources/icons/portraits/Trickster (7).png",
+      "./resources/icons/portraits/Trickster (8).png",
+      "./resources/icons/portraits/Trickster (9).png",
+      "./resources/icons/portraits/Trickster (10).png",
+      "./resources/icons/portraits/Trickster (11).png",
+      "./resources/icons/portraits/Trickster (12).png",
+      "./resources/icons/portraits/Troubadour.png",
+      "./resources/icons/portraits/Valkyrie (1).png",
+      "./resources/icons/portraits/Valkyrie (2).png",
+      "./resources/icons/portraits/Valkyrie (3).png",
+      "./resources/icons/portraits/Valkyrie (4).png",
+      "./resources/icons/portraits/War Priest (1).png",
+      "./resources/icons/portraits/War Priest (2).png",
+      "./resources/icons/portraits/War Priest (3).png",
+      "./resources/icons/portraits/War Priest (4).png",
+      "./resources/icons/portraits/War Priest (5).png",
+      "./resources/icons/portraits/War Priest (6).png",
+      "./resources/icons/portraits/War Priest (7).png",
+      "./resources/icons/portraits/War Priest (8).png",
+      "./resources/icons/portraits/War Priest (9).png",
+      "./resources/icons/portraits/War Priest (10).png",
+      "./resources/icons/portraits/War Priest (11).png",
+      "./resources/icons/portraits/War Priest (12).png",
+      "./resources/icons/portraits/Warlock (1).png",
+      "./resources/icons/portraits/Warlock (2).png",
+      "./resources/icons/portraits/Warlock (3).png",
+      "./resources/icons/portraits/Warlock (5).png",
+      "./resources/icons/portraits/Warlock (6).png",
+      "./resources/icons/portraits/Warlock (7).png",
+      "./resources/icons/portraits/Warlock (9).png",
+      "./resources/icons/portraits/Warlock (10).png",
+      "./resources/icons/portraits/Warlock (11).png",
+      "./resources/icons/portraits/Warlock (12).png",
+      "./resources/icons/portraits/Warlord.png",
+      "./resources/icons/portraits/Warrior (1).png",
+      "./resources/icons/portraits/Warrior (4).png",
+      "./resources/icons/portraits/Warrior (5).png",
+      "./resources/icons/portraits/Warrior (6).png",
+      "./resources/icons/portraits/Warrior (9).png",
+      "./resources/icons/portraits/Warrior (10).png",
+      "./resources/icons/portraits/Witch Hunter.png",
+      "./resources/icons/portraits/Wyvern Lord (1).png",
+      "./resources/icons/portraits/Wyvern Lord (5).png",
+      "./resources/icons/portraits/Wyvern Lord (9).png",
+      "./resources/icons/portraits/Wyvern Lord (10).png",
+      "./resources/icons/portraits/Wyvern Lord (11).png",
+      "./resources/icons/portraits/Wyvern Lord (12).png",
+      "./resources/icons/portraits/Wyvern Rider (1).png",
+      "./resources/icons/portraits/Wyvern Rider (3).png",
+      "./resources/icons/portraits/Wyvern Rider (4).png",
+      "./resources/icons/portraits/Wyvern Rider (5).png",
+      "./resources/icons/portraits/Wyvern Rider (6).png",
+      "./resources/icons/portraits/Wyvern Rider (9).png",
+      "./resources/icons/portraits/Wyvern Rider (11).png"
+    ]
+  }
 };

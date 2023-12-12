@@ -67,6 +67,7 @@ const Tokens = (function() {
 	/* define regular expressions for lexical analysis */
 
 	namespace.REGEXP = {
+		COMMENT    : new RegExp("//[^\\n]*(\\n|$)"),
 		STRING     : new RegExp("\\[[^\\]]*\\]"),
 		LITERAL    : new RegExp("[0-9]+(\\.[0-9]+(e[+-]*[0-9]+)*)*"),
 		IDENTIFIER : new RegExp("[A-Za-z_$][0-9A-Za-z_$|]*"),
@@ -75,11 +76,13 @@ const Tokens = (function() {
 		),
 		WHITESPACE : new RegExp("[ \\t\\n\\r]+"),
 		BLANKSPACE : new RegExp("^[ \\t\\n\\r]+$"),
+		MAXCOMMENT : new RegExp("^//[^\\n]*\\n?$"),
 	};
 
 	/* the order of these subexpressions is important */
 
 	namespace.REGEXP.TOKENS = new RegExp([
+		namespace.REGEXP.COMMENT.source,
 		namespace.REGEXP.STRING.source,
 		namespace.REGEXP.LITERAL.source,
 		namespace.REGEXP.OPERATOR.source,
@@ -1802,7 +1805,7 @@ const Tokens = (function() {
 	return Object.freeze(namespace);
 })(); 
 
-function tokenize(source, strip=true) {
+function tokenize(source, wstrip=true, cstrip=true) {
 	/* regular expressions are one of the best things invented */
 	const tokens = Array.from(source.matchAll(Tokens.REGEXP.TOKENS));
 
@@ -1819,9 +1822,14 @@ function tokenize(source, strip=true) {
 			);
 		}
 
-		/* strip whitespace */
 
-		if (!strip || !token[0].match(Tokens.REGEXP.BLANKSPACE)) {
+		/* strip whitespace and comments */
+
+		if (
+			!(cstrip && token[0].match(Tokens.REGEXP.MAXCOMMENT))
+				&&
+			!(wstrip && token[0].match(Tokens.REGEXP.BLANKSPACE))
+		) {
 			output.push(token);
 		}
 
@@ -1840,7 +1848,7 @@ function tokenize(source, strip=true) {
 function highlight(source, strip=false) {
 
 	const process = strip ? source.replaceAll(/\s+/g, " ") : source;
-	const tokens  = tokenize(process, false);
+	const tokens  = tokenize(process, false, false);
 	const output  = [];
 
 	for (let token of tokens) {
@@ -1849,6 +1857,12 @@ function highlight(source, strip=false) {
 	
 		if (text.match(Tokens.REGEXP.BLANKSPACE)) {
 			output.push(element("span", text));
+			continue;
+		}
+
+		if (text.match(Tokens.REGEXP.MAXCOMMENT)) {
+			if (strip) continue;
+			output.push(element("span", text, "hl-literal"));
 			continue;
 		}
 
@@ -1899,7 +1913,8 @@ class Parser {
 		// hacky conditional expressions to execute in roll20 macros
 		this._strict  = false;
 
-		// this.symbols = symbols;
+		// used when parsing templates to allow for macro names as arguments
+		this._params  = [];
 	}
 
 	_sink() {
@@ -2011,11 +2026,15 @@ class Parser {
 			);
 		}
 
-		// return macro;
-
 		const [_m, title, args] = macro;
 		const name = title[1];
 
+		// defer expansion until later if this is an parameter
+		if (this._params.includes(name)) {
+			return macro;
+		}
+
+		// otherwise make sure this name is defined
 		if (!(name in this._macros)) {
 			throw new CompilationError(
 				`Macro '${name}' is not defined.`, this.position
@@ -2023,9 +2042,7 @@ class Parser {
 		}
 
 		const defined  = this._macros[name];
-		const instance = defined.instantiate(args);
-
-		// return [Tokens.TERMINALS.MACRO, name, instance];
+		const instance = defined.instantiate(args, this._macros);
 		return instance;
 	}
 
@@ -2095,7 +2112,8 @@ class Parser {
 		}
 		this._toNext();
 
-		const body = this._parseExpression();
+		this._params = args.map(node => node[1]);
+		const body   = this._parseExpression();
 
 		if (body == null) {
 			this._toPrev();
@@ -2113,7 +2131,7 @@ class Parser {
 		}
 		this._toNext();
 
-		const instance = new Template(args.map(node => node[1]), body);
+		const instance = new Template(this._params, body);
 
 		return [Tokens.TERMINALS.TEMPLATE, title, instance];
 	}
@@ -2652,6 +2670,11 @@ class Parser {
 		if (this.token == Tokens.TERMINALS.ELSE) {
 			this._toNext();
 
+			// Eat a then. It's sometimes nice for code style
+			if (this.token == Tokens.TERMINALS.THEN) {
+				this._toNext();
+			}
+
 			fBranch = this._parseExpression();
 
 			if (fBranch == null) {
@@ -3057,7 +3080,7 @@ class Template {
 		
 	}
 
-	instantiate(values) {
+	instantiate(values, macros={}) {
 
 		if (values.length != this.args.length) {
 			console.error(values);
@@ -3074,9 +3097,54 @@ class Template {
 			map.set(this.args[i], values[i]);
 		}
 
-		function clone(map, node) {
+		function clone(map, node, macros) {
 
 			const list = [];
+
+			/* variable macro name expansion */
+			if (node[0] == "fill") {
+
+				const call = node[1][1];
+				const args = node[2];
+
+				// call is not a parameter
+				if (!map.has(call)) {
+					throw new CompilationError(
+						wrap(
+							`'${call}' is not a parameter nor a defined macro`
+						)
+					);
+				}
+
+
+				const swap = map.get(call)[1];
+
+				if (!(swap in macros)) {
+					throw new CompilationError(
+						wrap(
+							`Attempted to instantiate macro '${swap}' in `,
+							`place of macro parameter '${call}', however `,
+							"no such macro is defined."
+						)
+					);
+				}
+
+				const macro = macros[swap];
+
+				if (args.length != macro.args.length) {
+					throw new CompilationError(
+						wrap(
+							`Attempted to instantiate macro '${swap}' in `,
+							`place of macro parameter '${call}', however `,
+							`'${swap}' accepts ${macro.args.length} argument(s) `,
+							`and ${args.length} argument(s) were provided`
+						)
+					);
+				}
+
+				// console.log(`${call} -> ${swap}`, args);
+				return macro.instantiate(args, macros);
+			}
 
 			/* substitute expression */
 			if (node[0] == "$" && map.has(node[1])) {
@@ -3115,7 +3183,7 @@ class Template {
 			/* copy the ast node as is */
 			for (let element of node) {
 				if (element instanceof Array) {
-					list.push(clone(map, element));
+					list.push(clone(map, element, macros));
 				} else {
 					list.push(element);
 				}
@@ -3124,7 +3192,7 @@ class Template {
 			return list;
 		}
 
-		return clone(map, this.body);
+		return clone(map, this.body, macros);
 	}
 
 	static parse(source, macros={}) {
@@ -3441,8 +3509,201 @@ class Compiler {
 	 * @param {object} context - a map-like object for variable values
 	 * @returns {CompiledExpression} - an executable expression object
 	 */
-	compile(source, context=this.context, macros=this.macros) {
-		return new CompiledExpression(source, context, macros);
+	compile(source, define="") {
+		if (define) {
+			this.define({
+				name  : define,
+				about : "Feature attribute.",
+				expr  : source,
+			});
+
+			return this.context[define].e;
+		}
+		return new CompiledExpression(source, this.context, this.macros);
+	}
+
+	/**
+	 * Define a new function for this context. Ideally any time a function is
+	 * added to a context, it should be done exclusively thought this function.
+	 */
+	define(template) {
+		
+
+		let fn = undefined;
+
+		const source = (
+			template.expr.toString()
+				/* remove indentation from source */
+				.replace(/\t{3,4}/g, "")
+				/* convert remaining into spaces */
+				.replace(/\t/g, "  ")
+		);
+
+		if (typeof template.expr == "string") {
+
+			const e = this.compile(template.expr);
+
+			fn = ((env) => {
+				if (template.debug) debugger;
+				return Expression.evaluate(e, env);
+			});
+
+			fn.e = e;
+		
+			fn.s = element("div", [
+				"=== Calculator Expression ===", element("br"),
+				element("div", Expression.highlight(source), "calc-code"),
+			]);
+
+			fn.v = (() => e.symbols || []);
+
+		} else if (template.expr instanceof Array) {
+			// TODO either join the array or sum them.
+			template.compose = template.compose || " + ";
+			throw new Error("TODO");
+		} else {
+			fn   = template.expr;
+			fn.s = element("div", [
+				"=== JavaScript Function ===", element("br"),
+				element("pre", source)
+			]);
+
+			const set = new Set();
+			fn.v = template.vars || (() => set);
+		}
+
+		fn.called      = template.name;
+		fn.header      = tooltip(
+			element("span", [
+				"Variable: ",
+				element("span", template.name, "datum")
+			]),
+			wrap(
+				"Click on the text below to switch between showing a ",
+				"description and the definition."
+			)
+		);
+
+		fn.about       = new SwapText([
+			hilight(template.about),
+			element("pre", fn.s),
+		]).root;
+
+		this.context[fn.called] = fn;
+
+		return fn;
+	}
+
+
+	*variables(pattern) {
+		for (let v in this.context) {
+			if (!pattern || v.match(pattern))
+				yield this.context[v];
+		}
+	}
+
+
+	dependants(variable) {
+
+		if (!(variable in this.context)) {
+			// throw Error(`${variable} is not a valid key for context`);
+			console.warn(`${variable} is not a valid key for context`);
+			return new Set();
+		}
+
+		const fn = this.context[variable];
+		return fn.dep || new Set(); // TODO make this not fail silently.
+	}
+
+	/**
+	 * Compute which variables depend on each other.
+	 * This uses a top down traversal and sets the "depends on" set as the 
+	 * set of all variables that reach it using this traversal method.
+	 */
+	compute_dependants(variable, set=new Set()) {
+
+		if (!(variable in this.context))
+			throw Error(`${variable} is not a valid key for context`);
+
+		const fn = this.context[variable];
+		fn.dep   = ("dep" in fn) ? fn.dep.union(set) : new Set(set);
+		// if (!("e" in fn)) return;
+
+		set.add(variable);
+		for (let each of fn.v()) {
+			if (set.has(each)) continue;
+			this.compute_dependants(each, set);
+		}
+		set.delete(variable);
+
+	}
+
+	static clean(identifier) {
+		return identifier.replace(/\|/g, "_");
+	}
+
+	static line(a, b, c=false) {
+		return `\t${this.clean(a)}->${this.clean(b)}${c ? "_R" : ""};`;
+	}
+
+	/**
+	 * Compute the dependancies in this context for a given expression.
+	 */
+	dependancies(expr, set=new Set(), graph=null) {
+
+		let collection = undefined;
+
+		if (expr instanceof CompiledExpression) {
+			collection = expr.symbols;
+		} else if (typeof expr == "string" || expr instanceof String) {
+
+			if (!(expr in this.context)) {
+				return this.dependancies(this.compile(expr), set);
+			}
+
+			collection = this.context[expr].v();
+
+		} else if (expr instanceof Set) {
+			collection = expr;
+		} else {
+			throw new Error("argument must be string or CompiledExpression");
+		}
+
+		for (let each of collection) {
+
+			if (graph !== null)
+				graph.push(Compiler.line(expr, each, set.has(each)));
+
+			if (set.has(each)) continue;
+			set.add(each);
+			this.dependancies(each, set, graph);
+		}
+
+		return set;
+	}
+
+	graph(expr) {
+		const queue = [];
+		const set   = new Set();
+		const graph = [];
+
+		queue.push(expr);
+
+		while (queue.length) {
+			const v = queue.shift();
+
+			for (let each of this.context[v].v()) {
+				graph.push(Compiler.line(v, each, set.has(each)));
+
+				if (set.has(each)) continue;
+				set.add(each);
+
+				queue.push(each);
+			}
+
+		}
+
+		console.log(graph.join("\n"));
 	}
 
 }
@@ -3867,6 +4128,23 @@ function highlight(source) {
 	return walk(ast);
 }
 
+const NOT_DEPENDANCY = new Set([
+	"All", "Any", "Required", "Innate", "None", "Required",
+	"Unknown", "Unfinished", "Barrier", "Agarthan"
+]);
+
+// TODO account for the fact that ast[0] could be an array
+function depends(ast, set=new Set()) {
+
+	if (ast.length && !NOT_DEPENDANCY.has(ast[0])) set.add(ast[0]);
+
+	for (let i = 1; i < ast.length; ++i) {
+		if (ast[i] instanceof Array) depends(ast[i], set);
+	}
+
+	return set;
+}
+
 // class Engine {
 
 // 	constructor(context, yields) {
@@ -3968,6 +4246,7 @@ class CompiledExpression {
 		this.context = context;
 		this.symbols = new Set();
 		this.ast     = parse(source, this.symbols);
+		this.depends = depends(this.ast);
 	}
 
 	search() {
@@ -4156,6 +4435,7 @@ return Object.freeze({
 	},
 
 	parse: parse,
+	depends: depends,
 });
 
 

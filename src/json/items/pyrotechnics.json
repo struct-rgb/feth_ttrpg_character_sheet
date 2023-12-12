@@ -14,11 +14,11 @@
     "avo": 0,
     "crit": 0,
     "cravo": 0,
-    "minrng": 0,
+    "minrng": 2,
     "maxrng": 2,
     "tpcost": 2,
     "spcost": 0,
-    "tp": 5,
+    "tp": 0,
     "sp": 0
   },
   "rows": [

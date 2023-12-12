@@ -1,6 +1,6 @@
 {
     "name": "Wrestler",
-    "description": "On hit, after combat at Range ≤ 1, (Dex or Luc + 20)% chance this unit may choose one of the following:\n • Move target foe up to two spaces in a cardinal direction (you choose).\n • Apply @{condition:Rattled:[Rattled]} to target foe for one turn.\n • Apply @{condition::[Taunted]} to target foe for one turn.\n • Apply @{const:gbp:[Str -3]} to target foe for one turn.",
+    "description": "On hit, after combat at Range ≤ 1, (Dex or Luc + 20)% chance this unit may choose one of the following:\n • Move target foe up to two spaces in a cardinal direction (you choose).\n • Apply @{condition:Rattled:[Rattled]} to target foe for one turn.\n • Apply @{condition:Taunted:[Taunted]} to target foe for one turn.\n • Apply @{const:gbp:[Str -3]} to target foe for one turn.",
     "requires": "All (Brawl D+) (Level 8)",
     "modifiers": {
         "hp": 0,

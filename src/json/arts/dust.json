@@ -1,7 +1,7 @@
 {
   "name": "Dust",
   "description": "@{item::Crusher} only; applies @{const:gbp:[Def -5]} to target for 1 turn and effective against Dragon units.",
-  "requires": "All (Weapon Crusher) (Crest Dominic) (Axes E)",
+  "requires": "All (Item Crusher) (Crest Dominic) (Axes E)",
   "compatible": "Name Crusher",
   "mttype": "else",
   "modifiers": {
@@ -19,6 +19,7 @@
   },
   "comment": "",
   "tags": [
+    "dragon effective",
     "effective",
     "condition",
     "relic"

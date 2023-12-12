@@ -1,7 +1,7 @@
 {
   "name": "Trinity Gore",
   "description": "@{item::Trishul} only; Effective against Cavalry, effective against Dragon units.",
-  "requires": "All (Weapon `Trishul`) (Crest Lamine) (Lances E)",
+  "requires": "All (Item `Trishul`) (Crest Lamine) (Lances E)",
   "compatible": "Name Trishul",
   "mttype": "else",
   "modifiers": {
@@ -19,6 +19,9 @@
   },
   "comment": "",
   "tags": [
+    "cavalry effective",
+    "dragon effective",
+    "effective",
     "relic"
   ],
   "hidden": false,

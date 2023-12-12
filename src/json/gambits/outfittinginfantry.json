@@ -27,6 +27,7 @@
         "epcost": 0,
         "capcost": 0
     },
+    "events": ["Outfitting"],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["structure"],

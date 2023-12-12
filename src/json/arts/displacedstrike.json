@@ -1,7 +1,7 @@
 {
   "name": "Displaced Strike",
   "description": "Only usable with ethereal weapons.",
-  "requires": "Weapon `Ethreal Lance`",
+  "requires": "Item `Ethreal Lance`",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

@@ -27,6 +27,7 @@
         "epcost": 0,
         "capcost": 0
     },
+    "events": ["Training"],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["structure"],

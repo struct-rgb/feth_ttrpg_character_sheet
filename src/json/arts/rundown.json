@@ -1,6 +1,6 @@
 {
   "name": "Run Down",
-  "description": "Can only be equipped by Cavalry units, and can only be used while mounted. Unit swaps spaces with target foe after combat (if able). On hit, applies @{condition:Rattled:[Rattled]} to target Infantry foe for one turn. ",
+  "description": "Can only be equipped by Cavalry units, and can only be used while mounted. Unit swaps spaces with target foe after combat (if able). On hit, applies @{condition:Halt:[Halt]} to target Infantry foe for one turn. ",
   "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
   "requires": "Riding C",
   "mttype": "else",

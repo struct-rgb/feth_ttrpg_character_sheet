@@ -18,17 +18,194 @@
 /* global Feature */
 /* global Item */
 /* global Attribute */
-/* global AttackFeature */
+/* global Action */
 
 /* global Grade */
 
 /* global Expression */
 
+class ItemPreview {
+
+	constructor(item) {
+		this.item = item;
+		this.root = element("div");
+
+		this.va = new Action.VisualAid(this.item, {draw: false});
+		this.item.refresher.register(this.va, ["theme", "item|total|maxrng", "item|total|minrng"]);
+		this._pregroup = null;
+
+		this.item.refresher.register(this,
+			Array.from(this.item.sheet.compiler.variables(
+				/item\|total\|.*/
+			)).map(f => f.called).concat([
+				"item|rank", "item|price", "item|preview"
+			])
+		);
+	}
+
+	generate(dead=false) {
+
+		let   star  = undefined;
+		const sheet = this.item.sheet;
+
+		function span(...args) {
+			return element("span", args);
+		}
+		
+		const mods  = [];
+		const env   =  new Expression.Env(
+			Expression.Env.RUNTIME, sheet.definez
+		);
+
+		const uimod = (name, sign=false, dead=false) => {
+
+			const dyn = env.read(`item|dynamic|${name}`);
+
+			/* it it's a number just give a static html */
+			if (!dyn) {
+
+				const num = env.read(`item|total|${name}`);
+
+				/* we don't care to display these */
+				if (num == 0) return 0;
+
+				return element("span", {
+					class   : ["computed"],
+					content : [(sign && num >= 0) ? "+" : "", String(num)],
+				});
+			}
+
+			const variable = `item|total|${name}`;
+
+			/* made a modifier expression for this value */
+			const modifier = sheet.compiler.compile(variable);
+
+			/* handle an expression by returning a ModWidget */
+			const widget = new ModWidget(modifier, sign, !dead);
+
+			/* throw it in the refresher */
+			// this.item.refresher.register(widget, [variable]);
+
+			return widget.root;
+		};
+
+		if ((star = this.item._price._trigger(this.item.price))) {
+			mods.push([
+				element("span", star, "computed"),
+				element( "sub",  "G", "computed"),
+			]);
+		}
+
+		if ((star = uimod("tpcost", false, dead))) {
+			mods.push([star, element("sub", "TP", "computed")]);
+		}
+
+		if ((star = uimod("spcost", false, dead))) {
+			mods.push([star, element("sub", "SP", "computed")]);
+		}
+
+		for (let key in this.item.stats) {
+
+			if (Feature.MODEXCLUDE.has(key)) {
+				continue;
+			}
+
+			/* items shouldn't modify this */
+			if (key == "doubles" || key == "doubled") {
+				continue;
+			}
+
+			if ((star = uimod(key, true, dead))) {
+				mods.push(span(capitalize(key), ":\xA0", star));
+			}
+		}
+
+		const min = env.read("item|total|minrng");
+		const max = env.read("item|total|maxrng");
+
+		if (min != max) {
+			const min = uimod("minrng", false, dead);
+			const max = uimod("maxrng", false, dead);
+			mods.push(span("Range:\xA0", min, "\xA0-\xA0", max));
+		} else if (min != 0) {
+			mods.push(span("Range:\xA0", uimod("maxrng", false, dead)));
+		}
+
+		if ((star = uimod("tp", false, dead))) {
+			mods.push(span("Max TP:\xA0", star));
+		}
+
+		if ((star = uimod("sp", false, dead))) {
+			mods.push(span("Max SP:\xA0", star));
+		}
+
+		const rank  = this.item._rank._trigger(this.item.rank);
+		const attrs = Array.from(this.item.attributes.getActive());
+
+		let link = undefined;
+
+		try {
+			link = hitip.link(this.item.fullInfo());
+		} catch (error) {
+			console.log(error);
+			return element("div", [
+				element("dt", "Error Parsing Custom Description"),
+				element("dd", String(error)),
+			]);
+		}
+
+		const predicate = (
+			this.item.template.type
+				? `${this.item.template.type} ${rank}`
+				: "None"
+		);
+
+		const dd = element("dd", [
+			delimit(" ", mods), mods.length ? element("br") : "",
+			this.item.aoe ? this.va.root : "", element("br"),
+			link,
+			attrs.length ? element("div", [
+				element("strong", "Attributes"),
+				element("ul",
+					attrs.map(a => element("li",
+						tooltip(
+							element("span", Attribute.get(a).name, "datum"),
+							Attribute.get(a).body(true)
+						)
+					))
+				)
+			]) : "",
+			element("div",
+				hitip.toul(sheet.predicator.compile(predicate), dead, this.item.refresher)
+			)
+		]);
+
+		const dt = element("dt", [
+			this.item.name, " (", this.item.template.type, " ", rank, ")"
+		]);
+
+		return element("div", [dt, dd]);
+	}
+
+	refresh() {
+		if (this.root.hasChildNodes()) {
+			this.root.lastChild.remove();
+		}
+
+		if (this._pregroup) this.item.refresher.delete(this._pregroup);
+		this._pregroup = this.item.refresher.createGroup();
+		this.root.appendChild(this.generate());
+	}
+
+}
+
 class Items {
 
 	constructor(sheet) {
-		this.root  = document.createElement("div");
-		this.sheet = sheet;
+		this.root      = document.createElement("div");
+		this.sheet     = sheet;
+		this.refresher = this.sheet.refresher;
+		// this._pregroup = null;
 
 		this._name = element("input", {
 			class : ["simple-border"],
@@ -42,6 +219,8 @@ class Items {
 					const element = this.sheet.wb.category.element(activeID);
 					element.title       = this.name;
 					element.description = this.body();
+
+					this.refresher.refresh("item|preview");
 				}),
 			},
 		});
@@ -81,13 +260,18 @@ class Items {
 			addActive   : true,
 			ontoggle    : ((category, key) => {
 				category.toggleActive(key);
-				this.refresh();
+				// this.refresh();
+				const feature = category.model.get(key);
+				this.refresher.refresh(feature.affects);
 			}),
 			onremove    : ((category, key) => {
 				const wasActive = category.isActive(key);
 				category.delete(key);
 
-				if (wasActive) this.refresh();
+				if (wasActive) {
+					const feature = category.model.get(key);
+					this.refresher.refresh(feature.affects);
+				}
 			}),
 			select      : Attribute.select(),
 		});
@@ -101,7 +285,7 @@ class Items {
 			}
 		});
 
-		this._preview = element("div");
+		this._preview = new ItemPreview(this);
 
 		this.stats = {};
 
@@ -109,19 +293,28 @@ class Items {
 		const cconf = {edit: true, root: "span", value: 0, shown: "0",  min: -100, max: +100};
 
 		const makefn = (name) => {
+
+			const variable = `item|total|${name}`;
+
 			const baseFunction = new Expression.Env(
 				Expression.Env.RUNTIME, this.sheet.definez
-			).func(`item|total|${name}`);
+			).func(variable);
 
 			return ((base) => {
-				this.sheet.stats.refreshSecondary();
+				// this.sheet.stats.refreshSecondary();
+				this.refresher.refresh(variable);
 				return baseFunction();
 			});
 		};
 
 		const defsec = (key, config, fn) => {
-			const cell      = new AttributeCell(config, fn);
+			const cell       = new AttributeCell(config, fn);
 			this.stats[key] = cell;
+
+			const variable = `item|total|${key}`;
+
+			const dependancies = this.sheet.compiler.dependancies(variable);
+			this.refresher.register(cell, dependancies);
 			return cell;
 		};
 
@@ -165,6 +358,7 @@ class Items {
 					sum += Attribute.get(attribute).rank;
 				}
 
+				this.refresher.refresh("item|rank");
 				return Grade.fromNumber(Math.max(Math.min(sum, 12), 0));
 			}),
 		});
@@ -185,6 +379,7 @@ class Items {
 					sum += Attribute.get(attribute).price;
 				}
 
+				this.refresher.refresh("item|price");
 				return sum;
 			}),
 		});
@@ -193,13 +388,13 @@ class Items {
 			edit    : true,
 			value   : 0,
 			shown   : "ELSE",
-			min     : AttackFeature.MTTYPE.min,
-			max     : AttackFeature.MTTYPE.max,
+			min     : Action.MTTYPE.min,
+			max     : Action.MTTYPE.max,
 			step    : 1,
 			root    : "span",
 			trigger : ((base) => {
 				const value = baseFunction();
-				const text  = AttackFeature.MTTYPE.asString(value);
+				const text  = Action.MTTYPE.asString(value);
 				this.sheet.stats.refreshSecondary();
 				return text.toUpperCase();
 			}),
@@ -259,7 +454,9 @@ class Items {
 		/* --------------------------------------------------------------- */
 
 		this._adder   = new hitip.Adder(this._description, () => this.refresh());
-		this._replace = new Toggle("Replace original?", false, () => {});
+		this._replace = new Toggle("Replace original?", false, () => {
+			this.refresher.refresh("item|preview");
+		});
 
 		this._refr    = element("input", {
 			class : ["simple-border"],
@@ -310,7 +507,7 @@ class Items {
 			uniqueLabel("Template", this._select), element("br"),
 			this._sf.root, element("br"), element("br"),
 
-			this._preview,
+			this._preview.root,
 
 			tooltip(this._refr, [
 				"Refresh the item preview."
@@ -487,6 +684,18 @@ class Items {
 		this._replace.checked = value;
 	}
 
+	modifier(name) {
+
+		const variable = `item|total|${name}`;
+		if (!(variable in this.sheet.definez)) return 0;
+
+		const env   =  new Expression.Env(
+			Expression.Env.RUNTIME, this.sheet.definez
+		);
+
+		return env.read(variable);
+	}
+
 	refresh() {
 		this._rank.refresh();
 		this._price.refresh();
@@ -495,11 +704,7 @@ class Items {
 			this.stats[stat].refresh();
 		}
 
-		if (this._preview.hasChildNodes()) {
-			this._preview.lastChild.remove();
-		}
-
-		this._preview.appendChild(this.preview());
+		this.refresher.refresh("item|preview");
 	}
 
 	import(item) {
@@ -604,142 +809,11 @@ class Items {
 
 	/* blurb display */
 
-	preview(dead=false) {
-
-		let   star  = undefined;
-		const sheet = this.sheet;
-
-		function span(...args) {
-			return element("span", args);
-		}
-		
-		const mods  = [];
-		const env   =  new Expression.Env(
-			Expression.Env.RUNTIME, sheet.definez
-		);
-
-		function uimod(name, sign=false, dead=false) {
-
-			const dyn = env.read(`item|dynamic|${name}`);
-
-			/* it it's a number just give a static html */
-			if (!dyn) {
-
-				const num = env.read(`item|total|${name}`);
-
-				/* we don't care to display these */
-				if (num == 0) return 0;
-
-				return element("span", {
-					class   : ["computed"],
-					content : [(sign && num >= 0) ? "+" : "", String(num)],
-				});
-			}
-
-			/* made a modifier expression for this value */
-			const modifier = sheet.compiler.compile(`item|total|${name}`);
-
-			/* handle an expression by returning a ModWidget */
-			return (new ModWidget(modifier, sign, !dead)).root;
-		}
-
-		if ((star = this._price._trigger(this.price))) {
-			mods.push([
-				element("span", star, "computed"),
-				element( "sub",  "G", "computed"),
-			]);
-		}
-
-		if ((star = uimod("tpcost", false, dead))) {
-			mods.push([star, element("sub", "TP", "computed")]);
-		}
-
-		if ((star = uimod("spcost", false, dead))) {
-			mods.push([star, element("sub", "SP", "computed")]);
-		}
-
-		for (let key in this.stats) {
-
-			if (Feature.MODEXCLUDE.has(key)) {
-				continue;
-			}
-
-			/* items shouldn't modify this */
-			if (key == "doubles" || key == "doubled") {
-				continue;
-			}
-
-			if ((star = uimod(key, true, dead))) {
-				mods.push(span(capitalize(key), ":\xA0", star));
-			}
-		}
-
-		const min = env.read("item|total|minrng");
-		const max = env.read("item|total|maxrng");
-
-		if (min != max) {
-			const min = uimod("minrng", false, dead);
-			const max = uimod("maxrng", false, dead);
-			mods.push(span("Range:\xA0", min, "\xA0-\xA0", max));
-		} else if (min != 0) {
-			mods.push(span("Range:\xA0", uimod("maxrng", false, dead)));
-		}
-
-		if ((star = uimod("tp", false, dead))) {
-			mods.push(span("Max TP:\xA0", star));
-		}
-
-		if ((star = uimod("sp", false, dead))) {
-			mods.push(span("Max SP:\xA0", star));
-		}
-
-		const rank  = this._rank._trigger(this.rank);
-		const attrs = Array.from(this.attributes.getActive());
-
-		let link = undefined;
-
-		try {
-			link = hitip.link(this.fullInfo());
-		} catch (error) {
-			console.log(error);
-			return element("div", [
-				element("dt", "Error Parsing Custom Description"),
-				element("dd", String(error)),
-			]);
-		}
-
-		const predicate = (
-			this.template.type
-				? `${this.template.type} ${rank}`
-				: "None"
-		);
-
-		const dd = element("dd", [
-			delimit(" ", mods), mods.length ? element("br") : "",
-			link,
-			attrs.length ? element("div", [
-				element("strong", "Attributes"),
-				element("ul",
-					attrs.map(a => element("li",
-						tooltip(
-							element("span", Attribute.get(a).name, "datum"),
-							Attribute.get(a).body(true)
-						)
-					))
-				)
-			]) : "",
-			element("div",
-				hitip.toul(this.sheet.predicator.compile(predicate), dead)
-			)
-		]);
-
-		const dt = element("dt", [
-			this.name, " (", this.template.type, " ", rank, ")"
-		]);
-
-		return element("div", [dt, dd]);
+	get aoe() {
+		return this.template.aoe;
 	}
-	
+
+
 	blurb() {
 
 		let star = undefined;

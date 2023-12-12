@@ -5,6 +5,15 @@
 	--arylide-yellow: #E7D05Cff;
 	--dutch-white: #E4DCB6ff;
 	--drab-dark-brown: #32290Aff;
+
+	--gambit-unit: var(--drab-dark-brown);
+	--gambit-border: var(--olive);
+	--gambit-tile: var(--dutch-white);
+	--gambit-background: var(--drab-dark-brown);
+	--gambit-hit-0: #9D8725;
+	--gambit-hit-20: #7D6705;
+	--gambit-hit-40: #5D4700;
+	--gambit-hit-60: #3D2700;
 }
 
 .base {

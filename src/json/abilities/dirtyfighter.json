@@ -1,6 +1,6 @@
 {
     "name": "Dirty Fighter",
-    "description": "Duration of conditions applied to target foe after combat increases by 1. After combat apply @{const:gbp:[Stat +(X/2)]} to this unit matching the @{const:gbp:[Stat -X]} with the highest value of X applied to foe after combat.",
+    "description": "Duration of conditions applied to target foe after combat increases by 1. After combat apply @{const:gbp:[Stat +(X/2)]} to this unit matching the @{const:gbp:[Stat -X]} with the highest value of X applied to foe after combat for the same duration.",
     "requires": "All (Any (Swords D+) (Riding D+)) (Level 8)",
     "modifiers": {
         "hp": 0,

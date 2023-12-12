@@ -1,7 +1,7 @@
 {
   "name": "Burning Quake",
   "description": "@{item::Lúin} only; Mt +30% of user's Spd; effective against Dragon units.",
-  "requires": "All (Weapon Lúin) (Crest Daphnel) (Lances E)",
+  "requires": "All (Item Lúin) (Crest Daphnel) (Lances E)",
   "compatible": "Name Lúin",
   "mttype": "else",
   "modifiers": {
@@ -19,6 +19,7 @@
   },
   "comment": "",
   "tags": [
+    "dragon effective",
     "scales",
     "effective",
     "relic"

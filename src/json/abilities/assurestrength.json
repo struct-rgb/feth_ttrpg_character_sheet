@@ -35,7 +35,7 @@
     "rows": [
         {
             "name": "Minimum Damage",
-            "when": "unit|total|mttype|str",
+            "when": "unit|total|mttype == mttype|str",
             "expr": "ceil((unit|total|mt) / 4)",
             "roll": false
         }

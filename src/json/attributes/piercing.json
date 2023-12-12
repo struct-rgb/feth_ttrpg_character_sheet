@@ -3,6 +3,7 @@
     "type": "Any",
     "description": "When this unit initiates combat, after the resolution of that combat, deal nonlethal damage equal to 50% of the damage dealt to target foe that combat to the nearest enemy in a three space perpendicular (3x1 line) behind target foe. For 4 TP, this effect may occur after a combat on enemy phase.\n\nDisabled on weapons that are not Lances, Guile, Faith or Bows.",
     "rank": 2,
+    "aoe": "Box 1x3",
     "price": 2000,
 
     "mttype": "else",

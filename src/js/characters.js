@@ -22,7 +22,9 @@ class Characters {
 
 	constructor(sheet) {
 
-		this.sheet = sheet;
+		this.sheet     = sheet;
+		this.refresher = sheet.refresher;
+		this._pregroup = null;
 
 		this._name = element("input", {
 			class : ["simple-border"],
@@ -44,7 +46,7 @@ class Characters {
 			attrs: {
 				value   : "Normal",
 				oninput : (() => {
-					this.sheet.stats.refresh();
+					this.refresher.refresh("other|triangle");
 				}),
 			},
 		});
@@ -102,9 +104,13 @@ class Characters {
 			"Class description/prerequisites/etc. will go here."
 		);
 
-		this._info = element("div");
+		this._info    = element("div");
+		this._infodiv = element("div", this._info);
+
+		this._token   = element("img");
 
 		this.root = element("div", [
+
 			uniqueLabel("Character Name", this._name), element("br"),
 			this._name, element("br"),
 
@@ -127,10 +133,11 @@ class Characters {
 
 			element("br"),
 			element("br"),
-			this._info,
+			this._infodiv,
 
 		]);
 	}
+
 
 	get name() {
 		return this._name.value;
@@ -173,10 +180,8 @@ class Characters {
 	}
 
 	set mounted(value) {
-		this._mounted.checked = value;
-
-		if (this.mounted && !this.class.hasMount()) {
-			this.mounted = false;
+		if (value && !this.class.hasMount()) {
+			this._mounted.checked = false;
 		} else {
 			this.refresh();
 		}
@@ -191,7 +196,10 @@ class Characters {
 		if (value === undefined) throw Error();
 
 		this._class.value     = value;
-		this._mounted.checked = this.class.hasMount();	
+		this._mounted.checked = this.class.hasMount();
+
+		this.refresher.refresh("Class");
+		this.refresher.refresh("ClassType");
 	}
 
 	get triangle() {
@@ -200,6 +208,14 @@ class Characters {
 
 	set triangle(value) {
 		this._advantage.value = value;
+	}
+
+	get token() {
+		return this._token.src;
+	}
+
+	set token(value) {
+		this._token.src = value;
 	}
 
 	refresh() {
@@ -244,6 +260,9 @@ class Characters {
 
 		this.sheet.stats.refresh();
 
+		if (this._pregroup) this.refresher.delete(this._pregroup); 
+		this._pregroup = this.refresher.createGroup();
+
 		this.reclass();
 	}
 
@@ -257,12 +276,12 @@ class Characters {
 			class   : ["center-pane"],
 			content : [
 				element("dt", element("strong", c.name)),
-				element("dd", c.body(true, false, false)),
+				element("dd", c.body(true, false, false, this.refresher)),
 			],
 		});
 
 		this._info = p;
-		this.root.appendChild(p);
+		this._infodiv.appendChild(p);
 	}
 
 	static listize(node, top=true) {

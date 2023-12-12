@@ -1,6 +1,6 @@
 {
     "name": "Arcane Architect",
-    "description": "Once per turn on this unit's phase, at any point aside from mid-combat, Castiel may apply one mode to @{tooltip:Reason tile(s):Ice Block, Fire Patch, Wind Torrent, Lighting Arc, or Force Wall} within Range 10:\n\u00A01. Destroy up to X target tiles and regain 1 SP per tile destroyed.\n\u00A02. Move X target tiles X spaces.\n\u00A03. Convert X target tiles of one type into Reason tiles of another type (besides @{tile:Force Wall:Force Walls}).\n\u00A04. Extend the duration of X wall tiles by one turn. \n\u00A05. Deal (Castiel's Mag - target's Res) nonlethal damage to up to X targets adjacent to target tile and destroy target tile.\nWhere X is 1d4 rolled before choosing a mode.",
+    "description": "Once per turn on this unit's phase, at any point aside from mid-combat, Castiel may apply one mode to @{tooltip:Reason tile(s):Ice Block, Fire Patch, Wind Torrent, Lightning Arc, or Force Wall} within Range 10:\n\u00A01. Destroy up to X target tiles and regain 1 SP per tile destroyed.\n\u00A02. Move X target tiles X spaces.\n\u00A03. Convert X target tiles of one type into Reason tiles of another type (besides @{tile:Force Wall:Force Walls}).\n\u00A04. Extend the duration of X wall tiles by one turn. \n\u00A05. Deal (Castiel's Mag - target's Res) nonlethal damage to up to X targets adjacent to target tile and destroy target tile.\nWhere X is 1d4 rolled before choosing a mode.",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,

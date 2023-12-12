@@ -23,7 +23,8 @@
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
     "movement",
-    "force"
+    "force",
+    "variant"
   ],
   "hidden": false,
   "type": "Reason",

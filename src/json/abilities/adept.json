@@ -1,6 +1,6 @@
 {
     "name": "Adept",
-    "description": "In combat, after first attack this unit makes with a Sword, Lance, or Axe, Dex% chance to immediately make a consecutive attack.",
+    "description": "When not using a combat art in combat, after the first attack this unit makes with a Sword, Lance, or Axe, it has a Dex% chance to immediately make a consecutive attack.",
     "requires": "All (Swords B+) (Level 20)",
     "modifiers": {
         "hp": 0,

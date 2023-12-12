@@ -7,7 +7,7 @@
 
 /* global Class */
 /* global Expression */
-/* global AttackFeature */
+/* global Action */
 
 /* global PointBuy */
 
@@ -1464,11 +1464,12 @@ class Stats {
 	};
 
 	constructor(stats, sheet) {
-		this.root     = element("div");
-		this.names    = stats;
-		this.sheet    = sheet;
-		this.levelups = new LevelHistory(sheet);
-		this.pointbuy = new PointBuy();
+		this.root      = element("div");
+		this.names     = stats;
+		this.sheet     = sheet;
+		this.levelups  = new LevelHistory(sheet);
+		this.pointbuy  = new PointBuy();
+		this.refresher = this.sheet.refresher;
 
 		const primes  = element("tbody");
 
@@ -1479,8 +1480,10 @@ class Stats {
 			min     : 1,
 			max     : 100,
 			trigger : ((level) => {
-				this.refreshSecondary();
-				this.stats.mov.refresh();
+				// this.refreshSecondary();
+				this.refresher.refresh("Level");
+				this.refresher.refresh("unit|level");
+				// this.stats.mov.refresh();
 				return level;
 			}),
 		});
@@ -1514,9 +1517,12 @@ class Stats {
 				Expression.Env.RUNTIME, this.sheet.definez
 			).func(`unit|total|${stat}`);
 
-			const base = new AttributeCell(Stats.BASE_OPTIONS, (base) => {
-				
-				this.refreshSecondary();
+			const varname = `unit|base|${stat}`;
+
+			const base = new AttributeCell(Stats.BASE_OPTIONS, (_base) => {
+
+				// TODO refresher location
+				this.refresher.refresh(varname);
 				
 				if (stat == "dex" || stat == "lck") {
 					this.sheet.battalion.refresh(false);
@@ -1524,6 +1530,12 @@ class Stats {
 
 				return Math.max(baseFunction(), 0);
 			});
+
+			this.refresher.register(base,
+				this.sheet.compiler.dependancies(`unit|total|${stat}`,
+					new Set([`unit|var_base|${stat}`]) // prevent recursion
+				)
+			);
 
 			this.stats[stat] = base;
 
@@ -1557,8 +1569,20 @@ class Stats {
 		const cconf = {edit: false, root: "span", value: 0, shown: "0"};
 
 		const defsec = (key, config, fn) => {
+
+			const variable      = `unit|total|${key}`;
+
+			if (fn === undefined) {
+				fn = new Expression.Env(
+					Expression.Env.RUNTIME, this.sheet.definez
+				).func(variable);
+			}
+
 			const cell          = new AttributeCell(config, fn);
-			this.secondary[key] = cell; 
+			this.secondary[key] = cell;
+
+			const dependancies  = this.sheet.compiler.dependancies(variable);
+			this.refresher.register(cell, dependancies);
 			return cell;
 		};
 
@@ -1595,7 +1619,7 @@ class Stats {
 			wide("Might", "mt"),
 			wide("Based on", "mttype", (base) => {
 				const value = baseFunction();
-				const text  = AttackFeature.MTTYPE.asString(value);
+				const text  = Action.MTTYPE.asString(value);
 				return text.toUpperCase();
 			}),
 			dual("Prot/Resl", "prot", "resl"),
@@ -1628,10 +1652,20 @@ class Stats {
 			]),
 		]);
 
+		this.va = new Action.VisualAid(this.sheet, {
+			width : 180,
+			draw  : false,
+		});
+
+
+
+		this.sheet.refresher.register(this.va, this.sheet.view_triggers);
+
 		this.root = element("div", [
 			element("table", primes),
 			element("hr"),
 			element("table", second),
+			this.va.root,
 		]);
 	}
 

@@ -23,7 +23,8 @@
     "no crit",
     "no stats",
     "healing",
-    "tactical"
+    "tactical",
+    "halfslot"
   ],
   "hidden": false,
   "type": "Generic",

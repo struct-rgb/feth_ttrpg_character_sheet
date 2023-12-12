@@ -1,6 +1,6 @@
 {
     "name": "Battle Stance",
-    "description": "At the start of its phase, this unit can choose to enter into 1 of 6 Battle stances:\n\u00A0• Solar: Str +5/Def -5\n\u00A0• Lunar: Mag +5/Res -5\n\u00A0• Earth: Def +5/Str -5\n\u00A0• Water: Res +5/Mag -5\n\u00A0• Wind: Avo +5 / Hit -5\n\u00A0• Fire: Hit +5/Avo -5",
+    "description": "At the start of its phase, this unit can choose to enter into 1 of 6 Battle stances:\n\u00A0• Solar: Str +5/Def -5\n\u00A0• Lunar: Mag +5/Res -5\n\u00A0• Earth: Def +5/Str -5\n\u00A0• Water: Res +5/Mag -5\n\u00A0• Wind: Avo +15 / Hit -5\n\u00A0• Fire: Hit +5/Avo -15",
     "requires": "Innate",
     "modifiers": {
         "hp": 0,
@@ -16,8 +16,8 @@
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "5 * fill locals|multiplier(6, 5)",
-        "avo": "5 * fill locals|multiplier(5, 6)",
+        "hit": "15 * fill locals|multiplier(6, 5)",
+        "avo": "15 * fill locals|multiplier(5, 6)",
         "crit": 0,
         "cravo": 0,
 
@@ -57,6 +57,6 @@
     ],
 
     "comment": "Aaron von Rogue School's personal.",
-    "tags": ["personal", "action"],
+    "tags": ["personal"],
     "hidden": false
 }

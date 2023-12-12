@@ -1,7 +1,7 @@
 {
   "name": "Fortify",
   "type": "Faith",
-  "description": "Restores HP to all allies within range = The spell�s Mt + the user�s Mag/2. The range of this spell is 1-(User�s Mag/4, rounded up.).",
+  "description": "Restores HP to all allies within range = The spell's Mt + the user's Mag/2. The range of this spell is 1-(User's Mag/4, rounded up.).",
   "requires": "Faith A",
   "rank": "A",
   "price": 3760,
@@ -15,7 +15,7 @@
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
-    "maxrng": 1,
+    "maxrng": "ceil(unit|total|mag / 4)",
     "tpcost": 8,
     "spcost": 0,
     "tp": 0,

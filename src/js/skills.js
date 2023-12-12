@@ -56,8 +56,11 @@ class Row {
 				this.sheet.battalion._rank.refresh();
 			}
 
-			this.sheet.character.reclass();
+			// this.sheet.character.reclass();
 			section._other.cell.refresh();
+
+			// TODO make sure that this works
+			this.sheet.refresher.refresh(this.name);
 
 			return this.grade;
 		});
@@ -103,14 +106,19 @@ class SkillUserInterface {
 		this._total.root.colSpan = 2;
 		this.rows   = new Map();
 
-		this._other = new Row("Other", this, sheet, (x) => 
-			Grade.fromNumber(
+		this._other = new Row("Other", this, sheet, (x) => {
+			const grade = Grade.fromNumber(
 				Array
 					.from(this.rows.values())
 					.map(row => Grade.toNumber(row.cell.shown))
 					.reduce((a, b) => Math.max(a, b))
-			)	
-		);
+			);
+
+			// TODO make sure that this works
+			this.sheet.refresher.refresh("Other");
+
+			return grade;
+		});
 
 		const body = element("tbody", 
 			skills.map(skill => {

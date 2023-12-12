@@ -1,7 +1,7 @@
 {
   "name": "Ruined Sky",
   "description": "@{item::Lance of Ruin} only; effective against Flying and Dragon units.",
-  "requires": "All (Weapon `Lance of Ruin`) (Crest Gautier) (Lances E)",
+  "requires": "All (Item `Lance of Ruin`) (Crest Gautier) (Lances E)",
   "compatible": "Name `Lance of Ruin`",
   "mttype": "else",
   "modifiers": {
@@ -19,6 +19,7 @@
   },
   "comment": "",
   "tags": [
+    "dragon effective",
     "effective",
     "relic"
   ],

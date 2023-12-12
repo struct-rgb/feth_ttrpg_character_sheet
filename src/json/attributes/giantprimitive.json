@@ -1,0 +1,28 @@
+{
+    "name": "Giant Primitive",
+    "type": "Any",
+    "description": "Grants weapon Mt +2 and Avo -15.",
+    "rank": 0,
+    "price": 0,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": -15,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["for bows", "for axes", "for lance", "for swords", "for brawl", "for guile", "for reason", "for faith"],
+    "hidden": false
+}

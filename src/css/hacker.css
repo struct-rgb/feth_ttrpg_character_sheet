@@ -1,3 +1,15 @@
+
+:root {
+	--gambit-unit: #000000;
+	--gambit-border: #00DD00;
+	--gambit-tile: #008800;
+	--gambit-background: #222222;
+	--gambit-hit-0: #00CC00;
+	--gambit-hit-20: #008800;
+	--gambit-hit-40: #005500;
+	--gambit-hit-60: #002200;
+}
+
 .base {
 	color: #DDDDDD;
 	background: black

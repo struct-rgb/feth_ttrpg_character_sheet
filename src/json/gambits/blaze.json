@@ -1,11 +1,11 @@
 {
     "name": "Blaze",
-    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn. After combat, create @{tiles:Fire Patch:Fire Patches} in all empty spaces in AoE.",
+    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn. After combat, create @{tile:Fire Patch:Fire Patches} in all empty spaces in AoE.",
     "requires": "Authority B",
     "mttype": "else",
     "price": "",
     "rank": "B",
-    "aoe": "Half Circle 2",
+    "aoe": "Half-Circle 2",
     "modifiers": {
         "atk": 0,
         "mor": 0,

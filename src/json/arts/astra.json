@@ -5,7 +5,7 @@
   "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
-    "mt": "(-(item|total|mt + abilities|mt + equipment|mt) / 2)",
+    "mt": "floor(-(item|total|mt + abilities|mt + equipment|mt) / 2)",
     "prot": 0,
     "resl": 0,
     "hit": -10,

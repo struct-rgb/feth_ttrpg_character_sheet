@@ -1,7 +1,7 @@
 {
     "name": "Unlocked",
     "type": "Any",
-    "description": "Item can be equipped by a unit that does not meet its required skill rank; in this case, consumes 2 TP after combat or after use (as applies). Disabled while wielder has 0 TP. This attribute cannot be purchased.",
+    "description": "Item can be equipped by a unit that does not meet its required skill rank; in this case, it costs two additional TP to use. Disabled while wielder has 0 TP. This attribute cannot be purchased.",
     "rank": 0,
     "price": 0,
 

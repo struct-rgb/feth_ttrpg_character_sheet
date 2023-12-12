@@ -23,7 +23,8 @@
     "no might",
     "no hit",
     "no crit",
-    "no stats"
+    "no stats",
+    "halfslot"
   ],
   "hidden": false,
   "type": null,

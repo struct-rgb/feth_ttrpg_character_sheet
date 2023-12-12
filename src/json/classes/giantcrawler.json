@@ -1,0 +1,39 @@
+{
+  "name": "Giant Crawler",
+  "description": "This massive worm has grown to an unnatural size through the absorption of magic",
+  "type": ["Monster"],
+  "tier": "Monster",
+  "requires": "Innate",
+  "abilities": ["Seal Speed", "Seal Defense"],
+    "arts": [],
+  "growths": {
+    "hp": 25,
+    "str": 10,
+    "mag": 10,
+    "dex": 10,
+    "spd": 0,
+    "def": 15,
+    "res": 15,
+    "lck": 20
+  },
+  "modifiers": {
+    "hp": 2,
+    "str": 2,
+    "mag": 2,
+    "dex": 2,
+    "spd": 0,
+    "def": 3,
+    "res": 3,
+    "lck": 3,
+    "mov": 4
+  },
+  "mount": null,
+
+  "default_base": "Apothacary",
+  "default_preset": "Balance/Balance/Luck",
+  "default_mainarm": "Item",
+  "default_sidearm": "Bows",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

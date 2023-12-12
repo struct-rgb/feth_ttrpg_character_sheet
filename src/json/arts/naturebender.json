@@ -1,7 +1,7 @@
 {
   "name": "Naturebender",
   "description": "@{item::Hrotti} only; @{tooltip:calculates:I changed this to match Eviscerate} damage against the lower of foe’s Prot or Resl. Effective against Cavalry and Dragon units.",
-  "requires": "All (Weapon Hrotti) (Crest Timotheos) (Guile E)",
+  "requires": "All (Item Hrotti) (Crest Timotheos) (Guile E)",
   "compatible": "Name Hrotti",
   "mttype": "else",
   "modifiers": {
@@ -19,6 +19,8 @@
   },
   "comment": "",
   "tags": [
+    "dragon effective",
+    "cavalry effective",
     "relic",
     "effective"
   ],

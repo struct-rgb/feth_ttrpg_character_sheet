@@ -1,6 +1,6 @@
 {
-    "name": "Lead by Example",
-    "description": "After this unit uses a gambit without the Measured tag, this unit may immediately use a tactical art without the Measured tag, or initiate combat with a foe in weapon range. Both instances of forced movement may apply to battalion units and ignore Auto range.",
+    "name": "Lead by Example 1",
+    "description": "After this unit uses a gambit Rank C or lower gambit without the Measured tag, this unit may immediately use a tactical art without the Measured tag, or initiate combat with a foe in weapon range.",
     "requires": "Any (Authority A) (Class Lord) (Class Banneret) (Class General) (Class `Crow Knight`)",
     "modifiers": {
         "hp": 0,

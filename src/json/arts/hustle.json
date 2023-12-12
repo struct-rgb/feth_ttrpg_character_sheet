@@ -23,7 +23,8 @@
     "no crit",
     "no stats",
     "tactical",
-    "movement"
+    "movement",
+    "halfslot"
   ],
   "hidden": false,
   "type": null,

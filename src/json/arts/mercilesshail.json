@@ -5,6 +5,7 @@
   "requires": "Reason B",
   "compatible": "All (Skill Reason) (Tag `ice`)",
   "mttype": "else",
+  "aoe": "CenterBox 0-1",
   "modifiers": {
     "mt": 0,
     "prot": 0,
@@ -13,8 +14,8 @@
     "avo": 0,
     "crit": 0,
     "cravo": 0,
-    "minrng": 0,
-    "maxrng": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|maxrng",
     "tiles": 0,
     "spcost": 9,
     "tpcost": 5,

@@ -36,7 +36,7 @@
 /* global Item */
 /* global Equipment */
 /* global Attribute */
-/* global AttackFeature */
+/* global Action */
 /* global Condition */
 /* global Tile */
 /* global Battalion */
@@ -516,6 +516,179 @@ class Buildables {
 
 }
 
+/*
+ * AttributeCell v/
+ * ModWidget v/
+ * ReqWidget
+
+	 new Set([
+	    "Brawl", v/
+	    "Level", v/
+	    "Swords", v/
+	    "Lances", v/
+	    "Riding", v/
+	    "Class", v/
+	    "Flying", v/
+	    "Armor", v/
+	    "Bows", v/
+	    "Axes", v/
+	    "Authority", v/
+	    "ClassType", v/
+	    "Faith", v/
+	    "Guile", v/
+	    "Reason", v/
+	    "Other", v/
+	    "Item", 
+	    "Crest", v/
+	    "Equipment",
+	    "Permission",
+	    "Adjutant",
+	    "Training", v/
+	    "Outfitting" v/
+	])
+
+ * VisualAid v/
+ */
+
+class Refresher {
+
+	constructor(sheet) {
+		this.items     = new Map();
+		this.propagate = new Map();
+		this.triggers  = new Map();
+		this.dirty     = new Set();
+		this.group     = null;
+		this.flight    = false;
+		this.sheet     = sheet; // TODO ugly hack
+	}
+
+	createGroup() {
+		return (this.group = new Set());
+	}
+
+	clearGroup() {
+		const group = this.group;
+		this.group  = null;
+		return group;
+	}
+
+	register(element, triggers, propagate=[]) {
+
+		if (this.items.has(element)) return false;
+
+		this.items.set(element, new Set(triggers));
+		this.propagate.set(element, new Set(propagate));
+
+		for (let trigger of triggers) {
+			if (this.triggers.has(trigger)) {
+				this.triggers.get(trigger).add(element);
+			} else {
+				this.triggers.set(trigger, new Set([element]));
+			}
+		}
+
+		if (this.group) this.group.add(element);
+		return true;
+	}
+
+
+	soil(value) {
+		if (typeof value == "string" || value instanceof String) {
+
+			// Value is a string representing a trigger.
+			if (!this.triggers.has(value)) {
+				return;
+			}
+
+			for (let element of this.triggers.get(value)) {
+				this.dirty.add(element);
+				this.soil(this.propagate.get(element));
+			}
+
+			return;
+		} else if (value instanceof Set || value instanceof Array) {
+
+			// Value is a set of trigger string or refreshable object.
+			for (let each of value) {
+				this.soil(each);
+			}
+
+			return;
+		} else if (this.items.has(value)) {
+
+			// Value is a refreshable object.
+			this.dirty.add(value);
+			this.soil(this.propagate.get(element));
+
+			return;
+		}
+
+		throw new Error(`No element, group, or trigger for '${value}'`);
+	}
+
+	clean() {
+
+		// Guard against objects that invoke this object's
+		// refresh method in their refresh method to prevent
+		// infinte recursion. (Only clean once at the end.)
+		if (this.flight) return 0;
+		this.flight = true;
+
+		let count = 0;
+		for (let each of this.dirty) {
+			each.refresh();
+			count += 1;
+		}
+		this.dirty.clear();
+
+		this.flight = false;
+		return count;
+	}
+
+	refresh(value) {
+
+		if (value === undefined) {
+			return this.refresh(Array.from(this.items.keys()));
+		}
+
+		this.soil(value);
+
+		return this.clean();
+	}
+
+	delete(value) {
+
+		if (value instanceof Set) {
+			let count = 0;
+			for (let each of value) count += this.delete(each);
+			return count;
+		} else if (this.items.has(value)) {
+			const triggers = this.items.get(value);
+
+			this.items.delete(value);
+			this.propagate.delete(value);
+
+			for (let trigger of triggers) {
+				this.triggers.get(trigger).delete(value);
+			}
+
+			this.dirty.delete(value);
+
+			return 1;
+		}
+
+		return 0;
+	}
+
+	all() {
+		for (let each of this.items.keys()) {
+			if (this.dirty.has(each)) this.dirty.delete(each);
+			each.refresh();
+		}
+	}
+
+}
+
 /**
  * Class representing the main body of the sheet.
  */
@@ -532,7 +705,7 @@ class Sheet {
 
 		this.macros = new Macros.UserInterface(this);
 
-		this.attack_mttype = "str";
+		this.refresher = new Refresher(this);
 
 		/* prominently display the version data */
 		const version = element("strong", [
@@ -597,8 +770,14 @@ class Sheet {
 
 		const compiler = new Expression.Compiler(context, macros);
 		this.compiler  = compiler;
-		this.context(context, this.macros.varopts);
+		this.context(compiler, this.macros.varopts);
 		this.definez   = context;
+
+		this.view_triggers = new Set(["theme"]).extend(
+			compiler.dependancies("unit|total|maxrng")
+		).extend(
+			compiler.dependancies("unit|total|minrng")
+		);
 
 		this.runenv    = new Expression.Env(
 			Expression.Env.RUNTIME, this.definez
@@ -635,13 +814,17 @@ class Sheet {
 		const refresh = (category, key) => {
 			console.log("refresh", key);
 			category.toggleActive(key);
-			this.stats.refresh();
+
+			const feature = category.model.get(key);
+			this.refresher.refresh(feature.affects);
 		};
 
 		const forget  = (category, key) => {
 			console.log("forget", key);
 			category.delete(key);
-			this.stats.refresh();
+
+			const feature = category.model.get(key);
+			this.refresher.refresh(feature.affects);
 		};
 
 		const unequip = (type) => {
@@ -673,15 +856,16 @@ class Sheet {
 					category.delete(key);
 				}
 
-				this.stats.refresh();
+				const feature = category.model.get(key);
+				this.refresher.refresh(feature.affects);
 			};
 		};
 
 		this.tabs = {};
 
 		const myFeatureTitle = ((feature) => feature.title()); 
-		const myFeatureBody  = ((feature) => feature.body());
-		const myTriggers     = ((feature) => feature.dependancies);
+		const myFeatureBody  = ((feature, refresher) => feature.body(false, refresher));
+		const myTriggers     = ((feature) => feature.affects);
 
 		let   sidebook = new Notebook(equip_section);
 
@@ -738,6 +922,7 @@ class Sheet {
 			ontoggle    : refresh,
 			onremove    : unequip("abilities"),
 			select      : Ability.select(),
+			refresher   : this.refresher,
 		});
 
 		sidebook.add("Abilities", this.abilities.root);
@@ -758,10 +943,14 @@ class Sheet {
 			ontoggle    : ((category, key) => {
 				console.log("refresh", key);
 
+				const feature = category.model.get(key);
+
 				// It's always fine to deactivate an art; nothing to break.
 				if (category.isActive(key)) {
 					category.toggleActive(key);
-					this.stats.refresh();
+
+					// this.stats.refresh();
+					this.refresher.refresh(feature.affects);
 					return;
 				}
 
@@ -800,10 +989,13 @@ class Sheet {
 				
 				// Then just activate this one.
 				category.toggleActive(key);
-				this.stats.refresh();
+
+				// this.stats.refresh();
+				this.refresher.refresh(feature.affects);
 			}),
 			onremove    : unequip("arts"),
 			select      : Art.select(),
+			refresher   : this.refresher,
 		});
 
 		sidebook.add("Arts", this.arts.root);
@@ -824,6 +1016,7 @@ class Sheet {
 			ontoggle    : refresh,
 			onremove    : forget,
 			select      : Equipment.select(),
+			refresher   : this.refresher,
 		});
 
 		sidebook.add("Equipment", this.equipment.root);
@@ -905,6 +1098,7 @@ class Sheet {
 			ontoggle    : (() => void(0)),
 			onremove    : forget,
 			select      : Condition.select(),
+			refresher   : this.refresher,
 		});
 		gloss.add("Conditions", this.conditions.root);
 
@@ -922,6 +1116,7 @@ class Sheet {
 			ontoggle    : (() => void(0)),
 			onremove    : forget,
 			select      : Tile.select(),
+			refresher   : this.refresher,
 		});
 
 		gloss.add("Tiles", this.tiles.root);
@@ -1107,6 +1302,9 @@ class Sheet {
 				}),
 			]
 		});
+
+		// We can do this now that all is initialized
+		this.stats.va.refresh();
 	}
 
 	predicates(base) {
@@ -1187,9 +1385,9 @@ class Sheet {
 			let diff = 0;
 			for (let each of definitions.skills) {
 				diff = (
-					Grade.toNumber(this.skills[each].grade)
-						-
 					Grade.toNumber(grade)
+						-
+					Grade.toNumber(this.skills[each].grade)
 				);
 
 				if (diff <= 0) break;
@@ -1310,9 +1508,11 @@ class Sheet {
 		return ctx;
 	}
 
-	context(base) {
+	context(compiler) {
 
 		if (this._context) return this._context;
+
+		const base = compiler.context;
 
 		function sum(env, ...args) {
 			return (
@@ -1334,81 +1534,50 @@ class Sheet {
 		const ctx    = base || {};
 
 		const add = (template) => {
-
-			let fn = undefined;
-
-			const source = (
-				template.expr.toString()
-					/* remove indentation from source */
-					.replace(/\t{3,4}/g, "")
-					/* convert remaining into spaces */
-					.replace(/\t/g, "  ")
-			);
-
-			if (typeof template.expr == "string") {
-				const e = this.compiler.compile(template.expr);
-				fn   = ((env) => {
-					if (template.debug) debugger;
-					return Expression.evaluate(e, env);
-				});
-				fn.e = e;
-				fn.s = element("div", [
-					"=== Calculator Expression ===", element("br"),
-					element("div", Expression.highlight(source), "calc-code"),
-				]);
-			} else {
-				fn   = template.expr;
-				fn.s = element("div", [
-					"=== JavaScript Function ===", element("br"),
-					element("pre", source)
-				]); 
-			}
-
-			fn.called      = template.name;
-			fn.header      = tooltip(
-				element("span", [
-					"Variable: ",
-					element("span", template.name, "datum")
-				]),
-				wrap(
-					"Click on the text below to switch between showing a ",
-					"description and the definition."
-				)
-			);
-
-			fn.about       = new SwapText([
-				hilight(template.about),
-				element("pre", fn.s),
-			]).root;
-			ctx[fn.called] = fn;
+			const fn = compiler.define(template);
 			varsen.push(fn.called);
 			return fn.called;
 		};
 
-		function funcsum(...names) {
+		this._js_vmap = new Map();
 
-			const funcs = names.map(name => {
+		const funcsum = (...names) => {
+
+			const vars = [];
+
+			for (let name of names) {
 				const type = typeof name;
-				if  ( type == "function" ) return name;
-				if  ( type == "string"   ) return ctx[name];
-				throw new Error(`type '${type}' is invalid`);
-			});
+				if (type == "function") {
 
-			return (env) => {
-
-				let a = 0;
-				for (let func of funcs) {
-					a = sum(env, a, func(env));
-
-					if ((typeof a != "number" && typeof a != "string") || Number.isNaN(a)) {
-						debugger;
+					// a hash name has already been made for this
+					if (this._js_vmap.has(name)) {
+						vars.push(this._js_vmap.get(name));
+						continue;
 					}
 
-				}
+					// create a hash name for this function
+					const uid = `uid|${uniqueID().replace(/-/g, "_")}`;
 
-				return a;
-			};
-		}
+					add({
+						name  : uid,
+						about : "Anonymous function.",
+						expr  : name,
+					});
+
+					this._js_vmap.set(name, uid);
+					vars.push(uid);
+
+				} else if (type == "string") {
+
+					vars.push(name);
+
+				} else {
+					throw new Error(`type ${type} is invalid`);
+				}
+			}
+
+			return vars.join("\n  + ");
+		};
 
 		const multisum = (getter, filter) => {
 
@@ -1645,6 +1814,12 @@ class Sheet {
 		});
 
 		add({
+			name  : "other|mounted",
+			about : "Whether unit is mounted or not.",
+			expr  : ((env) => Number(this.character.mounted)),
+		});
+
+		add({
 			name  : "other|triangle|prompt",
 			about : wrap(
 				"Code that generates a prompt asking for the user to select ",
@@ -1756,64 +1931,66 @@ class Sheet {
 				}),
 			});
 
-			add({
-				name  : `class|mounted|${name}`,
-				about : wrap(
-					`Evaluates to the unit's class's mount's ${name} `,
-					"modifier if the 'Mounted?' checkbox under Create => ",
-					"Characters is checked, otherwise always evaluates to 0.",
-				),
-				expr  : ((env) => {
-					const cls = this.character.class;
-					return label(env, "mnt",
-						cls.hasMount() && this.character.mounted
-							? cls.mount.modifier(name, env)
-							: 0
-					);
-				}),
-			});
+			if (name == "mov") {
+				add({
+					name  : `class|mounted|${name}`,
+					about : wrap(
+						`Evaluates to the unit's class's mount's ${name} `,
+						"modifier if the 'Mounted?' checkbox under Create => ",
+						"Characters is checked, otherwise always evaluates to 0.",
+					),
+					expr  : ((env) => {
+						const cls = this.character.class;
+						return label(env, "mnt",
+							cls.hasMount() && this.character.mounted
+								? cls.mount.modifier(name, env)
+								: 0
+						);
+					}),
+				});
 
-			add({ /* not added to prime because we want it conditional */
-				name  : `class|mount|${name}`,
-				about : wrap(
-					`The unit's class's mount's ${name} modifier. If `,
-					"the unit's class has not mount, evaluates to 0.",
-				),
-				expr  : ((env) => {
-					const cls = this.character.class;
-					return label(env, "mount",
-						cls.hasMount()
-							? cls.mount.modifier(name, env)
-							: 0
-					);
-				}),
-			});
+				add({ /* not added to prime because we want it conditional */
+					name  : `class|mount|${name}`,
+					about : wrap(
+						`The unit's class's mount's ${name} modifier. If `,
+						"the unit's class has not mount, evaluates to 0.",
+					),
+					expr  : ((env) => {
+						const cls = this.character.class;
+						return label(env, "mount",
+							cls.hasMount()
+								? cls.mount.modifier(name, env)
+								: 0
+						);
+					}),
+				});
 
-			prime.push(add({
-				name  : `class|ask_mounted|${name}`,
-				about : wrap(
-					`Evaluates to class|mounted|${name} in the character `,
-					"builder, but creates a prompt in the generated Roll20 ",
-					`macro for class|mount|${name}, so long as the value `,
-					`of class|mount|${name} is not 0.`,
-				),
-				expr  : `
-					metaif builtins|macrogen then
-						metaif class|mount|${name} then 
-							ask cat([Mounted? #], class|mount|${name})
-								; Yes {class|mount|${name}}
-								, No  {0}
+				prime.push(add({
+					name  : `class|ask_mounted|${name}`,
+					about : wrap(
+						`Evaluates to class|mounted|${name} in the character `,
+						"builder, but creates a prompt in the generated Roll20 ",
+						`macro for class|mount|${name}, so long as the value `,
+						`of class|mount|${name} is not 0.`,
+					),
+					expr  : `
+						metaif builtins|macrogen then
+							metaif class|mount|${name} then 
+								ask cat([Mounted? #], class|mount|${name})
+									; Yes {class|mount|${name}}
+									, No  {0}
+								end
+							else
+								0
 							end
 						else
-							0
+							class|mounted|${name}
 						end
-					else
-						class|mounted|${name}
-					end
-				`,
-			}));
+					`,
+				}));
+			}
 
-			prime.push(add({
+			prime.push(add({ // TODO HIDDEN CODE
 				name  : `abilities|${name}`,
 				about : 
 					`The sum of all ${name} modifiers from active abilities.`
@@ -1821,7 +1998,7 @@ class Sheet {
 				expr  : abilityfunc(name),
 			}));
 
-			prime.push(add({
+			prime.push(add({ // TODO HIDDEN CODE
 				name  : `equipment|${name}`,
 				about : wrap(
 					`The total ${name} modifier provided by the equipped `,
@@ -1866,11 +2043,12 @@ class Sheet {
 				"indicates whether the art's might is applied as healing ",
 				"or as damage. Used in the macro builder.",
 			),
-			expr  : ((env) => 
-				env.read("item|tagged|healing")
-					||
-				env.read("arts|tagged|healing")
-			),
+			expr : `
+				bothif item|tagged|healing
+					then item|tagged|healing
+					else arts|tagged|healing
+				end
+			`
 		});
 
 		let item_tags = new Set();
@@ -1878,11 +2056,12 @@ class Sheet {
 		for (let item of chain(definitions.items, definitions.attributes)) {
 			for (let tag of item.tags) {
 				
-				const name = tag;
+				const name       = tag;
+				const identifier = Expression.asIdentifier(tag);
 				if (item_tags.has(tag)) continue;
 
 				add({
-					name  : `item|tagged|${Expression.asIdentifier(tag)}`,
+					name  : `item|tagged|${identifier}`,
 					about : wrap(
 						`A flag; 1 if item is tagged with '${tag}' and 0 if `,
 						`item is not tagged with '${tag}'.`
@@ -1895,6 +2074,45 @@ class Sheet {
 						}
 
 						return Number(this.item.tagged(name));
+					}),
+				});
+
+				add({
+					name  : `inventory|${identifier}`,
+					about : wrap(
+						`The number of inventory items tagged with '${tag}'`,
+					),
+					expr  : ((env) => {
+						this.wb.sync();
+
+						let count = 0;
+
+						for (let each of this.wb.category.values()) {
+							// Ignore what isn't in the inventory.
+							if (!each.inventory) continue;
+
+							// Check the item's custom tags.
+							if (each.tags.includes(tag)) {
+								++count; continue;
+							}
+
+							// Check the item's template tags.
+							const item = Item.get(each.template);
+
+							if (item.tagged(tag)) {
+								++count; continue;
+							}
+
+							// Check tags on attributes.
+							for (let attr of each.attributes) {
+								const attribute = Attribute.get(attr.id);
+								if (attribute.tagged(tag)) {
+									++count; break;
+								}
+							}
+						}
+
+						return count;
 					}),
 				});
 
@@ -1944,7 +2162,7 @@ class Sheet {
 			}
 		}
 
-		for (let each of item_tags.union(art_tags)) {
+		for (let each of item_tags.intersect(art_tags)) {
 
 			const tag = Expression.asIdentifier(each);
 
@@ -2007,6 +2225,26 @@ class Sheet {
 					const string = this.item.template.type;
 					const number = Item.TYPE.asNumber(string);
 					return number == num;
+				}),
+			});
+
+			add({
+				name  : `inventory|type|${str.toLowerCase()}`,
+				about : wrap(
+					`The number of ${str} items in the inventory.`
+				),
+				expr  : ((env) => {
+					this.wb.sync();
+
+					let count = 0;
+
+					for (let each of this.wb.category.values()) {
+						const string = Item.get(each.template).type;
+						const number = Item.TYPE.asNumber(string);
+						if (number == num) count++;
+					}
+
+					return count;
 				}),
 			});
 		}
@@ -2102,6 +2340,44 @@ class Sheet {
 		}
 
 		add({
+			name  : "tactical|type",
+			about : wrap(
+				"The skill type of the equipped tactical art or 0 if none."
+			),
+			expr  : ((env) => {
+				for (let each of this.arts.getActiveValues()) {
+					if (each.isTactical()) return Item.TYPE.asNumber(each.type);
+				}
+				return 0;
+			}),
+		});
+
+		add({
+			name  : "item|type",
+			about : wrap(
+				"The skill type of the equipped item or 0 if none."
+			),
+			expr  : ((env) => {
+				const string = this.item.template.type;
+				const number = Item.TYPE.asNumber(string);
+				return number;
+			}),
+		});
+
+		add({
+			name  : "host|type",
+			about : wrap(
+				"The skill type of the equipped tactical art or item or 0 if none."
+			),
+			expr  : `
+				bothif arts|tactical
+					then tactical|type
+					else item|type
+				end
+			`,
+		});
+
+		add({
 			name  : "arts|type|weapon",
 			about : wrap(
 				"The number of combat arts with an Axes, Swords, Lances, Brawl, ",
@@ -2178,7 +2454,7 @@ class Sheet {
 			expr  : ((env) => {
 				let a = 0;
 				for (let each of this.item.attributes.getActiveValues()) {
-					a = a || AttackFeature.MTTYPE.asNumber(each.mttype);
+					a = a || Action.MTTYPE.asNumber(each.mttype);
 				}
 				return a;
 			}),
@@ -2193,7 +2469,7 @@ class Sheet {
 			),
 			expr  : ((env) => {
 				return  (
-					AttackFeature.MTTYPE.asNumber(this.item.template.mttype)
+					Action.MTTYPE.asNumber(this.item.template.mttype)
 				);
 			}),
 		});
@@ -2216,18 +2492,18 @@ class Sheet {
 				"What statistic this item's might is based off of; either ",
 				"unit|total|str or unit|total|mag or none.",
 			),
-			expr  : ((env) => {
-				return  (
-					/* manual entry overrides all others */
-					env.read("item|custom|mttype")
-						||
-					/* attributes override template */
-					env.read("item|attributes|mttype")
-						||
-					/* fallback value is template value */
-					env.read("item|template|mttype")
-				);
-			}),
+			expr  : `
+				bothif item|custom|mttype
+					// manual entry overrides all others
+					then item|custom|mttype
+				elseif item|attributes|mttype
+					// attributes override template
+					then item|attributes|mttype
+				else
+					// fallback is template value
+					then item|template|mttype
+				end
+			`
 		});
 
 		add({
@@ -2240,7 +2516,7 @@ class Sheet {
 			expr  : ((env) => {
 				let a = 0;
 				for (let each of this.arts.getActiveValues()) {
-					a = a || AttackFeature.MTTYPE.asNumber(each.mttype);
+					a = a || Action.MTTYPE.asNumber(each.mttype);
 				}
 				return a;
 			}),
@@ -2260,7 +2536,7 @@ class Sheet {
 					
 					if (!gambit.tagged("structure")) continue;
 
-					mttype = AttackFeature.MTTYPE.asNumber(gambit.mttype);
+					mttype = Action.MTTYPE.asNumber(gambit.mttype);
 
 					/* some structure that overrides a training gambit */
 					if (!gambit.name.includes("Training")) {
@@ -2278,7 +2554,7 @@ class Sheet {
 				"What statistic the active gambit's might is targets.",
 			),
 			expr  : ((env) => {
-				return AttackFeature.MTTYPE.asNumber(
+				return Action.MTTYPE.asNumber(
 					this.battalion.getGambit().mttype
 				);
 			}),
@@ -2294,7 +2570,7 @@ class Sheet {
 				let a = 0;
 				for (let each of this.arts.getActiveValues()) {
 					if (!each.tagged("metagambit")) continue;
-					a = a || AttackFeature.MTTYPE.asNumber(each.mttype);
+					a = a || Action.MTTYPE.asNumber(each.mttype);
 				}
 				return a;
 			}),
@@ -2306,21 +2582,21 @@ class Sheet {
 			about : wrap(
 				"What statistic this gambit's might targets",
 			),
-			expr  : ((env) => {
-				return (
-					/* meta gambit overrides active gambit */
-					env.read("gambit|arts|mttype")
-						||
-					/* active gambit overrides structure value */
-					env.read("gambit|active|mttype")
-						||
-					/* structure value serves as fallback */
-					env.read("gambit|structure|mttype")
-						||
-					/* fallback is not to assume N/A */
-					3 
-				);
-			}),
+			expr  : `
+				bothif gambit|arts|mttype
+					// meta gambit overrides active gambit
+					then gambit|arts|mttype
+				elseif gambit|active|mttype
+					// active gambit overrides structure value
+					then gambit|active|mttype
+				elseif gambit|structure|mttype
+					// structure value serves as fallback
+					then gambit|structure|mttype
+				else
+					// fallback is not to assume N/A
+					then mttype|none
+				end
+			`
 		});
 
 		add({
@@ -2330,23 +2606,32 @@ class Sheet {
 				"unit|total|str or unit|total|mag or none. Defaults to ",
 				"none if nothing overrides it with another option.",
 			),
-			expr  : ((env) => {
-				return (
-					/* art overrides item value */
-					env.read("arts|mttype")
-						||
-					/* item value serves as fallback */
-					env.read("item|total|mttype")
-						||
-					/* fallback is not to assume N/A */
-					3 
-				);
-			}),
+
+			expr  : `
+				bothif arts|mttype
+					// art overrides item value
+					then arts|mttype
+				elseif item|total|mttype
+					// item value serves as fallback
+					then item|total|mttype
+				else
+					// fallback is not to assume N/A
+					then mttype|none
+				end
+			`,
 		});
 
-		for (let each of AttackFeature.MTTYPE.strings.entries()) {
+		for (let each of Action.MTTYPE.strings.entries()) {
 
 			const [num, str] = each;
+			
+			add({
+				name  : `mttype|${str}`,
+				about : wrap(
+					`Constant value for the ${str} mttype.`
+				),
+				expr  : String(num)
+			});
 
 			add({
 				name  : `unit|total|mttype|${str}`,
@@ -2354,9 +2639,7 @@ class Sheet {
 					`Evaluates to 1 if unit|total|mttype is ${str}, and `,
 					"evaluates to 0 otherwise."
 				),
-				expr  : ((env) => {
-					return env.read("unit|total|mttype") == num;
-				}),
+				expr  : `unit|total|mttype == mttype|${str}`
 			});
 		}
 
@@ -2519,6 +2802,8 @@ class Sheet {
 					`Total ${name} from active abilities.`
 				,
 				expr  : abilityfunc(name),
+				// vars  : (() => Ability.getDynamics(name))
+
 			}));
 
 			add({
@@ -2555,17 +2840,17 @@ class Sheet {
 			),
 			expr  : `
 				floor(
-					bothif unit|total|mttype|mag
+					bothif unit|total|mttype == mttype|mag
 						then unit|total|mag
-					elseif unit|total|mttype|str
+					elseif unit|total|mttype == mttype|str
 						then unit|total|str
 						else 0
 					end
 						* unit|multiplier|healing
 				)
-					+ item|total|mt
+					+ host|mt
 					+ abilities|mt
-					+ arts|mt
+					+ combatarts|mt
 					+ equipment|mt
 			`,
 		});
@@ -2578,7 +2863,7 @@ class Sheet {
 				"feature does not heal or do damage and to 0 if it is equal.",
 			),
 			expr  : `
-				bothif unit|total|mttype|none
+				bothif unit|total|mttype == mttype|none
 					then 0
 					else unit|total|mt
 				end
@@ -2715,11 +3000,15 @@ class Sheet {
 				"or art. This defaults to the maximum range of the item, ",
 				"but if an art is used, the art's maximum range supercedes it.",
 			),
-			expr  : ((env) => {
-				return (
-					env.read("arts|maxrng") || env.read("item|total|maxrng")
-				);
-			}),
+			expr  : `
+				bothif combatarts|maxrng
+					then combatarts|maxrng
+				elseif tactical|maxrng
+					then tactical|maxrng
+				else
+					then item|total|maxrng
+				end
+			`
 		});
 
 		add({
@@ -2741,11 +3030,15 @@ class Sheet {
 				"or art. This defaults to the minimum range of the item, ",
 				"but if an art is used, the art's minimum range supercedes it.",
 			),
-			expr  : ((env) => {
-				return (
-					env.read("arts|minrng") || env.read("item|total|minrng")
-				);
-			}),
+			expr  : `
+				bothif combatarts|minrng
+					then combatarts|minrng
+				elseif tactical|minrng
+					then tactical|minrng
+				else
+					then item|total|minrng
+				end
+			`
 		});
 
 		add({
@@ -2766,9 +3059,7 @@ class Sheet {
 				"The base stamina points available ",
 				"to this unit (i.e. from levels)."
 			),
-			expr  : ((env) => {
-				return 10 * Math.floor(this.stats.level / 10) + 15;
-			}),
+			expr  : "10 * floor(unit|level / 10) + 15",
 		});
 
 		add({
@@ -2920,9 +3211,7 @@ class Sheet {
 			about : wrap(
 				"The equipped battalion's level. Used to scale its stats."
 			),
-			expr  : ((env) => {
-				return label(env, "level", this.battalion.level);
-			}),
+			expr  : "unit|level",
 		});
 
 		for (let each of this.data.stats.battalion.first) {
@@ -2984,7 +3273,7 @@ class Sheet {
 						`The battalion's ${name} bonus from its level written out.`,
 					),
 					expr  : `
-						floor(battalion|mult|${name} * Level {battalion|level})
+						floor(battalion|mult|${name} * Level {unit|level})
 					`,
 				}));
 			}
@@ -3010,7 +3299,11 @@ class Sheet {
 				about : wrap(
 					`The battalion's leveled ${name} statistic before modifiers.`
 				),
-				expr  : `battalion|template|${name} + battalion|long|${name}`,
+				expr  : (
+					this.data.stats.battalion.growths.includes(name)
+						? `battalion|template|${name} + battalion|long|${name}`
+						: `battalion|template|${name}`
+				)
 			});
 		}
 
@@ -3047,45 +3340,51 @@ class Sheet {
 			expr  : abilityfunc("br"),
 		});
 
-		add({
-			name  : "battalion|modifier|gmt",
-			about : wrap(
-				"The battalion's might statistic bonuses from employer."
-			),
-			expr  : funcsum(abilityfunc("gmt"), artfunc("gmt")),
-		});
+		for (let each of [
+			["gmt", "might"], ["ghit", "hit"], ["gepcost", "ep cost"],
+			["gminrng", "min range"], ["gmaxrng", "max rang"],
+		]) {
 
-		add({
-			name  : "battalion|modifier|gepcost",
-			about : wrap(
-				"The battalion's ep cost statistic bonuses from employer."
-			),
-			expr  : funcsum(abilityfunc("gepcost"), artfunc("gepcost")),
-		});
+			const [stat, name] = each;
+			const sum          = [];
 
-		add({
-			name  : "battalion|modifier|ghit",
-			about : wrap(
-				"The battalion's hit statistic bonuses from employer."
-			),
-			expr  : funcsum(abilityfunc("ghit"), artfunc("ghit")),
-		});
+			sum.push(add({
+				name  : `abilities|${stat}`,
+				about : wrap(
+					`The battalion's gambit ${name} statistic bonuses from employer's abilities.`
+				),
+				expr  : abilityfunc(stat),
+			}));
 
-		add({
-			name  : "battalion|modifier|gmaxrng",
-			about : wrap(
-				"The battalion's gambit max range statistic bonuses from employer."
-			),
-			expr  : funcsum(abilityfunc("gmaxrng"), gambitfunc("gmaxrng"), artfunc("gmaxrng"))
-		});
+			sum.push(add({
+				name  : `combatarts|${stat}`,
+				about : wrap(
+					`The battalion's gambit ${name} statistic bonuses from employer's combat arts.`
+				),
+				expr  : artfunc(stat),
+			}));
 
-		add({
-			name  : "battalion|modifier|gminrng",
-			about : wrap(
-				"The battalion's gambit minrng statistic bonuses from employer."
-			),
-			expr  : funcsum(abilityfunc("gmaxrng"), gambitfunc("gmaxrng"), artfunc("gminrng"))
-		});
+			// sum.push(add({
+			// 	name  : `gambits|${stat}`,
+			// 	about : wrap(
+			// 		`The battalion's gambit ${name} statistic bonuses from employer's combat arts.`
+			// 	),
+			// 	expr  : artfunc(stat),
+			// }));
+
+			add({
+				name  : `battalion|modifier|${stat}`,
+				about : wrap(
+					`The battalion's gambit ${name} statistic bonuses from employer.`
+				),
+				expr  : funcsum(...sum),
+			});
+
+			/* TODO battalion|modifier|g{min,max}rng had gambitfunc("g{min,max}rng")
+			 * I have no idea whoat this was used for honestly, to I took it out
+			 * add that back in if it ends up breaking, else remove comment here
+			 */
+		}
 
 		add({
 			name  : "battalion|total|mt",
@@ -3185,6 +3484,11 @@ class Sheet {
 
 		this.macros._input.setAttribute("list", uid);
 		this._context = ctx;
+
+		for (let variable in this._context) {
+			this.compiler.compute_dependants(variable);
+		}
+
 		return ctx;
 	}
 
@@ -3213,6 +3517,36 @@ class Sheet {
 		if ((tmp = this.equipment.getActive())) {
 			for (row of Equipment.get(tmp).rows) yield row;
 		}
+	}
+
+	modifier(name) {
+
+		const variable = name == "cutrng" ? "item|total|maxrng" : `unit|total|${name}`;
+		if (!(variable in this.definez)) return 0;
+
+		const env   =  new Expression.Env(
+			Expression.Env.RUNTIME, this.definez
+		);
+
+		return env.read(variable);
+	}
+
+	get aoe() {
+		return this.item.aoe;
+	}
+
+	tablink(text, tabs) {
+		return element("span", {
+			class   : ["datum", "underline"],
+			content : text,
+			attrs   : {
+				onclick: (() => {
+					for (let [notebook, tab] of tabs) {
+						this.tabs[notebook].active = tab;
+					}
+				})
+			}
+		});
 	}
 
 	/* methods relating to persisting the sheet */
@@ -3272,9 +3606,13 @@ class Sheet {
 	theme(name) {
 		if (!Theme.set(name)) return false;
 		this.themes.toggleActive(name);
+		
+		// Gotta wait until the new sheet loads before we refresh.
+		// Timeout may not be good for every environment and need tweaked.
+		setTimeout(() => this.refresher.refresh("theme", true), 20);
+		
 		return true;
 	}
-
 
 	/* Methods relating to Point Buy */
 
@@ -3479,7 +3817,7 @@ class Sheet {
 			if (kind.parent != null) addKit(kind.parent, scale);
 		};
 
-		if (ps.sidearm == "None") {
+		if (ps.mainarm == ps.sidearm || ps.sidearm == "None") {
 			addKit(ps.mainarm, 3);
 		} else {
 			addKit(ps.mainarm, 2);
@@ -3497,5 +3835,6 @@ class Sheet {
 		this.myPointBuy.setAnimated(animate);
 	}
 }
+
 
 /* exported Sheet */

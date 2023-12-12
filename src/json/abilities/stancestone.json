@@ -1,7 +1,7 @@
 {
     "name": "Stone Stance",
     "description": "When foe initiates combat, after that combat, regain HP equal to half of damage taken by unit during combat.",
-    "requires": "All (Brawling C) (Level 11)",
+    "requires": "All (Brawl C) (Level 11)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

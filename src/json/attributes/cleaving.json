@@ -4,6 +4,7 @@
     "description": "When this unit initiates combat, after the resolution of that combat, deal nonlethal damage equal to 50% of the damage dealt to target foe that combat to a foe adjacent to but not behind target foe. For 4 TP, this effect may occur after a combat on enemy phase.\n\nDisabled on weapons that are not Axes, Reason, Brawl or Swords.",
     "rank": 2,
     "price": 2000,
+    "aoe": "Box 3x1",
 
     "mttype": "else",
     "modifiers": {

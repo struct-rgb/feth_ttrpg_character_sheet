@@ -1,7 +1,7 @@
 {
   "name": "Beast Fang",
   "description": "@{item::Blutgang} only; effective against Cavalry and Dragon units.",
-  "requires": "All (Weapon Blutgang) (Crest `the Beast`) (Swords E)",
+  "requires": "All (Item Blutgang) (Crest `the Beast`) (Swords E)",
   "compatible": "Name Blutgang",
   "mttype": "else",
   "modifiers": {
@@ -20,6 +20,8 @@
   "comment": "",
   "tags": [
     "effective",
+    "cavalry effective",
+    "dragon effective",
     "relic"
   ],
   "hidden": false,

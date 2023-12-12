@@ -7,6 +7,15 @@
 	--wash:#989eb5;
 	--egg:#fff6e6;
 	--goldl:#f1e5ac;
+
+	--gambit-unit: var(--goldl);
+	--gambit-border: var(--blue);
+	--gambit-tile: var(--green);
+	--gambit-background: var(--egg);
+	--gambit-hit-0: #004325;
+	--gambit-hit-20: #006345;
+	--gambit-hit-40: #008365;
+	--gambit-hit-60: #00a385;
 }
 
 /* This class is on the body element. */

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 import sys
 import json
 
@@ -257,6 +258,25 @@ def compile_definitions(omit=False):
 			definitions.sort(key=SORTING_FUNCS[file.name])
 
 		compiled[file.name] = definitions
+
+	# load the paths to all of the image resources
+	icons = {}
+	base  = Path("./resources/icons/")
+
+	for each in ["item", "type", "effective", "portraits"]:
+		icons[each] = sorted(f"./{str(path)}" for path in (base / each).iterdir())
+
+	def sort_portraits(path):
+		base   = re.split(r"[./]", path)[-2]
+		match  = re.fullmatch(r"^((?:\w+ ?)+)(?:\((\d+)\))?$", base)
+		if not match:
+			raise Exception(f"Couldn't parse portrait filename {base}")
+		result = (match[1], int(match[2] or 0))
+		return result
+
+	icons["portraits"].sort(key=sort_portraits)
+
+	compiled["icons"] = icons
 
 	return compiled
 

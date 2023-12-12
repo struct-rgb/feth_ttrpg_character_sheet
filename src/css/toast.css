@@ -6,6 +6,16 @@
 	--wash:#989eb5;
 	--egg:#fff6e6;
 	--pink:#ffafc7;
+
+	--gambit-unit: var(--pink);
+	--gambit-border: var(--lightblue);
+	--gambit-tile: var(--blue);
+	--gambit-background: #222222;
+	--gambit-hit-0: #74d7ec;
+	--gambit-hit-20: #54b7cc;
+	--gambit-hit-40: #5497ac;
+	--gambit-hit-60: #34778c;
+
 }
 
 .base {

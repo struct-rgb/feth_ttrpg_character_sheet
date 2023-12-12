@@ -3,6 +3,7 @@
   "description": "Apply @{condition:Levitation:[Levitation]} to this unit and adjacent allies for 3 turns.",
   "requires": "Reason A",
   "mttype": "else",
+  "aoe": "Plus 0-1",
   "modifiers": {
     "mt": 0,
     "prot": 0,
