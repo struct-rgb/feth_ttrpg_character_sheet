@@ -306,6 +306,13 @@ def main():
 
 	Path("definitions.js").write_text(javascript)
 
+	try:
+		import markdown
+		html = markdown.markdown(Path("README.md").read_text())
+		Path("README.html").write_text(html)
+	except ImportError:
+		pass
+
 	if args.print:
 		print(json_str)	
 
