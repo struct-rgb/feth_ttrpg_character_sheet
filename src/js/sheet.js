@@ -3813,6 +3813,43 @@ class Sheet {
 				}
 			}
 
+			/* create battalion */
+			if ("battalion" in kit) {
+				this.bb.select.value = kit.battalion;
+				this.bb.add();
+
+				const name          = kit.scale > 1 ? "Talent" : "Normal";
+				const number        = Grade.APTITUDE.asNumber(name);
+				const grade         = Grade.for(scale, number);
+				this.battalion.rank = Grade.toNumber(grade);
+
+				/* add an outfitting gambit */
+				const clstype  = Presetter.getDefault(cls.type);
+				const outfit   = `${clstype} Outfitting`;
+				this.battalion.gambits.add(outfit);
+				this.battalion.gambits.toggleActive(outfit);
+
+				/* add a training gambit; match weapon if possible */
+				let training = (
+					Presetter.KITS[ps.mainarm].training 
+						||
+					Presetter.KITS[ps.sidearm].training
+				);
+
+				if (!(training && kit.training.includes(training))) {
+					training = Presetter.getDefault(kit.training);
+				}
+
+				this.battalion.gambits.add(training);
+				this.battalion.gambits.toggleActive(training);
+
+				/* add any other gambits to battalion */
+				for (let each of kit.gambits) {
+					this.battalion.gambits.add(each);
+					this.battalion.gambits.toggleActive(each);
+				}
+			}
+
 			/* recurse */
 			if (kind.parent != null) addKit(kind.parent, scale);
 		};

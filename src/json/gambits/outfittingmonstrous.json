@@ -1,5 +1,5 @@
  {
-    "name": "Monstrous Outfitting",
+    "name": "Monster Outfitting",
     "description": "Grants Max EP +5 and splits this unit's EP pool into two bars in a 1:2 ratio; battalion’s units are Monster units. Not purchasable.",
     "requires": "Authority E",
     "mttype": "else",

@@ -24725,7 +24725,7 @@ const definitions = {
         "cravo": 0,
         "tpcost": "bothif item|type|bows then fill confirm([Antimagic?], 2) else 0 end",
         "spcost": 0,
-        "tp": 1,
+        "tp": 0,
         "sp": 0,
         "minrng": 0,
         "maxrng": 0,
@@ -28785,10 +28785,9 @@ const definitions = {
       "default_base": "Banneret",
       "default_preset": "Balance/Balance/Luck",
       "default_mainarm": [
-        "Swords",
-        "Lances",
-        "Axes",
-        "Fire"
+        "Fighters",
+        "Mages",
+        "Archers"
       ],
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
@@ -39761,7 +39760,7 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Monstrous Outfitting",
+      "name": "Monster Outfitting",
       "description": "Grants Max EP +5 and splits this unit's EP pool into two bars in a 1:2 ratio; battalion\u2019s units are Monster units. Not purchasable.",
       "requires": "Authority E",
       "mttype": "else",
@@ -40206,7 +40205,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -40801,7 +40802,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -41344,7 +41347,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -41736,7 +41741,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "infantry effective"
       ],
       "hidden": false
     },
@@ -41800,7 +41807,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "armor effective"
       ],
       "hidden": false
     },
@@ -41934,7 +41943,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },
@@ -42001,7 +42012,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "cavalry effective"
       ],
       "hidden": false
     },
@@ -42100,7 +42113,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "measured"
+        "measured",
+        "effective",
+        "flying effective"
       ],
       "hidden": false
     },

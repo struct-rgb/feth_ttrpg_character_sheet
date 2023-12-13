@@ -244,7 +244,7 @@ const KITS = {
 	"Swords": {
 		parent: null,
 		hide: false,
-		icon: "Swords",
+		training: "Swords Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -381,6 +381,7 @@ const KITS = {
 	"Lances": {
 		parent: null,
 		hide: false,
+		training: "Lances Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -517,6 +518,7 @@ const KITS = {
 	"Bows": {
 		parent: null,
 		hide: false,
+		training: "Bows Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -653,6 +655,7 @@ const KITS = {
 	"Axes": {
 		parent: null,
 		hide: false,
+		training: "Axes Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -789,6 +792,7 @@ const KITS = {
 	"Reason": {
 		parent: null,
 		hide: true,
+		training: "Reason Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -925,6 +929,7 @@ const KITS = {
 	"Ice": {
 		parent: "Reason",
 		hide: false,
+		training: "Reason Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -983,6 +988,7 @@ const KITS = {
 	"Fire": {
 		parent: "Reason",
 		hide: false,
+		training: "Reason Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1041,6 +1047,7 @@ const KITS = {
 	"Lightning": {
 		parent: "Reason",
 		hide: false,
+		training: "Reason Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1099,6 +1106,7 @@ const KITS = {
 	"Wind": {
 		parent: "Reason",
 		hide: false,
+		training: "Reason Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1157,6 +1165,7 @@ const KITS = {
 	"Force": {
 		parent: "Reason",
 		hide: false,
+		training: "Reason Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1215,6 +1224,7 @@ const KITS = {
 	"Brawl": {
 		parent: null,
 		hide: true,
+		training: "Might Fist Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1351,6 +1361,7 @@ const KITS = {
 	"Metal": {
 		parent: "Brawl",
 		hide: false,
+		training: "Might Fist Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1430,6 +1441,7 @@ const KITS = {
 	"Beast": {
 		parent: "Brawl",
 		hide: false,
+		training: "Might Fist Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1509,6 +1521,7 @@ const KITS = {
 	"Water": {
 		parent: "Brawl",
 		hide: false,
+		training: "Mystic Fist Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1588,6 +1601,7 @@ const KITS = {
 	"Faith": {
 		parent: null,
 		hide: false,
+		training: "Faith Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1730,6 +1744,7 @@ const KITS = {
 	"Guile": {
 		parent: null,
 		hide: false,
+		training: "Guile Training",
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1867,6 +1882,522 @@ const KITS = {
 				"abilities" : ["Guile Prowess 5", "Guile Range +1", "Guile Tomefaire"],
 				"arts": ["Draw Back"],
 			}
+		},
+	},
+	"Authority": {
+		parent: null,
+		hide: false,
+		1 : {
+			1 : {
+				"points"    : 2,
+				"items"     : ["Iron Shield"],
+				"abilities" : ["Authority 1", "Other Prowess 1"],
+				"arts": [],
+			},
+			5 : {
+				"points"    : 4,
+				"items"     : ["Iron Shield"],
+				"abilities" : ["Authority 2", "Other Prowess 2"],
+				"arts": [],
+			},
+			9 : {
+				"points"    : 8,
+				"items"     : ["Steel Shield"],
+				"abilities" : ["Authority 2", "Other Prowess 2"],
+				"arts": [],
+			},
+			15 : {
+				"points"    : 16,
+				"items"     : ["Steel Shield"],
+				"abilities" : ["Authority 3", "Other Prowess 3"],
+				"arts": [],
+			},
+			26 : {
+				"points"    : 40,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 3", "Other Prowess 3"],
+				"arts": [],
+			},
+			31 : {
+				"points"    : 53,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 4", "Other Prowess 4"],
+				"arts": [],
+			},
+			37 : {
+				"points"    : 80,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 5", "Other Prowess 5"],
+				"arts": [],
+			},
+		},
+		2 : {
+			1 : {
+				"points"    : 2,
+				"items"     : ["Iron Shield"],
+				"abilities" : ["Authority 2", "Other Prowess 2"],
+				"arts": ["Pivot"],
+			},
+			4 : {
+				"points"    : 4,
+				"items"     : ["Steel Shield"],
+				"abilities" : ["Authority 2", "Other Prowess 2"],
+				"arts": ["Pivot"],
+			},
+			9 : {
+				"points"    : 8,
+				"items"     : ["Steel Shield"],
+				"abilities" : ["Authority 3", "Other Prowess 3"],
+				"arts": ["Pivot"],
+			},
+			16 : {
+				"points"    : 18,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 3", "Other Prowess 3"],
+				"arts": ["Pivot"],
+			},
+			21 : {
+				"points"    : 26,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 4", "Other Prowess 4"],
+				"arts": ["Pivot"],
+			},
+			28 : {
+				"points"    : 40,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 5", "Other Prowess 5"],
+				"arts": ["Pivot"],
+			},
+		},
+		3 : {
+			1 : {
+				"points"    : 2,
+				"items"     : ["Iron Shield"],
+				"abilities" : ["Authority 2", "Other Prowess 2"],
+				"arts": ["Pivot"],
+			},
+			3 : {
+				"points"    : 4,
+				"items"     : ["Steel Shield"],
+				"abilities" : ["Authority 2", "Other Prowess 2"],
+				"arts": ["Pivot"],
+			},
+			6 : {
+				"points"    : 8,
+				"items"     : ["Steel Shield"],
+				"abilities" : ["Authority 3", "Other Prowess 3"],
+				"arts": ["Pivot"],
+			},
+			11 : {
+				"points"    : 19,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 3", "Other Prowess 3"],
+				"arts": ["Pivot"],
+			},
+			15 : {
+				"points"    : 31,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 4", "Other Prowess 4"],
+				"arts": ["Pivot"],
+			},
+			25 : {
+				"points"    : 66,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 5", "Other Prowess 5"],
+				"arts": ["Pivot"],
+			},
+			28 : {
+				"points"    : 78,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 5", "Other Prowess 5"],
+				"arts": ["Pivot"],
+			},
+			33 : {
+				"points"    : 101,
+				"items"     : ["Silver Shield"],
+				"abilities" : ["Authority 5", "Other Prowess 5"],
+				"arts": ["Pivot"],
+			}
+		}
+	},
+	"Fighters": { // Make the outfitting match the unit type
+		parent: "Authority",
+		hide: false,
+		1 : {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Disturbance", "Hold the Line"]
+			},
+			15 : {
+				"points"    : 16,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Disturbance", "Hold the Line", "Initiate"]
+			},
+			26 : {
+				"points"    : 40,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Mad Melee", "Hold the Line", "Initiate"]
+			},
+		},
+		2 : {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Disturbance", "Hold the Line"]
+			},
+			9 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Disturbance", "Hold the Line", "Initiate"]
+			},
+			16 : {
+				"points"    : 18,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Mad Melee", "Hold the Line", "Initiate"]
+			},
+		},
+		3: {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Disturbance", "Hold the Line"]
+			},
+			6 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Disturbance", "Hold the Line", "Initiate"]
+			},
+			11 : {
+				"points"    : 19,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Mad Melee", "Hold the Line", "Initiate"]
+			},
+			16 : {
+				"points"    : 34,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Protection",
+				"training"  : [
+					"Axes Training", "Lances Training", "Swords Training",
+					"Mighty Fist Training", "Mystic Fist Training",
+				],
+				"gambits"   : ["Assault Troop", "Hold the Line", "Initiate"]
+			},
+		},
+	},
+	"Mages": { // Make the outfitting match the unit type
+		parent: "Authority",
+		hide: false,
+		1 : {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Group Magic"]
+			},
+			9 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Group Magic", "Initiate"]
+			},
+			26 : {
+				"points"    : 40,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Resonant Magic", "Initiate"]
+			},
+		},
+		2 : {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Group Magic"]
+			},
+			9 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Group Magic", "Initiate"]
+			},
+			16 : {
+				"points"    : 18,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Resonant Magic", "Initiate"]
+			},
+		},
+		3: {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Group Magic"]
+			},
+			6 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Group Magic", "Initiate"]
+			},
+			11 : {
+				"points"    : 19,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Resonant Magic", "Initiate"]
+			},
+			16 : {
+				"points"    : 34,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Resiliance",
+				"training"  : [
+					"Reason Training", "Guile Training", "Faith Training"
+				],
+				"gambits"   : ["Resonant Magic", "Initiate", "Demolish"]
+			},
+		},
+	},
+	"Archers": { // Make the outfitting match the unit type
+		parent: "Authority",
+		hide: false,
+		1 : {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Fusillade"]
+			},
+			9 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Fusillade", "Initiate"]
+			},
+			26 : {
+				"points"    : 40,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Poisoned Arrows", "Initiate"]
+			},
+		},
+		2 : {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Fusillade"]
+			},
+			9 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Fusillade", "Initiate"]
+			},
+			16 : {
+				"points"    : 18,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Poisoned Arrows", "Initiate"]
+			},
+		},
+		3: {
+			1 : {
+				"points"    : 2,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Fusillade"]
+			},
+			6 : {
+				"points"    : 8,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Fusillade", "Initiate"]
+			},
+			11 : {
+				"points"    : 19,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Poisoned Arrows", "Initiate"]
+			},
+			16 : {
+				"points"    : 34,
+				"items"     : [],
+				"abilities" : [],
+				"arts": [],
+
+				"battalion" : "Balanced/Offense",
+				"training"  : ["Bows Training"],
+				"gambits"   : ["Hail of Arrows", "Initiate"]
+			},
 		},
 	},
 	"Item": {
@@ -2829,6 +3360,16 @@ class Tokenator {
 			}
 		});
 
+		this.guessbb   = element("button", {
+			content : "Guess Battalion Icons",
+			class   : ["simple-border"],
+			attrs   : {
+				onclick : ((event) => {
+					this.guess(sheet.battalion, false);
+				}),
+			}
+		});
+
 		this.clearb    = element("button", {
 			content : "Clear All Token Options",
 			class   : ["simple-border"],
@@ -2855,6 +3396,10 @@ class Tokenator {
 			tooltip(this.infantryb.root, wrap(
 				"Whether the Infantry movement type icon should ever be ",
 				"marked or should just left implied by lack of an icon."
+			)), element("br"),
+			tooltip(this.guessbb, wrap(
+				"Guess what icons the character's active battalion should ",
+				"have based on its equipped gambits."
 			)), element("br"),
 			this.clearb, element("br"),
 			uniqueLabel("Portrait", this.portrait.root), element("br"),
@@ -3045,6 +3590,10 @@ class Tokenator {
 
 			for (let kit of sheet.kits()) {
 
+				if ("battalion" in kit) {
+					addActive(this.skills, "Authority");
+				}
+
 				for (let each of kit.items) {
 
 					const stringle    = typeof each == "string";
@@ -3052,7 +3601,7 @@ class Tokenator {
 					const nattributes = stringle ?  []  : each.slice(1);
 
 					const item = Item.get(nitem);
-					const type = item.tagged("Shield") ? "Shield" : item.type;
+					const type = item.tagged("shield") ? "Shield" : item.type;
 
 					addEffective(this.effective, item.tags);
 
@@ -3079,9 +3628,30 @@ class Tokenator {
 
 			this.portrait.setRandomVariant(sheet.class);
 			
+		} else if (sheet instanceof Battalions) {
+
+			// Add the battalion icon.
+			addActive(this.types, "Battalion");
+
+			// Guess everything from equipped gambits.
+			for (let gambit of sheet.gambits.values()) {
+
+				let match = null;
+
+				if ((match = gambit.name.match(/^(.*) Outfitting$/))) {
+					if (!this.infantryb.checked && match[1] == "Infantry") continue;
+					addActive(this.types, match[1]);
+				} else if ((match = gambit.name.match(/^(.*) Training$/))) {
+					addActive(this.skills, match[1].includes("Fist") ? "Brawl" : match[1]);
+				} else {
+					addEffective(this.effective, gambit.tags);
+				}
+
+			}
+
 		} else {
 			throw new Error(
-				`Expected Sheet or Presetter but got ${nameof(sheet)}.`
+				`Expected Sheet, Presetter, or Battalions but got ${nameof(sheet)}.`
 			);
 		}
 

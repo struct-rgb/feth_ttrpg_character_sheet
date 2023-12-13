@@ -31,7 +31,7 @@
 
     "default_base": "Banneret",
     "default_preset": "Balance/Balance/Luck",
-    "default_mainarm": ["Swords", "Lances", "Axes", "Fire"],
+    "default_mainarm": ["Fighters", "Mages", "Archers"],
     "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
