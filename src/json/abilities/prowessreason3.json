@@ -1,7 +1,7 @@
 {
     "name": "Reason Prowess 3",
     "description": "Grants Hit +13, Avo +7, Crit +13, and Crit Avo +7, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
-    "requires": "All (Reason C+) (Level 5)",
+    "requires": "Any (All (Reason C+) (Level 5)) (All (Armor C+) (ClassType Armor) (Level 5)) (All (Flying C+) (ClassType Flying) (Level 5)) (All (Riding C+) (ClassType Cavalry) (Level 5))",
     "modifiers": {
         "hp": 0,
         "sp": 0,

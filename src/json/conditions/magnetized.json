@@ -1,6 +1,6 @@
 {
     "name": "Magnetized",
-    "description": "While wielding a non-spell weapon, the weapon triangle does not apply to affected unit; instead, affected unit has Disadvantage against non-spell weapons, and all on-spell weapons have Advantage against affected unit.",
+    "description": "While wielding an Axes, Swords, Lances, or Bows, the weapon triangle does not apply to affected unit; instead, affected unit has Disadvantage against Axes, Swords, Lances, and Bows, and all Axes, Swords, Lances, and Bows have Advantage against affected unit.",
     "modifiers": {
         "hp": 0,
         "sp": 0,

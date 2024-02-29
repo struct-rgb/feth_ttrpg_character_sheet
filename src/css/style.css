@@ -322,6 +322,12 @@ div.calc-code {
 	margin: 3px;
 }
 
+span.smol {
+	font-size: 0.5em;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
 button.smol {
 	font-size: 0.5em;
 	margin-left: 5px;

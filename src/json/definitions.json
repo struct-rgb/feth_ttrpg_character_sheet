@@ -39,6 +39,13 @@
       "doubles",
       "doubled"
     ],
+    "defensive": [
+      "prot",
+      "resl",
+      "avo",
+      "cravo",
+      "doubled"
+    ],
     "battalion": {
       "first": [
         "end",

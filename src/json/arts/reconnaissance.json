@@ -1,6 +1,6 @@
 {
   "name": "Reconnaissance",
-  "description": "Apply @{condition:Forwarned:[Forewarned]} to target ally within your danger zone for one turn.",
+  "description": "Apply @{condition:Forewarned:[Forewarned]} to target ally within your danger zone for one turn.",
   "requires": "Flying B",
   "mttype": "none",
   "modifiers": {

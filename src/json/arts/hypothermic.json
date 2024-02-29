@@ -1,6 +1,6 @@
 {
   "name": "Hypothermic",
-  "description": "Ice metamagic; Crit +5 in combat for each @{tile::Ice Block} adjacent to target foe. @{const:variant:Frostbite Variant:} Hit +10 and after combat, if target foe was defeated, create an @{tile::Ice Block} in target foe’s space.",
+  "description": "Ice metamagic; Crit +5 in combat for each @{tile::Ice Block} within one space of target foe. @{const:variant:Frostbite Variant:} Hit +10 and after combat, if target foe was defeated, create an @{tile::Ice Block} in target foe’s space.",
   "requires": "Reason D",
   "compatible": "All (Skill Reason) (Tag `ice`)",
   "mttype": "else",

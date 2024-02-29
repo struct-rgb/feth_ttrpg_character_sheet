@@ -1,6 +1,6 @@
 {
   "name": "Hunter’s Volley",
-  "description": "Sniper only; triggers 2 consecutive hits.",
+  "description": "@{const:ap:AP (1-2) + 1} @{style:italic:(one more than normal)}",
   "requires": "Class Sniper",
   "compatible": "Skill Bows",
   "mttype": "else",
@@ -18,10 +18,8 @@
     "spcost": 5
   },
   "comment": "",
-  "tags": [
-    "rework"
-  ],
-  "hidden": false,
+  "tags": [],
+  "hidden": true,
   "type": "Bows",
-  "rank": "B+"
+  "rank": ""
 }

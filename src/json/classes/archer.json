@@ -1,6 +1,6 @@
 {
     "name": "Archer",
-    "description": "Bow focused martial class.",
+    "description": "A class the specializes in using bows from very long range.",
     "type": ["Infantry"],
     "tier": "Starting",
     "requires": "Bows D",

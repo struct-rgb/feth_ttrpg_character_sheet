@@ -4,7 +4,7 @@
     "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Guile C+) (Faith C+) (Required (Level 15))",
-    "abilities": ["Group Lull Def/Cha", "Invocation", "Consumption 1"],
+    "abilities": ["Group Lull Def/Cha", "Invocation", "Consumption 1", "Glide"],
     "arts": ["Summon"],
     "growths": {
         "hp": 15,
@@ -17,14 +17,14 @@
         "lck": 30
       },
     "modifiers": {
-        "hp": 6,
-        "str": 0,
+        "hp": 9,
+        "str": 1,
         "mag": 4,
-        "dex": 2,
-        "spd": 0,
+        "dex": 5,
+        "spd": 1,
         "def": 0,
         "res": 5,
-        "lck": 4,
+        "lck": 10,
         "mov": 4
     },
     "mount": null,

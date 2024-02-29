@@ -1,6 +1,6 @@
 {
     "name": "Quiver: Sticky Arrowheads",
-    "description": "Before wielder makes an attack with a bow, they may pay 3 TP to grant it Mt -3 and to apply @{const:gbp:[Mov -2]} to target foe if it hits. One quiver in a unit’s inventory does not consume an item slot.",
+    "description": "Before wielder makes an attack with a bow, they may pay 3 TP to grant it Mt -3 and to apply @{const:gbp:[Mov -2]} to target foe for one turn after combat if it hits. One quiver in a unit’s inventory does not consume an item slot.",
     "requires": "None",
     "price": 750,
     "type": "Quiver",

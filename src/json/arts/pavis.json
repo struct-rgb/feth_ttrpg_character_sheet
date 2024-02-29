@@ -23,7 +23,8 @@
     "no crit",
     "no stats",
     "tactical",
-    "condition"
+    "condition",
+    "depricated"
   ],
   "hidden": false,
   "rank": "",

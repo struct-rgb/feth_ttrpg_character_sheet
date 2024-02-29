@@ -1,6 +1,6 @@
 {
     "name": "Armored Knight",
-    "description": "A knight who specializes in armored combat",
+    "description": "A melee focused armor class with very high defense.",
     "type": ["Armor"],
     "tier": "Starting",
     "requires": "Armor D",

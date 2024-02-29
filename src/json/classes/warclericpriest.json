@@ -4,8 +4,8 @@
   "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "All (Axes C+) (Faith C+) (Required (Level 15))",
-  "abilities": [ "Axe Advantage", "Faith Advantage", "Faith Consumption 1" ],
-    "arts": [],
+  "abilities": [ ["Axe Advantage", "Brawl Advantage"], "Faith Advantage", "Faith Consumption 1" ],
+    "arts": ["Cantor's Strike"],
   "growths": {
     "hp": 25,
     "str": 20,
@@ -14,24 +14,24 @@
     "spd": 0,
     "def": 15,
     "res": 25,
-    "lck": 20
+    "lck": 15
   },
   "modifiers": {
-    "hp": 4,
+    "hp": 6,
     "str": 4,
     "mag": 3,
-    "dex": 2,
-    "spd": 0,
+    "dex": 6,
+    "spd": 1,
     "def": 2,
     "res": 5,
-    "lck": 4,
+    "lck": 10,
     "mov": 6
   },
   "mount": null,
 
   "default_base": "Brigand",
   "default_preset": "Power/Balance/Balance",
-  "default_mainarm": "Axes",
+  "default_mainarm": ["Axes", "Metal"],
   "default_sidearm": "Faith",
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],

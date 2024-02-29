@@ -26,7 +26,8 @@
 
         "tpcost": 0,
         "spcost": [
-            "bothif item|tagged|target_foe + item|tagged|condition",
+	    "// add a way to detect targetting foes\n",
+            "bothif item|tagged|condition",
             "  then -(item|total|tpcost)",
             "  else 0",
             "end"

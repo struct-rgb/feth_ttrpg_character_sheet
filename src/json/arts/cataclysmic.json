@@ -1,0 +1,26 @@
+{
+  "name": "Catalysmic",
+  "description": "This combat art may be used with another, which reduces that art’s SP cost to zero. Make non-targeting and uncounterable attacks against each foe in AoE at the beginning of this unit’s next phase.",
+  "requires": "Innate",
+  "compatible": "Not (Tag `no might`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 2,
+    "prot": 0,
+    "resl": 0,
+    "hit": -10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|maxrng",
+    "tpcost": 0,
+    "spcost": -6,
+    "macost": 0
+  },
+  "comment": "",
+  "tags": ["staggering blow", "for monsters", "inclusive", "combo"],
+  "hidden": true,
+  "type": "Generic",
+  "rank": "E"
+}

@@ -4,8 +4,8 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Bows C+) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": ["Bow Advantage", "Trick Shot", "Canto"],
-    "arts": [],
+    "abilities": ["Bow Advantage", "Trick Shot", "Canto+"],
+    "arts": ["Cantabrian Circle"],
     "growths": {
         "hp": 20,
         "str": 20,
@@ -17,15 +17,15 @@
         "lck": 15
       },
     "modifiers": {
-        "hp": 3,
+        "hp": 4,
         "str": 3,
         "mag": 2,
-        "dex": 2,
+        "dex": 5,
         "spd": 4,
         "def": 3,
         "res": 2,
-        "lck": 5,
-        "mov": 5
+        "lck": 13,
+        "mov": 4
     },
     "mount": {
         "hp": 0,
@@ -36,13 +36,13 @@
         "def": 0,
         "res": 0,
         "lck": 0,
-        "mov": 2
+        "mov": 3
     },
 
     "default_base": "Archer",
     "default_preset": "Power/Balance/Dexterity",
     "default_mainarm": "Bows",
-    "default_sidearm": "Lances",
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

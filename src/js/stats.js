@@ -1480,12 +1480,24 @@ class Stats {
 			min     : 1,
 			max     : 100,
 			trigger : ((level) => {
-				// this.refreshSecondary();
 				this.refresher.refresh("Level");
 				this.refresher.refresh("unit|level");
-				// this.stats.mov.refresh();
 				return level;
 			}),
+		});
+
+		this._size = new AttributeCell({
+			edit    : true,
+			value   : 1,
+			shown   : "1",
+			min     : 1,
+			max     : 9,
+			root    : "span",
+			trigger : ((size) => {
+				Action.UNIT_SIZE = Number(size);
+				this.refresher.refresh("unit|size");
+				return size;
+			}) 
 		});
 
 		const edit = element("input", {
@@ -1541,7 +1553,9 @@ class Stats {
 
 			const grow = ((stat) => {
 
-				if (stat == "mov") return element("td");
+				if (stat == "mov") return element("td", [
+					element("strong", "Size "), this._size.root
+				]);
 
 				const growFunction = new Expression.Env(
 					Expression.Env.RUNTIME, this.sheet.definez
@@ -1652,7 +1666,7 @@ class Stats {
 			]),
 		]);
 
-		this.va = new Action.VisualAid(this.sheet, {
+		this.va = new RangeFinder(this.sheet, {
 			width : 180,
 			draw  : false,
 		});
@@ -1680,6 +1694,18 @@ class Stats {
 
 	set level(value) {
 		this._level.value = value;
+	}
+
+	/**
+	 * The character's size in tiles (character are squares).
+	 * @type {number}
+	 */
+	get size() {
+		return this._size.value;
+	}
+
+	set size(value) {
+		this._size.value = value;
 	}
 
 	/**
@@ -1754,6 +1780,7 @@ class Stats {
 	import(object) {
 		
 		this.level = object.level || 1;
+		this.size  = object.size  || 1;
 
 		for (let name of this.names) {
 			this.stats[name].value   = object.bases[name];
@@ -1780,6 +1807,7 @@ class Stats {
 	export() {
 
 		const object = {
+			size     : this.size,
 			level    : this.level,
 			levelups : this.levelups.export(),
 			pointbuy : this.pointbuy.export(),

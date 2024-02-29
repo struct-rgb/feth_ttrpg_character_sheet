@@ -3,7 +3,6 @@
 /* global uniqueLabel */
 /* global AttributeCell */
 
-/* global Art */
 /* global Gambit */
 /* global Battalion */
 /* global Adjutant */
@@ -51,17 +50,9 @@ class BattalionPreview {
 
 	generate(dead=false) {
 
-		let   star  = undefined;
 		const sheet = this.battalion.sheet;
 
-		function span(...args) {
-			return element("span", args);
-		}
-		
 		const mods  = [];
-		const env   =  new Expression.Env(
-			Expression.Env.RUNTIME, sheet.definez
-		);
 
 		const rank  = this.battalion._rank._trigger(this.battalion.rank);
 		const attrs = Array.from(this.battalion.gambits.names());
@@ -279,7 +270,7 @@ class Battalions {
 		});
 
 		const perc = ((base, variable) => {
-			return String(variable()) + "%";
+			return `${variable()}%`;
 		});
 
 		const babcap = sf.span("Capacity", {
@@ -379,7 +370,6 @@ class Battalions {
 				{var: "battalion|total|contract", edit: false}),
 		]);
 
-		/* todo check if this needs move after the root */
 		this._template = Battalion.get(Battalion.DEFAULT);
 		this._adjutant = Adjutant.get(Adjutant.DEFAULT);
 
@@ -577,7 +567,6 @@ class Battalions {
 	*iterCustomRows() {
 
 		let row = undefined;
-		let tmp = undefined;
 
 		for (let each of this.gambits.getActiveValues()) {
 			for (row of each.rows) yield row;
@@ -599,7 +588,7 @@ class Battalions {
 				: (
 					this._template.description + (
 						this.information
-							? " " + this.information
+							? ` ${this.information}`
 							: ""
 					)
 				)
@@ -648,6 +637,39 @@ class Battalions {
 			hitip.text([this.name, this.fullInfo()], set),
 			"\nUsage Requirements\n",
 			"  * Authority ", rank
+		].join("");
+	}
+
+	html() {
+
+		const mods = [];
+		const env  = new Expression.Env(
+			Expression.Env.RUNTIME, this.sheet.definez
+		);
+
+		for (let key of [
+			"ep", "atk", "prot", "resl", "cap", "br", "auto", "plu"
+		]) {
+			const value = env.read(`battalion|total|${key}`);
+			if (value <= 1) continue;
+
+			mods.push(`${capitalize(key)}:&nbsp;${value}`);
+		}
+
+		const set  = new Set();
+		const rank = this._rank._trigger(this.rank);
+
+		return [
+			"<b>",
+			this.name, " (Authority ", rank, ")",
+			"</b>",
+			"(With&nbsp;", this.adjutant.name, ") ", "<br />",
+			mods.join(" "), mods.length ? "<br />" : "",
+			hitip.html([this.name, this.fullInfo()], set),
+			"<br /><b>Usage Requirements</b><br />",
+			"<ul>",
+			"<li>", "Authority ", rank, "</li>",
+			"</ul>",
 		].join("");
 	}
 

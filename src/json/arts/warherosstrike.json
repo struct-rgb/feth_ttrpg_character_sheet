@@ -1,8 +1,8 @@
 {
-  "name": "War Hero’s Strike",
-  "description": "War Hero only; effective against all foes.",
-  "requires": "All (Class `War Hero`) (Axes E)",
-  "compatible": "Skill Axes",
+  "name": "Warrior's Strike",
+  "description": "Effective against all units.",
+  "requires": "Class `War Hero`",
+  "compatible": "All (Skill Axes) (Not (Tag `no might`)) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 3,
@@ -15,13 +15,13 @@
     "minrng": 1,
     "maxrng": 1,
     "tpcost": 0,
-    "spcost": 5
+    "spcost": 10
   },
   "comment": "",
   "tags": [
-    "relic", "effective", "all effective"
+    "effective", "all effective"
   ],
   "hidden": true,
   "type": "Axes",
-  "rank": "E"
+  "rank": ""
 }

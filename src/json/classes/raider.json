@@ -1,0 +1,39 @@
+{
+    "name": "Raider",
+    "description": "This axe expert is not just a warrior, but THE warrior",
+    "type": ["Infantry"],
+    "tier": "Advanced",
+    "requires": "All (Any (Axes C+) (Brawl C+)) (Any (Brawl C+) (Bows C+)) (Any (Bows C+) (Axes C+)) (Required (Level 15))",
+    "abilities": [["Axe Advantage", "Bow Advantage", "Brawl Advantage"], ["Axe Advantage", "Bow Advantage", "Brawl Advantage"], "Crit +20", "Terrain Resistance", "Voyager"],
+    "arts": ["Battle Frenzy"],
+    "growths": {
+        "hp": 30,
+        "str": 25,
+        "mag": 20,
+        "dex": 20,
+        "spd": 10,
+        "def": 10,
+        "res": 0,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 6,
+        "mag": 3,
+        "dex": 10,
+        "spd": 2,
+        "def": 2,
+        "res": 0,
+        "lck": 10,
+        "mov": 5
+    },
+    "mount": null,
+
+    "default_base": "Brigand",
+    "default_preset": "Power/Balance/Luck",
+    "default_mainarm": ["Axes", "Metal", "Bows"],
+    "default_sidearm": ["Axes", "Metal", "Bows"],
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

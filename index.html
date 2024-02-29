@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
 	<script type="text/javascript" src="./src/js/expression.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
+	<script type="text/javascript" src="./src/js/dynamics.js"></script>
 	<script type="text/javascript" src="./src/js/legacy.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
 </head>
@@ -43,6 +44,13 @@
 			sheet.macros.historySave();
 			return true;
 		});
+
+		// Make sure the rangefinder refreshs on load.
+		// document.getElementById("theme-link").onload = ((event) => {
+		// 	console.log("Loaded CSS file...");
+		// 	sheet.refresher.refresh("theme");
+		// });
+
 	</script>
 
 	<noscript>This webpage needs javascript to run.</noscript>

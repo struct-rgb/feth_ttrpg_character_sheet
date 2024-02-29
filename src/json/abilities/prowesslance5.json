@@ -1,7 +1,7 @@
 {
     "name": "Lance Prowess 5",
     "description": "Grants Hit +15, Avo +15, Crit +15, and Crit Avo +15, when unit uses Lances. A unit may only equip one \"Lance Prowess\" ability at a time.",
-    "requires": "All (Lances A+) (Level 25)",
+    "requires": "Any (All (Lances A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
     "modifiers": {
         "hp": 0,
         "sp": 0,

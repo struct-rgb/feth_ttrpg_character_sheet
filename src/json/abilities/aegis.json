@@ -1,7 +1,7 @@
 {
     "name": "Aegis",
-    "description": "Dex% chance to reduce the damage taken from Faith, Guile, Reason, Bows by 50%, and grants use of the @{art::Aegis} tactical art.",
-    "requires": "All (Any (Swords B) (Lances B)) (Riding B) (Level 20)",
+    "description": "Dex% chance to reduce the damage taken from Faith, Guile, Reason, Bows by 50%.",
+    "requires": "Any (All (Any (Swords B) (Lances B)) (Required (Riding B)) (Level 14)) (Class `Paladin`)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

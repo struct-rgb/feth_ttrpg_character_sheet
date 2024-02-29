@@ -1,7 +1,7 @@
 {
     "name": "Judo Stance",
     "description": "When foe initiates combat, after combat, foe takes nonlethal damage equal to half of damage taken by unit during combat.",
-    "requires": "All (Brawl C+) (Level 10)",
+    "requires": "All (Brawl B) (Level 17)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

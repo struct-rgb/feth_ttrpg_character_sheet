@@ -1,24 +1,37 @@
 {
   "name": "Sneak Attack",
-  "description": "Trigger: (before) an adjacent enemy enters combat with an ally two spaces away. Initiate combat with that enemy with equipped Sword at AP 1. In combat, target foe cannot counterattack and damage this unit deals is halved after damage calculation. @{const:variant:Ranged Variant:} If unit is equipped with a sword with the “Ranged” attribute, the attack instead deals full damage.",
-  "requires": "Swords C",
+  "description": "Mt +(Spd - Atk) (min. 0); usable only as a reaction with trigger: an enemy within range enters combat with an ally two spaces away. @{const:variant:Ranged Variant:} This art has Range 1-2.",
+  "requires": "Any (Swords C) (Swords B)",
+  "compatible": "All (Skill Swords) (Not (Tag `no might`))",
   "mttype": "else",
   "modifiers": {
-    "mt": 0,
+    "mt": [
+      "more",
+      "  (unit|total|spd) - (",
+      "    bothif item|total|mttype == mttype|str",
+      "      then unit|total|str",
+      "    elseif item|total|mttype == mttype|mag",
+      "      then unit|total|mag",
+      "      else 0",
+      "    end)",
+      "else",
+      "  0",
+      "end"
+    ],
     "prot": 0,
     "resl": 0,
     "hit": 0,
-    "avo": 0,
+    "avo": 20,
     "crit": 0,
     "cravo": 0,
     "minrng": 1,
-    "maxrng": 1,
+    "maxrng": "bothif item|has_attribute|Ranged then 2 else 1 end",
     "tpcost": 0,
-    "spcost": 5
+    "spcost": 4
   },
   "comment": "",
-  "tags": ["reaction", "tactical", "no might", "no hit", "no crit", "no stats"],
+  "tags": ["reaction"],
   "hidden": false,
-  "rank": "C",
+  "rank": "C-B",
   "type": "Swords"
 }

@@ -13,19 +13,19 @@
     "dex": 20,
     "spd": 20,
     "def": 5,
-    "res": 20,
+    "res": 15,
     "lck": 15
   },
   "modifiers": {
-    "hp": 5,
+    "hp": 6,
     "str": 3,
     "mag": 3,
-    "dex": 3,
+    "dex": 10,
     "spd": 5,
-    "def": 0,
+    "def": 1,
     "res": 3,
-    "lck": 2,
-    "mov": 5
+    "lck": 5,
+    "mov": 6
   },
   "mount": null,
 

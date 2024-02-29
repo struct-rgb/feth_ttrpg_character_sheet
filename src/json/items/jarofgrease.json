@@ -5,6 +5,7 @@
   "requires": "None",
   "rank": "E",
   "price": 750,
+  "aoe": "Ring 0-1",
   "mttype": "none",
   "modifiers": {
     "mt": 0,
@@ -35,7 +36,8 @@
     "no hit",
     "no stats",
     "no triangle",
-    "wall"
+    "wall",
+    "break"
   ],
   "hidden": false
 }

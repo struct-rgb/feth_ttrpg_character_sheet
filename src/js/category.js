@@ -4,6 +4,7 @@
  * @module category
  */
 
+/* global Refresher */
 /* global SwapText */
 /* global element */
 /* global assume */
@@ -95,6 +96,9 @@ class CategoryElement {
 		});
 
 		this.dt.appendChild(this.span);
+
+		this.group_mark = element("span", this.group, "smol", "computed");
+		if (options.markGroup) this.dt.appendChild(this.group_mark);
 
 		// make a "remove" button
 		this.removeButton = element("button",  {
@@ -445,11 +449,13 @@ class Category {
 		this.ontoggle    = options.ontoggle  || Category.succeed;
 		this.onremove    = options.onremove  || Category.succeed;
 		this.onreorder   = options.onreorder || Category.succeed;
+		this.onadd       = options.onadd     || Category.succeed;
 		this.reorderable = Boolean(options.reorderable);
 		this.removable   = Boolean(options.removable);
 		this.hideable    = Boolean(options.hideable);
 		this.selectable  = Boolean(options.selectable);
-		this.addActive   = Boolean(options.addActive || false);
+		this.markGroup   = Boolean(options.markGroup);
+		this.addActive   = Boolean(options.addActive);
 		this.parent      = null;
 		this._elements   = new Map();
 		this.root        = document.createElement("div");
@@ -461,20 +467,27 @@ class Category {
 		} else {
 
 			// create a button to add a new element
-			this.addButton         = document.createElement("input");
-			this.addButton.value   = "Add";
-			this.addButton.type    = "button";
-			this.addButton.onclick = () => {
-				
-				const name  = category.select.value;
-				const added = category.add(name, {group: this.name});
-				if (!added) return;
 
-				if (this.addActive) {
-					this.ontoggle.call(undefined, this, name);
+			this.addButton = element("input", {
+				class : ["simple-border"],
+				attrs : {
+					value   : "Add",
+					type    : "button",
+					onclick : (() => {
+
+						const name  = category.select.value;
+						const added = category.add(name, {group: this.name});
+						if (!added) return;
+
+						if (this.addActive) {
+							this.ontoggle.call(undefined, this, name);
+						}
+
+						this.onadd.call(undefined, this, name);
+					})
 				}
-			};
-			this.addButton.classList.add("simple-border");
+			});
+
 			this.root.appendChild(this.addButton);
 
 			if (options.select) {
@@ -482,18 +495,6 @@ class Category {
 				this.select = this._sf._select;
 				this.root.appendChild(this._sf.root);
 			} else {
-				// create a selector of valid values
-				// this.select = document.createElement("select");
-				// this.select.classList.add("simple-border");
-				// for (let item of this.model.values()) {
-				// 	if ("hidden" in item && item.hidden) continue;
-				// 	const option = document.createElement("option");
-				// 	option.value = item.name;
-				// 	option.appendChild(document.createTextNode(item.name));
-				// 	this.select.appendChild(option);
-				// }
-				// this.root.appendChild(this.select);
-
 				this.select = element("select", {
 					class   : ["simple-border"],
 					content : Array.from(this.model._lookup.keys()).map(key => 
@@ -693,6 +694,7 @@ class Category {
 			onreorder   : (() => {
 				return onreorder.call(undefined, this, name);
 			}),
+			markGroup   : assume(options.markGroup, this.markGroup),
 			group       : assume(options.group, ""),
 			hidden      : assume(options.hidden, false),
 		});
@@ -758,10 +760,10 @@ class Category {
 	clear() {
 		this.clearActive();
 		for (let element of this._elements.values()) {
-			if (element.resources) {
-				const [resources, refresher] = element.resources;
-				// console.log(`${element._title.data}: `, refresher.delete(resources));
-			}
+			// if (element.resources) {
+			// 	const [resources, refresher] = element.resources;
+			// 	console.log(`${element._title.data}: `, refresher.delete(resources));
+			// }
 			element.remove();
 		}
 		this._elements.clear();

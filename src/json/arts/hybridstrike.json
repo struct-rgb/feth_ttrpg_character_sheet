@@ -1,8 +1,8 @@
 {
   "name": "Hybrid Strike",
-  "description": "Unit makes an attack with an equipped Swords, Axes, Lances, or Bows weapon and a follow-up attack with a Faith, Reason, or Guile weapon @{const:ap:(AP 2)}. Both attacks must be able to be made at the same range.",
+  "description": "Unit makes an attack with an equipped Swords, Axes, Lances, or Bows weapon and a follow-up attack with a Faith, Reason, or Guile weapon @{const:ap:(AP 2)}. Both weapons must be usable at the same range.",
   "requires": "Class (Class `Dark Knight`) (Class `Mortal Savant`) (Class `Holy Knight`)",
-  "compatible": "Skill Swords Axes Lances Bows",
+  "compatible": "All (Skill Swords Axes Lances Bows) (Not (Tag `no might`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

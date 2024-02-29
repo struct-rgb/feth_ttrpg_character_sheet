@@ -1,0 +1,38 @@
+{
+    "name": "Parallel Stance",
+    "description": "Grants Str +2 and Mag +2 in combat when foe initiates combat. Cannot be equipped with @{ability::Fierce Stance} or @{ability::Fiendish Stance}.",
+    "requires": "All (Any (Swords D+) (Lances D+) (Axes D+) (Bows D+) (Brawl D+)) (Any (Faith D+) (Reason D+) (Guile D+) (Brawl D+)) (Level 11)",
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": "fill stance(3)",
+        "mag": "fill stance(3)",
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["stance", "in combat"],
+    "hidden": false
+}

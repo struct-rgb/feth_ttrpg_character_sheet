@@ -4,6 +4,9 @@
 /* global tooltip */
 /* global element */
 /* global Toggle */
+/* global BigButton */
+
+/* global uniqueID */
 
 /* global Expression */
 
@@ -56,8 +59,9 @@ class CustomRow {
  */
 class Builder {
 
-	constructor() {
-		this.base = [];
+	constructor(brace=true) {
+		this.base  = [];
+		this.brace = brace;
 	}
 
 	me(action) {
@@ -71,11 +75,11 @@ class Builder {
 	}
 
 	italic(text) {
-		return "*" + text + "*";
+		return `*${text}*`;
 	}
 
 	bold(text) {
-		return "**" + text + "**";
+		return `**${text}**`;
 	}
 
 	table() {
@@ -90,7 +94,7 @@ class Builder {
 
 	sum(...args) {
 		const level = [];
-		level.push("[[");
+		if (this.brace) level.push("[[");
 
 		let first = true;
 		for (let arg of args) {
@@ -100,7 +104,7 @@ class Builder {
 			first = false;
 		}
 
-		level.push("]]");
+		if (this.brace) level.push("]]");
 		return level;
 	}
 
@@ -120,7 +124,7 @@ class Builder {
 	}
 
 	attribute(attribute) {
-		return "@{" + attribute + "}";
+		return `@{${attribute}}`;
 	}
 
 	selected(attribute) {
@@ -211,6 +215,10 @@ class UserInterface {
 		this._compact  = new Toggle("Compact Macro Expressions?", true);
 		this._testroll = new Toggle("Test Roll Prompt?", false);
 		this._ranges   = new Toggle("Explicit Attack Range?", false);
+		this._defend   = new Toggle("Subtract Foe's Defenses", false);
+		this._export   = new BigButton("Export as VTTES Character",
+			() => void this.exportVTTES()
+		);
 		
 		this._input   = element("input", {
 			class: ["simple-border", "calculator"],
@@ -318,6 +326,17 @@ class UserInterface {
 					"eliminate these operations if labels are also enabled.",
 				),
 			),
+
+			tooltip(
+				this._defend.root,
+				wrap(
+					"Automatically subtract selected foe's defenses when you ",
+					"roll a macro with a hit chance. This only works if the ",
+					"sheet for that foe has defensive macros set up."
+				),
+			),
+
+			this._export.label,
 
 			element("br"),
 
@@ -617,7 +636,6 @@ class UserInterface {
 		const meta   = arts.filter(art => !art.isTactical());
 		const base   = tactic ? tactic : wpn;
 		const tagged = [base].concat(meta);
-		const skill  = Item.TYPE.asString(env.read("host|type"));
 
 		(m
 			.me("(FLAVOR TEXT GOES HERE)")
@@ -755,6 +773,10 @@ class UserInterface {
 		return macro;
 	}
 
+	static SEPERATOR_ITEMS   = "==========  ITEMS  =========";
+	static SEPERATOR_TACTICS = "========== TACTICS ==========";
+	static SEPERATOR_GAMBITS = "========== GAMBITS ==========";
+
 	macros(display=true) {
 
 		const macros  = [];
@@ -775,11 +797,11 @@ class UserInterface {
 		gambits.add("Counter");
 
 		const targets = chain(
-			["==========  ITEMS  ========="],
+			[UserInterface.SEPERATOR_ITEMS],
 			Array.from(items.category.entries()),
-			["========== TACTICS =========="],
+			[UserInterface.SEPERATOR_TACTICS],
 			arts.values(),
-			["========== GAMBITS =========="],
+			[UserInterface.SEPERATOR_GAMBITS],
 			gambits.values(),
 		);
 
@@ -996,6 +1018,300 @@ class UserInterface {
 		if (display) this._display.value = blurb;
 		return blurb;
 	}
+
+	html(display=true) {
+
+		const text  = [];
+		const sheet = this.sheet;
+		const env   = new Expression.Env(Expression.Env.RUNTIME, sheet.definez);
+
+		function list(title, iterable) {
+			const array = Array.from(iterable);
+			if (array.length == 0) return;
+
+			text.push(title, "\n\n");
+
+			for (let feature of array) {
+				text.push(feature.html(), "\n\n");
+			}
+		}
+
+		text.push("<h1>", sheet.character.name, "</h1>\n\n<pre>\n");
+		for (let name of sheet.stats.names) {
+			text.push(
+				name.toUpperCase().padEnd(3, " "), " = ",
+				env.read(`unit|total|${name}`), "\n"
+			);
+		}
+		text.push("</pre>\n\n");
+
+		text.push("<h2>Description</h2>\n\n");
+		text.push(sheet.character.description, "\n\n");
+
+		/* Inventory */
+
+		let   added = 0;
+		const hole  = text.length;
+
+		text.push("");
+
+		const active = sheet.wb.activeID;
+
+		for (let uid of sheet.wb.category.names()) {
+			sheet.wb.change(uid);
+			if (sheet.wb.model.inInventory) {
+				text.push(sheet.wb.model.html(), "\n\n");
+				++added;
+			}
+		}
+
+		sheet.wb.change(active);
+
+		if (added) text[hole] = "<h2>Inventory</h2>\n\n";
+
+		/* Other Features */
+
+		list("<h2>Equipment</h2>", sheet.equipment.values());
+
+		const className = sheet.character.class.name;
+		if (className != "None") text.push(`<h2>${className}</h2>\n\n`);
+
+		list("<h2>Abilities</h2>", sheet.abilities.values());
+
+		list("<h2>Arts</h2>", sheet.arts.values());
+
+		/* Battalion */
+
+		if (sheet.bb.category.active) {
+			text.push("<h2>Battalion</h2>\n\n", sheet.battalion.html(), "\n\n");
+			list("<h3>Gambits</h3>", sheet.battalion.gambits.values());
+		}
+
+		/* The End */
+
+		const blurb = text.join("");
+		if (display) this._display.value = blurb;
+		return blurb;
+	}
+
+	vttes(display=true) {
+
+		const alias = this._alias.checked;
+		this._alias.checked = true;
+
+		let   done  = false;
+		const sheet = this.sheet;
+		const env   = sheet.runenv;
+		const oldId = uniqueID();
+
+		const hpID  = uniqueID();
+		const spID  = uniqueID();
+		const tpID  = uniqueID();
+
+		const template = {
+			schema_version: 3,
+			type: "character",
+			character: {
+				oldId            : oldId,
+				name             : sheet.character.name,
+				avatar           : "",
+				bio              : encodeURIComponent(this.html(false)),
+				gmnotes          : "",
+				defaulttoken     : JSON.stringify({
+					imgsrc              : "",
+					width               : 70,
+					height              : 70,
+					layer               : "objects",
+					name                : sheet.character.name,
+					represents          : oldId,
+					light_multiplier    : 1,
+					bar_location        : "overlap_bottom",
+					compact_bar         : "compact",
+					bar1_num_permission : "hidden",
+					bar1_value          : env.read("unit|total|hp"),
+					bar1_max            : env.read("unit|total|hp"),
+					bar1_link           : hpID,
+					bar2_num_permission : "hidden",
+					bar2_value          : env.read("unit|total|sp"),
+					bar2_max            : env.read("unit|total|sp"),
+					bar2_link           : spID,
+					bar3_num_permission : "hidden",
+					bar3_value          : env.read("unit|total|tp"),
+					bar3_max            : env.read("unit|total|tp"),
+					bar3_link           : tpID,
+				}),
+				tags             : "[]",
+				controlledby      : "all",
+				inplayerjournals : "all",
+				attribs          : [
+					{
+						name    : "HP",
+						current : String(env.read("unit|total|hp")),
+						max     : "",
+						id      : hpID,
+					},
+					{
+						name    : "SP",
+						current : String(env.read("unit|total|sp")),
+						max     : "",
+						id      : spID,
+					},
+					{
+						name    : "TP",
+						current : String(env.read("unit|total|tp")),
+						max     : "",
+						id      : tpID,
+					},
+					{
+						name    : "Str",
+						current : String(env.read("unit|base|str")),
+						max     : "",
+						id      : uniqueID(),
+					},
+					{
+						name    : "Mag",
+						current : String(env.read("unit|base|mag")),
+						max     : "",
+						id      : uniqueID(),
+					},
+					{
+						name    : "Dex",
+						current : String(env.read("unit|base|dex")),
+						max     : "",
+						id      : uniqueID(),
+					},
+					{
+						name    : "Spd",
+						current : String(env.read("unit|base|spd")),
+						max     : "",
+						id      : uniqueID(),
+					},
+					{
+						name    : "Def",
+						current : String(env.read("unit|base|def")),
+						max     : "",
+						id      : uniqueID(),
+					},
+					{
+						name    : "Res",
+						current : String(env.read("unit|base|res")),
+						max     : "",
+						id      : uniqueID(),
+					},
+					{
+						name    : "Lck",
+						current : String(env.read("unit|base|lck")),
+						max     : "",
+						id      : uniqueID(),
+					},
+					// ...this.defensive().map(attribute => ({
+					// 	name    : attribute[0],
+					// 	current : attribute[1],
+					// 	max     : "",
+					// 	id      : uniqueID(),
+					// })),
+				],
+				abilities        : (
+					this.macros(false)
+
+						// filter out the things we don't want
+						.filter(macro => {
+
+							if (done) return false;
+
+							if (macro == UserInterface.SEPERATOR_ITEMS)
+								return false;
+							if (macro == UserInterface.SEPERATOR_TACTICS)
+								return false;
+							if (macro == UserInterface.SEPERATOR_GAMBITS) {
+								done = true;
+								return false;
+							}
+							return true;
+						})
+
+						// turn the rest into Roll20 abilities
+						.map(macro => ({
+							name          : (
+								macro.match(/\{\{name=([^}]+)}}/)[1]
+							),
+							description   : "",
+							istokenaction : true,
+							action        : macro,
+							order         : -1,
+						}))
+				),
+			}
+		};
+
+		this._alias.checked = alias;
+		if (display) this._display.value = JSON.stringify(template, null, 4);
+		return template;
+	}
+
+	exportVTTES() {
+
+		const a    = element("a");
+		const item = this.vttes(false);
+		const name = this.sheet.character.name;
+		const file = new Blob(
+			[JSON.stringify(item, null, 4)], {type: "application/json"}
+		);
+		
+		a.href     = URL.createObjectURL(file);
+		a.download = `${name.replace(/ /g, "_")}_vttes.json`;
+		a.click();
+		URL.revokeObjectURL(a.href);
+	}
+
+	// defensive() {
+
+	// 	const m       = new Builder(false);
+	// 	const stats   = definitions.stats.defensive;
+	// 	const buckets = new Map();
+
+	// 	const env = new Expression.Env(
+	// 		Expression.Env.MACROGEN
+	// 			| (this._labels.checked  ? Expression.Env.LABEL   : 0)
+	// 			| (this._alias.checked   ? Expression.Env.ALIAS   : 0)
+	// 			| (this._compact.checked ? Expression.Env.COMPACT : 0),
+	// 		this.sheet.definez,
+	// 	);
+
+	// 	for (let item of this.sheet.wb.iter()) {
+	// 		for (let each of stats) {
+
+	// 			const value = env.read(`item|total|${each}`);
+	// 			if (value == "0") continue; 
+
+	// 			if (!buckets.has(each)) buckets.set(each, ["Other", "0"]);
+	// 			buckets.get(each).push(this.sheet.item.name, value);
+			
+	// 		}
+	// 	}
+
+	// 	const final = [];
+
+	// 	for (let each of stats) {
+
+	// 		const bucket = buckets.get(each);
+
+	// 		final.push([capitalize(each), m.merge(
+	// 			...m.sum(
+	// 				env.read(`unit|received|${each}`),
+	// 				bucket && bucket.length > 2
+	// 					? m.prompt(
+	// 						"Foe's Equipped Item?", ...bucket
+	// 					).join("")
+	// 					: "0"
+	// 				)
+	// 			).join(" ")
+	// 		])
+	// 	}
+
+	// 	// if (display) this._display.value = macros.join("\n\n");
+	// 	return final;
+	// }
 }
 
 return {

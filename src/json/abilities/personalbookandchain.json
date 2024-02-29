@@ -34,7 +34,8 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": 0
+        "mov": 0,
+        "slotcost": 0
     },
 
     "comment": "Hugo von Dominic's personal.",

@@ -264,6 +264,8 @@ class Characters {
 		this._pregroup = this.refresher.createGroup();
 
 		this.reclass();
+		
+		this.sheet.refresher.refresh("abilities|slotcost", "arts|slotcost");
 	}
 
 	reclass() {
@@ -327,6 +329,8 @@ class Characters {
 	}
 
 	import(object) {
+
+		console.log(object);
 
 		if (typeof object != "object") {
 			throw Error(`expected object but got type ${typeof object}`);

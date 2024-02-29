@@ -2,7 +2,7 @@
   "name": "Pneuma Gale",
   "description": "Deals magic-based damage.",
   "requires": "Class Cultivator",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `no might))",
   "mttype": "else",
   "modifiers": {
     "mt": 7,

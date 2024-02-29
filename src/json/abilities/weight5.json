@@ -1,7 +1,7 @@
 {
     "name": "Weight -5",
     "description": "Increases threshold to double this unit by 5 in combat.",
-    "requires": "Armor A+",
+    "requires": "Any (Armor A+) (Class `Juggernaut`)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

@@ -1,7 +1,7 @@
 {
     "name": "Agarthan Technology",
     "description": "Adjacent foes deal 3 less damage during combat.",
-    "requires": "Agarthan",
+    "requires": "Innate",
     "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -14,8 +14,8 @@
         "lck": 0,
 
         "mt": 0,
-        "prot": 3,
-        "resl": 3,
+        "prot": "fill confirm([Foe Adjacent?], 3)",
+        "resl": "fill confirm([Foe Adjacent?], 3)",
         "hit": 0,
         "avo": 0,
         "crit": 0,

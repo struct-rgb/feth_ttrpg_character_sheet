@@ -1,6 +1,6 @@
 {
     "name": "Thyrsus",
-    "description": "If wielder has the Crest of @{ability:Major Crest of Gloucester:Gloucester}, grants wielder Range +2 to damaging spells, @{ability::Aegis}, and @{ability::Pavis}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+    "description": "If wielder has the Crest of @{ability:Major Crest of Gloucester:Gloucester}, grants wielder Range +2 to damaging spells, @{ability::Aegis}, and @{ability::Pavise}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
     "requires": "None",
     "price": 0,
     "type": "Staff",

@@ -1,10 +1,10 @@
 {
-    "name": "Dark Wyvernian",
+    "name": "Malig Knight",
     "description": "A mage who rains death from above upon the back of a wyvern. Choose one Advantage skill on reclass.",
     "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": [["Reason Advantage", "Guile Advantage"], "Canto", "Savage Blow"],
+    "abilities": [["Reason Advantage", "Guile Advantage"], "Canto+", "Savage Blow"],
     "arts": [],
     "growths": {
         "hp": 25,
@@ -17,22 +17,22 @@
         "lck": 15
     },
     "modifiers": {
-        "hp": 6,
-        "str": 2,
+        "hp": 9,
+        "str": 3,
         "mag": 4,
-        "dex": 1,
-        "spd": 1,
+        "dex": 3,
+        "spd": 3,
         "def": 4,
         "res": 0,
-        "lck": 2,
-        "mov": 5
+        "lck": 10,
+        "mov": 4
     },
     "mount": {
         "hp": 0,
-        "str": 1,
+        "str": 0,
         "mag": 0,
         "dex": 0,
-        "spd": 2,
+        "spd": 0,
         "def": 0,
         "res": 0,
         "lck": 0,

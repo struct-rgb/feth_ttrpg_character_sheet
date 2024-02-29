@@ -1,8 +1,27 @@
 
 /* global element */
 /* global Preset */
+/* global wrap */
+
 /* global Class */
 /* global uniqueLabel */
+
+/* global CategoryModel */
+/* global MultiActiveCategory */
+
+/* global BigButton */
+/* global Toggle */
+/* global tooltip */
+/* global Version */
+/* global capitalize */
+
+/* global Art */
+/* global Item */
+/* global Attribute */
+/* global Battalions */
+/* global nameof */
+
+/* global Notebook */
 
 const Presetter = (function() {
 
@@ -1406,7 +1425,7 @@ const KITS = {
 				"items"     : [
 					["Iron Fist Technique", "Mighty"]
 				],
-				"abilities" : ["Fading Blow"],
+				"abilities" : [],
 				"arts": ["Fading Blow"],
 			},
 			3 : {
@@ -1415,7 +1434,7 @@ const KITS = {
 					["Iron Fist Technique", "Mighty"],
 					["Steel Fist Technique", "Mighty"],
 				],
-				"abilities" : ["Fading Blow"],
+				"abilities" : [],
 				"arts": ["Fading Blow"],
 			},
 			11 : {
@@ -3867,7 +3886,7 @@ class Presetter {
 			this._preset._select.value = build.default_preset;
 			this._mainarm.value        = Presetter.getDefault(build.default_mainarm);
 			this._sidearm.value        = Presetter.getDefault(build.default_sidearm);
-			console.log(build);
+			// console.log(build);
 
 			this.tokenator.guess(this);
 		});

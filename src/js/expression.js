@@ -8,8 +8,9 @@
 /* global element */
 /* global wrap */
 /* global hilight */
-/* global uniqueID */
 /* global delimit */
+/* global tooltip */
+/* global SwapText */
 
 /* we're going to go for a different pattern with this one */
 const Expression = (function() {
@@ -1481,8 +1482,7 @@ const Tokens = (function() {
 				} catch (error) {
 					if (error instanceof CompilationError) {
 						error.message = (
-							`In expansion of template '${text}'; `
-								+ error.message
+							`In expansion of template '${text}'; ${error.message}`
 						);
 					}
 					throw error;
@@ -1500,8 +1500,7 @@ const Tokens = (function() {
 				} catch (error) {
 					if (error instanceof CompilationError) {
 						error.message = (
-							`In expansion of template '${text}'; `
-								+ error.message
+							`In expansion of template '${text}'; ${error.message}`
 						);
 					}
 					throw error;
@@ -2789,25 +2788,12 @@ class Parser {
 				if ((rhs = this[operands]()) != null) {
 					lhs = [op, lhs, rhs];
 				} else {
-
-					/** TODO validate this behavior.
-					 * I don't remember if this branch has a valid
-					 * purpose or if it exists just to indicate failure.
-					 * I suspect the later so I'm making it throw an
-					 * exception whenever this branch is taken.
-					 *
-					 * Remove and restore the return if you find out that
-					 * it does something of use for some reason.
-					 */
-
 					this._toPrev();
 
 					throw new CompilationError(
 						`No right operand to infix operator ${op}`,
 						this.position
 					);
-
-					// return rhs;
 				}
 			}
 
@@ -3544,7 +3530,6 @@ class Compiler {
 			const e = this.compile(template.expr);
 
 			fn = ((env) => {
-				if (template.debug) debugger;
 				return Expression.evaluate(e, env);
 			});
 
@@ -3735,7 +3720,7 @@ return Object.freeze({
 	asIdentifier: function(string) {
 		const rep = string.replace(/[^A-Za-z0-9_$|]/, char => "_");
 		if (rep.length == 0) return rep;
-		return rep[0].match(/[0-9|]/) ? "$" + rep : rep;
+		return rep[0].match(/[0-9|]/) ? `$${rep}` : rep;
 	},
 
 	/* convenience function to compile easily */

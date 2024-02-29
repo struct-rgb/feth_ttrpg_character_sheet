@@ -13,11 +13,13 @@
 /* global ellipse */
 /* global uniqueLabel */
 
+/* global assume */
 /* global element */
 /* global tooltip */
 /* global delimit */
 /* global capitalize */
-/* global Theme */
+
+/* global RangeFinder */
 
 /* TODO this directive is to condense the many
  * violations that not having this here makes below
@@ -198,6 +200,14 @@ class Feature {
 		this.dependancies = new Set();
 		this.affects      = new Set();
 
+		// defaults until these can be added to all the files
+		if ("modifiers" in template) {
+			template.modifiers["tslots"]   = assume(template.modifiers["slots"]    , 0);
+			template.modifiers["aslots"]   = assume(template.modifiers["aslots"]   , 0);
+			template.modifiers["tslots"]   = assume(template.modifiers["tslots"]   , 0);
+			template.modifiers["slotcost"] = assume(template.modifiers["slotcost"] , 1);
+		}
+
 		// parse file-local template definitions if present
 		const locals = new Set();
 
@@ -214,7 +224,6 @@ class Feature {
 			}
 		}
 
-		const cls    = new.target;
 		const kind   = new.target.kind;
 
 		// function to compile dynamic modifiers
@@ -269,13 +278,37 @@ class Feature {
 		if ("rows" in template) {
 			for (let i = 0; i < template.rows.length; ++i) {
 				const line = template.rows[i];
+				let when = null, expr = null;
+
+				const name = line.name || this.name;
+
+				try {
+					when = compile(line.when || "1", i);
+				} catch (error) {
+					console.error(
+						`Error in 'when' in row ${
+							name
+						} (${i}) of ${new.target.name} '${template.name}' `,
+						error
+					);
+					throw error;
+				}
+
+				try {
+					expr = compile(line.expr || "0");
+				} catch (error) {
+					console.error(
+						`Error in 'when' in row ${
+							name
+						} (${i}) of ${new.target.name} '${template.name}' `,
+						error
+					);
+					throw error;
+				}
+
+
 				this.rows.push(
-					new Macros.CustomRow(
-						line.name || this.name,
-						compile(line.when || "1", i),
-						compile(line.expr || "0", i),
-						line.roll || false,
-					)
+					new Macros.CustomRow(name, when, expr, line.roll || false)
 				);
 			}
 		}
@@ -284,6 +317,10 @@ class Feature {
 			? predicator.compile(template.requires || "None")
 			: Polish.compile("")
 		);
+
+		// TODO hack to make unit size accessible to rangefinder
+		if (compiler && "modifiers" in template)
+			template.modifiers["size"] = "unit|size";
 
 		// compile dynamic expressions in the modifiers/multipliers
 		for (let attribute of Feature.STATS_ATTRIBUTES) {
@@ -299,7 +336,15 @@ class Feature {
 
 			// iterate through each element
 			for (let key in stats) {
-				stats[key] = compile(stats[key], key);
+				try {
+					stats[key] = compile(stats[key], key);
+				} catch (error) {
+					console.error(
+						`Error in key '${key}' of ${new.target.name} '${template.name}'`,
+						stats[key]
+					);
+					throw error;
+				}
 			}
 
 			this[attribute.key] = Object.freeze(stats);
@@ -401,7 +446,7 @@ class Feature {
 
 	static MODEXCLUDE = new Set([
 		"tiles", "tp", "sp", "tpcost", "spcost",
-		"epcost", "cap", "minrng", "maxrng"
+		"epcost", "cap", "minrng", "maxrng", "size", "slotcost"
 	]);
 
 	/**
@@ -423,6 +468,9 @@ class Feature {
 				element("sub", "G", "computed")
 			]);
 		}
+
+		const slots = this.modifierForUI("slotcost", false, dead, false, dynamics);
+		if (slots) mods.push(span("Slots:\xA0", slots));
 
 		for (let key in this.modifiers) {
 
@@ -474,6 +522,7 @@ class Feature {
 		for (let key in this.modifiers) {
 
 			// if (Feature.MODEXCLUDE.has(key)) continue;
+			if (key == "size") continue;
 
 			const value = this.modifier(key);
 			const isnum = (typeof this.modifiers[key] == "number");
@@ -491,6 +540,38 @@ class Feature {
 			hitip.text(this),
 			"\nUsage Requirements\n",
 			hitip.totl(this.requires.ast),
+		].join("");
+	}
+
+	html() {
+
+		const mods = [];
+
+		if (this.price) {
+			mods.push(`${this.price}G`);
+		}
+
+		for (let key in this.modifiers) {
+
+			// if (Feature.MODEXCLUDE.has(key)) continue;
+			if (key == "size") continue;
+
+			const value = this.modifier(key);
+			const isnum = (typeof this.modifiers[key] == "number");
+
+			if (isnum && value == 0) continue;
+
+			const mark  = (isnum ? "" : "*");
+
+			mods.push(`${capitalize(key)}:&nbsp;${value}${mark}`);
+		}
+
+		return [
+			"<b>", this.title(), "</b><br />",
+			mods.join(" "), mods.length ? "<br />" : "",
+			hitip.html(this),
+			"<br /><b>Usage Requirements</b><br />",
+			hitip.tohtml(this.requires.ast),
 		].join("");
 	}
 
@@ -803,7 +884,7 @@ class Action extends Feature {
 		}
 
 		if (this.aoe && this.aoe != "None" && this.aoe != "Variable") {
-			const va = new Action.VisualAid(this);
+			const va = new RangeFinder(this);
 			if (dynamics) dynamics.register(va, ["theme", "unit|total|maxrng", "unit|total|minrng"]);
 			mods.push(element("br"), va.root);
 		}
@@ -815,533 +896,6 @@ class Action extends Feature {
 			this.requires.source ? hitip.toul(this.requires, dead, dynamics) : ""
 		]);
 	}
-
-	static TILE_SIZE = 12;
-	static HALF_TILE = Action.TILE_SIZE / 2;
-	static QRTR_TILE = Action.HALF_TILE / 2;
-	static ORIG_TILE = Action.TILE_SIZE;
-
-
-	static tile(ctx, x, y, xtheme, penalty=0) {
-		const theme = xtheme || Theme.active();
-		const size  = Action.TILE_SIZE;
-		const half  = Action.HALF_TILE;
-		ctx.beginPath();
-		ctx.strokeStyle = theme.border;
-		ctx.rect(x - half, y - half, size, size);
-		ctx.fillStyle = theme.hit_penalty(penalty);
-		ctx.fillRect(x - half, y - half, size, size);
-		ctx.stroke();
-	}
-
-	static bgtile(ctx, x, y, xtheme) {
-		const theme = xtheme || Theme.active();
-		const size  = Action.TILE_SIZE;
-		const half  = Action.HALF_TILE;
-		ctx.beginPath();
-		ctx.strokeStyle = theme.border;
-		ctx.rect(x - half, y - half, size, size);
-		ctx.stroke();
-	}
-
-	static AoETile(ctx, x, y, xtheme) {
-		const theme = xtheme || Theme.active();
-		const size  = Action.TILE_SIZE;
-		const half  = Action.HALF_TILE;
-		ctx.beginPath();
-		ctx.strokeStyle = theme.border;
-
-		ctx.moveTo(x, y - half + 1);
-		ctx.lineTo(x, y + half - 1);
-		ctx.moveTo(x + half - 1, y);
-		ctx.lineTo(x - half + 1, y);
-		ctx.moveTo(x - half + 1, y - half + 1);
-		ctx.lineTo(x + half - 1, y + half - 1);
-		ctx.moveTo(x + half - 1, y - half + 1);
-		ctx.lineTo(x - half + 1, y + half - 1);
-		ctx.stroke();
-	}
-
-	static arrow(ctx, x, y, start) {
-		const theme  = Theme.active();
-		const half   = Action.HALF_TILE;
-
-		ctx.beginPath();
-		ctx.moveTo(x + half * Math.sin(start), y + half * Math.cos(start));
-		ctx.strokeStyle = theme.border;
-
-		start += Math.PI / 2;
-		ctx.lineTo(x + half * Math.sin(start), y + half * Math.cos(start));
-		ctx.lineTo(x + 0.2 * half * Math.sin(start), y + 0.2 * half * Math.cos(start));
-
-		start += Math.PI / 2;
-		ctx.lineTo(x + half * Math.sin(start - (Math.PI/8)), y + half * Math.cos(start - (Math.PI/8)));
-		ctx.lineTo(x + half * Math.sin(start + (Math.PI/8)), y + half * Math.cos(start + (Math.PI/8)));
-
-		start += Math.PI / 2;
-		ctx.lineTo(x + 0.2 * half * Math.sin(start), y + 0.2 * half * Math.cos(start));
-		ctx.lineTo(x + half * Math.sin(start), y + half * Math.cos(start));
-
-		start += Math.PI / 2;
-		ctx.lineTo(x + half * Math.sin(start), y + half * Math.cos(start));
-
-		ctx.fillStyle = theme.unit;
-		ctx.fill();
-		ctx.stroke();
-	}
-
-	static unit(ctx, x, y, border, fill) {
-		const theme = Theme.active();
-		const qrtr  = Action.QRTR_TILE;
-		ctx.beginPath();
-		ctx.strokeStyle = theme.border;
-		ctx.arc(x, y, qrtr, 0, 2 * Math.PI);
-		ctx.fillStyle = theme.unit;
-		ctx.fill();
-		ctx.stroke();
-	}
-
-	static line(ctx, x, y, length, bits, fn=Action.AoETile) {
-		const size = Action.TILE_SIZE;
-		// North: 0, South: 2, East: 3, West: 1
-		const sign  = size * (((bits & 0x2) >> 1) || -1);
-		const xsize = sign * (  bits  & 0x1);
-		const ysize = sign * (~ bits  & 0x1);
-		for (let i = 0; i < length; ++i)
-			fn(ctx, x + xsize * i, y + ysize * i);
-	}
-
-	static box(ctx, x, y, w, h, bits, fn=Action.AoETile) {
-		const size      = Action.TILE_SIZE;
-		const direction = bits & 0x3;
-
-		switch (direction) {
-		case 0x0:   // North
-		case 0x2: { // South
-			const centerX   = (x - (Math.floor(w / 2) * size));
-			const centerY   = y;
-			for (let i = 0; i < w; ++i) {
-				Action.line(ctx, centerX + (i * size), centerY, h, direction, fn);
-			}
-		} break;
-		case 0x1:   // East
-		case 0x3: { // West
-			const centerX   = x;
-			const centerY   = (y - (Math.floor(w / 2) * size));
-			for (let i = 0; i < w; ++i) {
-				Action.line(ctx, centerX, centerY + (i * size), h, direction, fn);
-			}
-		}	break;
-		default:
-			throw new Error("Impossible direction.");
-		}
-	}
-
-	static rectangle(ctx, x, y, w, h, fn=Action.AoETile) {
-		const size  = Action.TILE_SIZE;
-		const centerX   = x - (Math.floor(w / 2) * size);
-		const centerY   = y + (Math.floor(h / 2) * size);
-		for (let i = 0; i < w; ++i) {
-			Action.line(ctx, centerX + (i * size), centerY, h, 0, fn);
-		}
-	}
-
-	static circle(ctx, x, y, min, max, fn=Action.AoETile) {
-		const size = Action.TILE_SIZE;
-		for (let i = -max; i <= max; ++i) {
-			for (let j = -max; j <= max; ++j) {
-				const distance = Math.abs(i) + Math.abs(j);
-				if (distance < min || max < distance) continue;
-				fn(ctx, x + size * i, y + size * j);
-			}
-		}
-	}
-
-	static xcross(ctx, x, y, min, max, fn=Action.AoETile) {
-		const size = Action.TILE_SIZE;
-		for (let i = -max; i <= max; ++i) {
-			for (let j = -max; j <= max; ++j) {
-				const distance = Math.abs(i) + Math.abs(j);
-				if (distance < min * 2) continue;
-				if (Math.abs(i) != Math.abs(j)) continue;
-				fn(ctx, x + size * i, y + size * j);
-			}
-		}
-	}
-
-	static plus(ctx, x, y, min, max, fn=Action.AoETile) {
-		const size = Action.TILE_SIZE;
-		for (let i = -max; i <= max; ++i) {
-			for (let j = -max; j <= max; ++j) {
-				if (!(i == 0 || j == 0)) continue;
-				const distance = Math.abs(i) + Math.abs(j);
-				if (distance < min || max < distance) continue;
-				fn(ctx, x + size * i, y + size * j);
-			}
-		}
-	}
-
-	static frost(ctx, x, y, min, max, fn=Action.AoETile) {
-		const size = Action.TILE_SIZE;
-		for (let i = -max; i <= max; ++i) {
-			for (let j = -max; j <= max; ++j) {
-
-				if (!(
-					(j == -max && i <= 0) || (j == max && i >= 0) || i == 0
-				)) continue;
-
-				fn(ctx, x + size * i, y + size * j);
-			}
-		}
-	}
-
-	static half_circle(ctx, x, y, min, max, bits, fn=Action.AoETile) {
-		const size      = Action.TILE_SIZE;
-		const direction = bits & 0x3;
-		const iStart    = direction == 0x3 ? 0 : -max;
-		const iStop     = direction == 0x1 ? 0 :  max;
-		const jStart    = direction == 0x2 ? 0 : -max;
-		const jStop     = direction == 0x0 ? 0 :  max;
-
-		for (let i = iStart; i <= iStop; ++i) {
-			for (let j = jStart; j <= jStop; ++j) {
-				const distance = Math.abs(i) + Math.abs(j);
-				if (distance < min || max < distance) continue;
-				fn(ctx, x + size * i, y + size * j);
-			}
-		}
-	}
-
-	static cutRange(min, cut, max) {
-		const section = [];
-
-		let range = min, start = min, last = 0;
-		for (range = min; range <= max; ++range) {
-			const raw     = 20 * (range - cut);
-			const penalty = Math.min(60, Math.max(0, raw));
-
-			if (last !== penalty) {
-				section.push([start, range - 1, last]);
-				start = range;
-			}
-
-			last = penalty;
-		}
-
-		section.push([start, range - 1, last]);
-		return section;
-	}
-
-	static findRange(range, cuts) {
-		for (let [min, max, mod] of cuts) {
-			if (min <= range && range <= max)
-				return mod;
-		}
-		return -1;
-	}
-
-	static draw(canvas, action, offsetX, offsetY, mouseX, mouseY) {
-
-		const x = Math.floor(((mouseX - offsetX) + Action.HALF_TILE) / Action.TILE_SIZE);
-		const y = Math.floor(((mouseY - offsetY) + Action.HALF_TILE) / Action.TILE_SIZE);
-
-		const theme = Theme.active();
-		const ctx   = canvas.getContext("2d");
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-		if (!action) return;
-
-		let match  = undefined;
-		const min  = action.modifier("minrng");
-		const max  = action.modifier("maxrng");
-		const cut  = action.modifier("cutrng");
-		const cuts = Action.cutRange(min, cut ? cut : max, max);
-
-		const distance = Math.abs(x) + Math.abs(y);
-		const inRange  = min <= distance && distance <= max;
-		const i        = inRange ? offsetX + x * Action.TILE_SIZE : offsetX;
-		const j        = inRange ? offsetY + y * Action.TILE_SIZE : offsetY - (max * Action.TILE_SIZE);
-
-		for (let i = cuts.length - 1; i >= 0; --i) {
-			const [start, stop, penalty] = cuts[i];
-			const fn = (ctx, x, y) => Action.tile(ctx, x, y, theme, penalty);
-			Action.circle(ctx, offsetX, offsetY, start, stop, fn);
-		}
-
-		const angle = Math.atan2(
-			(inRange ? mouseX : i) - offsetX,
-			(inRange ? mouseY : j) - offsetY,
-		);
-
-		const radian = Math.round(angle / (Math.PI / 2));
-		const round  = radian * (Math.PI / 2);
-		const faces  = (radian + 2) % 4;
-
-		const composite = ctx.globalCompositeOperation;
-		ctx.globalCompositeOperation = "xor";
-
-		if ((match = action.aoe.match(/^(None||Variable)$/))) {
-			/* do nothing */
-		}
-		else
-		if ((match = action.aoe.match(/^Centered-Box (\d)x(\d)$/))) {
-			Action.rectangle(ctx, i, j, Number(match[1]), Number(match[2]));
-		}
-		else
-		if ((match = action.aoe.match(/^Ring (\d)-(\d)$/))) {
-			Action.circle(ctx, i, j, Number(match[1]), Number(match[2]));
-		}
-		else
-		if ((match = action.aoe.match(/^X (\d)-(\d)$/))) {
-			Action.xcross(ctx, i, j, Number(match[1]), Number(match[2]));
-		}
-		else
-		if ((match = action.aoe.match(/^Plus (\d)-(\d)$/))) {
-			Action.plus(ctx, i, j, Number(match[1]), Number(match[2]));
-		}
-		else
-		if ((match = action.aoe.match(/^Box (\d)x(\d)$/))) {
-			Action.box(ctx, i, j, Number(match[1]), Number(match[2]), faces);
-		}
-		else
-		if ((match = action.aoe.match(/^Frost (\d)$/))) {
-			Action.frost(ctx, i, j, 0, Number(match[1]));
-		}
-		else
-		if ((match = action.aoe.match(/^Half Circle (\d)$/))) {
-			Action.half_circle(ctx, i, j, 0, Number(match[1]), faces);
-		} else {
-			/* do nothing */
-		}
-
-		ctx.globalCompositeOperation = composite;
-
-		Action.unit(ctx, i, j);
-
-		Action.arrow(ctx, offsetX, offsetY, round);
-
-		const text = `Range ${inRange ? distance : max} (${
-			["North", "West", "South", "East", "North"][faces]
-		}), Hit -${
-			Action.findRange(inRange ? distance : max, cuts)
-		}, Zoom ${
-			((Action.TILE_SIZE / Action.ORIG_TILE) * 100).toFixed(0)
-		}%`;
-
-		ctx.beginPath();
-		ctx.fillStyle   = theme.background;
-		ctx.strokeStyle = theme.background;
-		ctx.rect(0, 0, canvas.width, Action.ORIG_TILE);
-		ctx.fill();
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.strokeStyle = theme.border;
-		ctx.moveTo(0, Action.ORIG_TILE);
-		ctx.lineTo(canvas.width, Action.ORIG_TILE);
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.fillStyle = theme.border;
-		ctx.fillText(text, 0, 10);
-		ctx.fill();
-	}
-
-	static setTileSize(pixels=this.ORIG_TILE) {
-		this.TILE_SIZE = pixels;
-		this.HALF_TILE = this.TILE_SIZE / 2;
-		this.QRTR_TILE = this.HALF_TILE / 2;
-
-		// TODO this is a super hack; fix this either by making scale a
-		// property of the instance so that we don't need to globaly refresh
-		// or figure out a different way to do this because this could crash
-		// the page if this function is called before sheet is initialized.
-		sheet.refresher.refresh("theme");
-	}
-
-	static VisualAid = class {
-		
-		constructor(action, template) {
-
-			template           = template || {};
-
-			this.action        = action;
-			this.canvas        = element("canvas", [], "simple-border");
-			this.canvas.width  = Math.floor(
-				(template.width || 230) / Action.ORIG_TILE
-			) * Action.TILE_SIZE;
-			this.canvas.height = 10 * Action.ORIG_TILE;
-
-			this.center();
-			this.setBorders(this.x, this.y, 2);
-
-			this.interval      = null;
-
-			this.mouseX        = this.x;
-			this.mouseY        = this.y;
-
-			this.collapsed     = false;
-
-			// console.log(this.xMin, this.xMax, this.yMin, this.yMax);
-
-			this.canvas.addEventListener("mouseenter", (event) => {
-				this.interval = setInterval(() => {
-					this.refresh();
-				}, 10);
-			});
-
-			this.canvas.addEventListener("mouseleave", (event) => {
-				clearInterval(this.interval);
-			});
-
-			this.canvas.addEventListener("dblclick", (event) => {
-				this.collapse();
-			});
-
-			// zoom in or out on the portait with the mouse wheel
-			this.canvas.addEventListener("wheel", (event) => {
-
-				// zoom in or out on the animation
-				const delta       = Math.sign(event.deltaY) * Number(this.scale.step);
-				const old         = Number(this.scale.value);
-				const scale       = delta + old;
-
-				Action.setTileSize(scale * Action.ORIG_TILE);
-				const coe = Action.ORIG_TILE * action.modifier("maxrng") * 0.5;
-				const off = (coe * old) - (coe * scale);
-
-				this.x   += off;
-				this.y   += off;
-
-				this.scale.value  = scale;
-				this.scale.onchange();
-
-				// stop the page from scolling
-				event.preventDefault();
-				event.stopPropagation();
-			}, false);
-
-			this.scale         = element("input", {
-				class: ["simple-border", "no-display"],
-				attrs: {
-					type     : "number",
-					min      : 0.02,
-					max      : 4.00,
-					step     : 0.05,
-					value    : 1.00,
-					onchange : ((event) => {
-						if (this.scale.value < this.scale.min)
-							this.scale.value = this.scale.min;
-						if (this.scale.value > this.scale.max)
-							this.scale.value = this.scale.max;
-						this.refresh();
-					}),
-				}
-			});
-
-
-			// drag in order to move portrait
-
-			this.dragging      = false;
-			this.dragStartX    = null;
-			this.dragStartY    = null;
-			this.dragOffsetX   = null;
-			this.dragOffsetY   = null;
-			
-			this.canvas.addEventListener("mousedown", (event) => {
-
-				if (event.which == 1) {
-					this.dragging    = true;
-					this.dragStartX  = event.offsetX;
-					this.dragStartY  = event.offsetY;
-					this.dragOffsetX = this.x;
-					this.dragOffsetY = this.y
-				}
-			}, false);
-
-			this.canvas.addEventListener("mouseup", (event) => {
-
-				if (event.which == 1) {
-					this.dragging = false;
-					this.x = this.dragOffsetX + (event.offsetX - this.dragStartX);
-					this.y = this.dragOffsetY + (event.offsetY - this.dragStartY);
-					this.refresh();
-				}
-			}, false);
-
-			this.canvas.addEventListener("mousemove", (event) => {
-
-				this.mouseX = event.offsetX;
-				this.mouseY = event.offsetY;
-
-				if (this.dragging) {
-					this.x  = this.dragOffsetX + (event.offsetX - this.dragStartX);
-					this.y  = this.dragOffsetY + (event.offsetY - this.dragStartY);
-					this.refresh();
-				}
-			}, false);
-
-			this.collapse_button = element("button", {
-				class   : ["simple-border"],
-				content : "View Range",
-				attrs   : {onclick: () => this.collapse()}
-			});
-
-			this.root = element("span", [this.canvas]);
-			
-			if (assume(template.draw, true))
-				Action.draw(this.canvas, this.action, this.x, this.y);
-		}
-
-		center() {
-			this.x = this.canvas.width  / 2;
-			this.y = this.canvas.height / 2;
-		}
-
-		setBorders(centerX, centerY, tiles) {
-
-			this.xMin       = centerX + -Action.TILE_SIZE * 12;
-			this.xMax       = centerX +  Action.TILE_SIZE * 12;
-			this.yMin       = centerY + -Action.TILE_SIZE * 8;
-			this.yMax       = centerY +  Action.TILE_SIZE * 8;
-
-			const [w, h] = this.tileAt(this.canvas.width, this.canvas.height);
-
-			this.xMinScroll = tiles;
-			this.xMaxScroll = w - tiles;
-			this.yMinScroll = tiles;
-			this.yMaxScroll = h - tiles;
-		}
-
-		collapse() {
-			if (this.interval) {
-				clearInterval(this.interval);
-			}
-
-			if (this.collapsed) {
-				this.collapse_button.remove();
-				this.root.appendChild(this.canvas);
-				this.center();
-				this.refresh();
-			} else {
-				this.canvas.remove();
-				this.root.appendChild(this.collapse_button);
-			}
-
-			this.collapsed = !this.collapsed;
-		}
-
-		refresh() {
-			Action.draw(this.canvas, this.action, this.x, this.y, this.mouseX, this.mouseY);
-		}
-
-		tileAt(x, y) {
-			return [
-				Math.floor((x + Action.HALF_TILE) / Action.TILE_SIZE),
-				Math.floor((y + Action.HALF_TILE) / Action.TILE_SIZE),
-			];
-		}
-	};
 }
 
 /**
@@ -1365,6 +919,10 @@ class Art extends Action {
 		if (template.mttype != "else")
 			this.affects.add("item|total|mttype");
 
+		if (typeof this.rank == "string") {
+			this.rank = this.rank.split("-");
+		}
+
 		// If this is not a super() call, freeze the object.
 		if (new.target === Art) {
 			Object.freeze(this);
@@ -1387,7 +945,7 @@ class Art extends Action {
 			return ` ${this.name} (${kind})`;
 		}
 
-		return `${this.name} (${kind}: ${this.type} ${this.rank})`;
+		return `${this.name} (${kind}: ${this.type} ${this.rank.join("-")})`;
 	}
 
 	static compatibles(object) {
@@ -1525,6 +1083,13 @@ class Art extends Action {
 
 	isNormal() {
 		return !(this.tagged("combo") || this.tagged("tactical"));
+	}
+
+	*exKeys() {
+		for (let rank of this.rank) {
+			const kind = this.isTactical() ? "tactical" : "combat";
+			yield `${this.type} ${rank} ${kind} art`;
+		}
 	}
 
 	static select(trigger) {
@@ -1833,7 +1398,7 @@ class Item extends Action {
 			return `${this.name} (DEPRICATED)`;
 		}
 
-		return this.name + " (" + this.type + " " + this.rank + ") ";
+		return `${this.name} (${this.type} ${this.rank}) `;
 	}
 
 	static TYPE = new ConfigEnum(
@@ -2065,6 +1630,10 @@ class Item extends Action {
 
 				new Filter.Toggle("Shield", false, (feature) => {
 					return feature.tagged("shield");
+				}),
+
+				new Filter.Toggle("Stone", false, (feature) => {
+					return feature.tagged("stone");
 				}),
 
 				new Filter.Toggle("Reaction", false, (feature) => {
@@ -3214,6 +2783,8 @@ class Gambit extends Action {
 
 			// if (Feature.MODEXCLUDE.has(key)) continue;
 
+			if (key == "size") continue;
+
 			const value = this.modifier(key);
 			const isnum = (typeof this.modifiers[key] == "number");
 
@@ -3231,6 +2802,57 @@ class Gambit extends Action {
 			hitip.text(this),
 			"\nUsage Requirements\n",
 			hitip.totl(this.requires.ast),
+		].join("");
+	}
+
+	html() {
+
+		const mods = [];
+
+		if (this.price) {
+			mods.push(`${this.price}G`);
+		}
+
+		const info = [];
+
+		const tagtip = ((tag) => {
+			if (!this.tagged(tag)) return;
+			const name = capitalize(tag);
+			info.push(name);
+		});
+
+		tagtip("structure");
+
+		tagtip("measured");
+
+		tagtip("adjutant");
+
+		if (!this.tagged("structure"))
+			info.push(`AoE: ${this.aoe}`);
+
+		for (let key in this.modifiers) {
+
+			// if (Feature.MODEXCLUDE.has(key)) continue;
+
+			if (key == "size") continue;
+
+			const value = this.modifier(key);
+			const isnum = (typeof this.modifiers[key] == "number");
+
+			if (isnum && value == 0) continue;
+
+			const mark  = (isnum ? "" : "*");
+
+			mods.push(`${capitalize(key)}:&nbsp;${value}${mark}`);
+		}
+
+		return [
+			"<b>", this.title(), "</b><br />",
+			info.join(",&nbsp;"), "<br />",
+			mods.join(" "), mods.length ? "<br />" : "",
+			hitip.html(this),
+			"<br /><b>Usage Requirements</b><br />",
+			hitip.tohtml(this.requires.ast),
 		].join("");
 	}
 
@@ -3506,7 +3128,7 @@ class Attribute extends Action {
 			return `${this.name} (DEPRICATED)`;
 		}
 
-		return this.name + " (Rank +" + this.rank + ") ";
+		return `${this.name} (Rank +${this.rank}) `;
 	}
 
 	/* uninhereit the body method back to super.super.body */
@@ -3562,6 +3184,12 @@ class Attribute extends Action {
 
 				element("br"),
 
+				new Filter.Toggle("Shield", false, (feature) => {
+					return feature.tagged("for shield");
+				}),
+				new Filter.Toggle("Stone", false, (feature) => {
+					return feature.tagged("for stone");
+				}),
 				new Filter.Toggle("Other", false, (feature) => {
 					return feature.tagged("for other");
 				}),
@@ -4078,7 +3706,16 @@ function textfn(table, link, text, userdata) {
 
 	/* special behavior for style tooltips */
 	if (table == "style") {
-		return text; // TODO make this actually style the text in markdown
+		switch (link) {
+		case "italic":
+			return `*${text}*`;
+		case "bold":
+			return `**${text}**`;
+		case "underline":
+			return `<u>${text}</u>`;
+		default: // unsupported, so just let it through as is
+			return text;
+		}
 	}
 
 	/* here we do the lookup */
@@ -4152,10 +3789,155 @@ function textwrapper(feature, set, join=true, named=false) {
 	return join ? entries.join("\n") : entries;
 }
 
+function htmlfn(table, link, text, userdata) {
+
+	/* special behavior for literal tooltips */
+	if (table == "tooltip") {
+		return link;
+	}
+
+	/* omit the generic mechanics explainations */
+	if (table == "const") {
+		return text;
+	}
+
+	/* special behavior for style tooltips */
+	if (table == "style") {
+		switch (link) {
+		case "italic":
+			return `<i>${text}</i>`;
+		case "bold":
+			return `<b>${text}</b>`;
+		case "underline":
+			return `<u>${text}</u>`;
+		default: // unsupported, so just let it through as is
+			return text;
+		}
+	}
+
+	/* here we do the lookup */
+	const feature  = LOOKUP.get(table);
+
+	if (feature === undefined) {
+		throw new ReferenceError(
+			`feature namespace '${table}' is not defined`
+		);
+	}
+
+	const con  = [];
+	const keys = link ? link.split(LINK_DELIMITER) : [text];
+
+	for (let key of keys.reverse()) {
+
+		/* prevent unbounded recursion */
+		if (userdata.set.has(key)) {
+			con.push(text);
+			continue;
+		}
+
+		const instance = feature.get(key);
+
+		if (Object.is(instance, feature.EMPTY)) {
+			console.error(`feature link '${key}' broken`);
+			return text;
+		}
+
+		if (instance instanceof Feature && instance.tagged("depricated")) {
+			console.error(`feature '${key}' is depricated`);
+			return text;
+		}
+
+		userdata.set.add(key);
+		const body = textp(instance.description, userdata);
+		userdata.stack.push(`<i>(${instance.name})</i> ${body}`);
+		// userdata.set.delete(key);
+	}
+
+	return text;
+}
+
+const htmlp = parser(htmlfn, (merge) => merge.join(""));
+
+function htmlwrapper(feature, set, join=true, named=false) {
+
+	const [name, description] = (function() {
+		if (feature instanceof Feature) {
+			return [feature.name, feature.description];
+		}
+
+		if (feature instanceof Array && feature.length >= 2) {
+			return feature;
+		}
+
+		throw new TypeError(
+			`expected Feature or Array (length >= 2) but got '${feature}'`
+		);
+	})();
+
+	const userdata = {
+		"set"   : set || new Set([name]),
+		"stack" : [],
+	};
+
+	const body = textp(description, userdata);
+	userdata.stack.push(named ? `<i>(${name})</i>${body}` : body);
+
+	const entries = userdata.stack.reverse();
+	return join ? entries.join("<br />") : entries;
+}
+
 const LISTPRED = new Set(["All", "Any"]);
 
 function andblurb() {
 	return link(LOOKUP.get("const").get("all").text);
+}
+
+function tohtml(node, top=true) {
+
+	const fn   = node[0];
+	const args = node.slice(1);
+
+	if (top) {
+		const list = LISTPRED.has(fn);
+		return wrap(
+			`<stong>Requires ${fn}</b><ul>`,
+			list
+				? args.map(e => `<li>${tohtml(e, false)}</li>`).join("")
+				: `<li>${tohtml(node, false)}</li>`,
+			"</ul>"
+		);
+	}
+
+	switch (fn) {
+
+	case "All":
+		return args.map(e => tohtml(e, false)).join(" and ");
+
+	case "Any":
+		return args.map(e => tohtml(e, false)).join(" or ");
+
+	case "Required":
+		return `${tohtml(args[0], false)} (required)`;
+
+	case "Permission":
+		return fn;
+
+	case "Crest":
+		return `Crest of ${args[0]}`;
+
+	case "ClassType":
+		return `${args[0]} Class`;
+
+	case "Class":
+		return `Class is ${args[0]}`;
+
+	case "Item":
+	case "Equipment":
+		return `${args[0]} equipped`;
+
+	default:
+		return node.join(" ");
+	}
 }
 
 function totl(node, top=true) {
@@ -4532,7 +4314,9 @@ return {
 	dead: dead,
 	toul: toul,
 	totl: totl,
+	tohtml: tohtml,
 	text: textwrapper,
+	html: htmlwrapper,
 	Adder: TagAdder,
 };
 

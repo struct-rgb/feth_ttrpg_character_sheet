@@ -1,7 +1,7 @@
 {
-    "name": "Pavis",
-    "description": "Dex% chance to reduce damage from Swords, Lances, Axes, and @{tooltip:Monster weapons:Not all damage from monster units, specifically Other weapons like Crest Stones that fall outside of normal classification, e.g. does not halve damage from a magic wielding Phantom.} by 50%, and grants use of the @{art::Pavis} tactical art.",
-    "requires": "All (Any (Axes B) (Lances B)) (Armor B) (Level 20)",
+    "name": "Pavise",
+    "description": "(Dex + 20)% chance to reduce damage from Swords, Lances, Axes, Brawl, and @{tooltip:Monster weapons:Not all damage from monster units, specifically Other weapons like Crest Stones that fall outside of normal classification, e.g. does not halve damage from a magic wielding Phantom.} by 50%.",
+    "requires": "Any (All (Any (Axes B) (Lances B)) (Required (Armor B)) (Level 14)) (Class `Juggernaut`) (Class `Swashbuckler`)",
     "modifiers": {
         "hp": 0,
         "sp": 0,

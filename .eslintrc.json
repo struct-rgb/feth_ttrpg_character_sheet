@@ -21,6 +21,9 @@
             "error",
             "double"
         ],
+	"prefer-template": [
+            "error"
+	],
         "semi": [
             "error",
             "always"

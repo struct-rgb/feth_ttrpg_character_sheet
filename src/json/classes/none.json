@@ -1,7 +1,7 @@
 {
     "name": "None",
     "description": "An starting point for homebrew.",
-    "type": ["Other"],
+    "type": [],
     "tier": "Starting",
     "requires": "None",
     "abilities": [],

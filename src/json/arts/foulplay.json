@@ -1,6 +1,6 @@
 {
   "name": "Foul Play",
-  "description": "Unit swaps positions with an ally in range.",
+  "description": "Unit swaps positions with target unit; automatically hits allies. Costs 2 SP when targetting a foe.",
   "requires": "Class Trickster",
   "mttype": "else",
   "modifiers": {
@@ -14,18 +14,16 @@
     "minrng": 1,
     "maxrng": 5,
     "tpcost": 0,
-    "spcost": 0
+    "spcost": "fill affirm([Target Foe?], 2, 0)"
   },
   "comment": "",
   "tags": [
     "no might",
-    "no hit",
     "no crit",
     "no stats",
-    "tactical",
-    "rework"
+    "tactical"
   ],
-  "hidden": false,
+  "hidden": true,
   "type": null,
   "rank": ""
 }

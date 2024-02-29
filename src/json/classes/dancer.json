@@ -2,9 +2,9 @@
     "name": "Dancer",
     "description": "A performer who raises morale, allowing allies to act again",
     "type": ["Infantry"],
-    "tier": "Starting",
+    "tier": "Advanced",
     "requires": "Required (Permission `White Heron Cup`)",
-    "abilities": ["Consumption 1", "Avo +20", "Level 10 Mov +1"],
+    "abilities": ["Consumption 1", "Avo +20"],
     "arts": ["Dance", "Deadly Dance"],
     "growths": {
         "hp": 20,
@@ -17,15 +17,15 @@
         "lck": 30
       },
     "modifiers": {
-        "hp": 4,
+        "hp": 6,
         "str": 0,
         "mag": 0,
-        "dex": 5,
+        "dex": 13,
         "spd": 5,
         "def": 1,
         "res": 1,
-        "lck": 6,
-        "mov": 5
+        "lck": 15,
+        "mov": 6
     },
     "mount": null,
 

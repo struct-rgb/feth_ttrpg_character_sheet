@@ -1,6 +1,6 @@
 {
     "name": "Enclosing Wall",
-    "description": "Reduces all damage dealt to the user by 50%. Can only endure one round of combat before being destroyed.",
+    "description": "Reduces damage this unit takes from non-gambit attacks by half while Barrier is active.",
     "requires": "Barrier",
     "modifiers": {
         "hp": 0,

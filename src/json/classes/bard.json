@@ -1,35 +1,39 @@
 {
-  "name": "Bard",
-  "description": "An advanced class that uses Authority.",
-  "type": ["Infantry"],
-  "tier": "Advanced",
-  "requires": "Authority B",
-  "abilities": [ "Calm Spirit", "Positioning" ],
+    "name": "Lord",
+    "description": "An infantry authority unit.",
+    "type": ["Infantry"],
+    "tier": "Advanced",
+    "requires": "All (Authority B) (Level 15)",
+    "abilities": ["Lead by Example 2", "Battalion Renewal", "Duelist's Blow"],
     "arts": [],
-  "growths": {
-    "hp": 20,
-    "str": 15,
-    "mag": 20,
-    "dex": 30,
-    "spd": 20,
-    "def": 0,
-    "res": 10,
-    "lck": 25
-  },
-  "modifiers": {
-    "hp": 3,
-    "str": 3,
-    "mag": 4,
-    "dex": 6,
-    "spd": 3,
-    "def": 0,
-    "res": 2,
-    "lck": 5,
-    "mov": 5
-  },
-  "mount": null,
+    "growths": {
+        "hp": 20,
+        "str": 20,
+        "mag": 20,
+        "dex": 20,
+        "spd": 10,
+        "def": 15,
+        "res": 10,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 4,
+        "mag": 4,
+        "dex": 10,
+        "spd": 3,
+        "def": 2,
+        "res": 2,
+        "lck": 10,
+        "mov": 5
+    },
+    "mount": null,
 
-  "comment": "Items in growth, modifiers, and mount should be integers",
-  "tags": ["depricated"],
-  "hidden": false
+    "default_base": "Banneret",
+    "default_preset": "Balance/Balance/Luck",
+    "default_mainarm": ["Fighters", "Mages", "Archers"],
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
 }

@@ -7,14 +7,14 @@
   "abilities": ["Duelist's Stance", ["Sword Advantage", "Bow Advantage"], "Positioning"],
     "arts": [],
   "growths": {
-    "hp": 30,
-    "str": 20,
+    "hp": 25,
+    "str": 15,
     "mag": 15,
-    "dex": 20,
+    "dex": 10,
     "spd": 20,
     "def": 15,
-    "res": 5,
-    "lck": 15
+    "res": 10,
+    "lck": 20
   },
   "modifiers": {
     "hp": 5,

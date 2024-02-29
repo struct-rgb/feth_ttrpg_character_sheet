@@ -2,7 +2,7 @@
   "name": "Phalanx",
   "description": "@{const:ap:AP = 2 + (#adjacent allies)}.",
   "requires": "Class Halberdier",
-  "compatible": "Skill Lances",
+  "compatible": "All (Skill Lances) (Not (Tag `no might`))",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

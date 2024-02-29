@@ -1,6 +1,6 @@
 {
     "name": "Vigilance",
-    "description": "Once per battle, when the affected unit would be reduced to 0 HP, it is instead reduced to 1 HP and gains Avo +40 for the remaining duration of the condition.",
+    "description": " If a foe initiates combat against affected unit, one of applying unit's deployed battalion units may make an attack against that foe before combat without being counter attacked, then the condition ends.",
 
     "modifiers": {
         "hp": 0,

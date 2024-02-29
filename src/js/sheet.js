@@ -39,7 +39,6 @@
 /* global Action */
 /* global Condition */
 /* global Tile */
-/* global Battalion */
 /* global Adjutant */
 /* global Preset */
 /* global Gambit */
@@ -192,7 +191,7 @@ class AutosaveConfiguration {
 
 			const minutes        = Math.floor(seconds / 60);
 			const justSecs       = seconds - (minutes * 60);
-			const partSecs       = justSecs < 10 ? "0" + justSecs : justSecs;
+			const partSecs       = justSecs < 10 ? `0${justSecs}` : justSecs;
 			this._countdown.data = `${minutes}:${partSecs}`;
 			if (seconds--) return;
 
@@ -239,8 +238,6 @@ class Buildables {
 			this.importBatch(e);
 			this._batch_import.input.value = null;
 		}, false);
-
-		// this.root.appendChild(this._batch_import.input);
 
 		const cell = ((bigbutton, tooltiptext) => {
 			return element("td", [
@@ -357,6 +354,8 @@ class Buildables {
 		this._activeID = activeID;
 
 		this.model.clear(this.select.value);
+
+		return activeID;
 	}
 
 	get active() {
@@ -464,7 +463,7 @@ class Buildables {
 		const item = this.model.export();
 		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
 		a.href     = URL.createObjectURL(file);
-		a.download = this.model.name.replace(/ /g, "_") + ".json";
+		a.download = `${this.model.name.replace(/ /g, "_")}.json`;
 		a.click();
 		URL.revokeObjectURL(a.href);
 	}
@@ -474,7 +473,7 @@ class Buildables {
 		const item = this.exportAll();
 		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
 		a.href     = URL.createObjectURL(file);
-		a.download = this.model.constructor.name + ".batch.json";
+		a.download = `${this.model.constructor.name}.batch.json`;
 		a.click();
 		URL.revokeObjectURL(a.href);
 	}
@@ -514,6 +513,13 @@ class Buildables {
 		reader.readAsText(file);
 	}
 
+	*iter() {
+		for (let key of this.map.keys()) {
+			this.change(key);
+			yield this.model;
+		}
+	}
+
 }
 
 /*
@@ -549,6 +555,18 @@ class Buildables {
 
  * VisualAid v/
  */
+
+class Refreshable {
+
+	constructor(callback) {
+		this.callback = callback;
+	}
+
+	refresh() {
+		return this.callback();
+	}
+
+}
 
 class Refresher {
 
@@ -601,8 +619,10 @@ class Refresher {
 			}
 
 			for (let element of this.triggers.get(value)) {
-				this.dirty.add(element);
-				this.soil(this.propagate.get(element));
+				if (!this.dirty.has(element)) {
+					this.dirty.add(element);
+					this.soil(this.propagate.get(element));
+				}
 			}
 
 			return;
@@ -617,8 +637,10 @@ class Refresher {
 		} else if (this.items.has(value)) {
 
 			// Value is a refreshable object.
-			this.dirty.add(value);
-			this.soil(this.propagate.get(element));
+			if (!this.dirty.has(value)) {
+				this.dirty.add(value);
+				this.soil(this.propagate.get(value));
+			}
 
 			return;
 		}
@@ -636,7 +658,7 @@ class Refresher {
 
 		let count = 0;
 		for (let each of this.dirty) {
-			each.refresh();
+			(typeof each == "function" ? each() : each.refresh());
 			count += 1;
 		}
 		this.dirty.clear();
@@ -688,6 +710,8 @@ class Refresher {
 	}
 
 }
+
+
 
 /**
  * Class representing the main body of the sheet.
@@ -773,7 +797,7 @@ class Sheet {
 		this.context(compiler, this.macros.varopts);
 		this.definez   = context;
 
-		this.view_triggers = new Set(["theme"]).extend(
+		this.view_triggers = new Set(["theme", "unit|size"]).extend(
 			compiler.dependancies("unit|total|maxrng")
 		).extend(
 			compiler.dependancies("unit|total|minrng")
@@ -825,6 +849,17 @@ class Sheet {
 
 			const feature = category.model.get(key);
 			this.refresher.refresh(feature.affects);
+		};
+
+		const equip = (type) => {
+
+			/* type should be "abilities" or "arts" */
+
+			const slotcost = `${type}|slotcost`;
+
+			return (category, key) => {
+				this.refresher.refresh(slotcost);
+			};
 		};
 
 		const unequip = (type) => {
@@ -911,7 +946,13 @@ class Sheet {
 		let model = new CategoryModel(
 			Ability.kind, Ability.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
+
+		this._abilities_verdict = document.createTextNode("");
 		
+		this.refresher.register(() => {
+			this._abilities_verdict.data = this.checkAbilitySlots();
+		}, ["abilities|slotcost"]);
+
 		this.abilities = new MultiActiveCategory(model, {
 			name        : "equip",
 			empty       : "No abilities are equipped",
@@ -920,18 +961,29 @@ class Sheet {
 			removable   : true,
 			hideable    : true,
 			ontoggle    : refresh,
+			onadd       : equip("abilities"),
 			onremove    : unequip("abilities"),
+			// markGroup   : true,
 			select      : Ability.select(),
 			refresher   : this.refresher,
 		});
 
-		sidebook.add("Abilities", this.abilities.root);
+		sidebook.add("Abilities",  element("div", [
+			element("span", this._abilities_verdict, "computed"),
+			this.abilities.root,
+		]));
 
 		/* Art category */
 
 		model = new CategoryModel(
 			Art.kind, Art.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
+
+		this._arts_verdict = document.createTextNode("");
+
+		this.refresher.register(() => {
+			this._arts_verdict.data = this.checkArtsSlots();
+		}, ["arts|slotcost"]);
 
 		this.arts = new MultiActiveCategory(model, {
 			name        : "equip",
@@ -993,12 +1045,17 @@ class Sheet {
 				// this.stats.refresh();
 				this.refresher.refresh(feature.affects);
 			}),
+			onadd       : equip("arts"),
 			onremove    : unequip("arts"),
+			// markGroup   : true,
 			select      : Art.select(),
 			refresher   : this.refresher,
 		});
 
-		sidebook.add("Arts", this.arts.root);
+		sidebook.add("Arts", element("div", [
+			element("span", this._arts_verdict, "computed"),
+			this.arts.root,
+		]));
 
 		/* Equipment category */
 
@@ -1690,6 +1747,12 @@ class Sheet {
 			name  : "unit|level",
 			about : "This unit's level",
 			expr  : ((env) => this.stats.level)
+		});
+
+		add({
+			name  : "unit|size",
+			about : "Unit's length and width in tiles (units are squares).",
+			expr  : ((env) => this.stats.size)
 		});
 
 		add({
@@ -2753,20 +2816,6 @@ class Sheet {
 			/* clear what we have so far */
 			second.length = 0;
 
-			second.push(add({
-				name  : `host|${name}`,
-				about : wrap(
-					`Equal to item|total|${name} if no tactical art is `,
-					"active, but if one is active, equal to 0."
-				),
-				expr  : `
-					bothif arts|tactical
-						then tactical|${name}
-						else item|total|${name}
-					end
-				`,
-			}));
-
 			add({ // TODO remove this when possible
 				name  : `arts|${name}`,
 				about : wrap(
@@ -2804,6 +2853,26 @@ class Sheet {
 				expr  : abilityfunc(name),
 				// vars  : (() => Ability.getDynamics(name))
 
+			}));
+
+			add({
+				name  : `unit|modifier|no_item|${name}`,
+				about : `The sum of all ${name} modifiers excluding from items.`,
+				expr  : funcsum(...second),
+			});
+
+			second.push(add({
+				name  : `host|${name}`,
+				about : wrap(
+					`Equal to item|total|${name} if no tactical art is `,
+					"active, but if one is active, equal to 0."
+				),
+				expr  : `
+					bothif arts|tactical
+						then tactical|${name}
+						else item|total|${name}
+					end
+				`,
 			}));
 
 			add({
@@ -2853,6 +2922,52 @@ class Sheet {
 					+ combatarts|mt
 					+ equipment|mt
 			`,
+		});
+
+		add({
+			name  : "unit|received|prot",
+			about : wrap(
+				"This unit's protection when it's receiving an attack. ",
+				"Used in roll20 macro generation."
+			),
+			expr  : "unit|total|def + unit|modifier|no_item|prot",
+		});
+
+		add({
+			name  : "unit|received|resl",
+			about : wrap(
+				"This unit's resiliance when it's receiving an attack. ",
+				"Used in roll20 macro generation."
+			),
+			expr  : "unit|total|res + unit|modifier|no_item|resl",
+		});
+
+		add({
+			name  : "unit|received|avo",
+			about : wrap(
+				"This unit's avoid when it's receiving an attack. ",
+				"Used in roll20 macro generation."
+			),
+			expr  : "unit|total|lck + unit|modifier|no_item|avo",
+		});
+
+		add({
+			name  : "unit|received|cravo",
+			about : wrap(
+				"This unit's critical avoid when it's receiving an attack. ",
+				"Used in roll20 macro generation."
+			),
+			expr  : "unit|total|dex + unit|modifier|no_item|cravo",
+		});
+
+
+		add({
+			name  : "unit|received|doubled",
+			about : wrap(
+				"This unit's threshold to be doubled when it's receiving an attack. ",
+				"Used in roll20 macro generation."
+			),
+			expr  : "unit|total|spd + unit|modifier|no_item|doubled",
 		});
 
 		add({
@@ -2974,12 +3089,22 @@ class Sheet {
 		}
 
 		add({
+			name  : "doubling_threshold",
+			about : wrap(
+				"Number of points of speed one unit's speed must exceed another to double it."
+			),
+			expr  : `
+				5
+			`,
+		});
+
+		add({
 			name  : "unit|total|doubles",
 			about : wrap(
 				"Maximum attack speed that of foes this unit can double."
 			),
 			expr  : `
-				(unit|total|spd + unit|modifier|doubles - 5)
+				(unit|total|spd + unit|modifier|doubles - doubling_threshold)
 			`,
 		});
 
@@ -2989,7 +3114,7 @@ class Sheet {
 				"Minimum attack speed that foe needs to double this unit."
 			),
 			expr  : `
-				(unit|total|spd + unit|modifier|doubled + 5)
+				(unit|total|spd + unit|modifier|doubled + doubling_threshold)
 			`,
 		});
 
@@ -3363,15 +3488,7 @@ class Sheet {
 				),
 				expr  : artfunc(stat),
 			}));
-
-			// sum.push(add({
-			// 	name  : `gambits|${stat}`,
-			// 	about : wrap(
-			// 		`The battalion's gambit ${name} statistic bonuses from employer's combat arts.`
-			// 	),
-			// 	expr  : artfunc(stat),
-			// }));
-
+			
 			add({
 				name  : `battalion|modifier|${stat}`,
 				about : wrap(
@@ -3379,11 +3496,6 @@ class Sheet {
 				),
 				expr  : funcsum(...sum),
 			});
-
-			/* TODO battalion|modifier|g{min,max}rng had gambitfunc("g{min,max}rng")
-			 * I have no idea whoat this was used for honestly, to I took it out
-			 * add that back in if it ends up breaking, else remove comment here
-			 */
 		}
 
 		add({
@@ -3521,6 +3633,8 @@ class Sheet {
 
 	modifier(name) {
 
+		if (name == "size") return this.runenv.read("unit|size");
+
 		const variable = name == "cutrng" ? "item|total|maxrng" : `unit|total|${name}`;
 		if (!(variable in this.definez)) return 0;
 
@@ -3601,7 +3715,7 @@ class Sheet {
 			"Sheet data has been successfully saved to browser storage. " +
 			"Autosave also occurs automatically every five minutes."
 		);
-	}
+	}	
 
 	theme(name) {
 		if (!Theme.set(name)) return false;
@@ -3609,7 +3723,7 @@ class Sheet {
 		
 		// Gotta wait until the new sheet loads before we refresh.
 		// Timeout may not be good for every environment and need tweaked.
-		setTimeout(() => this.refresher.refresh("theme", true), 20);
+		setTimeout(() => this.refresher.refresh("theme"), 60);
 		
 		return true;
 	}
@@ -3673,6 +3787,11 @@ class Sheet {
 		this.myPointBuy.setAnimated(animate);
 	}
 
+	/**
+	 * Copies stats (and optionally class) from the point buy to the main sheet.
+	 * @param  {Boolean} whether to set the class on the main sheet
+	 * @return {null}
+	 */
 	copy_stats_to_point_buy(doClass=true) {
 
 		this.myPointBuy.forecast.clear();
@@ -3690,6 +3809,10 @@ class Sheet {
 		}
 	}
 
+	/**
+	 * Creates a new character from the settings of the Tools > NPCs tab.
+	 * @return {string} uuid of character in buildable
+	 */
 	create_npc() {
 
 		this.character._sf.reset();
@@ -3707,7 +3830,7 @@ class Sheet {
 
 		/* set preset to custom and add a new sheet */
 		this.cb.select.value = "Custom";
-		this.cb.add();
+		const uuid           = this.cb.add();
 
 		/* easy access variables */
 		const ps  = this.myPresetter;
@@ -3772,9 +3895,7 @@ class Sheet {
 
 				/* include any attributes in the item's name */
 				if (attrs.length) {
-					this.item.name = (
-						attrs.join(" ") + " " + this.item.name
-					);
+					this.item.name = `${attrs.join(" ")} ${this.item.name}`;
 				}
 
 				this.item.inInventory = true;
@@ -3870,6 +3991,163 @@ class Sheet {
 		this.character.refresh();
 
 		this.myPointBuy.setAnimated(animate);
+
+		return uuid;
+	}
+
+	/* slot validation methods */
+
+	static ModifierCounter = (
+		/**
+		 * Sums the numbers in an array of {@link Feature} modifier
+		 */
+		class SlotCounter {
+
+			/**
+			 * @param  {string} name - display name of the modifier to count
+			 * @param  {field}  field - field name of the modifier to count
+			 * @param  {limit}  limit - maximum sum; exceeding this will cause
+			 * counting to return an error string.
+			 * @return {SlotCounter}
+			 */
+			constructor(name, field, limit) {
+				this.slots = [];
+				this.name  = name;
+				this.field = field;
+				this.limit = limit;
+				this.sum   = 0;
+			}
+
+			/**
+			 * @param  {Feature} feature - feature to count the modifier from
+			 * @return {?strong} error string if sum exceeds limit; else null
+			 */
+			count(feature) {
+
+				this.sum += feature.modifier(this.field);
+				this.slots.push(feature);
+
+				if (this.sum > this.limit) return wrap(
+					"Number of ", this.name, " exceeds maximum of ", this.limit,
+					". ", this.slots.map(
+						f => `${f.name} (${f.modifier(this.field)})`
+					).join(", "), " consume a total of ", this.sum, " slots."
+				);
+
+				return null;
+			}
+		}
+	);
+
+	/**
+	 * Check that the abilities in the category don't exceed the maximium number
+	 * of ability slots this unit possesses.
+	 * @param  {MultiActiveCategory} category - a category containing abilities;
+	 * defaults to this.abilites
+	 * @return {?string} an errer string if check fails; else null
+	 */
+	checkAbilitySlots(category=this.abilities) {
+
+		// for counting slot number restrictions
+		const slots = new Sheet.ModifierCounter("equipped abilities", "slotcost", 5);
+
+		for (let ability of this.abilities) {
+
+			const entry = this.abilities.element(ability.name);
+			
+			// we only care about user equipped arts for this
+			if (entry.group != "equip") continue;
+
+			// secondary pass just to do our due diligence, as at the time
+			// of this writing, some arts can be sourced as either class
+			// arts and equippables without being regrouped as class arts
+			if (this.character.class.abilities.includes(ability.name)) continue;
+
+			// don't count this art if it doesn't consume any slots
+			if (ability.modifier("slotcost") == 0) continue;
+
+			let error = slots.count(ability);
+			if (error) return error;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Validates that the arts in the category don't exceed the maximum number 
+	 * of arts slots, that the numbers of combat and tactical arts don't exceed
+	 * the number of slots allocated to each kind, and that there are no arts
+	 * equipped that are mutually exclusive with each other. 
+	 * @param  {MultiActiveCategory} category - a category containing arts;
+	 * defaults fo this.arts
+	 * @return {?string} an error string if check fails; else null
+	 */
+	checkArtsSlots(category=this.arts) {
+
+		// map to reserve Skill. Rank, Type combos
+		const arts    = [];
+		const reserve = new Map();
+
+		// for counting slot number restrictions
+		const tactics    = new Sheet.ModifierCounter("tactical arts" , "slotcost" , 3);
+		const combats    = new Sheet.ModifierCounter("combat arts"   , "slotcost" , 3);
+		const slots      = new Sheet.ModifierCounter("equipped arts" , "slotcost" , 5);
+
+		for (let art of this.arts) {
+
+			const entry = this.arts.element(art.name);
+			
+			// we only care about user equipped arts for this
+			if (entry.group != "equip") continue;
+
+			// secondary pass just to do our due diligence, as at the time
+			// of this writing, some arts can be sourced as either class
+			// arts and equippables without being regrouped as class arts
+			if (this.character.class.arts.includes(art.name)) continue;
+
+			// don't count this art if it doesn't consume any slots
+			if (art.modifier("slotcost") == 0) continue;
+
+			// proper arts don't come up until Rank D so we can ignore these
+			if (art.rank.all(r => Grade.toNumber(r) < 2)) continue;
+
+			let error = slots.count(art);
+			if (error) return error;
+
+			error = (art.isTactical() ? tactics : combats).count(art);
+			if (error) return error;
+
+			// skip the next phase for arts that ignore Skill and Rank exclusion
+			if (art.tagged("inclusive")) continue;
+
+			const keys = new Set(art.exKeys());
+			arts.push({art, keys});
+		}
+
+		// sort elements in descending order of number of keys
+		const sortfn = (a, b) => a.keys.size >= b.keys.size;
+
+		while (arts.length) {
+
+			// not worth writing a priority queue for this
+			arts.sort(sortfn);
+
+			const {art, keys} = arts.pop();
+
+			if (keys.size == 0) return wrap(
+				art.name, " conflicts with: ", Array.from(art.exKeys()).map(
+					key => `${reserve.get(key).name} (${key})`
+				).join(", ")
+			);
+
+			const [key] = keys;
+
+			reserve.set(key, art);
+			
+			for (let each of arts) each.keys.delete(key);
+		}
+
+		return null;
 	}
 }
 

@@ -1,7 +1,7 @@
 {
     "name": "Sword Prowess 5",
     "description": "Grants Hit +10, Avo +20, Crit +10, and Crit Avo +20, when unit uses Swords. A unit may only equip one \"Sword Prowess\" ability at a time.",
-    "requires": "All (Swords A+) (Level 25)",
+    "requires": "Any (All (Swords A+) (Level 25)) (All (Armor A+) (ClassType Armor) (Level 25)) (All (Flying A+) (ClassType Flying) (Level 25)) (All (Riding A+) (ClassType Cavalry) (Level 25))",
     "modifiers": {
         "hp": 0,
         "sp": 0,

@@ -29,7 +29,8 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": 0
+        "mov": 0,
+        "slotcost": 0
     },
 
     "comment": "Regi Durenzo's old personal.",

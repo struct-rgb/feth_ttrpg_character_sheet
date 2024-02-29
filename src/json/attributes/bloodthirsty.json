@@ -1,7 +1,7 @@
 {
     "name": "Bloodthirsty",
     "type": "Any",
-    "description": "When this weapon deals damage, 30% chance to apply @{condition:Berserk:[Berserk]} to wielder for two turns. Cannot be unequipped while wielder is affected by @{condition:Berserk:[Berserk]}. Disables all other attributes except for @{attribute::Magic}.",
+    "description": "When this weapon deals damage, 30% chance to apply @{condition:Berserk:[Berserk]} to wielder after combat for two turns. Cannot be unequipped while wielder is affected by @{condition:Berserk:[Berserk]}. Disables all other attributes except for @{attribute::Magic}.",
     "rank": 0,
     "price": 0,
 

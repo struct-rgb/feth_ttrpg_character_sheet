@@ -2,6 +2,7 @@
   "name": "Creature Ken",
   "description": "May be used with one other combat art. If unit’s attacks are Effective against Monster units, unit has weapon advantage, and if not, unit’s attacks become Effective against Monster units.",
   "requires": "Class `Monster Hunter`",
+  "compatible": "Not (Tag `tactical`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

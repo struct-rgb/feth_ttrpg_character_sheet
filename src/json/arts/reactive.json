@@ -1,6 +1,6 @@
 {
   "name": "Reactive",
-  "description": "Trigger: Before combat on Enemy Phase. Cast @{item::Heal} on an ally within range.",
+  "description": "Trigger: Before combat on Enemy Phase. Cast @{item::Heal} on an ally within range of your @{item::Heal} spell.",
   "requires": "Faith B",
   "compatible": "Name Heal",
   "mttype": "else",
@@ -20,7 +20,7 @@
     "sp": 0,
     "tp": 0
   },
-  "comment": "Counter-Command",
+  "comment": "",
   "tags": [
     "reaction"
   ],

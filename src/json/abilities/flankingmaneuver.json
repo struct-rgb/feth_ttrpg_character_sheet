@@ -1,6 +1,6 @@
 {
     "name": "Flanking Maneuver",
-    "description": "Hit +15 in combat when unit and or more allies are adjacent to target foe.",
+    "description": "This unit has weapon advantage a foe in combat when this unit and one or more allies are adjacent to that foe.",
     "requires": "Class Hussar",
     "modifiers": {
         "hp": 0,
@@ -16,12 +16,7 @@
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": [
-            "bothif not(unit|total|maxrng - 1)",
-            "  then ask [Flanking?], No {0}; Yes {15} end",
-            "  else 0",
-            "end"
-        ],
+        "hit": 0,
         "avo": 0,
         "crit": 0,
         "cravo": 0,

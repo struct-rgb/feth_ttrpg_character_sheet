@@ -1,7 +1,7 @@
 {
   "name": "Fog Breath",
   "description": "Can only be used while mounted. Create up to 3 @{tile:Smoke Screen:Smoke Screens} in a 1x3 or 3x1 line starting from target adjacent tile.",
-  "requires": "Any (Class `Wyvern Rider`) (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
+  "requires": "Any (Class `Wyvern Lord`) (Class `Dark Wyvernian`)",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

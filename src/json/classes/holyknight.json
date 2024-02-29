@@ -4,11 +4,11 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Faith C+) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": [["Sword Advantage", "Lance Advantage"], "Faith Advantage", "Canto"],
-    "arts": [],
+    "abilities": [["Sword Advantage", "Lance Advantage", "Axe Advantage"], "Faith Advantage", "Hope Aura", "Canto+"],
+    "arts": ["Hybrid Strike"],
     "growths": {
         "hp": 25,
-        "str": 15,
+        "str": 20,
         "mag": 20,
         "dex": 10,
         "spd": 5,
@@ -17,15 +17,15 @@
         "lck": 20
       },
     "modifiers": {
-        "hp": 3,
-        "str": 2,
+        "hp": 5,
+        "str": 4,
         "mag": 4,
-        "dex": 2,
-        "spd": 0,
-        "def": 2,
+        "dex": 4,
+        "spd": 1,
+        "def": 3,
         "res": 6,
-        "lck": 4,
-        "mov": 5
+        "lck": 8,
+        "mov": 4
     },
     "mount": {
         "hp": 0,
@@ -36,13 +36,13 @@
         "def": 0,
         "res": 0,
         "lck": 0,
-        "mov": 2
+        "mov": 3
     },
 
     "default_base": "Priest",
     "default_preset": "Power/Defense/Luck",
     "default_mainarm": "Faith",
-    "default_sidearm": "Lances",
+    "default_sidearm": ["Swords", "Lances"],
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

@@ -1,17 +1,17 @@
 {
   "name": "Assassinate",
-  "description": "Target foe's Def and Res are 0 during damage calculation (other sources of Prot and Resl apply as normal).",
-  "requires": "All (Swords A) (Bows A) (Level 25)",
-  "compatible": "Skill Swords Bows",
+  "description": "Target foe's Def and Res are 0 during damage calculation @{style:italic:(other sources of Prot and Resl apply as normal)}.",
+  "requires": "Class Assassain",
+  "compatible": "All (Skill Swords Bows) (Not (Tag `tactical`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
     "prot": 0,
     "resl": 0,
-    "hit": 15,
-    "avo": 15,
+    "hit": 0,
+    "avo": 0,
     "crit": 0,
-    "cravo": 15,
+    "cravo": 0,
     "minrng": 1,
     "maxrng": 2,
     "tpcost": 0,
@@ -19,7 +19,7 @@
   },
   "comment": "",
   "tags": [],
-  "hidden": false,
-  "type": "Swords-Bows",
-  "rank": "A-A"
+  "hidden": true,
+  "type": ["Swords", "Bows"],
+  "rank": ""
 }

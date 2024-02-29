@@ -1,27 +1,27 @@
 {
   "name": "Sol",
-  "description": "The user regains HP equal to the damage dealt.",
-  "requires": "All (Swords B+) (Axes B+) (Level 25)",
-  "compatible": "Skill Swords Axes",
-  "mttype": "else",
+  "description": "Restores HP equal to half of damage dealt to foe; after combat apply @{const:gbp:[Max HP x2]} to this unit for one turn.",
+  "requires": "Class `Hero`",
+  "compatible": "All (Skill Axes Swords) (Not (Tag `tactical`))",
+  "mttype": "none",
   "modifiers": {
     "mt": 3,
     "prot": 0,
     "resl": 0,
-    "hit": 15,
+    "hit": 10,
     "avo": 0,
-    "crit": 15,
+    "crit": 0,
     "cravo": 0,
     "minrng": 1,
     "maxrng": 1,
     "tpcost": 0,
-    "spcost": 5
+    "spcost": 4
   },
   "comment": "",
   "tags": [
-    "healing"
+    ""
   ],
-  "hidden": false,
-  "type": "Swords-Axes",
-  "rank": "B+-B+"
+  "hidden": true,
+  "rank": "",
+  "type": ["Axes", "Swords"]
 }

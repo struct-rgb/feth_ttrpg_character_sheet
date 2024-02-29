@@ -20,6 +20,8 @@
 /* global Attribute */
 /* global Action */
 
+/* global RangeFinder */
+
 /* global Grade */
 
 /* global Expression */
@@ -30,8 +32,8 @@ class ItemPreview {
 		this.item = item;
 		this.root = element("div");
 
-		this.va = new Action.VisualAid(this.item, {draw: false});
-		this.item.refresher.register(this.va, ["theme", "item|total|maxrng", "item|total|minrng"]);
+		this.va = new RangeFinder(this.item, {draw: false});
+		this.item.refresher.register(this.va, ["theme", "unit|size", "item|total|maxrng", "item|total|minrng"]);
 		this._pregroup = null;
 
 		this.item.refresher.register(this,
@@ -577,7 +579,7 @@ class Items {
 				: (
 					this._template.description + (
 						this.information
-							? " " + this.information
+							? ` ${this.information}`
 							: ""
 					)
 				)
@@ -686,6 +688,8 @@ class Items {
 
 	modifier(name) {
 
+		if (name == "size") return this.sheet.runenv.read("unit|size");
+
 		const variable = `item|total|${name}`;
 		if (!(variable in this.sheet.definez)) return 0;
 
@@ -781,6 +785,7 @@ class Items {
 		this.name        = preset || Item.DEFAULT;
 		this.template    = preset || Item.DEFAULT;
 		this._custom_tags.clear();
+		this._base.value = 0;
 	}
 
 	/* builtable display */
@@ -892,6 +897,91 @@ class Items {
 				.join("\n"),
 			"\nUsage Requirements\n",
 			"  * ", this.template.type, " ", rank
+		].join("");
+	}
+
+	html() {
+
+		let star = undefined;
+
+		function d(condition) {
+			return condition ? "*" : "";
+		}
+
+		const mods = [];
+		const env  = new Expression.Env(
+			Expression.Env.RUNTIME, this.sheet.definez
+		);
+
+		if ((star = this._price._trigger(this.price))) {
+			mods.push(`${star}G`);
+		}
+
+		if ((star = env.read("item|dynamic|tpcost"))) {
+			mods.push([env.read("item|total|tpcost"), "TP", star]);
+		}
+
+		if ((star = env.read("item|dynamic|spcost"))) {
+			mods.push([env.read("item|total|spcost"), "SP", star]);
+		}
+
+		for (let key in this.stats) {
+
+			if (Feature.MODEXCLUDE.has(key)) {
+				continue;
+			}
+
+			/* items shouldn't modify this */
+			if (key == "doubles" || key == "doubled") {
+				continue;
+			}
+
+			const value = env.read(`item|total|${key}`);
+			const isdyn = env.read(`item|dynamic|${key}`);
+
+			if (!isdyn && value == 0) continue;
+
+			const mark  = d(isdyn);
+
+			mods.push(`${capitalize(key)}:&nbsp;${value}${mark}`);
+		}
+
+		const min  = env.read("item|total|minrng");
+		const max  = env.read("item|total|maxrng");
+		const mind = d(env.read("item|dynamic|minrng"));
+		const maxd = d(env.read("item|dynamic|maxrng"));
+
+		if (min != max) {
+			mods.push("Range:&nbsp;", min, mind, "&nbsp;-&nbsp;", max, maxd);
+		} else if (min != 0) {
+			mods.push("Range:&nbsp;", max, (mind || maxd));
+		}
+
+		if ((star = d(env.read("item|dynamic|tp")))) {
+			mods.push("Max TP:&nbsp;", env.read("item|total|tp"), star);
+		}
+
+		if ((star = d(env.read("item|dynamic|sp")))) {
+			mods.push("Max SP:&nbsp;", env.read("item|total|sp"), star);
+		}
+
+		const set  = new Set();
+		const rank = this._rank._trigger(this.rank);
+
+		return [
+			"<b>",
+			this.name, " (", this.template.type, " ", rank, ")", "<br />",
+			"</b><br />",
+			mods.join(" "), mods.length ? "<br />" : "",
+			hitip.html([this.name, this.fullInfo()], set), "<br />",
+			Array.from(this.attributes.getActive())
+				.map(a => hitip.html(Attribute.get(a), set, true, true))
+				.map(t => t.replace(/\s+/g, " "))
+				.join("<br />"),
+			"\n<br /><b>Usage Requirements</b><br />\n",
+			"<ul>",
+			"<li>", this.template.type, " ", rank, "</li>",
+			"</ul>",
 		].join("");
 	}
 

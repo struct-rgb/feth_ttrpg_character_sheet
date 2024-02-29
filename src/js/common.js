@@ -105,9 +105,12 @@ function choice(options) {
 	/* if given one option choose it */
 	if (options.length == 1) return options[1];
 
+	/* if not interactive return the first option */
+	if (!choice.interactive) return options[1];
+
 	/* put together a prompt of choices */
 	const list = options.map((item, index) => `${index + 1}. ${item}`);
-	const text = "Enter the number of your choice:\n" + list.join("\n");
+	const text = `Enter the number of your choice:\n${list.join("\n")}`;
 
 	/* keep asking until given a valid choice */
 	for (;;) {
@@ -122,6 +125,8 @@ function choice(options) {
 		return options[response - 1];
 	}
 }
+
+choice.interactive = true;
 
 class TagSetWidget {
 
@@ -395,7 +400,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("3.6.0");
+	static CURRENT = new Version("3.7.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -561,6 +566,10 @@ function element(type, content, ...classes) {
 return element;
 
 })();
+
+function tag(name, text) {
+	return `<${name}>${text}</${name}>`;
+}
 
 function delimit(delimiter, array) {
 	return array.reduce((accumulator, element) => (
@@ -997,21 +1006,6 @@ class VariableTable {
 		return element("span", els);
 	}
 
-	// range(title, key1, key2, edit=true) {
-	// 	return element("tr", [
-	// 		element("th", "GRange"),
-	// 		element("td", {
-	// 			attrs   : {colSpan: 2},
-	// 			class   : ["center", "padded-cell"],
-	// 			content : [
-	// 				this.section(key1, null, edit, false).root,
-	// 				element("span", " - ", edit ? "datum" : "computed"),
-	// 				this.section(key2, null, edit, false).root,
-	// 			],
-	// 		}),
-	// 	]);
-	// }
-
 	range(optsA, optsB) {
 		optsA.range = optsB;
 		return optsA;
@@ -1174,6 +1168,7 @@ class Select {
 
 		this._filters  = new Group(Group.AND, true);
 		this._model    = template.model;
+		this._trigger  = template.trigger;
 
 		let   group   = Group.NONE;
 		const content = [];
@@ -1232,6 +1227,10 @@ class Select {
 				this._select.appendChild(option);
 			}
 		} 
+	}
+
+	options() {
+		return this._select.childNodes;
 	}
 
 	get value() {
@@ -1341,11 +1340,11 @@ function d4() {
 
 const cardinal = ["North", "South", "East", "West"];
 
-function raijin_slots(dice) {
+function _raijin_slots(dice) {
 	return Array.from(Array(dice), () => cardinal[d4() - 1]);
 }
 
-const raijin = (function() {
+const _raijin = (function() {
 
 function iteration(stop) {
 	let   x   = 0;
@@ -1462,6 +1461,167 @@ class Theme {
 		localStorage.setItem("theme", theme.name);
 		return theme;
 	}
+}
+
+function _big_damage(sheet, template) {
+
+	/* template.detail  - whether to show just aggregate data or vs each foe
+	 * template.level   - level to do math at
+	 * template.classes - if you only want to see specific classes
+	 */
+
+	const env     = sheet.runenv;
+	const level   = assume(template.level   , 1);
+	const detail  = assume(template.detail  , false);
+	const classes = assume(template.classes , 
+		Array.from(sheet.myPresetter._class.options()).map(o => o.value)
+	);
+
+	sheet.myPresetter._level.value = level;
+
+	const original = sheet.cb.activeID;
+	const columns  = [];
+
+	for (let item of sheet.wb.iter()) {
+		
+		// get up to date values
+		sheet.refresher.refresh();
+
+		// collect them 
+		columns.push({
+			name    : item.name,
+			mt      : env.read("unit|total|mt"),
+			doubles : env.read("unit|total|doubles"),
+			mttype  : sheet.stats.secondary.mttype._shown(),
+			hit     : env.read("unit|total|hit"),
+			crit    : env.read("unit|total|crit"),
+		});
+	}
+
+	sheet.tabs.tools.active = "NPCs";
+	sheet.tabs.main.active  = "Tools";
+
+	const interactive  = choice.interactive;
+	choice.interactive = false;
+
+	const rows = [];
+	const ids  = [];
+
+	for (let option of classes) {
+
+		if (option.value == "None") continue;
+		// if (option.value == "Dancer") continue;
+
+		sheet.myPresetter._class._select.value = option;
+		sheet.myPresetter._class._trigger();
+		ids.push(sheet.create_npc());
+
+		rows.push({
+			name    : sheet.character.name,
+			hp      : env.read("unit|total|hp"),
+			doubled : env.read("unit|total|doubled"),
+			avo     : env.read("unit|total|avo"),
+			prot    : env.read("unit|total|prot"),
+			resl    : env.read("unit|total|resl"),
+			cravo   : env.read("unit|total|cravo"),
+		});
+	}
+
+	choice.interactive = interactive;
+
+	const final  = [];
+	const mean   = {};
+	const median = {};
+	const stdev  = {};
+
+	mean.class   = "<AVERAGE>";
+	if (detail) mean.attacks = 0;
+	median.class   = "<MEDIAN>";
+	if (detail) median.attacks = 0;
+	stdev.class   = "<STDEV>";
+	if (detail) stdev.attacks = 0;
+
+
+	for (let row of rows.sort(r => r.name)) {
+
+		const results = {
+			class: row.name
+		};
+
+		for (let column of columns) {
+
+			const pkey = `${column.name} (%)`;
+			const ckey = `${column.name} (c)`;
+
+			if (!("attacks" in results)) {
+				results["attacks"] = (column.doubles >= row.doubled) + 1;
+			}
+
+			if (!(pkey in mean)) mean[pkey] = 0;
+			if (!(ckey in mean)) mean[ckey] = 0;
+			if (!(pkey in median)) median[pkey] = [];
+			if (!(ckey in median)) median[ckey] = [];
+			if (!(pkey in stdev)) stdev[pkey] = [];
+			if (!(ckey in stdev)) stdev[ckey] = [];
+
+			const damage = Math.max(column.mt - (
+				column.mttype == "STR" ? row.prot : column.mttype == "MAG" ? row.resl : 0
+			), 1);
+
+			const ratio   = (damage / row.hp);
+			const percent = (ratio * results["attacks"] * 100);
+			const hitrate = (Math.max(column.hit - row.avo, 0) / 100);
+			const combats = Math.ceil(row.hp / (damage * hitrate * results["attacks"]));
+
+			results[pkey]  = percent;
+			results[ckey]  = combats;
+			mean[pkey]    += percent;
+			mean[ckey]    += combats;
+			median[pkey].push(percent);
+			median[ckey].push(combats);
+			stdev[pkey].push(percent);
+			stdev[ckey].push(combats);
+		}
+
+		if (detail) final.push(results);
+	}
+
+	const set = new Set(["class", "attacks"]);
+
+	for (let key in mean) {
+		if (set.has(key)) continue;
+		mean[key] /= rows.length;
+	}
+
+	for (let key in median) {
+		if (set.has(key)) continue;
+		// console.log(key);
+		const array = median[key].sort((a, b) => a - b);
+		const lo    = Math .floor ((array.length - 1) / 2);
+		const hi    = Math .ceil  ((array.length - 1) / 2);
+		median[key] = (array[hi] + array[lo]) / 2;
+	}
+
+	for (let key in stdev) {
+		if (set.has(key)) continue;
+		// console.log(key);
+		const array = stdev[key];
+		const avg   = mean[key];
+		stdev[key]  = Math.sqrt(array.map(x => Math.pow(x - avg, 2)).reduce((a, b) => a + b) / array.length);
+	}
+	
+
+
+	final.push(mean);
+	final.push(stdev);
+	final.push(median);
+
+	sheet.cb.change(original);
+	for (let id of ids) sheet.cb.remove(id);
+
+	console.log(sheet.character.name);
+	console.table(final);
+
 }
 
 /* exported chain */

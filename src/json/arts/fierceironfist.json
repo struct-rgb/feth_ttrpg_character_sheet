@@ -2,7 +2,7 @@
   "name": "Fierce Iron Fist",
   "description": "@{const:ap:AP 5} (three consecutive attacks).",
   "requires": "Class Grappler",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `tactical`))",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

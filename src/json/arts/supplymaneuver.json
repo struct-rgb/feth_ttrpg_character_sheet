@@ -1,0 +1,30 @@
+{
+  "name": "Supply Maneuver",
+  "description": "Trigger: Once per phase, when this or unit an adjacent ally enters combat. Use an item with a break chance on target foe, ally, or tile within range @{style:italic:(this cannot self-target)}.",
+  "requires": "Any (Class `Quartermaster`) (Class `Majordomo`)",
+  "compatible": "Tag `break`",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|maxrng",
+    "tiles": 0,
+    "spcost": 3,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "Counter-Command",
+  "tags": [
+    "reaction"
+  ],
+  "hidden": true,
+  "type": "",
+  "rank": ""
+}

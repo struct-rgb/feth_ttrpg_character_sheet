@@ -1,6 +1,6 @@
 {
     "name": "Rafail Gem",
-    "description": "If wielder has the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}, grants wielder @{ability::Aegis}, @{ability::Pavis}, immunity to critical hits, and nullifies Effectiveness against Armor, Cavalry, and Flying units against the wielder. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
+    "description": "If wielder has the Crest of @{ability:Major Crest of Lamine||Minor Crest of Lamine:Lamine}, grants wielder @{ability::Aegis}, @{ability::Pavise}, immunity to critical hits, and nullifies Effectiveness against Armor, Cavalry, and Flying units against the wielder. If wielder is crestless, deals 10 lethal damage at start of wielder's phase",
     "requires": "None",
     "price": 0,
     "type": "Accessory",

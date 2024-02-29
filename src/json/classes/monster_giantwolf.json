@@ -1,0 +1,43 @@
+{
+  "name": "Giant Wolf",
+  "description": "A massive wolf that has grown to unusual size.",
+  "type": ["Monster"],
+  "tier": "Monster",
+  "requires": "Innate",
+  "abilities": [
+
+  ],
+  "arts": [
+
+  ],
+  "growths": {
+    "hp": 30,
+    "str": 20,
+    "mag": 20,
+    "dex": 15,
+    "spd": 25,
+    "def": 15,
+    "res": 15,
+    "lck": 20
+  },
+  "modifiers": {
+    "hp": 13,
+    "str": 4,
+    "mag": 4,
+    "dex": 1,
+    "spd": 5,
+    "def": 2,
+    "res": 2,
+    "lck": 3,
+    "mov": 2
+  },
+  "mount": null,
+
+  "default_base": "Giant Wolf",
+  "default_preset": "Speed/Balance/Luck",
+  "default_mainarm": "Sleep",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

@@ -1,6 +1,6 @@
 {
     "name": "Acrobat",
-    "description": "While unmounted:\n• Unit ignores movement penalties from difficult terrain.\n• Unit ignores damage and status conditions from foe's AOE effects.\n• Unit has (Spd + 10)% chance to apply 2{const:gbp:[Mov +2]} to itself for one turn at the start of its phase.",
+    "description": "While unmounted:\n• Unit ignores movement penalties from difficult terrain.\n• Unit ignores damage and status conditions from foe's AOE effects.\n• Unit has (Spd + 10)% chance to apply @{const:gbp:[Mov +2]} to itself for one turn at the start of its phase.",
     "requires": "All (Brawl C) (Level 11)",
     "modifiers": {
         "hp": 0,

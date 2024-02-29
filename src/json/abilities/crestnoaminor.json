@@ -30,8 +30,7 @@
         "sp": 0,
 
         "mov": 0,
-
-        "proc": 10
+        "slotcost": 0
     },
     "events": ["Crest"],
 

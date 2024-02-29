@@ -1,7 +1,7 @@
 {
   "name": "Covert Orders",
   "description": "Trigger: before foe enters, after foe exits, or before foe initiates combat with ally in a space within Range 0-1 of this unit’s deployed battalion unit. Use a gambit without the Measured tag as a reaction, following the same restrictions as adjutant reactions.",
-  "requires": "Authority B",
+  "requires": "Any (Authority B) (Class `General`)",
   "compatible": "Match Gambit (All (Not (Tag `measured`)) (Not (Name `Counter`)))",
   "mttype": "else",
   "modifiers": {

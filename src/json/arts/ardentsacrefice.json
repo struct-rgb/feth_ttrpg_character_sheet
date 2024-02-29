@@ -24,7 +24,8 @@
     "no stats",
     "healing",
     "tactical",
-    "halfslot"
+    "halfslot",
+    "inclusive"
   ],
   "hidden": false,
   "type": "Generic",

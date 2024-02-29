@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/struct-rgb/feth_ttrpg_character_sheet#readme",
   "dependencies": {
-    "@babel/eslint-parser": "^7.15.8"
+    "@babel/eslint-parser": "^7.15.8",
+    "jsdoc": "^4.0.2"
   },
   "devDependencies": {
     "eslint": "^8.29.0"

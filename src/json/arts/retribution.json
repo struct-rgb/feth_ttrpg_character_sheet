@@ -26,6 +26,6 @@
     "reaction"
   ],
   "hidden": true,
-  "type": ["Reason", "Faith", "Guile"],
+  "type": "",
   "rank": ""
 }

@@ -1,11 +1,11 @@
 {
   "name": "Bishop",
-  "description": "An advanced class that uses Faith.",
+  "description": "A Faith specialist with boosted healing.",
   "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "All (Faith B) (Required (Level 15))",
-  "abilities": [ "Faith Heal +10", "Faith Consumption 2", "Terrain Resistance" ],
-    "arts": [],
+  "abilities": [ "Faith Heal +10", "Faith Consumption 2", "Terrain Resistance" , "Glide"],
+    "arts": ["Gratia"],
   "growths": {
     "hp": 15,
     "str": 15,
@@ -17,14 +17,14 @@
     "lck": 20
   },
   "modifiers": {
-    "hp": 3,
+    "hp": 4,
     "str": 1,
     "mag": 5,
-    "dex": 2,
-    "spd": 0,
+    "dex": 5,
+    "spd": 2,
     "def": 1,
-    "res": 7,
-    "lck": 4,
+    "res": 6,
+    "lck": 10,
     "mov": 4
   },
   "mount": null,

@@ -1,6 +1,6 @@
 {
     "name": "Mystic",
-    "description": "Weapon deals magic-based damage. Disabled on non-Brawl weapons. If added to a weapon with the Mighty attribute, replaces that attribute.",
+    "description": "Weapon deals magic-based damage. Disabled on non-Brawl and non-Stone weapons. If added to a weapon with the Mighty attribute, replaces that attribute.",
     "rank": 0,
     "price": 0,
 
@@ -22,6 +22,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["for brawl"],
+    "tags": ["for brawl", "for stone"],
     "hidden": false
 }

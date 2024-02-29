@@ -4,28 +4,28 @@
     "type": ["Infantry"],
     "tier": "Advanced",
     "requires": "All (Brawl C+) (Any (Faith C+) (Reason C+) (Guile C+)) (Required (Level 15))",
-    "abilities": ["Consumption 2", "Stamina +15"],
-    "arts": [],
+    "abilities": ["Consumption 2", "Stamina +15", "Acrobat"],
+    "arts": ["Pneuma Gale"],
     "growths": {
         "hp": 30,
-        "str": 15,
+        "str": 20,
         "mag": 20,
-        "dex": 20,
+        "dex": 15,
         "spd": 20,
         "def": 10,
         "res": 10,
         "lck": 10
       },
     "modifiers": {
-        "hp": 3,
+        "hp": 6,
         "str": 2,
         "mag": 4,
-        "dex": 4,
-        "spd": 2,
-        "def": 0,
+        "dex": 8,
+        "spd": 3,
+        "def": 1,
         "res": 3,
-        "lck": 4,
-        "mov": 5
+        "lck": 10,
+        "mov": 6
     },
     "mount": null,
 

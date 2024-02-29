@@ -2,7 +2,7 @@
   "name": "Stinging Strikes",
   "description": "Can be used on enemy phase, after a foe initiates combat. Uses unit's normal @{const:ap:AP} (max of 2)",
   "requires": "Class Pugilist",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `tactical`))",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

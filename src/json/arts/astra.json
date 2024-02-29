@@ -1,11 +1,11 @@
 {
   "name": "Astra",
-  "description": "Halves might; user makes 5 consecutive attacks.",
-  "requires": "Swords A+",
+  "description": "@{const:ap:AP 9}; halves might bonus from equipped weapon, rounded up.",
+  "requires": "Class Swordsmaster",
   "compatible": "Skill Swords",
   "mttype": "else",
   "modifiers": {
-    "mt": "floor(-(item|total|mt + abilities|mt + equipment|mt) / 2)",
+    "mt": "ceil(-(item|total|mt) / 2)",
     "prot": 0,
     "resl": 0,
     "hit": -10,
@@ -19,7 +19,7 @@
   },
   "comment": "",
   "tags": [],
-  "hidden": false,
+  "hidden": true,
   "type": "Swords",
-  "rank": "A+"
+  "rank": ""
 }

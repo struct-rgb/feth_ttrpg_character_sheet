@@ -10,17 +10,17 @@
         "hp": 15,
         "str": 10,
         "mag": 10,
-        "dex": 15,
+        "dex": 20,
         "spd": 10,
         "def": 10,
         "res": 10,
-        "lck": 25
+        "lck": 20
       },
     "modifiers": {
         "hp": 2,
         "str": 2,
         "mag": 2,
-        "dex": 2,
+        "dex": 4,
         "spd": 1,
         "def": 2,
         "res": 2,

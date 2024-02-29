@@ -1,6 +1,6 @@
 {
   "name": "Apothecary",
-  "description": "A versatile infantry class with decent defensive stats and the ability to make greater use of consumable items.",
+  "description": "A defensive support class specialized in using consumable items.",
   "type": ["Infantry"],
   "tier": "Starting",
   "requires": "Any (Swords D) (Lances D) (Axes D) (Bows D) (Brawl D) (Faith D) (Reason D) (Guile D)",
@@ -29,7 +29,7 @@
   },
   "mount": null,
 
-  "default_base": "Apothacary",
+  "default_base": "Apothecary",
   "default_preset": "Balance/Balance/Luck",
   "default_mainarm": "Item",
   "default_sidearm": "Bows",

@@ -5,7 +5,7 @@
   "tier": "Advanced",
   "requires": "All (Any (Swords C+) (Bows C+)) (Required (Armor C+)) (Required (Level 15))",
   "abilities": ["Alert Stance", ["Sword Advantage", "Bow Advantage"], "Positioning"],
-    "arts": [],
+    "arts": ["Distraction"],
   "growths": {
     "hp": 25,
     "str": 15,
@@ -17,14 +17,14 @@
     "lck": 20
   },
   "modifiers": {
-    "hp": 15,
+    "hp": 8,
     "str": 4,
     "mag": 2,
-    "dex": 2,
-    "spd": 3,
+    "dex": 5,
+    "spd": 4,
     "def": 2,
     "res": 2,
-    "lck": 4,
+    "lck": 10,
     "mov": 4
   },
   "mount": null,

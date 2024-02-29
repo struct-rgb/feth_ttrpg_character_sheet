@@ -4,8 +4,8 @@
     "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Axes C+) (Lances C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": [["Axe Advantage", "Lance Advantage"], "Avo +10", "Canto"],
-    "arts": [["Frost Breath", "Flame Breath", "Fog Breath"]],
+    "abilities": [["Axe Advantage", "Lance Advantage"], "Avo +10", "Canto+"],
+    "arts": [["Frost Breath", "Fire Breath", "Fog Breath"]],
     "growths": {
         "hp": 30,
         "str": 20,
@@ -17,15 +17,15 @@
         "lck": 10
       },
     "modifiers": {
-        "hp": 6,
+        "hp": 9,
         "str": 5,
         "mag": 2,
-        "dex": 1,
+        "dex": 3,
         "spd": 3,
         "def": 5,
         "res": 0,
-        "lck": 2,
-        "mov": 5
+        "lck": 5,
+        "mov": 4
     },
     "mount": {
         "hp": 0,

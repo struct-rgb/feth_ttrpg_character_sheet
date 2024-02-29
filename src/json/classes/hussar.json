@@ -4,28 +4,28 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Swords C+) (Lances C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": [["Sword Advantage", "Lance Advantage", "Axe Advantage"], "Canto", "Flanking Maneuver"],
-    "arts": [],
+    "abilities": [["Sword Advantage", "Lance Advantage", "Axe Advantage"], "Flanking Maneuver", "Canto+"],
+    "arts": ["Cut Off"],
     "growths": {
         "hp": 25,
         "str": 20,
         "mag": 15,
-        "dex": 15,
+        "dex": 10,
         "spd": 20,
         "def": 15,
         "res": 10,
         "lck": 15
       },
     "modifiers": {
-        "hp": 4,
+        "hp": 6,
         "str": 3,
-        "mag": 1,
-        "dex": 4,
+        "mag": 2,
+        "dex": 5,
         "spd": 5,
         "def": 3,
         "res": 2,
-        "lck": 3,
-        "mov": 6
+        "lck": 8,
+        "mov": 4
     },
     "mount": {
         "hp": 0,
@@ -36,13 +36,13 @@
         "def": 0,
         "res": 0,
         "lck": 0,
-        "mov": 2
+        "mov": 3
     },
 
     "default_base": "Cavalier",
     "default_preset": "Speed/Balance/Balance",
-    "default_mainarm": "Swords",
-    "default_sidearm": "Lances",
+    "default_mainarm": ["Swords", "Lances", "Axes"],
+    "default_sidearm": "None",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

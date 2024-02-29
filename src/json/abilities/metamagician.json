@@ -50,5 +50,5 @@
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["in combat"],
-    "hidden": false
+    "hidden": true
 }

@@ -4,7 +4,7 @@
     "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Any (Reason C+) (Guile C+)) (Required (Flying C+)) (Required (Level 15))",
-    "abilities": [["Reason Advantage", "Guile Advantage"], "Savage Blow", "Canto"],
+    "abilities": [["Reason Advantage", "Guile Advantage"], "Savage Blow", "Canto+"],
     "arts": [["Frost Breath", "Flame Breath", "Fog Breath"]],
     "growths": {
         "hp": 25,
@@ -25,7 +25,7 @@
         "def": 4,
         "res": 0,
         "lck": 4,
-        "mov": 5
+        "mov": 4
     },
     "mount": {
         "hp": 0,
@@ -41,8 +41,8 @@
 
     "default_base": "Wyvern Rider",
     "default_preset": "Balance/Defense/Balance",
-    "default_mainarm": "Fire",
-    "default_sidearm": "Guile",
+    "default_mainarm": ["Fire", "Guile"],
+    "default_sidearm": "Axes",
     "comment": "Items in growth, modifiers, and mount should be integers",
     "tags": [],
     "hidden": false

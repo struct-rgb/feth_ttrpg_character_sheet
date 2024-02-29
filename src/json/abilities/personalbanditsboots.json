@@ -29,7 +29,8 @@
         "tp": 0,
         "sp": 0,
 
-        "mov": 1
+        "mov": 1,
+        "slotcost": 0
     },
 
     "comment": "Items in modifers can either be integers or string expressions",

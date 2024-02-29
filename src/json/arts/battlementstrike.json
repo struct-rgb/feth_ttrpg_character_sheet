@@ -1,7 +1,8 @@
 {
   "name": "Battlement Strike",
-  "description": "If this unit is adjacent to a @{tile::Barricade}, it may initiate combat as though it occupied any contiguous @{tile::Barricade}.",
+  "description": "If this unit is adjacent to a @{tile::Barricade}, it may initiate combat as though it occupies any contiguous @{tile::Barricade}.",
   "requires": "Class `Fortress Knight`",
+  "compatible": "Not (Tag `tactical`)",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

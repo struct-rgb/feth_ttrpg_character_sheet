@@ -1,0 +1,27 @@
+{
+  "name": "Brilliant Stone",
+  "type": "Other",
+  "description": "No special effects.",
+  "requires": "Other A",
+  "rank": "A",
+  "price": 0,
+  "mttype": "else",
+  "modifiers": {
+    "mt": 11,
+    "prot": 0,
+    "resl": 0,
+    "hit": 75,
+    "avo": 0,
+    "crit": 15,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": ["stone"],
+  "hidden": false
+}

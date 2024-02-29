@@ -4,8 +4,8 @@
   "type": ["Infantry"],
   "tier": "Advanced",
   "requires": "All (Swords C+) (Any (Reason C+) (Guile C+)) (Required (Level 15))",
-  "abilities": ["Sword Advantage", "Warding Stance", "Stamina +10" ],
-    "arts": [],
+  "abilities": ["Sword Advantage", ["Reason Advantage", "Guile Advantage"], "Warding Stance"],
+    "arts": ["Hybrid Strike", "Voicetaker"],
   "growths": {
     "hp": 25,
     "str": 20,
@@ -14,17 +14,17 @@
     "spd": 15,
     "def": 15,
     "res": 10,
-    "lck": 5
+    "lck": 10
   },
   "modifiers": {
-    "hp": 3,
-    "str": 3,
-    "mag": 2,
-    "dex": 4,
-    "spd": 3,
+    "hp": 5,
+    "str": 4,
+    "mag": 4,
+    "dex": 7,
+    "spd": 4,
     "def": 3,
-    "res": 4,
-    "lck": 2,
+    "res": 1,
+    "lck": 10,
     "mov": 5
   },
   "mount": null,
@@ -32,7 +32,7 @@
   "default_base": "Myrmidon",
   "default_preset": "Balance/Balance/Dexterity",
   "default_mainarm": "Swords",
-  "default_sidearm": "Guile",
+  "default_sidearm": ["Lightning", "Ice", "Guile"],
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [],
   "hidden": false

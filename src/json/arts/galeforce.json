@@ -2,6 +2,7 @@
   "name": "Galeforce",
   "description": "Can only be used while mounted. If target foe is defeated, unit’s full movement is restored after combat.",
   "requires": "Any (Class `Dark Flier`) (Class Valkyrie)",
+  "compatible": "All (Skill Reason Guile) (Not (Tag `no might`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

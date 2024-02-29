@@ -4,8 +4,8 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Any (Guile C+) (Reason C+)) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": [["Reason Advantage", "Guile Advantage"], ["Sword Advantage", "Lance Advantage"], "Despair Aura", "Canto"],
-    "arts": [],
+    "abilities": [["Reason Advantage", "Guile Advantage"], ["Lance Advantage", "Axe Advantage"], "Despair Aura", "Canto+"],
+    "arts": ["Hybrid Strike"],
     "growths": {
         "hp": 30,
         "str": 20,
@@ -17,15 +17,15 @@
         "lck": 20
       },
     "modifiers": {
-        "hp": 4,
+        "hp": 6,
         "str": 4,
         "mag": 4,
-        "dex": 1,
-        "spd": 0,
+        "dex": 3,
+        "spd": 1,
         "def": 4,
         "res": 5,
-        "lck": 4,
-        "mov": 5
+        "lck": 7,
+        "mov": 4
     },
     "mount": {
         "hp": 0,

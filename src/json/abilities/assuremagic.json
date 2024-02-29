@@ -1,6 +1,6 @@
 {
     "name": "Assure Magic",
-    "description": "Unit's magic-based attacks deal a minimum of Mt / 4 lethal damage on a hit (round up).",
+    "description": "Unit's magic-based attacks deal a minimum of Mt / 4 lethal damage on a hit (round up). (Depricated, use @{ability::Assurance} instead.)",
     "requires": "Level 5",
     "modifiers": {
         "hp": 0,
@@ -42,6 +42,6 @@
     ],
 
     "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["assure", "chance"],
-    "hidden": false
+    "tags": ["assure", "chance", "depricated"],
+    "hidden": true
 }

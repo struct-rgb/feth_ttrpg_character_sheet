@@ -1,0 +1,39 @@
+{
+  "name": "Giant Bird",
+  "description": "This massive bird has grown to an unnatural size through the absorption of magic",
+  "type": ["Monster", "Flying"],
+  "tier": "Monster",
+  "requires": "Innate",
+  "abilities": ["Avo +10"],
+  "arts": [],
+  "growths": {
+    "hp": 30,
+    "str": 15,
+    "mag": 15,
+    "dex": 15,
+    "spd": 25,
+    "def": 15,
+    "res": 15,
+    "lck": 25
+  },
+  "modifiers": {
+    "hp": 11,
+    "str": 2,
+    "mag": 2,
+    "dex": 2,
+    "spd": 5,
+    "def": 2,
+    "res": 2,
+    "lck": 6,
+    "mov": 2
+  },
+  "mount": null,
+
+  "default_base": "Giant Bird",
+  "default_preset": "Speed/Balance/Luck",
+  "default_mainarm": "None",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

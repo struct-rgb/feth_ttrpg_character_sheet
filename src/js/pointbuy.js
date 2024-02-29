@@ -165,7 +165,7 @@ class AttributePair {
 			before  : "( ",
 			after   : " )",
 			shown   : "0",
-			trigger : (cost) => "$" + String(cost), 
+			trigger : (cost) => `$${cost}`, 
 		});
 
 		this.roots  = [this.value.root, this.center.root, this.cattr.root];
@@ -196,7 +196,7 @@ class StatisticRow {
 			trigger : function (x) {
 				oninput("growth");
 				oninput("final");
-				return (x * 5) + "%";
+				return `${x * 5}%`;
 			},
 		});
 
@@ -252,17 +252,19 @@ const costfunctions = {
 		STR : (s) => {
 			const str = scale(s, "STR", 4);
 			const mag = scale(s, "MAG", 4);
+			const spd = scale(s, "SPD", 4);
 			return natural(str + Math.max(str - mag, 0)/4);
 		},
 		MAG : (s) => {
 			const str = scale(s, "STR", 4);
 			const mag = scale(s, "MAG", 4);
+			const spd = scale(s, "SPD", 4);
 			return natural(mag + Math.max(mag - str, 0)/4);
 		},
 		DEX : (s) => natural((scale(s, "DEX",  4) / 2) + scale(s, "LCK", 4)/4),
 		SPD : (s) => {
 			const spd = scale(s, "SPD",  4);
-			return natural(spd + spd/4);
+			return natural(spd - spd/4);
 		},
 		DEF : (s) => natural(scale(s, "DEF",  4) + scale(s, "RES", 4)/4),
 		RES : (s) => natural(scale(s, "RES",  4) + scale(s, "DEF", 4)/4),
@@ -610,7 +612,7 @@ class PointBuy {
 
 		this.totalGrowth = new AttributePair("GrowthTotal", {
 			edit    : false,
-			trigger : (x => String(x * 5) + "%"),
+			trigger : (x => `${x * 5}%`),
 		});
 
 		this.totalFinal  = new AttributePair("FinalTotal", {
@@ -618,34 +620,121 @@ class PointBuy {
 			trigger : (x => x),
 		});
 
-		const rows = Array.from(this.rows.values());
-
 		this.pairs = {
 			value  : this.totalValue,
 			growth : this.totalGrowth,
 			final  : this.totalFinal,
 		};
 
+		this.baseMin = new AttributeCell({
+			edit    : true,
+			before  : "( ",
+			after   : " )",
+			shown   : "$15",
+			value   : 15,
+			trigger : (cost) => `$${cost}`,
+		});
+
+		this.growMin = new AttributeCell({
+			edit    : true,
+			before  : "( ",
+			after   : " )",
+			shown   : "$15",
+			value   : 15,
+			trigger : (cost) => `$${cost}`,
+		});
+
+		this.finalMax = new AttributeCell({
+			edit    : true,
+			before  : "( ",
+			after   : " )",
+			shown   : "$33",
+			value   : 33,
+			trigger : (cost) => `$${cost}`,
+		});
+
+		this._atkspdsum = new AttributeCell({
+			edit    : false,
+			shown   : "0",
+			value   : 0,
+			root    : "span",
+			trigger : (
+				(value) => Math.max(
+					this.rows.get("STR")._value.value.value,
+					this.rows.get("MAG")._value.value.value,
+				)
+					+
+				this.rows.get("SPD")._value.value.value
+			), 
+		});
+
+		this._atkspdlim = new AttributeCell({
+			edit    : true,
+			shown   : "14",
+			value   : 14,
+			root    : "span",
+			trigger : (cost) => String(cost), 
+		});
+
 		const table = element("table", [
-			...PointBuy.ROWS.map((template) => {
-				const row = new StatisticRow(...template, (pair) => {
-					this.update(pair);
-				});
-				this.rows.set(row.name, row);
-				return row.root;
-			}),
-			element("tr",  [
-				element("th", "Sum"),
-				...this.totalValue.roots,
-				...this.totalGrowth.roots,
-				...this.totalFinal.roots,
+			element("tbody", [
+				...PointBuy.ROWS.map((template) => {
+					const row = new StatisticRow(...template, (pair) => {
+						this.update(pair);
+					});
+					this.rows.set(row.name, row);
+					return row.root;
+				}),
 			]),
+			element("tfoot", [
+				element("tr",  [
+					element("th", "Sum"),
+					...this.totalValue.roots,
+					...this.totalGrowth.roots,
+					...this.totalFinal.roots,
+				]),
+				element("tr", [
+					element("th", "Budget"),
+					element("td", {
+						content : "Min",
+						attrs   : {colSpan: 2}
+					}),
+					this.baseMin.root,
+					element("td", {
+						content : "Min",
+						attrs   : {colSpan: 2}
+					}),
+					this.growMin.root,
+					element("td", {
+						content : "Max",
+						attrs   : {colSpan: 2}
+					}),
+					this.finalMax.root,
+				]),
+				element("tr", [
+					element("td", {
+						content : [
+							element("strong", "(Atk + Spd) limit is "),
+							this._atkspdsum.root,
+							element("strong", " / "),
+							this._atkspdlim.root,
+						],
+						attrs  : {
+							colSpan: 10,
+						}
+					})
+				]),
+			]), 
 		], "simple-border");
 
-		this.forecast = new Forecast(this);
+		this.forecast   = new Forecast(this);
 
 		this.root = element("div", [
-			table, this.forecast.root,
+			table, 
+
+
+
+			this.forecast.root,
 		]);
 
 		const that = this;
@@ -699,7 +788,7 @@ class PointBuy {
 			return;
 		}
 
-		const field = "_" + column;
+		const field = `_${column}`;
 
 		for (let [_key, row] of this.rows.entries()) {
 			row[field].value.clear();
@@ -735,7 +824,7 @@ class PointBuy {
 
 		const array   = [];
 		const getter  = (key) => PointBuy.COST_SCALE * this.rows.get(key)[column];
-		const privacy = "_" + column; 
+		const privacy = `_${column}`; 
 
 		let costSum = 0, baseSum = 0, diffSum = 0;
 		for (let [_key, row] of this.rows.entries()) {
@@ -789,13 +878,13 @@ class PointBuy {
 
 	*column(column) {
 		for (let [name, row] of this.rows.entries()) {
-			yield [name.toLowerCase(), row["_" + column].value.value];
+			yield [name.toLowerCase(), row[`_${column}`].value.value];
 		}
 	}
 
 	*cells(column) {
 		for (let [name, row] of this.rows.entries()) {
-			yield [name.toLowerCase(), row["_" + column].value];
+			yield [name.toLowerCase(), row[`_${column}`].value];
 		}
 	}
 
@@ -840,7 +929,7 @@ class PointBuy {
 		const item = this.export();
 		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
 		a.href     = URL.createObjectURL(file);
-		a.download = item.name.replace(/ /g, "_") + ".json";
+		a.download = `${item.name.replace(/ /g, "_")}.json`;
 		a.click();
 		URL.revokeObjectURL(a.href);
 	}
