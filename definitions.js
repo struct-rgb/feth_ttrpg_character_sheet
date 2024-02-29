@@ -31500,8 +31500,7 @@ const definitions = {
       "abilities": [
         [
           "Sword Advantage",
-          "Lance Advantage",
-          "Axe Advantage"
+          "Lance Advantage"
         ],
         "Faith Advantage",
         "Hope Aura",

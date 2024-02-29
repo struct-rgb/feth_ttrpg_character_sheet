@@ -4,7 +4,7 @@
     "type": ["Cavalry"],
     "tier": "Advanced",
     "requires": "All (Faith C+) (Required (Riding C+)) (Required (Level 15))",
-    "abilities": [["Sword Advantage", "Lance Advantage", "Axe Advantage"], "Faith Advantage", "Hope Aura", "Canto+"],
+    "abilities": [["Sword Advantage", "Lance Advantage"], "Faith Advantage", "Hope Aura", "Canto+"],
     "arts": ["Hybrid Strike"],
     "growths": {
         "hp": 25,
