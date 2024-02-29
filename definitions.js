@@ -23537,7 +23537,8 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0
+        "mov": 0,
+        "slotcost": "bothif unit|level >= 10 then 0.5 else 1.0 end"
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
