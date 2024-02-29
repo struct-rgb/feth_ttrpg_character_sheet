@@ -21641,7 +21641,7 @@ const definitions = {
     },
     {
       "name": "Parallel Blow",
-      "description": "Grants Str +3 and Mag +3 in combat when unit initiates combat.",
+      "description": "Grants Str +3 and Mag +3 in combat when unit initiates combat. Cannot be equipped alongside either @{ability::Fiendish Blow} or @{ability::Death Blow}.",
       "requires": "All (Any (Swords C+) (Lances C+) (Axes C+) (Bows C+) (Brawl C+)) (Any (Faith C+) (Reason C+) (Guile C+) (Brawl C+)) (Level 15)",
       "modifiers": {
         "hp": 0,
@@ -21676,7 +21676,7 @@ const definitions = {
     },
     {
       "name": "Parallel Stance",
-      "description": "Grants Str +2 and Mag +2 in combat when foe initiates combat. Cannot be equipped with @{ability::Fierce Stance} or @{ability::Fiendish Stance}.",
+      "description": "Grants Str +3 and Mag +3 in combat when foe initiates combat. Cannot be equipped alongside either @{ability::Fierce Stance} or @{ability::Fiendish Stance}.",
       "requires": "All (Any (Swords D+) (Lances D+) (Axes D+) (Bows D+) (Brawl D+)) (Any (Faith D+) (Reason D+) (Guile D+) (Brawl D+)) (Level 11)",
       "modifiers": {
         "hp": 0,
