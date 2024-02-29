@@ -19,7 +19,7 @@
   },
   "comment": "",
   "tags": ["inclusive", "for monsters"],
-  "hidden": true
+  "hidden": true,
   "type": ["Swords", "Lances", "Axes"],
   "rank": "E"
 }

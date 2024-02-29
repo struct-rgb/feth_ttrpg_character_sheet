@@ -6138,7 +6138,7 @@ const definitions = {
         "inclusive",
         "for monsters"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": [
         "Swords",
         "Lances",
@@ -6204,7 +6204,7 @@ const definitions = {
         "inclusive",
         "combo"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": "Generic",
       "rank": "E"
     },
@@ -8276,7 +8276,7 @@ const definitions = {
         "no stats",
         "inclusive"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": "",
       "rank": ""
     },
@@ -9071,7 +9071,7 @@ const definitions = {
       "tags": [
         "reaction"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": "",
       "rank": ""
     },
@@ -9143,7 +9143,7 @@ const definitions = {
         "tactical",
         "inclusive"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": "",
       "rank": ""
     },
@@ -9457,48 +9457,6 @@ const definitions = {
     }
   ],
   "abilities": [
-    {
-      "name": "Acc\u00e9l\u00e9ration",
-      "description": "When this unit hits with a non-arts attack, ((Spd - max(Mag, Str)) x 5)% chance to grant unit AP +1 until the end of combat.",
-      "requires": "Level 15",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0
-      },
-      "rows": [
-        {
-          "when": "not(item|tagged|no_might) * not(item|tagged|no_hit)",
-          "expr": "(unit|total|spd - (more unit|total|str else unit|total|mag end)) * 5 + other|trigger",
-          "roll": true
-        }
-      ],
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "rework",
-        "chance"
-      ],
-      "hidden": false
-    },
     {
       "name": "Acrobat",
       "description": "While unmounted:\n\u2022 Unit ignores movement penalties from difficult terrain.\n\u2022 Unit ignores damage and status conditions from foe's AOE effects.\n\u2022 Unit has (Spd + 10)% chance to apply @{const:gbp:[Mov +2]} to itself for one turn at the start of its phase.",
@@ -10370,7 +10328,7 @@ const definitions = {
     },
     {
       "name": "Assurance",
-      "description": "Unit's attacks deal a minimum of Mt / 4 lethal damage on a hit (round up).",
+      "description": "Unit's attacks deal a minimum of Mt / 4 lethal damage on a hit (round up). Consumes half of an ability slot.",
       "requires": "Level 5",
       "modifiers": {
         "hp": 0,
@@ -11519,7 +11477,7 @@ const definitions = {
       "tags": [
         "in combat"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Battalion Renewal",
@@ -12763,7 +12721,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Cavalry Effect Null",
@@ -13099,7 +13057,7 @@ const definitions = {
       "tags": [
         "boss"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Combat Artist",
@@ -15929,7 +15887,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Goddess' Blessings",
@@ -17852,7 +17810,7 @@ const definitions = {
       "tags": [
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lck +4",
@@ -18262,7 +18220,7 @@ const definitions = {
       "tags": [
         "personal"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Lucky Seven",
@@ -23448,7 +23406,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Stamina +10",
@@ -24972,7 +24930,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Vital Defense",
@@ -33329,10 +33287,10 @@ const definitions = {
         "lck": 5
       },
       "modifiers": {
-        "hp": 2,
+        "hp": 3,
         "str": 3,
         "mag": 2,
-        "dex": 7,
+        "dex": 18,
         "spd": 5,
         "def": 2,
         "res": 2,
@@ -33422,14 +33380,14 @@ const definitions = {
         "lck": 15
       },
       "modifiers": {
-        "hp": 5,
+        "hp": 6,
         "str": 3,
         "mag": 3,
-        "dex": 4,
+        "dex": 10,
         "spd": 5,
-        "def": 0,
+        "def": 1,
         "res": 3,
-        "lck": 2,
+        "lck": 5,
         "mov": 6
       },
       "mount": null,
