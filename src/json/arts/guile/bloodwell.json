@@ -1,0 +1,35 @@
+{
+  "name": "Bloodwell",
+  "description": "Create a @{tile}{Blood Well} in target space.",
+  "requires": "Any (Guile C) (Guile B)",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 3,
+    "tiles": 0,
+    "spcost": 4,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "wall"
+  ],
+  "type": "Guile",
+  "rank": "C-B",
+  "hidden": false
+}

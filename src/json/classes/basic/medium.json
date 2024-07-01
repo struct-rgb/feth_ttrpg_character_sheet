@@ -1,0 +1,39 @@
+{
+    "name": "Medium",
+    "description": "A resilient, magic focused Armor class with balanced stats and high HP that can recur TP when using Brawl or any magic skill.",
+    "type": ["Armor"],
+    "tier": "Starting",
+    "requires": "Armor D",
+    "abilities": [["Reason Prowess", "Faith Prowess", "Guile Prowess", "Brawl Prowess"], "Consumption 1", "Weight -2"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 15,
+        "dex": 10,
+        "spd": 5,
+        "def": 15,
+        "res": 20,
+        "lck": 5
+      },
+    "modifiers": {
+        "hp": 8,
+        "str": 1,
+        "mag": 2,
+        "dex": 4,
+        "spd": 0,
+        "def": 3,
+        "res": 3,
+        "lck": 5,
+        "mov": 4
+    },
+    "mount": 0,
+
+    "default_base": "Medium",
+    "default_preset": "Balance/Defense/Balance",
+    "default_mainarm": ["Faith", "Guile", "Fire", "Ice", "Wind", "Lightning", "Force"],
+    "default_sidearm": "Armor",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

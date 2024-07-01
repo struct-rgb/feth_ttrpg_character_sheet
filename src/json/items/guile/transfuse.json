@@ -1,0 +1,41 @@
+{
+  "name": "Transfuse",
+  "type": "Guile",
+  "description": "Restore (Mt + Mag / 4) HP to target ally. Cannot be used except as part of another feature’s effect. Does not consume an inventory slot.\nAble to target any of this army’s units (this unit and its allies) within Range 1-4 of this unit or a Bloodwell.",
+  "requires": "Guile D",
+  "rank": "D",
+  "price": 780,
+  "mttype": "none",
+  "modifiers": {
+    "mt": "floor((unit|total|mag) / 4) + 6",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 4,
+    "tpcost": 1,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "rows": [
+      {
+          "name": "Critical Heal",
+          "when": "item|tagged|treatment",
+          "expr": "unit|total|crit",
+          "roll": true
+      }
+  ],
+  "comment": "Incompatible with all Attributes.",
+  "tags": [
+    "healing",
+    "no crit",
+    "no hit",
+    "no stats",
+    "no triangle"
+  ],
+  "hidden": false
+}

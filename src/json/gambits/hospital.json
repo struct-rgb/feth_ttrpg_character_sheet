@@ -1,9 +1,9 @@
 {
     "name": "Hospital",
-    "description": "Restore 2 + ½ Charm HP to non-employer ally in AoE. Cannot be equipped alongside @{gambit::Initiate}.",
+    "description": "Restore 2 + ½ Charm HP to non-employer ally in AoE. Cannot be equipped alongside @{gambit}{Initiate}.",
     "requires": "Authority C",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "None",
     "modifiers": {

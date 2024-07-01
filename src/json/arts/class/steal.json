@@ -1,0 +1,25 @@
+{
+  "name": "Steal",
+  "description": "@{const}{ap}{AP 1-2}; on hit, deals no damage and prevents counterattacks.\n\nOn hit, after combat, this unit may choose to disable “after combat” riders from other effects triggered by this hit in order to remove an item of its choice from target foe’s inventory other than a weapon or equipment target foe has equipped and place it in this unit’s inventory (discard an item if the stolen item would exceed this unit’s inventory capacity).\n\nOn this army's victory, non-discarded stolen weapons and equipment are sold for half their value unless purchased by this unit for half price after battle and on this army's defeat, all stolen items return to the convoy(s) of the army(s) they were stolen from.",
+  "requires": "Any (Any (Swords C) (Swords B)) (Any (Lances C) (Lances B)) (Any (Axes C) (Axes B)) (Any (Brawl C) (Brawl B)) (Any (Bows C) (Bows B)) (Class Thief) (Class Trickster)",
+  "compatible": "Skill Swords Lances Axes Bows Brawl",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": -10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "movement",
+  "tags": ["no might"],
+  "hidden": false,
+  "type": ["Swords", "Lances", "Axes", "Brawl", "Bows"],
+  "rank": "C-B"
+}

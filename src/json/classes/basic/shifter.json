@@ -1,0 +1,39 @@
+{
+  "name": "Shifter",
+  "description": "An animalistic Morph class which can take on numerous specializations, which include limited flight, movement after actions, bypassing enemies, resistance to weapon break, and HP recovery. Each variant can access either an extended SP pool or TP recursion.",
+  "type": ["Infantry"],
+  "tier": "Starting",
+  "requires": "Morph D",
+  "abilities": [["Axe Prowess", "Sword Prowess", "Lance Prowess", "Brawl Prowess", "Bow Prowess", "Reason Prowess", "Faith Prowess", "Guile Prowess", "Authority", "Dominion"],"Megalomorph", ["Consumption 1", "Stamina +5"]],
+    "arts": [],
+  "growths": {
+    "hp": 25,
+    "str": 10,
+    "mag": 10,
+    "dex": 15,
+    "spd": 15,
+    "def": 10,
+    "res": 10,
+    "lck": 15
+  },
+  "modifiers": {
+    "hp": 8,
+    "str": 2,
+    "mag": 2,
+    "dex": 5,
+    "spd": 2,
+    "def": 2,
+    "res": 2,
+    "lck": 5,
+    "mov": 4
+  },
+  "mount": 0,
+
+  "default_base": "Shifter",
+  "default_preset": "Balance/Balance/Balance",
+  "default_mainarm": "Lances",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

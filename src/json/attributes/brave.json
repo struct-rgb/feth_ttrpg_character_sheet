@@ -1,7 +1,6 @@
 {
     "name": "Brave",
-    "type": "Any",
-    "description": "Hit -15 and base might is reduced by half. @{const:ap:AP +1} if unit initiates combat, otherwise @{const:ap:AP +1} to foe if foe’s @{const:ap:AP = 2}. Consumes 2 TP per attack and decreases Max TP by 5 when placed in unit’s inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on spells and Brawl weapons.",
+    "description": "Hit -15 and base might is reduced by half. @{const}{ap}{AP +1} if unit initiates combat, otherwise @{const}{ap}{AP +1} to foe if foe’s @{const}{ap}{AP = 2}. Consumes 2 TP per attack and decreases Max TP by 5 when placed in unit’s inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on spells and Brawl weapons.",
     "rank": 2,
     "price": 2500,
 
@@ -24,5 +23,5 @@
 
     "comment": "Items in modifers should be integers",
     "tags": ["for axes", "for bows", "for swords", "for lances", "explain"],
-    "hidden": true
+    "hidden": false
 }

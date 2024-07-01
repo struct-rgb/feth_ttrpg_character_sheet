@@ -3,7 +3,7 @@
     "description": "Non-employer allies without Dance in AoE that have taken a turn this phase may take another turn.",
     "requires": "All (Authority S) (Outfitting Infantry)",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "S",
     "aoe": "Ring 0-1",
     "modifiers": {

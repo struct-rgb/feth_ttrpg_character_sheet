@@ -1,6 +1,6 @@
 {
     "name": "Mighty",
-    "description": "Weapon deals strength-based damage. Disabled on non-Brawl and non-Stone weapons. If added to a weapon with the Mystic attribute, replaces that attribute.",
+    "description": "Weapon deals strength-based damage. Disabled on non-Brawl weapons. If added to a weapon with the #{attribute}{Mystic} attribute, replaces that attribute.",
     "rank": 0,
     "price": 0,
 

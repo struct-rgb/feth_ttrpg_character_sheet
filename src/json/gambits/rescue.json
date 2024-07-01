@@ -1,9 +1,9 @@
 {
     "name": "Rescue",
-    "description": "Move a non-battalion ally from target space to an empty space adjacent to this battalion’s employer. Cannot be equipped alongside @{gambit::Escort}.",
+    "description": "Move a non-battalion ally from target space to an empty space adjacent to this battalion’s employer. Cannot be equipped alongside @{gambit}{Escort}.",
     "requires": "Authority B",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "B",
     "aoe": "None",
     "modifiers": {

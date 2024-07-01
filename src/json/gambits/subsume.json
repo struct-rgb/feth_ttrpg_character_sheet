@@ -3,7 +3,7 @@
     "description": "If this unit’s space is not occupied by another unit, move a non-battalion foe in target space into this unit’s space.",
     "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "D",
     "aoe": "None",
     "modifiers": {

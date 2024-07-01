@@ -1,0 +1,30 @@
+{
+  "name": "Scroll of Talos",
+  "type": "Reason",
+  "description": "A lightning spell; @{attribute}{Sacred} weapon associated with the @{ability}{Major Crest of Noa||Minor Crest of Noa}{Crest of Noa}.",
+  "requires": "Reason A",
+  "rank": "A",
+  "price": 0,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 18,
+    "prot": 0,
+    "resl": 0,
+    "hit": 65,
+    "avo": 0,
+    "crit": 15,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 7,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [
+    "sacred",
+    "lightning"
+  ],
+  "hidden": true
+}

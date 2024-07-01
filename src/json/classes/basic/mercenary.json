@@ -1,0 +1,39 @@
+{
+    "name": "Mercenary",
+    "description": "A pragmatic, consistency focused Axes and/or Swords using Infantry class with low resistance.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Any (Swords D) (Axes D)",
+    "abilities": [["Sword Prowess", "Axe Prowess"], "Hit +5", "Avo +5"],
+    "arts": [],
+    "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 10,
+        "dex": 20,
+        "spd": 15,
+        "def": 15,
+        "res": 5,
+        "lck": 5
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 4,
+        "mag": 2,
+        "dex": 7,
+        "spd": 2,
+        "def": 2,
+        "res": 1,
+        "lck": 3,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Mercenary",
+    "default_preset": "Speed/Defense/Dexterity",
+    "default_mainarm": "Swords",
+    "default_sidearm": "Axes",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

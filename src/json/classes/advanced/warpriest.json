@@ -1,0 +1,39 @@
+{
+  "name": "War Priest",
+  "description": "An advanced class that uses Axes and Faith.",
+  "type": ["Infantry"],
+  "tier": "Advanced",
+  "requires": "All (Axes C+) (Faith C+) (Required (Level 15))",
+  "abilities": [ ["Axe Advantage", "Brawl Advantage"], "Faith Advantage", "Faith Consumption 1" ],
+    "arts": ["Cantor's Strike"],
+  "growths": {
+    "hp": 25,
+    "str": 20,
+    "mag": 15,
+    "dex": 15,
+    "spd": 0,
+    "def": 15,
+    "res": 25,
+    "lck": 15
+  },
+  "modifiers": {
+    "hp": 6,
+    "str": 4,
+    "mag": 3,
+    "dex": 6,
+    "spd": 1,
+    "def": 2,
+    "res": 5,
+    "lck": 10,
+    "mov": 6
+  },
+  "mount": 0,
+
+  "default_base": "Brigand",
+  "default_preset": "Power/Balance/Balance",
+  "default_mainarm": ["Axes", "Metal"],
+  "default_sidearm": "Faith",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

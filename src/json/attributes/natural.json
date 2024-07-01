@@ -1,0 +1,27 @@
+{
+    "name": "Natural",
+    "description": "Grants weapon Mt +1 and Hit +5.\n\nCannot be equipped while demorphed and cannot be stolen; if wielder demorphs while this weapon is equipped, it ends up without a weapon equipped until it can next equip one.\n\nWhile in inventory, wielder has six inventory slots.\n\nDisabled on items without an attack.",
+    "rank": 0,
+    "price": 2600,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 5,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["for axes", "for swords", "for lances", "for faith", "for reason", "for guile", "for brawl", "for bows"],
+    "hidden": false
+}

@@ -1,9 +1,9 @@
 {
     "name": "All Out Brawl",
-    "description": "Effective against Infantry Foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+    "description": "Effective against Infantry Foes. On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn.",
     "requires": "All (Authority A) (All (Training `Mighty Fist`) (Training `Mystic Fist`))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "A",
     "aoe": "Box 3x2",
     "modifiers": {

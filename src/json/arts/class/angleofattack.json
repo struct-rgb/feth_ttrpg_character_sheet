@@ -1,0 +1,36 @@
+{
+  "name": "Angle of Attack",
+  "description": "Can only be used while mounted and can only target foes adjacent to X of this army’s Flying units, where X ≥ 2. Multiply bonuses to Mt, Hit, and Crit by X.",
+  "requires": "Any (Class `Falcon Knight`) (Class `Gryphon Rider`) (Class `Raven Knight`)",
+  "compatible": "All (Skill Axes Lances Swords) (Not (Tag `tactical`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "3 * fill locals|allies()",
+    "prot": 0,
+    "resl": 0,
+    "hit": "10 * fill locals|allies()",
+    "avo": 0,
+    "crit": "10 * fill locals|allies()",
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+
+  "locals": [
+    [
+      "template allies()",
+      "  ask [Adjacent Fliers from this Army?] case 2 end",
+      "end"
+    ]
+  ],
+
+  "comment": "",
+  "tags": [
+    "scales"
+  ],
+  "hidden": true,
+  "rank": "",
+  "type": ["Axes", "Swords", "Lances"]
+}

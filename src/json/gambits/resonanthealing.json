@@ -3,7 +3,7 @@
     "description": "Restore 2 + ½ Charm HP to allies in AoE.",
     "requires": "All (Authority B) (Training Faith)",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "B",
     "aoe": "Box 3x2",
     "modifiers": {

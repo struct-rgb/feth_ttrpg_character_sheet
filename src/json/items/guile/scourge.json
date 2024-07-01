@@ -1,0 +1,27 @@
+{
+  "name": "Scourge",
+  "type": "Guile",
+  "description": "Mt +7 against units with a Crest.",
+  "requires": "Guile C",
+  "rank": "C",
+  "price": 0,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": "4 + fill affirm([vs. Crest Bearer?], 0, 7)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 80,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 3,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes",
+  "tags": [],
+  "hidden": false
+}

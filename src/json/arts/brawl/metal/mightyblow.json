@@ -1,0 +1,25 @@
+{
+  "name": "Mighty Blow",
+  "description": "Mt +30% of user's Str. @{const}{variant}{Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
+  "requires": "Brawl A",
+  "compatible": "Skill Brawl",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "fill scale(3, [Str], unit|total|str)",
+    "prot": 0,
+    "resl": 0,
+    "hit": -5,
+    "avo": 0,
+    "crit": 20,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": ["metal", "variant"],
+  "hidden": false,
+  "type": "Brawl",
+  "rank": "A"
+}

@@ -1,9 +1,9 @@
 {
     "name": "Beastial Terror",
-    "description": "Mounted foes in range are forced to dismount, and for one turn, foes in AoE cannot remount. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+    "description": "Mounted foes in range are forced to dismount, and for one turn, foes in AoE cannot remount. @{style}{italic}{(Effect is attached to the spaces, not the units.)}",
     "requires": "All (Authority A) (Outfitting Infantry)",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "A",
     "aoe": "Ring 0-2",
     "modifiers": {

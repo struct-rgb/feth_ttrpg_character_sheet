@@ -1,6 +1,6 @@
 {
     "name": "Stabilizer",
-    "description": "Allows weapon to ignore the Mt penalties imposed by the @{attribute::Sealing}, @{attribute::Tainted}, and @{attribute::Paralytic} attributes.\n\nDisabled on non-Bow weapons.",
+    "description": "Allows weapon to ignore the Mt penalties imposed by the @{attribute}{Sealing}, @{attribute}{Tainted}, and @{attribute}{Paralytic} attributes.\n\nDisabled on non-Bow weapons.",
     "rank": 2,
     "price": 500,
 

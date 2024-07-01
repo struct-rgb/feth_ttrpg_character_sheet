@@ -1,0 +1,38 @@
+{
+    "name": "Distorted",
+    "description": "Before the affected unit casts a spell that uses Mt, roll a d100. Below a 50, the spell’s Mt = 0.",
+
+    "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+
+        "mt": "fill deny([Below 50?], -(unit|total|mt), 0)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "mov": 0
+    },
+
+    "comment": "todo fix the mt calc on this",
+    "tags": ["penalty", "rolls", "rework"],
+    "hidden": false
+}

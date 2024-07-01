@@ -1,16 +1,15 @@
 {
     "name": "Ranged",
-    "type": "Any",
-    "description": "Grants Range +1, -3 Mt, -10 Hit.\n\nDisabled on spells, Bows, and Brawl.",
+    "description": "Grants Range +1 and penalties based on weapon type:\n • Axes: Mt -4, Hit -5\n • Lances: Mt -3, Hit -10\n • Swords: Mt -2, Hit -15\nDisabled on spells, Bows, and Brawl.",
     "rank": 0,
     "price": 1500,
 
     "mttype": "else",
     "modifiers": {
-        "mt": "bothif item|noattr|maxrng < 2 then -3 else +0 end",
+        "mt": "fill locals|modifier_by_skill(-4, -2, -3)",
         "prot": 0,
         "resl": 0,
-        "hit": -10,
+        "hit": "fill locals|modifier_by_skill(-5, -15, -10)",
         "avo": 0,
         "crit": 0,
         "cravo": 0,
@@ -21,6 +20,22 @@
         "tp": 0,
         "sp": 0
     },
+
+    "locals": [
+        [
+          "template modifier_by_skill(axes, swords, lances)",
+          "  bothif item|type|axes   then",
+          "    axes",
+          "  elseif item|type|swords then",
+          "    swords",
+          "  elseif item|type|lances then",
+          "    lances",
+          "  else",
+          "    0",
+          "  end",
+          "end"
+        ]
+      ],
 
     "comment": "Items in modifers should be integers",
     "tags": ["penalty", "for axes", "for swords", "for lances", "explain"],

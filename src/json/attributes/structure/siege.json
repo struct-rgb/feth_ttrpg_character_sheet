@@ -1,0 +1,39 @@
+{
+    "name": "Structure: Siege",
+    "type": "Any",
+    "description": "Prot and Resl are doubled when in combat at Range 2 or more, but are zero otherwise.\n\nDisabled on non-shields and on weapons with another \"Structure\" attribute.",
+    "rank": 2,
+    "price": 0,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 0,
+        "prot": "fill locals|siege(item|noattr|prot)",
+        "resl": "fill locals|siege(item|noattr|resl)",
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "locals": [
+        [
+            "template siege(field)",
+            "  field * ask [Range to Foe?]",
+            "    case [Range 1]  {-1}",
+            "    else [Range 2+] {+1}",
+            "  end",
+            "end"
+        ]
+    ],
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["for shield", "structure", "explain"],
+    "hidden": false
+}

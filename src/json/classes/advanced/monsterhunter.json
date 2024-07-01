@@ -1,0 +1,39 @@
+{
+    "name": "Monster Hunter",
+    "description": "Anti-Monster infantry class. Choose one Advantage skill on reclass.",
+    "type": ["Infantry"],
+    "tier": "Advanced",
+    "requires": "All (Any (Axes C+) (Bows C+)) (Any (Bows C+) (Reason C+)) (Any (Reason C+) (Axes C+)) (Required (Level 15))",
+    "abilities": ["Bow Advantage", "Axe Advantage", "Reason Advantage", "Trapper", "Terrain Resistance"],
+    "arts": ["Creature Ken"],
+    "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 25,
+        "spd": 10,
+        "def": 10,
+        "res": 20,
+        "lck": 15
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 3,
+        "mag": 3,
+        "dex": 10,
+        "spd": 3,
+        "def": 3,
+        "res": 4,
+        "lck": 3,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Hunter",
+    "default_preset": "Balance/Balance/Dexterity",
+    "default_mainarm": ["Axes", "Fire"],
+    "default_sidearm": "Bows",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": ["rework"],
+    "hidden": false
+}

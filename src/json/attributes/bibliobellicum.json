@@ -1,6 +1,5 @@
 {
     "name": "Bibliobellicum",
-    "type": "Prompt",
     "description": "Weapon deals strength-based damage and TP cost is reduced by 20% of base TP cost when used at Range 1.\n\nThis attribute is disabled on non-spells and on spells that don’t deal damage on attack.",
     "rank": 0,
     "price": 500,

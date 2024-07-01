@@ -1,7 +1,8 @@
 {
   "name": "Engulf",
-  "description": "Unit may choose to deal nonlethal damage. On hit, after combat, if target foe was not defeated, remove target foe. While removed, target foe can still initiate combat with this unit as though it were at Range 1. When this unit is defeated, applied with @{condition:Broken:[Broken]}, before this unit initiates combat, or if it chooses to as an action, return all non-defeated foes that this unit has removed with @{art::Engulf} to the nearest empty space to the most recent space this unit has occupied (their choice if multiple). Cannot be used with weapons that have incompatible range.",
+  "description": "Unit may choose to deal nonlethal damage. On hit, after combat, if target foe was not defeated, remove target foe. While removed, target foe can still initiate combat with this unit as though it were at Range 1. When this unit is defeated, applied with @{condition}{Broken}{[Broken]}, before this unit initiates combat, or if it chooses to as an action, return all non-defeated foes that this unit has removed with @{art}{Engulf} to the nearest empty space to the most recent space this unit has occupied (their choice if multiple). Cannot be used with weapons that have incompatible range.",
   "requires": "Innate",
+  "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

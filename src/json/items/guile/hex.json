@@ -1,0 +1,29 @@
+{
+  "name": "Hex",
+  "type": "Guile",
+  "description": "Apply @{condition}{Hexed}{[Hexed]} to target foe for one turn. Wielder can pay 1 TP to cast this spell as a reaction with trigger: once per turn, foe in range enters combat.",
+  "requires": "Guile D",
+  "rank": "D",
+  "price": 780,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 90,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 5,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Can be used as a reaction. Incompatible with all Attributes.",
+  "tags": [
+    "reaction", "no crit", "no stats", "no might", "no triangle", "condition"
+  ],
+  "hidden": false
+}

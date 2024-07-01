@@ -1,0 +1,39 @@
+{
+    "name": "Assassin",
+    "description": "An fast class whose sword and bow ignore defenses while themselves being protected by stealth.",
+    "type": ["Infantry"],
+    "tier": "Advanced",
+    "requires": "All (Swords C+) (Bows C+) (Required (Level 15))",
+    "abilities": [["Bow Advantage", "Sword Advantage"], "Stealth", "Locktouch"],
+    "arts": ["Assassinate"],
+    "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 20,
+        "spd": 25,
+        "def": 0,
+        "res": 15,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 3,
+        "str": 2,
+        "mag": 2,
+        "dex": 5,
+        "spd": 7,
+        "def": 1,
+        "res": 2,
+        "lck": 13,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Thief",
+    "default_preset": "Speed/Resistance/Balance",
+    "default_mainarm": "Swords",
+    "default_sidearm": "Bows",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

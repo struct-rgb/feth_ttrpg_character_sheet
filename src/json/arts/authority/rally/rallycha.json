@@ -1,0 +1,33 @@
+{
+  "name": "Rally Cha +8",
+  "description": "Replaced with @{art}{Rally Lck +8}.",
+  "requires": "Authority C",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 3,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "condition",
+    "depricated"
+  ],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "C"
+}

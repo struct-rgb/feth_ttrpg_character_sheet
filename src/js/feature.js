@@ -3,23 +3,20 @@
  * @module feature
  */
 
-/* global Expression */
+/* global 
+	ConfigEnum, Filter
+	assume, capitalize, delimit, element, tooltip, wrap
+*/
+
+/* global Calculator */
 /* global Polish */
+/* global Markup */
+
 /* global Macros */
 
-/* global ConfigEnum */
-/* global Filter */
-/* global wrap */
-/* global ellipse */
-/* global uniqueLabel */
+/* global Requirements */
 
-/* global assume */
-/* global element */
-/* global tooltip */
-/* global delimit */
-/* global capitalize */
-
-/* global RangeFinder */
+/* global ModWidget, RangeFinder */
 
 /* TODO this directive is to condense the many
  * violations that not having this here makes below
@@ -30,119 +27,23 @@
  
 /* global definitions */
 
-class ModWidget {
+if (typeof require !== "undefined") {
 
-	constructor(modifier, sign, tool_tip) {
+	/* global require */
 
-		this.tooltip  = tool_tip;
-		this.modifier = modifier;
-		this.sign     = sign;
-
-		this._runtext = document.createTextNode("");
-		this._mactext = document.createTextNode("");
-
-		this._base    = element("span", {
-			class   : ["computed"],
-			content : (!tool_tip
-				? [this._runtext, element("sup", "*")]
-				:  this._runtext
-			),
-			attrs   : {
-				onpointerenter: (() => {
-					this.refresh();
-				})
-			}
-		});
-
-		if (!tool_tip) {
-			this.root = this._base;
-			this.refresh();
-			return;
-		}
-
-		const code = Expression.highlight(this.modifier.source, true);
-
-		this.root = tooltip(this._base, [
-
-			"Value updates on mouse over.",
-
-			element("br"), element("br"),
-
-			element("strong", "Calculator Expression"), element("br"),
-
-			element("div", code, "calc-code"), element("br"),
-
-			element("strong", "Roll20 Macro"), element("br"),
-
-			element("div", this._mactext, "calc-code"),
-		]);
-		
-		this.refresh();
-	}
-
-	refresh() {
-		const value     = this.modifier.execute();
-		const sign      = (this.sign && value >= 0 ? "+" : "");
-		this._runtext.data = sign + value;
-		this._mactext.data = this.modifier.macrogen();
-	}
-}
-
-class ReqWidget {
-
-	constructor(predicate, title, body, dead) {
-
-		this.predicate = predicate;
-		this.title     = title;
-
-		this._runtext = document.createTextNode("");
-
-		this._base    = element("span", {
-			class   : ["computed"],
-			content : this._runtext,
-			attrs   : {
-				onpointerenter: (() => {
-					this.refresh();
-				})
-			}
-		});
-
-		if (dead) {
-			this.root = this._base;
-			this.refresh();
-			return;
-		}
-
-		this.root = tooltip(this._base, [
-
-			"Value updates on mouse over.",
-
-			element("br"), element("br"),
-
-			body,
-		]);
-		
-		this.refresh();
-	}
-
-	refresh() {
-		const result       = this.predicate.exec(this.predicate.context).boolean;
-		this._runtext.data = `${this.title}${(result ? "Pass" : "Fail")}`;
-
-		const cl = this._base.classList;
-
-		if (result) {
-			if (cl.contains("computed")) {
-				cl.remove("computed");
-				cl.add("datum");
-			}
-		} else {
-			if(cl.contains("datum")) {
-				cl.remove("datum");
-				cl.add("computed");
-			}
-		}
-	}
+	/* eslint-disable no-global-assign */
+	({
+		ConfigEnum, Filter,
+		assume, capitalize, delimit, element, tooltip, wrap
+	}            = require("./common.js"));
+	(Calculator  = require("./lang/calculator.js"));
+	(Polish      = require("./lang/polish.js"));
+	(Markup      = require("./lang/markup.js"));
+	({
+		ModWidget, RangeFinder
+	}            = require("./widget/dynamic.js"));
+	(Macros      = require("./macro_builder.js"));
+	/* eslint-enable no-global-assign */
 }
 
 /**
@@ -189,7 +90,8 @@ class Feature {
 	/**
 	 * Create a feature from a template object
 	 */
-	constructor(template, compiler, predicator) {
+	constructor(template, compiler, predicator, marker) {
+
 		this.name         = template.name || "";
 		this.description  = template.description || "";
 		this.type         = template.type || "";
@@ -200,6 +102,10 @@ class Feature {
 		this.dependancies = new Set();
 		this.affects      = new Set();
 
+		compiler          = compiler   || new Calculator.Compiler();
+		predicator        = predicator || new Polish.Compiler();
+		this.marker       = marker;
+
 		// defaults until these can be added to all the files
 		if ("modifiers" in template) {
 			template.modifiers["tslots"]   = assume(template.modifiers["slots"]    , 0);
@@ -207,23 +113,10 @@ class Feature {
 			template.modifiers["tslots"]   = assume(template.modifiers["tslots"]   , 0);
 			template.modifiers["slotcost"] = assume(template.modifiers["slotcost"] , 1);
 		}
-
-		// parse file-local template definitions if present
-		const locals = new Set();
-
-		if (template.locals) {
-			
-			const defines   = compiler.macros;
-
-			for (let each of template.locals) {
-				const string      = each.join("\n");
-				const [name, tmp] = Expression.Template.parse(string, defines);
-				const id          = `locals|${name}`;
-				defines[id]       = tmp;
-				locals.add(id);
-			}
-		}
-
+		
+		// take into account the possibility of local definitions
+		const locals = compiler.createLocals(template.locals);
+		
 		const kind   = new.target.kind;
 
 		// function to compile dynamic modifiers
@@ -251,7 +144,7 @@ class Feature {
 
 			// try to compile the expression, if not error and assume default
 			try {
-				const identifier = Expression.asIdentifier(this.name);
+				const identifier = Calculator.asIdentifier(this.name);
 				const member     = `${kind}|${identifier}|${key}`;
 				const expression = compiler.compile(value, member);
 				const defined    = !(typeof key == "number");
@@ -268,7 +161,7 @@ class Feature {
 				return expression;
 
 			} catch (error) {
-				if (error instanceof Expression.CompilationError) {
+				if (error instanceof compiler.throws) {
 					console.error(this.name, value);
 				}
 				throw error;
@@ -312,11 +205,8 @@ class Feature {
 				);
 			}
 		}
-		
-		this.requires     = (predicator
-			? predicator.compile(template.requires || "None")
-			: Polish.compile("")
-		);
+
+		this.requires = predicator.compile(template.requires || "None");
 
 		// TODO hack to make unit size accessible to rangefinder
 		if (compiler && "modifiers" in template)
@@ -351,12 +241,8 @@ class Feature {
 		}
 
 		// delete any local templates that were created since we're done
-		if (locals.size > 0) {
-			for (let each of locals) {
-				delete compiler.macros[each];
-			}
-		}
-		
+		compiler.deleteLocals(locals);
+
 		// These objects are just references for value and as such should not
 		// be mutable. If this is not a super() call, freeze the object.
 		if (new.target === Feature) {
@@ -368,7 +254,7 @@ class Feature {
 	 * Populate the lookup map for this class
 	 * @param {Object} defintions - json game data
 	 */
-	static setLookupByName(iterable, compiler, predicator) {
+	static setLookupByName(iterable, compiler, predicator, marker) {
 
 		// initialize the "empty" feature on first invocation
 		if (this.EMPTY === undefined) {
@@ -384,7 +270,7 @@ class Feature {
 		this.byName.clear();
 		for (let template of iterable[this.kind]) {
 			try {
-				const instance = new this(template, compiler, predicator);
+				const instance = new this(template, compiler, predicator, marker);
 				this.byName.set(instance.name, instance);
 			} catch (error) {
 				console.error(template);
@@ -426,7 +312,7 @@ class Feature {
 
 	static dependancies(compiler, key) {
 		return this.where(
-			f => Expression.is(f.modifiers[key]),
+			f => Calculator.is(f.modifiers[key]),
 			f => f.modifiers[key].symbols,
 		).reduce((x, y) => x.extend(y), new Set());
 	}
@@ -445,16 +331,27 @@ class Feature {
 	}
 
 	static MODEXCLUDE = new Set([
-		"tiles", "tp", "sp", "tpcost", "spcost",
+		"tiles", "tp", "sp", "tpcost", "spcost", "capcost",
 		"epcost", "cap", "minrng", "maxrng", "size", "slotcost"
 	]);
+
+	static MOD_RENAME = new Map([
+		["tiles"  , "Tiles"     ],
+		["maxrng" , "Max Range" ],
+		["minrng" , "Min Range" ],
+		["tp"     , "Max TP"    ],
+		["sp"     , "Max SP"    ],
+		["tpcost" , "TP Cost"   ],
+		["spcost" , "SP Cost"   ],
+	]);
+
+	static UISEP = ":\xA0";
 
 	/**
 	 * Generate a feature's {@link CategoryElement} description
 	 * @return {string} description for this item's {@link CategoryElement}
 	 */
-	body(dead=false, dynamics=null) {
-		// return this.description;
+	body(dead=false) {
 
 		function span(...args) {
 			return element("span", args);
@@ -469,45 +366,38 @@ class Feature {
 			]);
 		}
 
-		const slots = this.modifierForUI("slotcost", false, dead, false, dynamics);
-		if (slots) mods.push(span("Slots:\xA0", slots));
+
+		let   star = undefined;
+		const bare = {sign: false , range: false , dead};
+		const sign = {sign: true  , range: false , dead};
+
+		if ((star = this.modifierForUI("capcost", bare))) mods.push([
+			element("span", star, "computed"),
+			element( "sub",  "C", "computed"),
+		]);
 
 		for (let key in this.modifiers) {
 
 			if (Feature.MODEXCLUDE.has(key)) continue;
 
-			const value = this.modifierForUI(key, true, dead, false, dynamics);
-			if (value) mods.push(span(capitalize(key), ":\xA0", value));
+			if ((star = this.modifierForUI(key, sign)))
+				mods.push(span(capitalize(key), Feature.UISEP, star));
 		}
 
-		const tiles = this.modifierForUI("tiles", true, dead, false, dynamics);
-		if (tiles) mods.push(span("Tiles:\xA0", tiles));
+		for (let [key, value] of Feature.MOD_RENAME) {
 
-		const maxrng = this.modifierForUI("maxrng", true, dead, false, dynamics);
-		if (maxrng) mods.push(span("Max Range:\xA0", maxrng));
+			if ((star = this.modifierForUI(key, sign)))
+				mods.push(span(value, Feature.UISEP, star));
 
-		const minrng = this.modifierForUI("minrng", true, dead, false, dynamics);
-		if (minrng) mods.push(span("Min Range:\xA0", minrng));
+		}
 
-		const tp = this.modifierForUI("tp", true, dead, false, dynamics);
-		if (tp) mods.push(span("Max TP:\xA0", tp));
-
-		const sp = this.modifierForUI("sp", true, dead, false, dynamics);
-		if (sp) mods.push(span("Max SP:\xA0", sp));
-
-		const tpcost = this.modifierForUI("tpcost", true, dead, false, dynamics);
-		if (tpcost) mods.push(span("TP Cost:\xA0", tpcost));
-
-		const spcost = this.modifierForUI("spcost", true, dead, false, dynamics);
-		if (spcost) mods.push(span("SP Cost:\xA0", spcost));
+		console.assert(this.requires.source);
 
 		return element("span", [
 			delimit(" ", mods),
 			mods.length ? element("br") : "",
-			dead
-				? hitip.dead(this.description)
-				: hitip.link(this.description),
-			this.requires.source ? hitip.toul(this.requires, dead, dynamics) : ""
+			this.marker.toLinks(this.description, dead),
+			Requirements.toDOM(this.marker, this.requires, dead)
 		]);
 	}
 
@@ -537,9 +427,9 @@ class Feature {
 		return [
 			this.title(), "\n",
 			mods.join(" "), mods.length ? "\n" : "",
-			hitip.text(this),
+			this.marker.toText(this),
 			"\nUsage Requirements\n",
-			hitip.totl(this.requires.ast),
+			Requirements.toText(this.requires)
 		].join("");
 	}
 
@@ -569,9 +459,9 @@ class Feature {
 		return [
 			"<b>", this.title(), "</b><br />",
 			mods.join(" "), mods.length ? "<br />" : "",
-			hitip.html(this),
+			this.marker.toHTML(this),
 			"<br /><b>Usage Requirements</b><br />",
-			hitip.tohtml(this.requires.ast),
+			Requirements.toHTML(this.requires)
 		].join("");
 	}
 
@@ -581,22 +471,26 @@ class Feature {
 	 * @returns {number} the modifier for the stat, or 0 if none exists
 	 */
 	modifier(stat, env) {
-		return Expression.evaluate(this.modifiers[stat] || 0, env);
+		return Calculator.evaluate(this.modifiers[stat] || 0, env);
 	}
 
-	modifierForUI(stat, sign=false, dead=false, range=false, resources=null) {
+	modifierForUI(field, template) {
 
-		/* test explicitly for membership */
-		if (!(stat in this.modifiers)) return 0;
+		const dead      = template.dead      ?? false;
+		const sign      = template.sign      ?? false;
+		const range     = template.range     ?? false;
 
-		/* then handle other number cases*/
-		const value    = this.modifier(stat);
-		const modifier = this.modifiers[stat];
+		// if there's no field with this name, return a default value
+		if (!(field in this.modifiers)) return 0;
 
-		/* it it's a number just give a static html */
+		// handle other cases in which we would return a number
+		const value    = this.modifier(field);
+		const modifier = this.modifiers[field];
+
+		// if the modifier is just a number return a static DOM object
 		if (typeof modifier == "number") {
-			
-			/* we don't care to display these */
+
+			// no need to display most zero value
 			if (!range && value == 0) return 0;
 
 			return element("span", {
@@ -608,16 +502,16 @@ class Feature {
 			});
 		}
 
-		const widget   = new ModWidget(modifier, sign, !dead);
+		const widget = new ModWidget(modifier, sign, !dead);
 
-		// TODO ungly hack remove internal sheet ref from this replace with context ref in expr env? (or make context a formal class in Expression)
-		if (resources != null) resources.register(
+		// TODO this is a super ugly hack to get the triggers
+		this.marker.refresher.register(
 			widget,
-			resources.sheet.compiler.dependancies(modifier),
-			[this.getVariableName(stat)],
+			this.marker.refresher.sheet.compiler.dependancies(modifier),
+			[this.getVariableName(field)],
 		);
 
-		/* handle an expression by returning a ModWidget */
+		// handle a calculator expression by returning a ModWidget DOM object
 		return widget.root;
 	}
 
@@ -798,8 +692,8 @@ class Action extends Feature {
 	/**
 	 * Create an Action from a template object
 	 */
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 		this.rank    = template.rank   || "E";
 		this.mttype  = template.mttype || 0;
 		this.price   = template.price  || 0;
@@ -818,7 +712,7 @@ class Action extends Feature {
 	 * @return {string} description for this feature's {@link CategoryElement}
 	 */
 
-	body(dead=false, dynamics=null) {
+	body(dead=false) {
 
 		function span(...args) {
 			return element("span", args);
@@ -833,14 +727,19 @@ class Action extends Feature {
 			]);
 		}
 
-		const tpcost = this.modifierForUI("tpcost", false, dead, false, dynamics);
-		if (tpcost) mods.push([tpcost, element("sub", "TP", "computed")]);
+		let   star  = undefined;
+		const bare  = {sign: false , range: false , dead};
+		const sign  = {sign: true  , range: false , dead};
+		const range = {sign: false , range: true  , dead}; 
 
-		const spcost = this.modifierForUI("spcost", false, dead, false, dynamics);
-		if (spcost) mods.push([spcost, element("sub", "SP", "computed")]);
+		if ((star = this.modifierForUI("tpcost", bare)))
+			mods.push([star, element("sub", "TP", "computed")]);
 
-		const epcost = this.modifierForUI("epcost", false, dead, false, dynamics);
-		if (epcost) mods.push([epcost, element("sub", "EP", "computed")]);
+		if ((star = this.modifierForUI("spcost", bare)))
+			mods.push([star, element("sub", "SP", "computed")]);
+
+		if ((star = this.modifierForUI("epcost", bare)))
+			mods.push([star, element("sub", "EP", "computed")]);
 
 		for (let key in this.modifiers) {
 
@@ -848,52 +747,50 @@ class Action extends Feature {
 				continue;
 			}
 
-			const value = this.modifierForUI(key, true, dead, false, dynamics);
+			const value = this.modifierForUI(key, sign);
 
 			if (value) {
 				mods.push(span(capitalize(key), ":\xA0", value));
 			}
 		}
 
-		const tiles = this.modifierForUI("tiles", false, dead, false, dynamics);
-		if (tiles) mods.push(span("Tiles:\xA0", tiles));
+		if ((star = this.modifierForUI("tiles", bare)))
+			mods.push(span("Tiles:\xA0", star));
 
 		const min = this.modifier("minrng");
 		const max = this.modifier("maxrng");
 
 		if (min != max) {
-			const min = this.modifierForUI("minrng", false, dead, true, dynamics);
-			const max = this.modifierForUI("maxrng", false, dead, true, dynamics);
+			const min = this.modifierForUI("minrng", range);
+			const max = this.modifierForUI("maxrng", range);
 			mods.push(span("Range:\xA0", min, "\xA0-\xA0", max));
 		} else if (min != 0) {
-			mods.push(span("Range:\xA0", this.modifierForUI("maxrng", false, dead, false, dynamics)));
+			mods.push(span("Range:\xA0", this.modifierForUI("maxrng", bare)));
 		}
 
-		const tp = this.modifier("tp");
-
-		if (tp) {
-			const tp = this.modifierForUI("tp", false, dead, false, dynamics);
-			mods.push(span("Max TP:\xA0", tp));
+		if ((star = this.modifier("tp"))) {
+			star = this.modifierForUI("tp", bare);
+			mods.push(span("Max TP:\xA0", star));
 		}
 
-		const sp = this.modifier("sp");
-
-		if (sp) {
-			const sp = this.modifierForUI("sp", false, dead, false, dynamics);
-			mods.push(span("Max SP:\xA0", sp));
+		if ((star = this.modifier("sp"))) {
+			star = this.modifierForUI("sp", bare);
+			mods.push(span("Max SP:\xA0", star));
 		}
 
 		if (this.aoe && this.aoe != "None" && this.aoe != "Variable") {
 			const va = new RangeFinder(this);
-			if (dynamics) dynamics.register(va, ["theme", "unit|total|maxrng", "unit|total|minrng"]);
+			this.marker.refresher.register(va, ["theme", "unit|total|maxrng", "unit|total|minrng"]);
 			mods.push(element("br"), va.root);
 		}
+
+		console.assert(this.requires.source);
 
 		return element("span", [
 			delimit(" ", mods),
 			mods.length ? element("br") : "",
-			hitip[dead ? "dead" : "link"](this.description),
-			this.requires.source ? hitip.toul(this.requires, dead, dynamics) : ""
+			this.marker.toLinks(this.description, dead),
+			Requirements.toDOM(this.marker, this.requires, dead)
 		]);
 	}
 }
@@ -908,8 +805,8 @@ class Art extends Action {
 
 	static DEFAULT = "";
 
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 
 		let value = template.compatible || "False";
 		if (value instanceof Array) value = value.join("\n");
@@ -948,131 +845,6 @@ class Art extends Action {
 		return `${this.name} (${kind}: ${this.type} ${this.rank.join("-")})`;
 	}
 
-	static compatibles(object) {
-
-		const relative = (symbol, func) => {
-			return (op, ...args) => {
-				if (args.length < 2) throw Error(
-					`Expected two or more arguments for '${symbol}' predicate.`
-				);
-
-				let x = Number(args.pop());
-				
-				while (args.length) {
-					const y = Number(args.pop());
-					if (!func(x, y)) return false;
-					x = y;
-				}
-				return true;
-			};
-		};
-
-		return {
-			"All": (op, ...args) => args.reduce((x, y) => x && y),
-			"Any": (op, ...args) => args.reduce((x, y) => x || y),
-			"Not": (op, arg) => !arg,
-			"Skill": (op, ...args) => {
-				for (let arg of args) {
-					if (object.target.type == arg) return true;
-				}
-				return false;
-			},
-			"Name": (op, ...args) => {
-				for (let arg of args) {
-					if (object.target.name == arg) return true;
-				}
-				return false;
-			},
-			"Tag": (op, ...args) => {
-				let has = true;
-				for (let arg of args) {
-					has = has && object.target.tagged(arg);
-				}
-				return has;
-			},
-			"Element": (op, ...args) => {
-				for (let arg of args) {
-					if (object.target.description.includes(arg)) return true;
-				}
-				return false;
-			},
-			"Requires": (op, ...args) => {
-				for (let arg of args) {
-					if (object.target.requires.symbols.has(arg)) return true;
-				}
-				return false;
-			},
-			"Modifier": (op, field) => {
-				return object.target.modifier(field);
-			},
-
-			">": relative(">", (x, y) => x > y),
-			"<": relative("<", (x, y) => x < y),
-			"==": relative("==", (x, y) => x == y),
-			"<>": relative("<>", (x, y) => x != y),
-			">=": relative(">=", (x, y) => x >= y),
-			"<=": relative("<=", (x, y) => x <= y),
-			
-			"Text": (op, ...args) => {
-				for (let arg of args) {
-					if (object.target.description.includes(arg)) return true;
-				}
-				return false;
-			},
-			"AoE": (op, ...args) => {
-				for (let arg of args) {
-					if (object.target.aoe == arg) return true;
-				}
-				return false;
-			},
-			"True": (op, ...args) => true,
-			"False": (op, ...args) => false,
-			"Match": (op, ...args) => {
-
-				// If odd, use the last expression as a default.
-				const odd   = args.length & 1;
-				const other = odd ? Boolean(args.pop()) : false;
-
-				// Process the other arguments as pairs.
-				for (let [cls, val] of args.chunk(2)) {
-					
-					const name = object.target.constructor.name;
-
-					// Special case for arts specifically.
-					if (name == "Art") {
-						// target is an art, but is it tactical?
-						const tactic = object.target.isTactical();
-						if (tactic ? cls == "Tactic" : cls == "Art")
-							return val;
-
-						continue; // Skip the normal case.
-					}
-
-					// Normal case, just check the type.
-					if (name == cls) return val;
-				}
-
-				return other;
-			}
-		};
-	}
-
-	compatible(feature) {
-		if (
-			!(feature instanceof Item)
-				&&
-			!(feature instanceof Gambit)
-				&&
-			!(feature instanceof Art)
-		) {
-			throw new Error(
-				"expected Item, Art, or Gambit as argument"
-			);
-		}
-
-
-	}
-
 	isTactical() {
 		return this.tagged("tactical");
 	}
@@ -1088,7 +860,7 @@ class Art extends Action {
 	*exKeys() {
 		for (let rank of this.rank) {
 			const kind = this.isTactical() ? "tactical" : "combat";
-			yield `${this.type} ${rank} ${kind} art`;
+			yield `${this.type} ${rank}, ${kind} art`;
 		}
 	}
 
@@ -1109,10 +881,10 @@ class Art extends Action {
 			content : [
 				element("strong", "Type"), element("br"),
 
-				new Filter.Toggle("Combat", false, (feature) => {
+				new Filter.Toggle("Arts", false, (feature) => {
 					return !feature.tagged("tactical");
 				}),
-				new Filter.Toggle("Tactical", false, (feature) => {
+				new Filter.Toggle("Tactics", false, (feature) => {
 					return feature.tagged("tactical");
 				}),
 
@@ -1340,6 +1112,10 @@ class Art extends Action {
 				Filter.Group.END,
 
 				element("br"),
+
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -1667,6 +1443,10 @@ class Item extends Action {
 
 				element("br"),
 
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
 				}),
@@ -1707,24 +1487,17 @@ class Class extends Feature {
 	/**
 	 * Create a class from a template object
 	 */
-	constructor(template, compiler, predicator) {
-		super(template, null, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, null, predicator, marker);
 		this.abilities = template.abilities || [];
 		this.arts      = template.arts || [];
 		this.growths   = Object.freeze(template.growths || {});
 		this.tier      = template.tier    || "Starting";
-
 		this.default_base    = template.default_base;
 		this.default_preset  = template.default_preset;
 		this.default_mainarm = template.default_mainarm;
 		this.default_sidearm = template.default_sidearm;
-
-		this.mount = (template.mount
-			? ("name" in template.mount
-				? new Feature(template.mount)
-				: new Feature({name: "new", modifiers: template.mount}))
-			: null
-		);
+		this.mount           = Number(template.mount ?? 0);
 
 		if (new.target === Class) {
 			Object.freeze(this);
@@ -1831,7 +1604,7 @@ class Class extends Feature {
 		return true;
 	}
 
-	modifierForUI(stat, sign=false, dead=false) {
+	modifierForUI(stat, sign=false) {
 
 		/* test explicitly for membership */
 		if (!(stat in this.modifiers)) return 0;
@@ -1840,8 +1613,8 @@ class Class extends Feature {
 		const value = (
 			this.modifier(stat)
 				+
-			(this.hasMount() && stat in this.mount.modifiers
-				? this.mount.modifiers[stat]
+			(stat == "mov" && this.hasMount()
+				? this.mount
 				: 0)
 		);
 
@@ -1857,7 +1630,7 @@ class Class extends Feature {
 		});
 	}
 
-	growthForUI(stat, sign=false, dead=false) {
+	growthForUI(stat, sign=false) {
 
 		/* test explicitly for membership */
 		if (!(stat in this.growths)) return 0;
@@ -1891,24 +1664,30 @@ class Class extends Feature {
 	 * @returns {boolean} true if there is a mount, false otherwise
 	 */
 	hasMount() {
-		return Boolean(this.mount);
+		return this.mount >= 0;
 	}
 
 	/**
 	 * Generate a feature's {@link CategoryElement} description
 	 * @return {string} description for this item's {@link CategoryElement}
 	 */
-	body(dead=false, table=true, center=true, dynamics=null) {
+	body(options={}) {
+
+		if (!(typeof options == "object")) throw new Error();
+
+		const dead   = options.dead   ?? false;
+		const table  = options.table  ?? true;
+		const center = options.center ?? true;
 
 		const rows = (
 			["hp", "spd", "str", "mag", "dex", "lck", "def", "res"]
 				.map(key => 
 					[
 						element("td", key.toUpperCase()),
-						element("td", this.modifierForUI(key, false, dead)),
+						element("td", this.modifierForUI(key, false)),
 						element("td", [
 							element("span", "(", "punctuation"),
-							this.growthForUI(key, false, dead),
+							this.growthForUI(key, false),
 							element("span", ")", "punctuation"),
 						]),
 					]
@@ -1923,22 +1702,22 @@ class Class extends Feature {
 			element("td"),
 			element("td"),
 			element("td", "MOV"),
-			element("td", this.modifierForUI("mov", false, dead)),
+			element("td", this.modifierForUI("mov", false)),
 			element("td"),
 			element("td"),
 		);
+
+		console.assert(this.requires.source);
 
 		return element("span", [
 			element("em",
 				`${this.tier}, ${Array.isArray(this.type) ? this.type.join(", ") : this.type}`
 			), element("br"),
-			dead
-				? hitip.dead(this.description)
-				: hitip.link(this.description),
+			this.marker.toLinks(this.description, dead),
 			table
 				? element("table", element("tbody", rows), center ? "center-table" : undefined)
 				: "",
-			this.requires.source ? hitip.toul(this.requires, dead, dynamics) : ""
+			Requirements.toDOM(this.marker, this.requires, dead)
 		]);
 	}
 
@@ -2046,6 +1825,10 @@ class Class extends Feature {
 
 				element("br"), element("strong", "Other"), element("br"),
 
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
 				}),
@@ -2085,8 +1868,8 @@ class Ability extends Feature {
 		return `abilities|${key}`;
 	}
 
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 		// this.weapon = template.weapon || "";
 
 		if (this.name.includes("Crest")) {
@@ -2344,6 +2127,10 @@ class Ability extends Feature {
 
 				element("br"), element("strong", "Other"), element("br"),
 
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
 				}),
@@ -2384,8 +2171,8 @@ class Equipment extends Feature {
 		return `equipment|${key}`;
 	}
 
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 		this.price = template.price || "";
 
 		if (new.target === Equipment) {
@@ -2453,6 +2240,10 @@ class Equipment extends Feature {
 
 				element("br"),
 
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
 				}),
@@ -2489,8 +2280,8 @@ class Tile extends Action {
 	static kind = "tiles";
 	static DEFAULT = "";
 
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 		this.stats = template.stats || {};
 
 		if (new.target === Tile) {
@@ -2551,6 +2342,10 @@ class Tile extends Action {
 
 				element("br"), element("strong", "Other"), element("br"),
 
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
 				new Filter.Toggle("Parameter", false, (feature) => {
 					return feature.tagged("parameter");
 				}),
@@ -2588,13 +2383,13 @@ class Adjutant extends Feature {
 	static kind    = "adjutants";
 	static DEFAULT = "No Adjutant";
 
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 
 		this.type   = "Adjutant";
 		this.gambit = (
 			template.gambit
-				? new Gambit(template.gambit, compiler, predicator)
+				? new Gambit(template.gambit, compiler, predicator, marker)
 				: Gambit.EMPTY
 		);
 
@@ -2681,8 +2476,8 @@ class Gambit extends Action {
 		return `battalion|modifier|${key}`;
 	}
 
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 
 		if (this.name.includes("Training"))
 			this.affects.add("Training");
@@ -2707,7 +2502,7 @@ class Gambit extends Action {
 		return `${this.name} (${this.modifier("cap")})`;
 	}
 
-	body(dead=false, dynamics=null) {
+	body(dead=false) {
 		
 		let   tags = 0;
 		const info = [];
@@ -2748,10 +2543,10 @@ class Gambit extends Action {
 		if (info.length) return element("div", [
 			delimit(",\xA0", info),
 			tags ? element("br") : "\xA0",
-			super.body(dead, dynamics),
+			super.body(dead),
 		]);
 
-		return super.body(dead, dynamics);
+		return super.body(dead);
 	}
 
 	blurb() {
@@ -2799,9 +2594,9 @@ class Gambit extends Action {
 			this.title(), "\n",
 			info.join(",\xA0"), "\n",
 			mods.join(" "), mods.length ? "\n" : "",
-			hitip.text(this),
+			this.marker.toText(this),
 			"\nUsage Requirements\n",
-			hitip.totl(this.requires.ast),
+			Requirements.toText(this.requires),
 		].join("");
 	}
 
@@ -2850,9 +2645,9 @@ class Gambit extends Action {
 			"<b>", this.title(), "</b><br />",
 			info.join(",&nbsp;"), "<br />",
 			mods.join(" "), mods.length ? "<br />" : "",
-			hitip.html(this),
+			this.marker.toHTML(this),
 			"<br /><b>Usage Requirements</b><br />",
-			hitip.tohtml(this.requires.ast),
+			Requirements.toHTML(this.requires)
 		].join("");
 	}
 
@@ -3024,6 +2819,10 @@ class Gambit extends Action {
 
 				element("br"), element("strong", "Other"), element("br"),
 
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
 				}),
@@ -3057,8 +2856,8 @@ class Battalion extends Feature {
 	static kind    = "battalions";
 	static DEFAULT = "Alone";
 
-	constructor(template) {
-		super(template);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 
 		this.price   = template.price  || 0;
 		this.rank    = template.rank   || "E";
@@ -3104,8 +2903,8 @@ class Attribute extends Action {
 		return `item|attributes|${key}`;
 	}
 
-	constructor(template, compiler, predicator) {
-		super(template, compiler, predicator);
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
 
 		this.price  = template.price || 0;
 		this.rank   = template.rank  || 0;
@@ -3226,15 +3025,21 @@ class Attribute extends Action {
 				new Filter.Toggle("Cost", false, (feature) => {
 					return feature.tagged("cost");
 				}),
-
-				element("br"),
-
 				new Filter.Toggle("Penalty", false, (feature) => {
 					return feature.tagged("penalty");
 				}),
 
+				element("br"),
+
+				
+				new Filter.Toggle("Structure", false, (feature) => {
+					return feature.tagged("structure");
+				}),
 				new Filter.Toggle("Conjure", false, (feature) => {
 					return feature.tagged("conjure");
+				}),
+				new Filter.Toggle("Treatment", false, (feature) => {
+					return feature.tagged("treatment");
 				}),
 
 				element("br"), element("strong", "Other"), element("br"),
@@ -3244,6 +3049,10 @@ class Attribute extends Action {
 				}),
 
 				element("br"),
+
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -3311,15 +3120,6 @@ class Condition extends Feature {
 				new Filter.Toggle("Penalty", false, (feature) => {
 					return feature.tagged("penalty");
 				}),
-				// new Filter.Toggle("Pure", false, (feature) => {
-				// 	const bonus   = feature.tagged("bonus");
-				// 	const penalty = feature.tagged("penalty");
-				// 	return (
-				// 		(bonus && !penalty)
-				// 			||	
-				// 		(!bonus && penalty)
-				// 	);
-				// }),
 
 				Filter.Group.END,
 
@@ -3375,6 +3175,10 @@ class Condition extends Feature {
 
 				element("br"), element("strong", "Other"), element("br"),
 
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
 				}),
@@ -3409,929 +3213,19 @@ Feature.SUBCLASSES = [
 	Tile, Battalion, Adjutant, Preset, Gambit
 ];
 
-const hitip = (function() {
-
-const HLREGEX = /(@){([^:]*):([^:]*):([^}]*)}/;
-
-const LINK_DELIMITER = "||";
-
-function parser(action, combine) {
-	return function(string, data) {
-		const tok   = string.split(HLREGEX).filter(x => x != null);
-		const merge = [];
-
-		for (let i = 0; i < tok.length; ++i) {
-			if (tok[i] == "@") {
-				try {
-					const html = action(tok[++i], tok[++i], tok[++i], data);
-					if (html) merge.push(html);
-					continue;
-				} catch (error) {
-					console.error(string);
-					throw error;
-				}
-			}
-			merge.push(tok[i]);
-		}
-
-		return combine(merge);
-	};
-}
-
-function deadfn(table, link, text) {
-
-	/* special behavior for literal tooltips */
-	if (table == "tooltip") {
-		return element("span", link, "computed");
-	}
-
-	return element("span", text, "computed");
-}
-
-const dead = parser(deadfn, (merge) => element("span", merge));
-
-const LOOKUP = new Map([
-	[ "item"      , Item    ],
-	[ "condition" , Condition ],
-	[ "ability"   , Ability   ],
-	[ "art"       , Art ],
-	[ "attribute" , Attribute ],
-	[ "tile"      , Tile      ],
-	[ "equipment" , Equipment ],
-	[ "class"     , Class     ],
-	[ "gambit"    , Gambit    ],
-	[ "adjutant"  , Adjutant  ],
-
-	["", {
-		get: function() {
-			return this;
-		},
-
-		body: function() {
-			return "This feature.";
-		},
-
-		select: function(trigger) {
-
-			trigger = trigger || (() => {});
-
-			return new Filter.Select({
-				value   : this.DEFAULT,
-				trigger : trigger,
-				model   : this,
-				options : [],
-				content : [],
-			});
-		}
-	}],
-
-	["const", {
-
-		features: (function() {
-
-			const map = new Map();
-
-			for (let key in definitions.tooltips) {
-				map.set(key, {
-
-					name: definitions.tooltips[key].name,
-
-					text: definitions.tooltips[key].description.join(""),
-
-					body: function() {
-						return dead(this.text);
-					}
-				});
-			}
-
-			return map;
-		})(),
-
-		get: function(link) {
-
-			if (!this.features.has(link)) {
-				throw new ReferenceError(
-					`tooltip constant text for ${link} is not defined`
-				);
-			}
-
-			return this.features.get(link);
-		},
-
-		DEFAULT: "gbp",
-
-		name: "Premade Tooltip",
-
-		select: function(trigger) {
-
-			trigger = trigger || (() => {});
-
-			return new Filter.Select({
-				value   : this.DEFAULT,
-				trigger : trigger,
-				model   : this,
-				options : Object.keys(definitions.tooltips).map(cls => 
-					element("option", {
-						attrs   : {value: cls},
-						content : cls,
-					})
-				),
-				content : [],
-			});
-		}
-	}],
-
-	["tooltip", {
-
-		text: "",
-
-		get: function() {
-			return this;
-		},
-
-		body: function() {
-			return "If you see this, an error has occured!";
-		},
-
-		name: "Custom Tooltip",
-
-		select: function(trigger) {
-			trigger = trigger || (() => {});
-
-			const text = element("input", {
-				class : ["simple-border"],
-				attrs : {
-					"placeholder" : "text",
-					"type"        : "text",
-				}
-			});
-
-			/* this mimics a Filter.Select object */
-			return {
-				_select : text,
-				root    : element("span", [
-					tooltip(text, []),
-				]),
-			};
-		}
-	}],
-
-	["style", {
-
-		text: "",
-
-		get: function() {
-			return this;
-		},
-
-		body: function() {
-			return "If you see this, an error has occured!";
-		},
-
-		name: "Text Style",
-
-		select: function(trigger) {
-
-			trigger = trigger || (() => {});
-
-			const styles = ["bold", "italic", "underline"];
-
-			return new Filter.Select({
-				value   : this.DEFAULT,
-				trigger : trigger,
-				model   : this,
-				options : styles.map(cls => 
-					element("option", {
-						attrs   : {value: cls},
-						content : cls,
-					})
-				),
-				content : [],
-			});
-		}
-
-	}]
-
-]);
-
-function linkfn(table, link, text, dynamics) {
-
-	/* special behavior for literal tooltips */
-	if (table == "tooltip") {
-		return tooltip(element("span", link, "datum"), text);
-	}
-
-	/* special behavior for styles */
-	if (table == "style") {
-
-		const classes = link.split(LINK_DELIMITER);
-
-		if (classes.length == 0) {
-			console.error("style link is broken");
-			return element("div", [
-				element("strong", "Broken style.", "computed"),
-				element("br"),
-			]);
-		}
-
-		return element("span", {
-			class   : link.split(LINK_DELIMITER),
-			content : text || " ",
-		});
-	}
-
-	/* otherwise do a lookup */
-	const feature  = LOOKUP.get(table);
-
-	if (feature === undefined) {
-		throw new ReferenceError(
-			`feature namespace '${table}' is not defined`
-		);
-	}
-
-	const con  = [];
-	const keys = link ? link.split(LINK_DELIMITER) : [text];
-
-	let broken = false;
-
-	for (let key of keys) {
-
-		const instance = feature.get(key);
-
-		if (Object.is(instance, feature.EMPTY)) {
-			console.error(`feature link '${link || text}' broken`);
-			con.push(element("div", [
-				element("strong", `Broken feature link: ${key}`, "computed"),
-				element("br"),
-			]));
-			broken = true;
-			continue;
-		}
-
-		if (instance instanceof Feature && instance.tagged("depricated")) {
-			console.error(`feature '${link || text}' is depricated`);
-			con.push(element("div", [
-				element("strong", `Depricated feature link: ${key}`, "computed"),
-				element("br"),
-			]));
-			broken = true;
-			continue;
-		}
-
-		con.push(
-			element("div", [
-				element("strong", instance.name), element("br"),
-				instance.body(true, dynamics)
-			])
-		);
-	}
-
-	const base = element("span", text, broken ? "computed" : "datum");
-	return tooltip(base, delimit(() => element("hr"), con));
-}
-
-const link = parser(linkfn, (merge) => element("span", merge));
-
-function textfn(table, link, text, userdata) {
-
-	/* special behavior for literal tooltips */
-	if (table == "tooltip") {
-		return link;
-	}
-
-	/* omit the generic mechanics explainations */
-	if (table == "const") {
-		return text;
-	}
-
-	/* special behavior for style tooltips */
-	if (table == "style") {
-		switch (link) {
-		case "italic":
-			return `*${text}*`;
-		case "bold":
-			return `**${text}**`;
-		case "underline":
-			return `<u>${text}</u>`;
-		default: // unsupported, so just let it through as is
-			return text;
-		}
-	}
-
-	/* here we do the lookup */
-	const feature  = LOOKUP.get(table);
-
-	if (feature === undefined) {
-		throw new ReferenceError(
-			`feature namespace '${table}' is not defined`
-		);
-	}
-
-	const con  = [];
-	const keys = link ? link.split(LINK_DELIMITER) : [text];
-
-	for (let key of keys.reverse()) {
-
-		/* prevent unbounded recursion */
-		if (userdata.set.has(key)) {
-			con.push(text);
-			continue;
-		}
-
-		const instance = feature.get(key);
-
-		if (Object.is(instance, feature.EMPTY)) {
-			console.error(`feature link '${key}' broken`);
-			return text;
-		}
-
-		if (instance instanceof Feature && instance.tagged("depricated")) {
-			console.error(`feature '${key}' is depricated`);
-			return text;
-		}
-
-		userdata.set.add(key);
-		const body = textp(instance.description, userdata);
-		userdata.stack.push(`(${instance.name}) ${body}`);
-		// userdata.set.delete(key);
-	}
-
-	return text;
-}
-
-const textp = parser(textfn, (merge) => merge.join(""));
-
-function textwrapper(feature, set, join=true, named=false) {
-
-	const [name, description] = (function() {
-		if (feature instanceof Feature) {
-			return [feature.name, feature.description];
-		}
-
-		if (feature instanceof Array && feature.length >= 2) {
-			return feature;
-		}
-
-		throw new TypeError(
-			`expected Feature or Array (length >= 2) but got '${feature}'`
-		);
-	})();
-
-	const userdata = {
-		"set"   : set || new Set([name]),
-		"stack" : [],
-	};
-
-	const body = textp(description, userdata);
-	userdata.stack.push(named ? `(${name}) ${body}` : body);
-
-	const entries = userdata.stack.reverse();
-	return join ? entries.join("\n") : entries;
-}
-
-function htmlfn(table, link, text, userdata) {
-
-	/* special behavior for literal tooltips */
-	if (table == "tooltip") {
-		return link;
-	}
-
-	/* omit the generic mechanics explainations */
-	if (table == "const") {
-		return text;
-	}
-
-	/* special behavior for style tooltips */
-	if (table == "style") {
-		switch (link) {
-		case "italic":
-			return `<i>${text}</i>`;
-		case "bold":
-			return `<b>${text}</b>`;
-		case "underline":
-			return `<u>${text}</u>`;
-		default: // unsupported, so just let it through as is
-			return text;
-		}
-	}
-
-	/* here we do the lookup */
-	const feature  = LOOKUP.get(table);
-
-	if (feature === undefined) {
-		throw new ReferenceError(
-			`feature namespace '${table}' is not defined`
-		);
-	}
-
-	const con  = [];
-	const keys = link ? link.split(LINK_DELIMITER) : [text];
-
-	for (let key of keys.reverse()) {
-
-		/* prevent unbounded recursion */
-		if (userdata.set.has(key)) {
-			con.push(text);
-			continue;
-		}
-
-		const instance = feature.get(key);
-
-		if (Object.is(instance, feature.EMPTY)) {
-			console.error(`feature link '${key}' broken`);
-			return text;
-		}
-
-		if (instance instanceof Feature && instance.tagged("depricated")) {
-			console.error(`feature '${key}' is depricated`);
-			return text;
-		}
-
-		userdata.set.add(key);
-		const body = textp(instance.description, userdata);
-		userdata.stack.push(`<i>(${instance.name})</i> ${body}`);
-		// userdata.set.delete(key);
-	}
-
-	return text;
-}
-
-const htmlp = parser(htmlfn, (merge) => merge.join(""));
-
-function htmlwrapper(feature, set, join=true, named=false) {
-
-	const [name, description] = (function() {
-		if (feature instanceof Feature) {
-			return [feature.name, feature.description];
-		}
-
-		if (feature instanceof Array && feature.length >= 2) {
-			return feature;
-		}
-
-		throw new TypeError(
-			`expected Feature or Array (length >= 2) but got '${feature}'`
-		);
-	})();
-
-	const userdata = {
-		"set"   : set || new Set([name]),
-		"stack" : [],
-	};
-
-	const body = textp(description, userdata);
-	userdata.stack.push(named ? `<i>(${name})</i>${body}` : body);
-
-	const entries = userdata.stack.reverse();
-	return join ? entries.join("<br />") : entries;
-}
-
-const LISTPRED = new Set(["All", "Any"]);
-
-function andblurb() {
-	return link(LOOKUP.get("const").get("all").text);
-}
-
-function tohtml(node, top=true) {
-
-	const fn   = node[0];
-	const args = node.slice(1);
-
-	if (top) {
-		const list = LISTPRED.has(fn);
-		return wrap(
-			`<stong>Requires ${fn}</b><ul>`,
-			list
-				? args.map(e => `<li>${tohtml(e, false)}</li>`).join("")
-				: `<li>${tohtml(node, false)}</li>`,
-			"</ul>"
-		);
-	}
-
-	switch (fn) {
-
-	case "All":
-		return args.map(e => tohtml(e, false)).join(" and ");
-
-	case "Any":
-		return args.map(e => tohtml(e, false)).join(" or ");
-
-	case "Required":
-		return `${tohtml(args[0], false)} (required)`;
-
-	case "Permission":
-		return fn;
-
-	case "Crest":
-		return `Crest of ${args[0]}`;
-
-	case "ClassType":
-		return `${args[0]} Class`;
-
-	case "Class":
-		return `Class is ${args[0]}`;
-
-	case "Item":
-	case "Equipment":
-		return `${args[0]} equipped`;
-
-	default:
-		return node.join(" ");
-	}
-}
-
-function totl(node, top=true) {
-
-	const fn   = node[0];
-	const args = node.slice(1);
-
-	if (top) {
-		const list = LISTPRED.has(fn);
-		return wrap(
-			`Requires ${fn}\n`,
-			list
-				? args.map(e => `  * ${totl(e, false)}`).join("\n")
-				: `  * ${totl(node, false)}`
-		);
-	}
-
-	switch (fn) {
-
-	case "All":
-		return args.map(e => totl(e, false)).join(" and ");
-
-	case "Any":
-		return args.map(e => totl(e, false)).join(" or ");
-
-	case "Required":
-		return `${totl(args[0], false)} (required)`;
-
-	case "Permission":
-		return fn;
-
-	case "Crest":
-		return `Crest of ${args[0]}`;
-
-	case "ClassType":
-		return `${args[0]} Class`;
-
-	case "Class":
-		return `Class is ${args[0]}`;
-
-	case "Item":
-	case "Equipment":
-		return `${args[0]} equipped`;
-
-	default:
-		return node.join(" ");
-	}
-}
-
-function toul(node, dead=false, dynamics=null, top=true) {
-
-	if (top) {
-
-		const ast  = node.ast;
-
-		const reqs = new ReqWidget(node, "", andblurb(), dead);
-		if (dynamics) dynamics.register(reqs, Array.from(node.depends));
-
-		const title = element("span", [
-			element("strong", `Requires ${ast[0]} `),
-			element("span", [
-				element("strong", "("),
-				reqs.root,
-				element("strong", ")"),
-			])
-		]);
-
-		const body  = element("ul", {
-			class    : ["compact-list"],
-			content : LISTPRED.has(ast[0])
-				? ast.slice(1).map(e => element("li", toul(e, dead, dynamics, false)))
-				: element("li", toul(ast, dead, dynamics, false)),
-		});
-
-		return element("div", [title, body]);
-	}
-
-	const fn   = node[0];
-	const args = node.slice(1);
-
-	switch (fn) {
-
-	case "All":
-		return delimit(" and ",
-			args.map(e => toul(e, dead, dynamics, false))
-		);
-
-	case "Any":
-		return delimit(" or ",
-			args.map(e => toul(e, dead, dynamics, false))
-		);
-
-	case "Required":
-		return element("span",
-			[toul(args[0], dead, dynamics, false), " (required)"]
-		);
-
-	case "Permission":
-		return element("strong", fn);
-
-	case "Gambit":
-		return element("span",
-			[(dead ? deadfn : linkfn)("gambit", args[0], args[0]), element("strong", " equipped")]
-		);
-
-	case "Training": {
-		const name = `${args[0]} Training`;
-		return element("span",
-			[(dead ? deadfn : linkfn)("gambit", name, args[0])]
-		);
-	}
-
-	case "Outfitting": {
-		const name = `${args[0]} Outfitting`;
-		return element("span",
-			[(dead ? deadfn : linkfn)("gambit", name, args[0])]
-		);
-	}
+// only execute this in node; not browser
+if (typeof module !== "undefined") {
 	
-	case "Crest": {
-		const name  = `Crest of ${args[0]}`;
-		const major = `Major ${name}`;
-		const minor = `Minor ${name}`;
-		const func  = (dead ? deadfn : linkfn);
-		return element("span", 
-			element("strong", func("ability", `${major}||${minor}`, name))
-		);
-	}
+	/* global module */
 
-	case "ClassType":
-		return element("strong", [args[0], " Class"]);
-
-	case "Class":
-		return args.length >= 1 
-			? element("strong", ["Class is ", args[0]])
-			: element("strong", "Class");
-
-	case "Item":
-		return element("span",
-			[(dead ? deadfn : linkfn)("item", args[0], args[0]), element("strong", " equipped")]
-		);
-
-	case "Equipment":
-		return element("span",
-			[(dead ? deadfn : linkfn)("equipment", args[0], args[0]), element("strong", " equipped")]
-		);
-
-	default:
-		return element("strong", delimit(" ", node));
-	}
-}
-
-class TagAdder {
-
-	static TIPS = {
-
-		combo: element("div", [
-			element("br"),
-			element("span", wrap(
-				"Tip: you can combine multiple tooltips from the same ",
-				"namespace into one by typing || between the names ",
-				"in the center field."
-			)),
-			element("br"), element("br"),
-			element("span", wrap(
-				"@{art:Shelter R||Shelter F:Shelter}"
-			)),
-		]),
-
-		custom: element("div", [
-			element("br"),
-			element("span", wrap(
-				"Tip: the \"tooltip\" namespace lets you make custom tooltips. ",
-				"Unlike other namespaces, the display text goes in the center ",
-				"field and the tooltip text in the rightmost.",
-			)),
-			element("br"), element("br"),
-			element("span", wrap(
-				"@{tooltip:display text:tooltip text}"
-			))
-		]),
-
-		const: element("div", [
-			element("br"),
-			element("span", wrap(
-				"Tip: the \"const\" namespace contains commonly used ",
-				"prewritten tooltips."
-			)),
-			element("br"), element("br"),
-			element("span", wrap(
-				"gbp: shown for status conditions that apply a generic ",
-				"statistic bonus or penalty, i.e. [Stat +X] or [Stat -X]."
-			)),
-			element("br"), element("br"),
-			element("span", wrap(
-				"variant: explanation for how reason metamagic ",
-				"variants work (special effect with specific spells)"
-			)),
-			element("br"), element("br"),
-			element("span", wrap(
-				"ap: attack plurality table"
-			)),
-		]),
-
-		style: element("div", [
-			element("br"),
-			element("span", wrap(
-				"Tip: you can apply multiple styles at once by typing || ",
-				"between the names in the center field.",
-			)),
-			element("br"), element("br"),
-			element("span", wrap(
-				"@{style:bold||italic:extra emphasis}"
-			)),
-		]),
+	module.exports = {
+		Ability, Adjutant, Art, Attribute, Battalion, Class, Condition,
+		Equipment, Feature, Gambit, Item, Preset, Tile 
 	};
-
-	constructor(target, callback) {
-
-		this.target   = target;
-		this.callback = callback; 
-
-		class Thorax {
-			constructor(feature) {
-				// debugger
-				this.textnode = document.createTextNode(feature.name);
-				this.select   = feature.select(() => {
-					this.textnode.data = ellipse(this.select._select.value, 10);
-				});
-
-				this.root = this.select.root;
-
-				const div      = this.select.root.firstChild;
-				const dropdown = div.firstChild;
-				dropdown.remove();
-
-				div.firstChild.prepend(element("br"));
-				div.firstChild.prepend(dropdown);
-				div.firstChild.prepend(element("br"));
-				div.firstChild.prepend(element("strong", feature.name));
-				div.prepend(element("span", this.textnode, "datum"));				
-			}
-
-			get value() {
-				return this.select._select.value;
-			}
-		}
-
-		this._tags = element("select", {
-			class   : ["simple-border", "selectable"],
-			content : (
-				Array.from(LOOKUP.keys())
-					.filter(n => n != "")
-					.map(n =>
-						element("option", {attrs: {value: n}, content: n}))
-			),
-			attrs   : {
-				onchange: (() => {
-					const data        = this._tags.value;
-					this._tag_tn.data = data ? data : "\xA0\xA0\xA0";
-					this._span.firstChild.remove();
-					this._span.appendChild(this._map.get(data).root);
-					this._tips.firstChild.remove();
-					this._tips.appendChild(TagAdder.TIPS[
-						data == "tooltip"
-							? "custom"
-							: data == "style"
-								? "style"
-								: data == "const"
-									? "const"
-									: "combo"
-					]);
-				})
-			}
-		});
-
-		const exclude = new Set([""]);
-
-		this._map = new Map(
-			Array.from(LOOKUP.entries())
-				.filter(e => !exclude.has(e[0]))
-				.map(e => { e[1] = new Thorax(e[1]); return e; })
-		);
-
-		this._span = element("span", this._map.get("item").root);
-
-		this._tool = element("input", {
-			class : ["simple-border", "selectable", "adder-field"],
-			attrs : {
-				type: "text",
-			}
-		});
-
-		this._text = element("textarea", {
-			class : ["simple-border", "selectable", "adder-field"],
-			attrs : {
-				placeholder : "Enter custom display text here...",
-				onchange    : (() => {
-					this._txt_tn.data = ellipse(this._text.value, 6);
-				}),
-			}
-		});
-
-		this._tips = element("div", TagAdder.TIPS["combo"]);
-
-		this._tag_tn = document.createTextNode("namespace");
-		this._txt_tn = document.createTextNode("...");
-
-		this.root = element("span", [
-			tooltip(
-				element("input", {
-					class  : ["simple-border"],
-					attrs  : {
-						value   : "Add",
-						type    : "button",
-						onclick : (() => {
-							this.insert(this.text());
-							this.callback.call();
-						})
-					},
-				}),
-				wrap(
-					"Add your own tooltips to your custom item description; ",
-					"mouse over the highlighted text to the right to select ",
-					"a feature to add."
-				)
-			),
-			element("span", [
-				"@{",
-				tooltip(element("span", this._tag_tn, "datum"), [
-					uniqueLabel("Choose a namespace:", this._tags), element("br"),
-					this._tags, this._tips
-				]),
-				":",
-				this._span,
-				":",
-				tooltip(element("span", this._txt_tn, "datum"), [
-					uniqueLabel("Enter display text:", this._text), element("br"),
-					this._text,
-					element("br"),
-					element("span", wrap(
-						"Tip: if left empty, display text will be the name of ",
-						"the feature selected in the center field.",
-					))
-				]),
-				"}"
-			])
-		]);
-	}
-
-	text() {
-		const namespace = this._tags.value;
-		const link      = this._map.get(namespace).value;
-		const text      = this._text.value || link;
-		return `@{${namespace}:${link}:${text}}`;
-	}
-
-	insert(text) {
-		const start  = this.target.selectionStart;
-		const end    = this.target.selectionEnd;
-		const old    = this.target.value;
-		this.target.value = (
-			`${old.substring(0, start)}${text}${old.substring(end)}`
-		);
-
-		this.target.setSelectionRange(start + text.length, end + text.length);
-		this.target.focus();
-	}
-
 }
 
-return {
-	link: link,
-	dead: dead,
-	toul: toul,
-	totl: totl,
-	tohtml: tohtml,
-	text: textwrapper,
-	html: htmlwrapper,
-	Adder: TagAdder,
-};
+/* exported
+	Ability, Adjutant, Art, Attribute, Battalion, Class, Condition, Equipment,
+	Feature, Gambit, Item, Preset, Tile
+*/
 
-})();
-
-/* exported Ability */
-/* exported Class */
-/* exported CombartArt */
-/* exported Item */ 
-/* exported Equipment */
-/* exported Attribute */
-/* exported Condition */
-/* exported Tile */
-/* exported Battalion */
-/* exported Gambit */
-/* exported Adjutant */
-/* exported Preset */
-/* exported hitip */

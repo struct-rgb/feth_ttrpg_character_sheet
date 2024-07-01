@@ -1,0 +1,30 @@
+{
+  "name": "Raise Shield",
+  "description": "As an action, choose North, South, East, or West: for one turn, all damage this unit takes from sources in the chosen direction is halved and this unit cannot counter attack foes in the chosen direction.",
+  "requires": "Other C",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0 
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats"
+  ],
+  "hidden": false,
+  "type": ["Other"],
+  "rank": "C"
+}

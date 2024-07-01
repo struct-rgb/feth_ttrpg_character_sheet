@@ -1,6 +1,6 @@
 {
     "name": "Frost Patch",
-    "description": "Counts as difficult terrain for non-Flying units and grants occupying non-Flying units Crit Avo -10 in combat. Frost Patches are seen as @{tile:Ice Block:Ice Blocks} for the purposes of Reason combat arts that count or check for the presence of @{tile:Ice Block:Ice Blocks}.",
+    "description": "Counts as difficult terrain for non-Flying units and grants occupying non-Flying units Crit Avo -10 in combat. Frost Patches are seen as @{tile}{Ice Block}{Ice Blocks} for the purposes of Reason combat arts that count or check for the presence of @{tile}{Ice Block}{Ice Blocks}.",
     "requires": "None",
     "stats": {
         "hp": 1,

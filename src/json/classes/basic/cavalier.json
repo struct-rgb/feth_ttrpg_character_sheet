@@ -1,0 +1,39 @@
+{
+    "name": "Cavalier",
+    "description": "An adaptable Cavalry class with balanced stats and a focus on offense.",
+    "type": ["Cavalry"],
+    "tier": "Starting",
+    "requires": "Riding D",
+    "abilities": [["Axe Prowess", "Sword Prowess", "Lance Prowess", "Bow Prowess"], "Hit +5", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 10,
+        "dex": 10,
+        "spd": 5,
+        "def": 15,
+        "res": 10,
+        "lck": 10
+      },
+    "modifiers": {
+        "hp": 4,
+        "str": 3,
+        "mag": 2,
+        "dex": 5,
+        "spd": 2,
+        "def": 3,
+        "res": 2,
+        "lck": 3,
+        "mov": 4
+    },
+    "mount": 3,
+
+    "default_base": "Cavalier",
+    "default_preset": "Power/Balance/Dexterity",
+    "default_mainarm": ["Swords", "Lances"],
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

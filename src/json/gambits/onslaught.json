@@ -1,9 +1,9 @@
 {
     "name": "Onslaught",
-    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn then, after combat, push foe in target space one space  away from this unit.",
+    "description": "On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn then, after combat, push foe in target space one space  away from this unit.",
     "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "Box 1x2",
     "modifiers": {

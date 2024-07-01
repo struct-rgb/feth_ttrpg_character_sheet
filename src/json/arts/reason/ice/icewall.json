@@ -1,0 +1,36 @@
+{
+  "name": "Ice Wall",
+  "description": "Starting from target empty tile, create one or more @{tile}{Ice Block}{Ice Blocks} (at most 1 per 5 Mag) in connecting empty tiles. Costs 1 SP + 1 SP per tile created.",
+  "requires": "Reason D",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tiles": "fill wall([Mag], unit|total|mag, 5)",
+    "spcost": "1 + ask [Tiles created?] end",
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "wall",
+    "ice"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
+}

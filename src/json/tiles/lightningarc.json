@@ -1,6 +1,6 @@
 {
     "name": "Lightning Arc",
-    "description": "While this tile is occupied by a unit, it cannot be travsersed by other units. Once per unit per turn, when a unit enters a tile of this type, it takes 20% nonlethal damage and has @{condition:Halt:[Halt]} applied to it for one turn.",
+    "description": "While this tile is occupied by a unit, it cannot be travsersed by other units. Once per unit per turn, when a unit enters a tile of this type, it takes 20% nonlethal damage and has @{condition}{Halt}{[Halt]} applied to it for one turn.",
     "requires": "None",
     "stats": {
         "hp": 0,

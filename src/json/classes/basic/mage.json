@@ -1,0 +1,39 @@
+{
+  "name": "Mage",
+  "description": "A clever Infantry class that has high crit while separated from allies and recurs TP when using Reason but has low movement and defense.",
+  "type": ["Infantry"],
+  "tier": "Starting",
+  "requires": "Reason D",
+  "abilities": ["Reason Prowess", "Reason Consumption 1", "Focus"],
+    "arts": [],
+  "growths": {
+    "hp": 10,
+    "str": 10,
+    "mag": 20,
+    "dex": 15,
+    "spd": 10,
+    "def": 0,
+    "res": 20,
+    "lck": 15
+  },
+  "modifiers": {
+    "hp": 0,
+    "str": 1,
+    "mag": 4,
+    "dex": 5,
+    "spd": 2,
+    "def": 0,
+    "res": 4,
+    "lck": 8,
+    "mov": 4
+  },
+  "mount": 0,
+
+  "default_base": "Mage",
+  "default_preset": "Balance/Balance/Dexterity",
+  "default_mainarm": ["Fire", "Ice", "Wind", "Lightning", "Force"],
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

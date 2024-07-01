@@ -1,0 +1,28 @@
+{
+  "name": "Meteor",
+  "type": "Reason",
+  "description": "A fire spell; @{const}{ap}{AP = 1}. On hit, deal half damage dealt to target foe to foes within one space of target foe.",
+  "requires": "Reason A",
+  "rank": "A",
+  "aoe": "Ring 1-1",
+  "price": 3820,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 10,
+    "prot": 0,
+    "resl": 0,
+    "hit": 80,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 3,
+    "maxrng": 10,
+    "tpcost": 13,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": ["aoe", "fire"],
+  "hidden": false
+}

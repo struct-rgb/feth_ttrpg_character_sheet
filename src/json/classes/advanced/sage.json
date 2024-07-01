@@ -1,0 +1,39 @@
+{
+  "name": "Sage",
+  "description": "An advanced class that uses Reason.",
+  "type": ["Infantry"],
+  "tier": "Advanced",
+  "requires": "All (Reason B) (Required (Level 15))",
+  "abilities": [["Elemental Harmony", "Elemental Discord"], "Wall Mastery", "Consumption 1", "Terrain Resistance", "Glide"],
+    "arts": ["Conduit"],
+  "growths": {
+    "hp": 15,
+    "str": 25,
+    "mag": 30,
+    "dex": 20,
+    "spd": 5,
+    "def": 10,
+    "res": 25,
+    "lck": 10
+  },
+  "modifiers": {
+    "hp": 3,
+    "str": 1,
+    "mag": 6,
+    "dex": 8,
+    "spd": 1,
+    "def": 2,
+    "res": 5,
+    "lck": 5,
+    "mov": 4
+  },
+  "mount": 0,
+
+  "default_base": "Mage",
+  "default_preset": "Balance/Balance/Dexterity",
+  "default_mainarm": ["Fire", "Ice", "Wind", "Lightning", "Force"],
+  "default_sidearm": "Faith",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

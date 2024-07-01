@@ -1,0 +1,39 @@
+{
+    "name": "Juggernaut",
+    "description": "An knight versed in embattlement with expertise in armored combat. Choose one Advantage skill on reclass.",
+    "type": ["Armor"],
+    "tier": "Advanced",
+    "requires": "All (Any (Axes C+) (Lances C+)) (Required (Armor C+)) (Required (Level 15))",
+    "abilities": [["Axe Advantage", "Lance Advantage", "Sword Advantage"], "Weight -5", "Pavise", "Stamina +10"],
+    "arts": ["Colossus", "Sombre Strike"],
+    "growths": {
+        "hp": 30,
+        "str": 25,
+        "mag": 20,
+        "dex": 10,
+        "spd": 0,
+        "def": 30,
+        "res": 15,
+        "lck": 5
+      },
+    "modifiers": {
+        "hp": 11,
+        "str": 6,
+        "mag": 2,
+        "dex": 0,
+        "spd": 1,
+        "def": 6,
+        "res": 3,
+        "lck": 0,
+        "mov": 4
+    },
+    "mount": 0,
+
+    "default_base": "Armored Knight",
+    "default_preset": "Power/Balance/Balance",
+    "default_mainarm": ["Axes", "Lances", "Swords"],
+    "default_sidearm": "Armor",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

@@ -3,7 +3,7 @@
     "description": "The abscence of a battalion.",
     "rank": "E",
     "gambits": [],
-    "requires": "",
+    "requires": "None",
     "price": 0,
 
     "growths": {

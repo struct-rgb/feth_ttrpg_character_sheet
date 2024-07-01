@@ -1,0 +1,25 @@
+{
+  "name": "Colossus",
+  "description": "Apply @{condition}{Colossus} to this unit or end @{condition}{Colossus} on this unit.",
+  "requires": "Class Juggernaut",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "",
+  "tags": ["tactical", "no might", "no hit", "no crit", "no stats"],
+  "hidden": true,
+  "rank": "",
+  "type": ["Swords", "Lances", "Axes"]
+}

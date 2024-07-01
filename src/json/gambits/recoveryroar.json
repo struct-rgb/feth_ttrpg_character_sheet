@@ -3,7 +3,7 @@
     "description": "End status effects of your choice on all allies in AoE.",
     "requires": "All (Authority C+) (Training Faith)",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "C+",
     "aoe": "Ring 0-2",
     "modifiers": {

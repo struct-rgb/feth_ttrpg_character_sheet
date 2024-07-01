@@ -1,0 +1,33 @@
+{
+  "name": "Soar",
+  "description": "Can only be equipped by Flying units and can only be used while mounted. Apply @{condition}{Pass}{[Pass]} to this unit for one turn or until this unit dismounts.",
+  "requires": "Flying C",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "movement",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "movement",
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Flying",
+  "rank": "C"
+}

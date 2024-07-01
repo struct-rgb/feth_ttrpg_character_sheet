@@ -1,44 +1,41 @@
 {
-    "name": "Class Template",
-    "description": "This is a template class; it can't be used",
-    "type": "Martial Armor Flying Riding Other",
-    "tier": "Starting Advanced",
-    "requires": "",
-    "abilities": [],
-    "arts": [],
+    "name"        : "string",
+    "description" : "markup",
+    "type"        : "classtype",
+    "tier"        : "classtier",
+    "requires"    : "requires",
+    "abilities"   : "abilities",
+    "arts"        : "arts",
     "growths": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0
+        "hp"  : "number",
+        "str" : "number",
+        "mag" : "number",
+        "dex" : "number",
+        "spd" : "number",
+        "def" : "number",
+        "res" : "number",
+        "lck" : "number"
       },
     "modifiers": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mov": 0
+        "hp"  : "number",
+        "str" : "number",
+        "mag" : "number",
+        "dex" : "number",
+        "spd" : "number",
+        "def" : "number",
+        "res" : "number",
+        "lck" : "number",
+        "mov" : "number"
     },
-    "mount": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0
-    },
+    "mount": "number",
 
-    "comment": "Items in growth, modifiers, and mount should be integers",
-    "tags": [],
-    "hidden": false
+    "default_base"    : "classname",
+    "default_preset"  : "preset",
+    "default_mainarm" : "kits",
+    "default_sidearm" : "kits",
+
+    "comment" : "string",
+    "tags"    : "tags",
+    "hidden"  : "boolean",
+    "?omit"   : "boolean"
 }

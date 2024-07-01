@@ -75,6 +75,14 @@
       ]
     }
   },
+  "traits": {
+    "Athletics": ["Axes", "Swords", "Lances", "Brawl"],
+    "Precision": ["Swords", "Reason", "Bows", "Riding"],
+    "Endurance": ["Brawl", "Armor", "Flying", "Riding"],
+    "Canniness": ["Axes", "Guile", "Bows", "Authority"],
+    "Spirit": ["Faith", "Lances", "Armor", "Authority"],
+    "Acuity": ["Faith", "Reason", "Guile", "Flying"]
+  },
   "skills": [
     "Axes",
     "Swords",
@@ -94,8 +102,8 @@
       "define": [
         "template affirm(title, yes, no)",
         "  ask [title]",
-        "    , No  { no  }",
-        "    ; Yes { yes }",
+        "    case No  { no  }",
+        "    else Yes { yes }",
         "  end",
         "end"
       ],
@@ -113,8 +121,8 @@
       "define": [
         "template deny(title, yes, no)",
         "  ask [title]",
-        "    ; Yes { yes }",
-        "    , No  { no  }",
+        "    else Yes { yes }",
+        "    case No  { no  }",
         "  end",
         "end"
       ],
@@ -133,8 +141,8 @@
         "template confirm(title, multiplier)",
         "  ((",
         "    ask [title]",
-        "      ; No  { 0 }",
-        "      , Yes { 1 }",
+        "      else No  { 0 }",
+        "      case Yes { 1 }",
         "    end",
         "  ) * (",
         "    multiplier",
@@ -155,8 +163,8 @@
         "template refuse(title, multiplier)",
         "  ((",
         "    ask [title]",
-        "      ; Yes { 1 }",
-        "      , No  { 0 }",
+        "      else Yes { 1 }",
+        "      case No  { 0 }",
         "    end",
         "  ) * (",
         "    multiplier",
@@ -175,9 +183,16 @@
     {
       "define": [
         "template blow(mod)",
-        "  bothif not(unit|tagged|healing)",
-        "    then fill affirm(cat([Unit Initiated? #], mod), mod, 0)",
-        "    else 0",
+        "  metaif builtins|macrogen",
+        "    // try to figure out if there's a better conditional for this",
+        "    then bothif not(unit|tagged|healing)",
+        "      then fill affirm(cat([Unit Initiated? #], mod), mod, 0)",
+        "      else 0",
+        "    end",
+        "    else bothif other|initiative == other|initiative|unit",
+        "      then mod",
+        "      else 0",
+        "    end",
         "  end",
         "end"
       ],
@@ -205,7 +220,13 @@
     {
       "define": [
         "template stance(modifier)",
-        "  fill affirm(cat([Foe Initiated? #], modifier), modifier, 0)",
+        "  metaif builtins|macrogen",
+        "    then fill affirm(cat([Foe Initiated? #], modifier), modifier, 0)",
+        "    else bothif other|initiative == other|initiative|foe",
+        "      then modifier",
+        "      else 0",
+        "    end",
+        "  end",
         "end"
       ],
       "about": [
@@ -218,15 +239,40 @@
     },
     {
       "define": [
-        "template advantage(variable)",
+        "template generic_advantage(variable)",
         "  bothif variable",
         "    then",
-        "      more",
+        "      max(",
         "        metaif builtins|macrogen",
         "          then other|triangle|prompt",
         "          else other|triangle",
-        "        end",
-        "      else 0 end / 3",
+        "        end,",
+        "        0",
+        "      ) / 3",
+        "    else 0",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Macro for the * advantage family of skills that give bonuses in ",
+        "combat when unit has weapon triangle advantage."
+      ],
+      "args": [
+        "a variable to test for the weapon type"
+      ]
+    },
+    {
+      "define": [
+        "template advantage(variable)",
+        "  bothif variable",
+        "    then",
+        "      max(",
+        "        metaif builtins|macrogen",
+        "          then other|triangle|prompt",
+        "          else other|triangle",
+        "        end,",
+        "        0",
+        "      ) / 3",
         "    else 0",
         "  end",
         "end"
@@ -241,10 +287,34 @@
     },
     {
       "define": [
+        "template arms_shield(variable)",
+        "  bothif variable",
+        "    then",
+        "      max(",
+        "        metaif builtins|macrogen",
+        "          then other|triangle|prompt",
+        "          else other|triangle",
+        "        end,",
+        "        0",
+        "      ) / 5",
+        "    else 0",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Macro for the * arm shield family of skills that give Prot/Resl +3 in ",
+        "combat when unit has weapon triangle advantage."
+      ],
+      "args": [
+        "a variable to test for the weapon type"
+      ]
+    },
+    {
+      "define": [
         "template defiant(bonus)",
         "  ask cat([HP ≤ 25%? #], bonus)",
-        "    , No     {0}",
-        "    ; Yes    {bonus}",
+        "    case No  {0}",
+        "    else Yes {bonus}",
         "  end",
         "end"
       ],
@@ -342,17 +412,209 @@
         "Whether weapon counts as a 'hidden weapon' for conditions."
       ],
       "args": []
+    },
+    {
+      "define": [
+        "template prowess_requires(level, skill, rank)",
+        "  unit|level >= level and (",
+        "    skill >= rank",
+        "      or",
+        "    unit|rank|Armor  >= rank",
+        "      or",
+        "    unit|rank|Riding >= rank",
+        "      or",
+        "    unit|rank|Flying >= rank",
+        "  )",
+        "end"
+      ],
+      "about": [
+        "Macro that implements a \"Prowess\" scaling for an attribute."
+      ],
+      "args": [
+        "greater than or equal to level",
+        "skill rank to check (other than Flying, Armor, or Riding)",
+        "greater than or equal to rank"
+      ]
+    },
+    {
+      "define": [
+        "template prowess_args(type, skill, one, two, three, four, five)",
+        "  bothif type then",
+        "    bothif fill prowess_requires(25, skill, 9)",
+        "      then five",
+        "    elseif fill prowess_requires(15, skill, 7)",
+        "      then four",
+        "    elseif fill prowess_requires( 5, skill, 5)",
+        "      then three",
+        "    elseif fill prowess_requires( 1, skill, 3)",
+        "      then two",
+        "    elseif fill prowess_requires( 1, skill, 1)",
+        "      then one",
+        "    else",
+        "      then 0",
+        "    end",
+        "  else",
+        "    0",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Macro that implements a \"Prowess\" scaling for an attribute."
+      ],
+      "args": [
+        "equipped weapon type to check",
+        "skill rank to check (other than Flying, Armor, or Riding)",
+        "rank one value",
+        "rank two value",
+        "rank three value",
+        "rank four value",
+        "rank five value"
+      ]
+    },
+    {
+      "define": [
+        "template prowess_boon(type, skill)",
+        "  fill prowess_args(type, skill, 7, 10, 13, 16, 20)",
+        "end"
+      ],
+      "about": [
+        "Macro that implements a high \"Prowess\" scaling for an attribute."
+      ],
+      "args": [
+        "equipped weapon type to check",
+        "skill rank to check (other than Flying, Armor, or Riding)"
+      ]
+    },
+    {
+      "define": [
+        "template prowess_base(type, skill)",
+        "  fill prowess_args(type, skill, 6, 8, 10, 12, 15)",
+        "end"
+      ],
+      "about": [
+        "Macro that implements a base \"Prowess\" scaling for an attribute."
+      ],
+      "args": [
+        "equipped weapon type to check",
+        "skill rank to check (other than Flying, Armor, or Riding)"
+      ]
+    },
+    {
+      "define": [
+        "template prowess_bane(type, skill)",
+        "  fill prowess_args(type, skill, 5, 6, 7, 8, 10)",
+        "end"
+      ],
+      "about": [
+        "Macro that implements a low \"Prowess\" scaling for an attribute."
+      ],
+      "args": [
+        "equipped weapon type to check",
+        "skill rank to check (other than Flying, Armor, or Riding)"
+      ]
+    },
+    {
+      "define": [
+        "template breaker(type, skill)",
+        "  ask cat(type, [breaker?])",
+        "    else No {",
+        "      bothif skill >= 8 // Rank A",
+        "        then 30",
+        "      elseif skill >= 6 // Rank B",
+        "        then 20",
+        "      else",
+        "        then 0",
+        "      end",
+        "    }",
+        "    case Yes {0}",
+        "  end",
+        "end"
+      ],
+      "about": [
+        "Macro that implements scaling breaker abilities."
+      ],
+      "args": [
+        "prefix for prompt",
+        "skill rank variable"
+      ]
+    },
+    {
+      "define": [
+        "template inner(value)",
+        "  let a = value then a;",
+        "end"
+      ],
+      "about": [
+        "Tests how templates interact with local variables"
+      ],
+      "args": [
+        "an expression"
+      ]
+    },
+    {
+      "define": [
+        "template indirect(macro, value)",
+        "  fill macro(value)",
+        "end"
+      ],
+      "about": [
+        "Tests how templates with fillable macros interact with local variable"
+      ],
+      "args": [
+        "a macro name",
+        "an expression"
+      ]
+    },
+    {
+      "define": [
+        "template local(value)",
+        "  let a = value then fill inner(a);",
+        "end"
+      ],
+      "about": [
+        "Tests how templates interact with local variables"
+      ],
+      "args": [
+        "an expression"
+      ]
+    },
+    {
+      "define": [
+        "template third(value)",
+        "  let a = value then fill local(a) + fill local(a);",
+        "end"
+      ],
+      "about": [
+        "Tests how templates interact with local variables"
+      ],
+      "args": [
+        "an expression"
+      ]
+    },
+    {
+      "define": [
+        "template identity(expression)",
+        "  expression",
+        "end"
+      ],
+      "about": [
+        "Performs no transformation; used to debug compiler's macro expansion."
+      ],
+      "args": [
+        "an expression"
+      ]
     }
   ],
   "tooltips" : {
     "gbp": {
       "name": "Generic Bonus/Penalty",
       "description": [
-        "Conditions of the forms @{::[Stat +X]} and @{::[Stat -X]} apply a ",
-        "modifier equal to X to the listed Stat. When multiple such ",
-        "conditions sharing the same Stat and sign (+ or -) are applied to a ",
-        "unit, they merge together into one condition, taking the larger ",
-        "magnitude and the longer remaining duration of the two."
+        "Conditions of the forms @{style}{bold}{[Stat +X]} and ",
+        "@{style}{bold}{[Stat -X]} apply a modifier equal to X to the listed ",
+        "Stat. When multiple such conditions sharing the same Stat and sign ",
+        "(+ or -) are applied to a unit, they merge together into one ",
+        "condition, taking the larger magnitude and the longer remaining ",
+        "duration of the two."
       ]
     },
     "variant": {
@@ -375,7 +637,7 @@
         "AP 3 \u00A0 2 CA(s) \u00A0 0 FA(s)\n",
         "AP 4 \u00A0 2 CA(s) \u00A0 1 FA(s)\n",
         "AP 5 \u00A0 3 CA(s) \u00A0 0 FA(s)\n\n",
-        "Combat arts/metamagic have fixed AP and are unaffected by AP ",
+        "Combat/metamagic arts have fixed AP and are unaffected by AP ",
         "modifiers unless otherwise stated."
       ]
     },
@@ -383,11 +645,104 @@
       "name": "Skill Rank Requirements",
       "description": [
         "When a group of skill rank requirements (SRRs) is qualified with ",
-        "@{style:bold:all} or connected with @{style:bold:and}, you may ",
+        "@{style}{bold}{all} or connected with @{style}{bold}{and}, you may ",
         "ignore all but one SRR in that group if one those listed is exceeded ",
-        "by one or more ranks. SRRs marked with @{style:bold:(required)} ",
+        "by one or more ranks. SRRs marked with @{style}{bold}{(required)} ",
         "may not be ignored but may be the one SRR that lets the others ",
         "be. Other requirements may never be ignored."
+      ]
+    },
+    "treatment":  {
+      "name": "“Treatment” Attributes",
+      "description": [
+        "A series of @{item}{Heal} and @{item}{First Aid Kit} attributes that ",
+        "add the chance to trigger a critical heal when used, granting ",
+        "various bonus effects. @{attribute}{Treatment: Critical} increases ",
+        "the amount healed, while the others use HP restored in excess of ",
+        "Max HP as a resource to fuel their effects."
+      ]
+    },
+    "structure":  {
+      "name": "“Structure” Attributes",
+      "description": [
+        "A series of attributes that are mutually exclusive with each other ",
+        "and can only be added when an item is first purchased. In exchange, ",
+        "they typically possess low rank increases and gold costs."
+      ]
+    },
+    "conjure":  {
+      "name": "“Conjure” Attributes",
+      "description": [
+        "A series of mutually exclusive attributes that specify what type of ",
+        "phantom unit an item creates, if it is able to create phantom units.",
+        "Any effect that creates a phantom without specifying the type and",
+        "an without @{style}{bold}{“Conjure”} attribute creates a ",
+        "@{class}{Lemure} unit."
+      ]
+    },
+    "phantom":  {
+      "name": "Phantoms",
+      "description": [
+        "Temporary units that can be created with various effects, notably ",
+        "those of @{item}{Summon} and @{art}{Invoked}. A created phantom is ",
+        "the same level as the unit that created it and belongs to the same ",
+        "army while the Weapons, Arts, and Abilities it possesses are rolled ",
+        "on a table according to its type and level. All weapons a phantom is ",
+        "created with had the bound attribute, and any other items in a ",
+        "phantom's inventory go to the convoy when it is defeated. A unit can ",
+        "only control one phantom at a time (unless specified otherwise). If ",
+        "a unit would use an effect that creates a phantom while that units ",
+        "already controls a phantom, the effect is replaced with warping the ",
+        "existing phantom into the relevant space."
+      ]
+    },
+    "prowess": {
+      "name": "Prowess",
+      "description": [
+        "A bonus that scales based on character Level (Lv) and the Rank (Ra) ",
+        "of the relevant skill, as well as if the relevant statistic is weak ",
+        "(Lo), neutral (Ne), or strong (Hi) for that skill's prowess:\n\n",
+        "@{style}{table}{",
+          "Ra \u00A0 Lv \u00A0 Lo \u00A0 Ne \u00A0 Hi\n",
+          "E+ \u00A0 \u00A01 \u00A0 \u00A05 \u00A0 \u00A06 \u00A0 \u00A07\n",
+          "D+ \u00A0 \u00A01 \u00A0 \u00A06 \u00A0 \u00A08 \u00A0 10\n",
+          "C+ \u00A0 \u00A05 \u00A0 \u00A07 \u00A0 10 \u00A0 13\n",
+          "B+ \u00A0 10 \u00A0 \u00A08 \u00A0 12 \u00A0 16\n",
+          "A+ \u00A0 15 \u00A0 10 \u00A0 15 \u00A0 20\n",
+        "}"
+      ]
+    },
+    "prowess_boon": {
+      "name": "Prowess Boon",
+      "description": [
+        "A bonus that scales based on the Rank of the relevant skill:\n\n",
+        "Rank E+ \u00A0 7\n",
+        "Rank D+ \u00A0 10\n",
+        "Rank C+ \u00A0 13\n",
+        "Rank B+ \u00A0 16\n",
+        "Rank A+ \u00A0 20\n"
+      ]
+    },
+    "prowess_base": {
+      "name": "Prowess Base",
+      "description": [
+        "A bonus that scales based on the Rank of the relevant skill:\n\n",
+        "Rank E+ \u00A0 6\n",
+        "Rank D+ \u00A0 8\n",
+        "Rank C+ \u00A0 10\n",
+        "Rank B+ \u00A0 12\n",
+        "Rank A+ \u00A0 15\n"
+      ]
+    },
+    "prowess_bane": {
+      "name": "Prowess Bane",
+      "description": [
+        "A bonus that scales based on the Rank of the relevant skill:\n\n",
+        "Rank E+ \u00A0 5\n",
+        "Rank D+ \u00A0 6\n",
+        "Rank C+ \u00A0 7\n",
+        "Rank B+ \u00A0 8\n",
+        "Rank A+ \u00A0 10\n"
       ]
     }
   }

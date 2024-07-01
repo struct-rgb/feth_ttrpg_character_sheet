@@ -3,7 +3,7 @@
     "description": "Foes in AoE take nonlethal damage equal to this battalion’s Rank plus two; a unit only takes damage from this gambit once per phase.",
     "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "D",
     "aoe": "Ring 0-1",
     "modifiers": {

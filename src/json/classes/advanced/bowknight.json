@@ -1,0 +1,39 @@
+{
+    "name": "Bow Knight",
+    "description": "A mounted archer with superior range and movement",
+    "type": ["Cavalry"],
+    "tier": "Advanced",
+    "requires": "All (Bows C+) (Required (Riding C+)) (Required (Level 15))",
+    "abilities": ["Bow Advantage", "Trick Shot", "Canto+"],
+    "arts": ["Cantabrian Circle"],
+    "growths": {
+        "hp": 20,
+        "str": 20,
+        "mag": 15,
+        "dex": 25,
+        "spd": 15,
+        "def": 10,
+        "res": 10,
+        "lck": 15
+      },
+    "modifiers": {
+        "hp": 4,
+        "str": 3,
+        "mag": 2,
+        "dex": 5,
+        "spd": 4,
+        "def": 3,
+        "res": 2,
+        "lck": 13,
+        "mov": 4
+    },
+    "mount": 3,
+
+    "default_base": "Archer",
+    "default_preset": "Power/Balance/Dexterity",
+    "default_mainarm": "Bows",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

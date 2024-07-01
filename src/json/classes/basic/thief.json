@@ -1,0 +1,39 @@
+{
+    "name": "Thief",
+    "description": "A highly technical Bows and/or Swords focused Infantry class that has high dexterity, luck, and speed, can steal foes' items, unlock doors, and is difficult for enemies to target, but has very low stats otherwise.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Any (Swords D) (Bows D)",
+    "abilities": [["Sword Prowess", "Bow Prowess"], "Locktouch", "Crit +5", "Stealth"],
+    "arts": ["Steal"],
+    "growths": {
+        "hp": 10,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 20,
+        "def": 5,
+        "res": 10,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 2,
+        "str": 1,
+        "mag": 1,
+        "dex": 7,
+        "spd": 5,
+        "def": 1,
+        "res": 2,
+        "lck": 10,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Thief",
+    "default_preset": "Speed/Balance/Luck",
+    "default_mainarm": "Swords",
+    "default_sidearm": "Bows",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

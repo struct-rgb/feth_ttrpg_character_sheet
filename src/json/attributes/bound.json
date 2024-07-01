@@ -1,6 +1,5 @@
 {
     "name": "Bound",
-    "type": "Any",
     "description": "Weapon ceases to exist when removed from wielder’s inventory or when wielder is defeated and weapon’s value becomes 0G total. This attribute cannot be purchased.",
     "rank": 0,
     "price": 0,

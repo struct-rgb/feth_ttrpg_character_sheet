@@ -3,7 +3,7 @@
     "description": "Grants Max EP +5 and splits this unit's EP pool into two bars in a 1:2 ratio; battalion’s units are Monster units. Not purchasable.",
     "requires": "Authority E",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "E",
     "aoe": "",
     "modifiers": {
@@ -27,7 +27,6 @@
         "epcost": 0,
         "capcost": 0
     },
-    "events": ["Outfitting"],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["structure"],

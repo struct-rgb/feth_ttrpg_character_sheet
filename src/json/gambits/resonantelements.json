@@ -1,9 +1,9 @@
 {
     "name": "Resonant Elements",
-    "description": "For each space in AoE, this unit may create either an @{tile::Ice Block}, @{tile::Fire Patch}, @{tile::Wind Torrent}, @{tile::Lightning Arc}, or @{tile::Force Wall} in that space. Only @{tile::Wind Torrents} and @{tile::Fire Patches} may be created in occupied spaces, and created @{tile::Lightning Arcs} and @{tile::Wind Torrents} last one turn before disappearing.",
+    "description": "For each space in AoE, this unit may create either an @{tile}{Ice Block}, @{tile}{Fire Patch}, @{tile}{Wind Torrent}, @{tile}{Lightning Arc}, or @{tile}{Force Wall} in that space. Only @{tile}{Wind Torrent}{Wind Torrents} and @{tile}{Fire Patch}{Fire Patches} may be created in occupied spaces, and created @{tile}{Lightning Arc}{Lightning Arcs} and @{tile}{Wind Torrent}{Wind Torrents} last one turn before disappearing.",
     "requires": "All (Authority B) (Training Reason)",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "B",
     "aoe": "Box 3x2",
     "modifiers": {

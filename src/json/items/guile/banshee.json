@@ -1,0 +1,27 @@
+{
+  "name": "Banshee",
+  "type": "Guile",
+  "description": "On hit, after combat, apply @{const}{gbp}{[Mov -3]} to target foe for 1 turn.",
+  "requires": "Guile C",
+  "rank": "C",
+  "price": 1750,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 9,
+    "prot": 0,
+    "resl": 0,
+    "hit": 70,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 6,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": ["condition"],
+  "hidden": false
+}

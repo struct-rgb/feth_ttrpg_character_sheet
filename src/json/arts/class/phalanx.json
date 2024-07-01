@@ -1,0 +1,25 @@
+{
+  "name": "Phalanx",
+  "description": "@{const}{ap}{AP = 2 + (#adjacent allies)}.",
+  "requires": "Class Halberdier",
+  "compatible": "All (Skill Lances) (Not (Tag `no might`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 20,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": true,
+  "type": "Lances",
+  "rank": ""
+}

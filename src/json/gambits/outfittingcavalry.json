@@ -3,7 +3,7 @@
     "description": "Grants Auto +1; battalion’s units are Cavalry units. This battalion may not possess another \"Outfitting\" gambit, unless that gambit is \"Armor Outfitting.\"",
     "requires": "Authority E",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "E",
     "aoe": "",
     "modifiers": {
@@ -27,7 +27,6 @@
         "epcost": 0,
         "capcost": 0
     },
-    "events": ["Outfitting"],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["structure"],

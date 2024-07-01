@@ -1,0 +1,27 @@
+{
+  "name": "Voicetaker",
+  "description": "On hit, apply @{condition}{Silence}{[Silence]} to target foe for one turn and regain TP equal to the base cost of target foe’s equipped Faith, Guile, or Reason weapon.",
+  "requires": "Class `Mortal Savant`",
+  "compatible": "All (Skill Swords Reason Guile) (Not (Tag `no hit`)) (Not (Tag `no might`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    ""
+  ],
+  "hidden": true,
+  "rank": "",
+  "type": ["Swords", "Reason", "Guile"]
+}

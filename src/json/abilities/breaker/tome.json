@@ -1,0 +1,37 @@
+{
+  "name": "Tomebreaker",
+  "description": "Grants Hit +X and Avo +X in combat against Lances, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots.",
+  "requires": "Bows B",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": "fill breaker([Tome], unit|rank|Bows)",
+    "avo": "fill breaker([Tome], unit|rank|Bows)",
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 4
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "breaker",
+    "in combat",
+    "halfslot"
+  ],
+  "hidden": false
+}

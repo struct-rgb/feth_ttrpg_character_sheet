@@ -3,7 +3,7 @@
     "description": "Stabilize ally in target tile.",
     "requires": "Authority E",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "E",
     "aoe": "None",
     "modifiers": {

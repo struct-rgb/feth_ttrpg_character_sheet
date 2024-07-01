@@ -2,6 +2,7 @@
   "name": "Showdown",
   "description": "This unit initiates a duel against target foe in weapon range and all other units are removed for the duration. Dueling units cannot use normal movement, must use their action to initiate combat if they are able, and after a unit fails to deal damage with an attack it loses the ability to initiate combat for the duration. The turn count does not advance during the course of the duel and the duel ends when both units cannot initiate combat. All non-defeated units return to their spaces from before the duel.\n\nTake an extra turn.",
   "requires": "Any (Brawl B) (Armor B)",
+  "compatible": "None",
   "mttype": "else",
   "modifiers": {
     "mt": 0,
@@ -25,6 +26,6 @@
     "tactical"
   ],
   "hidden": false,
-  "type": "Brawl-Armor",
+  "type": ["Brawl", "Armor"],
   "rank": "B"
 }

@@ -1,0 +1,39 @@
+{
+    "name": "Troubadour",
+    "description": "A strategic, magic focused Cavalry class with balanced stats and a focus on support.",
+    "type": ["Cavalry"],
+    "tier": "Starting",
+    "requires": "Riding D",
+    "abilities": [["Axe Prowess", "Sword Prowess", "Lance Prowess", "Reason Prowess", "Faith Prowess", "Guile Prowess"], "Tactician", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 15,
+        "str": 10,
+        "mag": 15,
+        "dex": 10,
+        "spd": 10,
+        "def": 10,
+        "res": 15,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 1,
+        "str": 3,
+        "mag": 3,
+        "dex": 5,
+        "spd": 2,
+        "def": 2,
+        "res": 2,
+        "lck": 8,
+        "mov": 4
+    },
+    "mount": 3,
+
+    "default_base": "Troubadour",
+    "default_preset": "Power/Resistance/Luck",
+    "default_mainarm": ["Faith", "Fire", "Ice", "Wind", "Lightning", "Force"],
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

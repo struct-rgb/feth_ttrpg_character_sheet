@@ -1,9 +1,9 @@
 {
     "name": "Poisoned Arrows",
-    "description": "Effective against Flying foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and apply @{condition:Poisoned:[Poisoned]} to all foes in AoE.",
+    "description": "Effective against Flying foes. On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn and apply @{condition}{Poisoned}{[Poisoned]} to all foes in AoE.",
     "requires": "All (Authority C) (Training Bows))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "Ring 0-1",
     "modifiers": {

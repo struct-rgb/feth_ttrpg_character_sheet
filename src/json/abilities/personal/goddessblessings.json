@@ -1,0 +1,35 @@
+{
+  "name": "Goddess' Blessings",
+  "description": "Grants +5 Mag when unit is at 100% HP, and +5 Res when unit is below 50% HP.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": "fill affirm([50% Blessing?], 5, 0)",
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": "fill affirm([100% Blessing?], 5, 0)",
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Amelie Cosgrove's personal.",
+  "tags": [
+    "personal"
+  ],
+  "hidden": true
+}

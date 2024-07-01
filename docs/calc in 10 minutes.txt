@@ -1,0 +1,235 @@
+
+// Comments start with // and run until the end of the line.
+
+
+// Calculator is a functional language, meaning that the basic unit of syntax
+// is an expression that returns a value. In order to specify an expression,
+// one need only to write a literal (in calculator the only type is float):
+
+1
+
+// As Calculator only has expressions, in order to continue with this
+// tutorial we need way to discard the values of expressions we don't want.
+// This comes to us in the form of the expression separation operator:
+
+;
+
+// Make no mistake, this is not a terminator, it is a separator.
+// The following is a valid program that returns the number 2.
+
+1; 2
+
+// Now that that's out of the way, let's continue. 
+
+;
+
+// As one would expect from its namesake, calculator can handle basic arithmatic.
+
+3 + 2; // 5
+3 - 2; // 1
+3 * 2; // 6
+3 / 2; // 1.5
+
+// You can use parentheses to change the order of operations.
+
+ 2 + 3  * 4; // 14
+(2 + 3) * 4; // 20
+
+// We have unary operators as well.
+
+-(3 + 2); // -5
++(3 + 2); //  5
+
+// As well as more exotic binary operators. Using the % sign takes the remaineder:
+
+13 % 5; // 3
+
+// The die operator is another exotic one, which introduces a new concept. Some language
+// features have different behavior whether they're executing in the builder or being
+// converted into a Roll20 macro. Let's illustrate this:
+
+2 die 20; //bld   21 -> the builder calculates the average sum of rolling two 20 sided dice 
+2 die 20; //r2o 2d20 -> Roll20 will actually roll the dice and add them together
+
+// This concept becomes very important as we get into some operators that don't have clean
+// analogues in Roll20 macros. One good example is the simple boolean 'and' operator:
+
+1 and 0; //bld -> 0 (0 is false and nonzero is true)
+1 and 0; //r20 -> (({0,[[floor(1-abs((0)-(1)))]]}dl1) * ((0)-(0)) + 0)
+
+// I hope you had fun trying to understand what that nonsense was doing because I wrote it
+// and I still don't fully get it, lol. Here is a list of innocuous seeming things that are
+// not good to leave in an expression that will get turned into a Roll20 macro.
+
+// Boolean Operators
+
+1 and 0 ; // 0
+1 or  0 ; // 1
+not(0)  ; // 1 (the parentheses are mandatory)
+
+// Relative Operators
+
+2  > 1; // 1
+2  < 1; // 0
+2 >= 1; // 1
+2 <= 1; // 0
+2 == 1; // 0 (this is "is equal to")
+2 <> 1; // 1 (this is "is not equal to")
+
+// The humble if else. This is like a ternary operator in some other languages (a ? b : c).
+// This one is a whole can of worms that is difficult to explain and the short of it is that
+// you probably don't ever want to use it unless you're really desperate.
+
+if 2 > 1 then 1 else 0 end; //bld 1
+if 2 > 1 then 1 else 0 end; //r20 
+
+// by the way in the if statment above, the > is not the use of the > operator, it's a special syntax
+// if expressions must always take the exact form "if <expr> <relop> <expre> then..." for nightmare
+// Roll20 conversion reasons that I don't want to get into. Just trust me that there are more sane
+// versions of the conditional expression that are coming up later.
+
+// Putting that behind us let's look at a few "function like operators" which are operators that sort of
+// look like what would be function calls in other programming languages (of which not() is one).
+// The first batch "take" one "argument" and are safe to use on Roll20 bound expessions.
+
+floor(0.5); //bld 0, r20 "floor(0.5)"
+ceil(0.5);  //bld 1, r20 "ceil(0.5)"
+
+round(0.2); //bld 0, r20 "round(0.2)"
+round(0.8); //bld 1, r20 "round(0.2)"
+
+abs(-2);    //bld 2, r20 "abs(-2)"
+
+// These take one arguement and are not safe to use in those.
+
+not(1);      //bld  0
+
+sign(+0);    //bld  0
+sign(-3);    //bld -1
+sign(+3);    //bld  1
+
+boolean(+2); //bld 1
+boolean(-2); //bld 1
+boolean(+0); //bld 0
+
+// or in Roll20
+
+not(1);      //r20 "(ceil((abs(1)/(abs(1) + 1)) + 1) % 2)"
+sign(+0);    //r20 "(0 / ((0 ** abs(0)) + abs(0)))"
+boolean(+2); //r20 "2"
+boolean(-2); //r20 "-2"
+boolean(+0); //r20 "0"
+
+// The third batch are mostly safe to use in Roll20 macros and "take" one or more "arguments"
+// However they can't be used inside some later expression types that we will see.
+
+max(1, 2); // 2
+min(1, 2); // 1
+
+// Now we can move on to some wierd function style operators. These are safe to use in Roll20 macros
+// because their effects are, for one reason or another, ignored or resolved during compilation itself.
+
+// inspect() prints its value to the browser console, along with the state of the current execution
+// environment and the abstract syntax tree of the expression being executed. It's for debugging purposes.
+
+inspect(3 + 4); //bld returns 7 and prints 7 and bunch of other stuff
+inspect(3 + 4); //r20 returns "3 + 4"
+
+// meta() executes its argument before compilation even continues and inserts it into the output
+// for builder only expressions this is sort of invisible, but for roll20 macros it's not
+
+meta(2 + 3) + 1; //bld 6
+meta(2 + 3) + 1; //r20 "5 + 1"
+
+// Notice how the "2 + 3" was reduced tp 5 before the r20 macro was generated
+
+// Now, having seen "meta", we can introduce one of the sane conditionals I mentioned earlier, "metaif".
+// This expression executes its condition at compile time, like "meta" and then rather than choosing one
+// branch of execution, it compiles only either the true or false branch and inserts that into the output.
+// For the builder this is sort of invisible to the user, but it's very noticable in Roll20 output
+
+metaif 1 then 2 + 1 else 1 + 1 end; //bld 3
+metaif 1 then 2 + 1 else 1 + 1 end; //r20 "2 + 1"
+
+// Getting into how compilation is handled, when expressions are loaded into the
+// builder they're compiled into an intermediary representtion that can actually
+// be executed by the browser. This occurs once, at startup.
+// 
+// Expressions are also compiled every time they're converted into a R20 macro.
+// This distinction is important because given an expression like below:
+
+metaif variable then 1 else 0 end;
+
+// If we suppose the value of variable = 1 when the builder loads, this 
+// expression will always result in 1 when executed in the builder. However
+// when converted into a Roll20 macro, it might either be "1" or "0" depending
+// on the value of variable at the time the Roll20 macro is generated.
+
+// This is moderately unintuitive behavior, so while this conditional is more 
+// sane than the "if" from before, it's still it's something we can just use.
+// 
+// In order to get the behavior your probable expect, where the value of the
+// above expression selects 1 or 0 every time the compiler expression is 
+// executed as well as whenever the expression is convered into a Roll20 macro
+// we want to use a third conditional expression:
+
+bothif variable then 1 else 0 end;
+
+// This is the conditional that your should default to using. It's equivalent
+// to using the following expression (which we will explain in a bit):
+
+metaif builtins|macrogen
+	then metaif variable then 1 else 0 end
+	else if     variable then 1 else 0 end
+end;
+
+// This is actually how the bothif behavior was literally implemented for a
+// while, but that got too verbose so it was added as a language feature.
+
+// Since I've mentioned variables without explaining then, now would be a 
+// good time to do so! Variables are a way of assigning names to values so
+// that we can reused them or access internal state of the builder:
+// 
+// Variables always begin with upper or lower case letter, which is followed by
+// any number of letters, numbers, underscores, and $ or | symbols.
+
+variables; Va5iab|e$;
+
+// these are both valid variable names
+// 
+// There are three types of variables: builtins, globals, and locals. We'll
+// start with builtins because those are guaranteed to always be available to
+// the programmer, as they're used to access the internal state of the
+// calculator compilation and interpretation process itself.
+
+builtins|codegen; //bld 
+builtins|codegen; //r20 
+
+// This variable is 1 while 
+
+builtins|macrogen; //bld 
+builtins|macrogen; //r20 
+
+// This variable is 1 while
+
+builtins|comptime; //bld 
+builtins|comptime; //r20 
+
+// This variable is 1 while 
+
+builtins|runtime; //bld 
+builtins|runtime; //r20 
+
+// This variable is 1 while 
+
+builtins|alias; //bld 
+builtins|alias; //r20 
+
+// This variable is 1 while 
+
+builtins|label; //bld 
+builtins|label; //r20 
+
+// This variable is 1 while 
+
+

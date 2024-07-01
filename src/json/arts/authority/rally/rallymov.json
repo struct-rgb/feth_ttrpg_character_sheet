@@ -1,0 +1,33 @@
+{
+  "name": "Rally Mov +1",
+  "description": "Target up to three different allies within range, for each target, if it is a battalion unit, restore 4 EP to the target, otherwise apply @{const}{gbp}{[Mov +1]} to the target for one turn.",
+  "requires": "All (Authority A) (Level 20)",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 3,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "rework",
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Authority",
+  "rank": "A"
+}

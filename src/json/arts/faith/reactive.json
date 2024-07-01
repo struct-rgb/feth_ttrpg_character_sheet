@@ -1,0 +1,30 @@
+{
+  "name": "Reactive",
+  "description": "Trigger: Before combat on Enemy Phase. Cast @{item}{Heal} on an ally within range of your @{item}{Heal} spell.",
+  "requires": "Faith B",
+  "compatible": "Name Heal",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|maxrng",
+    "tiles": 0,
+    "spcost": 5,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "reaction"
+  ],
+  "hidden": false,
+  "type": "Faith",
+  "rank": "B"
+}

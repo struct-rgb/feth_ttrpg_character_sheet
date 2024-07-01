@@ -1,0 +1,35 @@
+{
+  "name": "Surgical Precision",
+  "description": "Grants Hit +10 and Crit +10. When this unit's action restores HP to a unit, roll a critical hit (if attacking, use that crit roll); if successful, double the amount of HP restored and apply one of the following effects (player controlling that unit chooses):\n•  Apply @{condition}{Overheal}{[Overheal]} to that unit for one turn equal to any excess healing.\n•  Before HP is restored, end one or more conditions on that unit (player's choice).\n•  Restore SP equal to half of any excess healing.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Rosalie Nedler's personal.",
+  "tags": [
+    "personal"
+  ],
+  "hidden": true
+}

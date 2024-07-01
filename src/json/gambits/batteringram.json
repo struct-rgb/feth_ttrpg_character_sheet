@@ -1,9 +1,9 @@
 {
     "name": "Battering Ram",
-    "description": "Effective against Armor Foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and destroy all player created tiles in or adjacent to AoE.",
+    "description": "Effective against Armor Foes. On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn and destroy all player created tiles in or adjacent to AoE.",
     "requires": "All (Authority A) (Training Axes)",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "A",
     "aoe": "Box 3x2",
     "modifiers": {

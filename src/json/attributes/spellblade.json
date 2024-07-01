@@ -1,7 +1,6 @@
 {
   "name": "Spellblade",
-  "type": "Any",
-  "description": "Range becomes 1 and TP cost is reduced by 30% of base TP cost. Additional effect depending on skill type:\n\n • Reason: Mt +3 and tome is compatible with Axe attributes.\n\n • Guile: Mt +2, Hit +5, and tome is compatible with lance attributes.\n\n • Faith: Mt +1, Hit +10, and tome is compatible with sword attributes.\n\nThe @{attribute::Ranged} attribute is disabled on this weapon. This attribute is disabled on non-spells and on spells that don’t deal damage on attack.",
+  "description": "Range becomes 1 and TP cost is reduced by 30% of base TP cost. Additional effect depending on skill type:\n\n • Reason: Mt +3 and tome is compatible with Axe attributes.\n\n • Guile: Mt +2, Hit +5, and tome is compatible with lance attributes.\n\n • Faith: Mt +1, Hit +10, and tome is compatible with sword attributes.\n\nThe @{attribute}{Ranged} attribute is disabled on this weapon. This attribute is disabled on non-spells and on spells that don’t deal damage on attack.",
   "rank": 0,
   "price": 0,
 
@@ -25,11 +24,11 @@
   "locals": [
     [
       "template modifier_by_skill(faith, reason, guile)",
-      "  bothif item|type|faith  <> 0 then",
+      "  bothif item|type|faith  then",
       "    faith",
-      "  elseif item|type|reason <> 0 then",
+      "  elseif item|type|reason then",
       "    reason",
-      "  elseif item|type|guile  <> 0 then",
+      "  elseif item|type|guile  then",
       "    guile",
       "  else",
       "    0",

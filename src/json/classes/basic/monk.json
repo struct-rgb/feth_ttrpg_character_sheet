@@ -1,0 +1,39 @@
+{
+    "name": "Monk",
+    "description": "An evasive Infantry class with an emphasis on support that recurs TP when using Brawl, has high movement, high luck, and protects nearby allies from damage.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Any (Brawl D) (Faith D)",
+    "abilities": [["Brawl Prowess", "Faith Prowess"], ["Brawl Consumption 1", "Faith Consumption 1"], "Chain Guard"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 10,
+        "def": 10,
+        "res": 5,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 2,
+        "mag": 2,
+        "dex": 5,
+        "spd": 3,
+        "def": 1,
+        "res": 1,
+        "lck": 10,
+        "mov": 6
+    },
+    "mount": 0,
+
+    "default_base": "Monk",
+    "default_preset": "Balance/Balance/Luck",
+    "default_mainarm": "Water",
+    "default_sidearm": "Faith",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

@@ -1,6 +1,5 @@
 {
     "name": "Bookmark",
-    "type": "Any",
     "description": "While in inventory, wielder has six inventory slots. Disabled on non-spell or non-Brawl weapons and on weapons with original Rank > D.",
     "rank": 0,
     "price": 2400,

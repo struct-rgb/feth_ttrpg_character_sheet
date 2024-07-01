@@ -1,0 +1,35 @@
+{
+  "name": "Mad Experimentationist",
+  "description": "Every time Simdora alternates between an action that targets an enemy unit and an action that is Supportive, she Gains a Charge that when used adds a stacking +2 might to that action. If Simdora interrupts her cadence and uses two of the same type in a row, the stacks are lost and she suffers Overcharge; her actions/attacks/movement are reduced by half until the end of her next turn. If her might bonus is over 6 at the time the penalty is 100%. If over 10 she also takes flat damage equal to half her might bonus",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": "(ask [Expend Charges?] end * 2)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Simdora Lycan's personal.",
+  "tags": [
+    "personal"
+  ],
+  "hidden": true
+}

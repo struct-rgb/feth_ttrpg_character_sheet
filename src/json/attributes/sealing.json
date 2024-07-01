@@ -1,6 +1,6 @@
 {
     "name": "Sealing",
-    "description": "If @{const:gbp:[Stat -X]} would be applied to target foe as a result of an attack made with this weapon, where Stat is not Mov, instead apply @{const:gbp:[Stat -(X + 2)]} to target foe.\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.",
+    "description": "If @{const}{gbp}{[Stat -X]} would be applied to target foe as a result of an attack made with this weapon, where Stat is not Mov, instead apply @{const}{gbp}{[Stat -(X + 2)]} to target foe.\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.",
     "rank": 0,
     "price": 1250,
 

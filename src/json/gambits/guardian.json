@@ -1,9 +1,9 @@
 {
     "name": "Guardian",
-    "description": "Apply @{condition:Bodyguard:[Bodyguard]} to one of this battalion’s units for one turn.",
+    "description": "Apply @{condition}{Bodyguard}{[Bodyguard]} to one of this battalion’s units for one turn.",
     "requires": "All (Authority C+) (Any (Training Swords) (Training Axes) (Training Lances) (Training `Mighty Fist`) (Training `Mystic Fist`) (Outfitting Armor)))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "C+",
     "aoe": "None",
     "modifiers": {

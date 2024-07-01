@@ -1,0 +1,25 @@
+{
+  "name": "Crescent Slash",
+  "description": "When one or more effects trigger on hit, after combat, choose one to apply to foes adjacent to target foe.",
+  "requires": "Swords D",
+  "compatible": "Skill Swords",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 6,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "D"
+}

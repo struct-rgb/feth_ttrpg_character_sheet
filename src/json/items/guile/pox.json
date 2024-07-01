@@ -1,0 +1,27 @@
+{
+  "name": "Pox",
+  "type": "Guile",
+  "description": "On hit, apply @{condition}{Bloodletting}[Bloodletting]} to target foe. Only pay this item’s TP cost once per combat.",
+  "requires": "Guile D",
+  "rank": "C",
+  "price": 1800,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 5,
+    "prot": 0,
+    "resl": 0,
+    "hit": 80,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 4,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": [],
+  "hidden": false
+}

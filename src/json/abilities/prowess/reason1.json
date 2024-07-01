@@ -1,0 +1,36 @@
+{
+  "name": "Reason Prowess 1",
+  "description": "Grants Hit +7, Avo +5, Crit +7, and Crit Avo +5, when unit uses Reason. A unit may only equip one \"Reason Prowess\" ability at a time.",
+  "requires": "Any (Reason E+) (All (Armor E+) (ClassType Armor)) (All (Flying E+) (ClassType Flying)) (All (Riding E+) (ClassType Cavalry))",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": "bothif host|type|reason then 7 else 0 end",
+    "avo": "bothif host|type|reason then 5 else 0 end",
+    "crit": "bothif host|type|reason then 7 else 0 end",
+    "cravo": "bothif host|type|reason then 5 else 0 end",
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 6
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "prowess",
+    "static"
+  ],
+  "hidden": false
+}

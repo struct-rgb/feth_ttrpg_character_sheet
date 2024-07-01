@@ -1,9 +1,9 @@
 {
     "name": "Assault Troop",
-    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+    "description": "On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn.",
     "requires": "All (Authority B) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "B",
     "aoe": "Box 1x4",
     "modifiers": {

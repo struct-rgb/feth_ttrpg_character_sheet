@@ -1,0 +1,29 @@
+{
+  "name": "Amalthea",
+  "type": "Faith",
+  "description": "@{attribute}{Sacred} weapon associated with the @{ability}{Major Crest of Cethleann||Minor Crest of Cethleann}{Crest of Cethleann}.",
+  "requires": "Faith A",
+  "rank": "A",
+  "price": 0,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 18,
+    "prot": 0,
+    "resl": 0,
+    "hit": 80,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 6,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [
+    "sacred"
+  ],
+  "hidden": true
+}

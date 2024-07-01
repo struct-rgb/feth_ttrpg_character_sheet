@@ -1,0 +1,25 @@
+{
+  "name": "Hunter’s Volley",
+  "description": "@{const}{ap}{AP (1-2) + 1} @{style}{italic}{(one more than normal)}",
+  "requires": "Class Sniper",
+  "compatible": "Skill Bows",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 15,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 3,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": true,
+  "type": "Bows",
+  "rank": ""
+}

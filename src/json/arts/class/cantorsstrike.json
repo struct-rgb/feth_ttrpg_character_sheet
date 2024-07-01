@@ -1,0 +1,30 @@
+{
+  "name": "Cantor's Strike",
+  "description": "Uses equipped weapon’s range; after combat this unit may use a Heal tome as a free action.",
+  "requires": "Class `War Priest`",
+  "compatible": "All (Skill Axes Brawl Faith) (Not (Tag `tactical`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 4,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|maxrng",
+    "tiles": 0,
+    "spcost": 3,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "combo"
+  ],
+  "hidden": true,
+  "type": ["Axes", "Faith", "Brawl"],
+  "rank": ""
+}

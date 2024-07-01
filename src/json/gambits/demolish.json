@@ -3,7 +3,7 @@
     "description": "Destroy up to 1 per 5 Charm connecting player created tiles in AoE starting from target player created tile in range.",
     "requires": "Authority D+",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "D+",
     "aoe": "Variable",
     "modifiers": {

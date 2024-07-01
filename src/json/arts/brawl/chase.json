@@ -1,0 +1,33 @@
+{
+  "name": "Chase",
+  "description": "Trigger: foe that was adjacent at start of phase finishes moving. This unit moves to the space closest to that foe that it can reach, up to its max movement.",
+  "requires": "Brawl C",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "reaction",
+    "movement"
+  ],
+  "hidden": false,
+  "type": "Brawl",
+  "rank": "C"
+}

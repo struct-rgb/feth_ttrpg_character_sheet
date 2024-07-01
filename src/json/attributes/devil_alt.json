@@ -1,7 +1,6 @@
 {
   "name": "Devil (Alt)",
-  "type": "Any",
-  "description": "Grants weapon Mt +6. When an attack made with this weapon misses, it hits its wielder instead. Weapon's base accuracy changes based on its type:\n\n • Swords, Hit: 70\n • Lances, Hit: 65\n • Axes, Hit: 60\n • Brawl, Hit: 55\n\nDisable on spells, Bows, and if weapon has any other attributes except for @{attribute::Spellblade}.",
+  "description": "Grants weapon Mt +6. When an attack made with this weapon misses, it hits its wielder instead. Weapon's base accuracy changes based on its type:\n\n • Swords, Hit: 70\n • Lances, Hit: 65\n • Axes, Hit: 60\n • Brawl, Hit: 55\n\nDisable on spells, Bows, and if weapon has any other attributes except for @{attribute}{Spellblade}.",
   "rank": 0,
   "price": 330,
 

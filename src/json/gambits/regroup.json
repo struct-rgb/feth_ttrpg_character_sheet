@@ -3,7 +3,7 @@
     "description": "All of this battalion’s units retreat and this battalion regains 2 + ½ Charm EP.",
     "requires": "Authority C",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "None",
     "modifiers": {

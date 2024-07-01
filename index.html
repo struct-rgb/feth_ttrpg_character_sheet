@@ -13,23 +13,31 @@
 	<script type="text/javascript">Theme.set()</script>
 	<link href="./src/css/style.css" rel="stylesheet" />
 
-	<!-- Load the rest of the scripts. --->
+	<!-- Load the rest of the scripts. Ordered to statisfy dependancies -->
 	<script type="text/javascript" src="./definitions.js"></script>
-	<script type="text/javascript" src="./src/js/notebook.js"></script>
-	<script type="text/javascript" src="./src/js/category.js"></script>
+	<script type="text/javascript" src="./src/js/widget/notebook.js"></script>
+	<script type="text/javascript" src="./src/js/widget/category.js"></script>
+	<script type="text/javascript" src="./src/js/widget/tagger.js"></script>
 	<script type="text/javascript" src="./src/js/presetter.js"> </script>
 	<script type="text/javascript" src="./src/js/pointbuy.js"></script>
-	<script type="text/javascript" src="./src/js/battalion.js"></script>
-	<script type="text/javascript" src="./src/js/characters.js"></script>
-	<script type="text/javascript" src="./src/js/weapons.js"></script>
-	<script type="text/javascript" src="./src/js/stats.js"></script>
-	<script type="text/javascript" src="./src/js/skills.js"></script>
+	<script type="text/javascript" src="./src/js/model/battalion.js"></script>
+	<script type="text/javascript" src="./src/js/model/character.js"></script>
+	<script type="text/javascript" src="./src/js/model/item.js"></script>
+	<script type="text/javascript" src="./src/js/model/stats.js"></script>
+	<script type="text/javascript" src="./src/js/model/check.js"></script>
+	<script type="text/javascript" src="./src/js/model/skill.js"></script>
 	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
-	<script type="text/javascript" src="./src/js/expression.js"></script>
+	<script type="text/javascript" src="./src/js/lang/calculator.js"></script>
+	<script type="text/javascript" src="./src/js/lang/polish.js"></script>
+	<script type="text/javascript" src="./src/js/lang/markup.js"></script>
+	<script type="text/javascript" src="./src/js/context/reminder.js"></script>
+	<script type="text/javascript" src="./src/js/context/requirements.js"></script>
+	<script type="text/javascript" src="./src/js/context/compatible.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
-	<script type="text/javascript" src="./src/js/dynamics.js"></script>
+	<script type="text/javascript" src="./src/js/widget/dynamic.js"></script>
 	<script type="text/javascript" src="./src/js/legacy.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
+	
 </head>
 <body class="base">
 
@@ -44,13 +52,6 @@
 			sheet.macros.historySave();
 			return true;
 		});
-
-		// Make sure the rangefinder refreshs on load.
-		// document.getElementById("theme-link").onload = ((event) => {
-		// 	console.log("Loaded CSS file...");
-		// 	sheet.refresher.refresh("theme");
-		// });
-
 	</script>
 
 	<noscript>This webpage needs javascript to run.</noscript>

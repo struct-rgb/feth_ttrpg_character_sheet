@@ -1,6 +1,5 @@
 {
     "name": "Rebinding",
-    "type": "Any",
     "description": "Reduces per-use TP cost by 1; negative cost restores TP. Disabled on non-spell or non-Brawl weapons and on weapons that grant Reactions.",
     "rank": 2,
     "price": 1250,

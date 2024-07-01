@@ -8,10 +8,7 @@
 
 /* global uniqueID */
 
-/* global Expression */
-
-/* global Art */
-/* global hitip */
+/* global Calculator */
 
 /* global Polish */
 
@@ -34,12 +31,12 @@ class CustomRow {
 	}
 
 	check(env) {
-		return Expression.execute(this.when);
+		return Calculator.execute(this.when);
 	}
 
 	macro(env) {
 		return (
-			Expression.is(this.expr)
+			Calculator.is(this.expr)
 				? this.expr.macrogen(env)
 				: this.expr
 		);
@@ -200,7 +197,8 @@ class UserInterface {
 	static HISTORY_LIMIT = 100;
 
 	constructor(sheet) {
-		this.sheet    = sheet;
+		this.sheet  = sheet;
+		this.marker = sheet.marker;
 
 		const history = localStorage.getItem("history");
 		this._history = history ? JSON.parse(history) : [];
@@ -392,9 +390,9 @@ class UserInterface {
 				"input: ", expression.source, "\n",
 				"macro: ", expression.macro(
 					0
-						| (this._labels.checked  ? Expression.Env.LABEL   : 0)
-						| (this._alias.checked   ? Expression.Env.ALIAS   : 0)
-						| (this._compact.checked ? Expression.Env.COMPACT : 0)
+						| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
+						| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
+						| (this._compact.checked ? Calculator.Env.COMPACT : 0)
 				), "\n",				
 			);
 
@@ -403,7 +401,7 @@ class UserInterface {
 
 		} catch (error) {
 
-			const comperr = Expression.CompilationError;
+			const comperr = Calculator.CompilationError;
 
 			if (error instanceof comperr) {
 				
@@ -433,7 +431,7 @@ class UserInterface {
 		}
 
 		try {
-			const tokens = Expression.tokenize(source);
+			const tokens = Calculator.tokenize(source);
 			const seen   = new Set();
 
 			for (let each of tokens) {
@@ -442,8 +440,8 @@ class UserInterface {
 
 				if (seen.has(token)) continue;
 
-				if (token in Expression.HELP) {
-					for (let fn of Expression.HELP[token]) {
+				if (token in Calculator.HELP) {
+					for (let fn of Calculator.HELP[token]) {
 						this._defs.appendChild(element("dt", fn.called));
 						this._defs.appendChild(element("dd", fn.about));
 					}
@@ -479,11 +477,11 @@ class UserInterface {
 		);
 
 		/* Set up macro-generation environment */
-		const env = new Expression.Env(
-			Expression.Env.MACROGEN
-				| (this._labels.checked  ? Expression.Env.LABEL   : 0)
-				| (this._alias.checked   ? Expression.Env.ALIAS   : 0)
-				| (this._compact.checked ? Expression.Env.COMPACT : 0),
+		const env = new Calculator.Env(
+			Calculator.Env.MACROGEN
+				| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
+				| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
+				| (this._compact.checked ? Calculator.Env.COMPACT : 0),
 			this.sheet.definez,
 		);
 
@@ -577,16 +575,19 @@ class UserInterface {
 
 		m.line("");
 
-		const set = new Set([gambit.name]);
+		const options = {seen: new Set([gambit.name]), join: false};
 
 		/* Gambit description */
-		for (let line of hitip.text(gambit, set, false)) {
+		for (let line of this.marker.toText(gambit, options)) {
 			m.line(m.italic(line));
 		}
 
+		// we do want the names to show up here
+		options.named = true;
+
 		/* Arts description */
 		for (let art of arts) {
-			for (let line of hitip.text(art, set, false, true)) {
+			for (let line of this.marker.toText(art, options)) {
 				m.line(m.italic(line));
 			}
 		}
@@ -608,11 +609,11 @@ class UserInterface {
 		const wpn  = this.sheet.item;
 
 		/* Set up macro-generation environment */
-		const env = new Expression.Env(
-			Expression.Env.MACROGEN
-				| (this._labels.checked  ? Expression.Env.LABEL   : 0)
-				| (this._alias.checked   ? Expression.Env.ALIAS   : 0)
-				| (this._compact.checked ? Expression.Env.COMPACT : 0),
+		const env = new Calculator.Env(
+			Calculator.Env.MACROGEN
+				| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
+				| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
+				| (this._compact.checked ? Calculator.Env.COMPACT : 0),
 			this.sheet.definez,
 		);
 
@@ -732,14 +733,18 @@ class UserInterface {
 
 		m.line("");
 
-		const set = new Set([base.name]);
 
 		const feature = [base.name, tactic ? base.description : wpn.fullInfo()];
 
+		const options = {seen: new Set([base.name]), join: false};
+
 		/* Base description */
-		for (let line of hitip.text(feature, set, false)) {
+		for (let line of this.marker.toText(feature, options)) {
 			m.line(m.italic(line));
 		}
+
+		// we want names on reminder text from here on
+		options.named = true;
 		
 		if (tactic) {
 			/* TODO maybe include something here for tactical arts
@@ -751,14 +756,14 @@ class UserInterface {
 			);
 
 			for (let attribute of explain) {
-				const text = hitip.text(attribute, set, false, true);
+				const text = this.marker.toText(attribute, options);
 				for (let line of text) m.line(m.italic(line));
 			}
 		}
 
 		/* Meta description */
 		for (let art of meta) {
-			for (let line of hitip.text(art, set, false, true)) {
+			for (let line of this.marker.toText(art, options)) {
 				m.line(m.italic(line));
 			}
 		}
@@ -806,7 +811,8 @@ class UserInterface {
 		);
 
 		const ref      = {target: null};
-		const compiler = new Polish.Compiler(Art.compatibles(ref));
+		const context  = Compatible.createContext(ref, definitions);
+		const compiler = new Polish.Compiler(context);
 		const metaarts = Array.from(arts.values()).filter(art => !art.isTactical());
 		const combos   = metaarts.filter(art => art.isCombo());
 
@@ -948,7 +954,7 @@ class UserInterface {
 
 		const text  = [];
 		const sheet = this.sheet;
-		const env   = new Expression.Env(Expression.Env.RUNTIME, sheet.definez);
+		const env   = new Calculator.Env(Calculator.Env.RUNTIME, sheet.definez);
 
 		function list(title, iterable) {
 			const array = Array.from(iterable);
@@ -1023,7 +1029,7 @@ class UserInterface {
 
 		const text  = [];
 		const sheet = this.sheet;
-		const env   = new Expression.Env(Expression.Env.RUNTIME, sheet.definez);
+		const env   = new Calculator.Env(Calculator.Env.RUNTIME, sheet.definez);
 
 		function list(title, iterable) {
 			const array = Array.from(iterable);
@@ -1130,15 +1136,15 @@ class UserInterface {
 					bar1_num_permission : "hidden",
 					bar1_value          : env.read("unit|total|hp"),
 					bar1_max            : env.read("unit|total|hp"),
-					bar1_link           : hpID,
+					// bar1_link           : hpID,
 					bar2_num_permission : "hidden",
 					bar2_value          : env.read("unit|total|sp"),
 					bar2_max            : env.read("unit|total|sp"),
-					bar2_link           : spID,
+					// bar2_link           : spID,
 					bar3_num_permission : "hidden",
 					bar3_value          : env.read("unit|total|tp"),
 					bar3_max            : env.read("unit|total|tp"),
-					bar3_link           : tpID,
+					// bar3_link           : tpID,
 				}),
 				tags             : "[]",
 				controlledby      : "all",
@@ -1270,11 +1276,11 @@ class UserInterface {
 	// 	const stats   = definitions.stats.defensive;
 	// 	const buckets = new Map();
 
-	// 	const env = new Expression.Env(
-	// 		Expression.Env.MACROGEN
-	// 			| (this._labels.checked  ? Expression.Env.LABEL   : 0)
-	// 			| (this._alias.checked   ? Expression.Env.ALIAS   : 0)
-	// 			| (this._compact.checked ? Expression.Env.COMPACT : 0),
+	// 	const env = new Calculator.Env(
+	// 		Calculator.Env.MACROGEN
+	// 			| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
+	// 			| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
+	// 			| (this._compact.checked ? Calculator.Env.COMPACT : 0),
 	// 		this.sheet.definez,
 	// 	);
 
@@ -1315,9 +1321,9 @@ class UserInterface {
 }
 
 return {
-	UserInterface: UserInterface,
-	Builder: Builder,
-	CustomRow: CustomRow,
+	UserInterface : UserInterface,
+	Builder       : Builder,
+	CustomRow     : CustomRow,
 };
 
 })();

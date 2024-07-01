@@ -1,9 +1,9 @@
 {
     "name": "Resonant Morass",
-    "description": "Deal 20% nonlethal damage to all foes in AoE and apply @{condition:gbp:[Mov -3]} to all foes in AoE for one turn.",
+    "description": "Deal 20% nonlethal damage to all foes in AoE and apply @{const}{gbp}{[Mov -3]} to all foes in AoE for one turn.",
     "requires": "All (Authority B) (Training Guile)",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "B",
     "aoe": "Box 3x2",
     "modifiers": {

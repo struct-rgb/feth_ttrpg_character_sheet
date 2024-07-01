@@ -1,0 +1,27 @@
+{
+    "name": "Lightning",
+    "description": "Weapon has the lightning element, Mt -1, Hit -10, Crit +5, and Max Range +1. After combat that this unit initiated, for each hit, destroy up to one overlay tile within one space of target foe.\n\nDisabled on non-Reason weapons and weapons with #{attribute}{Ice}, #{attribute}{Fire}, and #{attribute}{Wind}",
+    "rank": 0,
+    "price": 0,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": -1,
+        "prot": 0,
+        "resl": 0,
+        "hit": -10,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["for reason", "explain"],
+    "hidden": false
+}

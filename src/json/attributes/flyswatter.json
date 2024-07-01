@@ -1,6 +1,5 @@
 {
     "name": "Flyswatter",
-    "type": "Any",
     "description": "Grants weapon [Effective against Flying] and -5 Hit. Disabled on spells and on weapons with Range > 1.\n\n(This is delibrately not available for purchase.)",
     "rank": 2,
     "price": 0,

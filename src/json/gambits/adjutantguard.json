@@ -1,7 +1,7 @@
 {
     "name": "Adjutant Guard",
     "description": "Trigger: Target employer would enter combat. Halve the damage of the first attack that hits target employer.",
-    "requires": "Adjutant",
+    "requires": "Innate",
     "mttype": "none",
     "price": 0,
     "rank": "E",

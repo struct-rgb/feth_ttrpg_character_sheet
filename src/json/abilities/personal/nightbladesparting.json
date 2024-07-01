@@ -1,0 +1,35 @@
+{
+  "name": "Nightblade's Parting",
+  "description": "Compatible spells have @{attribute}{Spellblade} while in this unit's inventory and this unit is able to use the Vengeful Counter reaction.\n\nVengeful Counter—Trigger: once per phase other than this unit's, after a foe misses this unit an attack. Pay 5 TP to counterattack with Hit -20 with equipped tome regardless of range and ignoring range penalty.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Illese Arndt's personal",
+  "tags": [
+    "personal"
+  ],
+  "hidden": false
+}

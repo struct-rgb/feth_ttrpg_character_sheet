@@ -1,0 +1,39 @@
+{
+  "name": "Swashbuckler",
+  "description": "These Sword fighters prefer Strong, quick, Strikes",
+  "type": ["Infantry"],
+  "tier": "Advanced",
+  "requires": "All (Swords B) (Required (Level 15))",
+  "abilities": ["Armored Blow", "Pavise", "Stamina +10"],
+    "arts": ["Sombre Strike"],
+  "growths": {
+    "hp": 20,
+    "str": 15,
+    "mag": 15,
+    "dex": 30,
+    "spd": 25,
+    "def": 10,
+    "res": 10,
+    "lck": 5
+  },
+  "modifiers": {
+    "hp": 3,
+    "str": 3,
+    "mag": 2,
+    "dex": 18,
+    "spd": 5,
+    "def": 2,
+    "res": 2,
+    "lck": 0,
+    "mov": 5
+  },
+  "mount": 0,
+
+  "default_base": "Myrmidon",
+  "default_preset": "Speed/Balance/Luck",
+  "default_mainarm": "Swords",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

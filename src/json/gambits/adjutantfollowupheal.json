@@ -1,7 +1,7 @@
 {
     "name": "Adjutant Heal",
     "description": "Trigger: Target employer would enter combat. Restore HP to target employer equal to (Attack / 2) + 8.",
-    "requires": "Adjutant",
+    "requires": "Innate",
     "mttype": "none",
     "price": 0,
     "rank": "E",

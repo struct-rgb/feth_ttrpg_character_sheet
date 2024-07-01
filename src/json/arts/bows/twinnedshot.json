@@ -1,0 +1,25 @@
+{
+  "name": "Twinned Shot",
+  "description": "Once per phase, after combat, if this unit outspeeds targeted foe, it may initiate combat against another foe using this combat art. @{style}{italic}{(If you do, then pay the SP cost again.)}",
+  "requires": "Bows D",
+  "compatible": "Skill Bows",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 2,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 3,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Bows",
+  "rank": "D"
+}

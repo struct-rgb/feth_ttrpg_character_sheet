@@ -3,7 +3,7 @@
     "description": "Move a non-employer ally in target space into an unoccupied adjacent space.",
     "requires": "Authority E+",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "E+",
     "aoe": "None",
     "modifiers": {

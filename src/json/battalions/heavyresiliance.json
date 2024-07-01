@@ -3,7 +3,7 @@
     "description": "A battalion with high stats and low capacity designed to withstand magic-based attacks.",
     "rank": "E",
     "gambits": [],
-    "requires": "",
+    "requires": "None",
     "price": 0,
 
     "growths": {

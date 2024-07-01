@@ -3,7 +3,7 @@
     "description": "Battalion's weapon type is Swords and deals damage vs Prot; grants Atk +2, Hit +20, and Range 0-1. A battalion can only possess one \"Training\" gambit.",
     "requires": "Authority E",
     "mttype": "str",
-    "price": "",
+    "price": 0,
     "rank": "E",
     "aoe": "",
     "modifiers": {
@@ -27,7 +27,6 @@
         "epcost": 0,
         "capcost": 0
     },
-    "events": ["Training"],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["structure"],

@@ -3,7 +3,7 @@
     "description": "For one turn, foes within AoE have Hit -20 in combat. (Overlapping areas do not stack.)",
     "requires": "Authority C+",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "C+",
     "aoe": "Ring 0-1",
     "modifiers": {

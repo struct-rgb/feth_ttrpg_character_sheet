@@ -1,6 +1,6 @@
 {
     "name": "Mystic",
-    "description": "Weapon deals magic-based damage. Disabled on non-Brawl and non-Stone weapons. If added to a weapon with the Mighty attribute, replaces that attribute.",
+    "description": "Weapon deals magic-based damage. Disabled on non-Brawl weapons. If added to a weapon with the #{attribute}{Mighty} attribute, replaces that attribute.",
     "rank": 0,
     "price": 0,
 

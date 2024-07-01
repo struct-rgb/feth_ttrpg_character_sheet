@@ -333,7 +333,7 @@ class ForecastRecord {
 				" level(s) of ",
 				tooltip(
 					element("span", this.cnode, "datum"),
-					Class.get(cls).body(true)
+					Class.get(cls).body()
 				),
 			]
 		});

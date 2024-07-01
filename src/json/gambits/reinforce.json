@@ -3,7 +3,7 @@
     "description": "Restore 2 + ½ Charm EP to battalion ally in target tile.",
     "requires": "Authority C",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "None",
     "modifiers": {

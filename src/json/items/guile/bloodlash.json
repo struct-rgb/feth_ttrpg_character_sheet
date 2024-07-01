@@ -1,0 +1,27 @@
+{
+  "name": "Blood Lash",
+  "type": "Guile",
+  "description": "Deals nonlethal damage. After combat, for each hit, this unit may cast @{item}{Transfuse}.",
+  "requires": "Guile D",
+  "rank": "D",
+  "price": 900,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 2,
+    "prot": 0,
+    "resl": 0,
+    "hit": 75,
+    "avo": 10,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 1,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": [],
+  "hidden": false
+}

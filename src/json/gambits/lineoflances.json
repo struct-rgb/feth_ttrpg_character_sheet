@@ -1,9 +1,9 @@
 {
     "name": "Line of Lances",
-    "description": "Effective against Cavalry foes. On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and you may force each Cavalry foe in or adjacent to AoE to dismount, and for one turn, foes in or adjacent to AoE cannot remount. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+    "description": "Effective against Cavalry foes. On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn and you may force each Cavalry foe in or adjacent to AoE to dismount, and for one turn, foes in or adjacent to AoE cannot remount. @{style}{italic}{(Effect is attached to the spaces, not the units.)}",
     "requires": "All (Authority A) (Training Lances)",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "A",
     "aoe": "Box 3x2",
     "modifiers": {

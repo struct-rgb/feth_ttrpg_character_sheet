@@ -1,0 +1,27 @@
+{
+  "name": "Mercy's End",
+  "description": "@{item}{Curtana} only; Foe loses up to 20% of max HP after combat, effective against Dragon units.",
+  "requires": "All (Item `Curtana`) (Crest Fraldarius) (Swords E)",
+  "compatible": "Name Curtana",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 5,
+    "prot": 0,
+    "resl": 0,
+    "hit": 20,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": [
+    "relic", "effective", "dragon effective"
+  ],
+  "hidden": false,
+  "type": "Swords",
+  "rank": "E"
+}

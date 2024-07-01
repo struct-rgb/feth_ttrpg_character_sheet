@@ -22,6 +22,65 @@ function rename(state, map) {
 	}
 }
 
+function character_from_3_7_0(old) {
+
+	old.class = rename(old.class, new Map([
+		[ "Witch Hunter" , "Hunter" ],
+	]));
+
+	rename(old.abilities, new Map([
+		[ "Tomebreaker+"     , "Tomebreaker"    ],
+		[ "Fistbreaker+"     , "Fistbreaker"    ],
+		[ "Bowbreaker+"      , "Bowbreaker"     ],
+		[ "Axebreaker+"      ,  "Axebreaker"    ],
+		[ "Swordbreaker+"    , "Swordbreaker"   ],
+		[ "Lancebreaker+"    , "Lancebreaker"   ],
+		[ "Sword Prowess 1"  , "Sword Prowess"  ],
+		[ "Sword Prowess 2"  , "Sword Prowess"  ],
+		[ "Sword Prowess 3"  , "Sword Prowess"  ],
+		[ "Sword Prowess 4"  , "Sword Prowess"  ],
+		[ "Sword Prowess 5"  , "Sword Prowess"  ],
+		[ "Axe Prowess 1"    , "Axe Prowess"    ],
+		[ "Axe Prowess 2"    , "Axe Prowess"    ],
+		[ "Axe Prowess 3"    , "Axe Prowess"    ],
+		[ "Axe Prowess 4"    , "Axe Prowess"    ],
+		[ "Axe Prowess 5"    , "Axe Prowess"    ],
+		[ "Lance Prowess 1"  , "Lance Prowess"  ],
+		[ "Lance Prowess 2"  , "Lance Prowess"  ],
+		[ "Lance Prowess 3"  , "Lance Prowess"  ],
+		[ "Lance Prowess 4"  , "Lance Prowess"  ],
+		[ "Lance Prowess 5"  , "Lance Prowess"  ],
+		[ "Brawl Prowess 1"  , "Brawl Prowess"  ],
+		[ "Brawl Prowess 2"  , "Brawl Prowess"  ],
+		[ "Brawl Prowess 3"  , "Brawl Prowess"  ],
+		[ "Brawl Prowess 4"  , "Brawl Prowess"  ],
+		[ "Brawl Prowess 5"  , "Brawl Prowess"  ],
+		[ "Guile Prowess 1"  , "Guile Prowess"  ],
+		[ "Guile Prowess 2"  , "Guile Prowess"  ],
+		[ "Guile Prowess 3"  , "Guile Prowess"  ],
+		[ "Guile Prowess 4"  , "Guile Prowess"  ],
+		[ "Guile Prowess 5"  , "Guile Prowess"  ],
+		[ "Faith Prowess 1"  , "Faith Prowess"  ],
+		[ "Faith Prowess 2"  , "Faith Prowess"  ],
+		[ "Faith Prowess 3"  , "Faith Prowess"  ],
+		[ "Faith Prowess 4"  , "Faith Prowess"  ],
+		[ "Faith Prowess 5"  , "Faith Prowess"  ],
+		[ "Reason Prowess 1" , "Reason Prowess" ],
+		[ "Reason Prowess 2" , "Reason Prowess" ],
+		[ "Reason Prowess 3" , "Reason Prowess" ],
+		[ "Reason Prowess 4" , "Reason Prowess" ],
+		[ "Reason Prowess 5" , "Reason Prowess" ],
+		[ "Bow Prowess 1"    , "Bow Prowess"    ],
+		[ "Bow Prowess 2"    , "Bow Prowess"    ],
+		[ "Bow Prowess 3"    , "Bow Prowess"    ],
+		[ "Bow Prowess 4"    , "Bow Prowess"    ],
+		[ "Bow Prowess 5"    , "Bow Prowess"    ],
+	]));
+
+	old.version = "3.8.0";
+
+	return old;
+}
 
 function character_from_3_5_0(old) {
 
@@ -361,6 +420,10 @@ function character(obj, to=Version.CURRENT) {
 
 	if (version.older("3.6.0")) {
 		obj = character_from_3_5_0(obj);
+	}
+
+	if (version.older("3.8.0")) {
+		obj = character_from_3_7_0(obj);
 	}
 
 	return obj;

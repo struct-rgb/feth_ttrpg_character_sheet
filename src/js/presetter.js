@@ -1,27 +1,27 @@
 
-/* global element */
-/* global Preset */
-/* global wrap */
-
-/* global Class */
-/* global uniqueLabel */
-
-/* global CategoryModel */
-/* global MultiActiveCategory */
-
-/* global BigButton */
-/* global Toggle */
-/* global tooltip */
-/* global Version */
-/* global capitalize */
-
-/* global Art */
-/* global Item */
-/* global Attribute */
-/* global Battalions */
-/* global nameof */
+/* global require */
 
 /* global Notebook */
+
+/* global CategoryModel, MultiActiveCategory */
+
+/* global Battalions */
+
+/* global
+   BigButton, Toggle, Version
+   element, capitalize, nameof, tooltip, uniqueLabel, wrap
+ */
+
+/* global
+   Art, Attribute, Class, Item, Preset
+ */
+
+if (typeof require !== "undefined") {
+	/* eslint-disable no-global-assign */
+	({Notebook}                           = require("./widget/notebook.js"));
+	({CategoryModel, MultiActiveCategory} = require("./widget/category.js"));
+	/* eslint-enable no-global-assign */
+}
 
 const Presetter = (function() {
 
@@ -57,13 +57,13 @@ const DIMENSIONS = new Map([
 			"name": "Speed",
 			"bases": {
 				"hp": 0,
-				"str": 1,
-				"mag": 1,
-				"dex": 0,
+				"str": 2,
+				"mag": 2,
+				"dex": -1,
 				"spd": 4,
 				"def": 0,
 				"res": 0,
-				"lck": 0,
+				"lck": -1,
 				"mov": 0
 			},
 			"growths": {
@@ -260,6 +260,13 @@ const DIMENSIONS = new Map([
 ]);
 
 const KITS = {
+	"None": {
+		parent: null,
+		hide: false,
+		1: {},
+		2: {},
+		3: {},
+	},
 	"Swords": {
 		parent: null,
 		hide: false,
@@ -2605,13 +2612,6 @@ const KITS = {
 		2: {},
 		3: {},
 	},
-	"None": {
-		parent: null,
-		hide: false,
-		1: {},
-		2: {},
-		3: {},
-	},
 	"Phantom": {
 		parent: null,
 		hide: true,
@@ -3329,10 +3329,14 @@ class Tokenator {
 			class: ["simple-border"],
 			content: (
 				[
-					[ "Player", "#0000FF" ],
-					[ "Enemy" , "#FF0000" ],
-					[ "Ally"  , "#00FF00" ],
-					[ "Other" , "#FFFF00" ],
+					[ "Player"  , "#0000FF" ],
+					[ "Enemy"   , "#FF0000" ],
+					[ "Ally"    , "#00FF00" ],
+					[ "Other"   , "#FFFF00" ],
+					[ "Fourth"  , "#FF00FF" ],
+					[ "Fifth"   , "#00FFFF" ],
+					[ "Sixth"   , "#FFFFFF" ],
+					[ "Seventh" , "#FFFFFF" ],
 				].map(pair => {
 					const [label, color] = pair;
 					return element("option", {
@@ -3775,6 +3779,14 @@ class Presetter {
 
 	static KITS = KITS;
 
+	static random() {
+		const roll    = () => Math.floor(Math.random() * 3);
+		const offense = Array.from(DIMENSIONS.get("Offense"))[roll()][1];
+		const defense = Array.from(DIMENSIONS.get("Defense"))[roll()][1];
+		const rolling = Array.from(DIMENSIONS.get("Rolling"))[roll()][1];
+		return `${offense.name}/${defense.name}/${rolling.name}`;
+	}
+
 	static generate_presets() {
 
 		const basic = {
@@ -3886,7 +3898,6 @@ class Presetter {
 			this._preset._select.value = build.default_preset;
 			this._mainarm.value        = Presetter.getDefault(build.default_mainarm);
 			this._sidearm.value        = Presetter.getDefault(build.default_sidearm);
-			// console.log(build);
 
 			this.tokenator.guess(this);
 		});
@@ -3911,12 +3922,22 @@ class Presetter {
 			}
 		});
 
+		this._rebuild = element("button",  {
+			content : "Reroll",
+			class   : ["simple-border"],
+			attrs   : {
+				onclick : ((event) => {
+					this._preset._select.value = Presetter.random();
+				}),
+			}
+		});
+
 		this._mainarm = element("select", {
 			class: ["simple-border"],
 			content: Array.from(Object.entries(KITS)
 				.filter(kv => {
-					const [key, value] = kv;
-					return !value.hide && key != "None";
+					const [_key, value] = kv;
+					return !value.hide;
 				})
 				.map(kv => {
 					const [key, value] = kv;
@@ -3989,7 +4010,7 @@ class Presetter {
 			this._class.root, this._reroll, element("br"),
 
 			uniqueLabel("Build", this._preset.root), element("br"),
-			this._preset.root, element("br"),
+			this._preset.root, this._rebuild, element("br"),
 
 			uniqueLabel("Main Kit", this._mainarm), element("br"),
 			this._mainarm, element("br"),
@@ -4067,5 +4088,11 @@ class Presetter {
 return Presetter;
 
 })();
+
+// only execute this in node; not browser
+if (typeof module !== "undefined") {
+	/* global module */
+	module.exports = Presetter;
+}
 
 /* exported Presetter */

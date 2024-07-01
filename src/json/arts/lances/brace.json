@@ -1,0 +1,25 @@
+{
+  "name": "Brace",
+  "description": "For one turn, this unit is immune to #{condition}{Broken}{[Broken]} but its attacks deal nonlethal damage. Costs 1 more SP if this unit is mounted and has already taken an action this turn. ",
+  "requires": "Lances B",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": "2 + fill affirm([Mounted and already taken an action?], 1, 0)"
+  },
+  "comment": "",
+  "tags": ["tactical"],
+  "hidden": false,
+  "type": "Lances",
+  "rank": "B"
+}

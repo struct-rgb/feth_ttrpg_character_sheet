@@ -1,0 +1,80 @@
+{
+  "name": "Invalid",
+  "type": "Faith",
+  "description": "@{const}{gbp}",
+  "requires": "Unknown",
+  "rank": "C",
+  "price": 3,
+
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": [
+        "bothif 1",
+        "  then 2 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 + 7",
+        "  else 3",
+        "end"
+      ],
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 1
+
+  },
+
+  "locals": [
+    [
+      "template SyntaxtError(argument)",
+      "   argument + 1",
+      "end"
+    ],
+    [
+      "template SyntaxtError(argument)",
+      "   argument + 1",
+      "end"
+    ]
+  ],
+  
+  "rows": [
+    {
+      "name": "hi",
+      "expr": [
+        "bothif 1",
+        "  then 2 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 +",
+        "       6 + 7",
+        "  else 3",
+        "end"
+      ],
+      "when": "5",
+      "roll": true
+    }
+  ],
+
+  "comment": "Incompatible with all Attributes.",
+  "tags": [],
+  "hidden": false
+}

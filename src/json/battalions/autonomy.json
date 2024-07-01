@@ -3,7 +3,7 @@
     "description": "A battalion with superior Autonomy.",
     "rank": "E",
     "gambits": [],
-    "requires": "",
+    "requires": "None",
     "price": 0,
 
     "growths": {

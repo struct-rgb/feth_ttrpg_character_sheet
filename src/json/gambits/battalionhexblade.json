@@ -3,7 +3,7 @@
     "description": "Battalion deals damage vs Resl.",
     "requires": "All (Authority C) (Any (Training Swords) (Training Lances) (Training Axes) (Training Bows))",
     "mttype": "mag",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "None",
     "modifiers": {

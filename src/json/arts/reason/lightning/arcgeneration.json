@@ -1,0 +1,27 @@
+{
+  "name": "Arc Generation",
+  "description": "Lightning metamagic; create up to two Lightning Arcs in empty tiles adjacent to either this unit or target foe for one turn. @{const}{variant}{Static Shock Variant:} Create up to four Lightning Arcs distributed adjacent to both units.",
+  "requires": "Reason D",
+  "compatible": "All (Skill Reason) (Tag `lightning`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 3,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "wall", "lightning", "variant"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "D"
+}

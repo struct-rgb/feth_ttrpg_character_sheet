@@ -1,6 +1,6 @@
 {
     "name": "Fire Patch",
-    "description": "Once per unit per turn, a non-Flying unit that begins its phase in a tile of this type takes 20% non-lethal damage and has @{condition:Exposed:[Exposed]} applied to it for one turn.",
+    "description": "Once per unit per turn, a non-Flying unit that begins its phase in a tile of this type takes 20% non-lethal damage and has @{condition}{Exposed}{[Exposed]} applied to it for one turn.",
     "requires": "None",
     "stats": {
         "hp": 1,

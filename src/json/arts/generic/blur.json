@@ -1,0 +1,33 @@
+{
+  "name": "Blur",
+  "description": "Create one or more @{tile}{Blur} tiles (at most 1 per 8 Spd) in spaces that this unit has traversed this phase.",
+  "requires": "Any (Swords D+) (Lances D+) (Brawl D+) (Flying D+)",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 3,
+    "tiles": "fill wall([Spd], unit|total|spd, 8)"
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "wall"
+  ],
+  "hidden": false,
+  "type": ["Other"],
+  "rank": "D+"
+}

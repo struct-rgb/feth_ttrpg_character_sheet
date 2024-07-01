@@ -1,0 +1,28 @@
+{
+  "name": "Sword Dance",
+  "description": "Might increases based on user’s Charm.",
+  "requires": "All (Class Dancer) (Swords E)",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "fill scale(1, [Cha], unit|total|lck)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 20,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [
+    "depricated"
+  ],
+  "hidden": true,
+  "type": "Swords",
+  "rank": "E",
+  "hidden": true
+}

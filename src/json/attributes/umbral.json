@@ -1,6 +1,5 @@
 {
     "name": "Umbral",
-    "type": "Any",
     "description": "When wielder crits while attacking with this weapon, this weapon gains Mt +1 (cumulative) until the end of the battle. This attribute cannot be purchased.",
     "rank": 0,
     "price": 0,

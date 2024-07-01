@@ -1,0 +1,35 @@
+{
+  "name": "Swap",
+  "description": "User swaps places with target adjacent ally; consumes half of an arts slot starting at level 10.",
+  "requires": "None",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "slotcost": "bothif unit|level >= 10 then 0.5 else 1.0 end"
+  },
+  "comment": "",
+  "tags": [
+    "movement",
+    "tactical",
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "halfslot",
+    "inclusive"
+  ],
+  "hidden": false,
+  "type": "Other",
+  "rank": ""
+}

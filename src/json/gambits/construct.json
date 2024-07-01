@@ -1,9 +1,9 @@
 {
     "name": "Construct",
-    "description": "Choose to pay the associated cost to create one of the following tiles in target space following the restrictions in parentheses:\n • @{tile::Explosive} (empty space, 30 EP)\n • @{tile::Barricade} (empty space, 6 EP)\n• @{tile::Turret} (empty space, 6 EP)\n • @{tile::Smoke Screen} (4 EP)\n • @{tile::Fire Patch} (2 EP)",
+    "description": "Choose to pay the associated cost to create one of the following tiles in target space following the restrictions in parentheses:\n • @{tile}{Explosive} (empty space, 30 EP)\n • @{tile}{Barricade} (empty space, 6 EP)\n • @{tile}{Turret} (empty space, 6 EP)\n • @{tile}{Smoke Screen} (4 EP)\n • @{tile}{Fire Patch} (2 EP)",
     "requires": "Authority C",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "None",
     "modifiers": {

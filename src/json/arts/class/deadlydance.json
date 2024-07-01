@@ -1,0 +1,30 @@
+{
+  "name": "Deadly Dance",
+  "description": "Mt +30% of user's Luc; unit may use remaining movement after combat if used at Range 1.",
+  "requires": "Class Dancer",
+  "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": "fill scale(1, [Lck], unit|total|lck)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 20,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "max(item|total|minrng, 1)",
+    "maxrng": "min(item|total|maxrng, 2)",
+    "tiles": 0,
+    "spcost": 2,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "scales", "movement"
+  ],
+  "hidden": true,
+  "type": "Generic",
+  "rank": "E"
+}

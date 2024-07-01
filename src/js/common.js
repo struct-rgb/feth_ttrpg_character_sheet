@@ -1,11 +1,37 @@
 
-/* global Expression */
+/* global Calculator */
+/* global process */
+
+const inBrowser = 
+	typeof window !== "undefined" && typeof window.document !== "undefined";
+
+const inNode =
+	typeof process !== "undefined" && process.versions != null && process.versions.node != null;
+
+function isObject(o) {
+	return typeof o === "object" && !Array.isArray(o) && o !== null;
+}
 
 function *chain(...iterables) {
 	for (let iterable of iterables) {
 		for (let item of iterable) {
 			yield item;
 		} 
+	}
+}
+
+function *valuesOf(object, keys) {
+	for (let key of keys) {
+		yield object[key];
+	}
+}
+
+function *map(iterable, callback, thisArg) {
+	
+	let index = 0;
+
+	for (let each of iterable) {
+		yield callback.call(thisArg, each, index++, iterable);
 	}
 }
 
@@ -53,6 +79,11 @@ Array.prototype.any = function(predicate) {
 Array.prototype.all = function(predicate) {
 	for (let each of this) if (!predicate(each)) return false;
 	return true;
+};
+
+Array.prototype.clear = function() {
+	this.length = 0;
+	return this;
 };
 
 Set.prototype.union = function(other) {
@@ -304,7 +335,6 @@ class SwapText {
 	}
 }
 
-
 class Toggle {
 
 	constructor(title, value, fn) {
@@ -460,8 +490,9 @@ function ellipse(string, limit) {
 }
 
 function nameof(value) {
-	const type = typeof value;
-	return type == "object" ? type : type.constructor.name;
+	const  type = typeof value;
+	const  name = type == "object" ? value.constructor.name : type;
+	return name;
 }
 
 const capitalize = (function() {
@@ -511,6 +542,10 @@ function content_action(element, content) {
 		element.appendChild(textnode);
 	} else if (content instanceof HTMLElement || content instanceof Text) {
 		element.appendChild(content);
+	} else if (content.constructor.name == "Symbol") {
+		// kind of hack but an efficeient way to deal with ASTs
+		const textnode = document.createTextNode(String(content.value));
+		element.appendChild(textnode);
 	} else if (content instanceof Array) {
 		for (let each of content) {
 			if (each != null) content_action(element, each);
@@ -867,8 +902,8 @@ class VariableTable {
 	static NOACTION = ((base, variable) => variable());
 
 	func(name, action=VariableTable.NOACTION) {
-		const variable = new Expression.Env(
-			Expression.Env.RUNTIME, this.context
+		const variable = new Calculator.Env(
+			Calculator.Env.RUNTIME, this.context
 		).func(name);
 
 		return ((base) => {
@@ -1624,6 +1659,173 @@ function _big_damage(sheet, template) {
 
 }
 
+function kwargsChecker(mandatory, optional) {
+	return function (template) {
+		
+		// enforce certain template keys as mandatory
+		for (let key of mandatory) {
+			if (!(key in template)) throw new Error(
+				`template object is missing key ${JSON.stringify(key)}`
+			);
+		}
+
+		// fill in default valyes for the optional keys
+		for (let key in optional) {
+			if (!(key in template)) {
+				template[key] = optional[key];
+			}
+		}
+
+		return template;
+	};
+}
+
+function conjoin(word, items) {
+
+	if (!Array.isArray(items)) return items;
+
+	switch (items.length) {
+	case 0:
+		return "";
+	case 1:
+		return items[0];
+	case 2:
+		return `${items[0]} ${word} ${items[1]}`;
+	default: {
+		const copy = Array.from(items);
+		const last = copy.pop();
+		return `${copy.join(", ")}, ${word} ${last}`;
+	}}
+}
+
+class AbstractParser  {
+
+	constructor() {
+		this._index   = 0;
+		this._tokens  = null;
+		this._length  = 0;
+		this._depth   = 0;
+	}
+
+	_sink() {
+		++this._depth;
+	}
+
+	_swim() {
+		--this._depth;
+	}
+
+	_isTopLevel() {
+		return this._depth == 0;
+	}
+
+	_toNext() {
+		if (this._index < this._length) {
+			++this._index;
+		}
+	}
+
+	_toPrev() {
+		if (this._index > 0) {
+			--this._index;
+		}
+	}
+
+	_nextToken() {
+		const i = this._index + 1;
+		if (i < this._length) {
+			return this._tokens[i][0];
+		} else {
+			return null;
+		}
+	}
+
+	_prevToken() {
+		const i = this._index - 1;
+		if (i > 0) {
+			return this._tokens[i][0];
+		} else {
+			return null;
+		}
+	}
+
+	_reset(tokens) {
+		this._index   = 0;
+		this._tokens  = tokens;
+		this._length  = tokens.length;
+		this._depth   = 0;
+	}
+
+	get token() {
+		if (this._index < this._length) {
+			return this._tokens[this._index][0];
+		} else {
+			return null;
+		}
+	}
+
+	get position() {
+		if (this._index < this._length) {
+			return this._tokens[this._index].index;
+		} else {
+			return null;
+		}
+	}
+}
+
+class AbstractCompilationError extends Error {
+	constructor(message, position) {
+		super(message);
+		this.position = position;
+	}
+
+	at(source) {
+
+		let row = 0, column = 0, left = this.position;
+
+		for (let character of source) {
+			
+			if (left-- <= 0) break;
+
+			if (character == "\n") {
+				row    += 1;
+				column  = 0;
+			} else {
+				column += 1;
+			}
+		}
+
+		return [row + 1, column];
+	}
+}
+
+// only execute this in node; not browser
+if (typeof module !== "undefined") {
+	
+	/* global module */
+
+	module.exports = {
+		Grade,
+		nameof,
+		element,
+		wrap,
+		delimit,
+		hilight,
+		tooltip,
+		SwapText,
+		ConfigEnum,
+		kwargsChecker,
+		map,
+		valuesOf,
+		chain,
+		conjoin,
+		AbstractCompilationError,
+		AbstractParser,
+		isObject
+	};
+
+}
+
 /* exported chain */
 /* exported choice */
 /* exported wrap */
@@ -1649,3 +1851,8 @@ function _big_damage(sheet, template) {
 /* exported VariableTable */
 /* exported Theme */
 /* exported nameof */
+/* exported inBrowser */
+/* exported inNode */
+/* exported tag */
+/* exported kwargsChecker */
+/* exported AbstractCompilationError */

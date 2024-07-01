@@ -3,7 +3,7 @@
     "description": "Move a foe in target space into an unoccupied adjacent space.",
     "requires": "All (Authority D) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "D",
     "aoe": "None",
     "modifiers": {

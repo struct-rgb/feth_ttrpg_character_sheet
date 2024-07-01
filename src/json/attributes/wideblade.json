@@ -1,6 +1,5 @@
 {
     "name": "Wide Blade",
-    "type": "Any",
     "description": "Grants weapon +4 Mt, -25 Hit and +10 Crit.\n\nDisabled on spells and on weapons with Range > 1.",
     "rank": 1,
     "price": 550,

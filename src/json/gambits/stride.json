@@ -1,9 +1,9 @@
 {
     "name": "Stride",
-    "description": "Apply @{const:gbp:[Mov +5]} for one turn to non-employer allies in AoE.",
+    "description": "Apply @{const}{gbp}{[Mov +5]} for one turn to non-employer allies in AoE.",
     "requires": "Authority A+",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "A+",
     "aoe": "Ring 0-2",
     "modifiers": {

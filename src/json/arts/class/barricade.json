@@ -1,0 +1,35 @@
+{
+  "name": "Barricade",
+  "description": "Starting from target space, create one or more tiles (at most 1 per 10 Def) in connecting spaces:\n • @{tile}{Barricade} @{style}{italic}{(space must be empty)}\n • @{tile}{Turret}\nTiles may be in any combination of these types.",
+  "requires": "Class `Fortress Knight`",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tiles": "fill wall([Def], unit|total|def, 10)",
+    "spcost": 8,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "wall"
+  ],
+  "hidden": true,
+  "type": "Other",
+  "rank": ""
+}

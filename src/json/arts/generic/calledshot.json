@@ -1,0 +1,41 @@
+{
+  "name": "Called Shot",
+  "description": "Choose one part of the body to target (Conditions are applied on hit after combat for one turn):\n • Arms— Hit -15. [Hexed]\n • Legs— Hit -25. [Halt]\n • Head— Hit -35. Crit +35.\n • Body— Hit -45. [Exposed]\n(Target for as if already affected.)\nThis combat art can be used with one other combat art with AP = 1 that does not apply a condition on hit.",
+  "requires": "All (Level 15) (Any (Axes C) (Lances C) (Swords C) (Brawl C) (Bows C))",
+  "compatible": [
+    "Host false",
+    "  (Art  (Skill Axes Lances Swords Brawl Bows))",
+    "  (Item (Skill Axes Lances Swords Brawl Bows))"
+  ],
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": [
+    	"ask [Body Part?]",
+	"  else [Arms] {-15}",
+	"  case [Legs] {-25}", 
+	"  case [Head] {-35}", 
+	"  case [Body] {-45}",
+	"end"
+    ],
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|maxrng",
+    "tiles": 0,
+    "spcost": 3,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "condition", "combo"
+  ],
+  "hidden": false,
+  "type": "Generic",
+  "rank": ""
+}

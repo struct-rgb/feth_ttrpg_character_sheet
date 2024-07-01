@@ -1,0 +1,39 @@
+{
+    "name": "Pugilist",
+    "description": "A tenacious brawler.",
+    "type": ["Armor"],
+    "tier": "Advanced",
+    "requires": "All (Brawl C+) (Required (Armor C+)) (Required (Level 15))",
+    "abilities": ["Brawl Advantage", "Brawl Consumption 2", "Butterfly Stance"],
+    "arts": ["Stinging Strikes"],
+    "growths": {
+        "hp": 35,
+        "str": 20,
+        "mag": 20,
+        "dex": 10,
+        "spd": 20,
+        "def": 20,
+        "res": 10,
+        "lck": 10
+      },
+    "modifiers": {
+        "hp":  17,
+        "str": 2,
+        "mag": 2,
+        "dex": 1,
+        "spd": 4,
+        "def": 4,
+        "res": 3,
+        "lck": 1,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Brawler",
+    "default_preset": "Balance/Defense/Luck",
+    "default_mainarm": "Beast",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

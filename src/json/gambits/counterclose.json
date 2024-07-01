@@ -3,7 +3,7 @@
     "description": "Unit’s min range is 0 when counter-attacking.",
     "requires": "All (Authority D+) (Any (Training Faith) (Training Guile) (Training Reason) (Training Bows))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "D+",
     "aoe": "",
     "modifiers": {

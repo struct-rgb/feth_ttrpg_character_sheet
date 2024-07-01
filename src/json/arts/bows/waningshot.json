@@ -1,0 +1,25 @@
+{
+  "name": "Waning Shot",
+  "description": "After combat, apply @{const}{gbp}{[Str -5]} to target foe for 1 turn.",
+  "requires": "Any (Bows C) (Bows B)",
+  "compatible": "Skill Bows",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 4,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 3,
+    "tpcost": 0,
+    "spcost": 3
+  },
+  "comment": "",
+  "tags": ["condition"],
+  "hidden": false,
+  "type": "Bows",
+  "rank": "C-B"
+}

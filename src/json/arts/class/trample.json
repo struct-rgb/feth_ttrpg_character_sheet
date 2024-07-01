@@ -1,0 +1,27 @@
+{
+  "name": "Trample",
+  "description": "Can only be used while mounted. Unit moves to the opposite side of target foe after combat (if able). On hit, after combat, applies @{condition}{Rattled}{[Rattled]} to target Infantry or Armor foe for one turn.",
+  "requires": "Class `Great Knight`",
+  "compatible": "All (Skill Axes Lances Swords) (Not (Tag `tactical`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 4,
+    "prot": 5,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [
+    ""
+  ],
+  "hidden": true,
+  "rank": "",
+  "type": ["Axes", "Swords", "Lances"]
+}

@@ -1,9 +1,9 @@
 {
     "name": "Linked Horses",
-    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+    "description": "On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn.",
     "requires": "All (Authority A) (Outfitting Cavalry)",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "A",
     "aoe": "Box 3x2",
     "modifiers": {

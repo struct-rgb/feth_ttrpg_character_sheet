@@ -1,0 +1,39 @@
+{
+    "name": "Dancer",
+    "description": "A performer who raises morale, allowing allies to act again",
+    "type": ["Infantry"],
+    "tier": "Advanced",
+    "requires": "Required (Permission `White Heron Cup`)",
+    "abilities": ["Consumption 1", "Avo +20"],
+    "arts": ["Dance", "Deadly Dance"],
+    "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 15,
+        "spd": 15,
+        "def": 5,
+        "res": 15,
+        "lck": 30
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 0,
+        "mag": 0,
+        "dex": 13,
+        "spd": 5,
+        "def": 1,
+        "res": 1,
+        "lck": 15,
+        "mov": 6
+    },
+    "mount": 0,
+
+    "default_base": "Dancer",
+    "default_preset": "Speed/Balance/Luck",
+    "default_mainarm": "Swords",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

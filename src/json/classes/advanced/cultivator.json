@@ -1,0 +1,39 @@
+{
+    "name": "Cultivator",
+    "description": "A practioner of arts both martial and mystical.",
+    "type": ["Infantry"],
+    "tier": "Advanced",
+    "requires": "All (Brawl C+) (Any (Faith C+) (Reason C+) (Guile C+)) (Required (Level 15))",
+    "abilities": ["Consumption 2", "Stamina +15", "Acrobat"],
+    "arts": ["Pneuma Gale"],
+    "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 20,
+        "dex": 15,
+        "spd": 20,
+        "def": 10,
+        "res": 10,
+        "lck": 10
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 2,
+        "mag": 4,
+        "dex": 8,
+        "spd": 3,
+        "def": 1,
+        "res": 3,
+        "lck": 10,
+        "mov": 6
+    },
+    "mount": 0,
+
+    "default_base": "Brawler",
+    "default_preset": "Speed/Balance/Balance",
+    "default_mainarm": "Water",
+    "default_sidearm": ["Faith", "Wind", "Guile"],
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

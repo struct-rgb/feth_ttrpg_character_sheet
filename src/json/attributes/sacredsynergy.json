@@ -1,6 +1,6 @@
 {
     "name": "Sacred Synergy",
-    "description": "Weapon is treated as Rank @{tooltip:C:This is part of the solution for Simdora's Taranis} while in the inventory of a unit bearing its associated Crest, though it retains its normal rank for the purposes of adding additional attributes. Disabled on weapons that are not Sacred weapons. This attribute cannot be purchased.",
+    "description": "Weapon is treated as Rank @{tooltip}{C}{This is part of the solution for Simdora's Taranis} while in the inventory of a unit bearing its associated Crest, though it retains its normal rank for the purposes of adding additional attributes. Disabled on weapons that are not Sacred weapons. This attribute cannot be purchased.",
     "rank": 0,
     "price": 0,
 

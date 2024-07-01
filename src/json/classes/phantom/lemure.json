@@ -1,0 +1,39 @@
+{
+  "name": "Lemure",
+  "description": "A formless shade of the departed.",
+  "type": ["Flying", "Monster"],
+  "tier": "Phantom",
+  "requires": "Innate",
+  "abilities": ["Pass", "Level 10 Mov +1"],
+  "arts": ["Hustle"],
+  "growths": {
+    "hp": 0,
+    "str": 60,
+    "mag": 25,
+    "dex": 55,
+    "spd": 35,
+    "def": 0,
+    "res": 0,
+    "lck": 25
+  },
+  "modifiers": {
+    "hp": 1,
+    "str": 10,
+    "mag": 1,
+    "dex": 11,
+    "spd": 9,
+    "def": 0,
+    "res": 0,
+    "lck": 5,
+    "mov": 4
+  },
+  "mount": 0,
+
+  "default_base": "Lemure",
+  "default_preset": "Custom",
+  "default_mainarm": "Lemure",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

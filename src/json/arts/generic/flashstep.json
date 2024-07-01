@@ -1,0 +1,32 @@
+{
+  "name": "Flashstep",
+  "description": "Cannot target a foe that is not adjacent an empty space and within two spaces of an ally. @{const}{ap}{AP Variable}; this unit teleports to an empty space adjacent to target foe before combat.",
+  "requires": "All (Any (Axes C) (Swords C) (Lances C)) (Faith C)",
+  "compatible": [
+    "Host false",
+    "  (Art  (Skill Axes Lances Swords Guile))",
+    "  (Item (Skill Axes Lances Swords Guile))"
+  ],
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tiles": 0,
+    "spcost": 5,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": ["movement"],
+  "hidden": true,
+  "type": ["Swords", "Axes", "Lances", "Guile"],
+  "rank": "C"
+}

@@ -1,3 +1,28 @@
 {
-    "check_keys": false
+    "name"        : "string",
+    "description" : "markup",
+    "bases": {
+        "hp"  : "number",
+        "str" : "number",
+        "mag" : "number",
+        "dex" : "number",
+        "spd" : "number",
+        "def" : "number",
+        "res" : "number",
+        "lck" : "number",
+        "mov" : "number"
+    },
+    "growths": {
+        "hp"  : "number",
+        "str" : "number",
+        "mag" : "number",
+        "dex" : "number",
+        "spd" : "number",
+        "def" : "number",
+        "res" : "number",
+        "lck" : "number"
+    },
+    "comment" : "string",
+    "tags"    : "tags",
+    "hidden"  : "boolean"
 }

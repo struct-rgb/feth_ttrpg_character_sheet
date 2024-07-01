@@ -1,9 +1,9 @@
 {
     "name": "Initiate",
-    "description": "No special effects. Cannot be equipped alongside @{gambit::Hospital}.",
+    "description": "No special effects. Cannot be equipped alongside @{gambit}{Hospital}.",
     "requires": "Authority C",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "None",
     "modifiers": {

@@ -1,9 +1,9 @@
 {
     "name": "Blessing",
-    "description": "Apply @{condition:Guaranteed:[Guaranteed Miracle]} to non-employer allies in AoE for one turn.",
+    "description": "Apply @{condition}{Guaranteed}{[Guaranteed Miracle]} to non-employer allies in AoE for one turn.",
     "requires": "All (Authority A) (Training Faith)",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "A",
     "aoe": "Ring 0-1",
     "modifiers": {

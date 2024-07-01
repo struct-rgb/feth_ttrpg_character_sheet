@@ -1,7 +1,7 @@
 {
     "name": "Adjutant Follow-Up (Magic)",
     "description": "Trigger: After employer exits a combat in which employer made one or more attacks, and at most one of those attacks hit. Target the same foe that employer was just in combat with and make one attack against target foe.\n\nThis attack does not trigger counter attack(s).",
-    "requires": "Adjutant",
+    "requires": "Innate",
     "mttype": "mag",
     "price": 0,
     "rank": "E",

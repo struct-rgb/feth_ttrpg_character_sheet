@@ -1,6 +1,6 @@
 {
     "name": "Blood Well",
-    "description": "Cannot be traversed except by units with @{ability::Pass} or affected by @{condition:Pass:[Pass]}. Cannot be targetted by crestless units. Once per unit per turn, a crestless unit that begins its phase adjacent to the a tile of this type takes 10 lethal damage.",
+    "description": "Cannot be traversed except by units with @{ability}{Pass} or affected by @{condition}{Pass}{[Pass]}. A bloodwell is destroyed if it is targeted by a Faith spell.",
     "requires": "None",
     "stats": {
         "hp": 1,

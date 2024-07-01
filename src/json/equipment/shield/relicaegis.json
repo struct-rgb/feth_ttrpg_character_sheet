@@ -1,0 +1,36 @@
+{
+  "name": "Aegis Shield",
+  "description": "If wielder has the Crest of @{ability}{Major Crest of Fraldarius||Minor Crest of Fraldarius}{Fraldarius}, grants wielder @{ability}{Aegis} and @{ability}{Pavise}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "requires": "None",
+  "price": 0,
+  "type": "Shield",
+  "modifiers": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 6,
+    "resl": 3,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "mov": 0
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "relic"
+  ],
+  "hidden": true
+}

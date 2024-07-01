@@ -1,0 +1,39 @@
+{
+    "name": "Myrmidon",
+    "description": "An agile, Swords focused Infantry class with high speed, luck, and avoid but low defense, resistance, and HP.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Swords D",
+    "abilities": ["Sword Prowess", "Sword Arms Shield", "Avo +5"],
+    "arts": [],
+    "growths": {
+        "hp": 15,
+        "str": 10,
+        "mag": 10,
+        "dex": 10,
+        "spd": 20,
+        "def": 10,
+        "res": 10,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 2,
+        "str": 3,
+        "mag": 2,
+        "dex": 5,
+        "spd": 4,
+        "def": 1,
+        "res": 1,
+        "lck": 7,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Myrmidon",
+    "default_preset": "Speed/Balance/Luck",
+    "default_mainarm": "Swords",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

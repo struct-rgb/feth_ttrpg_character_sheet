@@ -1,6 +1,5 @@
 {
     "name": "Reloading Mechanism",
-    "type": "Any",
     "description": "This weapon’s max AP becomes 2. Disabled on non-Bows and on weapons without \"Structure: Crossbow\".",
     "rank": 1,
     "price": 1250,

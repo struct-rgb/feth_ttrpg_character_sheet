@@ -4,11 +4,11 @@
 	"reactions": ["Adjutant Heal"],
 	"gambit": {
     	"name": "Surgical Intervention",
-	    "description": "When an adjacent ally or an ally in this units space regains HP, 40% chance to double heal and apply the excess as @{condition:Overheal:[Overheal]} for one turn.",
+	    "description": "When an adjacent ally or an ally in this units space regains HP, 40% chance to double heal and apply the excess as @{condition}{Overheal}{[Overheal]} for one turn.",
 	    "requires": "Adjutant `Rosalie Nedler`",
 	    "mttype": "none",
-	    "price": "",
-	    "rank": "",
+	    "price": 0,
+	    "rank": 0,
 	    "aoe": "",
 	    "modifiers": {
 	        "atk": 0,

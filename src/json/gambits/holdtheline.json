@@ -1,9 +1,9 @@
 {
     "name": "Hold the Line",
-    "description": "Apply @{condition:Sentinel:[Sentinel]} to this battalion's units for one turn.",
+    "description": "Apply @{condition}{Sentinel}{[Sentinel]} to this battalion's units for one turn.",
     "requires": "All (Authority D+) (Any (Training Swords) (Training Axes) (Training Lances) (Training `Mighty Fist`) (Training `Mystic Fist`) (Outfitting Armor))",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "D+",
     "aoe": "None",
     "modifiers": {

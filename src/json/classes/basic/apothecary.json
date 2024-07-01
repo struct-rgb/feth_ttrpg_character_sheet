@@ -1,0 +1,39 @@
+{
+  "name": "Apothecary",
+  "description": "A resourceful, balanced, weapon-agnostic Infantry class that focuses on reusing consumable items but has low speed.",
+  "type": ["Infantry"],
+  "tier": "Starting",
+  "requires": "Any (Swords D) (Lances D) (Axes D) (Bows D) (Brawl D) (Faith D) (Reason D) (Guile D)",
+  "abilities": [["Axe Prowess", "Sword Prowess", "Lance Prowess", "Brawl Prowess", "Bow Prowess", "Reason Prowess", "Faith Prowess", "Guile Prowess", "Authority", "Dominion"], "Other Prowess", "Item Expertise"],
+    "arts": [],
+  "growths": {
+    "hp": 25,
+    "str": 10,
+    "mag": 10,
+    "dex": 10,
+    "spd": 0,
+    "def": 15,
+    "res": 15,
+    "lck": 20
+  },
+  "modifiers": {
+    "hp": 3,
+    "str": 2,
+    "mag": 2,
+    "dex": 5,
+    "spd": 0,
+    "def": 3,
+    "res": 3,
+    "lck": 8,
+    "mov": 5
+  },
+  "mount": 0,
+
+  "default_base": "Apothecary",
+  "default_preset": "Balance/Balance/Luck",
+  "default_mainarm": "Item",
+  "default_sidearm": "Bows",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

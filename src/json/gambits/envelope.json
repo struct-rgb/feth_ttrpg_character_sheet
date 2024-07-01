@@ -3,7 +3,7 @@
     "description": "If this unit’s space is not occupied by another unit, move a non-employer, non-battalion ally in target space into this unit’s space.",
     "requires": "Authority E+",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "E+",
     "aoe": "None",
     "modifiers": {

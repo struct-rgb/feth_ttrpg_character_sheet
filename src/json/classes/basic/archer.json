@@ -1,0 +1,39 @@
+{
+    "name": "Archer",
+    "description": "A precise, dexterity focused Infantry bow specialist with increased bow range.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Bows D",
+    "abilities": ["Bow Prowess", "Bow Range +1"],
+    "arts": [],
+    "growths": {
+        "hp": 10,
+        "str": 10,
+        "mag": 10,
+        "dex": 25,
+        "spd": 15,
+        "def": 5,
+        "res": 10,
+        "lck": 15
+      },
+    "modifiers": {
+        "hp": 1,
+        "str": 2,
+        "mag": 2,
+        "dex": 10,
+        "spd": 2,
+        "def": 1,
+        "res": 2,
+        "lck": 7,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Archer",
+    "default_preset": "Balance/Resistance/Dexterity",
+    "default_mainarm": "Bows",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

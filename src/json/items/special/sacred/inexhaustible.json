@@ -1,0 +1,31 @@
+{
+  "name": "The Inexhaustible",
+  "type": "Bows",
+  "description": "Effective against Flying units. @{const}{ap}{AP +1} if unit initiates combat, otherwise @{const}{ap}{AP = 1} and @{const}{ap}{AP +1} to foe if foe's @{const}{ap}{AP = 2}. @{attribute}{Sacred} weapon associated with the @{ability}{Major Crest of Indech||Minor Crest of Indech}{Crest of Indech}.",
+  "requires": "Bows A",
+  "rank": "A",
+  "price": 0,
+  "mttype": "str",
+  "modifiers": {
+    "mt": 11,
+    "prot": 0,
+    "resl": 0,
+    "hit": "fill bowhit(80)",
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 2,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [
+    "sacred",
+    "effective",
+    "flying effective"
+  ],
+  "hidden": true
+}

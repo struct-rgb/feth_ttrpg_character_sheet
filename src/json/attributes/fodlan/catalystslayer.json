@@ -1,0 +1,35 @@
+{
+    "name": "Catalystslayer",
+    "description": "Can only be applied to a weapon with @{attribute}{Idolslayer}. Grants weapon a 20% chance to deal +5 might",
+    "rank": 1,
+    "price": 500,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "rows": [
+        {
+            "name": "Mt +5",
+            "expr": 20,
+            "roll": true
+        }
+    ],
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["for faith", "for reason", "for guile", "for axes", "for swords", "for lances", "for brawl", "explain"],
+    "hidden": true
+}

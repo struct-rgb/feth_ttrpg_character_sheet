@@ -4,8 +4,11 @@ import re
 import sys
 import json
 
-from pathlib import Path
-from argparse import ArgumentParser
+from types    import CodeType
+from typing   import Any, Optional
+from pathlib  import Path
+from argparse import ArgumentParser, Namespace
+from pprint   import pprint
 
 TIER_ORDER = {
 	"Starting": 1,
@@ -130,7 +133,26 @@ SORTING_FUNCS = {
 	),
 }
 
-def check_template(template, instance, depth=1):
+def itertree(start: Path):
+	"""
+	Iterator that yields each non-directory file in the tree of
+	the given path by means of a breadth first search.
+	"""
+
+	queue = [start]
+
+	while len(queue):
+		for each in queue.pop().iterdir():
+			if each.is_dir():
+				queue.append(each)
+			else:
+				yield each
+
+
+def check_template(template: dict, instance: dict, depth: int = 1):
+	"""
+	Checks an instance of a template for any missing keys-value pairs
+	"""
 
 	errors = []
 
@@ -157,7 +179,11 @@ def check_template(template, instance, depth=1):
 
 	return errors
 
-def error_template(source, template, instance):
+def error_template(source: Path, template: dict, instance: dict):
+	"""
+	Wrapper around check_template() to prepend the name of the file that
+	any errors occured in before the text of the errors themselves
+	"""
 
 	errors = check_template(template, instance)
 
@@ -168,7 +194,12 @@ def error_template(source, template, instance):
 
 	return ""
 
-def error_context(source, data, error, context):
+def error_context(
+	source  : Path,
+	data    : str,
+	error   : json.decoder.JSONDecodeError,
+	context : int
+):
 	"""
 	This creates a little display of the context surronding the line and column
 	number of a json.decoder.JsonDecodeError for use in troubleshooting.
@@ -191,12 +222,17 @@ def error_context(source, data, error, context):
 
 	return "\n".join(text)
 
-def json_check_load(file):
+def json_check_load(file: Path):
+	"""
+	Tries to load and return the contents of a json file, and if that fails
+	prints a useful error message as to why before terminating the program 
+	"""
+
 	try:
 		data = file.read_text()
 	except UnicodeDecodeError as error:
 		print(
-			f"Error loading: {definition}\n"
+			f"Error loading: {file}\n"
 			"    could not decode file as utf-8"
 		)
 		sys.exit(1)
@@ -211,7 +247,7 @@ def json_check_load(file):
 
 	return data
 
-def compile_definitions(omit=False):
+def compile_definitions(omit: bool = False):
 	"""
 	Gathers up and compiles all of the features defined in ./src/json into one
 	giant javascript file that can be linked to from index.html
@@ -232,7 +268,7 @@ def compile_definitions(omit=False):
 
 		definitions = []
 
-		for definition in file.iterdir():
+		for definition in itertree(file):
 
 			data = json_check_load(definition)
 			
@@ -284,21 +320,26 @@ argparser = ArgumentParser(
 	description="a script for building the character builder's data file"
 )
 
-argparser.add_argument(
+subparsers = argparser.add_subparsers()
+
+parser = subparsers.add_parser("make")
+
+parser.add_argument(
 	"-o", "--omit",
 	help="omit files with {\"omit\": true} from the final data file",
 	action="store_true",
 )
 
-argparser.add_argument(
+parser.add_argument(
 	"-p", "--print",
 	help="print the final data file to stdout",
 	action="store_true",
 )
 
-def main():
-
-	args = argparser.parse_args()
+def make(args: Namespace) -> None:
+	"""
+	Builds definitions.json
+	"""
 
 	compiled   = compile_definitions(args.omit)
 	json_str   = json.dumps(compiled, indent=2)
@@ -314,7 +355,122 @@ def main():
 		pass
 
 	if args.print:
-		print(json_str)	
+		print(json_str)
+
+parser.set_defaults(func=make)
+
+parser = subparsers.add_parser("query")
+
+parser.add_argument(
+	"namespace",
+	help="apply query to all definitions of the given type",
+	action="append",
+	nargs="+",
+)
+
+compiled_code = lambda each: compile(each, "<string>", "eval")
+
+parser.add_argument(
+	"-p", "--print",
+	action="append",
+	help=(
+		"user provided python expression is run on each template, and the "
+		"result of that computation is pretty printed to the console"
+	),
+	type=compiled_code,
+	default=[],
+)
+
+parser.add_argument(
+	"-f", "--filter",
+	action="append",
+	help=(
+		"user provided python expression is run against each template and "
+		"those that produce False as a result are filtered out"
+	),
+	type=compiled_code,
+	default=[],
+)
+
+def filter_folder(
+	folder  : Path,
+	filters : list[CodeType],
+	prints  : list[CodeType],
+) -> None:
+	"""
+	Applies any supplied filters to each json file in the tree of the supplied
+	folder before applying any supplied print expressions to files that pass. 
+	"""
+
+	for each in itertree(folder):
+		
+		result   : list[bool]     = []
+		localns  : dict[str, Any] = {}
+		globalns : dict[str, Any] = {"o": target}
+		target   : dict[str, Any] = json_check_load(each)
+
+		for expression in filters:
+			result.append(bool(eval(expression, globalns, localns)))
+
+		if not any(result):
+			continue
+
+		print(each)
+		for expression in prints:
+			pprint(eval(expression, globalns, localns))
+
+json_folder = Path("./src/json")
+
+def suggest_namespaces(invalid: Optional[str] = None) -> None:
+	"""
+	Print a list of valid namespaces. Format as an error if invalid is supplied.
+	"""
+	
+	if invalid is not None:
+		print(f"Invalid namespace `{invalid}', try one of:")
+	else:
+		print("Valid namespaces:")
+
+	for file in json_folder.iterdir():
+		if file.is_dir():
+			print(f"  {file.name}")
+
+def filter_namespace(
+	namespace : str,
+	filters   : list[CodeType],
+	prints    : list[CodeType],
+) -> None:
+	"""
+	Applies any supplied filters to the given fature namespace before applying
+	any supplied print expression to features that pass.
+	"""
+
+	folder = json_folder / namespace
+
+	if not folder.is_dir():
+		return suggest_namespaces(namespace)
+
+	filter_folder(folder, filters, prints)
+
+def query(args: Namespace) -> None:
+	"""
+	Queries template information
+	"""
+
+	if not args.filter:
+		args.filter.append(compiled_code("True"))
+
+	for namespace in args.namespace:
+		filter_namespace(namespace, args.filter, args.print)
+
+parser.set_defaults(func=query)
+
+def main() -> None:
+	"""
+	Program entry point
+	"""
+	args = argparser.parse_args()
+	args.func(args)
 
 if __name__ == "__main__":
 	main()

@@ -1,7 +1,7 @@
 {
   "name": "feth_ttrpg_character_sheet",
-  "version": "2.0.0",
-  "description": "A character builder for Bradley B.'s FE:3H TTRPG",
+  "version": "3.8.0",
+  "description": "A character builder for the Forged by Fire Strategy TTRPG",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,7 +18,9 @@
   "homepage": "https://github.com/struct-rgb/feth_ttrpg_character_sheet#readme",
   "dependencies": {
     "@babel/eslint-parser": "^7.15.8",
-    "jsdoc": "^4.0.2"
+    "argparse": "^2.0.1",
+    "jsdoc": "^4.0.3",
+    "marked": "^12.0.2"
   },
   "devDependencies": {
     "eslint": "^8.29.0"

@@ -3,7 +3,7 @@
     "description": "A battalion counter attack.",
     "requires": "None",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "E",
     "aoe": "None",
     "modifiers": {

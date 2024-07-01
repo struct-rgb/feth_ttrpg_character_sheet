@@ -1,0 +1,27 @@
+{
+    "name": "Wind",
+    "description": "Weapon has the wind element, Mt -2, Hit +10, and Crit +5. After combat that this unit initiated, for each hit, choose a mode:\n  * Move Target Foe one space.\n  * Move this unit one space.\n\nDisabled on non-Reason weapons and weapons with #{attribute}{Ice}, #{attribute}{Fire}, and #{attribute}{Lightning}",
+    "rank": 0,
+    "price": 0,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": -2,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["for reason", "explain"],
+    "hidden": false
+}

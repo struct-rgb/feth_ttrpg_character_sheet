@@ -1,0 +1,32 @@
+{
+  "name": "Take Cover",
+  "description": "Can only be equipped by Infantry units. Apply @{condition}{Spotted}{[Spotted -1]} to unit for one turn.",
+  "requires": "Level 5",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Other",
+  "rank": ""
+}

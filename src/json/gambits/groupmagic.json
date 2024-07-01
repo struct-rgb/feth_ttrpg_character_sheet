@@ -1,9 +1,9 @@
 {
     "name": "Group Magic",
-    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn.",
+    "description": "On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn.",
     "requires": "All (Authority D) (Any (Training Faith) (Training Reason) (Training Guile))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "D",
     "aoe": "Ring 0-1",
     "modifiers": {

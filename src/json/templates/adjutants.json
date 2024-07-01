@@ -1,43 +1,41 @@
 {
-	"name": "Adjutant Template",
-	"description": "This is a template adjutant; it can't be used",
-	"reactions": [],
-	"gambit": {
-    	"name": "Gambit Template",
-	    "description": "This is a template; it doesn't do anything.",
-	    "requires": "",
-	    "mttype": "str",
-	    "price": "",
-	    "rank": "",
-	    "aoe": "",
+	"name"        : "string",
+	"description" : "markup",
+	"?reactions"  : "tags",
+	"gambit"      : {
+    	"name"        : "string",
+	    "description" : "markup",
+	    "requires"    : "requires",
+	    "mttype"      : "mttype",
+	    "price"       : "number",
+	    "rank"        : "number",
+	    "aoe"         : "string",
 	    "modifiers": {
-	        "atk": 0,
-	        "mor": 0,
-	        "prot": 0,
-	        "resl": 0,
-	        "cap": 0,
-	        "auto": 0,
-	        "plu": 0,
-	        
-	        "end": 0,
-	        "br": 0,
-
-	        "hit": 0,
-	        "mt": 0,
-	        "cost": 0,
-	        "minrng": 0,
-	        "maxrng": 0,
-
-	        "epcost": 0,
-	        "capcost": 0
+	        "atk"     : "number",
+	        "mor"     : "number",
+	        "prot"    : "number",
+	        "resl"    : "number",
+	        "cap"     : "number",
+	        "auto"    : "number",
+	        "plu"     : "number",
+	        "end"     : "number",
+	        "br"      : "number",
+	        "hit"     : "number",
+	        "mt"      : "number",
+	        "cost"    : "number",
+	        "minrng"  : "number",
+	        "maxrng"  : "number",
+	        "epcost"  : "number",
+	        "capcost" : "number"
 	    },
 
-	    "comment": "Items in modifers can either be integers or string expressions",
-	    "tags": [],
-	    "hidden": false
+	    "comment" : "string",
+	    "tags"    : "tags",
+	    "hidden"  : "boolean"
 	},
 	
-    "comment": "Items in modifers can either be integers or string expressions",
-    "tags": [],
-    "hidden": false
+    "comment" : "string",
+    "tags"    : "tags",
+    "hidden"  : "boolean",
+    "?omit"   : "boolean"
 }

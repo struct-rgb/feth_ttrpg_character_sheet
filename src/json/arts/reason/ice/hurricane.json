@@ -1,0 +1,27 @@
+{
+  "name": "Hurricane" ,
+  "description": "Wind metamagic; create a 3x3 ring of @{tile}{Wind Torrent} tiles centered around target foe after combat. @{const}{variant}{Wind Wall Variant:} All current and created @{tile}{Wind Torrent}{Wind Torrents} have +1 or +2 (user’s choice) duration.",
+  "requires": "Reason C",
+  "compatible": "All (Skill Reason) (Tag `wind`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 7
+  },
+  "comment": "",
+  "tags": [
+    "wall", "wind", "variant"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C"
+}

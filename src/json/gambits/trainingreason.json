@@ -3,7 +3,7 @@
     "description": "Battalion's weapon type is Reason and deals damage vs Resl; grants Atk +6 and Range 1-2. A battalion can only possess one \"Training\" gambit.",
     "requires": "Authority E",
     "mttype": "mag",
-    "price": "",
+    "price": 0,
     "rank": "E",
     "aoe": "",
     "modifiers": {
@@ -27,7 +27,6 @@
         "epcost": 0,
         "capcost": 0
     },
-    "events": ["Training"],
 
     "comment": "Items in modifers can either be integers or string expressions",
     "tags": ["structure"],

@@ -1,0 +1,39 @@
+{
+    "name": "Kinshi Knight",
+    "description": "A flying knight who controls the skies",
+    "type": ["Flying"],
+    "tier": "Advanced",
+    "requires": "All (Bows C+) (Required (Flying C+)) (Required (Level 15))",
+    "abilities": ["Bow Advantage", "Air Superiority", "Canto+"],
+    "arts": ["Ardent Sacrefice", "Draw Back"],
+    "growths": {
+        "hp": 20,
+        "str": 15,
+        "mag": 15,
+        "dex": 15,
+        "spd": 25,
+        "def": 5,
+        "res": 10,
+        "lck": 25
+      },
+    "modifiers": {
+        "hp": 4,
+        "str": 2,
+        "mag": 2,
+        "dex": 13,
+        "spd": 6,
+        "def": 2,
+        "res": 2,
+        "lck": 5,
+        "mov": 4
+    },
+    "mount": 2,
+
+    "default_base": "Archer",
+    "default_preset": "Speed/Resistance/Luck",
+    "default_mainarm": "Bows",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

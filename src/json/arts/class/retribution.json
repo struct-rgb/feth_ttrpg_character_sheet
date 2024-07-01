@@ -1,0 +1,32 @@
+{
+  "name": "Retribution",
+  "description": "Trigger: once per turn, foe deals X lethal damage to this unit. Deal X nonlethal damage to that foe.\n\nMay still be chained if this unit has already reacted this chain.",
+  "requires": "Class `Sorcerer`",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "reaction"
+  ],
+  "hidden": true,
+  "type": "Other",
+  "rank": ""
+}

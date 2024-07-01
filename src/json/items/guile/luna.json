@@ -1,0 +1,27 @@
+{
+  "name": "Luna",
+  "type": "Guile",
+  "description": "@{const}{ap}{AP = 1}; target foe's Res is 0 during damage calculation (other sources of Resl apply as normal).",
+  "requires": "Guile C",
+  "rank": "C",
+  "price": 4120,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 65,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 6,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": [],
+  "hidden": false
+}

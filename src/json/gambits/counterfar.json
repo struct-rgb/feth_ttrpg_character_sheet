@@ -3,7 +3,7 @@
     "description": "Unit’s max range is 2 when counter-attacking.",
     "requires": "All (Authority D+) (Any (Training Swords) (Training Lances) (Training Axes) (Training `Mighty Fist`) (Training `Mystic Fist`))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "D+",
     "aoe": "",
     "modifiers": {

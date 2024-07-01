@@ -1,0 +1,35 @@
+{
+  "name": "Aegis of Ashes",
+  "description": "Create a @{tile}{Fire Patch} in this unit’s space. This unit and all allies occupying or adjacent to @{tile}{Fire Patch}{Fire Patches} regain 20% HP. For one turn, create a @{tile}{Fire Patch} in the space of any foe that targets a unit occupying a @{tile}{Fire Patch}.",
+  "requires": "Any (Reason C) (Reason B)",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": 4,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical",
+    "fire"
+  ],
+  "hidden": false,
+  "type": "Reason",
+  "rank": "C-B"
+}

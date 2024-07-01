@@ -1,0 +1,33 @@
+{
+  "name": "Lift",
+  "description": "Can only be equipped by Flying units.\n\nIf mounted, then until this unit moves two spaces or ends its movement, target Infantry or Armor ally has Flying movement and moves into the last space this unit occupied whenever this unit moves.",
+  "requires": "Flying D+",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0
+  },
+  "comment": "movement",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "movement",
+    "tactical",
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Flying",
+  "rank": "D+"
+}

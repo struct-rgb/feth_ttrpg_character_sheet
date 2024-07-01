@@ -1,0 +1,39 @@
+{
+    "name": "Holy Knight",
+    "description": "A mounted knight versed in both weapons and magic. Choose one weapon Advantage skill on reclass.",
+    "type": ["Cavalry"],
+    "tier": "Advanced",
+    "requires": "All (Faith C+) (Required (Riding C+)) (Required (Level 15))",
+    "abilities": [["Sword Advantage", "Lance Advantage"], "Faith Advantage", "Hope Aura", "Canto+"],
+    "arts": ["Hybrid Strike"],
+    "growths": {
+        "hp": 25,
+        "str": 20,
+        "mag": 20,
+        "dex": 10,
+        "spd": 5,
+        "def": 5,
+        "res": 30,
+        "lck": 20
+      },
+    "modifiers": {
+        "hp": 5,
+        "str": 4,
+        "mag": 4,
+        "dex": 4,
+        "spd": 1,
+        "def": 3,
+        "res": 6,
+        "lck": 8,
+        "mov": 4
+    },
+    "mount": 3,
+
+    "default_base": "Priest",
+    "default_preset": "Power/Defense/Luck",
+    "default_mainarm": "Faith",
+    "default_sidearm": ["Swords", "Lances"],
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

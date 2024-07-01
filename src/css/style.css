@@ -362,3 +362,8 @@ fieldset {
 .monospace {
 	font-family: monospace;
 }
+
+.table {
+	display: inline-block;
+	font-family: monospace;
+}

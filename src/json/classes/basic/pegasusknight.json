@@ -1,0 +1,39 @@
+{
+    "name": "Pegasus Knight",
+    "description": "A nimble Flying class with a high speed, resistance, and avoid.",
+    "type": ["Flying"],
+    "tier": "Starting",
+    "requires": "Flying D",
+    "abilities": [["Sword Prowess", "Lance Prowess", "Bow Prowess", "Reason Prowess", "Faith Prowess", "Guile Prowess"], "Avo +5", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 20,
+        "str": 10,
+        "mag": 10,
+        "dex": 5,
+        "spd": 20,
+        "def": 10,
+        "res": 15,
+        "lck": 15
+      },
+    "modifiers": {
+        "hp": 2,
+        "str": 2,
+        "mag": 2,
+        "dex": 2,
+        "spd": 5,
+        "def": 1,
+        "res": 3,
+        "lck": 6,
+        "mov": 4
+    },
+    "mount": 2,
+
+    "default_base": "Pegasus Knight",
+    "default_preset": "Speed/Resistance/Luck",
+    "default_mainarm": ["Swords", "Lances"],
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

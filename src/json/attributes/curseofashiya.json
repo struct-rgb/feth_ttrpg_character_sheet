@@ -1,6 +1,5 @@
 {
     "name": "Curse of Ashiya",
-    "type": "Swords",
     "description": "Grants weapon +40 Crit. Inflicts 5 nonlethal damage to wielder after combat. Decreases Max TP by 4 when placed in the Unit’s Inventory. (Penalty can only be removed using Restore once traded to another Unit.) Disabled on non-Swords and on weapons with Range > 1.",
     "rank": 4,
     "price": 2400,

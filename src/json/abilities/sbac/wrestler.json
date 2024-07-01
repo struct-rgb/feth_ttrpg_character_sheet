@@ -1,0 +1,41 @@
+{
+  "name": "Wrestler",
+  "description": "On hit, after combat at Range ≤ 1, (Dex or Luc + 20)% chance this unit may choose one of the following:\n • Move target foe up to two spaces in a cardinal direction (you choose).\n • Apply @{condition}{Rattled}{[Rattled]} to target foe for one turn.\n • Apply @{condition}{Taunted}{[Taunted]} to target foe for one turn.\n • Apply @{const}{gbp}{[Str -3]} to target foe for one turn.",
+  "requires": "All (Brawl D+) (Level 8)",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 4
+  },
+  "rows": [
+    {
+      "name": "Wrestler",
+      "when": "if unit|total|minrng <= 1 then 1 else 0 end",
+      "expr": "20 + unit|charm + other|trigger",
+      "roll": true
+    }
+  ],
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [],
+  "hidden": false
+}

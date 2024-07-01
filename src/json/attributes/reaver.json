@@ -1,6 +1,5 @@
 {
     "name": "Reaver",
-    "type": "Any",
     "description": "Reverses weapon triangle and consumes 3 TP on hit. This attribute is disabled while unit has 0 TP.\n\nDisabled on spells, Bows, and Brawl.",
     "rank": 2,
     "price": 2400,

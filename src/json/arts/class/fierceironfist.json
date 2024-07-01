@@ -1,0 +1,25 @@
+{
+  "name": "Fierce Iron Fist",
+  "description": "@{const}{ap}{AP 5} (three consecutive attacks).",
+  "requires": "Class Grappler",
+  "compatible": "All (Skill Brawl) (Not (Tag `tactical`))",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 10,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 6
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": true,
+  "type": "Brawl",
+  "rank": ""
+}

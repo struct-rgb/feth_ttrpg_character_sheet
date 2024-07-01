@@ -1,9 +1,9 @@
 {
     "name": "Poison Tactic",
-    "description": "On hit, apply @{condition:Rattled:[Rattled]} to all foes in AoE for one turn and apply @{condition:Poisoned:[Poisoned]} to all foes in AoE.",
+    "description": "On hit, apply @{condition}{Rattled}{[Rattled]} to all foes in AoE for one turn and apply @{condition}{Poisoned}{[Poisoned]} to all foes in AoE.",
     "requires": "Authority C",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "C",
     "aoe": "Half Circle 2",
     "modifiers": {

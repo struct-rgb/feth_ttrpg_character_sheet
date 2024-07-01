@@ -1,0 +1,35 @@
+{
+  "name": "Martial Dance",
+  "description": "Might increases based on user's Charm. Mt +3 if weapon has Max Range = 1.",
+  "requires": "All (Class Dancer) (Any (Axes E) (Lances E) (Swords E) (Bows E))",
+  "compatible": "Skill Axes Lances Swords Bows",
+  "mttype": "else",
+  "modifiers": {
+    "mt": [
+      "bothif item|total|maxrng == 1",
+      "  then 4 + floor((Lck {unit|total|lck}) * 0.3)",
+      "  else 1 + floor((Lck {unit|total|lck}) * 0.3)",
+      "end"
+    ],
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 20,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tiles": 0,
+    "spcost": 2,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "scales", "depricated"
+  ],
+  "hidden": true,
+  "type": ["Axes", "Lances", "Swords", "Bows"],
+  "rank": "E"
+}

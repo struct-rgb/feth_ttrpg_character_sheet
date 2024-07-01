@@ -1,0 +1,35 @@
+{
+  "name": "Shove",
+  "description": "Move target adjacent ally 1 space away from this unit in the direction target ally is from this unit; consumes half of an arts slot starting at level 10.",
+  "requires": "None",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "slotcost": "bothif unit|level >= 10 then 0.5 else 1.0 end"
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "movement",
+    "tactical",
+    "halfslot",
+    "inclusive"
+  ],
+  "hidden": false,
+  "type": "Other",
+  "rank": ""
+}

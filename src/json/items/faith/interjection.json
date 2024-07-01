@@ -1,0 +1,35 @@
+{
+  "name": "Interjection",
+  "type": "Faith",
+  "description": "On wielder's phase, target an ally in Range 1-3 and a foe within this weapon’s range of that ally. Initiate combat with foe as from ally’s space; after combat, for each hit, restore (4 + Mag / 4) HP to that ally.",
+  "requires": "Faith D",
+  "rank": "D",
+  "price": 900,
+  "mttype": "mag",
+  "modifiers": {
+    "mt": 3,
+    "prot": 0,
+    "resl": 0,
+    "hit": 80,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+
+  "rows": [
+    {
+      "name": "Healing",
+      "expr": "4 + floor((unit|total|mag)/4)"
+    }
+  ],
+
+  "comment": "Incompatible with all Attributes except Refined.",
+  "tags": [],
+  "hidden": false
+}

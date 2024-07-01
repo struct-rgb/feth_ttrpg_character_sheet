@@ -1,6 +1,5 @@
 {
     "name": "Improvised",
-    "type": "Any",
     "description": "This weapon’s selling cost is 0G.\nAll attributes on this weapon are always enabled, but each time this weapon is used, there’s a 30% chance that it will lose the most expensive attribute not already selected to be lost after the battle. This attribute is always lost last. If two or more other attributes are tied you may choose which one(s) are lost.\n\nCannot be purchased.",
     "rank": 0,
     "price": 0,
@@ -21,6 +20,13 @@
         "tp": 0,
         "sp": 0
     },
+    "rows": [
+        {
+            "name": "Deteriorate",
+            "expr": 30,
+            "roll": true
+        }
+    ],
 
     "comment": "Items in modifers should be integers",
     "tags": ["for axes", "for swords", "for lances", "for faith", "for reason", "for guile", "for brawl", "for bows", "explain"],

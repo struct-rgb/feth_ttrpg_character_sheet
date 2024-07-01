@@ -1,0 +1,39 @@
+{
+    "name": "Brawler",
+    "description": "An Infantry class that recurs TP when using Brawl and has a large SP pool and high movement but low resistance.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Brawl D",
+    "abilities": ["Brawl Prowess", "Brawl Consumption 1", "Stamina +5"],
+    "arts": [],
+    "growths": {
+        "hp": 30,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 15,
+        "def": 10,
+        "res": 0,
+        "lck": 10
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 2,
+        "mag": 2,
+        "dex": 8,
+        "spd": 3,
+        "def": 2,
+        "res": 0,
+        "lck": 5,
+        "mov": 6
+    },
+    "mount": 0,
+
+    "default_base": "Brawler",
+    "default_preset": "Balance/Defense/Dexterity",
+    "default_mainarm": ["Metal", "Beast"],
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

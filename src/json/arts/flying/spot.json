@@ -1,0 +1,32 @@
+{
+  "name": "Spot",
+  "description": "Apply @{condition}{Spotted}{[Spotted +1]} to target foe for one turn or until the end of that unit's next combat.",
+  "requires": "Flying D",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 80,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 5,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "movement",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "condition",
+    "tactical"
+  ],
+  "hidden": false,
+  "type": "Flying",
+  "rank": "D"
+}

@@ -2,7 +2,6 @@
 
 import re
 
-
 GRAMMER = """
 <expr>   ::= <list> | <nested>
 <list>   ::= <quote> | <symbol> | <string> | <nested> | 
@@ -196,6 +195,11 @@ class Parser:
 		token = self.token()
 		self._to_next()
 
+		try:
+			token = int(token)
+		except ValueError as error:
+			pass
+
 		self.symbols.add(token)
 		return token
 
@@ -217,10 +221,11 @@ def parse(source, symbols=None):
 
 class AST:
 
-	def __init__(self, source):
+	def __init__(self, source, context={}):
 		self.symbols = set()
 		parser       = Parser(self.symbols)
-		self.ast     = parse(source)
+		self.ast     = parser.parse_source(source)
+		self.context = context
 
 	def __iter__(self):
 		return self.nodeiter();
@@ -274,6 +279,121 @@ class AST:
 
 	def __repr__(self):
 		return repr(self.ast)
+
+	def exec(self, context=None):
+
+		if context is None:
+			context = self.context
+
+		def walk(array):
+
+			args = []
+
+			for item in array:
+				is_value = isinstance(item, (str, int)) 
+				args.append(item if is_value else walk(item))
+
+			return self.apply(context, args)
+
+		return walk(self.ast)
+
+	def apply(self, context, node):
+		operator = node[0]
+		if operator not in context:
+			raise KeyError(f"{node} undefined for this context")
+		return context[operator](*node)
+
+def relational(inner):
+
+	def outer(self, *args):
+
+		if len(args) < 3:
+			raise ValueError("needs at least two arguments")
+
+		result = True
+		for i in range(2, len(args)):
+			result = result and inner(args[i - 1], args[i])
+		return result
+
+	return outer
+
+def cumulative(inner):
+
+	def outer(self, *args):
+
+		if len(args) < 3:
+			raise ValueError("needs at least two arguments")
+
+		result = args[1]
+		for i in range(2, len(args)):
+			result = inner(result, args[i])
+		return result
+
+	return outer
+
+
+class Query(AST):
+
+	def __init__(self, source):
+
+		self.table  = {
+			"."        : self.dot,
+			"=="       : self.eq,
+			"<>"       : self.ne,
+			"<"        : self.lt,
+			">"        : self.gt,
+			">="       : self.ge,
+			"<="       : self.le,
+			"+"        : self.add,
+			"-"        : self.sub,
+			"*"        : self.mult,
+			"/"        : self.div,
+			"All"      : self.oand,
+			"Any"      : self.oor,
+			"Not"      : self.onot,
+			"True"     : self.true,
+			"False"    : self.false,
+			"IsString" : self.isstr,
+		}
+
+		super().__init__(source, self.table)
+
+		self.target = None
+		
+	def __index__(this, key):
+		return this.table[key]
+
+	def dot(self, *args):
+		
+		result = self.target
+
+		for item in range(1, len(args)):
+			result = result[args[item]]
+
+		return result
+
+	eq    = relational(lambda a, b: a == b)
+	ne    = relational(lambda a, b: a != b)
+	lt    = relational(lambda a, b: a <  b)
+	gt    = relational(lambda a, b: a >  b)
+	ge    = relational(lambda a, b: a >= b)
+	le    = relational(lambda a, b: a <= b)
+	add   = cumulative(lambda a, b: a + b)
+	sub   = cumulative(lambda a, b: a - b)
+	mult  = cumulative(lambda a, b: a * b)
+	div   = cumulative(lambda a, b: a / b)
+	oand  = cumulative(lambda a, b: a and b)
+	oor   = cumulative(lambda a, b: a or b)
+	onot  = cumulative(lambda a, b: a + b)
+	true  = lambda *args: True
+	false = lambda *args: False
+	isstr = lambda op, *args: any(
+		isinstance(a, str) for a in args
+	)
+
+
+
+
 
 
 

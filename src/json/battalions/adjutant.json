@@ -3,7 +3,7 @@
     "description": "A battalion that represents having an adjutant with no battalion equipped otherwise. This battalion has zero capacity regardless of rank.",
     "rank": "E",
     "gambits": [],
-    "requires": "",
+    "requires": "None",
     "price": 0,
 
     "growths": {

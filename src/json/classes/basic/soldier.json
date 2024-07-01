@@ -1,0 +1,39 @@
+{
+    "name": "Soldier",
+    "description": "An stalwart Lances focused Infantry class with that focuses on consistent defensive play, with high HP, defense, and critcal avoid, but low luck.",
+    "type": ["Infantry"],
+    "tier": "Starting",
+    "requires": "Lances D",
+    "abilities": ["Lance Prowess", "Lance Arms Shield", "Crit Avo +5"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 10,
+        "dex": 20,
+        "spd": 5,
+        "def": 15,
+        "res": 10,
+        "lck": 5
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 4,
+        "mag": 2,
+        "dex": 5,
+        "spd": 1,
+        "def": 4,
+        "res": 1,
+        "lck": 0,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Soldier",
+    "default_preset": "Balance/Defense/Dexterity",
+    "default_mainarm": "Lances",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

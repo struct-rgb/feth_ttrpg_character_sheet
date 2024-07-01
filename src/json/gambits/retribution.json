@@ -1,9 +1,9 @@
 {
     "name": "Retribution",
-    "description": "Allies in AoE counterattack regardless of range for one turn. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+    "description": "Allies in AoE counterattack regardless of range for one turn. @{style}{italic}{(Effect is attached to the spaces, not the units.)}",
     "requires": "All (Authority A) (Outfitting Armor)",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "A",
     "aoe": "Box 3x2",
     "modifiers": {

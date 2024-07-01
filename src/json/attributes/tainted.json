@@ -1,6 +1,6 @@
 {
     "name": "Tainted",
-    "description": "On hit, after combat, user may pay 3 TP to apply @{condition:Sickness:[Sickness]} to target foe until the end of target foe’s next combat this turn.\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.\n\nDisabled on weapons with Max Range > 4.",
+    "description": "On hit, after combat, user may pay 3 TP to apply @{condition}{Sickness}{[Sickness]} to target foe until the end of target foe’s next combat this turn.\n\nIf weapon is an Axe, Lance, or Sword with the Ranged property, ignore Mt penalty.\n\nDisabled on weapons with Max Range > 4.",
     "rank": 1,
     "price": 450,
 

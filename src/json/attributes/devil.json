@@ -6,7 +6,7 @@
 
     "mttype": "else",
     "modifiers": {
-        "mt": "ask [Devil?], No {0}; Yes {9} end",
+        "mt": "fill deny([Devil?], 9, 0)",
         "prot": 0,
         "resl": 0,
         "hit": 0,

@@ -1,0 +1,42 @@
+{
+    "name": "Tripwire",
+    "description": "Has 1 HP and lasts until reduced to 0 HP.\nDestroys itself and all connecting Tripwires if not adjacent to two impassible or player-created tiles. When entered by a non-Flying unit, this and all connecting Tripwires are destroyed and @{condition}{Halt}{[Halt]} is applied to that unit for one phase.",
+    "requires": "None",
+    "stats": {
+        "hp": 0,
+        "prot": 0,
+        "resl": 0,
+        "mov": 0
+    },
+    "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+
+        "minrng": 0,
+        "maxrng": 0,
+
+        "mov": 0
+    },
+
+    "comment": "Items in modifers can either be integers or string expressions",
+    "tags": ["movement"],
+    "hidden": false
+}

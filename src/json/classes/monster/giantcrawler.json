@@ -1,0 +1,39 @@
+{
+  "name": "Giant Crawler",
+  "description": "This massive worm has grown to an unnatural size through the absorption of magic",
+  "type": ["Monster"],
+  "tier": "Monster",
+  "requires": "Innate",
+  "abilities": [],
+  "arts": [],
+  "growths": {
+    "hp": 30,
+    "str": 15,
+    "mag": 15,
+    "dex": 15,
+    "spd": 25,
+    "def": 15,
+    "res": 25,
+    "lck": 15
+  },
+  "modifiers": {
+    "hp": 12,
+    "str": 2,
+    "mag": 2,
+    "dex": 1,
+    "spd": 5,
+    "def": 2,
+    "res": 5,
+    "lck": 3,
+    "mov": 2
+  },
+  "mount": 0,
+
+  "default_base": "Giant Crawler",
+  "default_preset": "Speed/Balance/Balance",
+  "default_mainarm": "None",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

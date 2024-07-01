@@ -1,6 +1,6 @@
 {
     "name": "Stalwart",
-    "description": "After combat, if unit is affected by @{const:gbp:[Mt +X]}, increase the value of X by 1. If not, apply @{const:gbp:[Mt +1]} to unit for one turn.",
+    "description": "After combat, if unit is affected by @{const}{gbp}{[Mt +X]}, increase the value of X by 1. If not, apply @{const}{gbp}{[Mt +1]} to unit for one turn.",
     "rank": 1,
     "price": 1250,
 

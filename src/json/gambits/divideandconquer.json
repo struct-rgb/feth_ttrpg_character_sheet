@@ -3,7 +3,7 @@
     "description": "Grants Plu +1",
     "requires": "All (Authority B) (Any (Outfitting Flying) (Outfitting Armor))",
     "mttype": "else",
-    "price": "",
+    "price": 0,
     "rank": "B",
     "aoe": "",
     "modifiers": {

@@ -1,6 +1,5 @@
 {
     "name": "Magic",
-    "type": "Prompt",
     "description": "Weapon deals magic-based damage.\n\nIf attacking from Range > 1, consumes 2 TP after combat. Disabled on spells and Brawl weapons.",
     "rank": 1,
     "price": 800,

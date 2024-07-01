@@ -1,0 +1,35 @@
+{
+  "name": "Gentle Heroics",
+  "description": "When a foe initiates combat with an adjacent ally and hits, after combat, roll 1d6 and apply the corresponding condition to that foe for one turn: 1=@{condition}{Exposed}{[Exposed]}, 2=@{condition}{Hexed}{[Hexed]}, 3=@{condition}{Marked}{[Marked]}, 4=@{condition}{Rattled}{[Rattled]}, 5=@{condition}{Vulnerable}{[Vulnerable]}, 6=Roll Again. If this unit rolls three sixes in a row, apply @{condition}{Doomed}{[Doomed]} and stop rolling.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Esme Durham's personal.",
+  "tags": [
+    "personal"
+  ],
+  "hidden": true
+}

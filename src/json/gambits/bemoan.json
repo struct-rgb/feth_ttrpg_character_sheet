@@ -3,7 +3,7 @@
     "description": "Extend the duration of one condition affecting a foe in target tile by one turn.",
     "requires": "Authority D+",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "D+",
     "aoe": "None",
     "modifiers": {

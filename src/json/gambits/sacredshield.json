@@ -1,9 +1,9 @@
 {
     "name": "Sacred Shield",
-    "description": "Allies in AoE take no damage from physical attacks for one turn. @{style:italic:(Effect is attached to the spaces, not the units.)}",
+    "description": "Allies in AoE take no damage from physical attacks for one turn. @{style}{italic}{(Effect is attached to the spaces, not the units.)}",
     "requires": "All (Authority B) (Outfitting Armor)",
     "mttype": "none",
-    "price": "",
+    "price": 0,
     "rank": "B",
     "aoe": "Box 3x1",
     "modifiers": {

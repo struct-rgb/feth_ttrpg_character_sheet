@@ -1,0 +1,39 @@
+{
+  "name": "Priest",
+  "description": "An devout Infantry class that recurs TP when using Faith and has powerful healing and high resistance but low defense, HP, and movement.",
+  "type": ["Infantry"],
+  "tier": "Starting",
+  "requires": "Faith D",
+  "abilities": ["Faith Prowess", "Faith Consumption 1", "Faith Heal +5" ],
+    "arts": [],
+  "growths": {
+    "hp": 10,
+    "str": 10,
+    "mag": 15,
+    "dex": 10,
+    "spd": 5,
+    "def": 0,
+    "res": 30,
+    "lck": 20
+  },
+  "modifiers": {
+    "hp": 0,
+    "str": 1,
+    "mag": 4,
+    "dex": 5,
+    "spd": 1,
+    "def": 0,
+    "res": 5,
+    "lck": 8,
+    "mov": 4
+  },
+  "mount": 0,
+
+  "default_base": "Priest",
+  "default_preset": "Balance/Resistance/Luck",
+  "default_mainarm": "Faith",
+  "default_sidearm": "None",
+  "comment": "Items in growth, modifiers, and mount should be integers",
+  "tags": [],
+  "hidden": false
+}

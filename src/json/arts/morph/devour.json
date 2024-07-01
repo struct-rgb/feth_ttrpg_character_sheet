@@ -1,0 +1,27 @@
+{
+  "name": "Devour",
+  "description": "Can only be used while morphed.\n\nIf target foe is defeated this turn, this unit regains 20% HP when it is defeated.",
+  "requires": "Any (Morph C) (Morph B)",
+  "compatible": "Not (Tag `no might`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 6,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 5
+  },
+  "comment": "",
+  "tags": [
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Morph",
+  "rank": "C-B"
+}

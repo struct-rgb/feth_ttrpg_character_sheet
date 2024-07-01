@@ -1,0 +1,34 @@
+{
+  "name": "Caltrops Trap",
+  "description": "Create 4 @{tile}{Caltrops} tiles in connecting spaces.",
+  "requires": "Any (Bows C) (Bows B)",
+  "compatible": "None",
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 2,
+    "tiles": 0,
+    "spcost": 0,
+    "tpcost": 0,
+    "sp": 5,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no hit",
+    "no crit",
+    "no stats",
+    "tactical"
+  ],
+  "hidden": false,
+  "type": "Bows",
+  "rank": "C-B"
+}

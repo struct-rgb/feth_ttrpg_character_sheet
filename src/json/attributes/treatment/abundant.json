@@ -1,0 +1,27 @@
+{
+    "name": "Treatment: Abundant",
+    "description": "On a critical heal, all excess healing may be expended to apply that much @{condition}{Overheal}{[Overheal]} to target ally for one turn.\n\nDisabled on all items except #{item}{First Aid Kit} with one @{const}{treatment}{“Treatment”} attribute and #{item}{Heal}.",
+    "rank": 2,
+    "price": 2000,
+
+    "mttype": "else",
+    "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+    },
+
+    "comment": "Items in modifers should be integers",
+    "tags": ["treatment", "for faith", "for other", "explain"],
+    "hidden": false
+}

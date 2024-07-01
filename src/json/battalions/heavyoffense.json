@@ -3,7 +3,7 @@
     "description": "A battalion with high stats and low capacity designed for offensive gambit usage.",
     "rank": "E",
     "gambits": [],
-    "requires": "",
+    "requires": "None",
     "price": 0,
 
     "growths": {

@@ -1,7 +1,6 @@
 {
     "name": "Venin",
-    "type": "Prompt",
-    "description": "On hit, after combat, user may pay 3 TP to apply @{condition:Poisoned:[Poisoned]} to target foe.\n\nDisabled on spells.",
+    "description": "On hit, after combat, user may pay 3 TP to apply @{condition}{Poisoned}{[Poisoned]} to target foe.\n\nDisabled on spells.",
     "rank": 2,
     "price": 2800,
 

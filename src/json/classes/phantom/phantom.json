@@ -1,0 +1,39 @@
+{
+    "name": "Phantom",
+    "description": "A spirit summoned to do battle.",
+    "type": ["Monster", "Flying"],
+    "tier": "Other",
+    "requires": "None",
+    "abilities": ["Pass", "Flying Effect Null"],
+    "arts": [],
+    "growths": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0
+      },
+    "modifiers": {
+        "hp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mov": 5
+    },
+    "mount": 0,
+
+    "default_base": "Phantom",
+    "default_preset": "Custom",
+    "default_mainarm": "Guile",
+    "default_sidearm": "None",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": ["depricated"],
+    "hidden": true
+}

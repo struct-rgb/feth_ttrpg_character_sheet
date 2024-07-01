@@ -1,7 +1,6 @@
 {
     "name": "Refined",
-    "type": "Any",
-    "description": "Grants weapon +1 Mt, +5 Hit and +5 Crit. Disabled on spells except for @{item::Essence}, @{item::Fire}, @{item::Thunder}, @{item::Wind}, @{item::Blizzard}, @{item::Mote}, @{item::Banish}, @{item::Miasma}, @{item::Frostbite}, @{item::Cutting Gale}, @{item::Bolganone} and @{item::Static Shock}.",
+    "description": "Grants weapon +1 Mt, +5 Hit and +5 Crit. Disabled on spells except for #{item}{Essence}, #{item}{Mote}, #{item}{Gloom}, #{item}{Bolt}, #{item}{Banish}, #{item}{Miasma}, and #{item}{Blast}.",
     "rank": 1,
     "price": 650,
 

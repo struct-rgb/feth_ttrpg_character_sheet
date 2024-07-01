@@ -1,0 +1,38 @@
+{
+  "name": "Omnibreaker",
+  "description": "Grants Hit +20 and Avo +20 in combat against @{tooltip}{Monster}{Original text said \"Monster, Mutant, and Undead\", but Undead traditionally are Monster units, and for Mutant, I would say it's up to whoever designed them to specify whether they're monsters or not. I don't think we need to add extra unit types to make niche things more complicated and more niche, personally. If people are designing wierd units, it's up to them to add a diversity of the existing types to them. Rant over.} units. Also, if this unit is using Reason and has other \"breaker\" skills equipped, grants an additional Hit +10 and Avo +10 in combat when those skills are active.",
+  "requires": "All (Reason B) (Armor B) (Level 20)",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": "fill affirm([Omnibreaker?], 0, 20) + fill affirm([Other Breaker?], 0, 10)",
+    "avo": "fill affirm([Omnibreaker?], 0, 20) + fill affirm([Other Breaker?], 0, 10)",
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 6
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "rework",
+    "breaker",
+    "in combat",
+    "depricated"
+  ],
+  "hidden": true
+}

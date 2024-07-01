@@ -1,0 +1,39 @@
+{
+    "name": "Wyvern Rider",
+    "description": "A fierce, strength focused Flying class with high defense but low resistance.",
+    "type": ["Flying"],
+    "tier": "Starting",
+    "requires": "Flying D",
+    "abilities": [["Axe Prowess", "Lance Prowess", "Bow Prowess", "Reason Prowess", "Faith Prowess", "Guile Prowess"], "Avo +5", "Canto"],
+    "arts": [],
+    "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 10,
+        "dex": 15,
+        "spd": 10,
+        "def": 20,
+        "res": 0,
+        "lck": 10
+      },
+    "modifiers": {
+        "hp": 6,
+        "str": 3,
+        "mag": 1,
+        "dex": 3,
+        "spd": 1,
+        "def": 5,
+        "res": 0,
+        "lck": 5,
+        "mov": 4
+    },
+    "mount": 2,
+
+    "default_base": "Wyvern Rider",
+    "default_preset": "Balance/Defense/Dexterity",
+    "default_mainarm": "Axes",
+    "default_sidearm": "Lances",
+    "comment": "Items in growth, modifiers, and mount should be integers",
+    "tags": [],
+    "hidden": false
+}

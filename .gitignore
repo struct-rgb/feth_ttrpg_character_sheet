@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# my test files for manual debugging
+test
+.build_error.txt
+.package-lock.json
+

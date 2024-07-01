@@ -5,43 +5,27 @@
  * @module sheet
  */
 
-/* global capitalize */
-/* global wrap */
-/* global uniqueID */
-/* global tooltip */
-/* global element */
-/* global Version */
-/* global hilight */
-/* global SwapText */
-/* global Grade */
-/* global uniqueLabel */
-/* global BigButton */
-/* global chain */
-/* global Theme */
-/* global Toggle */
+/* global
+	BigButton, Grade, SwapText, Theme, Toggle, Version,
+	capitalize, chain, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
+*/
 
-/* global Expression */
 /* global Polish */
 
+/* global Calculator */
+
 /* global Macros */
+
+/* global Markup */
 
 /* global Notebook */
 
 /* global Presetter */
 
-/* global Feature */
-/* global Ability */
-/* global Class */
-/* global Art */
-/* global Item */
-/* global Equipment */
-/* global Attribute */
-/* global Action */
-/* global Condition */
-/* global Tile */
-/* global Adjutant */
-/* global Preset */
-/* global Gambit */
+/* global
+	Ability, Action, Adjutant, Art, Attribute, Class, Condition, Equipment, 
+	Feature, Gambit, Item, Preset, Tile
+*/
 
 /* global Legacy */
 
@@ -50,9 +34,12 @@
 /* global Items */
 /* global Characters */
 
-/* global CategoryModel */
-/* global MultiActiveCategory */
-/* global SingleActiveCategory */
+/* global Requirements */
+/* global Reminder */
+
+/* global
+	CategoryModel MultiActiveCategory SingleActiveCategory
+*/
 
 /* global Forecast   */
 
@@ -556,18 +543,6 @@ class Buildables {
  * VisualAid v/
  */
 
-class Refreshable {
-
-	constructor(callback) {
-		this.callback = callback;
-	}
-
-	refresh() {
-		return this.callback();
-	}
-
-}
-
 class Refresher {
 
 	constructor(sheet) {
@@ -712,7 +687,6 @@ class Refresher {
 }
 
 
-
 /**
  * Class representing the main body of the sheet.
  */
@@ -726,8 +700,6 @@ class Sheet {
 
 		/* main definition data object */
 		this.data = data;
-
-		this.macros = new Macros.UserInterface(this);
 
 		this.refresher = new Refresher(this);
 
@@ -770,7 +742,7 @@ class Sheet {
 
 			for (let each of templates) {
 				const string      = each.define.join("\n");
-				const [name, tmp] = Expression.Template.parse(string, defs);
+				const [name, tmp] = Calculator.Template.parse(string, defs);
 				defs[name]        = tmp;
 
 				/* help and referencelookup stuff */
@@ -784,7 +756,7 @@ class Sheet {
 				);
 				tmp.about  = new SwapText([
 					argist(tmp, wrap(...each.about), ...each.args),
-					element("div", Expression.highlight(string), "calc-code"),
+					element("div", Calculator.highlight(string), "calc-code"),
 				]).root;
 			}
 
@@ -792,7 +764,15 @@ class Sheet {
 
 		})(data.macros);
 
-		const compiler = new Expression.Compiler(context, macros);
+		// for markup namespaces
+		this.marker  = new Markup.Compiler(
+			Reminder.getNamespace(definitions),
+			this.refresher,
+		);
+
+		this.macros = new Macros.UserInterface(this);
+
+		const compiler = new Calculator.Compiler(context, macros);
 		this.compiler  = compiler;
 		this.context(compiler, this.macros.varopts);
 		this.definez   = context;
@@ -803,8 +783,8 @@ class Sheet {
 			compiler.dependancies("unit|total|minrng")
 		);
 
-		this.runenv    = new Expression.Env(
-			Expression.Env.RUNTIME, this.definez
+		this.runenv    = new Calculator.Env(
+			Calculator.Env.RUNTIME, this.definez
 		);
 
 		const predicates = {};
@@ -817,7 +797,7 @@ class Sheet {
 
 		/* set lookup tables for each feature class */
 		for (let each of Feature.SUBCLASSES) {
-			each.setLookupByName(data, compiler, predicator);
+			each.setLookupByName(data, compiler, predicator, this.marker);
 		}
 
 		/* special nonsense */
@@ -833,6 +813,9 @@ class Sheet {
 
 		this.skills = new Skills.UserInterface(data.skills, this);
 		skill_section.appendChild(this.skills.root);
+
+		// this.checks = new Checks.UserInterface(definitions.traits, this);
+		// skill_section.appendChild(this.checks.root);
 
 		/* create callbacks for category events */
 		const refresh = (category, key) => {
@@ -941,6 +924,10 @@ class Sheet {
 			this.stats.pointbuy.root,
 		]));
 
+		const skillTriggers = definitions.skills.map(
+			skill => `unit|rank|${skill}`
+		);
+
 		/* Ability category */
 
 		let model = new CategoryModel(
@@ -951,7 +938,7 @@ class Sheet {
 		
 		this.refresher.register(() => {
 			this._abilities_verdict.data = this.checkAbilitySlots();
-		}, ["abilities|slotcost"]);
+		}, ["abilities|capcost", ...skillTriggers]);
 
 		this.abilities = new MultiActiveCategory(model, {
 			name        : "equip",
@@ -983,7 +970,7 @@ class Sheet {
 
 		this.refresher.register(() => {
 			this._arts_verdict.data = this.checkArtsSlots();
-		}, ["arts|slotcost"]);
+		}, ["arts|slotcost", ...skillTriggers]);
 
 		this.arts = new MultiActiveCategory(model, {
 			name        : "equip",
@@ -1365,204 +1352,11 @@ class Sheet {
 	}
 
 	predicates(base) {
-
-		const ctx = base || {};
-
-		const add = (name, func) => {
-			ctx[name] = func;
-		};
-
-		function autopass() {
-			return (op) => ({
-				require: false,
-				succeed: false,
-				boolean: true
-			});
-		}
-
-		add("All", (op, ...args) => args.reduce((x, y) => ({
-			require: x.require || y.require,
-			succeed: false,
-			boolean: (
-				(x.boolean || (y.succeed && !x.require))
-					&&
-				(y.boolean || (x.succeed && !y.require))
-			),
-		})));
-
-		add("Any", (op, ...args) => args.reduce((x, y) => ({
-			require: x.require || y.require,
-			succeed: x.succeed || y.succeed,
-			boolean: x.boolean || y.boolean,
-		})));
-
-		add("Required", ((op, x) => {
-			x.require = true;
-			return x;
-		}));
-
-		add("Permission", (op, text) => ({
-			require: false,
-			succeed: false,
-			boolean: true,
-			// boolean: confirm(text),
-		}));
-
-		add("None", autopass());
-		// add("Other", autopass());
-		add("Barrier", autopass());
-		add("Innate", autopass());
-		add("Unfinished", autopass());
-
-		add("Level", (op, level) => ({
-			require: false,
-			succeed: false,
-			boolean: this.stats.level >= level
-		}));
-
-		for (let each of definitions.skills) {
-			const skill = each;
-
-			add(skill, (name, grade) => {
-				const diff = (
-					Grade.toNumber(this.skills[skill].grade)
-						-
-					Grade.toNumber(grade)
-				);
-
-				return {
-					require: false,
-					succeed: diff >= 1,
-					boolean: diff >= 0,
-				};
-			});
-		}
-
-		add("Other", (op, grade) => {
-			let diff = 0;
-			for (let each of definitions.skills) {
-				diff = (
-					Grade.toNumber(grade)
-						-
-					Grade.toNumber(this.skills[each].grade)
-				);
-
-				if (diff <= 0) break;
-			}
-
-			return {
-				require: false,
-				succeed: false,
-				boolean: diff <= 0,
-			};		
-		});
-
-		add("ClassType", (op, type) => {
-			return {
-				require: true,
-				succeed: false, 
-				boolean: this.character.class.type.includes(type),
-			};
-		});
-
-		add("Class", (op, name) => {
-			return {
-				require: true,
-				succeed: false, 
-				boolean: !name || this.character.class.name == name,
-			};
-		});
-
-		add("Equipment", (op, name) => {
-
-			const active = this.equipment.active;
-
-			return {
-				require: true,
-				succeed: false, 
-				boolean: active ? active == name : false,
-			};
-		});
-
-		add("Item", (op, name) => {
-
-			const active = this.wb.active;
-
-			return {
-				require: true,
-				succeed: false, 
-				boolean: active
-					? active.template == name
-					: false,
-			};
-		});
-
-		add("Gambit", (op, name) => {
-
-			let found = false;
-			for (let each of this.battalion.gambits.active) {
-				if (each.includes(name)) found = true;
-			}
-
-			return {
-				require: true,
-				succeed: false, 
-				boolean: found,
-			};
-		});
-
-		add("Training", (op, name) => {
-
-			let found = false;
-			for (let each of this.battalion.gambits.active) {
-				if (each.includes(`${name} Training`)) found = true;
-			}
-
-			return {
-				require: true,
-				succeed: false, 
-				boolean: found,
-			};
-		});
-
-		add("Outfitting", (op, name) => {
-
-			let found = false;
-			for (let each of this.battalion.gambits.active) {
-				if (each.includes(`${name} Outfitting`)) found = true;
-			}
-
-			return {
-				require: true,
-				succeed: false, 
-				boolean: found,
-			};
-		});
-
-		add("Crest", (op, name) => {
-
-			let found = false;
-			for (let each of this.abilities.getActiveKeys()) {
-				if (each.includes(name)) found = true;
-			}
-
-			return {
-				require: true,
-				succeed: false, 
-				boolean: found,
-			};
-		});
-
-		add("Adjutant", (op, name) => {
-			return {
-				require: true,
-				succeed: false, 
-				boolean: this.battalion.adjutant.name == name,
-			};
-		});
-
-		this._predicates = ctx;
-		return ctx;
+		return (
+			this._predicates
+				??
+			(this._predicates = Requirements.createContext(base, this, definitions))
+		);
 	}
 
 	context(compiler) {
@@ -1771,7 +1565,7 @@ class Sheet {
 				// this is only ever relevant in macrogen
 				if (env.runtime) return 0;
 
-				const rnv    = env.clone(Expression.Env.RUNTIME);
+				const rnv    = env.clone(Calculator.Env.RUNTIME);
 				const max    = rnv.read("unit|total|maxrng");
 				const cut    = rnv.read("host|maxrng");
 				const diff   = max - cut;
@@ -1841,6 +1635,33 @@ class Sheet {
 			}
 		});
 
+		for (let each of definitions.skills) {
+			const skill = each;
+
+			add({
+				name  : `unit|rank|${Calculator.asIdentifier(skill)}`,
+				about : wrap(
+					`Unit's numerical ${skill} rank.`
+				),
+				expr  : ((env) => Grade.toNumber(this.skills[skill].grade))
+			});
+		}
+
+		add({
+			name  : "unit|rank|max",
+			about : wrap(
+				"Unit's highest numerical skill rank."
+			),
+			expr  : ((env) => {
+				let highest = 0;
+				for (let name of this.skills.names) {
+					const grade = Grade.toNumber(this.skills[name].grade); 
+					highest     = Math.max(highest, grade);
+				}
+				return highest;
+			}),
+		});
+
 		// d888888b d8888b. d888888b  .d8b.  d8b   db  d888b  db      d88888b
 		// `~~88~~' 88  `8D   `88'   d8' `8b 888o  88 88' Y8b 88      88'
 		//    88    88oobY'    88    88ooo88 88V8o 88 88      88      88ooooo
@@ -1891,9 +1712,9 @@ class Sheet {
 			),
 			expr  : `
 				ask [Triangle Effect?]
-					; Neutral      {0}
-					, Advantage    {+15}
-					, Disadvantage {-15}
+					else Neutral      {0}
+					case Advantage    {+15}
+					case Disadvantage {-15}
 				end
 			`,
 		});
@@ -1914,6 +1735,34 @@ class Sheet {
 					0
 				end
 			`
+		});
+
+		add({
+			name  : "other|initiative",
+			about : wrap(
+				"The numerical value of the selected option of the Combat ",
+				"Initiative select widget in the Create => Characters tab of ",
+				"the unit builder."
+			),
+			expr  : ((env) => this.character.initiative)
+		});
+
+		add({
+			name  : "other|initiative|n_a",
+			about : "Combat initiative value for not applicable.",
+			expr  : "0",
+		});
+
+		add({
+			name  : "other|initiative|unit",
+			about : "Combat initiative value for unit initiated.",
+			expr  : "1",
+		});
+
+		add({
+			name  : "other|initiative|foe",
+			about : "Combat initiative value for foe initiated.",
+			expr  : "2",
 		});
 
 		// d8888b. d8888b. d888888b .88b  d88.  .d8b.  d8888b. db    db
@@ -2006,7 +1855,7 @@ class Sheet {
 						const cls = this.character.class;
 						return label(env, "mnt",
 							cls.hasMount() && this.character.mounted
-								? cls.mount.modifier(name, env)
+								? cls.mount
 								: 0
 						);
 					}),
@@ -2022,7 +1871,7 @@ class Sheet {
 						const cls = this.character.class;
 						return label(env, "mount",
 							cls.hasMount()
-								? cls.mount.modifier(name, env)
+								? cls.mount
 								: 0
 						);
 					}),
@@ -2040,8 +1889,8 @@ class Sheet {
 						metaif builtins|macrogen then
 							metaif class|mount|${name} then 
 								ask cat([Mounted? #], class|mount|${name})
-									; Yes {class|mount|${name}}
-									, No  {0}
+									else Yes {class|mount|${name}}
+									case No  {0}
 								end
 							else
 								0
@@ -2120,7 +1969,7 @@ class Sheet {
 			for (let tag of item.tags) {
 				
 				const name       = tag;
-				const identifier = Expression.asIdentifier(tag);
+				const identifier = Calculator.asIdentifier(tag);
 				if (item_tags.has(tag)) continue;
 
 				add({
@@ -2191,7 +2040,7 @@ class Sheet {
 				const name = tag;
 				if (art_tags.has(tag)) continue;
 
-				const id = Expression.asIdentifier(tag);
+				const id = Calculator.asIdentifier(tag);
 
 				add({
 					name  : `arts|tagged|${id}`,
@@ -2227,7 +2076,7 @@ class Sheet {
 
 		for (let each of item_tags.intersect(art_tags)) {
 
-			const tag = Expression.asIdentifier(each);
+			const tag = Calculator.asIdentifier(each);
 
 			add({
 				name  : `host|tagged|${tag}`,
@@ -2316,7 +2165,7 @@ class Sheet {
 		for (let each of definitions.attributes) {
 
 			const name       = each.name;
-			const identifier = Expression.asIdentifier(name);
+			const identifier = Calculator.asIdentifier(name);
 
 			add({
 				name  : `item|has_attribute|${identifier}`,
@@ -2889,7 +2738,7 @@ class Sheet {
 				"with a Roll20 variable called \"Charm\" when variables are ",
 				"enabled within macrogen. Use for battalion macros."
 			),
-			expr  : "[Charm] {more unit|total|lck else unit|total|dex end}" 
+			expr  : "[Charm] {max(unit|total|lck, unit|total|dex)}" 
 		});
 
 		add({
@@ -2897,7 +2746,24 @@ class Sheet {
 			about : wrap(
 				"Higher of dexterity and luck. Use for non-battalion macros.",
 			),
-			expr  : "more unit|total|lck else unit|total|dex end" 
+			expr  : "max(unit|total|lck, unit|total|dex)" 
+		});
+
+		add({
+			name  : "unit|total|atk",
+			about : wrap(
+				"unit|total|str, unit|total|mag, or 0 as determined by",
+				"unit|total|mttype",
+			),
+			expr  : `
+				// detemine base stat to compute mt from
+				bothif unit|total|mttype == mttype|mag
+					then unit|total|mag
+				elseif unit|total|mttype == mttype|str
+					then unit|total|str
+					else 0
+				end
+			`,
 		});
 
 		add({
@@ -2909,14 +2775,24 @@ class Sheet {
 			),
 			expr  : `
 				floor(
-					bothif unit|total|mttype == mttype|mag
-						then unit|total|mag
-					elseif unit|total|mttype == mttype|str
-						then unit|total|str
-						else 0
-					end
+					(unit|total|atk)
+						// healing (Heal, Recover) halves Mt
 						* unit|multiplier|healing
 				)
+
+					// weapon triangle +3 Mt bonus
+					+ bothif not(host|tagged|no_triangle)
+						then (max(
+							metaif builtins|macrogen
+								then other|triangle|prompt
+								else other|triangle
+							end,
+							0
+						) / 5)
+						else 0
+					end
+
+					// other modifiers
 					+ host|mt
 					+ abilities|mt
 					+ combatarts|mt
@@ -3094,7 +2970,7 @@ class Sheet {
 				"Number of points of speed one unit's speed must exceed another to double it."
 			),
 			expr  : `
-				5
+				4
 			`,
 		});
 
@@ -3253,7 +3129,7 @@ class Sheet {
 		for (let each of definitions.gambits) {
 
 			const name       = each.name;
-			const identifier = Expression.asIdentifier(name);
+			const identifier = Calculator.asIdentifier(name);
 
 			if (name == "Counter") continue;
 
@@ -3467,7 +3343,8 @@ class Sheet {
 
 		for (let each of [
 			["gmt", "might"], ["ghit", "hit"], ["gepcost", "ep cost"],
-			["gminrng", "min range"], ["gmaxrng", "max rang"],
+			["gminrng", "min range"], ["gmaxrng", "max range"],
+			["gplu", "plurality"], ["gauto", "autonomy"]
 		]) {
 
 			const [stat, name] = each;
@@ -3638,8 +3515,8 @@ class Sheet {
 		const variable = name == "cutrng" ? "item|total|maxrng" : `unit|total|${name}`;
 		if (!(variable in this.definez)) return 0;
 
-		const env   =  new Expression.Env(
-			Expression.Env.RUNTIME, this.definez
+		const env   =  new Calculator.Env(
+			Calculator.Env.RUNTIME, this.definez
 		);
 
 		return env.read(variable);
@@ -4048,8 +3925,10 @@ class Sheet {
 	 */
 	checkAbilitySlots(category=this.abilities) {
 
-		// for counting slot number restrictions
-		const slots = new Sheet.ModifierCounter("equipped abilities", "slotcost", 5);
+		// for counting slot capacity restrictions
+		const capacity = new Sheet.ModifierCounter(
+			"equipped abilities", "capcost", 18
+		);
 
 		for (let ability of this.abilities) {
 
@@ -4066,7 +3945,7 @@ class Sheet {
 			// don't count this art if it doesn't consume any slots
 			if (ability.modifier("slotcost") == 0) continue;
 
-			let error = slots.count(ability);
+			let error = capacity.count(ability);
 			if (error) return error;
 		}
 
@@ -4083,6 +3962,8 @@ class Sheet {
 	 * @return {?string} an error string if check fails; else null
 	 */
 	checkArtsSlots(category=this.arts) {
+
+		// TODO this sometimes doesn't run when  a new character is loaded
 
 		// map to reserve Skill. Rank, Type combos
 		const arts    = [];
@@ -4125,8 +4006,12 @@ class Sheet {
 		}
 
 		// sort elements in descending order of number of keys
-		const sortfn = (a, b) => a.keys.size >= b.keys.size;
+		const sortfn  = (a, b) => a.keys.size >= b.keys.size;
 
+		// keeps track of which arts are possible for which key
+		const options = new Map();
+
+		// we not need to try to assign each art a Skill/Rank/Type combo
 		while (arts.length) {
 
 			// not worth writing a priority queue for this
@@ -4134,21 +4019,46 @@ class Sheet {
 
 			const {art, keys} = arts.pop();
 
+			for (const key of keys) {
+				if (options.has(key)) {
+					options.get(key).push(art.name);
+				} else {
+					options.set(key, [art.name]);
+				}
+			}
+
 			if (keys.size == 0) return wrap(
-				art.name, " conflicts with: ", Array.from(art.exKeys()).map(
+				art.name, " conflicts with ", Array.from(art.exKeys()).map(
 					key => `${reserve.get(key).name} (${key})`
 				).join(", ")
 			);
 
 			const [key] = keys;
-
-			reserve.set(key, art);
-			
+			reserve.set(key, art);			
 			for (let each of arts) each.keys.delete(key);
+		}
+
+		// make sure that we actually have equip things as the ranks we need
+		for (let [key, art] of reserve.entries()) {
+
+			// check to see if we can equip this as its lowest rank
+			// if not, it's already illegal and not worth worrying about
+			if (!art.requires.exec().boolean) continue;
+
+			// knowing we can equip it as its lowest rank, we check to see if
+			// we're trying to equip it as a higher rank we don't have
+			const [source, _type] = key.split(",");
+			const predicate       = this.predicator.compile(source);
+
+			if (!predicate.exec().boolean) {
+				const names = conjoin("and", options.get(key));
+				return `${names} conflict because ${source} is locked`;
+			}
 		}
 
 		return null;
 	}
+
 }
 
 

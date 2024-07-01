@@ -1,7 +1,8 @@
 {
   "name": "Mass Rally",
-  "description": "Apply @{const:gbp:[Mov +1]} and the conditions applied by all other equipped \"Rally\" arts to all allies within 2 spaces for one turn.",
+  "description": "Apply @{const}{gbp}{[Mov +1]} and the conditions applied by all other equipped \"Rally\" arts to all allies within 2 spaces for one turn.",
   "requires": "All (Axes B+) (Faith B+) (Level 25)",
+  "compatible": "None",
   "mttype": "else",
   "aoe": "Ring 1-2",
   "modifiers": {
@@ -32,6 +33,6 @@
     "depricated"
   ],
   "hidden": true,
-  "type": "Axes-Faith",
+  "type": ["Axes", "Faith"],
   "rank": "B+-B+"
 }

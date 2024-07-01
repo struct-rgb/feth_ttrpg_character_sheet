@@ -1,0 +1,25 @@
+{
+  "name": "Charge!",
+  "description": "@{const}{ap}{AP Variable}; if this unit ends its movement at least five spaces from its starting position before combat, target foe cannot counterattack.",
+  "compatible": "All (Not (Tag `no hit`)) (Not (Tag `no might`))",
+  "requires": "Riding D",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 20,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [],
+  "hidden": false,
+  "type": "Riding",
+  "rank": "D"
+}
