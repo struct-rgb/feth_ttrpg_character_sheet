@@ -1,6 +1,6 @@
 {
   "name": "Sword Prowess",
-  "description": "Grants major bonuses to @{const}{prowess_boon}{Avo} and @{const}{prowess_boon}{Crit Avo}, minor bonuses to @{const}{prowess_bane}{Hit} and @{const}{prowess_boon}{Crit} when using Swords.",
+  "description": "Grants bonuses to @{const}{prowess_base}{Crit} and @{const}{prowess_base}{Avo}, and major bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_boon}{Crit Avo} when using  Swords.",
   "requires": "Swords E+",
   "modifiers": {
     "hp": 0,
@@ -15,10 +15,10 @@
     "mt": 0,
     "prot": 0,
     "resl": 0,
-    "hit": "fill prowess_bane(host|type|swords, unit|rank|Swords)",
+    "hit": "fill prowess_base(host|type|swords, unit|rank|Swords)",
     "avo": "fill prowess_boon(host|type|swords, unit|rank|Swords)",
-    "crit": "fill prowess_bane(host|type|swords, unit|rank|Swords)",
-    "cravo": "fill prowess_boon(host|type|swords, unit|rank|Swords)",
+    "crit": "fill prowess_boon(host|type|swords, unit|rank|Swords)",
+    "cravo": "fill prowess_base(host|type|swords, unit|rank|Swords)",
     "minrng": 0,
     "maxrng": 0,
     "tpcost": 0,

@@ -1,6 +1,6 @@
 {
   "name": "Axe Prowess",
-  "description": "Grants major bonuses to @{const}{prowess_boon}{Hit} and @{const}{prowess_boon}{Crit}, minor bonuses to @{const}{prowess_bane}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Axes.",
+  "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Avo}, and major bonuses to @{const}{prowess_boon}{Crit} and @{const}{prowess_boon}{Crit Avo} when using Axes.",
   "requires": "Axes E+",
   "modifiers": {
     "hp": 0,
@@ -15,10 +15,10 @@
     "mt": 0,
     "prot": 0,
     "resl": 0,
-    "hit": "fill prowess_boon(host|type|axes, unit|rank|Axes)",
-    "avo": "fill prowess_bane(host|type|axes, unit|rank|Axes)",
+    "hit": "fill prowess_base(host|type|axes, unit|rank|Axes)",
+    "avo": "fill prowess_base(host|type|axes, unit|rank|Axes)",
     "crit": "fill prowess_boon(host|type|axes, unit|rank|Axes)",
-    "cravo": "fill prowess_bane(host|type|axes, unit|rank|Axes)",
+    "cravo": "fill prowess_boon(host|type|axes, unit|rank|Axes)",
     "minrng": 0,
     "maxrng": 0,
     "tpcost": 0,

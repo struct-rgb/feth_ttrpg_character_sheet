@@ -1,6 +1,6 @@
 {
   "name": "Other Prowess",
-  "description": "Grants moderate bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit}, and @{const}{prowess_base}{Crit Avo} when using items not tied to specific skills.",
+  "description": "Grants bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit} and @{const}{prowess_boon}{Crit Avo} when using items not tied to specific skills.",
   "requires": "Other E+",
   "modifiers": {
     "hp": 0,

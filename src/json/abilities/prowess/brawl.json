@@ -1,6 +1,6 @@
 {
   "name": "Brawl Prowess",
-  "description": "Grants moderate bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit}, and @{const}{prowess_base}{Crit Avo} when using Brawl.",
+  "description": "Grants bonuses to @{const}{prowess_base}{Crit} and @{const}{prowess_base}{Crit Avo}, and major bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_boon}{Avo} when using  Brawl.",
   "requires": "Brawl E+",
   "modifiers": {
     "hp": 0,
@@ -15,8 +15,8 @@
     "mt": 0,
     "prot": 0,
     "resl": 0,
-    "hit": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
-    "avo": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
+    "hit": "fill prowess_boon(host|type|brawl, unit|rank|Brawl)",
+    "avo": "fill prowess_boon(host|type|brawl, unit|rank|Brawl)",
     "crit": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
     "cravo": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
     "minrng": 0,

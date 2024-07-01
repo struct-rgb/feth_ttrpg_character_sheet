@@ -1,6 +1,6 @@
 {
   "name": "Reason Prowess",
-  "description": "Grants major bonuses to @{const}{prowess_boon}{Hit} and @{const}{prowess_boon}{Crit}, minor bonuses to @{const}{prowess_bane}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Reason.",
+  "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Crit}, and major bonuses to @{const}{prowess_base}{Avo} and @{const}{prowess_boon}{Crit Avo} when using  Reason.",
   "requires": "Reason E+",
   "modifiers": {
     "hp": 0,
@@ -16,9 +16,9 @@
     "prot": 0,
     "resl": 0,
     "hit": "fill prowess_boon(host|type|reason, unit|rank|Reason)",
-    "avo": "fill prowess_bane(host|type|reason, unit|rank|Reason)",
+    "avo": "fill prowess_base(host|type|reason, unit|rank|Reason)",
     "crit": "fill prowess_boon(host|type|reason, unit|rank|Reason)",
-    "cravo": "fill prowess_bane(host|type|reason, unit|rank|Reason)",
+    "cravo": "fill prowess_base(host|type|reason, unit|rank|Reason)",
     "minrng": 0,
     "maxrng": 0,
     "tpcost": 0,

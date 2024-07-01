@@ -75,6 +75,11 @@ function character_from_3_7_0(old) {
 		[ "Bow Prowess 3"    , "Bow Prowess"    ],
 		[ "Bow Prowess 4"    , "Bow Prowess"    ],
 		[ "Bow Prowess 5"    , "Bow Prowess"    ],
+		[ "Authority 1"      , "Authority"    ],
+		[ "Authority 2"      , "Authority"    ],
+		[ "Authority 3"      , "Authority"    ],
+		[ "Authority 4"      , "Authority"    ],
+		[ "Authority 5"      , "Authority"    ],
 	]));
 
 	old.version = "3.8.0";
@@ -422,7 +427,7 @@ function character(obj, to=Version.CURRENT) {
 		obj = character_from_3_5_0(obj);
 	}
 
-	if (version.older("3.8.0")) {
+	if (version.older("4.0.0")) {
 		obj = character_from_3_7_0(obj);
 	}
 

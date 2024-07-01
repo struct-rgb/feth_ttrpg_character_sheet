@@ -1950,10 +1950,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Authority 2",
@@ -1988,10 +1989,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Authority 3",
@@ -2026,10 +2028,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Authority 4",
@@ -2064,10 +2067,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Authority 5",
@@ -2102,10 +2106,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Avo +10",
@@ -2359,7 +2364,7 @@ const definitions = {
     },
     {
       "name": "Axe Prowess",
-      "description": "Grants major bonuses to @{const}{prowess_boon}{Hit} and @{const}{prowess_boon}{Crit}, minor bonuses to @{const}{prowess_bane}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Axes.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Avo}, and major bonuses to @{const}{prowess_boon}{Crit} and @{const}{prowess_boon}{Crit Avo} when using Axes.",
       "requires": "Axes E+",
       "modifiers": {
         "hp": 0,
@@ -2374,10 +2379,10 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill prowess_boon(host|type|axes, unit|rank|Axes)",
-        "avo": "fill prowess_bane(host|type|axes, unit|rank|Axes)",
+        "hit": "fill prowess_base(host|type|axes, unit|rank|Axes)",
+        "avo": "fill prowess_base(host|type|axes, unit|rank|Axes)",
         "crit": "fill prowess_boon(host|type|axes, unit|rank|Axes)",
-        "cravo": "fill prowess_bane(host|type|axes, unit|rank|Axes)",
+        "cravo": "fill prowess_boon(host|type|axes, unit|rank|Axes)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -2424,10 +2429,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Axe Prowess 2",
@@ -2460,10 +2466,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Axe Prowess 3",
@@ -2496,10 +2503,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Axe Prowess 4",
@@ -2532,10 +2540,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Axe Prowess 5",
@@ -2568,10 +2577,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Axebreaker",
@@ -3417,7 +3427,7 @@ const definitions = {
     },
     {
       "name": "Bow Prowess",
-      "description": "Grants moderate bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit}, and @{const}{prowess_base}{Crit Avo} when using Bows.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Crit}, and major bonuses to @{const}{prowess_base}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Bows.",
       "requires": "Bows E+",
       "modifiers": {
         "hp": 0,
@@ -3432,9 +3442,9 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill prowess_base(host|type|bows, unit|rank|Bows)",
+        "hit": "fill prowess_boon(host|type|bows, unit|rank|Bows)",
         "avo": "fill prowess_base(host|type|bows, unit|rank|Bows)",
-        "crit": "fill prowess_base(host|type|bows, unit|rank|Bows)",
+        "crit": "fill prowess_boon(host|type|bows, unit|rank|Bows)",
         "cravo": "fill prowess_base(host|type|bows, unit|rank|Bows)",
         "minrng": 0,
         "maxrng": 0,
@@ -3482,10 +3492,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Bow Prowess 2",
@@ -3518,10 +3529,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Bow Prowess 3",
@@ -3554,10 +3566,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Bow Prowess 4",
@@ -3590,10 +3603,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Bow Prowess 5",
@@ -3626,10 +3640,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Bow Range +1",
@@ -3925,7 +3940,7 @@ const definitions = {
     },
     {
       "name": "Brawl Prowess",
-      "description": "Grants moderate bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit}, and @{const}{prowess_base}{Crit Avo} when using Brawl.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Crit} and @{const}{prowess_base}{Crit Avo}, and major bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_boon}{Avo} when using  Brawl.",
       "requires": "Brawl E+",
       "modifiers": {
         "hp": 0,
@@ -3940,8 +3955,8 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
-        "avo": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
+        "hit": "fill prowess_boon(host|type|brawl, unit|rank|Brawl)",
+        "avo": "fill prowess_boon(host|type|brawl, unit|rank|Brawl)",
         "crit": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
         "cravo": "fill prowess_base(host|type|brawl, unit|rank|Brawl)",
         "minrng": 0,
@@ -3990,10 +4005,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Brawl Prowess 2",
@@ -4026,10 +4042,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Brawl Prowess 3",
@@ -4062,10 +4079,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Brawl Prowess 4",
@@ -4098,10 +4116,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Brawl Prowess 5",
@@ -4134,10 +4153,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Brawl Satiation",
@@ -6757,7 +6777,7 @@ const definitions = {
     },
     {
       "name": "Faith Prowess",
-      "description": "Grants major bonuses to @{const}{prowess_boon}{Avo} and @{const}{prowess_boon}{Crit Avo}, minor bonuses to @{const}{prowess_bane}{Hit} and @{const}{prowess_boon}{Crit} when using Faith.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Crit}, and major bonuses to @{const}{prowess_base}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Faith.",
       "requires": "Faith E+",
       "modifiers": {
         "hp": 0,
@@ -6772,9 +6792,9 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill prowess_bane(host|type|faith, unit|rank|Faith)",
+        "hit": "fill prowess_base(host|type|faith, unit|rank|Faith)",
         "avo": "fill prowess_boon(host|type|faith, unit|rank|Faith)",
-        "crit": "fill prowess_bane(host|type|faith, unit|rank|Faith)",
+        "crit": "fill prowess_base(host|type|faith, unit|rank|Faith)",
         "cravo": "fill prowess_boon(host|type|faith, unit|rank|Faith)",
         "minrng": 0,
         "maxrng": 0,
@@ -6822,10 +6842,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Faith Prowess 2",
@@ -6858,10 +6879,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Faith Prowess 3",
@@ -6894,10 +6916,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Faith Prowess 4",
@@ -6930,10 +6953,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Faith Prowess 5",
@@ -6966,10 +6990,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Faith Range +1",
@@ -8219,7 +8244,7 @@ const definitions = {
     },
     {
       "name": "Guile Prowess",
-      "description": "Grants moderate bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit}, and @{const}{prowess_base}{Crit Avo} when using Guile.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Crit} and @{const}{prowess_base}{Avo}, and major bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_boon}{Crit Avo} when using Guile",
       "requires": "Guile E+",
       "modifiers": {
         "hp": 0,
@@ -8284,10 +8309,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Guile Prowess 2",
@@ -8320,10 +8346,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Guile Prowess 3",
@@ -8356,10 +8383,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Guile Prowess 4",
@@ -8392,10 +8420,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Guile Prowess 5",
@@ -8428,10 +8457,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Guile Range +1",
@@ -9647,10 +9677,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lance Prowess 2",
@@ -9683,10 +9714,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lance Prowess 3",
@@ -9719,10 +9751,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lance Prowess 4",
@@ -9755,10 +9788,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lance Prowess 5",
@@ -9791,10 +9825,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lancebreaker",
@@ -13375,10 +13410,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Omniprowess 2",
@@ -13411,10 +13447,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Omniprowess 3",
@@ -13447,10 +13484,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Omniprowess 4",
@@ -13483,10 +13521,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Omniprowess 5",
@@ -13519,10 +13558,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Opportunité",
@@ -13568,7 +13608,7 @@ const definitions = {
     },
     {
       "name": "Other Prowess",
-      "description": "Grants moderate bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit}, and @{const}{prowess_base}{Crit Avo} when using items not tied to specific skills.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit} and @{const}{prowess_boon}{Crit Avo} when using items not tied to specific skills.",
       "requires": "Other E+",
       "modifiers": {
         "hp": 0,
@@ -13633,10 +13673,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Other Prowess 2",
@@ -13669,10 +13710,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Other Prowess 3",
@@ -13705,10 +13747,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Other Prowess 4",
@@ -13741,10 +13784,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Other Prowess 5",
@@ -13777,10 +13821,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Parallel Blow",
@@ -14457,7 +14502,7 @@ const definitions = {
     },
     {
       "name": "Reason Prowess",
-      "description": "Grants major bonuses to @{const}{prowess_boon}{Hit} and @{const}{prowess_boon}{Crit}, minor bonuses to @{const}{prowess_bane}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Reason.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Crit}, and major bonuses to @{const}{prowess_base}{Avo} and @{const}{prowess_boon}{Crit Avo} when using  Reason.",
       "requires": "Reason E+",
       "modifiers": {
         "hp": 0,
@@ -14473,9 +14518,9 @@ const definitions = {
         "prot": 0,
         "resl": 0,
         "hit": "fill prowess_boon(host|type|reason, unit|rank|Reason)",
-        "avo": "fill prowess_bane(host|type|reason, unit|rank|Reason)",
+        "avo": "fill prowess_base(host|type|reason, unit|rank|Reason)",
         "crit": "fill prowess_boon(host|type|reason, unit|rank|Reason)",
-        "cravo": "fill prowess_bane(host|type|reason, unit|rank|Reason)",
+        "cravo": "fill prowess_base(host|type|reason, unit|rank|Reason)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -14522,10 +14567,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Reason Prowess 2",
@@ -14558,10 +14604,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Reason Prowess 3",
@@ -14594,10 +14641,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Reason Prowess 4",
@@ -14630,10 +14678,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Reason Prowess 5",
@@ -14666,10 +14715,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Reason Range +1",
@@ -16283,7 +16333,7 @@ const definitions = {
     },
     {
       "name": "Sword Prowess",
-      "description": "Grants major bonuses to @{const}{prowess_boon}{Avo} and @{const}{prowess_boon}{Crit Avo}, minor bonuses to @{const}{prowess_bane}{Hit} and @{const}{prowess_boon}{Crit} when using Swords.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Crit} and @{const}{prowess_base}{Avo}, and major bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_boon}{Crit Avo} when using  Swords.",
       "requires": "Swords E+",
       "modifiers": {
         "hp": 0,
@@ -16298,10 +16348,10 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill prowess_bane(host|type|swords, unit|rank|Swords)",
+        "hit": "fill prowess_base(host|type|swords, unit|rank|Swords)",
         "avo": "fill prowess_boon(host|type|swords, unit|rank|Swords)",
-        "crit": "fill prowess_bane(host|type|swords, unit|rank|Swords)",
-        "cravo": "fill prowess_boon(host|type|swords, unit|rank|Swords)",
+        "crit": "fill prowess_boon(host|type|swords, unit|rank|Swords)",
+        "cravo": "fill prowess_base(host|type|swords, unit|rank|Swords)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -16348,10 +16398,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Sword Prowess 2",
@@ -16384,10 +16435,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Sword Prowess 3",
@@ -16420,10 +16472,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Sword Prowess 4",
@@ -16456,10 +16509,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Sword Prowess 5",
@@ -16492,10 +16546,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "depricated",
         "prowess",
         "static"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Swordbreaker",

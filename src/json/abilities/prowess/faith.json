@@ -1,6 +1,6 @@
 {
   "name": "Faith Prowess",
-  "description": "Grants major bonuses to @{const}{prowess_boon}{Avo} and @{const}{prowess_boon}{Crit Avo}, minor bonuses to @{const}{prowess_bane}{Hit} and @{const}{prowess_boon}{Crit} when using Faith.",
+  "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Crit}, and major bonuses to @{const}{prowess_base}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Faith.",
   "requires": "Faith E+",
   "modifiers": {
     "hp": 0,
@@ -15,9 +15,9 @@
     "mt": 0,
     "prot": 0,
     "resl": 0,
-    "hit": "fill prowess_bane(host|type|faith, unit|rank|Faith)",
+    "hit": "fill prowess_base(host|type|faith, unit|rank|Faith)",
     "avo": "fill prowess_boon(host|type|faith, unit|rank|Faith)",
-    "crit": "fill prowess_bane(host|type|faith, unit|rank|Faith)",
+    "crit": "fill prowess_base(host|type|faith, unit|rank|Faith)",
     "cravo": "fill prowess_boon(host|type|faith, unit|rank|Faith)",
     "minrng": 0,
     "maxrng": 0,

@@ -1,6 +1,6 @@
 {
   "name": "Bow Prowess",
-  "description": "Grants moderate bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit}, and @{const}{prowess_base}{Crit Avo} when using Bows.",
+  "description": "Grants bonuses to @{const}{prowess_base}{Hit} and @{const}{prowess_base}{Crit}, and major bonuses to @{const}{prowess_base}{Avo} and @{const}{prowess_boon}{Crit Avo} when using Bows.",
   "requires": "Bows E+",
   "modifiers": {
     "hp": 0,
@@ -15,9 +15,9 @@
     "mt": 0,
     "prot": 0,
     "resl": 0,
-    "hit": "fill prowess_base(host|type|bows, unit|rank|Bows)",
+    "hit": "fill prowess_boon(host|type|bows, unit|rank|Bows)",
     "avo": "fill prowess_base(host|type|bows, unit|rank|Bows)",
-    "crit": "fill prowess_base(host|type|bows, unit|rank|Bows)",
+    "crit": "fill prowess_boon(host|type|bows, unit|rank|Bows)",
     "cravo": "fill prowess_base(host|type|bows, unit|rank|Bows)",
     "minrng": 0,
     "maxrng": 0,

@@ -29,8 +29,9 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
+    "depricated",
     "prowess",
     "static"
   ],
-  "hidden": false
+  "hidden": true
 }
