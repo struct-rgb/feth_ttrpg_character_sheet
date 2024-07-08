@@ -30,9 +30,9 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
-    "relic",
     "FE3H",
-    "changed"
+    "changed",
+    "relic"
   ],
   "hidden": false
 }

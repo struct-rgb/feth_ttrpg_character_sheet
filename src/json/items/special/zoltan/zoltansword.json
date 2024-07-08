@@ -24,7 +24,8 @@
   "comment": "Items in modifers should be integers",
   "tags": [
     "FE3H",
-    "changed"
+    "changed",
+    "weapon"
   ],
   "hidden": false
 }

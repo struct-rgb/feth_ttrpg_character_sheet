@@ -127,6 +127,15 @@ function rename(state, map) {
 	}
 }
 
+function character_from_4_3_0(old) {
+
+	old.experiences = old.experiences ?? [];
+
+	old.version = "4.4.0";
+
+	return old;
+}
+
 function character_from_4_2_0(old) {
 
 	for (let item of old.equipment.added) {
@@ -170,7 +179,7 @@ function character_from_4_2_0(old) {
 	if (lvls && !(lvls.levels.length > 0 || lvls.bases.any(n => n)))
 		delete old.statistics.levelups;
 
-	old.version = "4.2.0";
+	old.version = "4.3.0";
 
 	return old;
 }
@@ -240,11 +249,17 @@ function character_from_3_7_0(old) {
 		[ "Bow Prowess 3"    , "Bow Prowess"    ],
 		[ "Bow Prowess 4"    , "Bow Prowess"    ],
 		[ "Bow Prowess 5"    , "Bow Prowess"    ],
-		[ "Authority 1"      , "Authority"    ],
-		[ "Authority 2"      , "Authority"    ],
-		[ "Authority 3"      , "Authority"    ],
-		[ "Authority 4"      , "Authority"    ],
-		[ "Authority 5"      , "Authority"    ],
+		[ "Authority 1"      , "Authority"      ],
+		[ "Authority 2"      , "Authority"      ],
+		[ "Authority 3"      , "Authority"      ],
+		[ "Authority 4"      , "Authority"      ],
+		[ "Authority 5"      , "Authority"      ],
+		[ "Omniprowess 1"    , "Omniprowess"    ],
+		[ "Omniprowess 2"    , "Omniprowess"    ],
+		[ "Omniprowess 3"    , "Omniprowess"    ],
+		[ "Omniprowess 4"    , "Omniprowess"    ],
+		[ "Omniprowess 5"    , "Omniprowess"    ],
+
 	]));
 
 	old.version = "3.8.0";
@@ -379,9 +394,8 @@ function character_from_2_3_2(old) {
 		const roll = level.rolls[level.index];
 		console.log(roll);
 
-		if (!(Class.has(roll[0]) || OLD_CLASSES.has(roll[0]))) {
+		if (!(Class.has(roll[0]) || OLD_CLASSES.has(roll[0])))
 			continue;
-		}
 
 		if (group[0] === null) {
 			group[0] = roll[0];
@@ -620,7 +634,11 @@ function character(obj, to=Version.CURRENT) {
 	if (version.older("4.3.0")) {
 		obj = character_from_4_2_0(obj);
 	}
-	
+
+	if (version.older("4.4.0")) {
+		obj = character_from_4_3_0(obj);
+	}
+
 	return obj;
 }
 

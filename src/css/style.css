@@ -6,7 +6,7 @@ dl {
 
 .container {
 	display: grid;
-	grid-template-columns: 110px 180px 320px 1fr;
+	grid-template-columns: 150px 180px 320px 1fr;
 	/*grid-template-columns: 1fr 1fr 2fr 2fr;*/
 	grid-auto-rows: repeat(2, 1fr);
 	grid-column-gap: 10px;
@@ -45,6 +45,10 @@ input[type=number].updown-buttons {
 	margin-left: 3px;
 	margin-right: 3px;
 	background: rgba(0, 0, 0, 0.0);
+}
+
+input[type=number].experience {
+	width: 3em;
 }
 
 input[type=number].updown-buttons:focus {

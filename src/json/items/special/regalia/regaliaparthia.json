@@ -22,6 +22,8 @@
     "sp": 1
   },
   "comment": "Items in modifers should be integers",
-  "tags": [],
+  "tags": [
+    "weapon"
+  ],
   "hidden": false
 }

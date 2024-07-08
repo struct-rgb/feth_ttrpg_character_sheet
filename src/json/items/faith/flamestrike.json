@@ -23,6 +23,9 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": ["aoe"],
+  "tags": [
+    "weapon",
+    "aoe"
+  ],
   "hidden": false
 }

@@ -465,6 +465,8 @@ class Characters {
 
 		this.triangle = 0;
 
+		this.sheet.experiences.import(object.experiences);
+
 		/* We do want to refresh secondary stats now */
 		this.sheet.stats.pause        = false;
 		this.refresh();
@@ -489,6 +491,7 @@ class Characters {
 			abilities    : this.sheet.abilities.getState(),
 			arts         : this.sheet.arts.getState(),
 			equipment    : this.sheet.equipment.getState(),
+			experiences  : this.sheet.experiences.export(),
 		};
 	}
 
@@ -548,6 +551,8 @@ class Characters {
 		this.sheet.abilities.clear();
 		this.sheet.arts.clear();
 		this.sheet.equipment.clear();
+
+		this.sheet.experiences.clear();
 
 		this.refresh();
 		this.sheet.skills.refresh();

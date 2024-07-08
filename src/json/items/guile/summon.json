@@ -1,7 +1,7 @@
 {
   "name": "Summon",
   "type": "Guile",
-  "description": "Allows wielder to cast @{art}{Summon} for the cost of 4 TP; this weapon must possess one \"Conjure\" attribute.",
+  "description": "Allows wielder to cast @{art}{Summon} for the cost of 4 TP; this implement must possess one \"Conjure\" attribute.",
   "requires": "Guile B",
   "rank": "B",
   "price": 0,
@@ -23,6 +23,7 @@
   },
   "comment": "Incompatible with all Attributes. Cannot be obtained normally.",
   "tags": [
+    "implement",
     "no hit",
     "no crit",
     "no stats",

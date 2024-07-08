@@ -24,6 +24,6 @@
     },
 
     "comment": "Items in modifers should be integers",
-    "tags": ["first", "template"],
+    "tags": ["first", "template", "weapon"],
     "hidden": false
 }

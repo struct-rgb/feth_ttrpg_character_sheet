@@ -1,0 +1,37 @@
+{
+  "name": "Omniprowess",
+  "description": "Grants bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit} and @{const}{prowess_boon}{Crit Avo}. Unit cannot equip \"Prowess\" abilities.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": "fill prowess_base(1, unit|rank|max)",
+    "avo": "fill prowess_base(1, unit|rank|max)",
+    "crit": "fill prowess_base(1, unit|rank|max)",
+    "cravo": "fill prowess_base(1, unit|rank|max)",
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 6
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "depricated",
+    "prowess",
+    "static"
+  ],
+  "hidden": true
+}

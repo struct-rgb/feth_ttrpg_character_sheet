@@ -23,6 +23,11 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": ["condition", "aoe", "ice"],
+  "tags": [
+    "weapon",
+    "condition",
+    "aoe",
+    "ice"
+  ],
   "hidden": false
 }

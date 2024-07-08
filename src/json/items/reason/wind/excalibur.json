@@ -22,6 +22,11 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": ["effective", "wind", "flying effective"],
+  "tags": [
+    "weapon",
+    "effective",
+    "wind",
+    "flying effective"
+  ],
   "hidden": false
 }

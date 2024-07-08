@@ -1601,6 +1601,7 @@ class Theme {
 		add("Document", "The most minimal theme.", "./src/css/document.css");
 		add("Toast", "Designed by Toast, for Toast.", "./src/css/toast.css");
 		add("Hacker", "Boneless mode but green.", "./src/css/hacker.css");
+		add("Grimvalt", "Rustic fantasy.", "./src/css/grimvalt.css");
 
 		return map;
 	}();

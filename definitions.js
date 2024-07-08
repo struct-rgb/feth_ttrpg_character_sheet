@@ -462,7 +462,7 @@ const definitions = {
       ],
       "args": [
         "greater than or equal to level",
-        "skill rank to check (other than Flying, Armor, or Riding)",
+        "skill rank to check (other than Flying, Armor, Riding, or Morph)",
         "greater than or equal to rank"
       ]
     },
@@ -14029,6 +14029,43 @@ const definitions = {
         "breaker",
         "in combat",
         "depricated"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "Omniprowess",
+      "description": "Grants bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit} and @{const}{prowess_boon}{Crit Avo}. Unit cannot equip \"Prowess\" abilities.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": "fill prowess_base(1, unit|rank|max)",
+        "avo": "fill prowess_base(1, unit|rank|max)",
+        "crit": "fill prowess_base(1, unit|rank|max)",
+        "cravo": "fill prowess_base(1, unit|rank|max)",
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "depricated",
+        "prowess",
+        "static"
       ],
       "hidden": true
     },
@@ -38730,8 +38767,10 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     },
     {
       "name": "Critical Ring",
@@ -38764,8 +38803,10 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     },
     {
       "name": "Evasion Ring",
@@ -38798,8 +38839,10 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     },
     {
       "name": "Fetters of Dromi",
@@ -38870,8 +38913,10 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     },
     {
       "name": "March Ring",
@@ -38904,8 +38949,10 @@ const definitions = {
         "mov": 1
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     },
     {
       "name": "Prayer Ring",
@@ -38938,8 +38985,10 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     },
     {
       "name": "Risky Ring",
@@ -38972,8 +39021,10 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": false
+      "tags": [
+        "depricated"
+      ],
+      "hidden": true
     },
     {
       "name": "Speed Ring",
@@ -39112,7 +39163,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39146,7 +39199,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39180,7 +39235,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39214,7 +39271,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39248,7 +39307,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39282,7 +39343,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39316,7 +39379,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39426,7 +39491,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39460,7 +39527,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39494,7 +39563,9 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "depricated"
+      ],
       "hidden": true
     },
     {
@@ -39533,7 +39604,7 @@ const definitions = {
         "FE3H",
         "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Caduceus Staff",
@@ -39571,7 +39642,7 @@ const definitions = {
         "FE3H",
         "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Healing Staff",
@@ -39677,7 +39748,7 @@ const definitions = {
         "FE3H",
         "changed"
       ],
-      "hidden": false
+      "hidden": true
     }
   ],
   "gambits": [
@@ -42551,6 +42622,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template"
       ],
       "hidden": false
@@ -42579,7 +42651,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -42606,7 +42680,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -42634,6 +42710,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "depricated"
       ],
       "hidden": true
@@ -42662,7 +42739,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -42689,7 +42768,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -42716,7 +42797,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -42745,6 +42828,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "effective",
         "armor effective",
         "changed"
@@ -42775,7 +42859,9 @@ const definitions = {
         "sp": 1
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -42804,6 +42890,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "sacred",
         "effective",
         "armor effective",
@@ -42838,7 +42925,9 @@ const definitions = {
       "tags": [
         "FE3H",
         "sacred",
-        "changed"
+        "changed",
+        "weapon",
+        "sacred"
       ],
       "hidden": false
     },
@@ -42869,7 +42958,8 @@ const definitions = {
       "tags": [
         "FE3H",
         "relic",
-        "changed"
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -42900,7 +42990,8 @@ const definitions = {
       "tags": [
         "FE3H",
         "relic",
-        "changed"
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -42931,7 +43022,8 @@ const definitions = {
       "tags": [
         "FE3H",
         "relic",
-        "changed"
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -42960,6 +43052,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template"
       ],
       "hidden": false
@@ -42988,7 +43081,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43015,7 +43110,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43042,7 +43139,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43069,7 +43168,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43096,7 +43197,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43125,7 +43228,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43153,7 +43257,9 @@ const definitions = {
         "sp": 1
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43182,6 +43288,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "sacred",
         "effective",
         "cavalry effective",
@@ -43215,8 +43322,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
-        "changed"
+        "changed",
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -43246,8 +43354,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
         "changed"
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -43277,8 +43386,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
         "changed"
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -43308,8 +43418,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "secret",
         "changed"
+        "weapon",
+        "secret"
       ],
       "hidden": false
     },
@@ -43339,6 +43450,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "secret",
         "relic",
         "changed"
@@ -43370,6 +43482,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template"
       ],
       "hidden": false
@@ -43398,7 +43511,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43425,7 +43540,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43452,7 +43569,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43479,7 +43598,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43506,7 +43627,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43533,7 +43656,9 @@ const definitions = {
         "sp": 1
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -43562,9 +43687,10 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
+        "changed",
+        "weapon"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Sword of Begalta",
@@ -43592,8 +43718,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "sacred",
-        "changed"
+        "changed",
+        "weapon",
+        "sacred"
       ],
       "hidden": false
     },
@@ -43623,8 +43750,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "sacred",
         "changed"
+        "weapon",
+        "sacred"
       ],
       "hidden": false
     },
@@ -43654,8 +43782,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "sacred",
         "changed"
+        "weapon",
+        "sacred"
       ],
       "hidden": false
     },
@@ -43685,8 +43814,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
         "changed"
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -43716,8 +43846,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
         "changed"
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -43747,8 +43878,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
         "changed"
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -43780,6 +43912,7 @@ const definitions = {
         "FE3H",
         "relic",
         "changed"
+        "weapon",
       ],
       "hidden": false
     },
@@ -43809,8 +43942,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
         "changed"
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -43840,8 +43974,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "secret",
         "changed"
+        "weapon",
+        "secret"
       ],
       "hidden": false
     },
@@ -43871,8 +44006,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "secret",
         "changed"
+        "weapon",
+        "secret"
       ],
       "hidden": false
     },
@@ -43902,6 +44038,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "secret",
         "relic",
         "changed"
@@ -43933,6 +44070,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "effective",
         "custom",
         "cavalry effective",
@@ -43965,6 +44103,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "custom"
       ],
       "hidden": true
@@ -43994,6 +44133,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template",
         "effective",
         "flying effective"
@@ -44025,6 +44165,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "effective",
         "flying effective"
       ],
@@ -44055,6 +44196,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "effective",
         "flying effective"
       ],
@@ -44085,6 +44227,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "depricated"
       ],
       "hidden": true
@@ -44114,6 +44257,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "effective",
         "flying effective"
       ],
@@ -44144,6 +44288,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "effective",
         "flying effective"
       ],
@@ -44174,6 +44319,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "effective",
         "flying effective"
       ],
@@ -44205,6 +44351,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "effective",
         "flying effective",
         "changed"
@@ -44235,7 +44382,9 @@ const definitions = {
         "sp": 1
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -44264,6 +44413,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "sacred",
         "effective",
         "flying effective",
@@ -44297,6 +44447,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "sacred",
         "effective",
         "flying effective",
@@ -44330,6 +44481,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "relic",
         "effective",
         "flying effective",
@@ -44363,6 +44515,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "secret",
         "relic",
         "changed"
@@ -44394,6 +44547,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template"
       ],
       "hidden": false
@@ -44422,7 +44576,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -44450,6 +44606,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "beast"
       ],
       "hidden": false
@@ -44479,6 +44636,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "metal"
       ],
       "hidden": false
@@ -44508,6 +44666,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "water"
       ],
       "hidden": false
@@ -44537,6 +44696,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "beast"
       ],
       "hidden": false
@@ -44566,6 +44726,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "metal"
       ],
       "hidden": false
@@ -44595,6 +44756,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "water"
       ],
       "hidden": false
@@ -44624,6 +44786,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "beast"
       ],
       "hidden": false
@@ -44653,6 +44816,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "metal"
       ],
       "hidden": false
@@ -44682,6 +44846,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "water"
       ],
       "hidden": false
@@ -44712,8 +44877,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "sacred",
         "changed"
+        "weapon",
+        "sacred"
       ],
       "hidden": false
     },
@@ -44743,8 +44909,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
         "changed"
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -44773,6 +44940,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template"
       ],
       "hidden": false
@@ -44801,7 +44969,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -44828,7 +44998,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -44856,6 +45028,7 @@ const definitions = {
       },
       "comment": "Can be used as a reaction. Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "reaction",
         "no crit",
         "no stats",
@@ -44899,6 +45072,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "healing",
         "no crit",
         "no hit",
@@ -44937,7 +45111,9 @@ const definitions = {
         }
       ],
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -44964,7 +45140,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -44992,6 +45170,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -45021,6 +45200,7 @@ const definitions = {
       },
       "comment": "Can be used as a reaction. Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "reaction",
         "no crit",
         "no stats",
@@ -45131,6 +45311,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
@@ -45164,6 +45345,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
@@ -45197,6 +45379,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -45226,6 +45409,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "effective"
       ],
       "hidden": false
@@ -45255,6 +45439,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "effective",
         "monster effective"
       ],
@@ -45285,13 +45470,15 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
         "no triangle",
-        "condition"
+        "condition",
+        "depricated"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Solidarity",
@@ -45317,7 +45504,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45344,7 +45533,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45372,6 +45563,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no hit",
         "no stats",
         "no crit",
@@ -45404,7 +45596,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45432,6 +45626,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no hit",
         "no crit",
         "no stats",
@@ -45464,7 +45659,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45491,7 +45688,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45520,6 +45719,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "aoe"
       ],
       "hidden": false
@@ -45549,6 +45749,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "healing",
         "no hit",
         "no stats",
@@ -45583,8 +45784,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "sacred",
         "changed"
+        "weapon",
+        "sacred"
       ],
       "hidden": false
     },
@@ -45614,8 +45816,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
-        "changed"
+        "changed",
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -45644,6 +45847,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template"
       ],
       "hidden": false
@@ -45672,7 +45876,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45699,7 +45905,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45727,6 +45935,7 @@ const definitions = {
       },
       "comment": "Can be used as a reaction. Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "reaction",
         "no crit",
         "no stats",
@@ -45760,7 +45969,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined. Summon Only unless obtained elsewhere.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45788,6 +45999,7 @@ const definitions = {
       },
       "comment": "Can be used as a reaction. Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "reaction",
         "no crit",
         "no stats",
@@ -45822,6 +46034,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -45850,7 +46063,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45886,6 +46101,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "healing",
         "no crit",
         "no hit",
@@ -45919,6 +46135,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -45947,7 +46164,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -45974,7 +46193,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -46002,6 +46223,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -46030,7 +46252,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -46057,7 +46281,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -46085,6 +46311,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -46114,6 +46341,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -46143,6 +46371,7 @@ const definitions = {
       },
       "comment": "Can be used as a reaction. Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no crit",
         "no stats",
         "no might",
@@ -46176,6 +46405,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "effective",
         "cavalry effective"
       ],
@@ -46205,7 +46435,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -46233,6 +46465,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -46240,7 +46473,7 @@ const definitions = {
     {
       "name": "Summon",
       "type": "Guile",
-      "description": "Allows wielder to cast @{art}{Summon} for the cost of 4 TP; this weapon must possess one \"Conjure\" attribute.",
+      "description": "Allows wielder to cast @{art}{Summon} for the cost of 4 TP; this implement must possess one \"Conjure\" attribute.",
       "requires": "Guile B",
       "rank": "B",
       "price": 0,
@@ -46262,6 +46495,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes. Cannot be obtained normally.",
       "tags": [
+        "implement",
         "no hit",
         "no crit",
         "no stats",
@@ -46295,6 +46529,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no hit",
         "no crit",
         "no stats",
@@ -46328,6 +46563,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -46356,7 +46592,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes.",
-      "tags": [],
+      "tags": [
+        "weapon"
+      ],
       "hidden": false
     },
     {
@@ -46384,6 +46622,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -46413,6 +46652,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition"
       ],
       "hidden": false
@@ -46442,6 +46682,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes. Cannot be obtained normally.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
@@ -46475,6 +46716,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes. Cannot be obtained normally.",
       "tags": [
+        "weapon",
         "no might",
         "no crit",
         "no stats",
@@ -46509,8 +46751,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
-        "changed"
+        "changed",
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -46540,8 +46783,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "relic",
-        "changed"
+        "changed",
+        "weapon",
+        "relic"
       ],
       "hidden": false
     },
@@ -46570,6 +46814,7 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "weapon",
         "template"
       ],
       "hidden": false
@@ -46599,7 +46844,8 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "morph effective"
+        "morph effective",
+        "weapon"
       ],
       "hidden": false
     },
@@ -46628,6 +46874,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "fire"
       ],
       "hidden": false
@@ -46657,6 +46904,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "force"
       ],
       "hidden": false
@@ -46686,6 +46934,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "ice"
       ],
       "hidden": false
@@ -46715,6 +46964,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "lightning"
       ],
       "hidden": false
@@ -46744,7 +46994,8 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "morph effective"
+        "morph effective",
+        "weapon"
       ],
       "hidden": false
     },
@@ -46773,6 +47024,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "wind"
       ],
       "hidden": false
@@ -46802,6 +47054,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "fire"
       ],
       "hidden": false
@@ -46831,6 +47084,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "force"
       ],
       "hidden": false
@@ -46860,6 +47114,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "ice"
       ],
       "hidden": false
@@ -46889,6 +47144,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "lightning"
       ],
       "hidden": false
@@ -46918,7 +47174,8 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "morph effective"
+        "morph effective",
+        "weapon"
       ],
       "hidden": false
     },
@@ -46947,6 +47204,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "wind"
       ],
       "hidden": false
@@ -46976,6 +47234,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "force"
       ],
       "hidden": false
@@ -47005,6 +47264,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "ice"
       ],
       "hidden": false
@@ -47034,6 +47294,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "lightning"
       ],
       "hidden": false
@@ -47063,6 +47324,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "effective",
         "wind",
         "flying effective"
@@ -47094,6 +47356,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "wind"
       ],
       "hidden": false
@@ -47124,6 +47387,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "aoe",
         "fire"
       ],
@@ -47154,6 +47418,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "fire"
       ],
       "hidden": false
@@ -47183,6 +47448,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "force"
       ],
       "hidden": false
@@ -47212,6 +47478,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "force"
       ],
       "hidden": false
@@ -47242,6 +47509,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "condition",
         "aoe",
         "ice"
@@ -47273,6 +47541,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "lightning"
       ],
       "hidden": false
@@ -47303,6 +47572,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "sacred",
         "lightning",
         "changed"
@@ -47335,6 +47605,7 @@ const definitions = {
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
         "FE3H",
+        "weapon",
         "sacred",
         "lightning",
         "changed"
@@ -47367,6 +47638,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "weapon",
         "sacred",
         "wind",
         "changed"
@@ -47463,6 +47735,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -47504,6 +47777,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -47545,6 +47819,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -47586,6 +47861,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
@@ -47626,6 +47902,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "healing",
         "no might",
         "no crit",
@@ -47668,6 +47945,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
@@ -47708,6 +47986,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "healing",
         "no might",
         "no crit",
@@ -47750,6 +48029,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -47836,6 +48116,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -47878,6 +48159,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -47919,6 +48201,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -47960,6 +48243,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
@@ -48000,6 +48284,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -48041,6 +48326,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -48082,6 +48368,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "healing",
         "no might",
         "no crit",
@@ -48123,6 +48410,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no stats",
@@ -48162,6 +48450,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -48196,6 +48485,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -48237,6 +48527,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "healing",
         "no crit",
@@ -48279,6 +48570,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "no might",
         "no crit",
         "no hit",
@@ -48320,6 +48612,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "implement",
         "healing",
         "no might",
         "no crit",
@@ -48355,6 +48648,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "shield"
       ],
       "hidden": false
@@ -48384,9 +48678,214 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "monster",
         "FE3H",
         "changed"
+        "weapon",
+        "monster"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Accuracy Ring",
+      "type": "Other",
+      "description": "Grants Hit +10 while equipped.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "equipment"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Critical Ring",
+      "type": "Other",
+      "description": "Grants Crit +10 while equipped.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 10,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "equipment"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Deity Ring",
+      "type": "Other",
+      "description": "While equipped, grants Hit, Crit, Avo, and Crit Avo +4 and restores 10% HP at the start if wielder's phase.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 4,
+        "avo": 4,
+        "crit": 4,
+        "cravo": 4,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "equipment"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Evasion Ring",
+      "type": "Other",
+      "description": "Grants Avo +10 while equipped.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 10,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "equipment"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "March Ring",
+      "type": "Other",
+      "description": "While equipped, grants Mov +1.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0,
+        "mov": 1
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "equipment"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Prayer Ring",
+      "type": "Other",
+      "description": "While equipped, grants @{ability}{Miracle} and restores 10% HP at the start of wielder's phase.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "equipment"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Risky Ring",
+      "type": "Other",
+      "description": "While equipped, applies @{condition}{Blessed}{[Blessed]} to wielder and foe before combat until the end of combat.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "equipment"
       ],
       "hidden": false
     },
@@ -48422,6 +48921,7 @@ const definitions = {
       ],
       "comment": "Incompatible with all Attributes.",
       "tags": [
+        "weapon",
         "no might",
         "no crit",
         "no hit",
@@ -48458,8 +48958,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "monster",
-        "changed"
+        "changed",
+        "weapon",
+        "monster"
       ],
       "hidden": false
     },
@@ -48490,7 +48991,9 @@ const definitions = {
       "tags": [
         "FE3H",
         "monster",
-        "changed"
+        "changed",
+        "weapon",
+        "monster"
       ],
       "hidden": false
     },
@@ -48520,8 +49023,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "monster",
-        "changed"
+        "changed",
+        "weapon",
+        "monster"
       ],
       "hidden": false
     },
@@ -48551,8 +49055,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "monster",
         "changed"
+        "weapon",
+        "monster"
       ],
       "hidden": false
     },
@@ -48593,7 +49098,8 @@ const definitions = {
         "no crit",
         "no hit",
         "no stats",
-        "no triangle"
+        "no triangle",
+        "implement"
       ],
       "hidden": false
     },
@@ -48622,6 +49128,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "shield"
       ],
       "hidden": false
@@ -48652,7 +49159,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -48682,7 +49191,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -48744,6 +49255,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "shield"
       ],
       "hidden": false
@@ -48774,7 +49286,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -48804,7 +49318,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -48833,6 +49349,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "shield"
       ],
       "hidden": false
@@ -48863,7 +49380,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -48893,7 +49412,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -48922,6 +49443,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "weapon",
         "shield"
       ],
       "hidden": false
@@ -48952,7 +49474,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -48982,7 +49506,9 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "stone",
-        "changed"
+        "changed",
+        "weapon",
+        "stone"
       ],
       "hidden": true
     },
@@ -49012,7 +49538,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "first",
-        "template"
+        "template",
+        "weapon"
       ],
       "hidden": false
     }

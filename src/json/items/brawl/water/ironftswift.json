@@ -1,29 +1,30 @@
 {
-    "name": "Swift Fist Technique",
-    "type": "Brawl",
-    "rank": "D",
-    "description": "A water technique; has either the #{attribute}{Mighty} or #{attribute}{Mystic} attribute when obtained. @{const}{ap}{AP +1} if unit initiates combat. Costs 480G to upgrade from #{item}{Training Fist Technique}.",
-    "requires": "Brawl D",
-    "price": 780,
-
-    "mttype": "else",
-    "modifiers": {
-        "mt": 1,
-        "prot": 0,
-        "resl": 0,
-        "hit": 70,
-        "avo": 10,
-        "crit": 5,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 1,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-    },
-
-    "comment": "Items in modifers should be integers",
-    "tags": ["water"],
-    "hidden": false
+  "name": "Swift Fist Technique",
+  "type": "Brawl",
+  "rank": "D",
+  "description": "A water technique; has either the #{attribute}{Mighty} or #{attribute}{Mystic} attribute when obtained. @{const}{ap}{AP +1} if unit initiates combat. Costs 480G to upgrade from #{item}{Training Fist Technique}.",
+  "requires": "Brawl D",
+  "price": 780,
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 70,
+    "avo": 10,
+    "crit": 5,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 1,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [
+    "weapon",
+    "water"
+  ],
+  "hidden": false
 }

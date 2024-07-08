@@ -525,8 +525,10 @@ class Sheet {
 		this.skills = new Skills.UserInterface(data.skills, this);
 		skill_section.appendChild(this.skills.root);
 
-		// this.checks = new Checks.UserInterface(definitions.traits, this);
-		// skill_section.appendChild(this.checks.root);
+		skill_section.appendChild(element("hr"));
+
+		this.checks = new Checks.UserInterface(definitions.traits, this);
+		skill_section.appendChild(this.checks.root);
 
 		/* create callbacks for category events */
 		const refresh = (category, key) => {
@@ -788,6 +790,9 @@ class Sheet {
 		});
 
 		sidebook.add("Equipment", this.equipment.root);
+
+		this.experiences = new Experiences();
+		sidebook.add("Experiences", this.experiences.root);
 
 		/* battalions tab for test */
 		this.battalion  = new Battalions(this);
@@ -1393,6 +1398,75 @@ class Sheet {
 			}),
 		});
 
+		for (let each in definitions.traits) {
+
+			const trait = each;
+
+			add({
+				name  : `unit|trait|${trait}|rank`,
+				about : wrap(),
+				expr  : ((env) => {
+					return Checks.rank(this, trait);
+				}),
+			});
+
+			add({
+				name  : `unit|trait|${trait}|bonus`,
+				about : wrap(),
+				expr  : ((env) =>  {
+					return Checks.bonus(this, trait);
+				}),
+			});
+		}
+
+		add({
+			name  : "unit|traits",
+			about : "Select for which trait to roll a check with.",	
+			expr  : `
+				label [trait] {
+					ask [Trait?]
+						case [Athletics] {unit|trait|Athletics|bonus}
+						case [Precision] {unit|trait|Precision|bonus}
+						case [Endurance] {unit|trait|Endurance|bonus}
+						case [Canniness] {unit|trait|Canniness|bonus}
+						case [Spirit]    {unit|trait|Spirit|bonus}
+						case [Acuity]    {unit|trait|Acuity|bonus}
+					end
+				}
+			`
+		});
+
+		add({
+			name  : "unit|experiences",
+			about : "Select for which experience to roll a check with.",	
+			expr  : ((env) => {
+
+				// not relevant for use in sheet
+				if (env.runtime) return 0;
+
+				const m = new Macros.Builder();
+				const e = ["Experience?", "No Experience", 0];
+
+				for (let record of this.experiences.records.values()) {
+					e.push(record.phrase, record.bonus);
+				}
+
+				const macro = m.merge(m.prompt(...e)).join("");
+				return label(env, "experience", macro);
+			})
+		});
+
+		add({
+			name  : "unit|ease",
+			about : "Check ease for this unit.",
+			expr  : `
+				label [ease] {ask [Ease?] end}
+					+ unit|traits
+					+ unit|experiences
+					+ ask [Other Modifiers?] end
+			`
+		});
+
 		// d888888b d8888b. d888888b  .d8b.  d8b   db  d888b  db      d88888b
 		// `~~88~~' 88  `8D   `88'   d8' `8b 888o  88 88' Y8b 88      88'
 		//    88    88oobY'    88    88ooo88 88V8o 88 88      88      88ooooo
@@ -1719,12 +1793,44 @@ class Sheet {
 						const active = this.item.attributes.getActiveValues();
 
 						for (let each of active) {
-							if (each.tagged(name)) return true;
+							if (each.tagged(name)) return 1;
 						}
 
 						return Number(this.item.tagged(name));
 					}),
 				});
+
+				if (item.tags.includes("equipment")) {
+					add({
+						name  : `equipment|tagged|${identifier}`,
+						about : wrap(
+							`A flag; 1 if equipment is tagged with '${tag}' and 0 if `,
+							`item is not tagged with '${tag}'.`
+						),
+						expr  : ((env) => {
+
+							// make sure equipment is equipped
+							const equip = this.item.equipment;
+							if (equip == null) return 0;
+
+							// check any custom tags
+							if (equip.tags.includes(name))
+								return 1;
+
+							// check the equipment's template
+							if (Item.get(equip.template).tagged(name))
+								return 1;
+
+							// check each of the attributes
+							for (let each of equip.attributes)
+								if (Attribute.get(each.id).tagged(name))
+									return 1;
+
+							// does not have that tag
+							return 0;
+						}),
+					});
+				}
 
 				add({
 					name  : `inventory|${identifier}`,
@@ -3643,8 +3749,8 @@ class Sheet {
 				this.slots.push(feature);
 
 				if (this.sum > this.limit) return wrap(
-					"Number of ", this.name, " exceeds maximum of ", this.limit,
-					". ", this.slots.map(
+					"Capacity of ", this.name, " exceeds maximum of ",
+					this.limit, ". ", this.slots.map(
 						f => `${f.name} (${f.modifier(this.field)})`
 					).join(", "), " consume a total of ", this.sum, " capacity."
 				);
@@ -3797,5 +3903,70 @@ class Sheet {
 
 }
 
+class SessionEditor {
+
+	constructor(key) {
+
+		this.key = key;
+
+		this._textarea = element("textarea", {
+			class   : ["simple-border"],
+		});
+
+		this._erase = element("button", {
+			class   : ["simple-border"],
+			content : "Erase Data",
+			attrs   : {
+				onclick : (() => this.erase())
+			}
+		});
+
+		this._refresh = element("button", {
+			class   : ["simple-border"],
+			content : "Reload Data",
+			attrs   : {
+				onclick : (() => this.refresh())
+			}
+		});
+
+		this._overwrite = element("button", {
+			class   : ["simple-border"],
+			content : "Overwrite Data",
+			attrs   : {
+				onclick : (() => this.overwrite())
+			}
+		});
+
+		const title = "Failed to load the session data below.";
+
+		this.root = element("div", [
+			element("strong", title), element("br"),
+			this._textarea, element("br"),
+			this._refresh, this._overwrite, this._erase
+		]);
+
+		this.refresh();
+	}
+
+	refresh() {
+		const raw  = localStorage.getItem(this.key);
+		const data = JSON.stringify(JSON.parse(raw), null, 2);
+		this._textarea.value = data;
+	}
+
+	overwrite() {
+		const data = JSON.stringify(JSON.parse(this._textarea.value));
+		localStorage.setItem(this.key, data);
+		location.reload();
+	}
+
+	erase() {
+		localStorage.removeItem(this.key);
+		location.reload();
+	}
+
+}
+
 
 /* exported Sheet */
+/* exported SessionEditor */

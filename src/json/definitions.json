@@ -433,7 +433,7 @@
       ],
       "args": [
         "greater than or equal to level",
-        "skill rank to check (other than Flying, Armor, or Riding)",
+        "skill rank to check (other than Flying, Armor, Riding, or Morph)",
         "greater than or equal to rank"
       ]
     },

@@ -1,0 +1,29 @@
+{
+  "name": "Deity Ring",
+  "type": "Other",
+  "description": "While equipped, grants Hit, Crit, Avo, and Crit Avo +4 and restores 10% HP at the start if wielder's phase.",
+  "requires": "None",
+  "rank": "E",
+  "price": 0,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 4,
+    "avo": 4,
+    "crit": 4,
+    "cravo": 4,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": [
+    "equipment"
+  ],
+  "hidden": false
+}

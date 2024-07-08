@@ -35,7 +35,8 @@
     "no crit",
     "no hit",
     "no stats",
-    "no triangle"
+    "no triangle",
+    "implement"
   ],
   "hidden": false
 }

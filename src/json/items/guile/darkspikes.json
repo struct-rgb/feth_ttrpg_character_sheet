@@ -22,6 +22,10 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes.",
-  "tags": ["effective", "cavalry effective"],
+  "tags": [
+    "weapon",
+    "effective",
+    "cavalry effective"
+  ],
   "hidden": false
 }

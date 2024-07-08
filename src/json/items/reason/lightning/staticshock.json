@@ -22,6 +22,9 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes except Refined.",
-  "tags": ["lightning"],
+  "tags": [
+    "weapon",
+    "lightning"
+  ],
   "hidden": false
 }

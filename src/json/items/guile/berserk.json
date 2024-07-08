@@ -23,7 +23,12 @@
   },
   "comment": "Can be used as a reaction. Incompatible with all Attributes.",
   "tags": [
-    "no crit", "no stats", "no might", "no triangle", "condition"
+    "implement",
+    "no crit",
+    "no stats",
+    "no might",
+    "no triangle",
+    "condition"
   ],
   "hidden": false
 }

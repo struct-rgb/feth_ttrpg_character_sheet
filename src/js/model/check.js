@@ -33,6 +33,23 @@ for (let [trait, skills] of Object.entries(definitions.traits)) {
 	}
 }
 
+function rank(sheet, name) {
+
+	let level = 0;
+
+	for (let skill of MAP.get(name)) {
+		const apt  = sheet.skills.rows.get(skill).aptitude;
+		level     += Number(apt == 1 || apt == 3);
+	}
+
+	return level;
+}
+
+
+function bonus(sheet, name) {
+	return LEVELS[rank(sheet, name)];
+}
+
 class Row {
 	constructor(check, ui, sheet) {
 
@@ -40,56 +57,50 @@ class Row {
 		this.ui    = ui;
 		this.sheet = sheet;
 
-		this._level    = new AttributeCell({
+		this._rank    = new AttributeCell({
 			edit    : false,
 			shown   : 0,
 			value   : 0,
 			trigger : (value) => {
-
-				let level = 0;
-
-				for (let skill of MAP.get(this.name)) {
-					const apt  = sheet.skills.rows.get(skill);
-					level     += Number(apt == 1 || apt == 3);
-				}
-			
-				return level;
+				return rank(this.sheet, this.name);
 			}
 		});
 
 		this._bonus = new AttributeCell({
 			edit    : false,
-			shown   : 0,
+			shown   : "0%",
 			value   : 0,
+			before  : "(",
+			after   : ")",
 			trigger : (value) => {
-				return LEVELS[this.level.value];
+				return `${bonus(this.sheet, this.name)}%`;
 			}
 		});
 
 
 		this.root = element("tr", [
-			element("th", name),
-			this.level.root,
-			this.bonus.root,
+			element("th", this.name),
+			this._rank.root,
+			this._bonus.root,
 		]);
 	}
 
 	get level() {
-		return this._level.value;
+		return this._rank.value;
 	}
 
 	set level(value) {
-		this._level.value = value;
+		this._rank.value = value;
 	}
 
 	get bonus() {
 		return this._bonus.value;
 	}
 
-	// refresh() {
-	// 	this.level.refresh();
-	// 	this.bonus.refresh();
-	// }
+	refresh() {
+		this._rank.refresh();
+		this._bonus.refresh();
+	}
 }
 
 class UserInterface {
@@ -102,6 +113,10 @@ class UserInterface {
 				const row   = new Row(check, this, sheet);
 				this[check] = row;
 				this.rows.set(check, row);
+
+				sheet.refresher.register(row, definitions.traits[check].map(
+					name => `unit|rank|${name}`
+				));
 				return row.root;
 			})
 		);
@@ -148,9 +163,132 @@ class UserInterface {
 
 return {
 	UserInterface: UserInterface,
-	MAP: MAP,
+	MAP: MAP, bonus, rank
 };
 
 })();
+
+
+class Experience {
+
+	constructor(experiences, phrase="New Experience", bonus=0) {
+
+		this.uid         = uniqueID();
+		this.experiences = experiences;
+
+		this.experiences.records.set(this.uid, this);
+
+		this._phrase = element("input", {
+			class: ["simple-border"],
+			attrs: {
+				value : phrase,
+				type  : "text"
+			}
+		});
+
+		this._bonus  = element("input", {
+			class: ["simple-border", "experience"],
+			attrs: {
+				value : bonus,
+				type  : "number",
+				step  : 5,
+				min   : 0,
+				max   : 100,
+			}
+		});
+
+		this._delete = element("button", {
+			class   : ["simple-border", "smol"],
+			content : "Delete",
+			attrs   : {
+				onclick : (() => this.remove())
+			}
+		});
+
+		this.root = element("tr",
+			element("td", [this._bonus, this._phrase, this._delete])
+		);
+	}
+
+	get phrase() {
+		return this._phrase.value;
+	}
+
+
+	set phrase(value) {
+		this._phrase.value = value;
+	}
+
+	get bonus() {
+		return this._bonus.value;
+	}
+
+	set bonus(value) {
+		this._bonus.value = value;
+	}
+
+	remove() {
+		this.experiences.records.delete(this.uid);
+		this.root.remove();
+	}
+
+}
+
+class Experiences {
+
+	constructor() {
+
+		this.records = new Map();
+
+		this._button = element("input",  {
+			class   : ["simple-border"],
+			attrs   : {
+				value   : "Add New Experience",
+				type    : "button",
+				onclick : () => this.add(),
+			},
+		});
+
+
+		this._table = element("table");
+
+		this.root = element("div", [
+			this._button,
+			this._table,
+		]);
+	}
+
+	add(phrase="New Experience", bonus=0) {
+		const row = new Experience(this, phrase, bonus);
+		this._table.appendChild(row.root);
+	}
+
+
+	clear() {
+		for (let record of this.records.values()) {
+			record.remove();
+		}
+	}
+
+	import(experiences) {
+		this.clear();
+
+		for (let record of experiences) {
+			this.add(...record);
+		}
+	}
+
+	export() {
+
+		const experiences = [];
+
+		for (let record of this.records.values()) {
+			experiences.push([record.phrase, record.bonus]);
+		}
+
+		return experiences;
+	}
+
+}
 
 /* exported Checks */

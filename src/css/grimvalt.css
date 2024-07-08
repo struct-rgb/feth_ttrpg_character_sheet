@@ -1,0 +1,134 @@
+:root {
+  /* Colors */
+  --green: #00a385;
+  --gold: #897736;
+  --navy: #4d4856;
+  --blue: #3a5192;
+  --wash: #989eb5;
+  --egg: #fff6e6;
+  --goldl: #f1e5ac;
+
+  /* Theme-specific variables */
+  --gambit-unit: var(--goldl);
+  --gambit-border: var(--blue);
+  --gambit-tile: var(--green);
+  --gambit-background: var(--egg);
+  --gambit-hit-0: #004325;
+  --gambit-hit-20: #006345;
+  --gambit-hit-40: #008365;
+  --gambit-hit-60: #00a385;
+}
+
+/* Base styles */
+body {
+  font-family: 'Arial', sans-serif; /* Use appropriate western-style font if available */
+  margin: 0;
+  padding: 0;
+  color: var(--blue);
+  background-color: var(--egg);
+}
+
+/* Input elements */
+input[type="text"],
+button {
+  color: var(--blue);
+  outline: none;
+  background-color: var(--goldl);
+  border-radius: 3px;
+  border: 2px ridge var(--navy);
+  box-shadow: 2px 2px var(--gold);
+  padding: 4px;
+  margin: 3px;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table, th, td {
+  border: 1px solid var(--navy);
+  padding: 8px;
+}
+
+/* Datum styles */
+.datum {
+  font-weight: bold;
+  color: var(--green);
+}
+
+.computed {
+  font-weight: bold;
+  color: var(--gold);
+}
+
+/* Tooltip styles */
+.tts {
+  border-bottom: 1px dotted;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.ttts {
+  background-color: var(--navy);
+  color: var(--egg);
+  border-radius: 6px;
+  padding: 5px;
+}
+
+/* Level up table */
+.level-table th {
+  border-radius: 3px 3px 15px 15px;
+  border-width: 3px;
+  border-style: outset;
+  color: var(--egg);
+  font-weight: bolder;
+}
+
+.level-table th.incr-bell {
+  background-color: var(--green);
+  border-color: var(--green);
+}
+
+.level-table th.decr-bell {
+  background-color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* Toggle buttons */
+button.toggle-on {
+  color: var(--egg);
+  background-color: var(--gold);
+}
+
+button.toggle-off {
+  color: var(--navy);
+  background-color: var(--goldl);
+}
+
+/* Calculator syntax highlighting */
+.hl-reserved {
+  color: var(--green);
+}
+
+.hl-operator {
+  color: var(--gold);
+}
+
+/* Selected item */
+span.selectable,
+span.selected-text {
+  color: var(--blue);
+  background-color: var(--goldl);
+  border: 2px ridge var(--navy);
+  border-radius: 3px;
+  padding: 4px;
+  margin: 3px;
+}
+
+span.selectable:hover,
+span.selected-text {
+  background-color: var(--gold);
+  color: var(--egg);
+}

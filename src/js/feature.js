@@ -1262,6 +1262,21 @@ class Item extends Action {
 				}),
 				new Filter.Toggle("FE3H", false, (feature) => {
 					return feature.tagged("FE3H");
+
+				element("strong", "Item Type"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("Weapon", false, (feature) => {
+					return feature.tagged("weapon");
+				}),
+
+				new Filter.Toggle("Implement", false, (feature) => {
+					return feature.tagged("implement");
+				}),
+
+				new Filter.Toggle("Equipment", false, (feature) => {
+					return feature.tagged("equipment");
 				}),
 
 				Filter.Group.END,

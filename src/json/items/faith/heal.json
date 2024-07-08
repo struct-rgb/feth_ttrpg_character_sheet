@@ -22,15 +22,16 @@
     "sp": 0
   },
   "rows": [
-      {
-          "name": "Critical Heal",
-          "when": "item|tagged|treatment",
-          "expr": "unit|total|crit",
-          "roll": true
-      }
+    {
+      "name": "Critical Heal",
+      "when": "item|tagged|treatment",
+      "expr": "unit|total|crit",
+      "roll": true
+    }
   ],
   "comment": "Incompatible with all Attributes.",
   "tags": [
+    "implement",
     "healing",
     "no crit",
     "no hit",

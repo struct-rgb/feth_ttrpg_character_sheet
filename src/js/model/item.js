@@ -157,7 +157,10 @@ class ItemPreview {
 
 		const dd = element("dd", [
 			delimit(" ", mods), mods.length ? element("br") : "",
-			this.item.aoe ? this.va.root : "", element("br"),
+			this.item.aoe && !this.item.tagged("equipment")
+				? this.va.root
+				: "",
+			element("br"),
 			link,
 			attrs.length ? element("div", [
 				element("strong", "Attributes"),
@@ -200,12 +203,14 @@ class ItemPreview {
 
 class Items {
 
-	constructor(sheet) {
+	constructor(sheet, readonly=false) {
 		this.root       = document.createElement("div");
 		this.sheet      = sheet;
 		this.refresher  = this.sheet.refresher;
 		this.marker     = this.sheet.marker;
 		// this._pregroup = null;
+		// 
+		this.equipment  = null;
 
 		this._name = element("input", {
 			class : ["simple-border"],
@@ -224,6 +229,10 @@ class Items {
 				}),
 			},
 		});
+
+		this.editor   = element("div");
+
+		this.notebook = new Notebook(this.editor);
 
 		this._sf = Item.select(() => {
 			this.template = this._select.value;
@@ -491,66 +500,70 @@ class Items {
 			return dl;
 		};
 
-		this.root = element("div", [
+		this.notebook.add("Information", element("div", [
 			uniqueLabel("Item Name", this._name), element("br"),
 			this._name, element("br"),
 
 			uniqueLabel("Template", this._select), element("br"),
-			this._sf.root, element("br"), element("br"),
+			this._sf.root, element("br"),
 
-			this._preview.root,
+			uniqueLabel("Description", this._description), element("br"),
+			this._adder.root,
+			this._description,
+			tooltip(this._replace.root, [
+				"If checked, replaces the template item's original ",
+				"description. If not, appends the custom description to ",
+				"the end of the template item's original description."
+			].join("")),
+
 
 			tooltip(this._refr, [
 				"Refresh the item preview."
 			].join("")),
+		]));
+
+		this.notebook.add("Attributes", this.attributes.root);
+
+		this.notebook.add("Stats", 
+			element("table", second, "battalion-table")
+		);
+
+		this.notebook.add("Tags", element("div", [
+			this._template_tags.root, this._custom_tags.root,
+			element("p", wrap(
+				"You can add the following tags in order to change how ",
+				"this item generates macros:",
+			)),
+			defs(
+				"healing",
+				"Reduced macro might for healing calculation.",
+				"no might",
+				"Macro omits might calculation",
+				"no hit",
+				"Macro omits roll to hit.",
+				"no crit",
+				"Macro omits roll to crit.",
+				"no stats",
+				"Macro omits summary of unit's stats.",
+				"no cost",
+				"Macro omits TP and SP cost.",
+				"no triangle",
+				"Macro omits weapon triangle prompt.",
+			)
+		]));
+
+		this.root = element("div", [
+
+			this._preview.root,
 
 			element("br"), 
 			element("br"), 
 
 			element("details", [
-				element("summary", element("label", "Attributes")),
-				this.attributes.root,
-			]),
 
-			element("details", [
-				element("summary", element("label", "Customize Description")),
-				this._adder.root,
-				this._description,
-				tooltip(this._replace.root, [
-					"If checked, replaces the template item's original ",
-					"description. If not, appends the custom description to ",
-					"the end of the template item's original description."
-				].join(""))
-			]),
+				element("summary", element("label", "Customize Item")),
 
-			element("details", [
-				element("summary", element("label", "Customize Statistics")),
-				element("table", second, "battalion-table"),
-			]),
-
-			element("details", [
-				element("summary", element("label", "Customize Tags")),
-				this._template_tags.root, this._custom_tags.root,
-				element("p", wrap(
-					"You can add the following tags in order to change how ",
-					"this item generates macros:",
-				)),
-				defs(
-					"healing",
-					"Reduced macro might for healing calculation.",
-					"no might",
-					"Macro omits might calculation",
-					"no hit",
-					"Macro omits roll to hit.",
-					"no crit",
-					"Macro omits roll to crit.",
-					"no stats",
-					"Macro omits summary of unit's stats.",
-					"no cost",
-					"Macro omits TP and SP cost.",
-					"no triangle",
-					"Macro omits weapon triangle prompt.",
-				)
+				this.notebook.root,
 			]),
 
 		], "center-pane");
