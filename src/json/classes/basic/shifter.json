@@ -4,7 +4,7 @@
   "type": ["Infantry"],
   "tier": "Starting",
   "requires": "Morph D",
-  "abilities": [["Axe Prowess", "Sword Prowess", "Lance Prowess", "Brawl Prowess", "Bow Prowess", "Reason Prowess", "Faith Prowess", "Guile Prowess", "Authority", "Dominion"],"Megalomorph", ["Consumption 1", "Stamina +5"]],
+  "abilities": [["Axe Prowess", "Sword Prowess", "Lance Prowess", "Brawl Prowess", "Bow Prowess", "Reason Prowess", "Faith Prowess", "Guile Prowess", "Authority", "Dominion"],["Megalomorph", "Tetramorph", "Leptomorph", "Micromorph"], ["Consumption 1", "Stamina +5"]],
     "arts": [],
   "growths": {
     "hp": 25,
@@ -27,7 +27,7 @@
     "lck": 5,
     "mov": 4
   },
-  "mount": 0,
+  "mount": 2,
 
   "default_base": "Shifter",
   "default_preset": "Balance/Balance/Balance",

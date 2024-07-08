@@ -124,7 +124,8 @@ const definitions = {
     "Authority",
     "Armor",
     "Riding",
-    "Flying"
+    "Flying",
+    "Morph"
   ],
   "macros": [
     {
@@ -10086,6 +10087,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Leptomorph",
+      "description": "Grants Atk -1, Lck +3, and Spd +2.\n\nWhile morphed, this unit possesses the @{ability}{Glide} ability and Mov +2",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": -1,
+        "mag": -1,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": 0,
+        "lck": 3,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Let Me Protect You",
       "description": "As an action, apply @{const}{gbp}{[Def +4]} to allies within two spaces for one turn.",
       "requires": "Innate",
@@ -11860,7 +11896,7 @@ const definitions = {
     },
     {
       "name": "Megalomorph",
-      "description": "Grants HP +4, Dex -2, and Lck -2.\n\nWhile morphed, this unit possesses the Unbreaking and Wide Gait abilities.",
+      "description": "Grants HP +4, Dex -2, and Lck -2.\n\nWhile morphed, this unit possesses the @{ability}{Unbreaking} and @{ability}{Wide Gait} abilities.",
       "requires": "Class Shifter",
       "modifiers": {
         "hp": 4,
@@ -11884,7 +11920,7 @@ const definitions = {
         "tpcost": 0,
         "spcost": 0,
         "tp": 0,
-        "mov": 0,
+        "mov": "bothif other|morphed then -2 else 0 end",
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
@@ -11981,6 +12017,41 @@ const definitions = {
         "in combat"
       ],
       "hidden": true
+    },
+    {
+      "name": "Micromorph",
+      "description": "Grants Atk -1, Dex +3, and Lck +3.\n\nWhile morphed, this unit possesses the @{ability}{Pass} ability and Mov +2",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": -1,
+        "mag": -1,
+        "dex": 3,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 3,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
     },
     {
       "name": "Minor Crest of Aubin",
@@ -13608,7 +13679,7 @@ const definitions = {
     },
     {
       "name": "Other Prowess",
-      "description": "Grants bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit} and @{const}{prowess_boon}{Crit Avo} when using items not tied to specific skills.",
+      "description": "Grants bonuses to @{const}{prowess_base}{Hit}, @{const}{prowess_base}{Avo}, @{const}{prowess_base}{Crit} and @{const}{prowess_base}{Crit Avo} when using items not tied to specific skills.",
       "requires": "Other E+",
       "modifiers": {
         "hp": 0,
@@ -13623,10 +13694,10 @@ const definitions = {
         "mt": 0,
         "prot": 0,
         "resl": 0,
-        "hit": "fill prowess_base(host|type|bows, unit|rank|max)",
-        "avo": "fill prowess_base(host|type|bows, unit|rank|max)",
-        "crit": "fill prowess_base(host|type|bows, unit|rank|max)",
-        "cravo": "fill prowess_base(host|type|bows, unit|rank|max)",
+        "hit": "fill prowess_base(host|type|other, unit|rank|max)",
+        "avo": "fill prowess_base(host|type|other, unit|rank|max)",
+        "crit": "fill prowess_base(host|type|other, unit|rank|max)",
+        "cravo": "fill prowess_base(host|type|other, unit|rank|max)",
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 0,
@@ -16804,6 +16875,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Tetramorph",
+      "description": "Grants Atk +1, Dex +3, and Spd -1.\n\nWhile morphed, this unit possesses the @{ability}{Canto} ability and Mov +2",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 1,
+        "mag": 1,
+        "dex": 3,
+        "spd": -1,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Tomebreaker",
       "description": "Grants Hit +X and Avo +X in combat against Lances, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots.",
       "requires": "Bows B",
@@ -17158,6 +17264,41 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Unbreaking",
+      "description": "Prevents the first time this unit would be applied with @{condition}{Broken}{[Broken]} each phase.",
+      "requires": "Unknown",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
       "hidden": false
     },
     {
@@ -17648,6 +17789,41 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "double"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Wide Gait",
+      "description": "Unit ignores movement penalties from difficult terrain and is immune to forced movement.",
+      "requires": "Unknown",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
       ],
       "hidden": false
     },
@@ -24364,6 +24540,58 @@ const definitions = {
       ],
       "hidden": false,
       "type": "Flying",
+      "rank": "D"
+    },
+    {
+      "name": "Contaminate",
+      "description": "On hit, after combat, apply @{condition}{Poisoned}{[Poisoned]} to target foe. If morphed, on hit, prevent foe’s counter attack(s).",
+      "requires": "Morph D",
+      "compatible": "Not (Tag `no might`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 1,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": "item|total|minrng",
+        "maxrng": "item|total|minrng",
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "condition"
+      ],
+      "hidden": false,
+      "type": "Morph",
+      "rank": "D"
+    },
+    {
+      "name": "Scratch",
+      "description": "Base @{const}{ap}{AP +2}. Last attack deals 4 damage, or 7 damage if morphed.",
+      "requires": "Morph D",
+      "compatible": "Not (Tag `no might`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 2
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": false,
+      "type": "Morph",
       "rank": "D"
     },
     {
@@ -31780,7 +32008,12 @@ const definitions = {
           "Authority",
           "Dominion"
         ],
-        "Megalomorph",
+        [
+          "Megalomorph",
+          "Tetramorph",
+          "Leptomorph",
+          "Micromorph"
+        ],
         [
           "Consumption 1",
           "Stamina +5"
@@ -31808,7 +32041,7 @@ const definitions = {
         "lck": 5,
         "mov": 4
       },
-      "mount": 0,
+      "mount": 2,
       "default_base": "Shifter",
       "default_preset": "Balance/Balance/Balance",
       "default_mainarm": "Lances",

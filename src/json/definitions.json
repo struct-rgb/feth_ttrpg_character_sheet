@@ -95,7 +95,8 @@
     "Authority",
     "Armor",
     "Riding",
-    "Flying"
+    "Flying",
+    "Morph"
   ],
   "macros": [
     {

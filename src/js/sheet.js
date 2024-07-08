@@ -1704,6 +1704,12 @@ class Sheet {
 		});
 
 		add({
+			name  : "other|morphed",
+			about : "Whether unit is morphed or not.",
+			expr  : ((env) => Number(this.character.mounted)),
+		});
+
+		add({
 			name  : "other|triangle|prompt",
 			about : wrap(
 				"Code that generates a prompt asking for the user to select ",

@@ -1,0 +1,27 @@
+{
+  "name": "Contaminate",
+  "description": "On hit, after combat, apply @{condition}{Poisoned}{[Poisoned]} to target foe. If morphed, on hit, prevent foe’s counter attack(s).",
+  "requires": "Morph D",
+  "compatible": "Not (Tag `no might`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 1,
+    "prot": 0,
+    "resl": 0,
+    "hit": 10,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": "item|total|minrng",
+    "maxrng": "item|total|minrng",
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "condition"
+  ],
+  "hidden": false,
+  "type": "Morph",
+  "rank": "D"
+}

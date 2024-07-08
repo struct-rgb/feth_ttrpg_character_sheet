@@ -1,0 +1,26 @@
+{
+  "name": "Scratch",
+  "description": "Base @{const}{ap}{AP +2}. Last attack deals 4 damage, or 7 damage if morphed.",
+  "requires": "Morph D",
+  "compatible": "Not (Tag `no might`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 2
+  },
+  "comment": "",
+  "tags": [
+  ],
+  "hidden": false,
+  "type": "Morph",
+  "rank": "D"
+}

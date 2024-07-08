@@ -113,7 +113,7 @@ class Characters {
 
 		this._class = this._sf._select;
 
-		this._mounted = new Toggle("Mounted?", false, (bool) => {
+		this._mounted = new Toggle("Mount/Morph?", false, (bool) => {
 			this.mounted = this._mounted.checked;
 		});
 
@@ -147,8 +147,9 @@ class Characters {
 			this._sf.root,
 			
 			tooltip(this._mounted.root, [
-				"Flying and Cavalry classes can ride mounts for increased ",
-				"stats. When not mounted, they lose that class-type.",
+				"Flying, Cavalry, and Morph classes gain access to benefits ",
+				"when mounted or morphed. When they are not, they lose that ",
+				"class type."
 			].join("")),
 
 			element("br"),

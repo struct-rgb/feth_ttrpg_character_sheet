@@ -184,7 +184,7 @@ function createContext(base, host, definitions) {
 	});
 
 	addx({sign: ["Permission", [Types.string], Types.tribool], expr: autopass()});
-	addx({sign: ["Morph", [Types.rank], Types.tribool], expr: autopass()});
+	// addx({sign: ["Morph", [Types.rank], Types.tribool], expr: autopass()});
 	addx({sign: ["Unknown", [], Types.tribool], expr: autofail()});
 	addx({sign: ["None", [], Types.tribool], expr: autopass()});
 	addx({sign: ["Barrier", [], Types.tribool], expr: autopass()});

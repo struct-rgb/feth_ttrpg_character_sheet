@@ -927,6 +927,10 @@ class Art extends Action {
 				new Filter.Toggle("Flying", false, (feature) => {
 					return feature.requires.symbols.has("Flying");
 				}),
+				new Filter.Toggle("Morph", false, (feature) => {
+					return feature.requires.symbols.has("Morph");
+				}),
+				element("br"),
 				new Filter.Toggle("Authority", false, (feature) => {
 					return feature.requires.symbols.has("Authority");
 				}),
@@ -1817,6 +1821,10 @@ class Class extends Feature {
 				new Filter.Toggle("Flying", false, (feature) => {
 					return feature.requires.symbols.has("Flying");
 				}),
+				new Filter.Toggle("Morph", false, (feature) => {
+					return feature.requires.symbols.has("Morph");
+				}),
+				element("br"),
 				new Filter.Toggle("Authority", false, (feature) => {
 					return feature.requires.symbols.has("Authority");
 				}),
@@ -1956,6 +1964,10 @@ class Ability extends Feature {
 				new Filter.Toggle("Flying", false, (feature) => {
 					return feature.requires.symbols.has("Flying");
 				}),
+				new Filter.Toggle("Morph", false, (feature) => {
+					return feature.requires.symbols.has("Morph");
+				}),
+				element("br"),
 				new Filter.Toggle("Authority", false, (feature) => {
 					return feature.requires.symbols.has("Authority");
 				}),

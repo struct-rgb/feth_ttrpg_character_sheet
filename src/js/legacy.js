@@ -22,6 +22,16 @@ function rename(state, map) {
 	}
 }
 
+function character_from_4_0_0(old) {
+
+	old.skills.Morph = {
+		"value": 0,
+		"aptitude": "Normal"
+	};
+
+	return old;
+}
+
 function character_from_3_7_0(old) {
 
 	old.class = rename(old.class, new Map([
@@ -429,6 +439,10 @@ function character(obj, to=Version.CURRENT) {
 
 	if (version.older("4.0.0")) {
 		obj = character_from_3_7_0(obj);
+	}
+
+	if (version.older("4.1.0")) {
+		obj = character_from_4_0_0(obj);
 	}
 
 	return obj;
