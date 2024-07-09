@@ -483,7 +483,7 @@ const PresetSet = new Enum("preset", Presetter.generate_presets().map(preset => 
 
 let SkillSet = null, AbilitySet = null, ArtsSet = null;
 
-const TYPES = new Enum("class type", ["Armor", "Flying", "Cavalry", "Infantry", "Monster", "Morph"]);
+const TYPES = new Enum("class type", ["Armor", "Flying", "Cavalry", "Infantry", "Monster", "Morph", "Dragon"]);
 
 function checkCompile(key, compiler, source, types) {
 

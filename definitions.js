@@ -6131,6 +6131,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Dracomorph",
+      "description": "Grants Spd +2 and Res -1.\n\nWhile morphed, this unit possesses the @{ability}{Glide} ability and Mov +2.",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 2,
+        "def": 0,
+        "res": -1,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Dragon-Scale Wall",
       "description": "Reduces all damage dealt to the user by 70%.",
       "requires": "Barrier",
@@ -17403,6 +17438,41 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Vermimorph",
+      "description": "Grants HP +4, Def +1, and Spd -1.\n\nWhile morphed, this unit possesses the @{ability}{Wide Gait} and @{ability}{Voyager} abilities.",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 4,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": -1,
+        "def": 1,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": "bothif other|morphed then -2 else 0 end",
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
       "hidden": false
     },
     {
@@ -31094,7 +31164,7 @@ const definitions = {
       "default_sidearm": "Armor",
       "comment": "comment",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Armored Knight",
@@ -31313,6 +31383,73 @@ const definitions = {
         "Force"
       ],
       "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Wyrmling",
+      "description": "A draconic Morph class that can take on multiple specializations, including limited flight and aquatic movement. All variants have hybrid offenses, can recur TP, and possess limited environmental interaction.",
+      "type": [
+        "Morph",
+        "Dragon"
+      ],
+      "tier": "Starting",
+      "requires": "Morph D",
+      "abilities": [
+        [
+          "Axe Prowess",
+          "Sword Prowess",
+          "Lance Prowess",
+          "Brawl Prowess",
+          "Bow Prowess",
+          "Reason Prowess",
+          "Faith Prowess",
+          "Guile Prowess",
+          "Authority",
+          "Dominion"
+        ],
+        [
+          "Dracomorph",
+          "Vermimorph"
+        ],
+        "Consumption 1"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 15,
+        "mag": 15,
+        "dex": 15,
+        "spd": 15,
+        "def": 10,
+        "res": 10,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 5,
+        "str": 3,
+        "mag": 3,
+        "dex": 3,
+        "spd": 2,
+        "def": 2,
+        "res": 2,
+        "lck": 0,
+        "mov": 4
+      },
+      "mount": 2,
+      "default_base": "Wyrmling",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": [
+        "Swords",
+        "Lances",
+        "Axes"
+      ],
+      "default_sidearm": [
+        "Faith",
+        "Reason",
+        "Guile"
+      ],
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
@@ -31988,69 +32125,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Shifter",
-      "description": "An animalistic Morph class which can take on numerous specializations, which include limited flight, movement after actions, bypassing enemies, resistance to weapon break, and HP recovery. Each variant can access either an extended SP pool or TP recursion.",
-      "type": [
-        "Infantry"
-      ],
-      "tier": "Starting",
-      "requires": "Morph D",
-      "abilities": [
-        [
-          "Axe Prowess",
-          "Sword Prowess",
-          "Lance Prowess",
-          "Brawl Prowess",
-          "Bow Prowess",
-          "Reason Prowess",
-          "Faith Prowess",
-          "Guile Prowess",
-          "Authority",
-          "Dominion"
-        ],
-        [
-          "Megalomorph",
-          "Tetramorph",
-          "Leptomorph",
-          "Micromorph"
-        ],
-        [
-          "Consumption 1",
-          "Stamina +5"
-        ]
-      ],
-      "arts": [],
-      "growths": {
-        "hp": 25,
-        "str": 10,
-        "mag": 10,
-        "dex": 15,
-        "spd": 15,
-        "def": 10,
-        "res": 10,
-        "lck": 15
-      },
-      "modifiers": {
-        "hp": 8,
-        "str": 2,
-        "mag": 2,
-        "dex": 5,
-        "spd": 2,
-        "def": 2,
-        "res": 2,
-        "lck": 5,
-        "mov": 4
-      },
-      "mount": 2,
-      "default_base": "Shifter",
-      "default_preset": "Balance/Balance/Balance",
-      "default_mainarm": "Lances",
-      "default_sidearm": "None",
-      "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
-      "hidden": false
-    },
-    {
       "name": "Soldier",
       "description": "An stalwart Lances focused Infantry class with that focuses on consistent defensive play, with high HP, defense, and critcal avoid, but low luck.",
       "type": [
@@ -32140,6 +32214,69 @@ const definitions = {
       "default_preset": "Speed/Balance/Luck",
       "default_mainarm": "Swords",
       "default_sidearm": "Bows",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Shifter",
+      "description": "An animalistic Morph class which can take on numerous specializations, which include limited flight, movement after actions, bypassing enemies, resistance to weapon break, and HP recovery. Each variant can access either an extended SP pool or TP recursion.",
+      "type": [
+        "Morph"
+      ],
+      "tier": "Starting",
+      "requires": "Morph D",
+      "abilities": [
+        [
+          "Axe Prowess",
+          "Sword Prowess",
+          "Lance Prowess",
+          "Brawl Prowess",
+          "Bow Prowess",
+          "Reason Prowess",
+          "Faith Prowess",
+          "Guile Prowess",
+          "Authority",
+          "Dominion"
+        ],
+        [
+          "Megalomorph",
+          "Tetramorph",
+          "Leptomorph",
+          "Micromorph"
+        ],
+        [
+          "Consumption 1",
+          "Stamina +5"
+        ]
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 25,
+        "str": 10,
+        "mag": 10,
+        "dex": 15,
+        "spd": 15,
+        "def": 10,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 8,
+        "str": 2,
+        "mag": 2,
+        "dex": 5,
+        "spd": 2,
+        "def": 2,
+        "res": 2,
+        "lck": 5,
+        "mov": 4
+      },
+      "mount": 2,
+      "default_base": "Shifter",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Lances",
+      "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],
       "hidden": false
