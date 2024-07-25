@@ -539,7 +539,7 @@ function toDOM(marker, node, dead=false, top=true) {
 
 	case "Required":
 		return element("span",
-			[toDOM(marker, args[0].value, dead, false), " (required)"]
+			[toDOM(marker, args[0], dead, false), " (required)"]
 		);
 
 	case "Permission":
