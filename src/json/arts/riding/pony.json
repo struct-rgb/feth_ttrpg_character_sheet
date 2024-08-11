@@ -1,7 +1,7 @@
 {
   "name": "Pony",
   "description": "Can only be equipped by Cavalry units.\n\nIf mounted, then until this unit moves three spaces or ends its movement, target Flying, Cavlary, or Morph ally moves into the last space this unit occupied whenever this unit moves.",
-  "requires": "Flying D+",
+  "requires": "Riding D+",
   "compatible": "None",
   "mttype": "none",
   "modifiers": {

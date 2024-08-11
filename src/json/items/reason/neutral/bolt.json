@@ -1,7 +1,7 @@
 {
   "name": "Bolt",
   "type": "Reason",
-  "description": "No special effects. Costs 390G to upgrade from #{item}{Essence}.",
+  "description": "Effective against Morph units. Costs 390G to upgrade from #{item}{Essence}.",
   "requires": "Reason D",
   "rank": "D",
   "price": 840,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes except Refined.",
-  "tags": [],
+  "tags": ["morph effective"],
   "hidden": false
 }

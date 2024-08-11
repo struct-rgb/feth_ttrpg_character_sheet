@@ -1,7 +1,7 @@
 {
   "name": "Essence",
   "type": "Reason",
-  "description": "No special effects.",
+  "description": "Effective against Morph units",
   "requires": "Reason E",
   "rank": "E",
   "price": 450,
@@ -22,6 +22,6 @@
     "sp": 0
   },
   "comment": "Incompatible with all Attributes except Refined.",
-  "tags": [],
+  "tags": ["morph effective"],
   "hidden": false
 }

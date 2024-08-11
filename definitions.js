@@ -24825,7 +24825,7 @@ const definitions = {
     {
       "name": "Pony",
       "description": "Can only be equipped by Cavalry units.\n\nIf mounted, then until this unit moves three spaces or ends its movement, target Flying, Cavlary, or Morph ally moves into the last space this unit occupied whenever this unit moves.",
-      "requires": "Flying D+",
+      "requires": "Riding D+",
       "compatible": "None",
       "mttype": "none",
       "modifiers": {
@@ -25023,7 +25023,7 @@ const definitions = {
     },
     {
       "name": "Rally Str +4",
-      "description": "Target up to three different allies within range, for each target, if it is a battalion unit, restore 4 EP to the target, otherwise apply @{const}{gbp}{[Spd +4]} to the target for one turn.",
+      "description": "Target up to three different allies within range, for each target, if it is a battalion unit, restore 4 EP to the target, otherwise apply @{const}{gbp}{[Str +4]} to the target for one turn.",
       "requires": "Authority D+",
       "compatible": "None",
       "mttype": "none",
@@ -25172,7 +25172,7 @@ const definitions = {
     },
     {
       "name": "Shelter F",
-      "description": "Can only be equipped by Flying units. If mounted, apply @{condition}{Shelter}{[Shelter]} to target Infantry or Armor ally.",
+      "description": "Can only be equipped by Flying units and can only be used while mounted.\n\nRemove target Infantry or Armor ally; this unit cannot use a “Shelter” art again until target ally returns. Target ally may choose to use all remaining movement to return at any time during their phase, and also returns if this unit dismounts or leaves the battlefield. Upon returning, target ally enters the nearest empty space to the most recent space this unit has occupied (their choice if multiple).",
       "requires": "Flying C",
       "compatible": "None",
       "mttype": "else",
@@ -25835,7 +25835,7 @@ const definitions = {
     },
     {
       "name": "Shelter R",
-      "description": "Can only be equipped by Riding units. If mounted, apply @{condition}{Shelter}{[Shelter]} to target Infantry or Armor ally.",
+      "description": "Can only be equipped by Cavalry units and can only be used while mounted.\n\nRemove target Infantry or Armored ally; this unit cannot use a “Shelter” art again until target ally returns. Target ally may choose to use all remaining movement to return at any time during their phase, and also returns if this unit dismounts or leaves the battlefield. Upon returning, target ally enters the nearest empty space to the most recent space this unit has occupied (their choice if multiple).",
       "requires": "Riding B",
       "compatible": "None",
       "mttype": "else",
@@ -45530,7 +45530,7 @@ const definitions = {
     {
       "name": "Essence",
       "type": "Reason",
-      "description": "No special effects.",
+      "description": "Effective against Morph units",
       "requires": "Reason E",
       "rank": "E",
       "price": 450,
@@ -45551,7 +45551,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "morph effective"
+      ],
       "hidden": false
     },
     {
@@ -45673,7 +45675,7 @@ const definitions = {
     {
       "name": "Bolt",
       "type": "Reason",
-      "description": "No special effects. Costs 390G to upgrade from #{item}{Essence}.",
+      "description": "Effective against Morph units. Costs 390G to upgrade from #{item}{Essence}.",
       "requires": "Reason D",
       "rank": "D",
       "price": 840,
@@ -45694,7 +45696,9 @@ const definitions = {
         "sp": 0
       },
       "comment": "Incompatible with all Attributes except Refined.",
-      "tags": [],
+      "tags": [
+        "morph effective"
+      ],
       "hidden": false
     },
     {
@@ -45845,7 +45849,7 @@ const definitions = {
     {
       "name": "Blast",
       "type": "Reason",
-      "description": "No special effects. Costs 550G to upgrade from #{item}{Bolt}.",
+      "description": "Effective against Morph units. Costs 550G to upgrade from #{item}{Bolt}.",
       "requires": "Reason C",
       "rank": "C",
       "price": 1390,
@@ -45867,7 +45871,7 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "fire"
+        "morph effective"
       ],
       "hidden": false
     },
@@ -48695,6 +48699,7 @@ const definitions = {
       "./resources/icons/effective/Flying.png",
       "./resources/icons/effective/Infantry.png",
       "./resources/icons/effective/Monster.png",
+      "./resources/icons/effective/Morph.png",
       "./resources/icons/effective/Offense.png"
     ],
     "portraits": [

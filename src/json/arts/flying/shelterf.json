@@ -1,6 +1,6 @@
 {
   "name": "Shelter F",
-  "description": "Can only be equipped by Flying units. If mounted, apply @{condition}{Shelter}{[Shelter]} to target Infantry or Armor ally.",
+  "description": "Can only be equipped by Flying units and can only be used while mounted.\n\nRemove target Infantry or Armor ally; this unit cannot use a “Shelter” art again until target ally returns. Target ally may choose to use all remaining movement to return at any time during their phase, and also returns if this unit dismounts or leaves the battlefield. Upon returning, target ally enters the nearest empty space to the most recent space this unit has occupied (their choice if multiple).",
   "requires": "Flying C",
   "compatible": "None",
   "mttype": "else",

@@ -1,6 +1,6 @@
 {
   "name": "Rally Str +4",
-  "description": "Target up to three different allies within range, for each target, if it is a battalion unit, restore 4 EP to the target, otherwise apply @{const}{gbp}{[Spd +4]} to the target for one turn.",
+  "description": "Target up to three different allies within range, for each target, if it is a battalion unit, restore 4 EP to the target, otherwise apply @{const}{gbp}{[Str +4]} to the target for one turn.",
   "requires": "Authority D+",
   "compatible": "None",
   "mttype": "none",

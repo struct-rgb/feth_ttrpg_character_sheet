@@ -267,6 +267,16 @@ class Characters {
 				element.shiftForward(category.size - added);
 				added++;
 
+				// It's possible to have an item end up with an "equip"
+				// group when meant to be a "class" ability since we try
+				// to reuse elements for already equipped features
+				// 
+				// This lead to a bug where you always had to requip class
+				// abilities and arts whe changing charactes. Solution are
+				// either remove and replace the element or conver the class.
+				// I'm choosing to do the latter to reuse the elements.
+				if (element.group == "equip") element.group = "class";
+
 				if (active) category.toggleActive(item);
 			}
 		};
