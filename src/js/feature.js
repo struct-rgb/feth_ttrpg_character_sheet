@@ -1941,10 +1941,6 @@ class Class extends Feature {
 
 				element("br"), element("strong", "Other"), element("br"),
 
-				new Filter.Toggle("New", false, (feature) => {
-					return feature.tagged("new");
-				}),
-
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
 				}),
@@ -2538,10 +2534,6 @@ class Tile extends Action {
 				Filter.Group.END,
 
 				element("br"), element("strong", "Other"), element("br"),
-
-				new Filter.Toggle("New", false, (feature) => {
-					return feature.tagged("new");
-				}),
 
 				new Filter.Toggle("Parameter", false, (feature) => {
 					return feature.tagged("parameter");
