@@ -1,6 +1,6 @@
 {
   "name": "Cavalry Effect Null",
-  "description": "Nullifies any extra effectiveness against Cavalry units.",
+  "description": "Cavalry Effective bonus damage against this unit is reduced to 0.",
   "requires": "Riding S+",
   "modifiers": {
     "hp": 0,
@@ -28,6 +28,8 @@
     "capcost": 6
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
+  "tags": [
+    "changed"
+  ],
   "hidden": false
 }

@@ -10,8 +10,6 @@
 
 /* global RangeFinder */
 
-/* global Markup */
-
 /* global Requirements */
 
 /* global Grade */
@@ -232,14 +230,6 @@ class Items {
 			this.refresh();
 		});
 
-		this._inInventory = new Toggle("In Inventory?", false, () => {
-			const activeID = this.sheet.wb.category.getActive();
-			if (activeID === null) return;
-
-			const element = this.sheet.wb.category.element(activeID);
-			element.description = this.body();
-		});
-
 		this._select = this._sf._select;
 
 		this._template = Item.get(Item.DEFAULT);
@@ -253,20 +243,19 @@ class Items {
 		);
 
 		this.attributes = new MultiActiveCategory(model, {
-			name        : "themes",
-			empty       : "Item has no attributes",
-			selectable  : true,
-			reorderable : true,
-			removable   : true,
-			hideable    : true,
-			addActive   : true,
-			ontoggle    : ((category, key) => {
+			empty        : "Item has no attributes",
+			selectable   : true,
+			reorderable  : true,
+			removable    : true,
+			hideable     : true,
+			addActive    : true,
+			ontoggle     : ((category, key) => {
 				category.toggleActive(key);
 				// this.refresh();
 				const feature = category.model.get(key);
 				this.refresher.refresh(feature.affects);
 			}),
-			onremove    : ((category, key) => {
+			onremove     : ((category, key) => {
 				const wasActive = category.isActive(key);
 				category.delete(key);
 
@@ -275,7 +264,7 @@ class Items {
 					this.refresher.refresh(feature.affects);
 				}
 			}),
-			select      : Attribute.select(),
+			select       : Attribute.select()
 		});
 
 		this._description = element("textarea", {
@@ -515,11 +504,6 @@ class Items {
 				"Refresh the item preview."
 			].join("")),
 
-			tooltip(this._inInventory.root, [
-				"Check this box so that this item shows up when you generate ",
-				"a blurb or when you batch generate macros."
-			].join("")),
-
 			element("br"), 
 			element("br"), 
 
@@ -664,20 +648,6 @@ class Items {
 		this._rank.value = value;
 	}
 
-	get inInventory() {
-		return this._inInventory.checked;
-	}
-
-	set inInventory(value) {
-		this._inInventory.checked = value;
-
-		const activeID = this.sheet.wb.category.getActive();
-		if (activeID === null) return;
-
-		const element = this.sheet.wb.category.element(activeID);
-		element.description = this.body();
-	}
-
 	get replaceInfo() {
 		return this._replace.checked;
 	}
@@ -719,7 +689,6 @@ class Items {
 		this.rank        = item.rank        || 0;
 		this.mttype      = item.mttype      || 0;
 		this.price       = item.price       || 0;
-		this.inInventory = item.inventory   || false;
 		this.replaceInfo = item.replace     || false;
 		this.template    = item.template    || Item.DEFAULT;
 		this.information = item.description || "";
@@ -763,7 +732,6 @@ class Items {
 			attributes  : this.attributes.getState(),
 			modifiers   : stats,
 			description : this.information,
-			inventory   : this.inInventory,
 			replace     : this.replaceInfo,
 			tags        : Array.from(this._custom_tags.keys())
 		};
@@ -777,7 +745,6 @@ class Items {
 		}
 
 		this.attributes.clear();
-		this.inInventory = false;
 		this.replaceInfo = false;
 		this.information = "";
 		this.rank        = 0;
@@ -788,28 +755,18 @@ class Items {
 		this._base.value = 0;
 	}
 
-	/* builtable display */
+	/* buildable display */
 
 	getTitle(object) {
 		return object.name;
 	}
 
 	getBody(object) {
-		return element("span", [
-			object.template || object.description,
-			object.inventory
-				? element("em", " (Inventory)", "punctuation")
-				: ""
-		]);
+		return element("span", object.template || object.description);
 	}
 
 	body() {
-		return element("span", [
-			this._template.name,
-			this.inInventory
-				? element("em", " (Inventory)", "punctuation")
-				: ""
-		]);
+		return element("span", this._template.name);
 	}
 
 	/* blurb display */

@@ -23,7 +23,9 @@
   },
   "comment": "Items in modifers should be integers",
   "tags": [
-    "relic"
+    "FE3H",
+    "relic",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

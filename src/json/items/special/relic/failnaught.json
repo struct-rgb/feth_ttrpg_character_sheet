@@ -23,9 +23,11 @@
   },
   "comment": "Items in modifers should be integers",
   "tags": [
+    "FE3H",
     "relic",
     "effective",
-    "flying effective"
+    "flying effective",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

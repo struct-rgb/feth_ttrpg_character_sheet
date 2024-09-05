@@ -23,8 +23,10 @@
   },
   "comment": "Incompatible with all Attributes except Refined.",
   "tags": [
+    "FE3H",
     "sacred",
-    "lightning"
+    "lightning",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

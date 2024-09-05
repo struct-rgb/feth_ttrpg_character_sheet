@@ -918,7 +918,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "in combat"
+        "in combat",
+        "FE3H"
       ],
       "hidden": false
     },
@@ -953,7 +954,9 @@ const definitions = {
       },
       "comment": "Kato's peronsal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -1463,9 +1466,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Ancient Dragonskin",
@@ -1533,13 +1538,15 @@ const definitions = {
       },
       "comment": "Castiel's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
     {
       "name": "Armor Effect Null",
-      "description": "Nullifies any extra effectiveness against Armor units.",
+      "description": "Armor Effective bonus damage against this unit is reduced to 0.",
       "requires": "Armor S+",
       "modifiers": {
         "hp": 0,
@@ -1567,7 +1574,9 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -2322,7 +2331,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "arms shield",
         "in combat"
       ],
@@ -2726,7 +2734,9 @@ const definitions = {
       },
       "comment": "The shared ability of the Bandana Bandit mooks",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -2761,7 +2771,9 @@ const definitions = {
       },
       "comment": "Will's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -2796,7 +2808,9 @@ const definitions = {
       },
       "comment": "Scarlet Subrosa's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -2831,7 +2845,9 @@ const definitions = {
       },
       "comment": "\"Granny\"'s personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -2866,7 +2882,9 @@ const definitions = {
       },
       "comment": "Odd-Eye Cato's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -2901,7 +2919,46 @@ const definitions = {
       },
       "comment": "The Kid's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Bardic Charmer",
+      "description": "Once a map, this unit can turn one non-boss enemy unit into an ally unit. Said non-boss unit will then be turned into permanent ally that can be called upon later. If this ability is used on a enemy boss, they can prohibit the boss from targeting one ally of their choice for five turns.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Jasper Rano's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -3204,7 +3261,46 @@ const definitions = {
       ],
       "comment": "Aaron von Rogue School's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Beguiling Touch",
+      "description": "Grants Res +2 in combat when this unit initiates combat. When this unit targets an ally with an art or item or hits a foe with an attack, this unit may apply @{condition}{Seclude}{[Seclude]} to that unit. This unit may end up to four instances of @{condition}{Seclude}{[Seclude]} of its choice before this application, if it was applied through an attack.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": "fill blow(2)",
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Edine Bonfleur's personal.",
+      "tags": [
+        "FbF",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -3275,9 +3371,11 @@ const definitions = {
       },
       "comment": "Snakeroot's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Blessed Hand",
@@ -3351,9 +3449,11 @@ const definitions = {
       },
       "comment": "Hugo von Dominic's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Bow Advantage",
@@ -3830,6 +3930,43 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Brawl Arms Shield",
+      "description": "Grants Prot/Resl +3 in combat when unit has weapon triangle advantage using Brawl.",
+      "requires": "Class Brawler",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": "fill arms_shield(item|type|brawl)",
+        "resl": "fill arms_shield(item|type|brawl)",
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "new",
+        "arms shield",
+        "in combat"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Brawl Consumption 1",
       "description": "Restores 1 TP after unit uses a Brawl weapon. Consumes three less capacity starting at level 15. Cannot be equipped with another \"Brawl Consumption\" ability.",
       "requires": "Any (Brawl D+) (Class Brawler)",
@@ -4227,7 +4364,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -4370,7 +4509,7 @@ const definitions = {
     },
     {
       "name": "Cavalry Effect Null",
-      "description": "Nullifies any extra effectiveness against Cavalry units.",
+      "description": "Cavalry Effective bonus damage against this unit is reduced to 0.",
       "requires": "Riding S+",
       "modifiers": {
         "hp": 0,
@@ -4398,7 +4537,9 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -4641,7 +4782,8 @@ const definitions = {
       },
       "comment": "Brielle von Edmund's personal.",
       "tags": [
-        "personal"
+        "personal",
+        "changed"
       ],
       "hidden": true
     },
@@ -4675,8 +4817,11 @@ const definitions = {
         "capcost": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Colossal X",
@@ -4952,7 +5097,9 @@ const definitions = {
       },
       "comment": "Victor von Edmund's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -6306,8 +6453,8 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Effect Reduction",
-      "description": "Damage effectiveness multiplier for attacks against this unit is 1.5 instead of 2.0. Does not consume an ability slot.",
+      "name": "Dynamic Duo",
+      "description": "At the beginning of Briar's phase:\n - Apply [Auto +X] to Silver for one phase, where X is the number units Briar applied a condition to last turn.\n- Apply [Canto Y] to Briar for one phase, where Y is the number of units Silver applied a condition to last turn.\n",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -6332,16 +6479,55 @@ const definitions = {
         "spcost": 0,
         "tp": 0,
         "mov": 0,
-        "capcost": 6
+        "capcost": 0
+      },
+      "comment": "Briar Rose's personal.",
+      "tags": [
+        "FbF",
+        "personal",
+        "new"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Effect Reduction",
+      "description": "Effective damage against this unit is reduced from to 10 to 5.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
       "name": "Elemental Discord",
       "description": "If unit has exactly 2 Reason tomes that share an element in unit’s inventory, unit may use Reason metamagic arts of that element with tomes of any element at the cost of 2 additional SP.",
-      "requires": "Innate",
+      "requires": "Any (Class Warlock) (Class Sage)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6378,13 +6564,15 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": true
     },
     {
       "name": "Elemental Harmony",
       "description": "If unit has ≥ 3 Reason tomes that share an element in unit’s inventory, then unit may use the Variant form of any Reason metamagic that requires a specific tome in unit’s inventory with any tome of that element at the cost of 2 additional SP.",
-      "requires": "Innate",
+      "requires": "Any (Class Warlock) (Class Sage)",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -6421,7 +6609,9 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": true
     },
     {
@@ -6524,6 +6714,43 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Fairy Dust",
+      "description": "Every two turns, all ally units within 5 spaces of Rosemary will heal 2d6 HP. This increases to 2d8 at level 10, and 2d10 at level 20.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Rosemary's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -7203,9 +7430,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "static"
+        "FE3H",
+        "static",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Fiendish Blow",
@@ -7507,7 +7736,7 @@ const definitions = {
     },
     {
       "name": "Flying Effect Null",
-      "description": "Nullifies any extra effectiveness against Flying units.",
+      "description": "Flying Effective bonus damage against this unit is reduced to 0.",
       "requires": "Flying S+",
       "modifiers": {
         "hp": 0,
@@ -7535,7 +7764,9 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -7569,7 +7800,8 @@ const definitions = {
       },
       "comment": "Beatrice von Edmund's personal.",
       "tags": [
-        "personal"
+        "personal",
+        "changed"
       ],
       "hidden": true
     },
@@ -7638,8 +7870,11 @@ const definitions = {
         "capcost": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Frenetic Fighter",
@@ -7707,7 +7942,9 @@ const definitions = {
       },
       "comment": "Felicia's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -7742,9 +7979,11 @@ const definitions = {
       },
       "comment": "Esme Durham's personal.",
       "tags": [
-        "personal"
+        "FbF",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Giant Wings",
@@ -7812,46 +8051,11 @@ const definitions = {
       },
       "comment": "Fleur von Albreht's personal.",
       "tags": [
-        "personal"
-      ],
-      "hidden": true
-    },
-    {
-      "name": "Give and Break",
-      "description": "The first time this unit is targeted by an ally on each phase, apply @{condition}{Favor}{[Favor]} to that ally; the first time this unit targets an ally each phase, apply @{condition}{Favor}{[Favor]} to this unit.",
-      "requires": "Innate",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 0
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
+        "FE3H",
         "personal",
-        "depricated"
+        "changed"
       ],
-      "hidden": true,
-      "omit": false
+      "hidden": false
     },
     {
       "name": "Glide",
@@ -7917,9 +8121,11 @@ const definitions = {
       },
       "comment": "Amelie Cosgrove's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Gravimancy",
@@ -7952,7 +8158,9 @@ const definitions = {
       },
       "comment": "Violette von Mateus's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -8093,7 +8301,9 @@ const definitions = {
       },
       "comment": "Alvis Ironhelm Rangeld's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -8672,7 +8882,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -8863,6 +9075,43 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Helping Hand",
+      "description": " - When an ally within three spaces pays an SP or TP cost, this unit may pay up two points of that cost instead of that ally. - When this unit pays an SP or TP cost, one ally within three spaces may pay up to two points of that cost instead of this unit.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Tem Vargman's personal.",
+      "tags": [
+        "FbF",
+        "personal",
+        "new"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Hero Complex",
       "description": "Arts and Gambit Might +5 if an ally is in target foe's danger zone.",
       "requires": "Innate",
@@ -8898,9 +9147,11 @@ const definitions = {
       },
       "comment": "Lianne Amsel's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Hide Piercer",
@@ -9150,6 +9401,80 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Hold 'Em or Fold 'Em",
+      "description": "If there are more allies than foes within three spaces, grants Lck +10. Otherwise, grants Mov +1 and unit may pass through spaces occupied by foes and overlay tiles (ignoring effects).",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": "ask [Choose] case [Hold] {10} else [Fold] {0} end",
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 1,
+        "capcost": 0
+      },
+      "comment": "Drake Wood's personal.",
+      "tags": [
+        "FbF",
+        "personal",
+        "new"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Holy Rebuke",
+      "description": "Once per phase, as a reaction, this unit may inflict 10% nonlethal damage on an enemy. Trigger: Unit ends combat against an enemy unit.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Kenneth Rys's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Hope Aura",
       "description": "At the beginning of this unit’s phase, allies within 2 spaces recover 10% HP.",
       "requires": "Class `Holy Knight`",
@@ -9214,9 +9539,11 @@ const definitions = {
       },
       "comment": "Lillianna von Bergliez's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Improvisationalist",
@@ -9249,7 +9576,8 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "personal"
+        "personal",
+        "changed"
       ],
       "hidden": true
     },
@@ -9284,10 +9612,49 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false,
       "omit": false
+    },
+    {
+      "name": "Infuse",
+      "description": "Allies adjacent to this unit gain Mt +X in combat, where X is equal to this unit's spell Mt. Adjacent allies may also choose to target an foe's Resilience in combat.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Alita Blackwitch's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
+      ],
+      "hidden": false
     },
     {
       "name": "Inspiration",
@@ -9534,9 +9901,11 @@ const definitions = {
       },
       "comment": "Eleanor Higgins's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Lance Advantage",
@@ -9605,7 +9974,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "arms shield",
         "in combat"
       ],
@@ -10187,8 +10555,10 @@ const definitions = {
       },
       "comment": "姫子 von Varley's personal.",
       "tags": [
+        "FE3H",
         "personal",
-        "action"
+        "action",
+        "changed"
       ],
       "hidden": false
     },
@@ -10428,9 +10798,10 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "personal"
+        "personal",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Lucky Charm",
@@ -10463,7 +10834,9 @@ const definitions = {
       },
       "comment": "Evan Sinclaire's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -10711,9 +11084,11 @@ const definitions = {
       },
       "comment": "Simdora Lycan's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Mag +2",
@@ -10827,11 +11202,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Blaiddyd",
@@ -10872,11 +11249,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Cethleann",
@@ -10917,12 +11296,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Charon",
@@ -10963,12 +11344,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Chevalier",
@@ -11009,11 +11392,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Cichol",
@@ -11054,11 +11439,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Daphnel",
@@ -11099,12 +11486,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Dominic",
@@ -11145,11 +11534,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Ernest",
@@ -11190,11 +11581,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Flames",
@@ -11239,12 +11632,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Fraldarius",
@@ -11285,12 +11680,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Gautier",
@@ -11331,12 +11728,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Gloucester",
@@ -11377,12 +11776,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Goneril",
@@ -11423,11 +11824,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Indech",
@@ -11468,11 +11871,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Lamine",
@@ -11513,11 +11918,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Macuil",
@@ -11558,12 +11965,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Noa",
@@ -11604,11 +12013,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Riegan",
@@ -11649,11 +12060,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Seiros",
@@ -11694,12 +12107,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of Timotheos",
@@ -11740,11 +12155,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Major Crest of the Beast",
@@ -11785,12 +12202,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "major",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Martial Stance",
@@ -11925,9 +12344,11 @@ const definitions = {
       },
       "comment": "Keyve Molinaro's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Megalomorph",
@@ -11995,7 +12416,9 @@ const definitions = {
       },
       "comment": "Regi Durenzo's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false,
       "omit": false
@@ -12127,11 +12550,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Blaiddyd",
@@ -12172,11 +12597,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Cethleann",
@@ -12217,12 +12644,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Charon",
@@ -12263,12 +12692,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Chevalier",
@@ -12309,11 +12740,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Cichol",
@@ -12354,11 +12787,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Daphnel",
@@ -12399,12 +12834,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Dominic",
@@ -12445,11 +12882,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Ernest",
@@ -12490,11 +12929,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Flames",
@@ -12539,12 +12980,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Fraldarius",
@@ -12585,12 +13028,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Gautier",
@@ -12631,12 +13076,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Gloucester",
@@ -12677,12 +13124,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Goneril",
@@ -12723,11 +13172,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Indech",
@@ -12768,11 +13219,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Lamine",
@@ -12813,11 +13266,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Macuil",
@@ -12858,12 +13313,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Noa",
@@ -12904,11 +13361,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Riegan",
@@ -12949,11 +13408,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Seiros",
@@ -12994,12 +13455,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of Timotheos",
@@ -13040,11 +13503,13 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
-        "chance"
+        "chance",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Minor Crest of the Beast",
@@ -13085,12 +13550,14 @@ const definitions = {
       ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "FE3H",
         "crest",
         "minor",
         "chance",
-        "in combat"
+        "in combat",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Miracle",
@@ -13158,13 +13625,15 @@ const definitions = {
       },
       "comment": "Carmen's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Monster Effect Null",
-      "description": "Nullifies any extra effectiveness against Monster units.",
+      "description": "Monster Effective bonus damage against this unit is reduced to 0.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
@@ -13192,7 +13661,9 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -13267,6 +13738,80 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Moving Mountain",
+      "description": "If unit has moved enough spaces and successfully hits an opponent gain:\n - 5 movement = bonus 20 crit\n - 6 movement = foe is flung 2 spaces and takes 20% HP nonlethal damage on collision.\n - 7 movement = foe cannot counter. ",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": "fill affirm([Moved 6+?], 20, 0)",
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Logan Ninefinger's personsal.",
+      "tags": [
+        "FbF",
+        "personal",
+        "new"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Murhata",
+      "description": "Once per map, instantly eliminate one standard unit, within 10 tiles. (Standard units are not characters in the story, nor are they intended to be 'boss' units.) This action consumes the turn.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Serana 'Al Oblivia's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Nightblade's Parting",
       "description": "Compatible spells have @{attribute}{Spellblade} while in this unit's inventory and this unit is able to use the Vengeful Counter reaction.\n\nVengeful Counter—Trigger: once per phase other than this unit's, after a foe misses this unit an attack. Pay 5 TP to counterattack with Hit -20 with equipped tome regardless of range and ignoring range penalty.",
       "requires": "Innate",
@@ -13297,7 +13842,9 @@ const definitions = {
       },
       "comment": "Illese Arndt's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -14278,9 +14825,11 @@ const definitions = {
       },
       "comment": "Clara von Aegir's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Protagonist Complex",
@@ -14311,9 +14860,11 @@ const definitions = {
         "mov": 0,
         "capcost": 0
       },
-      "comment": "Francesca's personal.",
+      "comment": "Solomina von Aegir's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -14965,7 +15516,9 @@ const definitions = {
       },
       "comment": "Zeva Aurelia's peronsal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -15000,7 +15553,9 @@ const definitions = {
       },
       "comment": "Ragnar Rahman's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -15141,7 +15696,9 @@ const definitions = {
       },
       "comment": "Francesca's peronsal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -15176,7 +15733,9 @@ const definitions = {
       },
       "comment": "Penny Leclerc's personal",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -15360,7 +15919,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15396,7 +15954,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15432,7 +15989,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15468,7 +16024,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15504,7 +16059,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal",
         "condition"
       ],
@@ -15541,7 +16095,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15577,7 +16130,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15613,7 +16165,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15649,7 +16200,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15685,7 +16235,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
       ],
       "hidden": false
@@ -15721,8 +16270,44 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "seal"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Shadow Sprint",
+      "description": "Once per map, Nockmed may apply Stealth to himself for two turns.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Nockmed-Maltias's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -15757,7 +16342,9 @@ const definitions = {
       },
       "comment": "Signy's peronsal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -15792,10 +16379,12 @@ const definitions = {
       },
       "comment": "Regi Durenzo's old personal.",
       "tags": [
+        "FE3H",
         "personal",
-        "depricated"
+        "depricated",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Spd +2",
@@ -15824,12 +16413,13 @@ const definitions = {
         "spcost": 0,
         "tp": 0,
         "mov": 0,
-        "capcost": 2
+        "capcost": 3
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "static",
-        "halfslot"
+        "halfslot",
+        "changed"
       ],
       "hidden": false
     },
@@ -15970,7 +16560,9 @@ const definitions = {
       },
       "comment": "Persephone's peronsal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -16153,6 +16745,43 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Strategic Flank",
+      "description": "Once per phase, as a reaction, this unit may make an an attack on an enemy within his weapon range. Trigger: Ally concludes combat with the enemy in weapon range.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Slaidellius (Slaid) Silverwood's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Strategic Hand",
       "description": "This unit may choose to disallow its SBACs from activating before their next combat this turn. If they choose to do so and a SBAC would have activated, this unit gains @{condition}{Ace in the Hole}{[Ace in the Hole]}.\n\nCannot be equipped with another “Hand” ability.",
       "requires": "All (Any (Bows C) (Reason C) (Riding C)) (Level 11)",
@@ -16290,9 +16919,11 @@ const definitions = {
       },
       "comment": "Rosalie Nedler's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Survivalist Expert",
@@ -16325,9 +16956,11 @@ const definitions = {
       },
       "comment": "Ricardo von Nuvelle's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Sword Advantage",
@@ -16396,7 +17029,6 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "new",
         "arms shield",
         "in combat"
       ],
@@ -16872,9 +17504,11 @@ const definitions = {
       },
       "comment": "Fleche von Bergliez's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Terrain Resistance",
@@ -16941,6 +17575,43 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Throne of Corpses",
+      "description": "For one turn after one of this army's units is defeated, attacks by this army's units have Mt +3 in combat and restore 20% of the attacker's HP on hit.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": "fill affirm([Ally Downed?], 3, 0)",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Elric Lusine's personal.",
+      "tags": [
+        "FbF",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -17198,7 +17869,9 @@ const definitions = {
       },
       "comment": "Aaron von Rogue School's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
       "hidden": false
     },
@@ -17403,7 +18076,46 @@ const definitions = {
       },
       "comment": "Jocelyn's personal.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Vanishing Flock",
+      "description": "As an action, this unit may pay 10% SP to create a clone of itself in an adjacent space, controlling up to a max of 3 clones per 10 levels. This clone has 0 Max TP, 0 Max SP, and Max HP equal to 50% of this unit's Max HP, and it cannot take actions or reactions. As a reaction with trigger: a foe initiates combat with this unit, this unit may swap places with one of its clones.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Mordecai Rayler's personsal.",
+      "tags": [
+        "FbF",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -17581,7 +18293,7 @@ const definitions = {
     {
       "name": "Voyager",
       "description": "This unit may traverse @{tile}{Ice Block}{Ice Blocks} and water tiles.",
-      "requires": "Innate",
+      "requires": "Class Raider",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -17608,13 +18320,15 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": true
     },
     {
       "name": "Wall Mastery",
       "description": "Reason \"Wall\" arts create one tile per 3 magic instead of one tile per 5 magic.",
-      "requires": "Innate",
+      "requires": "Class Sage",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -17641,7 +18355,9 @@ const definitions = {
         "capcost": 6
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": true
     },
     {
@@ -17928,9 +18644,11 @@ const definitions = {
       },
       "comment": "Amelie Cosgrove's personl.",
       "tags": [
-        "personal"
+        "FE3H",
+        "personal",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Wrath",
@@ -17963,6 +18681,59 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Wrath of the Rhythm",
+      "description": "For every kill or assist, gain a stacking +1 damage to each attack for every 5 lvls, +1 max stacks (lv0=+1, lv5=+2, lv10=+3, lv15=+4 lv20=+5, lv25=+6, lv30=+7) on taking damage, all additional damage stacks are removed",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": "fill locals|stacks()",
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "locals": [
+        [
+          "template stacks()",
+          "  ask [Damage Stacks?]",
+          "     else 0",
+          "     case 1",
+          "     case 2",
+          "     case 3",
+          "     case 4",
+          "     case 5",
+          "     case 6",
+          "     case 7",
+          "  end",
+          "end"
+        ]
+      ],
+      "comment": "The Unknown's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
+      ],
       "hidden": false
     },
     {
@@ -18150,7 +18921,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "condition"
+        "condition",
+        "FE3H",
+        "changed"
       ],
       "hidden": false,
       "type": "Axes",
@@ -18676,9 +19449,11 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "relic",
         "effective",
-        "dragon effective"
+        "dragon effective",
+        "changed"
       ],
       "hidden": false,
       "rank": "E",
@@ -18705,10 +19480,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "effective",
         "condition",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Axes",
@@ -18735,10 +19512,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "effective",
         "movement",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Axes",
@@ -19012,7 +19791,8 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "movement"
+        "movement",
+        "FE3H"
       ],
       "hidden": false,
       "type": "Lances",
@@ -19288,9 +20068,11 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "all effective",
         "effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Lances",
@@ -19317,10 +20099,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "scales",
         "effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Lances",
@@ -19347,9 +20131,11 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Lances",
@@ -19376,10 +20162,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "cavalry effective",
         "dragon effective",
         "effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Lances",
@@ -19900,10 +20688,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "effective",
         "cavalry effective",
         "dragon effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Swords",
@@ -19930,10 +20720,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "armor effective",
         "effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Swords",
@@ -19960,9 +20752,11 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "relic",
         "effective",
-        "dragon effective"
+        "dragon effective",
+        "changed"
       ],
       "hidden": false,
       "type": "Swords",
@@ -19989,10 +20783,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "scales",
         "effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Swords",
@@ -20019,10 +20815,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "scales",
         "effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Swords",
@@ -20049,8 +20847,10 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "scales",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Swords",
@@ -20191,7 +20991,10 @@ const definitions = {
         "spcost": 3
       },
       "comment": "",
-      "tags": [],
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
       "hidden": false,
       "type": "Bows",
       "rank": "C"
@@ -20547,10 +21350,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "effective",
         "condition",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Bows",
@@ -20577,9 +21382,11 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "relic",
         "effective",
-        "dragon effective"
+        "dragon effective",
+        "changed"
       ],
       "hidden": false,
       "type": "Bows",
@@ -21164,9 +21971,11 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "effective",
         "dragon effective",
-        "relic"
+        "relic",
+        "changed"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -21968,9 +22777,11 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "relic",
-        "effective"
+        "effective",
+        "changed"
       ],
       "hidden": false,
       "type": "Faith",
@@ -22280,6 +23091,42 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "aoe"
+      ],
+      "hidden": false,
+      "type": "Guile",
+      "rank": "D"
+    },
+    {
+      "name": "Caustic Retch",
+      "description": "On hit, roll 1d4. Apply the corresponding condition to target foe and all adjacent units (including allies) other than this unit:\n - @{condition}{Sickness}{[Sickness]} for one turn.\n - @{condition}{Rattled}{[Rattled]} for one turn.\n - @{condition}{Poisoned}{[Poisoned].}\n - @{condition}{Taunted}{[Taunted]} for on turn.",
+      "requires": "Morph C",
+      "compatible": "None",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 70,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 3,
+        "tiles": 0,
+        "spcost": 4,
+        "tpcost": 0,
+        "sp": 0,
+        "tp": 0
+      },
+      "comment": "",
+      "tags": [
+        "no might",
+        "no crit",
+        "no stats",
+        "no triangle",
+        "tactical",
+        "condition",
+        "new"
       ],
       "hidden": false,
       "type": "Guile",
@@ -22748,10 +23595,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "cavalry effective",
         "relic",
-        "effective"
+        "effective",
+        "changed"
       ],
       "hidden": false,
       "type": "Guile",
@@ -22782,10 +23631,12 @@ const definitions = {
       },
       "comment": "",
       "tags": [
+        "FE3H",
         "dragon effective",
         "relic",
         "effective",
-        "combo"
+        "combo",
+        "changed"
       ],
       "hidden": false,
       "type": "Guile",
@@ -27558,6 +28409,34 @@ const definitions = {
       "rank": "C-B"
     },
     {
+      "name": "Horseater",
+      "description": "If morphed, this attack is Effective against Cavalry units.\n\nCannot be equipped alongside @{art}{Snatch}.",
+      "requires": "Any (Morph C) (Morph B)",
+      "compatible": "Not (Tag `no might`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 15,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "condition",
+        "new"
+      ],
+      "hidden": false,
+      "type": "Morph",
+      "rank": "C-B"
+    },
+    {
       "name": "Migrate",
       "description": "Can only be used while morphed.\n\nThis unit may move up to one space, then up to two target allies may move up to two spaces closer to this unit.",
       "requires": "Morph C",
@@ -27589,6 +28468,34 @@ const definitions = {
       "hidden": false,
       "type": "Morph",
       "rank": ""
+    },
+    {
+      "name": "Snatch",
+      "description": "If morphed, this attack is Effective against Flying units.\n\nCannot be equipped alongside @{art}{Horseater}.",
+      "requires": "Any (Morph C) (Morph B)",
+      "compatible": "Not (Tag `no might`)",
+      "mttype": "else",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 10,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 0,
+        "spcost": 4
+      },
+      "comment": "",
+      "tags": [
+        "condition",
+        "new"
+      ],
+      "hidden": false,
+      "type": "Morph",
+      "rank": "C-B"
     },
     {
       "name": "Flying Leap",
@@ -28438,9 +29345,11 @@ const definitions = {
         "for swords",
         "for lances",
         "for brawl",
-        "explain"
+        "explain",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Ceremonial",
@@ -29108,9 +30017,11 @@ const definitions = {
         "for swords",
         "for lances",
         "for brawl",
-        "explain"
+        "explain",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Improvised",
@@ -29599,8 +30510,11 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Reloading Mechanism",
@@ -29652,8 +30566,11 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Sacred Synergy",
@@ -29681,9 +30598,11 @@ const definitions = {
         "rework",
         "forspell",
         "forweapon",
-        "depricated"
+        "depricated",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Sacrificial",
@@ -30036,7 +30955,7 @@ const definitions = {
     {
       "name": "Structure: Longbow",
       "type": "Any",
-      "description": "Must be added when weapon is first obtained.\n\nWeapon’s minimum and maximum range increase by 1. While equipped, disables wielder's effects that decrease wielder's minimum range.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+      "description": "Must be added when weapon is first obtained.\n\nWeapon’s minimum and maximum range increase by 1.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
       "rank": 0,
       "price": 0,
       "mttype": "else",
@@ -30058,7 +30977,8 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "for bows",
-        "structure"
+        "structure",
+        "changed"
       ],
       "hidden": false
     },
@@ -30582,9 +31502,11 @@ const definitions = {
         "for guile",
         "for brawl",
         "for bows",
-        "explain"
+        "explain",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Unlocked",
@@ -31718,7 +32640,7 @@ const definitions = {
       "abilities": [
         "Brawl Prowess",
         "Brawl Consumption 1",
-        "Stamina +5"
+        "Brawl Arms Shield"
       ],
       "arts": [],
       "growths": {
@@ -31751,7 +32673,9 @@ const definitions = {
       ],
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -31851,6 +32775,11 @@ const definitions = {
       "tier": "Starting",
       "requires": "Any (Reason D) (Axes D) (Bows D))",
       "abilities": [
+        [
+          "Reason Prowess",
+          "Axe Prowess",
+          "Bow Prowess"
+        ],
         "Trapper",
         "Crit +5"
       ],
@@ -31886,7 +32815,9 @@ const definitions = {
       ],
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -32003,7 +32934,7 @@ const definitions = {
           "Brawl Consumption 1",
           "Faith Consumption 1"
         ],
-        "Chain Guard"
+        "Mov +1"
       ],
       "arts": [],
       "growths": {
@@ -32025,15 +32956,18 @@ const definitions = {
         "def": 1,
         "res": 1,
         "lck": 10,
-        "mov": 6
+        "mov": 5
       },
       "mount": 0,
       "default_base": "Monk",
       "default_preset": "Balance/Balance/Luck",
       "default_mainarm": "Water",
       "default_sidearm": "Faith",
+      "default_arts": [],
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -37329,8 +38263,11 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Blue Lion Brooch",
@@ -37363,8 +38300,11 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Dandy Bandana",
@@ -37397,8 +38337,11 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Golden Deer Bracelet",
@@ -37431,8 +38374,11 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Hematurgic Vessel",
@@ -37465,7 +38411,10 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
       "hidden": false
     },
     {
@@ -37500,9 +38449,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "relic"
+        "relic",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Tactiball Trophy",
@@ -37535,8 +38486,11 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "White Dragon Scarf",
@@ -37569,8 +38523,11 @@ const definitions = {
         "mov": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Quiver: Antimagic Arrowheads",
@@ -37875,8 +38832,12 @@ const definitions = {
         "mov": 1
       },
       "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "relic",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Goddess Ring",
@@ -38114,9 +39075,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "relic"
+        "relic",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Amber Shield",
@@ -38388,9 +39351,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "sacred"
+        "sacred",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Seiros Shield",
@@ -38424,9 +39389,11 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "sacred"
+        "sacred",
+        "FE3H",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Silver Shield",
@@ -38562,7 +39529,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "secret"
+        "secret",
+        "FE3H",
+        "changed"
       ],
       "hidden": false
     },
@@ -38598,7 +39567,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "sacred"
+        "sacred",
+        "FE3H",
+        "changed"
       ],
       "hidden": false
     },
@@ -38702,7 +39673,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "relic"
+        "relic",
+        "FE3H",
+        "changed"
       ],
       "hidden": false
     }
@@ -41771,10 +42744,12 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "effective",
-        "armor effective"
+        "armor effective",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Hauteclere",
@@ -41828,11 +42803,13 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "sacred",
         "effective",
-        "armor effective"
+        "armor effective",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Labraunda",
@@ -41859,9 +42836,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "sacred"
+        "FE3H",
+        "sacred",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Aymr",
@@ -41888,9 +42867,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Crusher",
@@ -41917,9 +42898,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Freikugel",
@@ -41946,9 +42929,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Custom Lance",
@@ -42138,8 +43123,11 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Gravidus",
@@ -42193,11 +43181,13 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "sacred",
         "effective",
-        "cavalry effective"
+        "cavalry effective",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Areadbhar",
@@ -42224,9 +43214,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Lance of Ruin",
@@ -42253,9 +43245,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Lúin",
@@ -42282,9 +43276,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Saintslayer",
@@ -42311,9 +43307,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "secret"
+        "FE3H",
+        "secret",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Trishul",
@@ -42340,10 +43338,12 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "secret",
-        "relic"
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Custom Sword",
@@ -42560,8 +43560,11 @@ const definitions = {
         "sp": 0
       },
       "comment": "Items in modifers should be integers",
-      "tags": [],
-      "hidden": true
+      "tags": [
+        "FE3H",
+        "changed"
+      ],
+      "hidden": false
     },
     {
       "name": "Sword of Begalta",
@@ -42588,9 +43591,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "sacred"
+        "FE3H",
+        "sacred",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Sword of Moralta",
@@ -42617,9 +43622,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "sacred"
+        "FE3H",
+        "sacred",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Sword of Seiros",
@@ -42646,9 +43653,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "sacred"
+        "FE3H",
+        "sacred",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Blutgang",
@@ -42675,9 +43684,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Sublime Creator Sword",
@@ -42704,9 +43715,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Sword of the Creator",
@@ -42733,9 +43746,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Thunderbrand",
@@ -42762,9 +43777,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Dark Creator Sword",
@@ -42791,9 +43808,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Athame",
@@ -42820,9 +43839,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "secret"
+        "FE3H",
+        "secret",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Ridill",
@@ -42849,9 +43870,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "secret"
+        "FE3H",
+        "secret",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Curtana",
@@ -42878,10 +43901,12 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "secret",
-        "relic"
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Rapier",
@@ -43179,10 +44204,12 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "effective",
-        "flying effective"
+        "flying effective",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Parthia",
@@ -43236,11 +44263,13 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "sacred",
         "effective",
-        "flying effective"
+        "flying effective",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Tathlum Bow",
@@ -43267,11 +44296,13 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "sacred",
         "effective",
-        "flying effective"
+        "flying effective",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Failnaught",
@@ -43298,11 +44329,13 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "relic",
         "effective",
-        "flying effective"
+        "flying effective",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Pinakla",
@@ -43329,10 +44362,12 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "secret",
-        "relic"
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Custom Fist Technique",
@@ -43676,9 +44711,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "sacred"
+        "FE3H",
+        "sacred",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Vajra-Mushti",
@@ -43705,9 +44742,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Custom Faith",
@@ -44543,9 +45582,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "sacred"
+        "FE3H",
+        "sacred",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Ichor Scroll",
@@ -44572,9 +45613,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Custom Guile",
@@ -45465,9 +46508,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Suttungr's Mystery",
@@ -45494,9 +46539,11 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "relic"
+        "FE3H",
+        "relic",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Custom Reason",
@@ -46255,10 +47302,12 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "sacred",
-        "lightning"
+        "lightning",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Taranis",
@@ -46285,10 +47334,12 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
+        "FE3H",
         "sacred",
-        "lightning"
+        "lightning",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Wind Caller's Genesis",
@@ -46315,10 +47366,12 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
+        "FE3H",
         "sacred",
-        "wind"
+        "wind",
+        "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Custom Other",
@@ -46705,6 +47758,50 @@ const definitions = {
         "break"
       ],
       "hidden": true
+    },
+    {
+      "name": "Happy Milk",
+      "type": "Other",
+      "description": "Restore 5 HP to this unit. Has a 35% chance to break after each use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 35,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "healing",
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break",
+        "FbF",
+        "new"
+      ],
+      "hidden": false
     },
     {
       "name": "Jar of Grease",
@@ -47287,7 +48384,9 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "monster"
+        "monster",
+        "FE3H",
+        "changed"
       ],
       "hidden": false
     },
@@ -47328,9 +48427,10 @@ const definitions = {
         "no hit",
         "no stats",
         "no triangle",
-        "break"
+        "break",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Dark Stone (Bird)",
@@ -47357,7 +48457,9 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "monster"
+        "FE3H",
+        "monster",
+        "changed"
       ],
       "hidden": false
     },
@@ -47386,7 +48488,9 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "monster"
+        "FE3H",
+        "monster",
+        "changed"
       ],
       "hidden": false
     },
@@ -47415,7 +48519,9 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "monster"
+        "FE3H",
+        "monster",
+        "changed"
       ],
       "hidden": false
     },
@@ -47444,7 +48550,9 @@ const definitions = {
       },
       "comment": "Items in modifers should be integers",
       "tags": [
-        "monster"
+        "FE3H",
+        "monster",
+        "changed"
       ],
       "hidden": false
     },
@@ -47543,9 +48651,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Slumbering Stone",
@@ -47572,9 +48681,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Rampage Morphstone",
@@ -47663,9 +48773,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Waking Stone",
@@ -47692,9 +48803,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Silver Shield",
@@ -47750,9 +48862,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Shining Stone",
@@ -47779,9 +48892,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Black-Sand Steel Shield",
@@ -47837,9 +48951,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Brilliant Stone",
@@ -47866,9 +48981,10 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone"
+        "stone",
+        "changed"
       ],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Blank Weapon",
@@ -48688,7 +49804,8 @@ const definitions = {
       "./resources/icons/type/Dragon.png",
       "./resources/icons/type/Flying.png",
       "./resources/icons/type/Infantry.png",
-      "./resources/icons/type/Monster.png"
+      "./resources/icons/type/Monster.png",
+      "./resources/icons/type/Morph.png"
     ],
     "effective": [
       "./resources/icons/effective/All.png",

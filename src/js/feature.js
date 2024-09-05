@@ -524,6 +524,21 @@ class Feature {
 	tagged(name) {
 		return this.tags.has(name);
 	}
+
+	static INNATENESS_TAGS = new Set(["personal", "crest"]);
+
+	/**
+	 * Whether this feature should probably be sorted under an "Innate" group
+	 * when placed into catagory. This is mainly for arts and abilities but
+	 * there was no other place it really made sense to put this.
+	 */
+	isConsideredInnate() {
+		return (
+			this.requires.symbols.has("Innate")
+				||
+			Iter.any(Feature.INNATENESS_TAGS, tag => this.tagged(tag))
+		); 
+	}
 }
 
 class Preset {
@@ -879,9 +894,35 @@ class Art extends Action {
 				})
 			),
 			content : [
-				element("strong", "Type"), element("br"),
 
-				new Filter.Toggle("Arts", false, (feature) => {
+				element("strong", "Campaign"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("All", true, (feature) => {
+					return (
+						!feature.tagged("FbF")
+							&&
+						!feature.tagged("CoA")
+							&&
+						!feature.tagged("FE3H")
+					);
+				}),
+				new Filter.Toggle("FbF", false, (feature) => {
+					return feature.tagged("FbF");
+				}),
+				new Filter.Toggle("CoA", false, (feature) => {
+					return feature.tagged("CoA");
+				}),
+				new Filter.Toggle("FE3H", false, (feature) => {
+					return feature.tagged("FE3H");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Type"), element("br"),
+
+				new Filter.Toggle("Combat", false, (feature) => {
 					return !feature.tagged("tactical");
 				}),
 				new Filter.Toggle("Tactics", false, (feature) => {
@@ -1067,7 +1108,7 @@ class Art extends Action {
 					return feature.tagged("reaction");
 				}),
 
-				new Filter.Toggle("Wall", false, (feature) => {
+				new Filter.Toggle("Overlay", false, (feature) => {
 					return feature.tagged("wall");
 				}),
 
@@ -1081,45 +1122,40 @@ class Art extends Action {
 					return feature.tagged("combo");
 				}),
 
-				new Filter.Toggle("Half-Slot", false, (feature) => {
-					return feature.tagged("halfslot");
-				}),
-
-				// new Filter.Toggle("Rally", false, (feature) => {
-				// 	return feature.tagged("rally");
-				// }),
-
 				new Filter.Toggle("Movement", false, (feature) => {
 					return feature.tagged("movement");
 				}),
 
-				new Filter.Toggle("Order", false, (feature) => {
-					return feature.tagged("order");
-				}),
 
 				new Filter.Toggle("Variant", false, (feature) => {
 					return feature.tagged("variant");
 				}),
 
-				element("br"), element("strong", "Other"), element("br"),
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Class", false, (feature) => {
-					return feature.requires.symbols.has("Class");
-				}),
-
-				new Filter.Toggle("Hero's Relic", false, (feature) => {
-					return feature.tagged("relic");
-				}),
-
-				Filter.Group.END,
-
-				element("br"),
 
 				new Filter.Toggle("New", false, (feature) => {
 					return feature.tagged("new");
 				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -1200,7 +1236,33 @@ class Item extends Action {
 				})
 			),
 			content : [
-				element("strong", "Skill"), element("br"),
+
+				element("strong", "Campaign"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("All", true, (feature) => {
+					return (
+						!feature.tagged("FbF")
+							&&
+						!feature.tagged("CoA")
+							&&
+						!feature.tagged("FE3H")
+					);
+				}),
+				new Filter.Toggle("FbF", false, (feature) => {
+					return feature.tagged("FbF");
+				}),
+				new Filter.Toggle("CoA", false, (feature) => {
+					return feature.tagged("CoA");
+				}),
+				new Filter.Toggle("FE3H", false, (feature) => {
+					return feature.tagged("FE3H");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Skill"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
@@ -1420,21 +1482,33 @@ class Item extends Action {
 					return feature.tagged("reaction");
 				}),
 
-				element("br"), element("strong", "Other"), element("br"),
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
-				new Filter.Toggle("Sacred", false, (feature) => {
-					return feature.tagged("sacred");
-				}),
-				new Filter.Toggle("Hero's Relic", false, (feature) => {
-					return feature.tagged("relic");
-				}),
-				new Filter.Toggle("Secret", false, (feature) => {
-					return feature.tagged("secret");
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
 				}),
 
-				element("br"),
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Other"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
 
 				new Filter.Toggle("Template", false, (feature) => {
 					return feature.tagged("template");
@@ -1446,10 +1520,6 @@ class Item extends Action {
 				Filter.Group.END,
 
 				element("br"),
-
-				new Filter.Toggle("New", false, (feature) => {
-					return feature.tagged("new");
-				}),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -1672,12 +1742,26 @@ class Class extends Feature {
 	}
 
 	/**
+	 * @typedef {object} ClassBodyOptions
+	 * @property {Boolean} dead   if true; do not expand embedded feature links
+	 * @property {Boolean} table  if true; display a table of base stats/growths
+	 * @property {Boolean} center if true; center the displayed elements
+	 */
+
+	/**
 	 * Generate a feature's {@link CategoryElement} description
+	 * @param  {ClassBodyOptions|boolean} options options for generating the
+	 * body of the class; if only a boolean is passed it is treated as though
+	 * an object of the form {dead: <boolean>} were passed as the argument
 	 * @return {string} description for this item's {@link CategoryElement}
 	 */
 	body(options={}) {
 
-		if (!(typeof options == "object")) throw new Error();
+		switch (typeof options) {
+		case "object"  : break;
+		case "boolean" : options = {dead: options}; break;
+		default        : throw new Error("Expected ClassBodyOptions or boolean");
+		}
 
 		const dead   = options.dead   ?? false;
 		const table  = options.table  ?? true;
@@ -1831,6 +1915,30 @@ class Class extends Feature {
 
 				Filter.Group.END,
 
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
 				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("New", false, (feature) => {
@@ -1905,7 +2013,32 @@ class Ability extends Feature {
 			),
 			content : [
 
-				element("strong", "Source"), element("br"),
+				element("strong", "Campaign"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("All", true, (feature) => {
+					return (
+						!feature.tagged("FbF")
+							&&
+						!feature.tagged("CoA")
+							&&
+						!feature.tagged("FE3H")
+					);
+				}),
+				new Filter.Toggle("FbF", false, (feature) => {
+					return feature.tagged("FbF");
+				}),
+				new Filter.Toggle("CoA", false, (feature) => {
+					return feature.tagged("CoA");
+				}),
+				new Filter.Toggle("FE3H", false, (feature) => {
+					return feature.tagged("FE3H");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Source"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
@@ -2105,43 +2238,37 @@ class Ability extends Feature {
 				new Filter.Toggle("Static", false, (feature) => {
 					return feature.tagged("static");
 				}),
-				new Filter.Toggle("Half-Slot", false, (feature) => {
-					return feature.tagged("halfslot");
-				}),
-
-				element("br"),
-
 				new Filter.Toggle("In Combat", false, (feature) => {
 					return feature.tagged("in combat");
 				}),
-				new Filter.Toggle("Barrier", false, (feature) => {
-					return feature.requires.symbols.has("Barrier");
-				}),
 
 				Filter.Group.END,
 
-				element("br"), element("strong", "Crests"), element("br"),
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Major", false, (feature) => {
-					return feature.tagged("major");
-				}),
-				new Filter.Toggle("Minor", false, (feature) => {
-					return feature.tagged("minor");
-				}),
-
-				Filter.Group.END,
-
-				new Filter.Toggle("None", true, (feature) => {
-					return !feature.tagged("crest");
-				}),
-
-				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("New", false, (feature) => {
 					return feature.tagged("new");
 				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -2207,7 +2334,32 @@ class Equipment extends Feature {
 				})
 			),
 			content : [
-				element("strong", "Item Type"), element("br"),
+				element("strong", "Campaign"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("All", true, (feature) => {
+					return (
+						!feature.tagged("FbF")
+							&&
+						!feature.tagged("CoA")
+							&&
+						!feature.tagged("FE3H")
+					);
+				}),
+				new Filter.Toggle("FbF", false, (feature) => {
+					return feature.tagged("FbF");
+				}),
+				new Filter.Toggle("CoA", false, (feature) => {
+					return feature.tagged("CoA");
+				}),
+				new Filter.Toggle("FE3H", false, (feature) => {
+					return feature.tagged("FE3H");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Item Type"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
@@ -2230,20 +2382,34 @@ class Equipment extends Feature {
 
 				Filter.Group.END,
 
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
 				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
-				new Filter.Toggle("Sacred", false, (feature) => {
-					return feature.tagged("sacred");
-				}),
-				new Filter.Toggle("Hero's Relic", false, (feature) => {
-					return feature.tagged("relic");
-				}),
-				element("br"),
-				new Filter.Toggle("Secret", false, (feature) => {
-					return feature.tagged("secret");
-				}),
 				new Filter.Toggle("Purchasable", false, (feature) => {
 					return feature.price > 0;
 				}),
@@ -2251,10 +2417,6 @@ class Equipment extends Feature {
 				Filter.Group.END,
 
 				element("br"),
-
-				new Filter.Toggle("New", false, (feature) => {
-					return feature.tagged("new");
-				}),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -2349,6 +2511,29 @@ class Tile extends Action {
 					return feature.tagged("healing");
 				}),
 
+				Filter.Group.END,
+
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
 
 				Filter.Group.END,
 
@@ -2679,7 +2864,32 @@ class Gambit extends Action {
 			),
 			content : [
 
-				element("strong", "Feature Type"), element("br"),
+				element("strong", "Campaign"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("All", true, (feature) => {
+					return (
+						!feature.tagged("FbF")
+							&&
+						!feature.tagged("CoA")
+							&&
+						!feature.tagged("FE3H")
+					);
+				}),
+				new Filter.Toggle("FbF", false, (feature) => {
+					return feature.tagged("FbF");
+				}),
+				new Filter.Toggle("CoA", false, (feature) => {
+					return feature.tagged("CoA");
+				}),
+				new Filter.Toggle("FE3H", false, (feature) => {
+					return feature.tagged("FE3H");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Feature Type"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
@@ -2829,11 +3039,31 @@ class Gambit extends Action {
 
 				Filter.Group.END,
 
-				element("br"), element("strong", "Other"), element("br"),
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
 
 				new Filter.Toggle("New", false, (feature) => {
 					return feature.tagged("new");
 				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -2961,7 +3191,32 @@ class Attribute extends Action {
 			),
 			content : [
 
-				element("strong", "For"), element("br"),
+				element("strong", "Campaign"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("All", true, (feature) => {
+					return (
+						!feature.tagged("FbF")
+							&&
+						!feature.tagged("CoA")
+							&&
+						!feature.tagged("FE3H")
+					);
+				}),
+				new Filter.Toggle("FbF", false, (feature) => {
+					return feature.tagged("FbF");
+				}),
+				new Filter.Toggle("CoA", false, (feature) => {
+					return feature.tagged("CoA");
+				}),
+				new Filter.Toggle("FE3H", false, (feature) => {
+					return feature.tagged("FE3H");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "For"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
@@ -3054,6 +3309,30 @@ class Attribute extends Action {
 					return feature.tagged("treatment");
 				}),
 
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("New", false, (feature) => {
+					return feature.tagged("new");
+				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
 				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("Purchasable", false, (feature) => {
@@ -3061,10 +3340,6 @@ class Attribute extends Action {
 				}),
 
 				element("br"),
-
-				new Filter.Toggle("New", false, (feature) => {
-					return feature.tagged("new");
-				}),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");
@@ -3185,11 +3460,31 @@ class Condition extends Feature {
 
 				Filter.Group.END,
 
-				element("br"), element("strong", "Other"), element("br"),
+				element("br"),
+				element("strong", `Version ${Version.CURRENT}`),
+				element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
 
 				new Filter.Toggle("New", false, (feature) => {
 					return feature.tagged("new");
 				}),
+
+				new Filter.Toggle("Changed", false, (feature) => {
+					return feature.tagged("changed");
+				}),
+
+				new Filter.Toggle("Other", false, (feature) => {
+					return (
+						!feature.tagged("new")
+							&&
+						!feature.tagged("changed")
+					);
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Other"), element("br"),
 
 				new Filter.Toggle("Rework", false, (feature) => {
 					return feature.tagged("rework");

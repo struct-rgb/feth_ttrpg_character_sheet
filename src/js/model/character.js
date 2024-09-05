@@ -159,7 +159,6 @@ class Characters {
 		]);
 	}
 
-
 	get name() {
 		return this._name.value;
 	}
@@ -223,6 +222,87 @@ class Characters {
 		this.refresher.refresh("ClassType");
 	}
 
+	/**
+	 * Loads class arts and/or abilities when changing classes
+	 * 
+	 * @param  {Category} category The Category collection object where the
+	 * given type of feature (arts or abilities) are store within.
+	 * 
+	 * @param  {Array}    options   An array of feature names, typically from
+	 * the template of the class to change to.
+	 *
+	 * @param  {boolean}  active    Should the class feature be set active?
+	 * 
+	 * @param  {Set}      elections A set of the names of preferred features
+	 * to pick from the options list when presented with a choice. If one can't
+	 * be chosen from the set the user is prompted to make a selection.
+	 * 
+	 */
+	loadClassFeatures(category, features, active, election) {
+
+		// remove all current class features
+		const names = Array.from(category.names("class"));
+		for (let feature of names) category.delete(feature);
+	
+		// add in the new class features
+		for (let feature of features) {
+
+			// select feature from optinon provided by class
+			feature = Presetter.elect(feature, election);
+			
+			if (category.has(feature)) {
+				// feature is present in "equip" group; move it to "class"
+				category.setGroupFor(feature, "class");
+			} else {
+				// feature should be added to category if not present
+				category.add(feature, {group: "class"});
+			}
+
+			// adjust other varous properties of the element
+			const element     = category.element(feature);
+			// hide the description by default to conserve room
+			element.hidden    = true;
+			// hide the remove button so the user can't invalidate the setup
+			element.removable = false;
+
+			// abilities are set to active by default to the user don't forget
+			if (active && !category.isActive(feature))
+				category.toggleActive(feature);
+		}
+
+		// display the "class" group before equipped features for visibility
+		category.getGroup("class")?.shiftToFront();
+
+		// display the "innate" group (if it exists) before class features
+		category.getGroup("innate")?.shiftToFront();
+	}
+
+	setClass(value, elections) {
+
+		if (value === undefined) throw Error();
+
+		this._class.value     = value;
+		this._mounted.checked = this.class.hasMount();
+
+		for (let key of ["abilities", "arts"]) {
+
+			const category = this.sheet[key];
+			const features = this.class[key];
+			const active   = key == "abilities";
+
+			this.loadClassFeatures(category, features, active, elections[key]);
+		}
+
+		this.sheet.stats.refresh();
+
+		if (this._pregroup) this.refresher.delete(this._pregroup); 
+		this._pregroup = this.refresher.createGroup();
+
+		this.reclass();
+		
+		this.sheet.refresher.refresh("abilities|slotcost", "arts|slotcost");
+	}
+
 	get triangle() {
 		return Number(this._advantage.value);
 	}
@@ -249,52 +329,14 @@ class Characters {
 
 	refresh() {
 
-		const options = {removable: false, group: "class", hidden: true};
-
-		const load    = (category, items, active) => {
-
-			/* Remove all current class arts/abilities. */
-			const names = Array.from(category.names("class"));
-			for (let item of names) category.delete(item);
-
-			/* Add in the new class arts/abilities. */
-			let added = 1;
-			for (let item of items) {
-				item = choice(item);
-				if (!category.has(item)) category.add(item, options);
-
-				const element = category.element(item);
-				element.shiftForward(category.size - added);
-				added++;
-
-				// It's possible to have an item end up with an "equip"
-				// group when meant to be a "class" ability since we try
-				// to reuse elements for already equipped features
-				// 
-				// This lead to a bug where you always had to requip class
-				// abilities and arts whe changing charactes. Solution are
-				// either remove and replace the element or conver the class.
-				// I'm choosing to do the latter to reuse the elements.
-				if (element.group == "equip") element.group = "class";
-
-				if (active) category.toggleActive(item);
-			}
-		};
-
-		const cls = this.class;
-
 		for (let key of ["abilities", "arts"]) {
 
 			const category = this.sheet[key];
+			const features = this.class[key];
+			const active   = key == "abilities";
 
-			if (!cls.validate(key, category.getState())) {
-				load(category, this.class[key], key == "abilities");
-			} else {
-				/* TODO low priority; find a better place to do this. */
-				for (let each of category.elements("class")) {
-					each.removable = false;
-				}
-			}
+			if (!this.class.validate(key, category.getState()))
+				this.loadClassFeatures(category, features, active);
 		}
 
 		this.sheet.stats.refresh();
@@ -406,8 +448,15 @@ class Characters {
 			this.sheet.battalion.clear();
 		}
 		
-		this.sheet.abilities.setState(object.abilities);
-		this.sheet.arts.setState(object.arts);
+		for (let key of ["abilities", "arts"]) {
+			
+			const category = this.sheet[key];
+			category.setState(object[key]);
+
+			// we don't the user to be able to remove class features
+			for (let each of category.elements("class"))
+				each.removable = false;
+		}
 
 		this.sheet.equipment.setState(object.equipment);
 

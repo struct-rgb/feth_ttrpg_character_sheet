@@ -23,9 +23,9 @@
   },
   "rows": [
     {
-        "name": "Break",
-        "expr": 30,
-        "roll": true
+      "name": "Break",
+      "expr": 30,
+      "roll": true
     }
   ],
   "comment": "Incompatible with all Attributes.",
@@ -35,7 +35,8 @@
     "no hit",
     "no stats",
     "no triangle",
-    "break"
+    "break",
+    "changed"
   ],
-  "hidden": false
+  "hidden": true
 }

@@ -23,7 +23,9 @@
   },
   "comment": "Items in modifers should be integers",
   "tags": [
-    "sacred"
+    "FE3H",
+    "sacred",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

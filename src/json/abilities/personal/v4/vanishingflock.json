@@ -1,0 +1,37 @@
+{
+  "name": "Vanishing Flock",
+  "description": "As an action, this unit may pay 10% SP to create a clone of itself in an adjacent space, controlling up to a max of 3 clones per 10 levels. This clone has 0 Max TP, 0 Max SP, and Max HP equal to 50% of this unit's Max HP, and it cannot take actions or reactions. As a reaction with trigger: a foe initiates combat with this unit, this unit may swap places with one of its clones.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Mordecai Rayler's personsal.",
+  "tags": [
+    "FbF",
+    "personal",
+    "new"
+  ],
+  "hidden": false
+}

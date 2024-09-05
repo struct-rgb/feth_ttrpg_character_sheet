@@ -1,6 +1,6 @@
 {
   "name": "Flying Effect Null",
-  "description": "Nullifies any extra effectiveness against Flying units.",
+  "description": "Flying Effective bonus damage against this unit is reduced to 0.",
   "requires": "Flying S+",
   "modifiers": {
     "hp": 0,
@@ -28,6 +28,8 @@
     "capcost": 6
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
+  "tags": [
+    "changed"
+  ],
   "hidden": false
 }

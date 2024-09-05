@@ -1,7 +1,7 @@
 {
   "name": "Voyager",
   "description": "This unit may traverse @{tile}{Ice Block}{Ice Blocks} and water tiles.",
-  "requires": "Innate",
+  "requires": "Class Raider",
   "modifiers": {
     "hp": 0,
     "sp": 0,
@@ -28,6 +28,8 @@
     "capcost": 6
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
+  "tags": [
+    "changed"
+  ],
   "hidden": true
 }

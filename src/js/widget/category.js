@@ -52,14 +52,15 @@ class CategoryElement {
 		this.onremove     = options.onremove  || CategoryElement.pass;
 		this.ontoggle     = options.ontoggle  || CategoryElement.pass;
 		this.onreorder    = options.onreorder || CategoryElement.pass;
-		this.group        = options.group     || "";
+		this._group       = options.group     || "";
 		this.resources    = options.resources || null;
+		this._showTitle   = options.showTitle || (x => x);
 
 		// go about building the DOM nodes
 		this.dt = document.createElement("dt");
 
 		if (typeof options.key == "string" || typeof options.key == "number") {
-			this.dt.setAttribute("data-key", options.key);
+			this.key = options.key;
 		}
 
 		this.updown = element("input", {
@@ -86,9 +87,10 @@ class CategoryElement {
 		// add title content
 		this.span = element("span", {
 			content : this._title,
-			class   : ["selectable"],
+			class   : options.toggleable ? ["selectable"] : [],
 			attrs   : {
 				onclick : (() => {
+					if (!this.toggleable) return;
 					this.ontoggle.call();
 					this.updown.focus(); // allows movement with arrow keys
 				}),
@@ -96,9 +98,6 @@ class CategoryElement {
 		});
 
 		this.dt.appendChild(this.span);
-
-		this.group_mark = element("span", this.group, "smol", "computed");
-		if (options.markGroup) this.dt.appendChild(this.group_mark);
 
 		// make a "remove" button
 		this.removeButton = element("button",  {
@@ -140,6 +139,14 @@ class CategoryElement {
 	}
 
 	/* getters and setters */
+
+	get key() {
+		return this.dt.getAttribute("data-key");
+	}
+
+	set key(value) {
+		this.dt.setAttribute("data-key", value);
+	}
 
 	/**
 	 * The title for this element/the text content for the dt tag
@@ -220,7 +227,7 @@ class CategoryElement {
 	}
 
 	/**
-	 * Whether the usser should be able to remove thie element from the list.
+	 * Whether the usser should be able to remove this element from the list.
 	 * @type {boolean}
 	 */
 	get removable() {
@@ -229,6 +236,27 @@ class CategoryElement {
 
 	set removable(value) {
 		this.removeButton.hidden = !value;
+	}
+
+	/**
+	 * Whether the usser should be able to select this element from the list.
+	 * @type {boolean}
+	 */
+	get toggleable() {
+		return this.span.classList.contains("selectable");
+	}
+
+	set toggleable(value) {
+		
+		const toggleable = this.toggleable;
+
+		if (toggleable == value) return;
+
+		if (toggleable) {
+			this.span.classList.remove("selectable");
+		} else {
+			this.span.classList.add("selectable");
+		}
 	}
 
 	/**
@@ -247,6 +275,14 @@ class CategoryElement {
 	set hidden(value) {
 		if (value == this._hidden) return;
 		this.hide();
+	}
+
+	get group() {
+		return this._group;
+	}
+
+	set group(value) {
+		this._group = value;
 	}
 
 	hide() {
@@ -273,6 +309,7 @@ class CategoryElement {
 	 * @param {number} offset - number of places forward to shift
 	 */
 	shiftForward(offset) {
+
 		if (!this.parent) return;
 
 		offset *= 2;
@@ -296,6 +333,7 @@ class CategoryElement {
 	 * @param {number} offset - number of places backward to shift
 	 */
 	shiftBackward(offset) {
+
 		if (!this.parent) return;
 
 		offset *= 2;
@@ -311,6 +349,52 @@ class CategoryElement {
 				sibling.insertAdjacentElement("afterEnd", element);
 			}
 		}
+	}
+
+	/**
+	 * Shift the element to the front of its parent element.
+	 */
+	shiftToFront() {
+
+		if (!this.parent) return;
+
+		const offset = this.parent.children.length / 2;
+
+		this.shiftForward(offset);
+	}
+
+	/**
+	 * Shift the element to the back of its parent element.
+	 */
+	shiftToBack() {
+
+		if (!this.parent) return;
+
+		const offset = this.parent.children.length / 2;
+
+		this.shiftBackward(offset);
+	}
+
+	insertBefore(element) {
+
+		if (!element.parent) return;
+
+		this.remove();
+
+		element.dt.insertAdjacentElement("beforeBegin", this.dt);
+		element.dt.insertAdjacentElement("beforeBegin", this.dd);
+		this.parent = element.parent;
+	}
+
+	insertAfter(element) {
+
+		if (!element.parent) return;
+
+		this.remove();
+
+		element.dd.insertAdjacentElement("afterEnd", this.dt);
+		element.dd.insertAdjacentElement("afterEnd", this.dd);
+		this.parent = element.parent;
 	}
 
 	/**
@@ -351,6 +435,59 @@ class CategoryElement {
 		this.dd.parentNode.removeChild(this.dd);
 		this.parent = null;
 	}
+}
+
+class CategoryGroup extends CategoryElement {
+
+	constructor(options) {
+		super(options);
+		this.dl = element("dl");
+		this.swap.modes[0] = this.dl;
+		this.swap.show(0);
+
+		this.dt.setAttribute("data-group", true);
+
+		this.onungroup = options.onungroup || CategoryElement.pass;
+
+		// make a "ungroup" button
+		this.ungroupButton = element("button",  {
+			class   : ["toggle-off", "smol"],
+			content : "Ungroup",
+			attrs   : {
+				onclick : (() => void this.onungroup.call()),
+				hidden  : !options.ungroupable,
+			},
+		});
+
+		this.dt.appendChild(this.ungroupButton);
+
+		// this is to force the button to the end
+		this.dt.appendChild(this.hideButton);
+	}
+
+	/**
+	 * Whether the user should be able to delete the group without its elements
+	 * @type {boolean}
+	 */
+	get ungroupable() {
+		return !this.ungroupButton.hidden;
+	}
+
+	set ungroupable(value) {
+		this.ungroupButton.hidden = !value;
+	}
+
+	get length() {
+		return this.dl.children.length;
+	}
+
+	*names() {
+		for (let child of this.dl.children) {
+			const key = child.getAttribute("data-key");
+			if (key) yield key;
+		}
+	}
+
 }
 
 /**
@@ -443,23 +580,41 @@ class Category {
 
 		const category = this;
 
-		this.model       = model;
-		this.name        = options.name      || "";
-		this.empty       = options.empty     || "";
-		this.ontoggle    = options.ontoggle  || Category.succeed;
-		this.onremove    = options.onremove  || Category.succeed;
-		this.onreorder   = options.onreorder || Category.succeed;
-		this.onadd       = options.onadd     || Category.succeed;
-		this.reorderable = Boolean(options.reorderable);
-		this.removable   = Boolean(options.removable);
-		this.hideable    = Boolean(options.hideable);
-		this.selectable  = Boolean(options.selectable);
-		this.markGroup   = Boolean(options.markGroup);
-		this.addActive   = Boolean(options.addActive);
-		this.parent      = null;
-		this._elements   = new Map();
-		this.root        = document.createElement("div");
-		this.refresher   = options.refresher || new Refresher();
+		this.model        = model;
+		this.name         = options.name      || "";
+		this.empty        = options.empty     || "";
+		this.ontoggle     = options.ontoggle  || Category.succeed;
+		this.onremove     = options.onremove  || Category.succeed;
+		this.onreorder    = options.onreorder || Category.succeed;
+		this.onadd        = options.onadd     || Category.succeed;
+		this.reorderable  = Boolean(options.reorderable ?? false);
+		this.removable    = Boolean(options.removable   ?? false);
+		this.hideable     = Boolean(options.hideable    ?? false);
+		this.selectable   = Boolean(options.selectable  ?? false);
+		this.toggleable   = Boolean(options.toggleable  ?? true);
+		this.addActive    = Boolean(options.addActive   ?? false);
+		this.parent       = null;
+		this._elements    = new Map();
+		this.root         = document.createElement("div");
+		this.refresher    = options.refresher  || new Refresher();
+	
+		this.groups       = new Map();
+		this.defaultGroup = options.defaultGroup || "";
+		this.groupShowTitle = options.groupShowTitle || (x => x);
+		this.groupHideable    = options.groupHideable    ?? true;
+		this.groupRemovable   = options.groupRemovable   ?? false;
+		this.groupToggleable  = options.groupToggleable  ?? false;
+		this.groupReorderable = options.groupReorderable ?? true;
+		this.groupUngroupable = options.groupUngroupable ?? false;
+		this.onGroupToggle    = options.onGroupToggle    ?? Category.succeed;
+		this.onGroupRemove    = options.onGroupRemove    ?? Category.succeed;
+		this.onGroupReorder   = options.onGroupReorder   ?? Category.succeed;
+		this.onGroupCreated   = options.onGroupCreated   ?? Category.succeed;
+		this.onGroupDeleted   = options.onGroupDeleted   ?? Category.succeed;
+		this.onGroupUngroup   = options.onGroupUngroup   ?? Category.succeed;
+
+		this.maxGroupsActive  = options.maxGroupsActive  ?? null;
+		this.groupsActive     = new Set();
 
 		// go about building the DOM nodes
 		if (!this.selectable) {
@@ -621,8 +776,8 @@ class Category {
 		this.clear();
 		for (let each of elements) {
 			added += Number(this.add(each.id, {
-				group  : assume(each.group, ""),
-				hidden : assume(each.hidden, false)
+				group  : assume(each.group  , this.defaultGroup),
+				hidden : assume(each.hidden , false)
 			}));
 		}
 
@@ -675,6 +830,7 @@ class Category {
 		const ontoggle    = assume(options.ontoggle, this.ontoggle);
 		const resources   = refresher.createGroup();
 		const description = this.model.description(name, refresher);
+		const groupName   = assume(options.group, this.defaultGroup);
 
 		const element  = new CategoryElement({
 			key         : name,
@@ -682,6 +838,7 @@ class Category {
 			description : description,
 			resources   : [resources, refresher],
 			triggers    : this.model.triggers(name),
+			toggleable  : assume(options.toggleable, this.toggleable),
 			reorderable : assume(options.reorderable, this.reorderable),
 			removable   : assume(options.removable, this.removable),
 			hideable    : assume(options.hideable, this.hideable),
@@ -694,13 +851,21 @@ class Category {
 			onreorder   : (() => {
 				return onreorder.call(undefined, this, name);
 			}),
-			markGroup   : assume(options.markGroup, this.markGroup),
-			group       : assume(options.group, ""),
+			group       : groupName,
 			hidden      : assume(options.hidden, false),
+			showTitle   : this.groupShowTitle,
 		});
 
 		this._elements.set(name, element);
-		element.addTo(this.dl);
+
+		// original case, which is now the default group
+		if (groupName == this.defaultGroup) {
+			element.addTo(this.dl);
+			return true;
+		}
+
+		// since this is an indented group, ensure it exists and add to it
+		element.addTo(this._ensureGroup(groupName).dl);
 
 		return true;
 	}
@@ -729,6 +894,7 @@ class Category {
 
 		element.remove();
 		this._elements.delete(name);
+		this._wipeupGroup(element.group);
 
 		if (this.size == 0) {
 			this._textnode.data = this.empty;
@@ -759,6 +925,7 @@ class Category {
 	 */
 	clear() {
 		this.clearActive();
+		
 		for (let element of this._elements.values()) {
 			// if (element.resources) {
 			// 	const [resources, refresher] = element.resources;
@@ -767,7 +934,216 @@ class Category {
 			element.remove();
 		}
 		this._elements.clear();
+		
+		this.clearGroupsActive();
+		for (let group of this.groups.values()) group.remove();
+		this.groups.clear();
+
 		this._textnode.data = this.empty;
+	}
+
+	/* group methods */
+
+	hasGroup(name) {
+		return this.groups.has(name);
+	}
+
+	getGroup(name) {
+		return this.groups.get(name);
+	}
+
+
+	/**
+	 * Create a CategoryGroup and add it to this widget with the given name if
+	 * one doesn't already exist and isn't the name is not the default group.
+	 * @param  {string}  group   name of the group to create
+	 * @param  {Object}  options options, same as for .add()
+	 * @return {CategoryGroup?}  ensured CategoryGroup
+	 */
+	_ensureGroup(group, options) {
+
+		if (group == this.defaultGroup)
+			throw new Error("Cannot ensure default group");
+
+		if (this.groups.has(group))
+			return this.groups.get(group);
+
+		options           = options || {};
+
+		const onremove    = assume(options.onremove, this.onGroupRemove);
+		const onreorder   = assume(options.onreorder, this.onGroupReorder);
+		const ontoggle    = assume(options.ontoggle, this.onGroupToggle);
+		const onungroup   = assume(options.onungroup, this.onGroupUngroup);
+
+		const element = new CategoryGroup({
+			key         : group,
+			title       : this.groupShowTitle(group),
+			toggleable  : assume(options.toggleable, this.groupToggleable),
+			reorderable : assume(options.reorderable, this.groupReorderable),
+			removable   : assume(options.removable, this.groupRemovable),
+			ungroupable : assume(options.ungroupable, this.groupUngroupable),
+			hideable    : assume(options.hideable, this.groupHideable),
+			onremove    : (() => {
+				return onremove.call(undefined, this, element);
+			}),
+			ontoggle    : (() => {
+				return ontoggle.call(undefined, this, element);
+			}),
+			onreorder   : (() => {
+				return onreorder.call(undefined, this, element);
+			}),
+			onungroup   : (() => {
+				return onungroup.call(undefined, this, element);
+			}),
+			hidden    : assume(options.hidden, false),
+			showTitle  : this.groupShowTitle,
+		});
+
+		this.groups.set(group, element);
+		element.addTo(this.dl);
+
+		this.onGroupCreated.call(undefined, this, element);
+
+		return element;
+	}
+
+	/**
+	 * Remove the group if it has no members
+	 * @param  {string}  group name of the group to check
+	 * @return {boolean}       whether it was removed
+	 */
+	_wipeupGroup(group) {
+
+		if (group == this.defaultGroup)
+			return false;
+
+		if (!this.groups.has(group))
+			return false;
+
+		const element = this.groups.get(group);
+
+		if (0 < element.length)
+			return false;
+
+		this.groups.delete(group);
+		element.remove();
+
+		this.onGroupDeleted.call(undefined, this, element);
+
+		return true;
+	}
+
+	/**
+	 * Changes the group an element belongs to
+	 */
+	setGroupFor(name, group, options={}) {
+
+		// can't set a group for a element that isn't present
+		if (!this.has(name)) return false;
+
+		const element = this._elements.get(name);
+
+		// nothing to do since it's already the same
+		if (element.group == group) return false;
+
+		element.remove();
+
+		if (group == this.defaultGroup) {
+			element.addTo(this.dl);
+		} else {
+			const category = this._ensureGroup(group, options);
+			if (!category) return false;
+			element.addTo(category.dl);
+		}
+
+		this._wipeupGroup(element.group);
+		element.group = group;
+		return true;
+	}
+
+	
+	/**
+	 * Deletes a group.
+	 * @param  {string}  group        group to delete
+	 * @param  {Boolean} withElements whether to delete contained elements
+	 * @return {Boolean}               whether deletion was a success
+	 */
+	deleteGroup(group, withElements=false) {
+
+		const element = this.getGroup(group);
+		if (!element) return false;
+
+		// don't want to modify while iterating
+		const names = Array.from(element.names());
+
+		if (withElements) {
+
+			// automatically peformes wipeup operation
+			for (let name of names) this.delete(name);
+
+		} else {
+
+			for (let name of names) {
+				const child = this._elements.get(name);
+
+				child.remove();
+				element.dd.insertAdjacentElement("afterEnd", child.dd);
+				element.dd.insertAdjacentElement("afterEnd", child.dt);
+
+				child.parent = this.dl;
+				child.group  = this.defaultGroup;
+			}
+
+			this._wipeupGroup(group);
+		}
+
+		return true;
+	}
+
+	isGroupActive(name) {
+		return this.groupsActive.has(name);
+	}
+
+	isGroupActiveSpace() {
+		return (
+			this.maxGroupsActive !== null
+				&&
+			this.getGroupsActive().size < this.maxGroupsActive
+		);
+	}
+
+	toggleGroupActive(name) {
+
+		if (!this.hasGroup(name)) return false;
+
+		const element = this.getGroup(name);
+
+		if (this.isGroupActive(name)) {
+			
+			if (this.isGroupActiveSpace())
+				return false;
+			
+			this.groupsActive.delete(name);
+			element.active = false;
+		} else {
+			this.groupsActive.add(name);
+			element.active = true;
+		}
+
+		return true;
+	}
+
+	getGroupsActive() {
+		return this.groupsActive;
+	}
+
+	clearGroupsActive() {
+		this.groupsActive.clear();
+		for (let group of this.groups.values()) {
+			if (group.active) {
+				group.active = false;
+			}
+		}
 	}
 
 	/* iterable */
@@ -776,12 +1152,45 @@ class Category {
 	 * Get an iterator of all of the names of the feature elements in this category in display order
 	 * @return iterator over the names of the feature elements of this category in display order
 	 */
-	*names(group) {
+	*names(...groups) {
+		switch (groups.length) {
+		case 0:
+			yield* this._names(null);
+			return;
+		case 1:
+			yield* this._names(groups[0]);
+			return;
+		default:
+			for (let group of groups) yield* this._names(group);
+			return;
+		} 
+	}
+
+	*_names(group) {
+		// cases where we do not have to traverse child elements
+		// since we just want the children of a CategoryGroup
+		if (group != null && group != this.defaultGroup) {
+			if (this.groups.has(group)) {
+				yield* this.groups.get(group).names();
+			}
+			return;
+		}
+
+		const justDefaultGroup = (group == this.defaultGroup);
+
 		for (let child of this.dl.children) {
-			const name    = child.getAttribute("data-key");
-			const element = this.element(name); 
-			const matches = name && (!group || element.group === group);
-			if (matches) yield name;
+
+			// no key means it's a <dd> element so nothing to yield
+			const key = child.getAttribute("data-key");
+			if (key == null) continue;
+
+			if (child.getAttribute("data-group")) {
+				if (justDefaultGroup) continue;
+				yield* this.groups.get(key).names();
+			} else {
+				yield key;
+			}
+
 		}
 	}
 
@@ -789,23 +1198,20 @@ class Category {
 	 * Get an iterator of all of the feature elements of this category in display order
 	 * @return iterator over the feature elements of this category in display order
 	 */
-	*values(group) {
-		for (let name of this.names(group)) {
+	*values(...group) {
+		for (let name of this.names(...group)) {
 			yield this.model.get(name);
 		}
 	}
 
-	*elements(group) {
-		for (let child of this.dl.children) {
-			const name    = child.getAttribute("data-key");
-			const element = this.element(name);
-			const matches = name && (!group || element.group === group);
-			if (matches) yield element;
+	*elements(...group) {
+		for (let name of this.names(...group)) {
+			yield this.element(name);
 		}
 	}
 
-	*entries(group) {
-		for (let name of this.names(group)) {
+	*entries(...group) {
+		for (let name of this.names(...group)) {
 			yield [name, this.model.get(name)];
 		}
 	}

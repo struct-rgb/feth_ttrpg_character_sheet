@@ -1,0 +1,37 @@
+{
+  "name": "Tripleforce",
+  "description": "Compatible tomes have @{attribute}{Spellblade} while in this unit's inventory. Once per enemy phase, this unit can spend 3 TP to use one of these reactions}{\n\n • Saber Throw - Trigger}{ after a foe misses this unit with an attack. Make a counterattack against that foe with equipped tome regardless of range.\n • Force Push - Trigger: After foe creates a tile within 3 spaces of this unit. Use @{art}{Telekinesis} targeting a player created tile, regardless of tile type.\n • Mind Trick - Trigger: Foe ends combat against this unit. Apply @{condition}{Confused}{[Confused]} and @{condition}{Berserk}{[Berserk]} to that foe for one turn; that foe moves and acts again during the next player phase and this unit is removed from the battlefield during player phase until it does.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Aaron von Rogue School's personal.",
+  "tags": [
+    "FE3H",
+    "personal",
+    "changed"
+  ],
+  "hidden": false
+}

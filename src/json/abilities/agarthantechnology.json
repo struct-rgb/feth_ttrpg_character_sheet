@@ -29,7 +29,8 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
-    "in combat"
+    "in combat",
+    "FE3H"
   ],
   "hidden": false
 }

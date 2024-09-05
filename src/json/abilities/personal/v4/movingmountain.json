@@ -1,0 +1,37 @@
+{
+  "name": "Moving Mountain",
+  "description": "If unit has moved enough spaces and successfully hits an opponent gain:\n - 5 movement = bonus 20 crit\n - 6 movement = foe is flung 2 spaces and takes 20% HP nonlethal damage on collision.\n - 7 movement = foe cannot counter. ",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": "fill affirm([Moved 6+?], 20, 0)",
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Logan Ninefinger's personsal.",
+  "tags": [
+    "FbF",
+    "personal",
+    "new"
+  ],
+  "hidden": false
+}

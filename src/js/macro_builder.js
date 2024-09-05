@@ -801,9 +801,9 @@ class UserInterface {
 
 		gambits.add("Counter");
 
-		const targets = chain(
+		const targets = Iter.chain(
 			[UserInterface.SEPERATOR_ITEMS],
-			Array.from(items.category.entries()),
+			Array.from(items.category.entries("inventory")),
 			[UserInterface.SEPERATOR_TACTICS],
 			arts.values(),
 			[UserInterface.SEPERATOR_GAMBITS],
@@ -857,10 +857,7 @@ class UserInterface {
 			case "Array": { // Items are handled here.
 
 				// Unpack the array.
-				const [key, value] = target;
-
-				// Just don't load it if not in inventory.
-				if (!value.inventory) continue;
+				const [key, _value] = target;
 
 				// This behaves more like a feature.
 				items.change(key);
@@ -988,12 +985,10 @@ class UserInterface {
 
 		const active = sheet.wb.activeID;
 
-		for (let uid of sheet.wb.category.names()) {
+		for (let uid of sheet.wb.category.names("inventory")) {
 			sheet.wb.change(uid);
-			if (sheet.wb.model.inInventory) {
-				text.push(sheet.wb.model.blurb(), "\n\n");
-				++added;
-			}
+			text.push(sheet.wb.model.blurb(), "\n\n");
+			++added;
 		}
 
 		sheet.wb.change(active);
@@ -1063,12 +1058,10 @@ class UserInterface {
 
 		const active = sheet.wb.activeID;
 
-		for (let uid of sheet.wb.category.names()) {
+		for (let uid of sheet.wb.category.names("inventory")) {
 			sheet.wb.change(uid);
-			if (sheet.wb.model.inInventory) {
-				text.push(sheet.wb.model.html(), "\n\n");
-				++added;
-			}
+			text.push(sheet.wb.model.html(), "\n\n");
+			++added;
 		}
 
 		sheet.wb.change(active);

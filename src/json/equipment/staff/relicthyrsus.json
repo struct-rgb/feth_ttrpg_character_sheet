@@ -1,38 +1,38 @@
 {
-    "name": "Thyrsus",
-    "description": "If wielder has the Crest of @{ability}{Major Crest of Gloucester}{Gloucester}, grants wielder Range +2 to damaging spells, @{ability}{Aegis}, and @{ability}{Pavise}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
-    "requires": "None",
-    "price": 0,
-    "type": "Staff",
-    "modifiers": {
-        "hp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0,
-
-        "minrng": 0,
-        "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype == mttype|mag then 2 else 0 end",
-
-        "mov": 0
-    },
-
-    "comment": "Items in modifers can either be integers or string expressions",
-    "tags": ["relic"],
-    "hidden": false
+  "name": "Thyrsus",
+  "description": "If wielder has the Crest of @{ability}{Major Crest of Gloucester}{Gloucester}, grants wielder Range +2 to damaging spells, @{ability}{Aegis}, and @{ability}{Pavise}. If wielder is crestless, deals 10 lethal damage at start of wielder's phase.",
+  "requires": "None",
+  "price": 0,
+  "type": "Staff",
+  "modifiers": {
+    "hp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0,
+    "minrng": 0,
+    "maxrng": "bothif not(unit|tagged|healing) and unit|total|mttype == mttype|mag then 2 else 0 end",
+    "mov": 0
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "relic",
+    "FE3H",
+    "changed"
+  ],
+  "hidden": false
 }

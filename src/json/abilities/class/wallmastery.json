@@ -1,7 +1,7 @@
 {
   "name": "Wall Mastery",
   "description": "Reason \"Wall\" arts create one tile per 3 magic instead of one tile per 5 magic.",
-  "requires": "Innate",
+  "requires": "Class Sage",
   "modifiers": {
     "hp": 0,
     "sp": 0,
@@ -28,6 +28,8 @@
     "capcost": 6
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
+  "tags": [
+    "changed"
+  ],
   "hidden": true
 }

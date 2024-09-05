@@ -1,0 +1,42 @@
+{
+  "name": "Book & Chain",
+  "description": "Grants Mt +4 to and negates TP cost of unit's Guile, Faith, and Reason attacks made at Range = 1. Unit's Guile, Faith, and Reason attacks deal strength-based damage.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": [
+      "bothif item|type|spell",
+      "  then fill deny([Book & Chain?], 4, 0)",
+      "  else 0",
+      "end"
+    ],
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Hugo von Dominic's personal.",
+  "tags": [
+    "FE3H",
+    "personal",
+    "changed"
+  ],
+  "hidden": false
+}

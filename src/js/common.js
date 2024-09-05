@@ -12,28 +12,51 @@ function isObject(o) {
 	return typeof o === "object" && !Array.isArray(o) && o !== null;
 }
 
-function *chain(...iterables) {
-	for (let iterable of iterables) {
-		for (let item of iterable) {
-			yield item;
-		} 
-	}
-}
-
 function *valuesOf(object, keys) {
 	for (let key of keys) {
 		yield object[key];
 	}
 }
 
-function *map(iterable, callback, thisArg) {
+const Iter = {
 	
-	let index = 0;
+	*chain(...iterables) {
+		for (let iterable of iterables) {
+			yield* iterable;
+		}
+	},
 
-	for (let each of iterable) {
-		yield callback.call(thisArg, each, index++, iterable);
+	*map(iterable, callback, thisArg) {
+	
+		let index = 0;
+
+		for (let each of iterable) {
+			yield callback.call(thisArg, each, index++, iterable);
+		}
+	},
+
+	any(iterable, predicate) {
+		for (let each of iterable) if (predicate(each)) return true;
+		return false;
+	},
+
+	all(iterable, predicate) {
+		for (let each of iterable) if (!predicate(each)) return false;
+		return true;
+	},
+
+	count(iterable, predicate) {
+		let count = 0;
+		for (let each of iterable) count += Number(predicate(each));
+		return count;
+	},
+
+	is(obj) {
+		if (obj == null) return false;
+		return typeof obj[Symbol.iterator] === "function";
 	}
-}
+	
+};
 
 Array.prototype.extend = function(...args) {
 	this.push(...args);
@@ -68,17 +91,15 @@ Array.prototype.random = function() {
 };
 
 Array.prototype.count = function(predicate) {
-	return this.reduce((a, b) => a + Number(predicate(b)), 0);
+	return Iter.count(this, predicate);
 };
 
 Array.prototype.any = function(predicate) {
-	for (let each of this) if (predicate(each)) return true;
-	return false;
+	return Iter.any(this, predicate);
 };
 
 Array.prototype.all = function(predicate) {
-	for (let each of this) if (!predicate(each)) return false;
-	return true;
+	return Iter.all(this, predicate);
 };
 
 Array.prototype.clear = function() {
@@ -140,7 +161,7 @@ function choice(options) {
 	if (!choice.interactive) return options[1];
 
 	/* put together a prompt of choices */
-	const list = options.map((item, index) => `${index + 1}. ${item}`);
+	const list = Array.from(options, (item, index) => `${index + 1}. ${item}`);
 	const text = `Enter the number of your choice:\n${list.join("\n")}`;
 
 	/* keep asking until given a valid choice */
@@ -151,9 +172,101 @@ function choice(options) {
 
 		const num = Number(response);
 
-		if (Number.isNaN(num) || num < 1 || options.length < num) continue;
+		if (Number.isNaN(num) || num < 1 || list.length < num) continue;
 
 		return options[response - 1];
+	}
+}
+
+
+const CHOICES_REGEX = /(?<begin>\d)+(?:\s*-\s*(?<end>\d+))?/g;
+
+function parseChoices(string, asSet=false) {
+
+	const chosen = asSet ? new Set() : [];
+	const add    = asSet ? "add"     : "push";
+
+	for (let range of string.matchAll(CHOICES_REGEX)) {
+
+		// get our bounds from the parsed data
+		const begin = Number(range.groups.begin);
+		const end   = Number(range.groups.end);
+
+		// if there's not "range" add the number and continue
+		if (begin == end || range.groups.end == null) {
+			chosen[add](begin);
+			continue;
+		}
+
+		// since we do have a range walk through it
+		const offset = Number(begin < end) || -1;
+
+		for (let i = begin; i != end; i += offset) {
+			chosen[add](i);
+		}
+	
+		chosen[add](end);
+	}
+
+	return chosen;
+}
+
+/**
+ * @typedef {Object} ChoicesOptions
+ * @property {String}  message - prompt to display to the user in the dialog
+ * @property {Boolean} unique  - if true; duplicate selects will be removed
+ */
+
+function choices(options, unique=true) {
+
+	const chosen = [];
+
+	/* if not asked to choose return the passed object */
+	if (!Iter.is(options)) return options;
+
+	/* if given no options choose none */
+	if (options.length == 0) return chosen;
+
+	/* if not interactive return the empty options */
+	if (!choice.interactive) return chosen;
+
+	/* put together a prompt of choices */
+	const list = Array.from(options);
+	const show = Array.from(options,
+		(item, index) => `${index + 1}. ${item || "Default"}`
+	);
+	const text = `Enter the numbers of your choices:\n${show.join("\n")}`;
+
+	/* keep asking until given a valid choice */
+	for (;;) {
+		const response = prompt(text);
+
+		if (response == null || response == "") return chosen;
+
+		let   error   = null;
+		const numbers = parseChoices(response, unique);
+
+		for (let num of numbers) {
+
+			if (num < 1 || list.length < num) {
+				chosen.clear();
+				error = `Number ${num} is outside of range.`;
+				break;
+			}
+
+			chosen.push(num);
+		}
+
+		if (error) {
+			alert(error);
+			continue;
+		}
+
+		// convert chosen indicies into options
+		for (let i = 0; i < chosen.length; ++i)
+			chosen[i] = list[chosen[i] - 1];
+
+		return unique ? new Set(chosen) : chosen;
 	}
 }
 
@@ -303,9 +416,9 @@ class BigButton {
 }
 
 class SwapText {
-	constructor(modes, hidden=false) {
+	constructor(modes, hidden=false, base="div") {
 
-		this.root = element("div");
+		this.root = element(base);
 
 		this.mode  = 0;
 		this.modes = modes.map((mode) => {
@@ -331,6 +444,12 @@ class SwapText {
 	next() {
 		this.modes[this.mode].remove();
 		this.mode = (this.mode + 1) % this.modes.length;
+		this.root.appendChild(this.modes[this.mode]);
+	}
+
+	show(mode) {
+		this.modes[this.mode].remove();
+		this.mode = mode;
 		this.root.appendChild(this.modes[this.mode]);
 	}
 }
@@ -430,7 +549,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("4.2.0");
+	static CURRENT = new Version("4.3.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -1103,7 +1222,14 @@ class Toggle {
 		this.checked   = value;
 
 		this.root = this._input;
+
+		// if (check instanceof Array) {
+
+		// 	this.swap = new SwapText([], true);
+
+		// } else {
 		this.fn   = check;
+		// }
 	}
 
 	refresh(value) {
@@ -1120,9 +1246,11 @@ class Toggle {
 		if (this._checked) {
 			this._input.classList.add("toggle-on");
 			this._input.classList.remove("toggle-off");
+			// if (this.swap) this.swap.show(1);
 		} else {
 			this._input.classList.add("toggle-off");
 			this._input.classList.remove("toggle-on");
+			// if (this.swap) this.swap.show(0);
 		}
 	}
 
@@ -1815,9 +1943,8 @@ if (typeof module !== "undefined") {
 		SwapText,
 		ConfigEnum,
 		kwargsChecker,
-		map,
+		Iter,
 		valuesOf,
-		chain,
 		conjoin,
 		AbstractCompilationError,
 		AbstractParser,

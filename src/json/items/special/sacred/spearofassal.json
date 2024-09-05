@@ -23,9 +23,11 @@
   },
   "comment": "Items in modifers should be integers",
   "tags": [
+    "FE3H",
     "sacred",
     "effective",
-    "cavalry effective"
+    "cavalry effective",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

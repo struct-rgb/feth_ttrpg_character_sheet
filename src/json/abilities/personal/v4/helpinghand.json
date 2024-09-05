@@ -1,0 +1,37 @@
+{
+  "name": "Helping Hand",
+  "description": " - When an ally within three spaces pays an SP or TP cost, this unit may pay up two points of that cost instead of that ally. - When this unit pays an SP or TP cost, one ally within three spaces may pay up to two points of that cost instead of this unit.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Tem Vargman's personal.",
+  "tags": [
+    "FbF",
+    "personal",
+    "new"
+  ],
+  "hidden": false
+}

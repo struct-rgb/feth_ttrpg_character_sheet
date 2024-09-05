@@ -1,0 +1,36 @@
+{
+  "name": "Caustic Retch",
+  "description": "On hit, roll 1d4. Apply the corresponding condition to target foe and all adjacent units (including allies) other than this unit:\n - @{condition}{Sickness}{[Sickness]} for one turn.\n - @{condition}{Rattled}{[Rattled]} for one turn.\n - @{condition}{Poisoned}{[Poisoned].}\n - @{condition}{Taunted}{[Taunted]} for on turn.",
+  "requires": "Morph C",
+  "compatible": "None",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 70,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 3,
+    "tiles": 0,
+    "spcost": 4,
+    "tpcost": 0,
+    "sp": 0,
+    "tp": 0
+  },
+  "comment": "",
+  "tags": [
+    "no might",
+    "no crit",
+    "no stats",
+    "no triangle",
+    "tactical",
+    "condition",
+    "new"
+  ],
+  "hidden": false,
+  "type": "Guile",
+  "rank": "D"
+}

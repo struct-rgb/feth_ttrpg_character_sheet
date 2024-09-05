@@ -6,8 +6,8 @@
  */
 
 /* global
-	BigButton, Grade, SwapText, Theme, Toggle, Version,
-	capitalize, chain, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
+	Grade, Iter, SwapText, Theme, Toggle, Version,
+	capitalize, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
 */
 
 /* global Polish */
@@ -186,327 +186,6 @@ class AutosaveConfiguration {
 			seconds = value / 1e3;
 		}, 1e3);
 	}
-}
-
-class Buildables {
-
-	constructor(options) {
-
-		this._updatefn = options.update || (x => x);
-
-		options    = options || {name: "NO NAME", templates: []};
-		this.root  = element("div");
-		this.model = options.model;
-
-		let button = undefined;
-
-		this._save         = new BigButton("Save", () => void this.save());
-		this._export       = new BigButton("Export", () => void this.export());
-		this._batch_export = new BigButton("Batch Export", () => void this.exportBatch());
-		this._copy         = new BigButton("Copy", () => void this.copy());
-		
-		this._import       = new BigButton("Import");
-		this._import.input.type   = "file";
-		this._import.input.accept = ".json";
-		this._import.input.addEventListener("change", (e) => {
-			this.import(e);
-			this._import.input.value = null;
-		}, false);
-
-		this._batch_import = new BigButton("Batch Import");
-		this._batch_import.input.type   = "file";
-		this._batch_import.input.accept = ".batch.json";
-		this._batch_import.input.addEventListener("change",  (e) => {
-			const warn = "This action will wipe out your current data. Continue?";
-			if (!confirm(warn)) {
-				this._batch_import.input.value = null;
-				return;
-			}
-			this.importBatch(e);
-			this._batch_import.input.value = null;
-		}, false);
-
-		const cell = ((bigbutton, tooltiptext) => {
-			return element("td", [
-				tooltip(bigbutton.label, tooltiptext),
-				bigbutton.input
-			]);
-		});
-
-		this.root.appendChild(element("table", [
-			element("tr", [
-				cell(this._save, 
-					"Save all sheet data to this web browser's local storage."
-				),
-				cell(this._export,
-					"Download the selected item as a file."
-				),
-				cell(this._batch_export,
-					"Download all items as a group file."
-				),
-			]),
-			element("tr", [
-				cell(this._copy,
-					"Create a copy of the selected item."
-				),
-				cell(this._import,
-					"Upload a file from the disk to edit."
-				),
-				cell(this._batch_import,
-					"Upload a group file from the disk to edit."
-				),
-			]),
-		]));
-
-		/* Add button */
-		button         = element("input");
-		button.type    = "button";
-		button.value   = "Add";
-		button.onclick = () => void this.add();
-		button.classList.add("simple-border");
-		this._add      = button;
-
-		this.root.appendChild(this._add);
-
-		/* Template select */
-
-		if (options.sortfilter) {
-			this._sf    = options.sortfilter;
-			this.select = this._sf._select;
-			this.root.appendChild(this._sf.root); 
-		} else {
-			this.root.appendChild(this.select = element("select", {
-				class   : ["simple-border"],
-				content : options.templates.map(template =>
-					element("option", {
-						content : template,
-						attrs   : {value: template},
-					})
-				),
-			}));
-		}
-
-		const getTitle = ((x) => {
-			return this.model.getTitle(x);
-		});
-
-		const getBody = ((x) => {
-			return this.model.getBody(x);
-		});
-
-		this.map      = new Map();
-		const model   = new CategoryModel(options.name, this.map, getTitle, getBody, () => []);
-		this.category = new SingleActiveCategory(model, {
-			name        : options.name,
-			empty       : options.empty || "Something went wrong!",
-			selectable  : false,
-			reorderable : true,
-			removable   : true,
-			ontoggle    : ((category, key) => {
-			
-				if (key == category.active) {
-					return false;
-				}
-
-				this.change(key);
-			}),
-			onremove    : ((category, key) => void this.remove(key)),
-			parent      : this.root,
-		});
-	}
-
-	get activeID() {// TODO see if this can be replaced with this.category.getActive()
-		return this.category.getActive() ? this._activeID : null;
-	}
-
-	set activeID(value) {
-		this._activeID = value;
-	}
-
-	add() {
-		if (this.category.size > 0) {
-			this.map.set(this._activeID, this.model.export());
-		}
-
-		const activeID = uniqueID();
-
-		this.map.set(activeID, {
-			name        : this.model.name,
-			description : this.model.description,
-		});
-
-		this.category.add(activeID);
-		this.category.toggleActive(activeID);
-
-		this._activeID = activeID;
-
-		this.model.clear(this.select.value);
-
-		return activeID;
-	}
-
-	get active() {
-		return this.map.get(this._activeID);
-	}
-
-	change(key) {
-
-		// Nothing to do for a null key.
-		if (key == null) return key;
-		
-		// Guard against a stale activeID in importAll
-		this.sync();
-
-		this._activeID = key;
-		this.category.toggleActive(key);
-
-		this.model.import(this.map.get(key));
-
-		return key;
-	}
-
-	sync() {
-		if (this.map.has(this._activeID))
-			this.map.set(this._activeID, this.model.export());
-	}
-
-	remove(key) {
-		if (key == this._activeID) {
-			alert("You cannot delete the active item.");
-			return;
-		}
-
-		this.category.delete(key);
-		this.map.delete(key);
-	}
-
-	save() {
-		/* global sheet */
-		sheet.save();
-	}
-
-	copy(key) {
-
-		key = key || this._activeID;
-
-		const activeID = uniqueID();
-
-		const item = (key == this._activeID
-			? this.model.export()
-			: JSON.parse(JSON.stringify(this.map.get(key)))
-		);
-
-		this.map.set(activeID, item);
-		this.category.add(activeID);
-
-		return this.change(activeID);
-	}
-
-	clear() {
-		this.map.clear();
-		this.category.clear();
-		this.model.clear();
-	}
-
-	exportAll() {
-		const active = this.category.getActive();
-		const data   = {active: active, elements: {}};
-		
-		for (let name of this.category.names()) {
-			const category = (
-				name == active
-					? this.model.export()
-					: this.map.get(name)
-			);
-
-			data.elements[name] = category;
-		}
-
-		return data;
-	}
-
-	importAll(data) {
-		
-		const {active, elements} = data;
-
-		this.map.clear();
-		this.category.clear();
-		this._activeID = null;
-
-		for (let element in elements) {
-			this.map.set(element, this._updatefn(elements[element]));
-			this.category.add(element);
-		}
-
-		if (active) this.change(active);
-	}
-
-	exportObject() {
-		return this.model.export();
-	}
-
-	export(batch=false) {
-		const a    = element("a");
-		const item = this.model.export();
-		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
-		a.href     = URL.createObjectURL(file);
-		a.download = `${this.model.name.replace(/ /g, "_")}.json`;
-		a.click();
-		URL.revokeObjectURL(a.href);
-	}
-
-	exportBatch() {
-		const a    = element("a");
-		const item = this.exportAll();
-		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
-		a.href     = URL.createObjectURL(file);
-		a.download = `${this.model.constructor.name}.batch.json`;
-		a.click();
-		URL.revokeObjectURL(a.href);
-	}
-
-	importObject(object) {
-		const activeID = uniqueID();
-		this.map.set(activeID, object);
-		this.category.add(activeID);
-		this.change(activeID);
-	}
-
-	import(e) {
-		const file = e.target.files[0];
-		if (!file) return;
-
-		const reader = new FileReader();
-
-		reader.onload = (e) => {
-			const item     = JSON.parse(e.target.result);
-			this.importObject(this._updatefn(item));
-		};
-		
-		reader.readAsText(file);
-	}
-
-	importBatch(e) {
-		const file = e.target.files[0];
-		if (!file) return;
-
-		const reader = new FileReader();
-
-		reader.onload = (e) => {
-			const item = JSON.parse(e.target.result);
-			this.importAll(item);
-		};
-		
-		reader.readAsText(file);
-	}
-
-	*iter() {
-		for (let key of this.map.keys()) {
-			this.change(key);
-			yield this.model;
-		}
-	}
-
 }
 
 /*
@@ -707,7 +386,7 @@ class Sheet {
 		const version = element("strong", [
 			element("span", `Version ${Version.CURRENT.toString()} (`),
 			element("a", {
-				attrs: {"href": "./README.html"},
+				attrs: {"href": "./src/html/README.html"},
 				content: "Changelog"}
 			), ")"
 		]);
@@ -838,10 +517,21 @@ class Sheet {
 
 			/* type should be "abilities" or "arts" */
 
-			const slotcost = `${type}|slotcost`;
+			const capcost = `${type}|capcost`;
 
 			return (category, key) => {
-				this.refresher.refresh(slotcost);
+				this.refresher.refresh(capcost);
+
+				const feature = category.get(key);
+
+				if (feature.isConsideredInnate()) {
+
+					category.setGroupFor(key, "innate");
+
+					category.getGroup("class")?.shiftToFront();
+
+					category.getGroup("innate").shiftToFront();
+				}
 			};
 		};
 
@@ -950,9 +640,10 @@ class Sheet {
 			ontoggle    : refresh,
 			onadd       : equip("abilities"),
 			onremove    : unequip("abilities"),
-			// markGroup   : true,
 			select      : Ability.select(),
 			refresher   : this.refresher,
+			groupShowTitle : capitalize,
+			groupReorderable : false,
 		});
 
 		sidebook.add("Abilities",  element("div", [
@@ -1034,9 +725,11 @@ class Sheet {
 			}),
 			onadd       : equip("arts"),
 			onremove    : unequip("arts"),
-			// markGroup   : true,
 			select      : Art.select(),
 			refresher   : this.refresher,
+			groupShowTitle : capitalize,
+			groupReorderable : false,
+			// defaultGroup : "equip",
 		});
 
 		sidebook.add("Arts", element("div", [
@@ -1051,7 +744,6 @@ class Sheet {
 		);
 
 		this.equipment = new SingleActiveCategory(model, {
-			name        : "equip",
 			empty       : "No equipment is owned",
 			selectable  : true,
 			reorderable : true,
@@ -1080,29 +772,36 @@ class Sheet {
 		this.character = new Characters(this);
 
 		const character_bb = new Buildables({
-			name       : "characters",
-			empty      : "If you're reading this, something has gone wrong",
-			model      : this.character,
-			sortfilter : Preset.select(),
-			update     : Legacy.character,
+			name        : "characters",
+			empty       : "If you're reading this, something has gone wrong",
+			model       : this.character,
+			sortfilter  : Preset.select(),
+			update      : Legacy.character,
+			groups      : "custom",
+			updateBatch : Legacy.batchOfCharacters,
 		});
 
 		const battalion_bb = new Buildables({
-			name      : "battalions",
-			empty     : "Not leading a battalion",
-			templates : data.battalions.filter(x => !x.hidden).map(x => x.name),
-			model     : this.battalion,
-			update    : Legacy.battalion,
+			name        : "battalions",
+			empty       : "Not leading a battalion",
+			templates   : data.battalions.filter(x => !x.hidden).map(x => x.name),
+			model       : this.battalion,
+			update      : Legacy.battalion,
+			updateBatch : Legacy.batchOfBattalions,
 		});
 
 		this.item = new Items(this);
 
 		const item_bb = new Buildables({
-			name       : "items",
-			empty      : "No items",
-			model      : this.item,
-			sortfilter : Item.select(),
-			update     : Legacy.item,
+			name         : "items",
+			empty        : "No items",
+			model        : this.item,
+			sortfilter   : Item.select(),
+			update       : Legacy.item,
+			selectGroup  : "convoy",
+			groups       : ["inventory", "convoy"],
+			updateBatch  : Legacy.batchOfItems,
+			groupShowTitle : capitalize,
 		});
 
 		this.cb = character_bb;
@@ -1133,9 +832,9 @@ class Sheet {
 		);
 
 		this.conditions = new MultiActiveCategory(model, {
-			name        : "unit",
 			empty       : "No conditions",
 			selectable  : true,
+			toggleable  : false,
 			reorderable : true,
 			removable   : true,
 			hideable    : true,
@@ -1151,9 +850,9 @@ class Sheet {
 		);
 
 		this.tiles = new MultiActiveCategory(model, {
-			name        : "map",
 			empty       : "No tiles",
 			selectable  : true,
+			toggleable  : false,
 			reorderable : true,
 			removable   : true,
 			hideable    : true,
@@ -1276,7 +975,6 @@ class Sheet {
 		configure.appendChild(this._autosave_conf.root);
 
 		this.themes  = new SingleActiveCategory(model, {
-			name        : "themes",
 			empty       : "If you're reading this, there is no theme",
 			selectable  : false,
 			reorderable : false,
@@ -1971,7 +1669,7 @@ class Sheet {
 
 		let item_tags = new Set();
 
-		for (let item of chain(definitions.items, definitions.attributes)) {
+		for (let item of Iter.chain(definitions.items, definitions.attributes)) {
 			for (let tag of item.tags) {
 				
 				const name       = tag;
@@ -2005,9 +1703,7 @@ class Sheet {
 
 						let count = 0;
 
-						for (let each of this.wb.category.values()) {
-							// Ignore what isn't in the inventory.
-							if (!each.inventory) continue;
+						for (let each of this.wb.category.values("inventory")) {
 
 							// Check the item's custom tags.
 							if (each.tags.includes(tag)) {
@@ -3740,7 +3436,7 @@ class Sheet {
 		/* copy stats over to main sheet */
 		this.copy_point_buy_stats(false);
 
-		/* add items and abilties to sheet */
+		/* add items and abilities to sheet */
 
 		const addKit = (skill, scale) => {
 			
@@ -3768,7 +3464,7 @@ class Sheet {
 				}
 
 				this.wb.select.value = item;
-				this.wb.add();
+				this.wb.add("inventory");
 
 				/* add any attributes to the item */
 				for (let attr of attrs) {
@@ -3780,8 +3476,6 @@ class Sheet {
 				if (attrs.length) {
 					this.item.name = `${attrs.join(" ")} ${this.item.name}`;
 				}
-
-				this.item.inInventory = true;
 			}
 
 			/* add abilities */
@@ -3790,7 +3484,8 @@ class Sheet {
 					throw new Error(`ability '${ability}' is undefined`);
 				}
 
-				this.abilities.add(ability);
+				if (this.abilities.has(ability)) continue;
+				this.abilities.add(ability, {group: "equip"});
 				this.abilities.toggleActive(ability);
 			}
 
@@ -3800,7 +3495,8 @@ class Sheet {
 					throw new Error(`art '${art}' is undefined`);
 				}
 
-				this.arts.add(art);
+				if (this.arts.has(art)) continue;
+				this.arts.add(art, {group: "equip"});
 			}
 
 			/* set skill level */
@@ -3858,6 +3554,10 @@ class Sheet {
 			if (kind.parent != null) addKit(kind.parent, scale);
 		};
 
+		this.character.setClass(cls.name, 
+			Presetter.getElections(ps.mainarm, ps.sidearm)
+		);
+
 		if (ps.mainarm == ps.sidearm || ps.sidearm == "None") {
 			addKit(ps.mainarm, 3);
 		} else {
@@ -3867,7 +3567,6 @@ class Sheet {
 
 		/* fill out flavor information */
 		this.character.name        = cls.name;
-		this.character.class       = cls.name;
 		this.character.description = cls.description;
 
 		/* refresh */
@@ -3914,7 +3613,7 @@ class Sheet {
 					"Number of ", this.name, " exceeds maximum of ", this.limit,
 					". ", this.slots.map(
 						f => `${f.name} (${f.modifier(this.field)})`
-					).join(", "), " consume a total of ", this.sum, " slots."
+					).join(", "), " consume a total of ", this.sum, " capacity."
 				);
 
 				return null;
@@ -3949,7 +3648,7 @@ class Sheet {
 			if (this.character.class.abilities.includes(ability.name)) continue;
 
 			// don't count this art if it doesn't consume any slots
-			if (ability.modifier("slotcost") == 0) continue;
+			if (ability.modifier("capcost") == 0) continue;
 
 			let error = capacity.count(ability);
 			if (error) return error;

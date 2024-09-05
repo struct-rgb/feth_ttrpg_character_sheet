@@ -1,0 +1,37 @@
+{
+  "name": "Throne of Corpses",
+  "description": "For one turn after one of this army's units is defeated, attacks by this army's units have Mt +3 in combat and restore 20% of the attacker's HP on hit.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": "fill affirm([Ally Downed?], 3, 0)",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Elric Lusine's personal.",
+  "tags": [
+    "FbF",
+    "personal",
+    "new"
+  ],
+  "hidden": false
+}

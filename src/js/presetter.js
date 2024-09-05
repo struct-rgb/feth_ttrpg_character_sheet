@@ -271,6 +271,9 @@ const KITS = {
 		parent: null,
 		hide: false,
 		training: "Swords Training",
+		abilities: new Set([
+			"Sword Prowess", "Sword Advantage", "Stamina +5"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -408,6 +411,9 @@ const KITS = {
 		parent: null,
 		hide: false,
 		training: "Lances Training",
+		abilities: new Set([
+			"Lance Prowess", "Lance Advantage", "Stamina +5"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -545,6 +551,9 @@ const KITS = {
 		parent: null,
 		hide: false,
 		training: "Bows Training",
+		abilities: new Set([
+			"Bow Prowess", "Bow Advantage", "Stamina +5"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -682,6 +691,9 @@ const KITS = {
 		parent: null,
 		hide: false,
 		training: "Axes Training",
+		abilities: new Set([
+			"Axe Prowess", "Axe Advantage", "Stamina +5"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -819,6 +831,10 @@ const KITS = {
 		parent: null,
 		hide: true,
 		training: "Reason Training",
+		abilities: new Set([
+			"Reason Prowess", "Reason Advantage", "Reason Magic Spectrum",
+			"Reason Range +1", "Reason Consumption 1", "Consumption"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1250,7 +1266,11 @@ const KITS = {
 	"Brawl": {
 		parent: null,
 		hide: true,
-		training: "Might Fist Training",
+		training: "Mighty Fist Training",
+		abilities: new Set([
+			"Brawl Prowess", "Brawl Advantage", "Brawl Consumption 1",
+			"Consumption"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1628,6 +1648,10 @@ const KITS = {
 		parent: null,
 		hide: false,
 		training: "Faith Training",
+		abilities: new Set([
+			"Faith Magic Spectrum", "Faith Range +1", "Faith Prowess",
+			"Faith Advantage", "Faith Consumption 1", "Consumption"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1771,6 +1795,10 @@ const KITS = {
 		parent: null,
 		hide: false,
 		training: "Guile Training",
+		abilities: new Set([
+			"Guile Magic Spectrum", "Guile Prowess",
+			"Guile Advantage", "Guile Consumption 1", "Consumption"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -1913,6 +1941,9 @@ const KITS = {
 	"Authority": {
 		parent: null,
 		hide: false,
+		abilities: new Set([
+			"Authority", "Stamina +5"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -2565,6 +2596,9 @@ const KITS = {
 	"Armor": {
 		parent: null,
 		hide: false,
+		abilities: new Set([
+			"Stamina +5"
+		]),
 		1 : {
 			1 : {
 				"points"    : 2,
@@ -3159,24 +3193,25 @@ class Tokenator {
 			);
 
 			super(model, {
-				name        : name,
-				empty       : "No icons added.",
-				selectable  : true,
-				reorderable : true,
-				removable   : true,
-				hideable    : false,
-				addActive   : true,
-				ontoggle    : ((category, key) => {
+				name         : name,
+				empty        : "No icons added.",
+				selectable   : true,
+				reorderable  : true,
+				removable    : true,
+				hideable     : false,
+				addActive    : true,
+				ontoggle     : ((category, key) => {
 					category.toggleActive(key);
 					this.parent.refresh();
 				}),
-				onremove    : ((category, key) => {
+				onremove     : ((category, key) => {
 					category.delete(key);
 					this.parent.refresh();
 				}),
-				onreorder   : ((category, key) => {
+				onreorder    : ((category, key) => {
 					this.parent.refresh();
 				}),
+				defaultGroup : name,
 			});
 
 			this.parent = parent;
@@ -3573,12 +3608,7 @@ class Tokenator {
 			}
 
 			// Detect which items types this unit uses.
-			const items  = Array.from(sheet.wb.category.values());
-
-			for (let each of items) {
-
-				// We only want icons for items that will get macros.
-				if (!each.inventory) continue;
+			for (let each of sheet.wb.category.values("inventory")) {
 
 				const item = Item.get(each.template);
 				const type = item.tagged("Shield") ? "Shield" : item.type;
@@ -3775,6 +3805,100 @@ class Tokenator {
 	}
 }
 
+/**
+ * This class is used as a mechanism to allow for kits to select the optinal
+ * variants of class abilities and arts that those kits synergize with.
+ */
+class Election extends Map {
+
+	constructor(key, ...kits) {
+		super();
+
+		for (let i = kits.length; 0 <= i; --i) {
+			this.addKit(key, kits[i], i);
+		}
+
+		this.best  = 0;
+		this.worst = kits.length;
+	}
+
+	static EMPTY = new Set();
+
+	addKit(key, from, rank) {
+
+		// get the relecant kit
+		const kit = KITS[from];
+		if (!kit) return;
+
+		// read in all of the preferred names with their ranking
+		const features = kit[key] ?? Election.EMPTY;
+		for (let feature of features) this.set(feature, rank);
+
+		// read in any features from the parent kit
+		if (kit.parent)
+			this.addKit(key, kit.parent, rank);
+	}
+
+	isBetter(key, rank) {
+		return rank > (this.get(key) ?? this.worst);
+	}
+
+	reserve(key) {
+		this.delete(key);
+		return key;
+	}
+
+	static getElections(...kits) {
+
+		const elections = {};
+
+		for (let key of ["abilities", "arts"]) {
+			elections[key] = new Election(key, ...kits);
+		}
+
+		return elections;
+	}
+
+	static elect(options, election) {
+
+		// no elections, so fall back on manual choice
+		if (election == null) return choice(options);
+
+		// if not asked to choose return the passed object
+		if (!(options instanceof Array)) return options;
+
+		// if given no options choose none
+		if (options.length == 0) return null;
+
+		// if given one option choose it
+		if (options.length == 1) return options[1];
+
+		// length of the elections will be lower than any election tier
+		let rank    = election.worst;
+
+		// this is our current "best choice" as we go forward
+		let elected = null;
+
+		// check each option to see if it was elected
+		for (let option of options) {
+
+			if (election.isBetter(option, rank)) {
+				rank    = election.get(option);
+				elected = option;
+			}
+
+			if (rank == election.best) break;
+		}
+
+		// if we elected a candidate, then return that
+		if (elected) return election.reserve(elected);
+
+		// fall back on letting the user manually choose
+		return choice(options);
+	}
+
+}
+
 class Presetter {
 
 	static KITS = KITS;
@@ -3882,6 +4006,10 @@ class Presetter {
 		/* we got an invalid input, so error */
 		throw Error("kits must be string or array");
 	}
+
+	static getElections = Election.getElections;
+
+	static elect = Election.elect;
 
 	static Tokenator = Tokenator;
 
@@ -3999,6 +4127,19 @@ class Presetter {
 			}
 		});
 
+		this._swaparms = element("input", {
+			class : ["simple-border"],
+			attrs : {
+				type    : "button",
+				value   : "Swap Kits",
+				onclick : (() => {
+					const tmp = this._mainarm.value;
+					this._mainarm.value = this._sidearm.value;
+					this._sidearm.value = tmp;
+				})
+			}
+		});
+
 		this.tokenator = new Tokenator(256);
 		// this.tokenator.allegiance.selectedIndex = "Enemy";
 		this.tokenator.refresh();
@@ -4013,7 +4154,7 @@ class Presetter {
 			this._preset.root, this._rebuild, element("br"),
 
 			uniqueLabel("Main Kit", this._mainarm), element("br"),
-			this._mainarm, element("br"),
+			this._mainarm, this._swaparms, element("br"),
 
 			uniqueLabel("Side Kit", this._sidearm), element("br"),
 			this._sidearm, element("br"),

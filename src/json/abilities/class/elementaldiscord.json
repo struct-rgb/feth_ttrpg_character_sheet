@@ -1,7 +1,7 @@
 {
   "name": "Elemental Discord",
   "description": "If unit has exactly 2 Reason tomes that share an element in unit’s inventory, unit may use Reason metamagic arts of that element with tomes of any element at the cost of 2 additional SP.",
-  "requires": "Innate",
+  "requires": "Any (Class Warlock) (Class Sage)",
   "modifiers": {
     "hp": 0,
     "sp": 0,
@@ -38,6 +38,8 @@
     "capcost": 6
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
+  "tags": [
+    "changed"
+  ],
   "hidden": true
 }

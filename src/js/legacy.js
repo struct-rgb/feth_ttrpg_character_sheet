@@ -5,6 +5,108 @@
 
 const Legacy = (function() {
 
+function batch_from_4_2_0(old) {
+
+	const fresh = {
+		version  : "4.3.0",
+		active   : old.active,
+		elements : []
+	};
+
+	for (let each in old.elements) {
+		fresh.elements.push({
+			id    : each,
+			group : "",
+			data  : old.elements[each],
+		});
+	}
+
+	return fresh;
+}
+
+function batch_item_from_4_2_0(old) {
+	
+	old = batch_from_4_2_0(old);
+
+	for (let each of old.elements) {
+		each.group = each.data.inventory ? "inventory" : "convoy";
+	}
+
+	return old;
+}
+
+function batchOfItems(obj, to=Version.CURRENT) {
+	
+	if (obj.version === undefined) {
+		obj.version = "4.2.0";
+	}
+
+	if (typeof to == "string") {
+		to = new Version(to);
+	}
+
+	const version = new Version(obj.version);
+
+	if (version.older("4.3.0")) {
+		obj = batch_item_from_4_2_0(obj);
+	}
+
+	return obj;
+
+}
+
+function batch_character_from_4_2_0(old) {
+
+	old = batch_from_4_2_0(old);
+
+	return old;
+}
+
+function batchOfCharacters(obj, to=Version.CURRENT) {
+	
+	if (obj.version === undefined) {
+		obj.version = "4.2.0";
+	}
+
+	if (typeof to == "string") {
+		to = new Version(to);
+	}
+
+	const version = new Version(obj.version);
+
+	if (version.older("4.3.0")) {
+		obj = batch_character_from_4_2_0(obj);
+	}
+
+	return obj;
+}
+
+function batch_battalion_from_4_2_0(old) {
+	
+	old = batch_from_4_2_0(old);
+
+	return old;
+}
+
+function batchOfBattalions(obj, to=Version.CURRENT) {
+	
+	if (obj.version === undefined) {
+		obj.version = "4.2.0";
+	}
+
+	if (typeof to == "string") {
+		to = new Version(to);
+	}
+
+	const version = new Version(obj.version);
+
+	if (version.older("4.3.0")) {
+		obj = batch_battalion_from_4_2_0(obj);
+	}
+
+	return obj;
+}
+
 function rename(state, map) {
 
 	if (!state) return;
@@ -22,12 +124,54 @@ function rename(state, map) {
 	}
 }
 
+function character_from_4_2_0(old) {
+
+	for (let item of old.equipment.added) {
+		item.group = "";
+	}
+
+	for (let item of old.arts) {
+
+		const art = Art.get(item.name);
+
+		if (art.isConsideredInnate()) {
+			item.group = "innate";
+			continue;
+		}
+
+		if (item.group == "") {
+			item.group = "equip";
+			continue;
+		}
+	}
+
+	for (let item of old.abilities) {
+
+		const ability = Ability.get(item.name);
+	
+		if (ability.isConsideredInnate()) {
+			item.group = "innate";
+		}
+	}
+
+	const items = old.items.elements;
+
+	for (let key in items)
+		items[key] = item_from_4_2_0(items[key]);
+
+	old.version = "4.2.0";
+
+	return old;
+}
+
 function character_from_4_0_0(old) {
 
 	old.skills.Morph = {
 		"value": 0,
 		"aptitude": "Normal"
 	};
+
+	old.version = "4.1.0";
 
 	return old;
 }
@@ -445,6 +589,10 @@ function character(obj, to=Version.CURRENT) {
 		obj = character_from_4_0_0(obj);
 	}
 
+	if (version.older("4.3.0")) {
+		obj = character_from_4_2_0(obj);
+	}
+	
 	return obj;
 }
 
@@ -453,6 +601,20 @@ function item_from_3_2_0(old) {
 	old.description = WToI_v3_3_0(old.description);
 	old.version     = "3.3.0";
 	return old; 
+}
+
+function item_from_4_2_0(old) {
+
+	// this will we wiped by not being exported
+	// delete old.inventory;
+
+	for (let attribute of old.attributes) {
+		attribute.group = "";
+	}
+	
+	old.version = "4.2.0";
+
+	return old;
 }
 
 function item(obj, to=Version.CURRENT) {
@@ -471,6 +633,10 @@ function item(obj, to=Version.CURRENT) {
 
 	if (version.older("3.3.0")) {
 		obj = item_from_3_2_0(obj);
+	}
+
+	if (version.older("4.3.0")) {
+		obj = item_from_4_2_0(obj);
 	}
 
 	return obj;
@@ -508,6 +674,9 @@ return {
 	character,
 	item,
 	battalion,
+	batchOfCharacters,
+	batchOfItems,
+	batchOfBattalions,
 };
 
 })();

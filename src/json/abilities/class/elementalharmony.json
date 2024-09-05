@@ -1,7 +1,7 @@
 {
   "name": "Elemental Harmony",
   "description": "If unit has ≥ 3 Reason tomes that share an element in unit’s inventory, then unit may use the Variant form of any Reason metamagic that requires a specific tome in unit’s inventory with any tome of that element at the cost of 2 additional SP.",
-  "requires": "Innate",
+  "requires": "Any (Class Warlock) (Class Sage)",
   "modifiers": {
     "hp": 0,
     "sp": 0,
@@ -38,6 +38,8 @@
     "capcost": 6
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
+  "tags": [
+    "changed"
+  ],
   "hidden": true
 }

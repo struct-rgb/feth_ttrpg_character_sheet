@@ -1,0 +1,37 @@
+{
+  "name": "Bush Tactics",
+  "description": "Unit may choose to ignore movement penalties from difficult terrain and unit created tiles; when this unit or an ally, on its phase, applies a status condition to a foe within three spaces of this unit, apply @{condition}{Pass}{[Pass]} and @{condition}{Canto}{[Canto]} to this unit or that ally, respectively, until the end of the phase.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "FE3H",
+    "personal",
+    "changed"
+  ],
+  "hidden": false
+}

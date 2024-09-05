@@ -25,12 +25,13 @@
     "spcost": 0,
     "tp": 0,
     "mov": 0,
-    "capcost": 2
+    "capcost": 3
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
     "static",
-    "halfslot"
+    "halfslot",
+    "changed"
   ],
   "hidden": false
 }

@@ -1,0 +1,28 @@
+{
+  "name": "Horseater",
+  "description": "If morphed, this attack is Effective against Cavalry units.\n\nCannot be equipped alongside @{art}{Snatch}.",
+  "requires": "Any (Morph C) (Morph B)",
+  "compatible": "Not (Tag `no might`)",
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 15,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 4
+  },
+  "comment": "",
+  "tags": [
+    "condition",
+    "new"
+  ],
+  "hidden": false,
+  "type": "Morph",
+  "rank": "C-B"
+}

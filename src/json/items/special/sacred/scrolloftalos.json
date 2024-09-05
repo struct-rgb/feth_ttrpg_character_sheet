@@ -23,8 +23,10 @@
   },
   "comment": "Items in modifers should be integers",
   "tags": [
+    "FE3H",
     "sacred",
-    "lightning"
+    "lightning",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

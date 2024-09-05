@@ -1,6 +1,6 @@
 {
   "name": "Effect Reduction",
-  "description": "Damage effectiveness multiplier for attacks against this unit is 1.5 instead of 2.0. Does not consume an ability slot.",
+  "description": "Effective damage against this unit is reduced from to 10 to 5.",
   "requires": "Innate",
   "modifiers": {
     "hp": 0,
@@ -25,9 +25,11 @@
     "spcost": 0,
     "tp": 0,
     "mov": 0,
-    "capcost": 6
+    "capcost": 0
   },
   "comment": "Items in modifers can either be integers or string expressions",
-  "tags": [],
+  "tags": [
+    "changed"
+  ],
   "hidden": false
 }

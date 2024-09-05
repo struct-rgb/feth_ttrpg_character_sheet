@@ -18,7 +18,10 @@
     "spcost": 3
   },
   "comment": "",
-  "tags": [],
+  "tags": [
+    "FE3H",
+    "changed"
+  ],
   "hidden": false,
   "type": "Bows",
   "rank": "C"

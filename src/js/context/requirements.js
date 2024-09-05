@@ -547,7 +547,7 @@ function toDOM(marker, node, dead=false, top=true) {
 
 	case "Gambit": {
 		return element("span", [
-			marker.link(marker, "gambit", [args[0].value], {dead}),
+			marker.link("gambit", [args[0].value], {dead}),
 			element("strong", " equipped")
 		]);
 	}

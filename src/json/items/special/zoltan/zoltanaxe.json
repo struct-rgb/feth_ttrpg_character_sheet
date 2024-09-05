@@ -23,8 +23,10 @@
   },
   "comment": "Items in modifers should be integers",
   "tags": [
+    "FE3H",
     "effective",
-    "armor effective"
+    "armor effective",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

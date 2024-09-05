@@ -4296,31 +4296,6 @@ class Compiler {
 		return locals;
 	}
 
-	// createLocals(templates) {
-
-	// 	if (templates == null) return null;
-
-	// 	const locals  = new Set();
-	// 	const defines = this.macros;
-
-	// 	for (let each of templates) {
-
-	// 		if (!(each instanceof Array)) {
-	// 			throw new Error(
-	// 				"locals template instances must be arrays of strings!"
-	// 			);
-	// 		}
-
-	// 		const string      = each.join("\n");
-	// 		const [name, tmp] = Template.parse(string, defines);
-	// 		const id          = `locals|${name}`;
-	// 		defines[id]       = tmp;
-	// 		locals.add(id);
-	// 	}
-
-	// 	return locals;
-	// }
-
 	deleteLocals(locals) {
 		if (locals && locals.size > 0) {
 			for (let each of locals) {

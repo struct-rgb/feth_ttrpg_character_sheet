@@ -9,14 +9,14 @@
 
 /* global 
    element, nameof, AbstractParser, AbstractCompilationError, valuesOf,
-   chain, map, conjoin
+   conjoin
  */
 
 if (typeof require !== "undefined") {
 	/* eslint-disable no-global-assign */
 	({
-		element, nameof, AbstractParser, valuesOf, chain, map,
-		AbstractCompilationError, conjoin
+		conjoin, element, nameof, valuesOf,
+		AbstractCompilationError, AbstractParser, Iter
 	} = require("../common.js"));
 	/* eslint-enable no-global-assign */
 }
@@ -713,8 +713,8 @@ class Type {
 		const {definitions, categories, mapping, flatten, name} = template;
 
 		const list   = conjoin("or", categories);
-		const mapped = map(chain(...valuesOf(definitions, categories)), mapping); 
-		const set    = new Set(flatten ? chain(...mapped) : mapped);
+		const mapped = Iter.map(Iter.chain(...valuesOf(definitions, categories)), mapping);
+		const set    = new Set(flatten ? Iter.chain(...mapped) : mapped);
 		const error  = (symbol => 
 			`${JSON.stringify(symbol.value)} is not a ${name} for any ${list}`
 		);

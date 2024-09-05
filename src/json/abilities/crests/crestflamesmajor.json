@@ -41,10 +41,12 @@
   ],
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
+    "FE3H",
     "crest",
     "major",
     "chance",
-    "in combat"
+    "in combat",
+    "changed"
   ],
-  "hidden": true
+  "hidden": false
 }

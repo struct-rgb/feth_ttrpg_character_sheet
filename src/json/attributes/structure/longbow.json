@@ -1,28 +1,30 @@
 {
-    "name": "Structure: Longbow",
-    "type": "Any",
-    "description": "Must be added when weapon is first obtained.\n\nWeapon’s minimum and maximum range increase by 1. While equipped, disables wielder's effects that decrease wielder's minimum range.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
-    "rank": 0,
-    "price": 0,
-
-    "mttype": "else",
-    "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-    },
-
-    "comment": "Items in modifers should be integers",
-    "tags": ["for bows", "structure"],
-    "hidden": false
+  "name": "Structure: Longbow",
+  "type": "Any",
+  "description": "Must be added when weapon is first obtained.\n\nWeapon’s minimum and maximum range increase by 1.\n\nDisabled on non-Bows and on weapons with another \"Structure\" attribute.",
+  "rank": 0,
+  "price": 0,
+  "mttype": "else",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 1,
+    "maxrng": 1,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Items in modifers should be integers",
+  "tags": [
+    "for bows",
+    "structure",
+    "changed"
+  ],
+  "hidden": false
 }

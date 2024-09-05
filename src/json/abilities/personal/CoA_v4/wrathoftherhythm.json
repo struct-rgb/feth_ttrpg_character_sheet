@@ -1,0 +1,53 @@
+{
+  "name": "Wrath of the Rhythm",
+  "description": "For every kill or assist, gain a stacking +1 damage to each attack for every 5 lvls, +1 max stacks (lv0=+1, lv5=+2, lv10=+3, lv15=+4 lv20=+5, lv25=+6, lv30=+7) on taking damage, all additional damage stacks are removed",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": "fill locals|stacks()",
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "locals": [
+    [
+      "template stacks()",
+      "  ask [Damage Stacks?]",
+      "     else 0",
+      "     case 1",
+      "     case 2",
+      "     case 3",
+      "     case 4",
+      "     case 5",
+      "     case 6",
+      "     case 7",
+      "  end",
+      "end"
+    ]
+  ],
+  "comment": "The Unknown's personal.",
+  "tags": [
+    "CoA",
+    "personal",
+    "new"
+  ],
+  "hidden": false
+}

@@ -28,12 +28,6 @@ if (typeof require !== "undefined") {
 
 const Variables = (function () {
 
-/**
- * 
- * @param  {Calculator.Env}    env  [description]
- * @param  {...string|number}  args [description]
- * @return {string|number}     sum of arguments
- */
 function sum(env, ...args) {
 	return (
 		env.runtime
@@ -48,13 +42,6 @@ function sum(env, ...args) {
 	);
 }
 
-/**
- * [label description]
- * @param  {[type]} env   [description]
- * @param  {[type]} text  [description]
- * @param  {[type]} value [description]
- * @return {[type]}       [description]
- */
 function label(env, text, value) {
 	if (!env.runtime && env.label && value != "0") {
 		if (typeof value == "string" && value.includes(" ")) {
@@ -121,8 +108,6 @@ function createContext(compiler, host, definitions) {
 	};
 
 	this._js_vmap = new Map();
-
-
 
 	const multisum = (getter, filter) => {
 
@@ -651,7 +636,7 @@ function createContext(compiler, host, definitions) {
 
 	let item_tags = new Set();
 
-	for (let item of chain(definitions.items, definitions.attributes)) {
+	for (let item of Iter.chain(definitions.items, definitions.attributes)) {
 		for (let tag of item.tags) {
 			
 			const name       = tag;
@@ -685,9 +670,7 @@ function createContext(compiler, host, definitions) {
 
 					let count = 0;
 
-					for (let each of this.wb.category.values()) {
-						// Ignore what isn't in the inventory.
-						if (!each.inventory) continue;
+					for (let each of this.wb.category.values("inventory")) {
 
 						// Check the item's custom tags.
 						if (each.tags.includes(tag)) {

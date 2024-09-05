@@ -1,0 +1,37 @@
+{
+  "name": "Beguiling Touch",
+  "description": "Grants Res +2 in combat when this unit initiates combat. When this unit targets an ally with an art or item or hits a foe with an attack, this unit may apply @{condition}{Seclude}{[Seclude]} to that unit. This unit may end up to four instances of @{condition}{Seclude}{[Seclude]} of its choice before this application, if it was applied through an attack.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": "fill blow(2)",
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Edine Bonfleur's personal.",
+  "tags": [
+    "FbF",
+    "personal",
+    "new"
+  ],
+  "hidden": false
+}

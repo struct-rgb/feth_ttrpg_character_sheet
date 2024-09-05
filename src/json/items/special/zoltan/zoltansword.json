@@ -22,6 +22,9 @@
     "sp": 0
   },
   "comment": "Items in modifers should be integers",
-  "tags": [],
-  "hidden": true
+  "tags": [
+    "FE3H",
+    "changed"
+  ],
+  "hidden": false
 }

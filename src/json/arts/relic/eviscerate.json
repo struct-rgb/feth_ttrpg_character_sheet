@@ -2,7 +2,7 @@
   "name": "Eviscerate",
   "description": "@{item}{Vajra-Mushti} only; calculates damage against the lower of foe’s Prot or Resl. Effective against Dragon units.",
   "requires": "All (Item Vajra-Mushti) (Crest Chevalier) (Brawl E)",
-    "compatible": "Name Vajra-Mushti",
+  "compatible": "Name Vajra-Mushti",
   "mttype": "else",
   "modifiers": {
     "mt": 10,
@@ -19,9 +19,11 @@
   },
   "comment": "",
   "tags": [
+    "FE3H",
     "effective",
     "dragon effective",
-    "relic"
+    "relic",
+    "changed"
   ],
   "hidden": false,
   "type": "Brawl",

@@ -1,0 +1,37 @@
+{
+  "name": "Dynamic Duo",
+  "description": "At the beginning of Briar's phase:\n - Apply [Auto +X] to Silver for one phase, where X is the number units Briar applied a condition to last turn.\n- Apply [Canto Y] to Briar for one phase, where Y is the number of units Silver applied a condition to last turn.\n",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 0,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "Briar Rose's personal.",
+  "tags": [
+    "FbF",
+    "personal",
+    "new"
+  ],
+  "hidden": false
+}

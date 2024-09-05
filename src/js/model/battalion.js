@@ -242,8 +242,22 @@ class Battalions {
 				const feature = Gambit.get(key);
 				this.refresher.refresh(feature.affects);
 			}),
-			select      : Gambit.select(),
-			refresher   : sheet.refresher,
+			// onadd       : ((category, key) => {
+
+			// 	const feature = category.get(key);
+
+			// 	if (feature.tagged("structure"))
+			// 		return category.setGroupFor(key, "structure");
+
+			// 	if (feature.tagged("measured"))
+			// 		return category.setGroupFor(key, "measured");
+
+			// 	category.setGroupFor(key, "Other");
+			// }),
+			select         : Gambit.select(),
+			refresher      : sheet.refresher,
+			defaultGroup   : "gambit",
+			groupShowTitle : capitalize,
 		});
 
 		this._rank  = new AttributeCell({

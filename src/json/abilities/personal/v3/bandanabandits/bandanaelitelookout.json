@@ -1,0 +1,37 @@
+{
+  "name": "Bandana Elite: Lookout",
+  "description": "HP +5; this units from this unit's army may choose to ignore damage, movement reduction, and condition application from tile and terrain effects. If this unit would be defeated, instead apply [Poison] to all foes within two spaces and remove this unit from the battlefield.",
+  "requires": "Innate",
+  "modifiers": {
+    "hp": 5,
+    "sp": 0,
+    "str": 0,
+    "mag": 0,
+    "dex": 0,
+    "spd": 0,
+    "def": 0,
+    "res": 0,
+    "lck": 0,
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "mov": 0,
+    "capcost": 0
+  },
+  "comment": "The Kid's personal",
+  "tags": [
+    "FE3H",
+    "personal",
+    "changed"
+  ],
+  "hidden": false
+}

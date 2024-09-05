@@ -102,10 +102,11 @@ class Tag {
 
 	/**
 	 * Creates a tag object from tage fields
-	 * @param  {string}         namespace [description]
-	 * @param  {Array.<string>} names     [description]
-	 * @param  {string}         display   [description]
-	 * @param  {Boolean}        silent    [description]
+	 * @param  {Symbol}         namespace namespace the names belong to
+	 * @param  {Array.<Symbol>} names     names of features linked to
+	 * @param  {Symbol?}        display   text to display in tag's location; if 
+	 * null then displayed text is contructed from names
+	 * @param  {Boolean}        silent    if reminders should not be expanded
 	 */
 	constructor(namespace, names, display, silent=false) {
 		this.namespace = namespace;
@@ -137,12 +138,14 @@ class Tag {
 	}
 
 	/**
-	 * Method intended to create a Tag from strings
-	 * @param  {[type]}  namespace [description]
-	 * @param  {[type]}  names     [description]
-	 * @param  {[type]}  display   [description]
-	 * @param  {Boolean} silent    [description]
-	 * @return {[type]}            [description]
+	 * Creates a tag object from tage fields, but accepts string arguments
+	 * in places where {@link Symbol} arguments would normally be expected
+	 * @param  {string}         namespace namespace the names belong to
+	 * @param  {Array.<string>} names     names of features linked to
+	 * @param  {string?}        display   text to display in tag's location; if 
+	 * null then displayed text is contructed from names
+	 * @param  {Boolean}        silent    if reminders should not be expanded
+	 * @return {Tag}                      Tag object created from data
 	 */
 	static create(namespace, names, display, silent=false) {
 
@@ -153,7 +156,7 @@ class Tag {
 		return new Tag(
 			new Symbol(namespace, 0),
 			names.map((n, i) => new Symbol(n, i)),
-			new Symbol(display, 0),
+			display == null ? null : new Symbol(display, 0),
 			silent
 		);
 	}
@@ -711,11 +714,13 @@ const ValidateParser = createParser(ValidateTag, (merge) => {
 /////////////////////////////////////
 
 /**
- * [description]
- * @param  {[type]} parser    [description]
- * @param  {[type]} reminder  [description]
- * @param  {[type]} delimiter [description]
- * @return {[type]}           [description]
+ * Wraps a parser function to append reminder text explaining markup tags for
+ * features encountered within the text body.
+ * @param  {function} parser    parser (created qith {@link createParser})
+ * @param  {function} reminder  takes the named and body an returns a formatted
+ *                              string that represents the reminder text
+ * @param  {string}   delimiter used to delimit reminders
+ * @return {string}             parser output with appended reminders
  */
 const createReminderWrapper = (parser, reminder, delimiter) => {
 	return (lookup, feature, options={}) => {
@@ -749,19 +754,18 @@ const createReminderWrapper = (parser, reminder, delimiter) => {
 };
 
 /**
- * [description]
- * @param  {[type]}  feature [description]
- * @param  {[type]}  set     [description]
- * @param  {Boolean} join    [description]
- * @param  {Boolean} named   [description]
- * @return {[type]}          [description]
+ * Parser that generates HTML text formatted output with feature reminders
+ * @param  {}       lookup  [description]
+ * @param  {[type]} feature [description]
+ * @param  {}       options [description]
+ * @return {[type]}         [description]
  */
 const HtmlParserWrapper = createReminderWrapper(
 	HtmlParser, (name, body) => `<i>(${name})</i>${body}`, "<br />"
 );
 
 /**
- * [description]
+ * Parser that generates plain text formatted output with feature reminders
  * @param  {[type]}  feature [description]
  * @param  {[type]}  set     [description]
  * @param  {Boolean} join    [description]
@@ -773,19 +777,33 @@ const TextParserWrapper = createReminderWrapper(
 );
 
 /**
+ * Optional parameters for @{link createLink}
+ * @typedef {Object} CreateLinkOptions
+ * @property {Boolean} dead    If tooltips should not be expanded
+ * @property {string?} display Text to display tag with 
+ * @property {Boolean} year    If reminders should not be expanded
+ */
+
+/**
  * Helper function to manually create a link from stuctured data without the
  * need to expose internal types like {@link Tag} and {@link Symbol}.
- * @param  {LinkTemplate} template keyword arguments
- * @return {HTMLElement}           feature link created from arguments
+ * @param  {Map.<string, Feature} namespaces collection of all possible
+ * namespaces to look up features within
+ * @param  {string}               namespace  namespace to look up feature
+ * body within based on names
+ * @param  {Array.<string>}       names      feature names to display inside
+ * generated tooltip
+ * @param  {CreateLinkOptions}    template   optional parameters
+ * @return {HTMLElement}          feature link created from arguments
  */
 function createLink(namespaces, namespace, names, template) {
 
 	const dead      = template.dead      ?? true;
-	const display   = template.display   ?? "";
+	const display   = template.display   ?? null;
 	const silent    = template.silent    ?? true;
 	const tag       = Tag.create(namespace, names, display, silent);
 
-	return (dead ? DOMLinkTag : DOMDeadTag)(namespaces, tag);
+	return (dead ? DOMDeadTag : DOMLinkTag)(namespaces, tag);
 }
 
 return {
