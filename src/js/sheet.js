@@ -7,7 +7,7 @@
 
 /* global
 	Grade, Iter, SwapText, Theme, Toggle, Version,
-	capitalize, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
+	capitalize, conjoin, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
 */
 
 /* global Polish */
@@ -53,6 +53,8 @@
  */
  
 /* global definitions */
+
+/* global Buildables */
 
 
 const V3 = true;

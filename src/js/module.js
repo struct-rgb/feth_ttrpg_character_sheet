@@ -1,4 +1,5 @@
 /**
+ * This file is the template for a module.
  * @module [module name]
  */
 

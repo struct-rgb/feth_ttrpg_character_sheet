@@ -1,16 +1,23 @@
 
-/* global chain */
-/* global wrap */
-/* global tooltip */
-/* global element */
-/* global Toggle */
-/* global BigButton */
+/* global
+	BigButton, Iter, Toggle,
+	element, tooltip, uniqueID, wrap
+*/
 
-/* global uniqueID */
+/* global Compatible */
 
 /* global Calculator */
 
 /* global Polish */
+
+/* TODO this directive is to condense the many
+ * violations that not having this here makes below
+ * I probably don't want to use defintions globally,
+ * but until I decide to change this, this todo will
+ * remain here to remind me of the various uses below.
+ */
+
+/* global definitions */
 
 /**
  * A module that implements a builder for Roll20 Macros

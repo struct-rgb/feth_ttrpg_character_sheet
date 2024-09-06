@@ -11,6 +11,11 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.3.1
+  * Fixed a bug when importing old sheets with removed classes
+  * Removed some unused code for the old random levelup system
+  * Internal documentation fixes
+
 ### Version 4.3.0
 
 #### General

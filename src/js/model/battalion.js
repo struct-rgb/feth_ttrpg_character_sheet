@@ -12,7 +12,6 @@
  */
 
 /* global Requirements */
-/* global Markup */
 /* global Tagger */
 
 /* TODO this directive is to condense the many

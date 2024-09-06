@@ -2,6 +2,9 @@
 /* global Version */
 /* global Class */
 /* global Characters */
+/* global
+	Ability, Art
+*/
 
 const Legacy = (function() {
 
@@ -159,6 +162,11 @@ function character_from_4_2_0(old) {
 	for (let key in items)
 		items[key] = item_from_4_2_0(items[key]);
 
+	const lvls  = old.statistics.levelups;
+
+	if (!(lvls.levels.length > 0 || lvls.bases.any(n => n)))
+		delete old.statistics.levelups;
+
 	old.version = "4.2.0";
 
 	return old;
@@ -241,6 +249,16 @@ function character_from_3_7_0(old) {
 	return old;
 }
 
+const CLASSES_FROM_3_5_0 = new Map([
+	[ "Apothacary"         , "Apothecary"   ],
+	[ "Swordmaster"        , "Swordsmaster" ],
+	[ "War Cleric/Priest"  , "War Priest"   ],
+	[ "Summoner/Invoker"   , "Summoner"     ],
+	[ "Gremory/Guru"       , "Gremory"      ],
+	[ "Crow Knight"        , "Raven Knight" ],
+	[ "Knight Captain"     , "General"      ],
+]);
+
 function character_from_3_5_0(old) {
 
 	rename(old.abilities, new Map([
@@ -251,15 +269,14 @@ function character_from_3_5_0(old) {
 		["Lead by Example", "Lead by Example 1"]
 	]));
 
-	old.class = rename(old.class, new Map([
-		[ "Apothacary"         , "Apothecary"   ],
-		[ "Swordmaster"        , "Swordsmaster" ],
-		[ "War Cleric/Priest"  , "War Priest"   ],
-		[ "Summoner/Invoker"   , "Summoner"     ],
-		[ "Gremory/Guru"       , "Gremory"      ],
-		[ "Crow Knight"        , "Raven Knight" ],
-		[ "Knight Captain"     , "General"      ],
-	]));
+	old.class = rename(old.class, CLASSES_FROM_3_5_0);
+	
+	const forecast = old.statistics.pointbuy.forecast;
+
+	forecast.class = rename(forecast.class, CLASSES_FROM_3_5_0);
+
+	for (let level of forecast.levels)
+		level[0] = rename(level[0], CLASSES_FROM_3_5_0);
 
 	old.version = "3.6.0";
 
@@ -329,6 +346,11 @@ function character_from_3_2_0(old) {
 	return old;
 }
 
+const OLD_CLASSES = new Set([
+	"Apothacary", "Swordmaster", "War Cleric/Priest", "Summoner/Invoker",
+	"Gremory/Guru", "Crow Knight", "Knight Captain", "Witch Hunter"
+]);
+
 function character_from_2_3_2(old) {
 
 	let o = old.statistics;
@@ -354,7 +376,7 @@ function character_from_2_3_2(old) {
 		const roll = level.rolls[level.index];
 		console.log(roll);
 
-		if (!Class.has(roll[0])) {
+		if (!(Class.has(roll[0]) || OLD_CLASSES.has(roll[0]))) {
 			continue;
 		}
 
@@ -371,6 +393,9 @@ function character_from_2_3_2(old) {
 		}
 	}
 	levels.push(group);
+
+	// account for fact old format did not take level 1 into account
+	if (levels[0]) levels[0][1] += 1;
 
 	o.pointbuy = {
 		"name"  : "",

@@ -3,8 +3,8 @@
  */
 
 /* global
-	Grade,
-	capitalize, chain, element,  uniqueID, wrap
+	Grade, Iter,
+	capitalize, element,  uniqueID, wrap
  */
 
 /* global 

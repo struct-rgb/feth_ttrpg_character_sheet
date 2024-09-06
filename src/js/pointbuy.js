@@ -1,10 +1,17 @@
 
-/* global element */
-/* global AttributeCell */
-/* global Class */
-/* global assume */
-/* global uniqueID */
-/* global tooltip */
+/* global
+	AttributeCell, Class,
+	assume, element, uniqueID, tooltip
+*/
+
+/* TODO this directive is to condense the many
+ * violations that not having this here makes below
+ * I probably don't want to use defintions globally,
+ * but until I decide to change this, this todo will
+ * remain here to remind me of the various uses below.
+ */
+ 
+/* global definitions */
 
 /**
  * Options for initializing a new AttributePair
@@ -252,13 +259,11 @@ const costfunctions = {
 		STR : (s) => {
 			const str = scale(s, "STR", 4);
 			const mag = scale(s, "MAG", 4);
-			const spd = scale(s, "SPD", 4);
 			return natural(str + Math.max(str - mag, 0)/4);
 		},
 		MAG : (s) => {
 			const str = scale(s, "STR", 4);
 			const mag = scale(s, "MAG", 4);
-			const spd = scale(s, "SPD", 4);
 			return natural(mag + Math.max(mag - str, 0)/4);
 		},
 		DEX : (s) => natural((scale(s, "DEX",  4) / 2) + scale(s, "LCK", 4)/4),

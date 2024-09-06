@@ -549,7 +549,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("4.3.0");
+	static CURRENT = new Version("4.3.1");
 
 	constructor(string) {
 		if (string == null) {
@@ -1983,3 +1983,4 @@ if (typeof module !== "undefined") {
 /* exported tag */
 /* exported kwargsChecker */
 /* exported AbstractCompilationError */
+/* exported choices */

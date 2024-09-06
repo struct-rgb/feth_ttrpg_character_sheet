@@ -4,13 +4,12 @@
  */
 
 /* global 
-	ConfigEnum, Filter
+	ConfigEnum, Filter, Iter, Version
 	assume, capitalize, delimit, element, tooltip, wrap
 */
 
 /* global Calculator */
 /* global Polish */
-/* global Markup */
 
 /* global Macros */
 
@@ -38,7 +37,6 @@ if (typeof require !== "undefined") {
 	}            = require("./common.js"));
 	(Calculator  = require("./lang/calculator.js"));
 	(Polish      = require("./lang/polish.js"));
-	(Markup      = require("./lang/markup.js"));
 	({
 		ModWidget, RangeFinder
 	}            = require("./widget/dynamic.js"));

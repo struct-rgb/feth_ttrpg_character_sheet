@@ -1146,7 +1146,7 @@ const Tokens = (function() {
 			},
 
 			macrogen: function(recurse, node, env) {
-				const [opcode, argA, argB] = node; // TODO make this use parens right
+				const [_opcode, argA, argB] = node; // TODO make this use parens right
 
 				if (!env.label) {
 					return recurse(argB);

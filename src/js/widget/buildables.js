@@ -8,8 +8,8 @@
 */
 
 /* global
-	BigButton, Version,
-	element, ellipse, tooltip, uniqueID
+	BigButton, Iter, SwapText, Toggle, Version,
+	element, ellipse, tooltip, uniqueID, wrap
  */
 
 /**

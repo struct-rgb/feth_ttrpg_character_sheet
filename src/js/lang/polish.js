@@ -7,9 +7,9 @@
 
 /* global require */
 
-/* global 
-   element, nameof, AbstractParser, AbstractCompilationError, valuesOf,
-   conjoin
+/* global
+	AbstractParser, AbstractCompilationError, Iter
+	conjoin, element, nameof, valuesOf,
  */
 
 if (typeof require !== "undefined") {

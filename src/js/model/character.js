@@ -1,12 +1,14 @@
 
 /* global
    Toggle, Version
-   choice, element, ellipse, delimit, tooltip, uniqueLabel,
+   element, ellipse, delimit, tooltip, uniqueLabel,
  */
 
 /* global
    Ability, Art, Class, Equipment, Preset
  */
+
+/* global Presetter */
 
 class Characters {
 

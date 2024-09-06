@@ -8,8 +8,6 @@
 	element, delimit, tag, wrap
 */
 
-/* global Markup */
-
 /* global ReqWidget */
 
 if (typeof require !== "undefined") {

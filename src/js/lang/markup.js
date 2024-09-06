@@ -12,6 +12,10 @@
 	conjoin, delimit, element, inBrowser, tooltip
  */
 
+/* global
+	Feature
+*/
+
 if (typeof require !== "undefined") {
 	/* eslint-disable no-global-assign */
 	({

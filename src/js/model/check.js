@@ -5,6 +5,15 @@
 
 /* global AttributeCell, element */
 
+/* TODO this directive is to condense the many
+ * violations that not having this here makes below
+ * I probably don't want to use defintions globally,
+ * but until I decide to change this, this todo will
+ * remain here to remind me of the various uses below.
+ */
+ 
+/* global definitions */
+
 const Checks = (function() {
 
 const LEVELS = [0, 10, 20, 25, 30];
