@@ -365,5 +365,6 @@ FodyWeavers.xsd
 # my test files for manual debugging
 test
 .build_error.txt
-.package-lock.json
 
+.package-lock.json
+package-lock.json
