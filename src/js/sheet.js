@@ -952,6 +952,7 @@ class Sheet {
 					}),
 				};
 			})(),
+			updateBatch : Legacy.batchOfCharacters,
 		});
 
 		/* don't want users adding any new sheets here */
