@@ -1,7 +1,7 @@
 {
   "name": "Tempest Lance",
   "description": "No special effect.",
-  "compatible": "Skill Lances",
+  "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
   "requires": "Lances D",
   "mttype": "else",
   "modifiers": {

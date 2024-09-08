@@ -2,7 +2,7 @@
   "name": "Wolf Fang Fist",
   "description": "@{const}{ap}{AP 3} (two consecutive attacks); weapon advantage against Cavalry units.",
   "requires": "Any (Brawl C) (Brawl B)",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 2,

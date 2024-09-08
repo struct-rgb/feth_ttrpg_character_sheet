@@ -2,7 +2,7 @@
   "name": "Swift Strikes",
   "description": "Triggers 2 consecutive hits.",
   "requires": "Lances A",
-  "compatible": "Skill Lances",
+  "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 2,

@@ -18904,7 +18904,7 @@ const definitions = {
       "name": "Flickering Flower",
       "description": "Emperor only; applies @{condition}{Halt}{[Halt]} to target foe for one turn.",
       "requires": "Unknown",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 10,
@@ -18958,7 +18958,7 @@ const definitions = {
       "name": "Spike",
       "description": "No special effect.",
       "requires": "Axes D",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 5,
@@ -19013,7 +19013,7 @@ const definitions = {
     {
       "name": "Conduit of Faith",
       "description": "Deals magic-based damage. Expends a usage of a Light Magic spell and adds its might to the attack and 1/3 of its might to the cost.",
-      "requires": "Axes C",
+      "requires": "Any (Axes C) (Axes B)",
       "compatible": "None",
       "mttype": "mag",
       "modifiers": {
@@ -19127,7 +19127,7 @@ const definitions = {
       "name": "Armored Strike",
       "description": "Mt +30% of user's Def.",
       "requires": "Axes A",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "fill scale(3, [Def], unit|total|def)",
@@ -19154,7 +19154,7 @@ const definitions = {
       "name": "Diamond Axe",
       "description": "No special effect.",
       "requires": "Axes A",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 14,
@@ -19179,7 +19179,7 @@ const definitions = {
       "name": "Exhaustive Strike",
       "description": "Expends all remaining SP; might increases by half of expended SP.",
       "requires": "Axes A",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": [
@@ -19244,7 +19244,7 @@ const definitions = {
       "name": "Focused Strike",
       "description": "No special effect.",
       "requires": "Any (Axes C) (Axes B)",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -19269,7 +19269,7 @@ const definitions = {
       "name": "Helm Splitter",
       "description": "Effective against Armor units.",
       "requires": "Any (Axes C) (Axes B)",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 7,
@@ -19297,7 +19297,7 @@ const definitions = {
       "name": "Lightning Axe",
       "description": "Deals magic-based damage. Mt +30% of user's Res.",
       "requires": "Any (Axes C) (Axes B)",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "mag",
       "modifiers": {
         "mt": "fill scale(4, [Res], unit|total|res)",
@@ -19324,7 +19324,7 @@ const definitions = {
       "name": "Monster Breaker",
       "description": "Effective against Monster units.",
       "requires": "Any (Axes C) (Axes B)",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 9,
@@ -19352,7 +19352,7 @@ const definitions = {
       "name": "Shield Axe",
       "description": "Restores HP equal to half of damage dealt; extra HP is applied as @{condition}{Overheal}{[Overheal]} for one turn.",
       "requires": "Any (Axes C) (Axes B)",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 1,
@@ -19379,7 +19379,7 @@ const definitions = {
       "name": "Wild Abandon",
       "description": "No special effect.",
       "requires": "Any(Axes C) (Axes B)",
-      "compatible": "Skill Axes",
+      "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 10,
@@ -19554,7 +19554,7 @@ const definitions = {
       "name": "Hit and Run",
       "description": "After combat, user moves 1 space away from target foe in the same row/column as target foe.",
       "requires": "Lances D",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -19580,7 +19580,7 @@ const definitions = {
     {
       "name": "Tempest Lance",
       "description": "No special effect.",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "requires": "Lances D",
       "mttype": "else",
       "modifiers": {
@@ -19695,7 +19695,7 @@ const definitions = {
       "name": "Glowing Ember",
       "description": "Mt +30% of user's Def.",
       "requires": "Lances A",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "fill scale(2, [Def], unit|total|def)",
@@ -19722,7 +19722,7 @@ const definitions = {
       "name": "Lance Jab",
       "description": "Mt +30% of user's Spd.",
       "requires": "Lances A",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "fill scale(3, [Spd], unit|total|spd)",
@@ -19749,7 +19749,7 @@ const definitions = {
       "name": "Swift Strikes",
       "description": "Triggers 2 consecutive hits.",
       "requires": "Lances A",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 2,
@@ -19844,9 +19844,10 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "movement"
+        "movement",
+        "FE3H"
       ],
-      "hidden": false,
+      "hidden": true,
       "type": "Lances",
       "rank": "C-B"
     },
@@ -19854,7 +19855,7 @@ const definitions = {
       "name": "Frozen Lance",
       "description": "Deals magic-based damage. Mt +30% of user's Dex.",
       "requires": "All (Lances C) (Lances B)",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "mag",
       "modifiers": {
         "mt": "fill scale(3, [Dex], unit|total|dex)",
@@ -19881,7 +19882,7 @@ const definitions = {
       "name": "Hook",
       "description": "On hit, moves target foe one space closer to user.",
       "requires": "Any (Lances C) (Lances B)",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 1,
@@ -19908,7 +19909,7 @@ const definitions = {
       "name": "Knight Kneeler",
       "description": "Effective against Cavalry units.",
       "requires": "Any (Lances C) (Lances B)",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 5,
@@ -19936,7 +19937,7 @@ const definitions = {
       "name": "Monster Piercer",
       "description": "Effective against Monster units.",
       "requires": "Any (Lances C) (Lances B)",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 7,
@@ -19964,7 +19965,7 @@ const definitions = {
       "name": "Redirection",
       "description": "On hit, apply @{condition}{Redirect}{[Redirect]} to this unit for one turn.",
       "requires": "Any (Lances C) (Lances B)",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 1,
@@ -19992,7 +19993,7 @@ const definitions = {
       "name": "Shatter Slash",
       "description": "After combat, apply @{const}{gbp}{[Def -5]} to target foe for 1 turn.",
       "requires": "Any (Lances C) (Lances B)",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -20019,7 +20020,7 @@ const definitions = {
       "name": "Vengeance",
       "description": "Might increases by 1 per 2 of user's missing HP.",
       "requires": "Any (Lances C) (Lances B)",
-      "compatible": "Skill Lances",
+      "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": [
@@ -20204,7 +20205,7 @@ const definitions = {
       "name": "Crescent Slash",
       "description": "When one or more effects trigger on hit, after combat, choose one to apply to foes adjacent to target foe.",
       "requires": "Swords D",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 6,
@@ -20229,7 +20230,7 @@ const definitions = {
       "name": "Sunder",
       "description": "No special effect.",
       "requires": "Swords D",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -20254,7 +20255,7 @@ const definitions = {
       "name": "Wrath Strike",
       "description": "No special effect.",
       "requires": "Swords D",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 5,
@@ -20313,7 +20314,7 @@ const definitions = {
       "name": "Haze Slice",
       "description": "No special effect.",
       "requires": "Any (Swords C) (Swords B)",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 2,
@@ -20338,7 +20339,7 @@ const definitions = {
       "name": "Finesse Blade",
       "description": "Mt +30% of user's Dex.",
       "requires": "Swords A",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "fill scale(2, [Dex], unit|total|dex)",
@@ -20365,7 +20366,7 @@ const definitions = {
       "name": "Hexblade",
       "description": "Deals magic-based damage.",
       "requires": "Swords A",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "mag",
       "modifiers": {
         "mt": 7,
@@ -20390,7 +20391,7 @@ const definitions = {
       "name": "Windsweep",
       "description": "Prevent enemy counter-attack.",
       "requires": "Swords A",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 3,
@@ -20440,7 +20441,7 @@ const definitions = {
       "name": "Bane of Monsters",
       "description": "Effective against Monster units.",
       "requires": "Any (Swords C) (Swords B)",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 6,
@@ -20468,7 +20469,7 @@ const definitions = {
       "name": "Excise",
       "description": "Consumes a combat art slot, but may be used as a combat art or tactical art:\n • Combat: Grants Mt +4 for each condition affecting target foe.\n • Tactical: End one or more conditions applied to target ally.",
       "requires": "Any (Swords C) (Swords B)",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "2 + ask [Number of Conditions?] else 0 end * 4",
@@ -20526,7 +20527,7 @@ const definitions = {
       "name": "Grounder",
       "description": "Effective against Flying units.",
       "requires": "Any (Swords C) (Swords B)",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 3,
@@ -20554,7 +20555,7 @@ const definitions = {
       "name": "Lightspeed",
       "description": "Combat occurs at Range 1.",
       "requires": "Any (Swords C) (Swords B)",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -20617,7 +20618,7 @@ const definitions = {
       "name": "Soulblade",
       "description": "Deals magic-based damage. Mt +30% of user’s Res.",
       "requires": "Any (Swords C) (Swords B)",
-      "compatible": "Skill Swords",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "mag",
       "modifiers": {
         "mt": "fill scale(5, [Res], unit|total|res)",
@@ -20643,8 +20644,8 @@ const definitions = {
     {
       "name": "Subdue",
       "description": "Leaves foe with at least 1 HP.",
-      "requires": "Any (Swords C) (Swords B) (Class Lord)",
-      "compatible": "Skill Swords",
+      "requires": "Any (Swords C) (Swords B)",
+      "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 0,
@@ -20860,7 +20861,7 @@ const definitions = {
       "name": "Curved Shot",
       "description": "No special effect.",
       "requires": "Bows D",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 1,
@@ -20887,8 +20888,8 @@ const definitions = {
       "requires": "Bows D",
       "compatible": [
         "Host false",
-        "  (Art  (Skill Bows))",
-        "  (Item (Skill Bows))"
+        "  (Art  (All (Skill Bows) (Not (Tag `no hit`))))",
+        "  (Item (All (Skill Bows) (Not (Tag `no hit`))))"
       ],
       "mttype": "else",
       "modifiers": {
@@ -20916,7 +20917,7 @@ const definitions = {
       "name": "Twinned Shot",
       "description": "Once per phase, after combat, if this unit outspeeds targeted foe, it may initiate combat against another foe using this combat art. @{style}{italic}{(If you do, then pay the SP cost again.)}",
       "requires": "Bows D",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 2,
@@ -20975,7 +20976,7 @@ const definitions = {
       "name": "Wind God",
       "description": "Barbarossa only.",
       "requires": "Unknown",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 5,
@@ -21003,7 +21004,7 @@ const definitions = {
       "name": "Encloser",
       "description": "On hit, after combat, applies @{condition}{Halt}{[Halt]} to target foe for 1 turn.",
       "requires": "Bows A",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -21030,7 +21031,7 @@ const definitions = {
       "name": "Point-Blank Volley",
       "description": "Triggers 2 consecutive hits.",
       "requires": "Bows A",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 2,
@@ -21055,7 +21056,7 @@ const definitions = {
       "name": "Ward Arrow",
       "description": "Apply @{condition}{Silence}{[Silence]} to target foe for one turn.",
       "requires": "Bows A",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -21176,7 +21177,7 @@ const definitions = {
       "name": "Deadeye",
       "description": "No special effect.",
       "requires": "Any (Bows C) (Bows B)",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 6,
@@ -21201,7 +21202,7 @@ const definitions = {
       "name": "Heavy Draw",
       "description": "No special effect.",
       "requires": "Any (Bows C) (Bows B)",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 8,
@@ -21226,7 +21227,7 @@ const definitions = {
       "name": "Monster Blaster",
       "description": "Effective against Monster units.",
       "requires": "Any (Bows C) (Bows B)",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 5,
@@ -21254,7 +21255,7 @@ const definitions = {
       "name": "Schism Shot",
       "description": "After combat, apply @{const}{gbp}{[Res -5]} to target foe for 1 turn.",
       "requires": "Any (Bows C) (Bows B)",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -21281,7 +21282,7 @@ const definitions = {
       "name": "Waning Shot",
       "description": "After combat, apply @{const}{gbp}{[Str -5]} to target foe for 1 turn.",
       "requires": "Any (Bows C) (Bows B)",
-      "compatible": "Skill Bows",
+      "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 4,
@@ -21396,7 +21397,7 @@ const definitions = {
       "name": "Rushing Blow",
       "description": "Avo +10; after combat, unit moves to opposite side of target foe (if able). @{const}{variant}{Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
       "requires": "Brawl D",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 7,
@@ -21425,7 +21426,7 @@ const definitions = {
       "name": "Fading Blow",
       "description": "Avo +30; after combat unit moves one space back. @{const}{variant}{Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
       "requires": "Brawl D",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 6,
@@ -21452,7 +21453,7 @@ const definitions = {
       "name": "Dive Kick",
       "description": "If able, unit moves one space toward target foe before combat and combat occurs at Range 1, and if not, combat occurs at Range 2 and this attack misses. @{const}{variant}{Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
       "requires": "Brawl D",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 9,
@@ -21544,7 +21545,7 @@ const definitions = {
       "name": "Bombard",
       "description": "@{const}{ap}{AP = 2d3 - 1}.",
       "requires": "Brawl A",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 3,
@@ -21576,7 +21577,7 @@ const definitions = {
       "name": "Draining Blow",
       "description": "Restores HP equal to 50% of damage dealt. @{const}{variant}{Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
       "requires": "Brawl A",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 5,
@@ -21605,7 +21606,7 @@ const definitions = {
       "name": "Mighty Blow",
       "description": "Mt +30% of user's Str. @{const}{variant}{Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
       "requires": "Brawl A",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "fill scale(3, [Str], unit|total|str)",
@@ -21633,7 +21634,7 @@ const definitions = {
       "name": "Mystic Blow",
       "description": "Mt +30% of user's Mag. @{const}{variant}{Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
       "requires": "Brawl A",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "fill scale(3, [Mag], unit|total|mag)",
@@ -21661,7 +21662,7 @@ const definitions = {
       "name": "Cavitation Wave",
       "description": "No special effect. @{const}{variant}{Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
       "requires": "Brawl A",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 6,
@@ -21689,7 +21690,7 @@ const definitions = {
       "name": "Big Dipper Strike",
       "description": "Effective against Infantry units.",
       "requires": "Any (Brawl C) (Brawl B)",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 7,
@@ -21718,7 +21719,7 @@ const definitions = {
       "name": "Pinpoint Strike",
       "description": "Can target allies in addition to foes. When targeting an ally, restore Damage - (ally’s Prot/Resl) HP instead of attacking.",
       "requires": "Any (Brawl C) (Brawl B)",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 8,
@@ -21743,7 +21744,7 @@ const definitions = {
       "name": "Shock Wave",
       "description": "On hit, after combat, apply @{condition}{Halt}{[Halt]} to target foe until the end of target foe’s next combat this turn.",
       "requires": "Any (Brawl C) (Brawl B)",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 1,
@@ -21768,7 +21769,7 @@ const definitions = {
       "name": "Wolf Fang Fist",
       "description": "@{const}{ap}{AP 3} (two consecutive attacks); weapon advantage against Cavalry units.",
       "requires": "Any (Brawl C) (Brawl B)",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 2,
@@ -21868,7 +21869,7 @@ const definitions = {
       "name": "Monster Crusher",
       "description": "Effective against Monster units. @{const}{variant}{Beast Element Variant:} Restores HP equal to 50% of damage dealt.",
       "requires": "Any (Brawl C) (Brawl B)",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 13,
@@ -21898,7 +21899,7 @@ const definitions = {
       "name": "One-Two Punch",
       "description": "@{const}{ap}{AP 2} (guaranteed follow-up); if first attack hits, then Mt +4 in combat to second attack. @{const}{variant}{Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
       "requires": "Any (Brawl C) (Brawl B)",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": "4 + fill affirm([First Attack Hit?], 0, 4)",
@@ -21926,7 +21927,7 @@ const definitions = {
       "name": "Nimble Combo",
       "description": "@{const}{ap}{AP 3} (two consecutive attacks); Avo +20. @{const}{variant}{Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
       "requires": "Any (Brawl C) (Brawl B)",
-      "compatible": "Skill Brawl",
+      "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
         "mt": 2,
@@ -32963,7 +32964,6 @@ const definitions = {
       "default_preset": "Balance/Balance/Luck",
       "default_mainarm": "Water",
       "default_sidearm": "Faith",
-      "default_arts": [],
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [
         "changed"

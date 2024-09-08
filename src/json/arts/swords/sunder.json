@@ -2,7 +2,7 @@
   "name": "Sunder",
   "description": "No special effect.",
   "requires": "Swords D",
-  "compatible": "Skill Swords",
+  "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 4,

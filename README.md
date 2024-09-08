@@ -11,6 +11,12 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.3.2
+  * Added a header to the skills section on the left side if the sheet
+  * Decreased time it takes the builder to switch between characters
+  * Bugfix: builder generated nonsensical combat/tactical weapon art combos
+  * Bugfix: memory leak issue with requirement pass/fail indicators
+
 ### Version 4.3.1
   * Fixed a bug when importing old sheets with removed classes
   * Removed some unused code for the old random levelup system

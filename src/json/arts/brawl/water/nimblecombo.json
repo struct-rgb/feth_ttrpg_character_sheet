@@ -2,7 +2,7 @@
   "name": "Nimble Combo",
   "description": "@{const}{ap}{AP 3} (two consecutive attacks); Avo +20. @{const}{variant}{Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
   "requires": "Any (Brawl C) (Brawl B)",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 2,

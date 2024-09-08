@@ -2,7 +2,7 @@
   "name": "One-Two Punch",
   "description": "@{const}{ap}{AP 2} (guaranteed follow-up); if first attack hits, then Mt +4 in combat to second attack. @{const}{variant}{Metal Element Variant:} Once this combat, this unit may reroll a d100 and choose to keep either value.",
   "requires": "Any (Brawl C) (Brawl B)",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": "4 + fill affirm([First Attack Hit?], 0, 4)",

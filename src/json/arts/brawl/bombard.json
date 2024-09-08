@@ -2,7 +2,7 @@
   "name": "Bombard",
   "description": "@{const}{ap}{AP = 2d3 - 1}.",
   "requires": "Brawl A",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 3,

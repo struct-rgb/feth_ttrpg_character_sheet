@@ -2,7 +2,7 @@
   "name": "Finesse Blade",
   "description": "Mt +30% of user's Dex.",
   "requires": "Swords A",
-  "compatible": "Skill Swords",
+  "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": "fill scale(2, [Dex], unit|total|dex)",

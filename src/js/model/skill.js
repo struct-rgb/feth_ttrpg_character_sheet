@@ -23,10 +23,6 @@ const POINTS = [
  */
 class Row {
 
-
-	
-
-
 	static ICONS = ["—", "⮝", "⮟", "⮙", "⮛"];
 
 	static NAMES = ["None", "Talent", "Weakness", "Budding Talent", "Budding Weakness"];
@@ -169,7 +165,14 @@ class SkillUserInterface {
 
 		// const foot = element("tfoot", );
 
-		this.root = element("div", element("table", body));
+		this.root = element("div", [
+			element("table", [
+				element("thead",
+					element("strong", "Skills", "underline")
+				),
+				body
+			])
+		]);
 
 		this.names = new Set(skills);
 		this.sheet = sheet;

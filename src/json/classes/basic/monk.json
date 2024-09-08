@@ -44,7 +44,6 @@
   "default_preset": "Balance/Balance/Luck",
   "default_mainarm": "Water",
   "default_sidearm": "Faith",
-  "default_arts": [],
   "comment": "Items in growth, modifiers, and mount should be integers",
   "tags": [
     "changed"

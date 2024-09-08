@@ -2,7 +2,7 @@
   "name": "Exhaustive Strike",
   "description": "Expends all remaining SP; might increases by half of expended SP.",
   "requires": "Axes A",
-  "compatible": "Skill Axes",
+  "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": [

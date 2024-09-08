@@ -2,7 +2,7 @@
   "name": "Hit and Run",
   "description": "After combat, user moves 1 space away from target foe in the same row/column as target foe.",
   "requires": "Lances D",
-  "compatible": "Skill Lances",
+  "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 4,

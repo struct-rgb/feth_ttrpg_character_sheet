@@ -2,7 +2,7 @@
   "name": "Big Dipper Strike",
   "description": "Effective against Infantry units.",
   "requires": "Any (Brawl C) (Brawl B)",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 7,

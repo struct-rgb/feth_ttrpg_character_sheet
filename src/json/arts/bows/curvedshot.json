@@ -2,7 +2,7 @@
   "name": "Curved Shot",
   "description": "No special effect.",
   "requires": "Bows D",
-  "compatible": "Skill Bows",
+  "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

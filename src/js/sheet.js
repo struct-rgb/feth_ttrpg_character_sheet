@@ -234,6 +234,31 @@ class Refresher {
 		this.group     = null;
 		this.flight    = false;
 		this.sheet     = sheet; // TODO ugly hack
+		this.defer     = false;
+
+		// for debugging memory management issues
+		this.snaps     = [];
+		this.version   = 0;
+		this.versions  = new Map();
+	}
+
+	/**
+	 * For debugging memory management issues. Saves a snapshot of the
+	 * item currently stored within the refresher with corresponding number.
+	 */
+	shapshot() {
+		++this.version;
+		this.snaps.push(new Set(this.items.keys()));
+	}
+
+	/**
+	 * Determines which items are different between two snapshots
+	 * @param  {Number} start the snapshot to start from
+	 * @param  {Number} stop  the snapshot to end with
+	 * @return {Set}          the set of differences
+	 */
+	snapdiff(start, stop) {
+		return this.snaps[start].difference(this.snaps[stop]);
 	}
 
 	createGroup() {
@@ -251,6 +276,7 @@ class Refresher {
 		if (this.items.has(element)) return false;
 
 		this.items.set(element, new Set(triggers));
+		this.versions.set(element, this.version);
 		this.propagate.set(element, new Set(propagate));
 
 		for (let trigger of triggers) {
@@ -306,6 +332,9 @@ class Refresher {
 
 	clean() {
 
+		// Defer actual updates until they're enabled again
+		if (this.defer) return 0;
+
 		// Guard against objects that invoke this object's
 		// refresh method in their refresh method to prevent
 		// infinte recursion. (Only clean once at the end.)
@@ -344,6 +373,7 @@ class Refresher {
 			const triggers = this.items.get(value);
 
 			this.items.delete(value);
+			this.versions.delete(value);
 			this.propagate.delete(value);
 
 			for (let trigger of triggers) {
@@ -3669,8 +3699,6 @@ class Sheet {
 	 * @return {?string} an error string if check fails; else null
 	 */
 	checkArtsSlots(category=this.arts) {
-
-		// TODO this sometimes doesn't run when  a new character is loaded
 
 		// map to reserve Skill. Rank, Type combos
 		const arts    = [];

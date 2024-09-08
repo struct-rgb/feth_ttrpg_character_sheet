@@ -927,10 +927,10 @@ class Category {
 		this.clearActive();
 		
 		for (let element of this._elements.values()) {
-			// if (element.resources) {
-			// 	const [resources, refresher] = element.resources;
-			// 	console.log(`${element._title.data}: `, refresher.delete(resources));
-			// }
+			if (element.resources) {
+				const [resources, refresher] = element.resources;
+				refresher.delete(resources);
+			}
 			element.remove();
 		}
 		this._elements.clear();

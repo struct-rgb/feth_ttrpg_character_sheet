@@ -1,8 +1,8 @@
 {
   "name": "Subdue",
   "description": "Leaves foe with at least 1 HP.",
-  "requires": "Any (Swords C) (Swords B) (Class Lord)",
-  "compatible": "Skill Swords",
+  "requires": "Any (Swords C) (Swords B)",
+  "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 0,

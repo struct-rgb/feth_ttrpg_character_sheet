@@ -2,7 +2,7 @@
   "name": "Lightspeed",
   "description": "Combat occurs at Range 1.",
   "requires": "Any (Swords C) (Swords B)",
-  "compatible": "Skill Swords",
+  "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 4,

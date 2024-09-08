@@ -367,3 +367,7 @@ fieldset {
 	display: inline-block;
 	font-family: monospace;
 }
+
+thead {
+	text-align: center;
+}

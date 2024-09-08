@@ -2,7 +2,7 @@
   "name": "Shield Axe",
   "description": "Restores HP equal to half of damage dealt; extra HP is applied as @{condition}{Overheal}{[Overheal]} for one turn.",
   "requires": "Any (Axes C) (Axes B)",
-  "compatible": "Skill Axes",
+  "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

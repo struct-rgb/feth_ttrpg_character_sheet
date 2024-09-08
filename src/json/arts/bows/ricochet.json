@@ -4,8 +4,8 @@
   "requires": "Bows D",
   "compatible": [
     "Host false",
-    "  (Art  (Skill Bows))",
-    "  (Item (Skill Bows))"
+    "  (Art  (All (Skill Bows) (Not (Tag `no hit`))))",
+    "  (Item (All (Skill Bows) (Not (Tag `no hit`))))"
   ],
   "mttype": "else",
   "modifiers": {

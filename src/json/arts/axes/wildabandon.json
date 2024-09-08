@@ -2,7 +2,7 @@
   "name": "Wild Abandon",
   "description": "No special effect.",
   "requires": "Any(Axes C) (Axes B)",
-  "compatible": "Skill Axes",
+  "compatible": "All (Skill Axes) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 10,

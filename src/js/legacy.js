@@ -164,7 +164,10 @@ function character_from_4_2_0(old) {
 
 	const lvls  = old.statistics.levelups;
 
-	if (!(lvls.levels.length > 0 || lvls.bases.any(n => n)))
+	// if the sheet has an old levelups set of data and that set
+	// of data is empty, then just delete it because there isn't
+	// any historical data that has value to preserve
+	if (lvls && !(lvls.levels.length > 0 || lvls.bases.any(n => n)))
 		delete old.statistics.levelups;
 
 	old.version = "4.2.0";

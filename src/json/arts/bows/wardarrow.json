@@ -2,7 +2,7 @@
   "name": "Ward Arrow",
   "description": "Apply @{condition}{Silence}{[Silence]} to target foe for one turn.",
   "requires": "Bows A",
-  "compatible": "Skill Bows",
+  "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 4,

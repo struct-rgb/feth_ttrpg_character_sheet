@@ -2,7 +2,7 @@
   "name": "Redirection",
   "description": "On hit, apply @{condition}{Redirect}{[Redirect]} to this unit for one turn.",
   "requires": "Any (Lances C) (Lances B)",
-  "compatible": "Skill Lances",
+  "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 1,

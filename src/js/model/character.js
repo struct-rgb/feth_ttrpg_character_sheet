@@ -422,7 +422,8 @@ class Characters {
 		}
 
 		/* Prevents refreshing secondary stats 1000 times */
-		this.sheet.stats.pause = true;
+		this.sheet.stats.pause        = true;
+		this.sheet.refresher.defer    = true;
 		/* Prevents stat change animation from playing */
 		const animate = this.sheet.myPointBuy.setAnimated(false);
 
@@ -465,11 +466,13 @@ class Characters {
 		this.triangle = 0;
 
 		/* We do want to refresh secondary stats now */
-		this.sheet.stats.pause = false;
+		this.sheet.stats.pause        = false;
 		this.refresh();
 
 		// Put this setting back to what it was.
 		this.sheet.myPointBuy.setAnimated(animate);
+		this.sheet.refresher.defer = false;
+		this.sheet.refresher.refresh();
 	}
 
 	export() {
@@ -545,8 +548,6 @@ class Characters {
 		this.sheet.abilities.clear();
 		this.sheet.arts.clear();
 		this.sheet.equipment.clear();
-
-		this.sheet.stats.levelups.clear();
 
 		this.refresh();
 		this.sheet.skills.refresh();

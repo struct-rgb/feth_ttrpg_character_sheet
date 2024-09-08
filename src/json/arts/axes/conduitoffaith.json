@@ -1,7 +1,7 @@
 {
   "name": "Conduit of Faith",
   "description": "Deals magic-based damage. Expends a usage of a Light Magic spell and adds its might to the attack and 1/3 of its might to the cost.",
-  "requires": "Axes C",
+  "requires": "Any (Axes C) (Axes B)",
   "compatible": "None",
   "mttype": "mag",
   "modifiers": {

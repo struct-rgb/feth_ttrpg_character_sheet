@@ -2,7 +2,7 @@
   "name": "Wind God",
   "description": "Barbarossa only.",
   "requires": "Unknown",
-  "compatible": "Skill Bows",
+  "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 5,

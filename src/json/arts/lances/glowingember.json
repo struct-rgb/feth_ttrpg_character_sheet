@@ -2,7 +2,7 @@
   "name": "Glowing Ember",
   "description": "Mt +30% of user's Def.",
   "requires": "Lances A",
-  "compatible": "Skill Lances",
+  "compatible": "All (Skill Lances) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": "fill scale(2, [Def], unit|total|def)",

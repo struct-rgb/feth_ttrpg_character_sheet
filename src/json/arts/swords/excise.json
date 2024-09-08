@@ -2,7 +2,7 @@
   "name": "Excise",
   "description": "Consumes a combat art slot, but may be used as a combat art or tactical art:\n • Combat: Grants Mt +4 for each condition affecting target foe.\n • Tactical: End one or more conditions applied to target ally.",
   "requires": "Any (Swords C) (Swords B)",
-  "compatible": "Skill Swords",
+  "compatible": "All (Skill Swords) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": "2 + ask [Number of Conditions?] else 0 end * 4",

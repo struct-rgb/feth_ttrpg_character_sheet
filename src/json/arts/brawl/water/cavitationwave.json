@@ -2,7 +2,7 @@
   "name": "Cavitation Wave",
   "description": "No special effect. @{const}{variant}{Water Element Variant:} If all attacks hit, then foe cannot counterattack this combat.",
   "requires": "Brawl A",
-  "compatible": "Skill Brawl",
+  "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 6,

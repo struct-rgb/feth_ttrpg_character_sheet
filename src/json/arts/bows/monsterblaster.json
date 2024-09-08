@@ -2,7 +2,7 @@
   "name": "Monster Blaster",
   "description": "Effective against Monster units.",
   "requires": "Any (Bows C) (Bows B)",
-  "compatible": "Skill Bows",
+  "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
     "mt": 5,
