@@ -122,7 +122,14 @@ class UserInterface {
 		);
 
 
-		this.root = element("div", element("table", body));
+		this.root = element("div",
+			element("table", [
+				element("thead",
+					element("strong", "Traits", "underline")
+				),
+				body
+			])
+		);
 	}
 
 	refresh() {

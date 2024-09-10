@@ -556,8 +556,7 @@ class Items {
 
 			this._preview.root,
 
-			element("br"), 
-			element("br"), 
+			element("br"),
 
 			element("details", [
 
