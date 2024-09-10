@@ -39126,9 +39126,9 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
-        "relic",
         "FE3H",
-        "changed"
+        "changed",
+        "relic"
       ],
       "hidden": false
     },
@@ -39604,7 +39604,7 @@ const definitions = {
         "FE3H",
         "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Caduceus Staff",
@@ -39642,7 +39642,7 @@ const definitions = {
         "FE3H",
         "changed"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Healing Staff",
@@ -39748,7 +39748,7 @@ const definitions = {
         "FE3H",
         "changed"
       ],
-      "hidden": true
+      "hidden": false
     }
   ],
   "gambits": [
@@ -42924,7 +42924,6 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "sacred",
         "changed",
         "weapon",
         "sacred"
@@ -43322,9 +43321,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "relic",
         "changed",
-        "weapon",
-        "relic"
+        "weapon"
       ],
       "hidden": false
     },
@@ -43354,9 +43353,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "relic"
+        "relic",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43386,9 +43385,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "relic"
+        "relic",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43418,7 +43417,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
+        "changed",
         "weapon",
         "secret"
       ],
@@ -43690,7 +43689,7 @@ const definitions = {
         "changed",
         "weapon"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Sword of Begalta",
@@ -43718,9 +43717,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "sacred",
         "changed",
-        "weapon",
-        "sacred"
+        "weapon"
       ],
       "hidden": false
     },
@@ -43750,9 +43749,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "sacred"
+        "sacred",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43782,9 +43781,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "sacred"
+        "sacred",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43814,9 +43813,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "relic"
+        "relic",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43846,9 +43845,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "relic"
+        "relic",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43878,9 +43877,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "relic"
+        "relic",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43911,8 +43910,8 @@ const definitions = {
       "tags": [
         "FE3H",
         "relic",
-        "changed"
-        "weapon",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43942,9 +43941,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "relic"
+        "relic",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -43974,7 +43973,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
+        "changed",
         "weapon",
         "secret"
       ],
@@ -44006,7 +44005,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
+        "changed",
         "weapon",
         "secret"
       ],
@@ -44877,9 +44876,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "sacred"
+        "sacred",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -44909,9 +44908,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "relic"
+        "relic",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -45784,9 +45783,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
-        "weapon",
-        "sacred"
+        "sacred",
+        "changed",
+        "weapon"
       ],
       "hidden": false
     },
@@ -45816,9 +45815,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "relic",
         "changed",
-        "weapon",
-        "relic"
+        "weapon"
       ],
       "hidden": false
     },
@@ -46751,9 +46750,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "relic",
         "changed",
-        "weapon",
-        "relic"
+        "weapon"
       ],
       "hidden": false
     },
@@ -46783,9 +46782,9 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
+        "relic",
         "changed",
-        "weapon",
-        "relic"
+        "weapon"
       ],
       "hidden": false
     },
@@ -46994,8 +46993,8 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "morph effective",
-        "weapon"
+        "weapon",
+        "morph effective"
       ],
       "hidden": false
     },
@@ -47174,8 +47173,8 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
-        "morph effective",
-        "weapon"
+        "weapon",
+        "morph effective"
       ],
       "hidden": false
     },
@@ -48539,6 +48538,49 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Stoneskin Potion",
+      "type": "Other",
+      "description": "Apply @{condition}{Stoneskin}{[Stoneskin]} to this unit or target ally for two turns. Has a 30% chance to break after use.",
+      "requires": "None",
+      "rank": "E",
+      "price": 750,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "rows": [
+        {
+          "name": "Break",
+          "expr": 30,
+          "roll": true
+        }
+      ],
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "weapon",
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle",
+        "break",
+        "changed"
+      ],
+      "hidden": true
+    },
+    {
       "name": "Vegicidal Spray",
       "type": "Other",
       "description": "Remove the benefits and penalties imposed by Foliage tiles in target space. Has a 30% chance to break after use.",
@@ -48679,7 +48721,7 @@ const definitions = {
       "comment": "Incompatible with all Attributes except Refined.",
       "tags": [
         "FE3H",
-        "changed"
+        "changed",
         "weapon",
         "monster"
       ],
@@ -48890,49 +48932,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Stoneskin Potion",
-      "type": "Other",
-      "description": "Apply @{condition}{Stoneskin}{[Stoneskin]} to this unit or target ally for two turns. Has a 30% chance to break after use.",
-      "requires": "None",
-      "rank": "E",
-      "price": 750,
-      "mttype": "none",
-      "modifiers": {
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 1,
-        "maxrng": 1,
-        "tpcost": 2,
-        "spcost": 0,
-        "tp": 0,
-        "sp": 0
-      },
-      "rows": [
-        {
-          "name": "Break",
-          "expr": 30,
-          "roll": true
-        }
-      ],
-      "comment": "Incompatible with all Attributes.",
-      "tags": [
-        "weapon",
-        "no might",
-        "no crit",
-        "no hit",
-        "no stats",
-        "no triangle",
-        "break",
-        "changed"
-      ],
-      "hidden": true
-    },
-    {
       "name": "Dark Stone (Bird)",
       "type": "Other",
       "description": "A magic crystal that was ingested by a giant bird.",
@@ -48990,7 +48989,6 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "monster",
         "changed",
         "weapon",
         "monster"
@@ -49055,7 +49053,7 @@ const definitions = {
       "comment": "Items in modifers should be integers",
       "tags": [
         "FE3H",
-        "changed"
+        "changed",
         "weapon",
         "monster"
       ],
@@ -49158,12 +49156,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Slumbering Stone",
@@ -49190,12 +49187,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Rampage Morphstone",
@@ -49285,12 +49281,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Waking Stone",
@@ -49317,12 +49312,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Silver Shield",
@@ -49379,12 +49373,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Shining Stone",
@@ -49411,12 +49404,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Black-Sand Steel Shield",
@@ -49473,12 +49465,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Brilliant Stone",
@@ -49505,12 +49496,11 @@ const definitions = {
       },
       "comment": "Incompatible with all Attributes.",
       "tags": [
-        "stone",
         "changed",
         "weapon",
         "stone"
       ],
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "Blank Weapon",

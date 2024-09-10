@@ -1262,6 +1262,7 @@ class Item extends Action {
 				}),
 				new Filter.Toggle("FE3H", false, (feature) => {
 					return feature.tagged("FE3H");
+				}),
 
 				element("strong", "Item Type"), element("br"),
 
