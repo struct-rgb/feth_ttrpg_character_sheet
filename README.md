@@ -11,6 +11,9 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.3.3
+  * Bugfix: Rank > E+ generic weapon combat arts broke arts requirements check
+
 ### Version 4.3.2
   * Added a header to the skills section on the left side if the sheet
   * Decreased time it takes the builder to switch between characters

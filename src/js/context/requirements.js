@@ -242,6 +242,11 @@ function createContext(base, host, definitions) {
 	});
 
 	addx({
+		sign: ["Generic", [Types.rank], Types.tribool],
+		expr: ctx["Other"].bind({}),
+	});
+
+	addx({
 		sign: ["ClassType", [Types.classtype], Types.tribool],
 		expr: ((name, type) => {
 			return {

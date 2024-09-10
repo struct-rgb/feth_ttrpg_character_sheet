@@ -549,7 +549,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("4.3.2");
+	static CURRENT = new Version("4.3.3");
 
 	constructor(string) {
 		if (string == null) {
