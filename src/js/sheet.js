@@ -3747,7 +3747,7 @@ class Sheet {
 		// keeps track of which arts are possible for which key
 		const options = new Map();
 
-		// we not need to try to assign each art a Skill/Rank/Type combo
+		// we now need to try to assign each art a Skill/Rank/Type combo
 		while (arts.length) {
 
 			// not worth writing a priority queue for this

@@ -871,9 +871,15 @@ class Art extends Action {
 	}
 
 	*exKeys() {
-		for (let rank of this.rank) {
-			const kind = this.isTactical() ? "tactical" : "combat";
-			yield `${this.type} ${rank}, ${kind} art`;
+
+		const ranks = this.rank instanceof Array ? this.rank : [this.rank];
+		const types = this.type instanceof Array ? this.type : [this.type];
+
+		for (let rank of ranks) {
+			for (let type of types) {
+				const kind = this.isTactical() ? "tactical" : "combat";
+				yield `${type} ${rank}, ${kind} art`;
+			}
 		}
 	}
 

@@ -11,6 +11,9 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.3.4
+  * Bugfix: Arts validation crashed for arts (Steal) with multiple skill reqs
+
 ### Version 4.3.3
   * Bugfix: Rank > E+ generic weapon combat arts broke arts requirements check
 
