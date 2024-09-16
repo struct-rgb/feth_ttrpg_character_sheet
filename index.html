@@ -20,12 +20,14 @@
 	<script type="text/javascript" src="./src/js/widget/tagger.js"></script>
 	<script type="text/javascript" src="./src/js/presetter.js"> </script>
 	<script type="text/javascript" src="./src/js/pointbuy.js"></script>
+	<script type="text/javascript" src="./src/js/widget/buildables.js"></script>
 	<script type="text/javascript" src="./src/js/model/battalion.js"></script>
 	<script type="text/javascript" src="./src/js/model/character.js"></script>
 	<script type="text/javascript" src="./src/js/model/item.js"></script>
 	<script type="text/javascript" src="./src/js/model/stats.js"></script>
 	<script type="text/javascript" src="./src/js/model/check.js"></script>
 	<script type="text/javascript" src="./src/js/model/skill.js"></script>
+	<script type="text/javascript" src="./src/js/model/inventory.js"></script>
 	<script type="text/javascript" src="./src/js/macro_builder.js"></script>
 	<script type="text/javascript" src="./src/js/lang/calculator.js"></script>
 	<script type="text/javascript" src="./src/js/lang/polish.js"></script>
@@ -36,7 +38,6 @@
 	<script type="text/javascript" src="./src/js/feature.js"></script>
 	<script type="text/javascript" src="./src/js/widget/dynamic.js"></script>
 	<script type="text/javascript" src="./src/js/legacy.js"></script>
-	<script type="text/javascript" src="./src/js/widget/buildables.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
 
 </head>
@@ -50,6 +51,11 @@
 
 		// create and add the actual sheet dynamically
 		try {
+
+			// in case we manually launched the session editor
+			SessionEditor.checkLaunch();
+			
+			// if we reach this point we want the normal sheet
 			sheet = new Sheet(definitions);
 			body.appendChild(sheet.root);
 

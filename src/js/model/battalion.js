@@ -40,7 +40,11 @@ class BattalionPreview {
 		);
 	}
 
+	static TIMES = 0;
+	
 	generate(dead=false) {
+
+		console.log(BattalionPreview.TIMES++);
 
 		const sheet = this.battalion.sheet;
 
@@ -732,11 +736,11 @@ class Battalions {
 
 	/* builtable display */
 
-	getTitle(object) {
+	getTitle(object=this) {
 		return object.name;
 	}
 
-	getBody(object) {
+	getBody(object=this) {
 		return element("span", object.template || object.description);
 	}
 

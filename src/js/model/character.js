@@ -25,7 +25,7 @@ class Characters {
 		this._name = element("input", {
 			class : ["simple-border"],
 			attrs : {
-				type     : "text", 
+				type     : "text",
 				value    : "Blank Sheet",
 				onchange : (() => {
 					const activeID = this.sheet.cb.category.getActive();
@@ -226,19 +226,19 @@ class Characters {
 
 	/**
 	 * Loads class arts and/or abilities when changing classes
-	 * 
+	 *
 	 * @param  {Category} category The Category collection object where the
 	 * given type of feature (arts or abilities) are store within.
-	 * 
+	 *
 	 * @param  {Array}    options   An array of feature names, typically from
 	 * the template of the class to change to.
 	 *
 	 * @param  {boolean}  active    Should the class feature be set active?
-	 * 
+	 *
 	 * @param  {Set}      elections A set of the names of preferred features
 	 * to pick from the options list when presented with a choice. If one can't
 	 * be chosen from the set the user is prompted to make a selection.
-	 * 
+	 *
 	 */
 	loadClassFeatures(category, features, active, election) {
 
@@ -423,7 +423,8 @@ class Characters {
 
 		/* Prevents refreshing secondary stats 1000 times */
 		this.sheet.stats.pause        = true;
-		this.sheet.refresher.defer    = true;
+		this.refresher.wait();
+
 		/* Prevents stat change animation from playing */
 		const animate = this.sheet.myPointBuy.setAnimated(false);
 
@@ -473,12 +474,11 @@ class Characters {
 
 		// Put this setting back to what it was.
 		this.sheet.myPointBuy.setAnimated(animate);
-		this.sheet.refresher.defer = false;
-		this.sheet.refresher.refresh();
+		this.sheet.refresher.signal();
 	}
 
 	export() {
-		return { 
+		return {
 			version      : Version.CURRENT.toString(),
 			name         : this.name,
 			description  : this.description,
@@ -560,11 +560,11 @@ class Characters {
 
 	/* builtable display */
 
-	getTitle(object) {
+	getTitle(object=this) {
 		return object.name;
 	}
 
-	getBody(object) {
+	getBody(object=this) {
 		return element("span", ellipse(object.description, 50));
 	}
 

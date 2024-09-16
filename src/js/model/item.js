@@ -25,20 +25,28 @@ class ItemPreview {
 		this.marker = this.item.marker;
 		this.root   = element("div");
 
+		const itemID = this.item.itemID;
+
 		this.va = new RangeFinder(this.item, {draw: false});
-		this.item.refresher.register(this.va, ["theme", "unit|size", "item|total|maxrng", "item|total|minrng"]);
+		this.item.refresher.register(this.va, ["theme", "unit|size", `${itemID}|total|maxrng`, `${itemID}|total|minrng`]);
 		this._pregroup = null;
 
 		this.item.refresher.register(this,
 			Array.from(this.item.sheet.compiler.variables(
 				/item\|total\|.*/
 			)).map(f => f.called).concat([
-				"item|rank", "item|price", "item|preview"
+				`${itemID}|rank`, `${itemID}|price`, `${itemID}|preview`
 			])
 		);
 	}
 
+	// static TIMES = 0;
+
 	generate(dead=false) {
+
+		// console.log(ItemPreview.TIMES++);
+		
+		const itemID = this.item.itemID;
 
 		let   star  = undefined;
 		const sheet = this.item.sheet;
@@ -54,12 +62,12 @@ class ItemPreview {
 
 		const uimod = (name, sign=false, dead=false) => {
 
-			const dyn = env.read(`item|dynamic|${name}`);
+			const dyn = env.read(`${itemID}|dynamic|${name}`);
 
 			/* it it's a number just give a static html */
 			if (!dyn) {
 
-				const num = env.read(`item|total|${name}`);
+				const num = env.read(`${itemID}|total|${name}`);
 
 				/* we don't care to display these */
 				if (num == 0) return 0;
@@ -70,7 +78,7 @@ class ItemPreview {
 				});
 			}
 
-			const variable = `item|total|${name}`;
+			const variable = `${itemID}|total|${name}`;
 
 			/* made a modifier expression for this value */
 			const modifier = sheet.compiler.compile(variable);
@@ -115,8 +123,8 @@ class ItemPreview {
 			}
 		}
 
-		const min = env.read("item|total|minrng");
-		const max = env.read("item|total|maxrng");
+		const min = env.read(`${itemID}|total|minrng`);
+		const max = env.read(`${itemID}|total|maxrng`);
 
 		if (min != max) {
 			const min = uimod("minrng", false, dead);
@@ -157,10 +165,9 @@ class ItemPreview {
 
 		const dd = element("dd", [
 			delimit(" ", mods), mods.length ? element("br") : "",
-			this.item.aoe && !this.item.tagged("equipment")
-				? this.va.root
-				: "",
-			element("br"),
+			...(this.item.aoe && !this.item.tagged("equipment")
+				? [this.va.root, element("br")]
+				: []),
 			link,
 			attrs.length ? element("div", [
 				element("strong", "Attributes"),
@@ -203,19 +210,26 @@ class ItemPreview {
 
 class Items {
 
-	constructor(sheet, readonly=false) {
-		this.root       = document.createElement("div");
-		this.sheet      = sheet;
-		this.refresher  = this.sheet.refresher;
-		this.marker     = this.sheet.marker;
+	constructor(sheet, options={}) {
+
+		this.itemID   = options.itemID   ?? "item";
+		this.readonly = options.readonly ?? false;
+
+		const itemID  = this.itemID;
+
+		this.root            = document.createElement("div");
+		this.sheet           = sheet;
+		this.refresher       = this.sheet.refresher;
+		this.marker          = this.sheet.marker;
+		this.showRangeFinder = true;
 		// this._pregroup = null;
-		// 
+
 		this.equipment  = null;
 
 		this._name = element("input", {
 			class : ["simple-border"],
 			attrs : {
-				type     : "text", 
+				type     : "text",
 				value    : Item.DEFAULT,
 				onchange : (() => {
 					const activeID = this.sheet.wb.category.getActive();
@@ -225,7 +239,7 @@ class Items {
 					element.title       = this.name;
 					element.description = this.body();
 
-					this.refresher.refresh("item|preview");
+					this.refresher.refresh(`${itemID}|preview`);
 				}),
 			},
 		});
@@ -294,7 +308,7 @@ class Items {
 
 		const makefn = (name) => {
 
-			const variable = `item|total|${name}`;
+			const variable = `${itemID}|total|${name}`;
 
 			const baseFunction = new Calculator.Env(
 				Calculator.Env.RUNTIME, this.sheet.definez
@@ -311,7 +325,7 @@ class Items {
 			const cell       = new AttributeCell(config, fn);
 			this.stats[key] = cell;
 
-			const variable = `item|total|${key}`;
+			const variable = `${itemID}|total|${key}`;
 
 			const dependancies = this.sheet.compiler.dependancies(variable);
 			this.refresher.register(cell, dependancies);
@@ -358,7 +372,7 @@ class Items {
 					sum += Attribute.get(attribute).rank;
 				}
 
-				this.refresher.refresh("item|rank");
+				this.refresher.refresh(`${itemID}|rank`);
 				return Grade.fromNumber(Math.max(Math.min(sum, 12), 0));
 			}),
 		});
@@ -379,7 +393,7 @@ class Items {
 					sum += Attribute.get(attribute).price;
 				}
 
-				this.refresher.refresh("item|price");
+				this.refresher.refresh(`${itemID}|price`);
 				return sum;
 			}),
 		});
@@ -402,7 +416,7 @@ class Items {
 
 		const baseFunction = new Calculator.Env(
 			Calculator.Env.RUNTIME, this.sheet.definez
-		).func("item|total|mttype");
+		).func(`${itemID}|total|mttype`);
 
 		const second = element("tbody", [
 			wide("Might", "mt", makefn("mt")),
@@ -435,7 +449,7 @@ class Items {
 				element("th", "Rank"),
 				element("td", {
 					class   : ["center"],
-					attrs   : {colSpan: 2}, 
+					attrs   : {colSpan: 2},
 					content : this._rank.root
 				}),
 			]),
@@ -455,7 +469,7 @@ class Items {
 
 		this._adder   = new Tagger(this._description, this.marker.context, () => this.refresh());
 		this._replace = new Toggle("Replace original?", false, () => {
-			this.refresher.refresh("item|preview");
+			this.refresher.refresh(`${itemID}|preview`);
 		});
 
 		this._refr    = element("input", {
@@ -479,7 +493,7 @@ class Items {
 			const dl = element("dl");
 
 			for (let i = 0; i < args.length; ++i) {
-				const tag    = args[i]; 
+				const tag    = args[i];
 				const button = element("input", {
 					class : ["simple-border"],
 					attrs : {
@@ -524,7 +538,7 @@ class Items {
 
 		this.notebook.add("Attributes", this.attributes.root);
 
-		this.notebook.add("Stats", 
+		this.notebook.add("Stats",
 			element("table", second, "battalion-table")
 		);
 
@@ -552,18 +566,24 @@ class Items {
 			)
 		]));
 
+		this.notebook.active = "Information";
+
+		this.summaryText = document.createTextNode("Customize Item");
+
 		this.root = element("div", [
-
-			this._preview.root,
-
-			element("br"),
 
 			element("details", [
 
-				element("summary", element("label", "Customize Item")),
+				element("summary",
+					element("label", this.summaryText, "underline", "bold")
+				),
 
 				this.notebook.root,
 			]),
+
+			element("br"),
+
+			this._preview.root,
 
 		], "center-pane");
 	}
@@ -672,7 +692,7 @@ class Items {
 
 		if (name == "size") return this.sheet.runenv.read("unit|size");
 
-		const variable = `item|total|${name}`;
+		const variable = `${this.itemID}|total|${name}`;
 		if (!(variable in this.sheet.definez)) return 0;
 
 		const env   =  new Calculator.Env(
@@ -690,19 +710,19 @@ class Items {
 			this.stats[stat].refresh();
 		}
 
-		this.refresher.refresh("item|preview");
+		this.refresher.refresh(`${this.itemID}|preview`);
 	}
 
 	import(item) {
 
-		this.sheet.stats.pause = true;
+		this.refresher.wait();
 
 		this.name        = item.name        || Item.DEFAULT;
-		this.rank        = item.rank        || 0;
+		this.rank        = item.rank        || 0; // refreshes
 		this.mttype      = item.mttype      || 0;
-		this.price       = item.price       || 0;
+		this.price       = item.price       || 0; // refreshes
 		this.replaceInfo = item.replace     || false;
-		this.template    = item.template    || Item.DEFAULT;
+		this.template    = item.template    || Item.DEFAULT; // many refreshes
 		this.information = item.description || "";
 		this.attributes.setState(item.attributes);
 
@@ -721,9 +741,8 @@ class Items {
 			}
 		}
 
-		this.sheet.stats.pause = false;
-
 		this.refresh();
+		this.refresher.signal();
 	}
 
 	export() {
@@ -769,11 +788,11 @@ class Items {
 
 	/* buildable display */
 
-	getTitle(object) {
+	getTitle(object=this) {
 		return object.name;
 	}
 
-	getBody(object) {
+	getBody(object=this) {
 		return element("span", object.template || object.description);
 	}
 
@@ -790,6 +809,8 @@ class Items {
 
 	blurb() {
 
+		const itemID = this.itemID;
+
 		let star = undefined;
 
 		function d(condition) {
@@ -805,12 +826,12 @@ class Items {
 			mods.push(`${star}G`);
 		}
 
-		if ((star = env.read("item|dynamic|tpcost"))) {
-			mods.push([env.read("item|total|tpcost"), "TP", star]);
+		if ((star = env.read(`${itemID}|dynamic|tpcost`))) {
+			mods.push([env.read(`${itemID}|total|tpcost`), "TP", star]);
 		}
 
-		if ((star = env.read("item|dynamic|spcost"))) {
-			mods.push([env.read("item|total|spcost"), "SP", star]);
+		if ((star = env.read(`${itemID}|dynamic|spcost`))) {
+			mods.push([env.read(`${itemID}|total|spcost`), "SP", star]);
 		}
 
 		for (let key in this.stats) {
@@ -824,8 +845,8 @@ class Items {
 				continue;
 			}
 
-			const value = env.read(`item|total|${key}`);
-			const isdyn = env.read(`item|dynamic|${key}`);
+			const value = env.read(`${itemID}|total|${key}`);
+			const isdyn = env.read(`${itemID}|dynamic|${key}`);
 
 			if (!isdyn && value == 0) continue;
 
@@ -834,10 +855,10 @@ class Items {
 			mods.push(`${capitalize(key)}:\xA0${value}${mark}`);
 		}
 
-		const min  = env.read("item|total|minrng");
-		const max  = env.read("item|total|maxrng");
-		const mind = d(env.read("item|dynamic|minrng"));
-		const maxd = d(env.read("item|dynamic|maxrng"));
+		const min  = env.read(`${itemID}|total|minrng`);
+		const max  = env.read(`${itemID}|total|maxrng`);
+		const mind = d(env.read(`${itemID}|dynamic|minrng`));
+		const maxd = d(env.read(`${itemID}|dynamic|maxrng`));
 
 		if (min != max) {
 			mods.push("Range:\xA0", min, mind, "\xA0-\xA0", max, maxd);
@@ -845,12 +866,12 @@ class Items {
 			mods.push("Range:\xA0", max, (mind || maxd));
 		}
 
-		if ((star = d(env.read("item|dynamic|tp")))) {
-			mods.push("Max TP:\xA0", env.read("item|total|tp"), star);
+		if ((star = d(env.read(`${itemID}|dynamic|tp`)))) {
+			mods.push("Max TP:\xA0", env.read(`${itemID}|total|tp`), star);
 		}
 
-		if ((star = d(env.read("item|dynamic|sp")))) {
-			mods.push("Max SP:\xA0", env.read("item|total|sp"), star);
+		if ((star = d(env.read(`${itemID}|dynamic|sp`)))) {
+			mods.push("Max SP:\xA0", env.read(`${itemID}|total|sp`), star);
 		}
 
 		const set  = new Set();
@@ -873,6 +894,7 @@ class Items {
 	html() {
 
 		let star = undefined;
+		const itemID = this.itemID;
 
 		function d(condition) {
 			return condition ? "*" : "";
@@ -887,12 +909,12 @@ class Items {
 			mods.push(`${star}G`);
 		}
 
-		if ((star = env.read("item|dynamic|tpcost"))) {
-			mods.push([env.read("item|total|tpcost"), "TP", star]);
+		if ((star = env.read(`${itemID}|dynamic|tpcost`))) {
+			mods.push([env.read(`${itemID}|total|tpcost`), "TP", star]);
 		}
 
-		if ((star = env.read("item|dynamic|spcost"))) {
-			mods.push([env.read("item|total|spcost"), "SP", star]);
+		if ((star = env.read(`${itemID}|dynamic|spcost`))) {
+			mods.push([env.read(`${itemID}|total|spcost`), "SP", star]);
 		}
 
 		for (let key in this.stats) {
@@ -906,8 +928,8 @@ class Items {
 				continue;
 			}
 
-			const value = env.read(`item|total|${key}`);
-			const isdyn = env.read(`item|dynamic|${key}`);
+			const value = env.read(`${itemID}|total|${key}`);
+			const isdyn = env.read(`${itemID}|dynamic|${key}`);
 
 			if (!isdyn && value == 0) continue;
 
@@ -916,10 +938,10 @@ class Items {
 			mods.push(`${capitalize(key)}:&nbsp;${value}${mark}`);
 		}
 
-		const min  = env.read("item|total|minrng");
-		const max  = env.read("item|total|maxrng");
-		const mind = d(env.read("item|dynamic|minrng"));
-		const maxd = d(env.read("item|dynamic|maxrng"));
+		const min  = env.read(`${itemID}|total|minrng`);
+		const max  = env.read(`${itemID}|total|maxrng`);
+		const mind = d(env.read(`${itemID}|dynamic|minrng`));
+		const maxd = d(env.read(`${itemID}|dynamic|maxrng`));
 
 		if (min != max) {
 			mods.push("Range:&nbsp;", min, mind, "&nbsp;-&nbsp;", max, maxd);
@@ -927,12 +949,12 @@ class Items {
 			mods.push("Range:&nbsp;", max, (mind || maxd));
 		}
 
-		if ((star = d(env.read("item|dynamic|tp")))) {
-			mods.push("Max TP:&nbsp;", env.read("item|total|tp"), star);
+		if ((star = d(env.read(`${itemID}|dynamic|tp`)))) {
+			mods.push("Max TP:&nbsp;", env.read(`${itemID}|total|tp`), star);
 		}
 
-		if ((star = d(env.read("item|dynamic|sp")))) {
-			mods.push("Max SP:&nbsp;", env.read("item|total|sp"), star);
+		if ((star = d(env.read(`${itemID}|dynamic|sp`)))) {
+			mods.push("Max SP:&nbsp;", env.read(`${itemID}|total|sp`), star);
 		}
 
 		const set  = new Set();

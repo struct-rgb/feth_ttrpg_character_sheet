@@ -11,6 +11,18 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.4.0
+
+#### Equipment and Inventory
+  * Made feature list widgets more generic in how their selection sets operate
+  * Eliminated equipment as a category and rolled it into Create > Inventory
+  * Create > Invetory was redesigned to prominently feature equipment
+
+#### Traits and Experiences
+  * Add a Traits section below Skills to display display active Trait bonuses
+  * Added an Assign > Experiences section to allow Character to feature those
+  * The Macro builder generates a check macro from your Traits and Experiences
+  
 ### Version 4.3.4
   * Bugfix: Arts validation crashed for arts (Steal) with multiple skill reqs
 

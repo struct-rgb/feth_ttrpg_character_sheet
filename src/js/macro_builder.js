@@ -392,7 +392,9 @@ class UserInterface {
 
 		try {
 			const expression = this.sheet.compiler.compile(source);
-
+			const jsexpr     = expression.js();
+			const jsfunc     = eval(jsexpr);
+			
 			console.log(expression);
 
 			this._display.value = wrap(
@@ -403,7 +405,11 @@ class UserInterface {
 						| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
 						| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
 						| (this._compact.checked ? Calculator.Env.COMPACT : 0)
-				), "\n",				
+				), "\n",
+				"jsgen: ", jsexpr, "\n",
+				"jsout: ", jsfunc(
+					expression.env.with(Calculator.Env.RUNTIME)
+				), "\n",
 			);
 
 			this.historyPush(source);

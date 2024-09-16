@@ -296,6 +296,10 @@ class Feature {
 		return name && this.byName.has(name);
 	}
 
+	static values() {
+		return this.byName.values();
+	}
+
 	static where(predicate=(() => true), map=(f => f)) {
 		
 		const features = [];
@@ -535,7 +539,11 @@ class Feature {
 			this.requires.symbols.has("Innate")
 				||
 			Iter.any(Feature.INNATENESS_TAGS, tag => this.tagged(tag))
-		); 
+		);
+	}
+
+	static *[Symbol.iterator]() {
+		yield* this.byName.values();
 	}
 }
 
@@ -581,6 +589,10 @@ class Preset {
 			const instance = new this(template);
 			this.byName.set(instance.name, instance);
 		}
+	}
+
+	static *[Symbol.iterator]() {
+		yield* this.byName.values();
 	}
 
 	static get(name, fallback) {

@@ -9,7 +9,7 @@
 
 /* global
    AbstractParser, AbstractCompilationError, SwapText
-   element, delimit, hilight, inBrowser, tooltip, wrap, 
+   element, delimit, hilight, inBrowser, tooltip, wrap,
  */
 
 if (typeof require !== "undefined") {
@@ -26,6 +26,10 @@ if (typeof require !== "undefined") {
 		AbstractCompilationError
 	} = require("../common.js"));
 	/* eslint-enable no-global-assign */
+}
+
+function jscape(string) {
+	return JSON.stringify(string, null, 4);
 }
 
 /* we're going to go for a different pattern with this one */
@@ -369,6 +373,10 @@ const Tokens = (function() {
 				this.macrogen = template.macrogen;
 			}
 
+			if ("jsgen" in template) {
+				this.jsgen = template.jsgen;
+			}
+
 			if (new.target === Operator) {
 				Object.freeze(this);
 			}
@@ -455,7 +463,7 @@ const Tokens = (function() {
 
 	/* arranged by arity */
 
-	/* 
+	/*
 	 * lower precedence means it's higher priority
 	 * ALIAS => 0
 	 * UNARY => 0
@@ -499,6 +507,11 @@ const Tokens = (function() {
 				const [_opcode] = node;
 				return "0";
 			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode] = node;
+				return "0";
+			},
 		}),
 
 		[TERMINALS.BUILTIN_CODEGEN] : new Operator(0, {
@@ -529,6 +542,11 @@ const Tokens = (function() {
 				const [_opcode] = node;
 				return "0";
 			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode] = node;
+				return "0";
+			},
 		}),
 
 		[TERMINALS.BUILTIN_MACROGEN] : new Operator(0, {
@@ -554,6 +572,11 @@ const Tokens = (function() {
 				const [_opcode] = node;
 				return "1";
 			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode] = node;
+				return "1";
+			}
 		}),
 
 		[TERMINALS.BUILTIN_ALIAS] : new Operator(0, {
@@ -578,6 +601,11 @@ const Tokens = (function() {
 			macrogen: function(recurse, node, env) {
 				const [_opcode] = node;
 				return Number(env.alias);
+			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode] = node;
+				return "Number(env.alias)";
 			},
 		}),
 
@@ -604,6 +632,11 @@ const Tokens = (function() {
 				const [_opcode] = node;
 				return Number(env.label);
 			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode] = node;
+				return "Number(env.label)";
+			},
 		}),
 	};
 
@@ -621,12 +654,17 @@ const Tokens = (function() {
 				const [_opcode, argument] = node;
 				return `(${recurse(argument)})`;
 			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `(${recurse(argument)})`;
+			},
 		}),
 
 		"$local"  : new Operator(0, {
 
 			codegen: function(recurse, code, node, env) {
-				const [_opcode, argument] = node; 
+				const [_opcode, argument] = node;
 
 				code.instructions.push(function(env) {
 					env.push(env.scope[argument]);
@@ -639,12 +677,17 @@ const Tokens = (function() {
 				return env.scope[argument];
 			},
 
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `env.scope[${jscape(argument)}]`;
+			},
+
 		}),
 
 		"$global" : new Operator(0, {
 
 			codegen: function(recurse, code, node, env) {
-				const [_opcode, argument] = node; 
+				const [_opcode, argument] = node;
 
 				code.instructions.push(function(env) {
 					env.push(env.read(argument));
@@ -656,6 +699,11 @@ const Tokens = (function() {
 			macrogen: function(recurse, node, env) {
 				const [_opcode, argument] = node;
 				return env.read(argument);
+			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `env.read(${jscape(argument)})`;
 			},
 		}),
 
@@ -674,6 +722,11 @@ const Tokens = (function() {
 				const [_opcode, argument] = node;
 				return argument;
 			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return argument;
+			},
 		}),
 
 		"text" : new Operator(0, {
@@ -688,6 +741,11 @@ const Tokens = (function() {
 			macrogen: function(recurse, node, env) {
 				const [_opcode, argument] = node;
 				return argument;
+			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return jscape(argument);
 			},
 		}),
 
@@ -723,6 +781,11 @@ const Tokens = (function() {
 				return recurse(argument);
 			},
 
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `(+!!(${recurse(argument)}))`;
+			},
+
 		}),
 
 		[TERMINALS.ABS]: new Unary(0, {
@@ -738,6 +801,11 @@ const Tokens = (function() {
 			],
 
 			fn: (x => Math.abs(x)),
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `Math.abs(${recurse(argument)})`;
+			},
 
 		}),
 
@@ -755,6 +823,11 @@ const Tokens = (function() {
 
 			fn: (x => Math.ceil(x)),
 
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `Math.ceil(${recurse(argument)})`;
+			},
+
 		}),
 
 		[TERMINALS.FLOOR]: new Unary(0, {
@@ -770,6 +843,11 @@ const Tokens = (function() {
 			],
 
 			fn: (x => Math.floor(x)),
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `Math.floor(${recurse(argument)})`;
+			},
 
 		}),
 
@@ -804,6 +882,11 @@ const Tokens = (function() {
 				const value = recurse(argument);
 				console.log(value, env, node);
 				return value;
+			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `env.fn.inspect(${recurse(argument)})`;
 			},
 		}),
 
@@ -842,10 +925,23 @@ const Tokens = (function() {
 
 				for (let each of argument) {
 					strings.push(recurse(each));
-				} 
+				}
 
 				return `{(${strings.join("),(")})}kl1`;
 			},
+
+			// jsgen: function(recurse, node, env) {
+			// 	const [_opcode, argument] = node;
+
+			// 	const segments = [];
+
+			// 	for (let each of argument) {
+					
+			// 	}
+
+			// 	return `env.fn.inspect(${recurse(argument)})`;
+			// },
+
 		}),
 
 		[TERMINALS.MAX] : new Operator(0, {
@@ -3863,7 +3959,7 @@ class Env {
 	}
 
 	in_scope(offset) {
-		return offset < 0 || this.scope.length <= offset; 
+		return offset < 0 || this.scope.length <= offset;
 	}
 
 	func(name, fallback=0) {
@@ -3944,7 +4040,7 @@ class Env {
 
 
 	/**
-	 * A flag used in macrogen on whether variable name substitution  
+	 * A flag used in macrogen on whether variable name substitution
 	 * should be performed on alias expressions. No effect on codegen.
 	 * User-provided flag. Inherited. Constant.
 	 * @type {boolean}
@@ -4008,6 +4104,22 @@ class CompiledExpression {
 
 	macro(flags) {
 		return this.macrogen(this.env.with(Env.MACROGEN | flags));
+	}
+
+	js(flags) {
+		return this.jsgen(this.env.with(Env.MACROGEN | flags));
+	}
+
+	jsgen(env) {
+
+		env = this.env.with(Env.MACROGEN);
+
+		const walk = (node) => {
+			const operator = Tokens.OPERATORS[node.length - 1][node[0]];
+			return operator.jsgen(walk, node, env);
+		};
+
+		return `(env) => ${walk(this.ast)}`;
 	}
 
 	macrogen(env) {

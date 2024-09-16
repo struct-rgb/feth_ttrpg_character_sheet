@@ -35,6 +35,12 @@ const Iter = {
 		}
 	},
 
+	*filter(iterable, callback) {
+		for (let each of iterable) {
+			if (callback(each)) yield each;
+		}
+	},
+
 	any(iterable, predicate) {
 		for (let each of iterable) if (predicate(each)) return true;
 		return false;
@@ -448,6 +454,7 @@ class SwapText {
 	}
 
 	show(mode) {
+		if (mode == this.mode) return;
 		this.modes[this.mode].remove();
 		this.mode = mode;
 		this.root.appendChild(this.modes[this.mode]);

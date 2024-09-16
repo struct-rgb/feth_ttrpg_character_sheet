@@ -59,7 +59,7 @@ class Stats {
 				Action.UNIT_SIZE = Number(size);
 				this.refresher.refresh("unit|size");
 				return size;
-			}) 
+			})
 		});
 
 		const edit = element("input", {

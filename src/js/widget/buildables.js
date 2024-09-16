@@ -12,6 +12,30 @@
 	element, ellipse, tooltip, uniqueID, wrap
  */
 
+class BuildableModel {
+
+	import() {
+
+	}
+
+	export() {
+
+	}
+
+	clear() {
+
+	}
+
+	getTitle(object) {
+		return "Title";
+	}
+
+	getBody(object) {
+		return "Body";
+	}
+
+}
+
 /**
  * Serves as a selection input for a Buildables object.
  */
@@ -317,7 +341,7 @@ class Buildables {
 
 		this.root.appendChild(element("table", [
 			element("tr", [
-				cell(this._save, 
+				cell(this._save,
 					"Save all sheet data to this web browser's local storage."
 				),
 				cell(this._export,
@@ -571,8 +595,8 @@ class Buildables {
 		const activeID = uniqueID();
 
 		this.map.set(activeID, {
-			name        : this.model.name,
-			description : this.model.description,
+			name        : this.model.getTitle(),
+			description : this.model.getBody(),
 		});
 
 		this.category.add(activeID, {group: group ?? this.selectGroup});
@@ -682,7 +706,7 @@ class Buildables {
 
 			if (name == active) {
 				element.data = this.model.export();
-				data.active  = name; 
+				data.active  = name;
 			} else {
 				element.data = this.map.get(name);
 			}
@@ -790,3 +814,4 @@ class Buildables {
 }
 
 /* exported Buildables */
+/* exported BuildableModel */

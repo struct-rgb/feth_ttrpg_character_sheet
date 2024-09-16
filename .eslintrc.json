@@ -43,6 +43,13 @@
                 "varsIgnorePattern": "^_"
             }
         ],
+        "no-trailing-spaces": [
+            "error",
+            {
+                "skipBlankLines": true,
+                "ignoreComments": false
+            }
+        ],
         "block-scoped-var": "error",
         "default-case": "error",
         "default-param-last": "error",
