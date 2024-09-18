@@ -7,7 +7,7 @@
 
 /* global
 	Grade, Iter, SwapText, Theme, Toggle, Version,
-	capitalize, conjoin, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
+	capitalize, delimit, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
 */
 
 /* global Polish */
@@ -713,15 +713,27 @@ class Sheet {
 
 		/* Ability category */
 
+		const updateVerdictElement = ((space) =>
+			() => {
+				while (space.hasChildNodes())
+					space.removeChild(space.lastChild);
+
+				const verdict = this.checkArtsSlots();
+
+				if (verdict) space.appendChild(verdict);
+			}
+		);
+
 		let model = new CategoryModel(
 			Ability.kind, Ability.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this._abilities_verdict = document.createTextNode("");
+		this._abilities_verdict = element("div", "", "computed");
 
-		this.refresher.register(() => {
-			this._abilities_verdict.data = this.checkAbilitySlots();
-		}, ["abilities|capcost", ...skillTriggers]);
+		this.refresher.register(
+			updateVerdictElement(this._abilities_verdict),
+			["abilities|capcost", ...skillTriggers],
+		);
 
 		this.abilities = new MultiActiveCategory(model, {
 			name        : "equip",
@@ -750,11 +762,12 @@ class Sheet {
 			Art.kind, Art.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this._arts_verdict = document.createTextNode("");
+		this._arts_verdict = element("div", "", "computed");
 
-		this.refresher.register(() => {
-			this._arts_verdict.data = this.checkArtsSlots();
-		}, ["arts|slotcost", ...skillTriggers]);
+		this.refresher.register(
+			updateVerdictElement(this._arts_verdict),
+			["arts|slotcost", ...skillTriggers]
+		);
 
 		this.arts = new MultiActiveCategory(model, {
 			name        : "equip",
@@ -826,7 +839,7 @@ class Sheet {
 		});
 
 		sidebook.add("Arts", element("div", [
-			element("span", this._arts_verdict, "computed"),
+			this._arts_verdict,
 			this.arts.root,
 		]));
 
@@ -3883,7 +3896,7 @@ class Sheet {
 			if (ability.modifier("capcost") == 0) continue;
 
 			let error = capacity.count(ability);
-			if (error) return error;
+			if (error) return element("span", error);
 		}
 
 		return null;
@@ -3909,17 +3922,12 @@ class Sheet {
 		const combats    = new Sheet.ModifierCounter("combat arts"   , "slotcost" , 3);
 		const slots      = new Sheet.ModifierCounter("equipped arts" , "slotcost" , 5);
 
-		for (let art of this.arts) {
+		// we only need to check these requiorments for equipped arts
+		for (let art of this.arts.values("equip")) {
 
-			const entry = this.arts.element(art.name);
-
-			// we only care about user equipped arts for this
-			if (entry.group != "equip") continue;
-
-			// secondary pass just to do our due diligence, as at the time
-			// of this writing, some arts can be sourced as either class
-			// arts and equippables without being regrouped as class arts
-			if (this.character.class.arts.includes(art.name)) continue;
+			// check to see if we can equip this art in the first place
+			// if we can't it's already invalid and not worth assigning
+			if (!art.requires.exec().boolean) continue;
 
 			// don't count this art if it doesn't consume any slots
 			if (art.modifier("slotcost") == 0) continue;
@@ -3927,24 +3935,37 @@ class Sheet {
 			// proper arts don't come up until Rank D so we can ignore these
 			if (art.rank.all(r => Grade.toNumber(r) < 2)) continue;
 
+			// record the number of overall slots the art consumes
 			let error = slots.count(art);
-			if (error) return error;
+			if (error) return element("span", error);
 
+			// record how many tactic/combat slots the art consumes
 			error = (art.isTactical() ? tactics : combats).count(art);
-			if (error) return error;
+			if (error) return element("span", error);
 
-			// skip the next phase for arts that ignore Skill and Rank exclusion
+			// skip the next phase for arts that ignore Skill/Rank exclusion
+			// these are those with "may be equipped alongside other" effects
 			if (art.tagged("inclusive")) continue;
 
-			const keys = new Set(art.exKeys());
+			// get the set of valid Rank/Skill/Type combos for this art
+			// combos unit can't meet requirements for are filtered out
+			// since it passed the first check least one will be left
+			const keys = new Set(art.exKeys(this.predicator));
+
+			// store the art with its keys
 			arts.push({art, keys});
 		}
 
-		// sort elements in descending order of number of keys
-		const sortfn  = (a, b) => a.keys.size >= b.keys.size;
+		// this makes the error display order make more sense
+		arts.reverse();
 
-		// keeps track of which arts are possible for which key
-		const options = new Map();
+		// sort elements in descending order of number of keys
+		// we want the ones with fewer options to reserve combos
+		// first and we're taking arts off the end of the array
+		const sortfn  = (a, b) => b.keys.size - a.keys.size;
+
+		// tracks which arts are in conflict
+		const conflicts = [];
 
 		// we now need to try to assign each art a Skill/Rank/Type combo
 		while (arts.length) {
@@ -3952,47 +3973,35 @@ class Sheet {
 			// not worth writing a priority queue for this
 			arts.sort(sortfn);
 
+			// get the item with the lowest number of combo options
 			const {art, keys} = arts.pop();
 
-			for (const key of keys) {
-				if (options.has(key)) {
-					options.get(key).push(art.name);
-				} else {
-					options.set(key, [art.name]);
-				}
+			// if there are no combo options we have a conflict
+			if (keys.size == 0) {
+				conflicts.push(wrap(
+					art.name, " conflicts with ", Array.from(
+						art.exKeys(this.predicator),
+						key => `${reserve.get(key).name} (equipped as ${key})`
+					).join(", ")
+				));
+				continue;
 			}
 
-			if (keys.size == 0) return wrap(
-				art.name, " conflicts with ", Array.from(art.exKeys()).map(
-					key => `${reserve.get(key).name} (${key})`
-				).join(", ")
-			);
-
+			// select an arbitrary available combination
 			const [key] = keys;
+
+			// reserve that combination for this art
 			reserve.set(key, art);
+
+			// remove the key from the pool of available keys
 			for (let each of arts) each.keys.delete(key);
 		}
 
-		// make sure that we actually have equip things as the ranks we need
-		for (let [key, art] of reserve.entries()) {
-
-			// check to see if we can equip this as its lowest rank
-			// if not, it's already illegal and not worth worrying about
-			if (!art.requires.exec().boolean) continue;
-
-			// knowing we can equip it as its lowest rank, we check to see if
-			// we're trying to equip it as a higher rank we don't have
-			const [source, _type] = key.split(",");
-			const predicate       = this.predicator.compile(source);
-
-			if (!predicate.exec().boolean) {
-				const names = conjoin("and", options.get(key));
-				return `${names} conflict because ${source} is locked`;
-			}
-		}
-
-		return null;
+		return conflicts.length
+			? element("div", delimit(() => element("br"), conflicts))
+			: null;
 	}
+
 
 	variableUsage(filter) {
 
@@ -4067,7 +4076,7 @@ class SessionEditor {
 			}
 		});
 
-		const title = "Failed to load the session data below.";
+		const title = "Failed to load the builder.";
 
 		this.root = element("div", [
 			element("strong", title), element("br"),

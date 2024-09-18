@@ -2,7 +2,7 @@
 /* global Calculator */
 /* global process */
 
-const inBrowser = 
+const inBrowser =
 	typeof window !== "undefined" && typeof window.document !== "undefined";
 
 const inNode =
@@ -276,8 +276,6 @@ function choices(options, unique=true) {
 	}
 }
 
-choice.interactive = true;
-
 class TagSetWidget {
 
 	static TagData = function (key, row, locked) {
@@ -495,7 +493,7 @@ class Toggle {
 			this._check.data = "☑ ";
 		} else {
 			this.root.classList.remove("selected-text");
-			this._check.data = "☐ "; 
+			this._check.data = "☐ ";
 		}
 	}
 
@@ -953,7 +951,7 @@ class VariableTable {
 				edit  : true,
 				root  : "span",
 				value : 0,
-				shown : "0", 
+				shown : "0",
 				min   : 0,
 				max   : 999
 			},
@@ -961,7 +959,7 @@ class VariableTable {
 				edit  : true,
 				root  : "span",
 				value : 0,
-				shown : "0", 
+				shown : "0",
 				min   : 0,
 				max   : 999
 			},
@@ -1644,7 +1642,7 @@ function _big_damage(sheet, template) {
 	const env     = sheet.runenv;
 	const level   = assume(template.level   , 1);
 	const detail  = assume(template.detail  , false);
-	const classes = assume(template.classes , 
+	const classes = assume(template.classes ,
 		Array.from(sheet.myPresetter._class.options()).map(o => o.value)
 	);
 
@@ -1658,7 +1656,7 @@ function _big_damage(sheet, template) {
 		// get up to date values
 		sheet.refresher.refresh();
 
-		// collect them 
+		// collect them
 		columns.push({
 			name    : item.name,
 			mt      : env.read("unit|total|mt"),
@@ -1961,7 +1959,6 @@ if (typeof module !== "undefined") {
 
 }
 
-/* exported chain */
 /* exported choice */
 /* exported wrap */
 /* exported capitalize */

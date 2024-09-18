@@ -149,7 +149,7 @@ class SkillUserInterface {
 			return grade;
 		});
 
-		const body = element("tbody", 
+		const body = element("tbody",
 			skills.map(skill => {
 				const row = new Row(skill, this, sheet);
 				this[skill] = row;

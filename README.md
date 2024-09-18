@@ -22,6 +22,10 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
   * Add a Traits section below Skills to display display active Trait bonuses
   * Added an Assign > Experiences section to allow Character to feature those
   * The Macro builder generates a check macro from your Traits and Experiences
+
+#### Bugfixes
+  * Arts validation chose wrong Skill/Rank combos to equip multiskill arts as
+  * **TODO** Old bug where active item name sometimes overwrote active character name
   
 ### Version 4.3.4
   * Bugfix: Arts validation crashed for arts (Steal) with multiple skill reqs

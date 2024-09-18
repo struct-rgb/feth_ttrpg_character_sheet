@@ -22735,6 +22735,7 @@ const definitions = {
         "no crit",
         "no stats",
         "tactical",
+        "healing",
         "rework"
       ],
       "hidden": false,
@@ -26164,7 +26165,7 @@ const definitions = {
     },
     {
       "name": "Shadowstep",
-      "description": "Cannot target a foe not adjacent to an empty space. @{const}{ap}{AP Variable}; this unit teleports to an empty space adjacent to target foe before combat.",
+      "description": "Cannot target a foe unless that foe is adjacent to a space this unit can traverse.\n\n@{const}{ap}{AP Variable}; this unit teleports to an empty space adjacent to target foe before combat.",
       "requires": "All (Any (Axes C) (Swords C) (Lances C)) (Guile C)",
       "compatible": [
         "Host false",

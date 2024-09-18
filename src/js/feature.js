@@ -882,15 +882,23 @@ class Art extends Action {
 		return !(this.tagged("combo") || this.tagged("tactical"));
 	}
 
-	*exKeys() {
+	*exKeys(predicator=null) {
 
 		const ranks = this.rank instanceof Array ? this.rank : [this.rank];
 		const types = this.type instanceof Array ? this.type : [this.type];
 
 		for (let rank of ranks) {
 			for (let type of types) {
+
+				const source = `${type} ${rank}`;
+
+				if (predicator) {
+					const predicate = predicator.compile(source);
+					if (!predicate.exec().boolean) continue;
+				}
+
 				const kind = this.isTactical() ? "tactical" : "combat";
-				yield `${type} ${rank}, ${kind} art`;
+				yield `${source} ${kind} art`;
 			}
 		}
 	}
@@ -903,7 +911,7 @@ class Art extends Action {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
