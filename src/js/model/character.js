@@ -111,7 +111,7 @@ class Characters {
 		this._sf    = Class.select(() => {
 			this.class = this._class.value;
 			this.refresh();
-		});
+		}, this.refresher);
 
 		this._class = this._sf._select;
 
@@ -166,6 +166,14 @@ class Characters {
 	}
 
 	set name(value) {
+		
+		console.log(`Setting name=${JSON.stringify(value)}`);
+
+		if (Item.has(value)) {
+			console.trace(`Character: ${this.name} -> ${value}`);
+			alert("Press Ctrl-Shift-I and send Ryan a screenshot.");
+		}
+
 		this._name.value = value;
 
 		const activeID = this.sheet.cb.category.getActive();
@@ -217,7 +225,7 @@ class Characters {
 
 		if (value === undefined) throw Error();
 
-		this._class.value     = value;
+		this._sf.value        = value;
 		this._mounted.checked = this.class.hasMount();
 
 		this.refresher.refresh("Class");
@@ -503,7 +511,7 @@ class Characters {
 
 		this.clear();
 
-		this.name        = preset.name        || Characters.DEFAULT;
+		this.name        = preset.name        || Characters.DEFAULT; // TODO Investigate
 		this.description = preset.description || "Preset for a custom character.";
 
 		this.sheet.stats.import(preset);

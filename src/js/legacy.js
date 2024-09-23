@@ -716,6 +716,27 @@ function battalion(obj, to=Version.CURRENT) {
 	return obj;
 }
 
+function configuration(obj, to=Version.CURRENT) {
+
+	if (obj.version === undefined) {
+		throw new TypeError (
+			"undefined version is not supported"
+		);
+	}
+
+	if (typeof to == "string") {
+		to = new Version(to);
+	}
+
+	const version = new Version(obj.version);
+
+	if (version.older("3.4.0")) {
+		obj = structuredClone(GameConfiguraion.FbF);
+	}
+
+	return obj;
+}
+
 return {
 	character,
 	item,
@@ -723,6 +744,7 @@ return {
 	batchOfCharacters,
 	batchOfItems,
 	batchOfBattalions,
+	configuration,
 };
 
 })();

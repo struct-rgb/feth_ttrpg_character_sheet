@@ -1023,7 +1023,7 @@ class VariableTable {
 		this.CONFIG    = VariableTable.CONFIG;
 	}
 
-	static NOACTION = ((base, variable) => variable());
+	static NOACTION = ((base, variable, name) => variable());
 
 	func(name, action=VariableTable.NOACTION) {
 		const variable = new Calculator.Env(
@@ -1031,7 +1031,7 @@ class VariableTable {
 		).func(name);
 
 		return ((base) => {
-			return action(base, variable);
+			return action(base, variable, name);
 		});
 	}
 
@@ -1210,7 +1210,7 @@ const Filter = (function() {
 
 class Toggle {
 
-	constructor(title, value, check) {
+	constructor(title, value, check, dynamic=null) {
 
 		this._input = element("button", {
 			attrs   : {
@@ -1224,16 +1224,20 @@ class Toggle {
 		});
 
 		this._original = value;
-		this.checked   = value;
+		this.setChecked(value, false);
 
 		this.root = this._input;
+
+		// the select will replace this with its this
+		// value if it's set to a truthy value on creation
+		this.dynamic = dynamic;
 
 		// if (check instanceof Array) {
 
 		// 	this.swap = new SwapText([], true);
 
 		// } else {
-		this.fn   = check;
+		this.fn      = check;
 		// }
 	}
 
@@ -1246,6 +1250,14 @@ class Toggle {
 	}
 
 	set checked(value) {
+		this.setChecked(value, true);
+	}
+
+	setChecked(value, count=false) {
+
+		// expect this to be undefined in constructor
+		if (value == this.checked) return;
+
 		this._checked = value;
 
 		if (this._checked) {
@@ -1257,6 +1269,11 @@ class Toggle {
 			this._input.classList.remove("toggle-on");
 			// if (this.swap) this.swap.show(0);
 		}
+
+		// signals the Select on whether it has to listen
+		// to refresh events because this Toggle is dynamic
+		if (count && this.dynamic)
+			this.dynamic._dynamics += this._checked ? +1 : -1;
 	}
 
 	reset() {
@@ -1337,6 +1354,11 @@ class Select {
 		this._filters  = new Group(Group.AND, true);
 		this._model    = template.model;
 		this._trigger  = template.trigger;
+		
+		// number of Toggles with dynamically updating conditions
+		this._dynamics = 0;
+		// selected option to keep stickied regardness of filters
+		this._sticky   = null;
 
 		let   group   = Group.NONE;
 		const content = [];
@@ -1361,6 +1383,9 @@ class Select {
 				} else {
 					this._filters.push(item);
 				}
+
+				if (item.dynamic)
+					item.dynamic = this;
 			} 
 			else
 			if (item instanceof Group) {
@@ -1373,7 +1398,7 @@ class Select {
 		this.root = element("span", [
 			tooltip(this._select, content), 
 		]);
-	
+
 		this.filter();
 	}
 
@@ -1385,24 +1410,58 @@ class Select {
 	}
 
 	filter() {
-		while (this._select.lastChild) {
-			this._select.lastChild.remove();
-		}
 
-		for (let option of this._options) {
+		// clear the select wigdet
+		while (this._select.lastChild)
+			this._select.lastChild.remove();
+
+		// add back options that are stickied or pass the filter
+		for (const option of this._options) {
+			
 			const feature = this._model.get(option.value);
-			if (this._filters.apply(feature)) {
+
+			if (Object.is(this._sticky, feature) || this.apply(feature))
 				this._select.appendChild(option);
-			}
 		} 
+	}
+
+	refresh() {
+		// we don't want to have to update this
+		// unless any dynamic Toggles are active
+		if (this._dynamics) this.filter();
 	}
 
 	options() {
 		return this._select.childNodes;
 	}
 
+	apply(feature) {
+		return this._filters.apply(feature);
+	}
+
 	get value() {
 		return this._select.value;
+	}
+
+	set value(value) {
+
+		let   refresh = false;
+		const feature = this._model.get(value);
+
+		// check whether old sticky should be removed
+		refresh = refresh || (this._sticky && !this.apply(this._sticky));
+
+		// check whether new sticky should be inserted
+		refresh = refresh || !this.apply(feature);
+
+		// update the sticky to the new value
+		this._sticky = feature;
+
+		// if refresh is needed do it now we have the right sticky
+		if (refresh) this.filter();
+
+		// we can finally set the value
+		this._select.value = value;
 	}
 }
 

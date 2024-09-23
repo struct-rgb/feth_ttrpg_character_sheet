@@ -38,6 +38,6 @@
   "default_mainarm": "Lances",
   "default_sidearm": "None",
   "comment": "Items in growth, modifiers, and mount should be integers",
-  "tags": [],
+  "tags": ["FE3H"],
   "hidden": false
 }

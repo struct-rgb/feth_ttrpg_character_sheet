@@ -194,35 +194,190 @@ class AutosaveConfiguration {
 	}
 }
 
+class CampaignConfiguration {
+
+	static LOCAL = "CampaignConfiguration";
+
+	static FbF = {
+		"maxcap_abilities" : 18,
+		"maxcap_arts"      :  3,
+		"maxcap_tactical"  :  2,
+		"maxcap_combat"    :  2,
+	};
+
+	static CoA = {
+		"maxcap_abilities" : 30,
+		"maxcap_arts"      :  5,
+		"maxcap_tactical"  :  3,
+		"maxcap_combat"    :  3,
+	};
+
+	static DEFINED = {
+		"maxcap_abilities" : "Maximum capacity for abilities.",
+		"maxcap_arts"      : "Maximum number of slots for arts.",
+		"maxcap_tactical"  : "Maximum number of slots for tactical arts",
+		"maxcap_combat"    : "Maximum number of slots for combat arts",
+	};
+
+	static FE3H = CampaignConfiguration.CoA; 
+
+	constructor(sheet) {
+
+		this.values = {};
+
+		this.table  = new VariableTable(
+			sheet.refresher, sheet.definez, this.values, 2
+		);
+
+		this.triggers = Array.from(
+			Object.keys(CampaignConfiguration.DEFINED),
+			key => `game|${key}`
+		);
+
+		this._save = element("button", {
+			class   : ["simple-border"],
+			content : "Save Settings",
+			attrs   : {
+				onclick: (() => {
+					localStorage.setItem(
+						CampaignConfiguration.LOCAL,
+						JSON.stringify(this.export())
+					);
+					alert("Campaign settings saved.");
+				}),
+			}
+		});
+
+		this._clear   = element("button", {
+			class   : ["simple-border"],
+			content : element("span", "Set to Defaults"),
+			attrs   : {
+				onclick: (() => void this.clear()),
+			}
+		});
+
+		this.defaults = element("select", {
+			class   : ["simple-border"],
+			content : ["FbF", "CoA", "FE3H"].map(name => 
+				element("option", {content: name, attrs: {value: name}})
+			)
+		});
+
+		const update = ((base, variable, name) => {
+			this.table.refresher.refresh(name);
+			return variable();
+		});
+
+		const rows = element("tbody", [
+			this.table.row(
+				"Art Slots",
+				{
+					var  : "game|maxcap_arts",
+					call : update,
+				}
+			),
+			this.table.row(
+				"Tactical Art Slots",
+				{
+					var  : "game|maxcap_combat",
+					call : update,
+				}
+			),
+			this.table.row(
+				"Combat Art Slots",
+				{
+					var  : "game|maxcap_tactical",
+					call : update,
+				}
+			),
+			this.table.row(
+				"Ability Capacity",
+				{
+					var  : "game|maxcap_abilities",
+					call : update,
+				}
+			),
+		]);
+
+		this.root = element("fieldset", [
+			element("legend",
+				element("span", "Campaign Settings", "underline", "bold")
+			),
+			element("table", rows),
+
+			this._clear, this.defaults, element("br"),
+			this._save,
+			
+		]);
+	}
+
+	import(object) {
+
+		object = Legacy.configuration(object);
+
+		for (const key in CampaignConfiguration.DEFINED) {
+			this.values[key].value = object.values[key];
+		}
+
+		this.table.refresher.refresh(this.triggers);
+	}
+
+	export() {
+
+		const object = {
+			version : Version.CURRENT.toString(),
+			values  : {},
+		};
+
+		for (const key in this.values) {
+			object.values[key] = this.values[key].value;
+		}
+
+		return object;
+	}
+
+	clear() {
+
+		const defaults = CampaignConfiguration[this.defaults.value];
+
+		for (const key in defaults) {
+			this.values[key].value = defaults[key];
+		}
+
+		this.table.refresher.refresh(this.triggers);
+	}
+
+}
+
 /*
  * AttributeCell v/
  * ModWidget v/
  * ReqWidget
 
 	 new Set([
-	    "Brawl", v/
-	    "Level", v/
-	    "Swords", v/
-	    "Lances", v/
-	    "Riding", v/
-	    "Class", v/
-	    "Flying", v/
-	    "Armor", v/
-	    "Bows", v/
-	    "Axes", v/
-	    "Authority", v/
-	    "ClassType", v/
-	    "Faith", v/
-	    "Guile", v/
-	    "Reason", v/
-	    "Other", v/
-	    "Item",
-	    "Crest", v/
+	    "Brawl", v/ L/
+	    "Level", v/ L/
+	    "Swords", v/ L/
+	    "Lances", v/ L/
+	    "Riding", v/ L/
+	    "Class", v/ L/
+	    "Flying", v/ L/
+	    "Armor", v/ L/
+	    "Bows", v/ L/
+	    "Axes", v/ L/
+	    "Authority", v/ L/
+	    "ClassType", v/ L/
+	    "Faith", v/ L/
+	    "Guile", v/ L/
+	    "Reason", v/ L/
+	    "Other", v/ L/
+	    "Item", 
+	    "Crest", v/ L/
 	    "Equipment",
 	    "Permission",
 	    "Adjutant",
-	    "Training", v/
-	    "Outfitting" v/
+	    "Training", v/ L/
+	    "Outfitting" v/ L/
 	])
 
  * VisualAid v/
@@ -577,6 +732,14 @@ class Sheet {
 			Gambit.byName.set(gambit.name, gambit);
 		}
 
+		this.gameConfig = new CampaignConfiguration(this);
+
+		Object.prototype.hasOwnProperty.call(localStorage, CampaignConfiguration.LOCAL)
+			? this.gameConfig.import(
+				JSON.parse(localStorage.getItem(CampaignConfiguration.LOCAL))
+			)
+			: this.gameConfig.clear();
+
 		/* populate skills, stats, and growths */
 		this.stats = new Stats(data.stats.names, this);
 		stats_section.appendChild(this.stats.root);
@@ -707,18 +870,14 @@ class Sheet {
 			this.stats.pointbuy.root,
 		]));
 
-		const skillTriggers = definitions.skills.map(
-			skill => `unit|rank|${skill}`
-		);
-
 		/* Ability category */
 
-		const updateVerdictElement = ((space) =>
+		const updateVerdictElement = ((space, method) =>
 			() => {
 				while (space.hasChildNodes())
 					space.removeChild(space.lastChild);
 
-				const verdict = this.checkArtsSlots();
+				const verdict = method();
 
 				if (verdict) space.appendChild(verdict);
 			}
@@ -731,8 +890,14 @@ class Sheet {
 		this._abilities_verdict = element("div", "", "computed");
 
 		this.refresher.register(
-			updateVerdictElement(this._abilities_verdict),
-			["abilities|capcost", ...skillTriggers],
+			updateVerdictElement(
+				this._abilities_verdict,
+				() => this.checkAbilitySlots(),
+			),
+			[
+				"abilities|capcost", "game|maxcap_abilities", "unit|level",
+				...definitions.skills
+			]
 		);
 
 		this.abilities = new MultiActiveCategory(model, {
@@ -745,7 +910,7 @@ class Sheet {
 			ontoggle    : refresh,
 			onadd       : equip("abilities"),
 			onremove    : unequip("abilities"),
-			select      : Ability.select(),
+			select      : Ability.select(null, this.refresher),
 			refresher   : this.refresher,
 			groupShowTitle : capitalize,
 			groupReorderable : false,
@@ -765,8 +930,14 @@ class Sheet {
 		this._arts_verdict = element("div", "", "computed");
 
 		this.refresher.register(
-			updateVerdictElement(this._arts_verdict),
-			["arts|slotcost", ...skillTriggers]
+			updateVerdictElement(
+				this._arts_verdict,
+				() => this.checkArtsSlots(),
+			),
+			[
+				"arts|slotcost", "game|maxcap_arts", "game|maxcap_combat",
+				"game|maxcap_combat", "unit|level", ...definitions.skills
+			]
 		);
 
 		this.arts = new MultiActiveCategory(model, {
@@ -831,7 +1002,7 @@ class Sheet {
 			}),
 			onadd       : equip("arts"),
 			onremove    : unequip("arts"),
-			select      : Art.select(),
+			select      : Art.select(null, this.refresher),
 			refresher   : this.refresher,
 			groupShowTitle : capitalize,
 			groupReorderable : false,
@@ -909,7 +1080,7 @@ class Sheet {
 			name         : "items",
 			empty        : "No items",
 			model        : this.inv,
-			sortfilter   : Item.select(),
+			sortfilter   : Item.select(null, this.refresher),
 			update       : Legacy.item,
 			selectGroup  : "convoy",
 			groups       : ["inventory", "convoy"],
@@ -1130,7 +1301,15 @@ class Sheet {
 			])
 		);
 
-		tools.add("Configure", configure);
+		const subconf   = new Notebook(undefined, true);
+
+		subconf.add("Application", configure);
+
+		subconf.add("Campaign", this.gameConfig.root);
+
+		subconf.active = "Application";
+
+		tools.add("Configure", subconf.root);
 
 		tools.active = "Configure";
 
@@ -1358,6 +1537,18 @@ class Sheet {
 		// 88  88  88    88      `Y8b. 8b
 		// 88  88  88   .88.   db   8D Y8b  d8
 		// YP  YP  YP Y888888P `8888Y'  `Y88P'
+		
+
+		for (const key in CampaignConfiguration.DEFINED) {
+
+			const defined  = CampaignConfiguration.DEFINED;
+
+			add({
+				name  : `game|${key}`,
+				about : defined[key],
+				expr  : ((env) => this.gameConfig.values[key].value),
+			});
+		}
 
 		add({
 			name  : "other|trigger",
@@ -3877,7 +4068,9 @@ class Sheet {
 
 		// for counting slot capacity restrictions
 		const capacity = new Sheet.ModifierCounter(
-			"equipped abilities", "capcost", 18
+			"equipped abilities", "capcost", this.runenv.read(
+				"game|maxcap_abilities"
+			)
 		);
 
 		for (let ability of this.abilities) {
@@ -3918,11 +4111,17 @@ class Sheet {
 		const reserve = new Map();
 
 		// for counting slot number restrictions
-		const tactics    = new Sheet.ModifierCounter("tactical arts" , "slotcost" , 3);
-		const combats    = new Sheet.ModifierCounter("combat arts"   , "slotcost" , 3);
-		const slots      = new Sheet.ModifierCounter("equipped arts" , "slotcost" , 5);
+		const tactics = new Sheet.ModifierCounter(
+			"tactical arts", "slotcost", this.runenv.read("game|maxcap_tactical")
+		);
+		const combats = new Sheet.ModifierCounter(
+			"combat arts", "slotcost", this.runenv.read("game|maxcap_combat")
+		);
+		const slots = new Sheet.ModifierCounter(
+			"equipped arts", "slotcost", this.runenv.read("game|maxcap_arts")
+		);
 
-		// we only need to check these requiorments for equipped arts
+		// we only need to check these requirements for equipped arts
 		for (let art of this.arts.values("equip")) {
 
 			// check to see if we can equip this art in the first place
@@ -4002,7 +4201,6 @@ class Sheet {
 			: null;
 	}
 
-
 	variableUsage(filter) {
 
 		const use = new Map();
@@ -4054,7 +4252,7 @@ class SessionEditor {
 
 		this._erase = element("button", {
 			class   : ["simple-border"],
-			content : "Erase Data",
+			content : "Erase Data and Reload",
 			attrs   : {
 				onclick : (() => this.erase())
 			}
@@ -4062,7 +4260,7 @@ class SessionEditor {
 
 		this._refresh = element("button", {
 			class   : ["simple-border"],
-			content : "Reload Data",
+			content : "Undo All Changes",
 			attrs   : {
 				onclick : (() => this.refresh())
 			}
@@ -4070,13 +4268,17 @@ class SessionEditor {
 
 		this._overwrite = element("button", {
 			class   : ["simple-border"],
-			content : "Overwrite Data",
+			content : "Overwrite Data and Reload",
 			attrs   : {
 				onclick : (() => this.overwrite())
 			}
 		});
 
-		const title = "Failed to load the builder.";
+		const title = wrap(
+			"Failed to load the builder. ",
+			"Raw session data is available below. ",
+			"Press Ctrl-Shift-I to get error information."
+		);
 
 		this.root = element("div", [
 			element("strong", title), element("br"),

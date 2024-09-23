@@ -11,22 +11,47 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
-### Version 4.4.0
+### Version 4.5.0
 
 #### Equipment and Inventory
   * Made feature list widgets more generic in how their selection sets operate
   * Eliminated equipment as a category and rolled it into Create > Inventory
   * Create > Invetory was redesigned to prominently feature equipment
 
+#### Bugfixes
+  * **TODO** Old bug where active item name sometimes overwrote active character name
+
+### Version 4.4.0
+
+#### General
+  * Added Tools > Configure > Campaign tab for campaign specific rules settings
+  * Moved other configuration options to Tools > Configure > Application
+  * Adding a new Character or Item adds it to the set "Move To" group by default
+  * Added "Passes Requirements" filter to Items, Abilities, Arts, and Gambits
+  * Campaign filters were added to classes
+  * Improved Character and Item load times
+
 #### Traits and Experiences
-  * Add a Traits section below Skills to display display active Trait bonuses
-  * Added an Assign > Experiences section to allow Character to feature those
+  * Added a Traits section below Skills to display active Trait bonuses
+  * Added an Assign > Experiences section to allow Characters to feature those
   * The Macro builder generates a check macro from your Traits and Experiences
 
 #### Bugfixes
+  * Other Prowess now consumes zero capacity.
+  * Venin attribute now prompts wielder for use.
+  * Level requirements are no longer wrongly ignored if a unit exceeds SRRs.
+  * Class & item template filters no longer remove the selected option.
   * Arts validation chose wrong Skill/Rank combos to equip multiskill arts as
-  * **TODO** Old bug where active item name sometimes overwrote active character name
-  
+
+#### Game Data
+  * Clarified wording on Twinned Shot
+  * FE3H monster classes moved to the FE3H campaign label
+
+#### New Crash Screen
+  * Added a better crash screen for when the builder fails to load on you
+  * Raw save data can be manually edited or erased (do this at your own peril)
+  * Can be found at Tools > Configure > Application as "Launch Session Editor"
+
 ### Version 4.3.4
   * Bugfix: Arts validation crashed for arts (Steal) with multiple skill reqs
 

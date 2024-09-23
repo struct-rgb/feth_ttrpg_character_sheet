@@ -251,7 +251,7 @@ class Items {
 		this._sf = Item.select(() => {
 			this.template = this._select.value;
 			this.refresh();
-		});
+		}, this.refresher);
 
 		this._select = this._sf._select;
 
@@ -617,7 +617,7 @@ class Items {
 		if (activeID === null) return;
 
 		const element = this.sheet.wb.category.element(activeID);
-		element.title = this.name;
+		element.title = this._name.value;
 	}
 
 	get description() {
@@ -646,8 +646,8 @@ class Items {
 
 	set template(value) {
 
-		this._template     = Item.get(value);
-		this._select.value = value;
+		this._template = Item.get(value);
+		this._sf.value = value;
 
 		this.refresh();
 
@@ -780,7 +780,7 @@ class Items {
 		this.information = "";
 		this.rank        = 0;
 		this.price       = 0;
-		this.name        = preset || Item.DEFAULT;
+		this.name        = preset || Item.DEFAULT; // TODO investigate
 		this.template    = preset || Item.DEFAULT;
 		this._custom_tags.clear();
 		this._base.value = 0;

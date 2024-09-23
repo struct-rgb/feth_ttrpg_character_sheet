@@ -15,7 +15,7 @@
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": 3,
+        "tpcost": "fill affirm([Venin?], 3, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0
