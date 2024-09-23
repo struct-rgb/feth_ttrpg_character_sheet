@@ -7,7 +7,7 @@
 
 /* global
 	Grade, Iter, SwapText, Theme, Toggle, Version,
-	capitalize, conjoin, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
+	capitalize, delimit, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
 */
 
 /* global Polish */
@@ -22,8 +22,12 @@
 
 /* global Presetter */
 
+/* global Checks */
+
+/* global Experiences */
+
 /* global
-	Ability, Action, Adjutant, Art, Attribute, Class, Condition, Equipment, 
+	Ability, Action, Adjutant, Art, Attribute, Class, Condition, Equipment,
 	Feature, Gambit, Item, Preset, Tile
 */
 
@@ -51,7 +55,7 @@
  * but until I decide to change this, this todo will
  * remain here to remind me of the various uses below.
  */
- 
+
 /* global definitions */
 
 /* global Buildables */
@@ -149,7 +153,7 @@ class AutosaveConfiguration {
 
 	export() {
 		return {
-			number     : Number(this._input.value),  
+			number     : Number(this._input.value),
 			multiplier : (
 				this._radios
 					.filter(radio => radio.checked)[0]
@@ -190,35 +194,190 @@ class AutosaveConfiguration {
 	}
 }
 
+class CampaignConfiguration {
+
+	static LOCAL = "CampaignConfiguration";
+
+	static FbF = {
+		"maxcap_abilities" : 18,
+		"maxcap_arts"      :  3,
+		"maxcap_tactical"  :  2,
+		"maxcap_combat"    :  2,
+	};
+
+	static CoA = {
+		"maxcap_abilities" : 30,
+		"maxcap_arts"      :  5,
+		"maxcap_tactical"  :  3,
+		"maxcap_combat"    :  3,
+	};
+
+	static DEFINED = {
+		"maxcap_abilities" : "Maximum capacity for abilities.",
+		"maxcap_arts"      : "Maximum number of slots for arts.",
+		"maxcap_tactical"  : "Maximum number of slots for tactical arts",
+		"maxcap_combat"    : "Maximum number of slots for combat arts",
+	};
+
+	static FE3H = CampaignConfiguration.CoA; 
+
+	constructor(sheet) {
+
+		this.values = {};
+
+		this.table  = new VariableTable(
+			sheet.refresher, sheet.definez, this.values, 2
+		);
+
+		this.triggers = Array.from(
+			Object.keys(CampaignConfiguration.DEFINED),
+			key => `game|${key}`
+		);
+
+		this._save = element("button", {
+			class   : ["simple-border"],
+			content : "Save Settings",
+			attrs   : {
+				onclick: (() => {
+					localStorage.setItem(
+						CampaignConfiguration.LOCAL,
+						JSON.stringify(this.export())
+					);
+					alert("Campaign settings saved.");
+				}),
+			}
+		});
+
+		this._clear   = element("button", {
+			class   : ["simple-border"],
+			content : element("span", "Set to Defaults"),
+			attrs   : {
+				onclick: (() => void this.clear()),
+			}
+		});
+
+		this.defaults = element("select", {
+			class   : ["simple-border"],
+			content : ["FbF", "CoA", "FE3H"].map(name => 
+				element("option", {content: name, attrs: {value: name}})
+			)
+		});
+
+		const update = ((base, variable, name) => {
+			this.table.refresher.refresh(name);
+			return variable();
+		});
+
+		const rows = element("tbody", [
+			this.table.row(
+				"Art Slots",
+				{
+					var  : "game|maxcap_arts",
+					call : update,
+				}
+			),
+			this.table.row(
+				"Tactical Art Slots",
+				{
+					var  : "game|maxcap_combat",
+					call : update,
+				}
+			),
+			this.table.row(
+				"Combat Art Slots",
+				{
+					var  : "game|maxcap_tactical",
+					call : update,
+				}
+			),
+			this.table.row(
+				"Ability Capacity",
+				{
+					var  : "game|maxcap_abilities",
+					call : update,
+				}
+			),
+		]);
+
+		this.root = element("fieldset", [
+			element("legend",
+				element("span", "Campaign Settings", "underline", "bold")
+			),
+			element("table", rows),
+
+			this._clear, this.defaults, element("br"),
+			this._save,
+			
+		]);
+	}
+
+	import(object) {
+
+		object = Legacy.configuration(object);
+
+		for (const key in CampaignConfiguration.DEFINED) {
+			this.values[key].value = object.values[key];
+		}
+
+		this.table.refresher.refresh(this.triggers);
+	}
+
+	export() {
+
+		const object = {
+			version : Version.CURRENT.toString(),
+			values  : {},
+		};
+
+		for (const key in this.values) {
+			object.values[key] = this.values[key].value;
+		}
+
+		return object;
+	}
+
+	clear() {
+
+		const defaults = CampaignConfiguration[this.defaults.value];
+
+		for (const key in defaults) {
+			this.values[key].value = defaults[key];
+		}
+
+		this.table.refresher.refresh(this.triggers);
+	}
+
+}
+
 /*
  * AttributeCell v/
  * ModWidget v/
  * ReqWidget
 
 	 new Set([
-	    "Brawl", v/
-	    "Level", v/
-	    "Swords", v/
-	    "Lances", v/
-	    "Riding", v/
-	    "Class", v/
-	    "Flying", v/
-	    "Armor", v/
-	    "Bows", v/
-	    "Axes", v/
-	    "Authority", v/
-	    "ClassType", v/
-	    "Faith", v/
-	    "Guile", v/
-	    "Reason", v/
-	    "Other", v/
+	    "Brawl", v/ L/
+	    "Level", v/ L/
+	    "Swords", v/ L/
+	    "Lances", v/ L/
+	    "Riding", v/ L/
+	    "Class", v/ L/
+	    "Flying", v/ L/
+	    "Armor", v/ L/
+	    "Bows", v/ L/
+	    "Axes", v/ L/
+	    "Authority", v/ L/
+	    "ClassType", v/ L/
+	    "Faith", v/ L/
+	    "Guile", v/ L/
+	    "Reason", v/ L/
+	    "Other", v/ L/
 	    "Item", 
-	    "Crest", v/
+	    "Crest", v/ L/
 	    "Equipment",
 	    "Permission",
 	    "Adjutant",
-	    "Training", v/
-	    "Outfitting" v/
+	    "Training", v/ L/
+	    "Outfitting" v/ L/
 	])
 
  * VisualAid v/
@@ -227,6 +386,7 @@ class AutosaveConfiguration {
 class Refresher {
 
 	constructor(sheet) {
+
 		this.items     = new Map();
 		this.propagate = new Map();
 		this.triggers  = new Map();
@@ -234,7 +394,7 @@ class Refresher {
 		this.group     = null;
 		this.flight    = false;
 		this.sheet     = sheet; // TODO ugly hack
-		this.defer     = false;
+		this.defer     = 0;
 
 		// for debugging memory management issues
 		this.snaps     = [];
@@ -271,6 +431,35 @@ class Refresher {
 		return group;
 	}
 
+	/**
+	 * Adds one to the "wait depth" of the refresher. The "wait depth" defers
+	 * cleaning of any elements until the refresher has encountered a call to
+	 * signal for each call to wait (similar to a semaphore). This is useful
+	 * for if you make a lot of programmatic changes to elements that trigger
+	 * automatic updates when their value is modified.
+	 * @return {Number} "wait depth" after modification
+	 */
+	wait() {
+		return ++this.defer;
+	}
+
+	/**
+	 * Decreases the "wait depth" of the refresher, and if the "wait depth" is
+	 * reduced to zero, cleans all dirty elements.
+	 * @return {Number} number of elements cleaned
+	 */
+	signal() {
+		--this.defer;
+		return this.clean();
+	}
+
+	/**
+	 * Registers an element to be refreshed when certain event occur
+	 * @param  {Refreshable}   element   element to refresh
+	 * @param  {Array<String>} triggers  events that cause element to refresh
+	 * @param  {Array<String>} propagate events to propagate this refresh to
+	 * @return {Boolean}                 true if registration was a success
+	 */
 	register(element, triggers, propagate=[]) {
 
 		if (this.items.has(element)) return false;
@@ -292,6 +481,11 @@ class Refresher {
 	}
 
 
+	/**
+	 * Marks elements with the given event(s) registered as being out of date
+	 * ("dirty") and in need of refreshing at a later point in time.
+	 * @param  {String|Array<String>} value event(s) to access element for
+	 */
 	soil(value) {
 		if (typeof value == "string" || value instanceof String) {
 
@@ -330,6 +524,10 @@ class Refresher {
 		throw new Error(`No element, group, or trigger for '${value}'`);
 	}
 
+	/**
+	 * Refreshes all elements marked as out of date ("dirty") by soil
+	 * @return {Number} the number of elements refreshed
+	 */
 	clean() {
 
 		// Defer actual updates until they're enabled again
@@ -352,6 +550,13 @@ class Refresher {
 		return count;
 	}
 
+	/**
+	 * Refreshes the elements registered with the event(s) provided. Avoids
+	 * unbounded recursion by first recursively soiling all affected elements
+	 * and then cleaning them once at the end of the operation.
+	 * @param  {String|Array<String>} value events for the elements to refresh
+	 * @return {Number}                     number of elements refreshed
+	 */
 	refresh(value) {
 
 		if (value === undefined) {
@@ -363,6 +568,11 @@ class Refresher {
 		return this.clean();
 	}
 
+	/**
+	 * Remove the registraction of an element from the refresher.
+	 * @param  {Refreshable|Set<Refreshable>} value element to remove
+	 * @return {Number}                       number of elements removed
+	 */
 	delete(value) {
 
 		if (value instanceof Set) {
@@ -388,12 +598,16 @@ class Refresher {
 		return 0;
 	}
 
-	all() {
-		for (let each of this.items.keys()) {
-			if (this.dirty.has(each)) this.dirty.delete(each);
-			each.refresh();
-		}
-	}
+	/**
+	 * Refresh all dirty
+	 * @return {[type]} [description]
+	 */
+	// all() {
+	// 	for (let each of this.items.keys()) {
+	// 		if (this.dirty.has(each)) this.dirty.delete(each);
+	// 		each.refresh();
+	// 	}
+	// }
 
 }
 
@@ -518,6 +732,14 @@ class Sheet {
 			Gambit.byName.set(gambit.name, gambit);
 		}
 
+		this.gameConfig = new CampaignConfiguration(this);
+
+		Object.prototype.hasOwnProperty.call(localStorage, CampaignConfiguration.LOCAL)
+			? this.gameConfig.import(
+				JSON.parse(localStorage.getItem(CampaignConfiguration.LOCAL))
+			)
+			: this.gameConfig.clear();
+
 		/* populate skills, stats, and growths */
 		this.stats = new Stats(data.stats.names, this);
 		stats_section.appendChild(this.stats.root);
@@ -525,8 +747,10 @@ class Sheet {
 		this.skills = new Skills.UserInterface(data.skills, this);
 		skill_section.appendChild(this.skills.root);
 
-		// this.checks = new Checks.UserInterface(definitions.traits, this);
-		// skill_section.appendChild(this.checks.root);
+		skill_section.appendChild(element("hr"));
+
+		this.checks = new Checks.UserInterface(definitions.traits, this);
+		skill_section.appendChild(this.checks.root);
 
 		/* create callbacks for category events */
 		const refresh = (category, key) => {
@@ -576,10 +800,10 @@ class Sheet {
 
 				/* get the element in questions from the category */
 				const element = category.element(key);
-				
+
 				/* either the classes abilites or arts array */
 				const array   = this.character.class[type];
-				
+
 				/* check if this element is a class ability/art */
 				const index   = array.findIndex(name => name == key);
 
@@ -603,7 +827,7 @@ class Sheet {
 
 		this.tabs = {};
 
-		const myFeatureTitle = ((feature) => feature.title()); 
+		const myFeatureTitle = ((feature) => feature.title());
 		const myFeatureBody  = ((feature, refresher) => feature.body(false, refresher));
 		const myTriggers     = ((feature) => feature.affects);
 
@@ -646,21 +870,35 @@ class Sheet {
 			this.stats.pointbuy.root,
 		]));
 
-		const skillTriggers = definitions.skills.map(
-			skill => `unit|rank|${skill}`
-		);
-
 		/* Ability category */
+
+		const updateVerdictElement = ((space, method) =>
+			() => {
+				while (space.hasChildNodes())
+					space.removeChild(space.lastChild);
+
+				const verdict = method();
+
+				if (verdict) space.appendChild(verdict);
+			}
+		);
 
 		let model = new CategoryModel(
 			Ability.kind, Ability.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this._abilities_verdict = document.createTextNode("");
-		
-		this.refresher.register(() => {
-			this._abilities_verdict.data = this.checkAbilitySlots();
-		}, ["abilities|capcost", ...skillTriggers]);
+		this._abilities_verdict = element("div", "", "computed");
+
+		this.refresher.register(
+			updateVerdictElement(
+				this._abilities_verdict,
+				() => this.checkAbilitySlots(),
+			),
+			[
+				"abilities|capcost", "game|maxcap_abilities", "unit|level",
+				...definitions.skills
+			]
+		);
 
 		this.abilities = new MultiActiveCategory(model, {
 			name        : "equip",
@@ -672,7 +910,7 @@ class Sheet {
 			ontoggle    : refresh,
 			onadd       : equip("abilities"),
 			onremove    : unequip("abilities"),
-			select      : Ability.select(),
+			select      : Ability.select(null, this.refresher),
 			refresher   : this.refresher,
 			groupShowTitle : capitalize,
 			groupReorderable : false,
@@ -689,11 +927,18 @@ class Sheet {
 			Art.kind, Art.byName, myFeatureTitle, myFeatureBody, myTriggers
 		);
 
-		this._arts_verdict = document.createTextNode("");
+		this._arts_verdict = element("div", "", "computed");
 
-		this.refresher.register(() => {
-			this._arts_verdict.data = this.checkArtsSlots();
-		}, ["arts|slotcost", ...skillTriggers]);
+		this.refresher.register(
+			updateVerdictElement(
+				this._arts_verdict,
+				() => this.checkArtsSlots(),
+			),
+			[
+				"arts|slotcost", "game|maxcap_arts", "game|maxcap_combat",
+				"game|maxcap_combat", "unit|level", ...definitions.skills
+			]
+		);
 
 		this.arts = new MultiActiveCategory(model, {
 			name        : "equip",
@@ -718,7 +963,7 @@ class Sheet {
 
 				// Alright so we're activating one now, it seems.
 				const art      = Art.get(key);
-				const active   = category.getActiveValues();				
+				const active   = category.getActiveValues();
 
 				// Assumes zero or one tactical arts active.
 				if (art.isTactical()) {
@@ -748,7 +993,7 @@ class Sheet {
 					// Guard against a third being activated.
 					if (swap.length == 2) return;
 				}
-				
+
 				// Then just activate this one.
 				category.toggleActive(key);
 
@@ -757,7 +1002,7 @@ class Sheet {
 			}),
 			onadd       : equip("arts"),
 			onremove    : unequip("arts"),
-			select      : Art.select(),
+			select      : Art.select(null, this.refresher),
 			refresher   : this.refresher,
 			groupShowTitle : capitalize,
 			groupReorderable : false,
@@ -765,7 +1010,7 @@ class Sheet {
 		});
 
 		sidebook.add("Arts", element("div", [
-			element("span", this._arts_verdict, "computed"),
+			this._arts_verdict,
 			this.arts.root,
 		]));
 
@@ -789,6 +1034,9 @@ class Sheet {
 
 		sidebook.add("Equipment", this.equipment.root);
 
+		this.experiences = new Experiences();
+		sidebook.add("Experiences", this.experiences.root);
+
 		/* battalions tab for test */
 		this.battalion  = new Battalions(this);
 
@@ -800,7 +1048,7 @@ class Sheet {
 		this.tabs.main = notebook;
 
 		const buildnb = new Notebook([notebook.root, class_section]);
-		
+
 		this.character = new Characters(this);
 
 		const character_bb = new Buildables({
@@ -828,7 +1076,7 @@ class Sheet {
 			name         : "items",
 			empty        : "No items",
 			model        : this.item,
-			sortfilter   : Item.select(),
+			sortfilter   : Item.select(null, this.refresher),
 			update       : Legacy.item,
 			selectGroup  : "convoy",
 			groups       : ["inventory", "convoy"],
@@ -935,7 +1183,7 @@ class Sheet {
 					getBody: (function(object) {
 						return element("span", object.description, "trunc");
 					}),
-					
+
 					import : (function(object) {
 						this.name = object.name;
 						this.data = object;
@@ -944,7 +1192,7 @@ class Sheet {
 					export : (function() {
 						return this.data;
 					}),
-					
+
 					clear  : (function(template) {
 						console.log(template);
 						this.name = model_data.name;
@@ -982,7 +1230,7 @@ class Sheet {
 		const legacy_button = element("input", {
 			class : ["simple-border"],
 			attrs : {
-				type    : "button", 
+				type    : "button",
 				value   : "Convert & Import Legacy Characters",
 				onclick : (() => {
 					this.legacy();
@@ -1006,6 +1254,22 @@ class Sheet {
 		this._autosave_conf = new AutosaveConfiguration(this);
 
 		configure.appendChild(this._autosave_conf.root);
+
+		configure.appendChild(
+			element("fieldset", [
+				element("legend", element("strong", "Troubleshoot")),
+				element("input", {
+					class : ["simple-border"],
+					attrs : {
+						type    : "button",
+						value   : "Launch Session Editor",
+						onclick : (() =>
+							void SessionEditor.startLaunch()
+						),
+					}
+				})
+			])
+		);
 
 		this.themes  = new SingleActiveCategory(model, {
 			empty       : "If you're reading this, there is no theme",
@@ -1033,7 +1297,15 @@ class Sheet {
 			])
 		);
 
-		tools.add("Configure", configure);
+		const subconf   = new Notebook(undefined, true);
+
+		subconf.add("Application", configure);
+
+		subconf.add("Campaign", this.gameConfig.root);
+
+		subconf.active = "Application";
+
+		tools.add("Configure", subconf.root);
 
 		tools.active = "Configure";
 
@@ -1064,7 +1336,7 @@ class Sheet {
 			content : [
 				skill_section,
 				stats_section,
-				element("div", { 
+				element("div", {
 					class   : ["span-3"],
 					content : class_section,
 				}),
@@ -1100,11 +1372,11 @@ class Sheet {
 			return (
 				env.runtime
 					? args.reduce((a, b) => a + b, 0)
-					: args.reduce((a, b) => 
+					: args.reduce((a, b) =>
 						a != 0
-							? (b != 0 
+							? (b != 0
 								? `${a} + ${b}`
-								: a) 
+								: a)
 							: b,
 					0)
 			);
@@ -1178,7 +1450,7 @@ class Sheet {
 						const modifier = feature.modifier(field, env);
 						if (modifier == 0) continue;
 
-						a = sum(env, a, label(env, feature.name, modifier)); 
+						a = sum(env, a, label(env, feature.name, modifier));
 					}
 
 					return a;
@@ -1254,13 +1526,25 @@ class Sheet {
 			}
 			return value;
 		}
-		
+
 		// .88b  d88. d888888b .d8888.  .o88b.
 		// 88'YbdP`88   `88'   88'  YP d8P  Y8
 		// 88  88  88    88    `8bo.   8P
 		// 88  88  88    88      `Y8b. 8b
 		// 88  88  88   .88.   db   8D Y8b  d8
 		// YP  YP  YP Y888888P `8888Y'  `Y88P'
+		
+
+		for (const key in CampaignConfiguration.DEFINED) {
+
+			const defined  = CampaignConfiguration.DEFINED;
+
+			add({
+				name  : `game|${key}`,
+				about : defined[key],
+				expr  : ((env) => this.gameConfig.values[key].value),
+			});
+		}
 
 		add({
 			name  : "other|trigger",
@@ -1386,11 +1670,80 @@ class Sheet {
 			expr  : ((env) => {
 				let highest = 0;
 				for (let name of this.skills.names) {
-					const grade = Grade.toNumber(this.skills[name].grade); 
+					const grade = Grade.toNumber(this.skills[name].grade);
 					highest     = Math.max(highest, grade);
 				}
 				return highest;
 			}),
+		});
+
+		for (let each in definitions.traits) {
+
+			const trait = each;
+
+			add({
+				name  : `unit|trait|${trait}|rank`,
+				about : wrap(),
+				expr  : ((env) => {
+					return Checks.rank(this, trait);
+				}),
+			});
+
+			add({
+				name  : `unit|trait|${trait}|bonus`,
+				about : wrap(),
+				expr  : ((env) =>  {
+					return Checks.bonus(this, trait);
+				}),
+			});
+		}
+
+		add({
+			name  : "unit|traits",
+			about : "Select for which trait to roll a check with.",
+			expr  : `
+				label [trait] {
+					ask [Trait?]
+						case [Athletics] {unit|trait|Athletics|bonus}
+						case [Precision] {unit|trait|Precision|bonus}
+						case [Endurance] {unit|trait|Endurance|bonus}
+						case [Canniness] {unit|trait|Canniness|bonus}
+						case [Spirit]    {unit|trait|Spirit|bonus}
+						case [Acuity]    {unit|trait|Acuity|bonus}
+					end
+				}
+			`
+		});
+
+		add({
+			name  : "unit|experiences",
+			about : "Select for which experience to roll a check with.",
+			expr  : ((env) => {
+
+				// not relevant for use in sheet
+				if (env.runtime) return 0;
+
+				const m = new Macros.Builder();
+				const e = ["Experience?", "No Experience", 0];
+
+				for (let record of this.experiences.records.values()) {
+					e.push(record.phrase, record.bonus);
+				}
+
+				const macro = m.merge(m.prompt(...e)).join("");
+				return label(env, "experience", macro);
+			})
+		});
+
+		add({
+			name  : "unit|ease",
+			about : "Check ease for this unit.",
+			expr  : `
+				label [ease] {ask [Ease?] end}
+					+ unit|traits
+					+ unit|experiences
+					+ ask [Other Modifiers?] end
+			`
 		});
 
 		// d888888b d8888b. d888888b  .d8b.  d8b   db  d888b  db      d88888b
@@ -1517,7 +1870,7 @@ class Sheet {
 
 			add({
 				name  : `unit|base|${name}`,
-				about : 
+				about :
 					`The unit's base ${name} statistic before modifiers.`
 				,
 				expr  : ((env) => {
@@ -1639,9 +1992,9 @@ class Sheet {
 				}));
 			}
 
-			prime.push(add({ // TODO HIDDEN CODE
+			prime.push(add({
 				name  : `abilities|${name}`,
-				about : 
+				about :
 					`The sum of all ${name} modifiers from active abilities.`
 				,
 				expr  : abilityfunc(name),
@@ -1682,8 +2035,8 @@ class Sheet {
 		//    88    88ooo88 88      88      88ooooo 88   88
 		//    88    88~~~88 88  ooo 88  ooo 88~~~~~ 88   88
 		//    88    88   88 88. ~8~ 88. ~8~ 88.     88  .8D
-		//    YP    YP   YP  Y888P   Y888P  Y88888P Y8888D'		
-		
+		//    YP    YP   YP  Y888P   Y888P  Y88888P Y8888D'
+
 		add({
 			name  : "unit|tagged|healing",
 			about : wrap(
@@ -1703,8 +2056,9 @@ class Sheet {
 		let item_tags = new Set();
 
 		for (let item of Iter.chain(definitions.items, definitions.attributes)) {
+
 			for (let tag of item.tags) {
-				
+
 				const name       = tag;
 				const identifier = Calculator.asIdentifier(tag);
 				if (item_tags.has(tag)) continue;
@@ -2030,7 +2384,7 @@ class Sheet {
 				"The number of combat arts with an Axes, Swords, Lances, Brawl, ",
 				"or Bows skill type."
 			),
-			expr  : ((env) => 
+			expr  : ((env) =>
 				this.arts.getActiveValues().count((art) => {
 					const number = Item.TYPE.asNumber(art.type);
 					return !art.isTactical() && 1 <= number && number <= 5;
@@ -2043,7 +2397,7 @@ class Sheet {
 			about : wrap(
 				"The number of combat arts with a Faith, Guile, or Reason skill type."
 			),
-			expr  : ((env) => 
+			expr  : ((env) =>
 				this.arts.getActiveValues().count((art) => {
 					const number = Item.TYPE.asNumber(art.type);
 					return !art.isTactical() && 6 <= number && number <= 8;
@@ -2067,7 +2421,7 @@ class Sheet {
 			about : wrap(
 				"A flag; 1 if a tactial art is active and 0 otherwise.",
 			),
-			expr  : ((env) => { // TODO make more efficient
+			expr  : ((env) => {
 				return Number(this.arts.getActiveValues().any(
 					art => art.tagged("tactical")
 				));
@@ -2083,7 +2437,7 @@ class Sheet {
 				return this.arts.getActive().size;
 			}),
 		});
-		
+
 		// d8888b. .88b  d88.  d888b    d8888b.  .d8b.  .d8888. d88888b
 		// 88  `8D 88'YbdP`88 88' Y8b   88  `8D d8' `8b 88'  YP 88'
 		// 88   88 88  88  88 88        88oooY' 88ooo88 `8bo.   88ooooo
@@ -2271,7 +2625,7 @@ class Sheet {
 		for (let each of Action.MTTYPE.strings.entries()) {
 
 			const [num, str] = each;
-			
+
 			add({
 				name  : `mttype|${str}`,
 				about : wrap(
@@ -2310,7 +2664,7 @@ class Sheet {
 				),
 				expr  : ((env) => {
 					return label(env, 
-						`${this.item.name} base`,
+						"", //`${this.item.name} base`,
 						this.item.stats[name].value,
 					);
 				}),
@@ -2323,7 +2677,7 @@ class Sheet {
 				),
 				expr  : ((env) => {
 					return label(env, 
-						this.item.name,
+						"", // TODO this.item.name,
 						this.item.template.modifier(name, env),
 					);
 				}),
@@ -2431,12 +2785,10 @@ class Sheet {
 
 			second.push(add({
 				name  : `abilities|${name}`,
-				about : 
+				about :
 					`Total ${name} from active abilities.`
 				,
 				expr  : abilityfunc(name),
-				// vars  : (() => Ability.getDynamics(name))
-
 			}));
 
 			add({
@@ -2473,7 +2825,7 @@ class Sheet {
 				"with a Roll20 variable called \"Charm\" when variables are ",
 				"enabled within macrogen. Use for battalion macros."
 			),
-			expr  : "[Charm] {max(unit|total|lck, unit|total|dex)}" 
+			expr  : "[Charm] {max(unit|total|lck, unit|total|dex)}"
 		});
 
 		add({
@@ -2481,7 +2833,7 @@ class Sheet {
 			about : wrap(
 				"Higher of dexterity and luck. Use for non-battalion macros.",
 			),
-			expr  : "max(unit|total|lck, unit|total|dex)" 
+			expr  : "max(unit|total|lck, unit|total|dex)"
 		});
 
 		add({
@@ -2535,51 +2887,51 @@ class Sheet {
 			`,
 		});
 
-		add({
-			name  : "unit|received|prot",
-			about : wrap(
-				"This unit's protection when it's receiving an attack. ",
-				"Used in roll20 macro generation."
-			),
-			expr  : "unit|total|def + unit|modifier|no_item|prot",
-		});
+		// add({
+		// 	name  : "unit|received|prot",
+		// 	about : wrap(
+		// 		"This unit's protection when it's receiving an attack. ",
+		// 		"Used in roll20 macro generation."
+		// 	),
+		// 	expr  : "unit|total|def + unit|modifier|no_item|prot",
+		// });
 
-		add({
-			name  : "unit|received|resl",
-			about : wrap(
-				"This unit's resiliance when it's receiving an attack. ",
-				"Used in roll20 macro generation."
-			),
-			expr  : "unit|total|res + unit|modifier|no_item|resl",
-		});
+		// add({
+		// 	name  : "unit|received|resl",
+		// 	about : wrap(
+		// 		"This unit's resiliance when it's receiving an attack. ",
+		// 		"Used in roll20 macro generation."
+		// 	),
+		// 	expr  : "unit|total|res + unit|modifier|no_item|resl",
+		// });
 
-		add({
-			name  : "unit|received|avo",
-			about : wrap(
-				"This unit's avoid when it's receiving an attack. ",
-				"Used in roll20 macro generation."
-			),
-			expr  : "unit|total|lck + unit|modifier|no_item|avo",
-		});
+		// add({
+		// 	name  : "unit|received|avo",
+		// 	about : wrap(
+		// 		"This unit's avoid when it's receiving an attack. ",
+		// 		"Used in roll20 macro generation."
+		// 	),
+		// 	expr  : "unit|total|lck + unit|modifier|no_item|avo",
+		// });
 
-		add({
-			name  : "unit|received|cravo",
-			about : wrap(
-				"This unit's critical avoid when it's receiving an attack. ",
-				"Used in roll20 macro generation."
-			),
-			expr  : "unit|total|dex + unit|modifier|no_item|cravo",
-		});
+		// add({
+		// 	name  : "unit|received|cravo",
+		// 	about : wrap(
+		// 		"This unit's critical avoid when it's receiving an attack. ",
+		// 		"Used in roll20 macro generation."
+		// 	),
+		// 	expr  : "unit|total|dex + unit|modifier|no_item|cravo",
+		// });
 
 
-		add({
-			name  : "unit|received|doubled",
-			about : wrap(
-				"This unit's threshold to be doubled when it's receiving an attack. ",
-				"Used in roll20 macro generation."
-			),
-			expr  : "unit|total|spd + unit|modifier|no_item|doubled",
-		});
+		// add({
+		// 	name  : "unit|received|doubled",
+		// 	about : wrap(
+		// 		"This unit's threshold to be doubled when it's receiving an attack. ",
+		// 		"Used in roll20 macro generation."
+		// 	),
+		// 	expr  : "unit|total|spd + unit|modifier|no_item|doubled",
+		// });
 
 		add({
 			name  : "unit|damage",
@@ -3100,7 +3452,7 @@ class Sheet {
 				),
 				expr  : artfunc(stat),
 			}));
-			
+
 			add({
 				name  : `battalion|modifier|${stat}`,
 				about : wrap(
@@ -3216,6 +3568,10 @@ class Sheet {
 		return ctx;
 	}
 
+	contextForItems(itemsID, add) {
+
+	}
+
 	*iterCustomRows(includeItem=true) {
 
 		let row = undefined;
@@ -3237,7 +3593,7 @@ class Sheet {
 			if (each.tagged("metagambit")) continue;
 			for (row of each.rows) yield row;
 		}
-		
+
 		if ((tmp = this.equipment.getActive())) {
 			for (row of Equipment.get(tmp).rows) yield row;
 		}
@@ -3307,7 +3663,7 @@ class Sheet {
 		if (session == null) return false;
 
 		this.cb.importAll(JSON.parse(session));
-		
+
 		return true;
 	}
 
@@ -3322,21 +3678,21 @@ class Sheet {
 	 */
 	save() {
 		this.autosave();
-		
+
 		alert(
 			"Sheet data has been successfully saved to browser storage. " +
 			"Autosave also occurs automatically every five minutes."
 		);
-	}	
+	}
 
 	theme(name) {
 		if (!Theme.set(name)) return false;
 		this.themes.toggleActive(name);
-		
+
 		// Gotta wait until the new sheet loads before we refresh.
 		// Timeout may not be good for every environment and need tweaked.
 		setTimeout(() => this.refresher.refresh("theme"), 60);
-		
+
 		return true;
 	}
 
@@ -3449,17 +3805,17 @@ class Sheet {
 		const pb  = this.myPointBuy;
 		const fc  = pb.forecast;
 		const cls = Class.get(ps.class);
-		
+
 		/* import the selected preset and clear the point buy */
 		pb.import(Preset.get(ps.preset));
 		fc.clear();
-		
+
 		/* add the levels to the point buy */
 		if (cls.default_base == cls.name) {
 			fc.add(cls.name, ps.level);
 		} else {
 			const advanced = Math.max(ps.level - 15, 0);
-			const basic    = ps.level - advanced; 
+			const basic    = ps.level - advanced;
 			fc.add(cls.default_base, basic);
 			if (advanced) fc.add(cls.name, advanced);
 		}
@@ -3472,7 +3828,7 @@ class Sheet {
 		/* add items and abilities to sheet */
 
 		const addKit = (skill, scale) => {
-			
+
 			/* get correct skill and scale */
 			const kind = Presetter.KITS[skill];
 			const kits = kind[scale];
@@ -3564,7 +3920,7 @@ class Sheet {
 
 				/* add a training gambit; match weapon if possible */
 				let training = (
-					Presetter.KITS[ps.mainarm].training 
+					Presetter.KITS[ps.mainarm].training
 						||
 					Presetter.KITS[ps.sidearm].training
 				);
@@ -3587,7 +3943,7 @@ class Sheet {
 			if (kind.parent != null) addKit(kind.parent, scale);
 		};
 
-		this.character.setClass(cls.name, 
+		this.character.setClass(cls.name,
 			Presetter.getElections(ps.mainarm, ps.sidearm)
 		);
 
@@ -3643,8 +3999,8 @@ class Sheet {
 				this.slots.push(feature);
 
 				if (this.sum > this.limit) return wrap(
-					"Number of ", this.name, " exceeds maximum of ", this.limit,
-					". ", this.slots.map(
+					"Capacity of ", this.name, " exceeds maximum of ",
+					this.limit, ". ", this.slots.map(
 						f => `${f.name} (${f.modifier(this.field)})`
 					).join(", "), " consume a total of ", this.sum, " capacity."
 				);
@@ -3665,13 +4021,15 @@ class Sheet {
 
 		// for counting slot capacity restrictions
 		const capacity = new Sheet.ModifierCounter(
-			"equipped abilities", "capcost", 18
+			"equipped abilities", "capcost", this.runenv.read(
+				"game|maxcap_abilities"
+			)
 		);
 
 		for (let ability of this.abilities) {
 
 			const entry = this.abilities.element(ability.name);
-			
+
 			// we only care about user equipped arts for this
 			if (entry.group != "equip") continue;
 
@@ -3684,17 +4042,17 @@ class Sheet {
 			if (ability.modifier("capcost") == 0) continue;
 
 			let error = capacity.count(ability);
-			if (error) return error;
+			if (error) return element("span", error);
 		}
 
 		return null;
 	}
 
 	/**
-	 * Validates that the arts in the category don't exceed the maximum number 
+	 * Validates that the arts in the category don't exceed the maximum number
 	 * of arts slots, that the numbers of combat and tactical arts don't exceed
 	 * the number of slots allocated to each kind, and that there are no arts
-	 * equipped that are mutually exclusive with each other. 
+	 * equipped that are mutually exclusive with each other.
 	 * @param  {MultiActiveCategory} category - a category containing arts;
 	 * defaults fo this.arts
 	 * @return {?string} an error string if check fails; else null
@@ -3706,21 +4064,22 @@ class Sheet {
 		const reserve = new Map();
 
 		// for counting slot number restrictions
-		const tactics    = new Sheet.ModifierCounter("tactical arts" , "slotcost" , 3);
-		const combats    = new Sheet.ModifierCounter("combat arts"   , "slotcost" , 3);
-		const slots      = new Sheet.ModifierCounter("equipped arts" , "slotcost" , 5);
+		const tactics = new Sheet.ModifierCounter(
+			"tactical arts", "slotcost", this.runenv.read("game|maxcap_tactical")
+		);
+		const combats = new Sheet.ModifierCounter(
+			"combat arts", "slotcost", this.runenv.read("game|maxcap_combat")
+		);
+		const slots = new Sheet.ModifierCounter(
+			"equipped arts", "slotcost", this.runenv.read("game|maxcap_arts")
+		);
 
-		for (let art of this.arts) {
+		// we only need to check these requirements for equipped arts
+		for (let art of this.arts.values("equip")) {
 
-			const entry = this.arts.element(art.name);
-			
-			// we only care about user equipped arts for this
-			if (entry.group != "equip") continue;
-
-			// secondary pass just to do our due diligence, as at the time
-			// of this writing, some arts can be sourced as either class
-			// arts and equippables without being regrouped as class arts
-			if (this.character.class.arts.includes(art.name)) continue;
+			// check to see if we can equip this art in the first place
+			// if we can't it's already invalid and not worth assigning
+			if (!art.requires.exec().boolean) continue;
 
 			// don't count this art if it doesn't consume any slots
 			if (art.modifier("slotcost") == 0) continue;
@@ -3728,24 +4087,37 @@ class Sheet {
 			// proper arts don't come up until Rank D so we can ignore these
 			if (art.rank.all(r => Grade.toNumber(r) < 2)) continue;
 
+			// record the number of overall slots the art consumes
 			let error = slots.count(art);
-			if (error) return error;
+			if (error) return element("span", error);
 
+			// record how many tactic/combat slots the art consumes
 			error = (art.isTactical() ? tactics : combats).count(art);
-			if (error) return error;
+			if (error) return element("span", error);
 
-			// skip the next phase for arts that ignore Skill and Rank exclusion
+			// skip the next phase for arts that ignore Skill/Rank exclusion
+			// these are those with "may be equipped alongside other" effects
 			if (art.tagged("inclusive")) continue;
 
-			const keys = new Set(art.exKeys());
+			// get the set of valid Rank/Skill/Type combos for this art
+			// combos unit can't meet requirements for are filtered out
+			// since it passed the first check least one will be left
+			const keys = new Set(art.exKeys(this.predicator));
+
+			// store the art with its keys
 			arts.push({art, keys});
 		}
 
-		// sort elements in descending order of number of keys
-		const sortfn  = (a, b) => a.keys.size >= b.keys.size;
+		// this makes the error display order make more sense
+		arts.reverse();
 
-		// keeps track of which arts are possible for which key
-		const options = new Map();
+		// sort elements in descending order of number of keys
+		// we want the ones with fewer options to reserve combos
+		// first and we're taking arts off the end of the array
+		const sortfn  = (a, b) => b.keys.size - a.keys.size;
+
+		// tracks which arts are in conflict
+		const conflicts = [];
 
 		// we now need to try to assign each art a Skill/Rank/Type combo
 		while (arts.length) {
@@ -3753,49 +4125,119 @@ class Sheet {
 			// not worth writing a priority queue for this
 			arts.sort(sortfn);
 
+			// get the item with the lowest number of combo options
 			const {art, keys} = arts.pop();
 
-			for (const key of keys) {
-				if (options.has(key)) {
-					options.get(key).push(art.name);
-				} else {
-					options.set(key, [art.name]);
-				}
+			// if there are no combo options we have a conflict
+			if (keys.size == 0) {
+				conflicts.push(wrap(
+					art.name, " conflicts with ", Array.from(
+						art.exKeys(this.predicator),
+						key => `${reserve.get(key).name} (equipped as ${key})`
+					).join(", ")
+				));
+				continue;
 			}
 
-			if (keys.size == 0) return wrap(
-				art.name, " conflicts with ", Array.from(art.exKeys()).map(
-					key => `${reserve.get(key).name} (${key})`
-				).join(", ")
-			);
-
+			// select an arbitrary available combination
 			const [key] = keys;
-			reserve.set(key, art);			
+
+			// reserve that combination for this art
+			reserve.set(key, art);
+
+			// remove the key from the pool of available keys
 			for (let each of arts) each.keys.delete(key);
 		}
 
-		// make sure that we actually have equip things as the ranks we need
-		for (let [key, art] of reserve.entries()) {
+		return conflicts.length
+			? element("div", delimit(() => element("br"), conflicts))
+			: null;
+	}
 
-			// check to see if we can equip this as its lowest rank
-			// if not, it's already illegal and not worth worrying about
-			if (!art.requires.exec().boolean) continue;
+}
 
-			// knowing we can equip it as its lowest rank, we check to see if
-			// we're trying to equip it as a higher rank we don't have
-			const [source, _type] = key.split(",");
-			const predicate       = this.predicator.compile(source);
+class SessionEditor {
 
-			if (!predicate.exec().boolean) {
-				const names = conjoin("and", options.get(key));
-				return `${names} conflict because ${source} is locked`;
+	constructor(key) {
+
+		this.key = key;
+
+		this._textarea = element("textarea", {
+			class   : ["simple-border"],
+		});
+
+		this._erase = element("button", {
+			class   : ["simple-border"],
+			content : "Erase Data and Reload",
+			attrs   : {
+				onclick : (() => this.erase())
 			}
-		}
+		});
 
-		return null;
+		this._refresh = element("button", {
+			class   : ["simple-border"],
+			content : "Undo All Changes",
+			attrs   : {
+				onclick : (() => this.refresh())
+			}
+		});
+
+		this._overwrite = element("button", {
+			class   : ["simple-border"],
+			content : "Overwrite Data and Reload",
+			attrs   : {
+				onclick : (() => this.overwrite())
+			}
+		});
+
+		const title = wrap(
+			"Failed to load the builder. ",
+			"Raw session data is available below. ",
+			"Press Ctrl-Shift-I to get error information."
+		);
+
+		this.root = element("div", [
+			element("strong", title), element("br"),
+			this._textarea, element("br"),
+			this._refresh, this._overwrite, this._erase
+		]);
+
+		this.refresh();
+	}
+
+	static MANUAL_KEY = "doEditSession";
+
+	static startLaunch() {
+		localStorage.setItem(SessionEditor.MANUAL_KEY, true);
+		window.location.replace("index.html");
+	}
+
+	static checkLaunch() {
+		if (localStorage.getItem(SessionEditor.MANUAL_KEY)) {
+			localStorage.removeItem(SessionEditor.MANUAL_KEY);
+			throw new Error("Manually launching session editor.");
+		}
+	}
+
+	refresh() {
+		const raw  = localStorage.getItem(this.key);
+		const data = JSON.stringify(JSON.parse(raw), null, 2);
+		this._textarea.value = data;
+	}
+
+	overwrite() {
+		const data = JSON.stringify(JSON.parse(this._textarea.value));
+		localStorage.setItem(this.key, data);
+		location.reload();
+	}
+
+	erase() {
+		localStorage.removeItem(this.key);
+		location.reload();
 	}
 
 }
 
 
 /* exported Sheet */
+/* exported SessionEditor */

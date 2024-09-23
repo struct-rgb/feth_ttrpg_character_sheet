@@ -228,7 +228,7 @@ class Items {
 		this._sf = Item.select(() => {
 			this.template = this._select.value;
 			this.refresh();
-		});
+		}, this.refresher);
 
 		this._select = this._sf._select;
 
@@ -585,7 +585,7 @@ class Items {
 		if (activeID === null) return;
 
 		const element = this.sheet.wb.category.element(activeID);
-		element.title = this.name;
+		element.title = this._name.value;
 	}
 
 	get description() {
@@ -614,8 +614,8 @@ class Items {
 
 	set template(value) {
 
-		this._template     = Item.get(value);
-		this._select.value = value;
+		this._template = Item.get(value);
+		this._sf.value = value;
 
 		this.refresh();
 
@@ -683,7 +683,7 @@ class Items {
 
 	import(item) {
 
-		this.sheet.stats.pause = true;
+		this.refresher.wait();
 
 		this.name        = item.name        || Item.DEFAULT;
 		this.rank        = item.rank        || 0;
@@ -709,9 +709,8 @@ class Items {
 			}
 		}
 
-		this.sheet.stats.pause = false;
-
 		this.refresh();
+		this.refresher.signal();
 	}
 
 	export() {
@@ -749,7 +748,7 @@ class Items {
 		this.information = "";
 		this.rank        = 0;
 		this.price       = 0;
-		this.name        = preset || Item.DEFAULT;
+		this.name        = preset || Item.DEFAULT; // TODO investigate
 		this.template    = preset || Item.DEFAULT;
 		this._custom_tags.clear();
 		this._base.value = 0;
@@ -757,11 +756,11 @@ class Items {
 
 	/* buildable display */
 
-	getTitle(object) {
+	getTitle(object=this) {
 		return object.name;
 	}
 
-	getBody(object) {
+	getBody(object=this) {
 		return element("span", object.template || object.description);
 	}
 

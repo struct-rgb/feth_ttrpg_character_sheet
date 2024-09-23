@@ -347,7 +347,13 @@ class Buildables {
 			attrs : {
 				type    : "button",
 				value   : "Add",
-				onclick : (() => void this.add()),
+				onclick : (() => {
+					this.add();
+
+					if (!("groupEntry" in this)) return;
+
+					this.setGroup();
+				}),
 			},
 		});
 
@@ -450,6 +456,11 @@ class Buildables {
 			reorderable : true,
 			removable   : true,
 			ontoggle    : ((category, key) => {
+
+				if (options.group == "custom" && Item.has(key)) {
+					console.trace(`Key: ${key}`);
+					debugger;
+				}
 			
 				if (key == category.active) {
 					return false;
@@ -748,7 +759,7 @@ class Buildables {
 	importObject(object) {
 		const activeID = uniqueID();
 		this.map.set(activeID, object);
-		this.category.add(activeID);
+		this.category.add(activeID, {group: this.selectGroup});
 		this.change(activeID);
 	}
 

@@ -4749,7 +4749,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [],
-      "hidden": false
+      "hidden": true
     },
     {
       "name": "Close Quarters Tactica",
@@ -14286,7 +14286,7 @@ const definitions = {
         "spcost": 0,
         "tp": 0,
         "mov": 0,
-        "capcost": 6
+        "capcost": 0
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
@@ -20915,7 +20915,7 @@ const definitions = {
     },
     {
       "name": "Twinned Shot",
-      "description": "Once per phase, after combat, if this unit outspeeds targeted foe, it may initiate combat against another foe using this combat art. @{style}{italic}{(If you do, then pay the SP cost again.)}",
+      "description": "Once per phase, after a combat in which this unit used @{art}{Twinned Shot}, if this unit outspeeds targeted foe, it may initiate combat against another foe using this combat art. @{style}{italic}{(If you do, then pay the SP cost again.)}",
       "requires": "Bows D",
       "compatible": "All (Skill Bows) (Not (Tag `no hit`))",
       "mttype": "else",
@@ -31560,7 +31560,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": 3,
+        "tpcost": "fill affirm([Venin?], 3, 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0
@@ -35992,7 +35992,9 @@ const definitions = {
       "default_mainarm": "None",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "FE3H"
+      ],
       "hidden": false
     },
     {
@@ -36078,7 +36080,9 @@ const definitions = {
       "default_mainarm": "None",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "FE3H"
+      ],
       "hidden": false
     },
     {
@@ -36118,7 +36122,9 @@ const definitions = {
       "default_mainarm": "None",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "FE3H"
+      ],
       "hidden": false
     },
     {
@@ -36158,7 +36164,9 @@ const definitions = {
       "default_mainarm": "Lances",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "FE3H"
+      ],
       "hidden": false
     },
     {
@@ -36198,7 +36206,9 @@ const definitions = {
       "default_mainarm": "None",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
-      "tags": [],
+      "tags": [
+        "FE3H"
+      ],
       "hidden": false
     }
   ],

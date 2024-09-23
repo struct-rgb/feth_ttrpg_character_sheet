@@ -178,7 +178,7 @@ class Builder {
 		return this.prompt(title, "No", no, "Yes", yes);
 	}
 
-	macro() {
+	macro(gm=false) {
 
 		const flatten = (list, accumulator) => {
 			for (let element of list) {
@@ -191,7 +191,10 @@ class Builder {
 			return accumulator;
 		};
 
-		return flatten(this.base, []).join("");
+		const whisper = gm ? "/w gm " : "";
+		const macro   = flatten(this.base, []).join("");
+
+		return `${whisper}${macro}`;
 	}
 
 }
@@ -785,9 +788,53 @@ class UserInterface {
 		return macro;
 	}
 
+
+	check(display=true) {
+		const m   = new Builder();
+		
+		/* Set up macro-generation environment */
+		const env = new Calculator.Env(
+			Calculator.Env.MACROGEN
+				| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
+				| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
+				| (this._compact.checked ? Calculator.Env.COMPACT : 0),
+			this.sheet.definez,
+		);
+
+		/* Determine if this allows test rolls */
+		const roll = (
+			this._testroll.checked
+				? m.prompt("Test Roll",
+					"No"  , m.sum("1d100"),
+					"Yes" , m.sum("0"))
+				: m.sum("1d100")
+		);
+
+		(m
+			.table()
+			.row("name", "Check")
+			.row("Roll",
+				m.merge(
+					roll,
+					"≤",
+					m.sum(env.read("unit|ease"))
+				))
+		);
+
+		const macro = m.macro(true);
+
+		if (display) {
+			console.log(macro);
+			this._display.value = macro;
+		}
+
+		return macro;
+	}
+
 	static SEPERATOR_ITEMS   = "==========  ITEMS  =========";
 	static SEPERATOR_TACTICS = "========== TACTICS ==========";
 	static SEPERATOR_GAMBITS = "========== GAMBITS ==========";
+	static SEPERATOR_CHECK   = "==========  CHECK  ==========";
 
 	macros(display=true) {
 
@@ -815,6 +862,7 @@ class UserInterface {
 			arts.values(),
 			[UserInterface.SEPERATOR_GAMBITS],
 			gambits.values(),
+			[UserInterface.SEPERATOR_CHECK],
 		);
 
 		const ref      = {target: null};
@@ -949,6 +997,9 @@ class UserInterface {
 
 		// This will prevent a phantom "Counter" from remaining.
 		this.sheet.battalion.refresh();
+
+		// Add in the macro for checks
+		macros.push(this.check(false));
 
 		if (display) this._display.value = macros.join("\n\n");
 		return macros;

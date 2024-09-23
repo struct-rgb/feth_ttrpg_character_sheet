@@ -253,7 +253,7 @@ class Battalions {
 
 			// 	category.setGroupFor(key, "Other");
 			// }),
-			select         : Gambit.select(),
+			select         : Gambit.select(null, this.refresher),
 			refresher      : sheet.refresher,
 			defaultGroup   : "gambit",
 			groupShowTitle : capitalize,
@@ -276,12 +276,12 @@ class Battalions {
 			}),
 		});
 
-		const fn = ((base, variable) => {
+		const fn = ((base, variable, name) => {
 			// this.refreshSecond();
 			return variable();
 		});
 
-		const perc = ((base, variable) => {
+		const perc = ((base, variable, name) => {
 			return `${variable()}%`;
 		});
 

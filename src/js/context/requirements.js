@@ -192,7 +192,7 @@ function createContext(base, host, definitions) {
 	addx({
 		sign: ["Level", [Types.number], Types.tribool],
 		expr: (op, level) => ({
-			require: false,
+			require: true,
 			succeed: false,
 			boolean: host.stats.level >= level
 		}),
@@ -284,14 +284,10 @@ function createContext(base, host, definitions) {
 	addx({
 		sign: ["Item", [Types.item], Types.tribool],
 		expr: ((op, name) => {
-			const active = host.wb.active;
-
 			return {
 				require: true,
 				succeed: false, 
-				boolean: active
-					? active.template == name
-					: false,
+				boolean: host.item.template.name == name
 			};
 		}),
 	});

@@ -24,6 +24,12 @@
  * remain here to remind me of the various uses below.
  */
  
+const myReqTriggers = [
+	"Item", // can remove this maybe; we're not going serious on this trigger
+	"Crest", "Level", "Other", "Class", "ClassType",
+	"Training", "Outfitting", ...definitions.skills
+];
+
 /* global definitions */
 
 if (typeof require !== "undefined") {
@@ -296,6 +302,10 @@ class Feature {
 		return name && this.byName.has(name);
 	}
 
+	static values() {
+		return this.byName.values();
+	}
+
 	static where(predicate=(() => true), map=(f => f)) {
 		
 		const features = [];
@@ -535,7 +545,11 @@ class Feature {
 			this.requires.symbols.has("Innate")
 				||
 			Iter.any(Feature.INNATENESS_TAGS, tag => this.tagged(tag))
-		); 
+		);
+	}
+
+	static *[Symbol.iterator]() {
+		yield* this.byName.values();
 	}
 }
 
@@ -581,6 +595,10 @@ class Preset {
 			const instance = new this(template);
 			this.byName.set(instance.name, instance);
 		}
+	}
+
+	static *[Symbol.iterator]() {
+		yield* this.byName.values();
 	}
 
 	static get(name, fallback) {
@@ -870,20 +888,28 @@ class Art extends Action {
 		return !(this.tagged("combo") || this.tagged("tactical"));
 	}
 
-	*exKeys() {
+	*exKeys(predicator=null) {
 
 		const ranks = this.rank instanceof Array ? this.rank : [this.rank];
 		const types = this.type instanceof Array ? this.type : [this.type];
 
 		for (let rank of ranks) {
 			for (let type of types) {
+
+				const source = `${type} ${rank}`;
+
+				if (predicator) {
+					const predicate = predicator.compile(source);
+					if (!predicate.exec().boolean) continue;
+				}
+
 				const kind = this.isTactical() ? "tactical" : "combat";
-				yield `${type} ${rank}, ${kind} art`;
+				yield `${source} ${kind} art`;
 			}
 		}
 	}
 
-	static select(trigger) {
+	static select(trigger, refresher=null) {
 
 		trigger = trigger || (() => {});
 
@@ -1175,6 +1201,12 @@ class Art extends Action {
 
 				element("br"),
 
+				new Filter.Toggle("Passes Requirements", false, (feature) => {
+					return feature.requires.exec().boolean;
+				}, true),
+
+				element("br"),
+
 				element("button", {
 					class   : ["simple-border"],
 					content : "Reset Filter",
@@ -1184,6 +1216,9 @@ class Art extends Action {
 				})
 			],
 		});
+
+		if (refresher)
+			refresher.register(filter, myReqTriggers);
 
 		return filter;
 	}
@@ -1225,7 +1260,7 @@ class Item extends Action {
 		0, "Other", ["Other"].concat(definitions.skills)
 	);
 
-	static select(trigger) {
+	static select(trigger, refresher) {
 
 		trigger = trigger || (() => {});
 
@@ -1539,6 +1574,12 @@ class Item extends Action {
 
 				element("br"),
 
+				new Filter.Toggle("Passes Requirements", false, (feature) => {
+					return feature.requires.exec().boolean;
+				}, true),
+
+				element("br"),
+
 				element("button", {
 					class   : ["simple-border"],
 					content : "Reset Filter",
@@ -1548,6 +1589,9 @@ class Item extends Action {
 				})
 			],
 		});
+
+		if (refresher)
+			refresher.register(filter, myReqTriggers);
 
 		return filter;
 	}
@@ -1813,7 +1857,7 @@ class Class extends Feature {
 		]);
 	}
 
-	static select(trigger) {
+	static select(trigger, refresher) {
 
 		trigger = trigger || (() => {});
 
@@ -1828,7 +1872,33 @@ class Class extends Feature {
 				})
 			),
 			content : [
-				element("strong", "Class Tier"), element("br"),
+
+				element("strong", "Campaign"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("All", true, (feature) => {
+					return (
+						!feature.tagged("FbF")
+							&&
+						!feature.tagged("CoA")
+							&&
+						!feature.tagged("FE3H")
+					);
+				}),
+				new Filter.Toggle("FbF", false, (feature) => {
+					return feature.tagged("FbF");
+				}),
+				new Filter.Toggle("CoA", false, (feature) => {
+					return feature.tagged("CoA");
+				}),
+				new Filter.Toggle("FE3H", false, (feature) => {
+					return feature.tagged("FE3H");
+				}),
+
+				Filter.Group.END,
+
+				element("br"), element("strong", "Class Tier"), element("br"),
 				
 				new Filter.Group(Filter.Group.OR, false),
 
@@ -1959,6 +2029,12 @@ class Class extends Feature {
 
 				element("br"),
 
+				new Filter.Toggle("Passes Requirements", false, (feature) => {
+					return feature.requires.exec().boolean;
+				}, true),
+
+				element("br"),
+
 				element("button", {
 					class   : ["simple-border"],
 					content : "Reset Filter",
@@ -1968,6 +2044,9 @@ class Class extends Feature {
 				})
 			],
 		});
+
+		if (refresher)
+			refresher.register(filter, myReqTriggers);
 
 		return filter;
 	}
@@ -1997,7 +2076,7 @@ class Ability extends Feature {
 		}
 	}
 
-	static select(trigger) {
+	static select(trigger, refresher=null) {
 
 		trigger = trigger || (() => {});
 
@@ -2284,6 +2363,12 @@ class Ability extends Feature {
 
 				element("br"),
 
+				new Filter.Toggle("Passes Requirements", false, (feature) => {
+					return feature.requires.exec().boolean;
+				}, true),
+
+				element("br"),
+
 				element("button", {
 					class   : ["simple-border"],
 					content : "Reset Filter",
@@ -2293,6 +2378,10 @@ class Ability extends Feature {
 				})
 			],
 		});
+
+
+		if (refresher)
+			refresher.register(filter, myReqTriggers);
 
 		return filter;
 	}
@@ -2844,7 +2933,7 @@ class Gambit extends Action {
 		].join("");
 	}
 
-	static select(trigger) {
+	static select(trigger, refresher=null) {
 
 		trigger = trigger || (() => {});
 
@@ -3075,6 +3164,12 @@ class Gambit extends Action {
 
 				element("br"),
 
+				new Filter.Toggle("Passes Requirements", false, (feature) => {
+					return feature.requires.exec().boolean;
+				}, true),
+
+				element("br"),
+
 				element("button", {
 					class   : ["simple-border"],
 					content : "Reset Filter",
@@ -3084,6 +3179,9 @@ class Gambit extends Action {
 				})
 			],
 		});
+
+		if (refresher)
+			refresher.register(filter, myReqTriggers);
 
 		return filter;
 	}

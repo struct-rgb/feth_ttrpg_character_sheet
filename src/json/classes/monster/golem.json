@@ -38,7 +38,7 @@
   "default_mainarm": ["Lances", "Bad A", ["Bad B", "Swords", "Lances"]],
   "default_sidearm": "None",
   "comment": "Items in growth, modifiers, and mount should be integers",
-  "tags": [],
+  "tags": ["FE3H"],
   "omit": true,
   "hidden": false
 }

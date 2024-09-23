@@ -20,6 +20,7 @@
 	<script type="text/javascript" src="./src/js/widget/tagger.js"></script>
 	<script type="text/javascript" src="./src/js/presetter.js"> </script>
 	<script type="text/javascript" src="./src/js/pointbuy.js"></script>
+	<script type="text/javascript" src="./src/js/widget/buildables.js"></script>
 	<script type="text/javascript" src="./src/js/model/battalion.js"></script>
 	<script type="text/javascript" src="./src/js/model/character.js"></script>
 	<script type="text/javascript" src="./src/js/model/item.js"></script>
@@ -31,28 +32,44 @@
 	<script type="text/javascript" src="./src/js/lang/polish.js"></script>
 	<script type="text/javascript" src="./src/js/lang/markup.js"></script>
 	<script type="text/javascript" src="./src/js/context/reminder.js"></script>
+	<script type="text/javascript" src="./src/js/context/variables.js"></script>
 	<script type="text/javascript" src="./src/js/context/requirements.js"></script>
 	<script type="text/javascript" src="./src/js/context/compatible.js"></script>
 	<script type="text/javascript" src="./src/js/feature.js"></script>
 	<script type="text/javascript" src="./src/js/widget/dynamic.js"></script>
 	<script type="text/javascript" src="./src/js/legacy.js"></script>
-	<script type="text/javascript" src="./src/js/widget/buildables.js"></script>
 	<script type="text/javascript" src="./src/js/sheet.js"> </script>
-	
+
 </head>
 <body class="base">
 
 	<!-- This is the main body of the application -->
 	<script type="text/javascript">
-		// create and add the actual sheet dynamically
-		const sheet = new Sheet(definitions);
-		document.getElementsByTagName("body")[0].appendChild(sheet.root);
 
-		// Show a "Leave site?" dialog
-		window.onbeforeunload = (() => {
-			sheet.macros.historySave();
-			return true;
-		});
+		let   sheet = undefined;
+		const body  = document.getElementsByTagName("body")[0];
+
+		// create and add the actual sheet dynamically
+		try {
+
+			// in case we manually launched the session editor
+			SessionEditor.checkLaunch();
+			
+			// if we reach this point we want the normal sheet
+			sheet = new Sheet(definitions);
+			body.appendChild(sheet.root);
+
+			// Show a "Leave site?" dialog
+			window.onbeforeunload = (() => {
+				sheet.macros.historySave();
+				return true;
+			});
+		} catch (error) {
+			const editor = new SessionEditor("v2session")
+			body.appendChild(editor.root);
+			throw error;
+		}
+
 	</script>
 
 	<noscript>This webpage needs javascript to run.</noscript>

@@ -2140,7 +2140,7 @@ function createContext(compiler, host, definitions) {
 }
 
 return {
-	createContext
+	createContext,
 };
 
 })();
