@@ -229,13 +229,13 @@ const Tokens = (function() {
 			TERMINALS.DIE,
 			TERMINALS.PERIOD,
 			TERMINALS.ALIAS,
-			TERMINALS.OPTION,
-			TERMINALS.DEFAULT,
 			TERMINALS.ALIAS,
 			TERMINALS.BEGIN,
 			TERMINALS.END,
 			TERMINALS.AND,
 			TERMINALS.OR,
+			TERMINALS.MIN,
+			TERMINALS.MAX,
 		]),
 
 		CALL: new Set([
@@ -283,8 +283,6 @@ const Tokens = (function() {
 			TERMINALS.PROMPT,
 			// TERMINALS.OPTION,
 			// TERMINALS.DEFAULT,
-			TERMINALS.MIN,
-			TERMINALS.MAX,
 			TERMINALS.SIGN,
 			TERMINALS.LABEL,
 			TERMINALS.META,
@@ -304,6 +302,8 @@ const Tokens = (function() {
 			TERMINALS.BOTHIF,
 			TERMINALS.MATCH,
 			TERMINALS.LET,
+			TERMINALS.OPTION,
+			TERMINALS.DEFAULT,
 		]),
 	};
 
@@ -2116,6 +2116,7 @@ function highlight(source, strip=false) {
 			continue;
 		}
 
+
 		if (Tokens.SET.OPERATOR.has(text) || Tokens.SET.CALL.has(text)) {
 			output.push(element("span", text, "hl-operator"));
 			continue;
@@ -2892,6 +2893,7 @@ class Parser extends AbstractParser {
 			/* assignments are terminated by a THEN terminal */
 			if (this.token == Tokens.TERMINALS.THEN) break;
 
+			// normal keywords can't be assignment targets
 			if (Tokens.SET.RESERVED.has(this.token)) {
 				throw new CompilationError(
 					`keyword ${this.token} cannot be used as a variable name`,
@@ -2899,7 +2901,7 @@ class Parser extends AbstractParser {
 				);
 			}
 
-			// TODO remove if possible to make "and" and "or" detect as resv'd
+			// make sure "and", "or", "die", etc are not valid for assignment
 			if (Tokens.SET.OPERATOR.has(this.token)) {
 				throw new CompilationError(
 					`keyword ${this.token} cannot be used as a variable name`,
@@ -3141,7 +3143,7 @@ class Parser extends AbstractParser {
 		);
 	}
 
-	_parseConditionalExpression() {		
+	_parseConditionalExpression() {
 
 		if (this.token != Tokens.TERMINALS.IF) {
 			return null;

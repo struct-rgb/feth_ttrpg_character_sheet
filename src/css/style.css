@@ -339,8 +339,8 @@ button.smol {
 }
 
 button.tight {
-	margin: 0;
-}
+/*	margin: 0;
+*/}
 
 fieldset {
 	border: 0px;
