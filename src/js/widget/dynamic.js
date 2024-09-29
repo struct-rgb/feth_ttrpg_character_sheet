@@ -246,7 +246,7 @@ class RangeFinder {
 			// zoom in or out on the animation
 			const delta       = Math.sign(event.deltaY) * Number(this.scale.step);
 			const old         = Number(this.scale.value);
-			const scale       = delta + old;
+			const scale       = Math.max(delta + old, 0);
 
 			this.setTileSize(scale * this.baseSize);
 			const coe = this.baseSize * action.modifier("maxrng") * 0.5;
@@ -479,7 +479,7 @@ class RangeFinder {
 	////////////////////////////////////
 
 	/**
-	 * Draw a line of tiles starting at real (x, y) and extending for 
+	 * Draw a line of tiles starting at real (x, y) and extending for
 	 * (length) tiles in the direction determined by (bits).
 	 * @param {number} x - real X coordinate of top left corner of start tile
 	 * @param {number} y - real Y coordinate of top left corner of start tile

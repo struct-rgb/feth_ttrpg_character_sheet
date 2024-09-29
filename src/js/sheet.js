@@ -1624,12 +1624,12 @@ class Sheet {
 					return `Range ${start}-${stop} (Hit -${penalty}`;
 				});
 
-				let range = min, start = min, last = 0;
+				let range = min, start = min, last = -1;
 				for (range = min; range <= max; ++range) {
 					const raw     = 20 * (range - cut);
 					const penalty = Math.min(60, Math.max(0, raw));
 
-					if (last !== penalty) {
+					if (last >= 0 && last !== penalty) {
 						prompt.push(option(start, range - 1, last), -last);
 						start = range;
 					}

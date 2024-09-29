@@ -43,6 +43,8 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
   * Level requirements are no longer wrongly ignored if a unit exceeds SRRs.
   * Class & item template filters no longer remove the selected option.
   * Arts validation chose wrong Skill/Rank combos to equip multiskill arts as
+  * It used to be possible reach negative zoom levels in the Rangefinder
+  * Range Penalty calculation would create decreasing ranges for some arts.
 
 #### Game Data
   * Clarified wording on Twinned Shot
