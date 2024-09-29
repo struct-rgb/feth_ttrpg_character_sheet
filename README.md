@@ -30,6 +30,7 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
   * Added "Passes Requirements" filter to Items, Abilities, Arts, and Gambits
   * Campaign filters were added to classes
   * Improved Character and Item load times
+  * Added new "Grimvalt" theme and did some style corrections
 
 #### Traits and Experiences
   * Added a Traits section below Skills to display active Trait bonuses
