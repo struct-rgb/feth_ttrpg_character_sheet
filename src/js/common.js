@@ -18,6 +18,10 @@ function *valuesOf(object, keys) {
 	}
 }
 
+Math.clamp = function(number, min, max) {
+	return Math.min(Math.max(number, min), max);
+};
+
 const Iter = {
 	
 	*chain(...iterables) {
@@ -797,8 +801,11 @@ function uniqueLabel(content, forElement) {
 
 function attrinput(textnode, options, oninput) {
 
+	const classes = ["simple-border"];
+	if (options.edit) classes.push("hidden-field");
+
 	const input = element("input", {
-		class: ["simple-border", "hidden-field"],
+		class: classes,
 		attrs: {
 			type    : "number",
 			min     : assume(options.min, 0),
@@ -806,34 +813,38 @@ function attrinput(textnode, options, oninput) {
 			value   : assume(options.value, assume(options.def, 0)),
 			step    : assume(options.step, 1),
 			oninput : oninput,
+			hidden  : true,
 		},
 	});
 
 	const label = uniqueLabel(textnode, input);
-	label.classList.add("datum");
+	label.classList.add(options.edit ? "datum" : "computed");
 
-	return [input, element("span", [label, input])];
+	return [input, element("span", [label, input]), label];
 }
 
 function attrselect(textnode, options, oninput) {
+	
+	const classes = ["simple-border"];
+	if (options.edit) classes.push("hidden-field");
+
 	const select = element("select", {
 
-		class: ["simple-border", "hidden-field"],
-
-		content: options.select.map((name, index) => 
+		class   : classes,
+		content : options.select.map((name, index) =>
 			element("option", {attrs: {value: index}, content: name})
 		),
-
-		attrs: {
+		attrs   : {
 			value   : assume(options.value, assume(options.def, 0)),
 			oninput : oninput,
+			hidden  : true,
 		}
 	});
 
 	const label = uniqueLabel(textnode, select);
-	label.classList.add("datum");
+	label.classList.add(options.edit ? "datum" : "computed");
 
-	return [select, element("span", [label, select])];
+	return [select, element("span", [label, select]), label];
 }
 
 /**
@@ -843,14 +854,16 @@ class AttributeCell {
 
 	constructor(options, trigger) {
 		options       = options || {};
+		options.edit  = !("edit" in options) || options.edit;
 		this.text     = document.createTextNode(assume(options.shown, ""));
 		this._trigger = trigger || options.trigger || (x => x);
 
-		const [input, span] = (options.select ? attrselect : attrinput)(this.text, options, (() => {
+		const [input, span, label] = (options.select ? attrselect : attrinput)(this.text, options, (() => {
 			this.value = this.input.value;
 		}));
 
 		this.input = input;
+		this.label = label;
 		this._def  = assume(options.def, 0);
 
 		this.root  = element(
@@ -859,8 +872,9 @@ class AttributeCell {
 				"before" in options
 					? element("span", options.before, "punctuation") : null,
 
-				!("edit" in options) || options.edit
-					? span : element("span", this.text, "computed"),
+				// !("edit" in options) || options.edit
+				// 	? span : element("span", this.text, "computed"),
+				span,
 
 				"after" in options
 					? element("span", options.after, "punctuation") : null,
@@ -890,7 +904,7 @@ class AttributeCell {
 	}
 
 	setShown(text) {
-		this.text.data = text; 
+		this.text.data = text;
 	}
 
 	get minimum() {
@@ -921,6 +935,24 @@ class AttributeCell {
 
 	set default(value) {
 		this._def = value;
+	}
+
+	get edit() {
+		return this.input.classList.contains("hidden-field");
+	}
+
+	set edit(value) {
+		if (value) {
+			this.label.classList.remove("computed");
+
+			this.input.classList.add("hidden-field");
+			this.label.classList.add("datum");
+		} else {
+			this.input.classList.remove("hidden-field");
+			this.label.classList.remove("datum");
+
+			this.label.classList.add("computed");
+		}
 	}
 
 	clear() {

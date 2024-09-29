@@ -203,6 +203,7 @@ class CampaignConfiguration {
 		"maxcap_arts"      :  3,
 		"maxcap_tactical"  :  2,
 		"maxcap_combat"    :  2,
+		"free_traits"      :  0,
 	};
 
 	static CoA = {
@@ -210,16 +211,43 @@ class CampaignConfiguration {
 		"maxcap_arts"      :  5,
 		"maxcap_tactical"  :  3,
 		"maxcap_combat"    :  3,
+		"free_traits"      :  1,
 	};
 
 	static DEFINED = {
-		"maxcap_abilities" : "Maximum capacity for abilities.",
-		"maxcap_arts"      : "Maximum number of slots for arts.",
-		"maxcap_tactical"  : "Maximum number of slots for tactical arts",
-		"maxcap_combat"    : "Maximum number of slots for combat arts",
+		"maxcap_abilities" : wrap(
+			"Maximum capacity for abilities. A low value makes for units that ",
+			"are faster and more intuitive to play while a higher value makes ",
+			"units more customizable at the expense of simplicity."
+		),
+		"maxcap_arts"      : wrap(
+			"Maximum number of slots for arts. A low value makes for units that ",
+			"are faster and more intuitive to play while a higher value makes ",
+			"units more customizable at the expense of simplicity."
+		),
+		"maxcap_tactical"  : wrap(
+			"Maximum number of slots for tactical arts. Increasing this ",
+			"relative to the maximum number of combat arts can give players ",
+			"incentive to make more support oriented units."
+		),
+		"maxcap_combat"    : wrap(
+			"Maximum number of slots for combat arts. Increasing this ",
+			"relative to the maximum number of combat arts can give players ",
+			"incentive to make more combat oriented units."
+		),
+		"free_traits"      : wrap(
+			"Allow players to set their own ranks for traits instead of tying ",
+			"trait progression entirely to skill rank, as is the default."
+		),
 	};
 
-	static FE3H = CampaignConfiguration.CoA; 
+	static FE3H = {
+		"maxcap_abilities" : 30,
+		"maxcap_arts"      :  5,
+		"maxcap_tactical"  :  3,
+		"maxcap_combat"    :  3,
+		"free_traits"      :  0,
+	};
 
 	constructor(sheet) {
 
@@ -232,6 +260,11 @@ class CampaignConfiguration {
 		this.triggers = Array.from(
 			Object.keys(CampaignConfiguration.DEFINED),
 			key => `game|${key}`
+		);
+
+		this.table.refresher.register(this,
+			[CampaignConfiguration.LOCAL],
+			this.triggers
 		);
 
 		this._save = element("button", {
@@ -258,7 +291,7 @@ class CampaignConfiguration {
 
 		this.defaults = element("select", {
 			class   : ["simple-border"],
-			content : ["FbF", "CoA", "FE3H"].map(name => 
+			content : ["FbF", "CoA", "FE3H"].map(name =>
 				element("option", {content: name, attrs: {value: name}})
 			)
 		});
@@ -268,35 +301,63 @@ class CampaignConfiguration {
 			return variable();
 		});
 
+		const traits = ((base, variable, name) => {
+			
+			for (const value of sheet.checks.rows.values()) {
+				value._rank.edit = Boolean(base);
+			}
+
+			this.table.refresher.refresh(name);
+			return variable() ? "true" : "false";
+		});
+
 		const rows = element("tbody", [
 			this.table.row(
-				"Art Slots",
+				tooltip("Art Slots",
+					CampaignConfiguration.DEFINED["maxcap_arts"],
+				),
 				{
 					var  : "game|maxcap_arts",
 					call : update,
 				}
 			),
 			this.table.row(
-				"Tactical Art Slots",
+				tooltip("Tactical Art Slots",
+					CampaignConfiguration.DEFINED["maxcap_tactical"],
+				),
 				{
 					var  : "game|maxcap_combat",
 					call : update,
 				}
 			),
 			this.table.row(
-				"Combat Art Slots",
+				tooltip("Combat Art Slots",
+					CampaignConfiguration.DEFINED["maxcap_combat"],
+				),
 				{
 					var  : "game|maxcap_tactical",
 					call : update,
 				}
 			),
 			this.table.row(
-				"Ability Capacity",
+				
+				tooltip("Ability Capacity",
+					CampaignConfiguration.DEFINED["maxcap_abilities"],
+				),
 				{
 					var  : "game|maxcap_abilities",
 					call : update,
 				}
 			),
+			this.table.row(
+				tooltip("Free Trait Ranks",
+					CampaignConfiguration.DEFINED["free_traits"]
+				),
+				{
+					var  : "game|free_traits",
+					call : traits,
+				}
+			)
 		]);
 
 		this.root = element("fieldset", [
@@ -316,10 +377,10 @@ class CampaignConfiguration {
 		object = Legacy.configuration(object);
 
 		for (const key in CampaignConfiguration.DEFINED) {
-			this.values[key].value = object.values[key];
+			this.values[key].setValue(object.values[key]);
 		}
 
-		this.table.refresher.refresh(this.triggers);
+		this.table.refresher.refresh(CampaignConfiguration.LOCAL);
 	}
 
 	export() {
@@ -341,10 +402,16 @@ class CampaignConfiguration {
 		const defaults = CampaignConfiguration[this.defaults.value];
 
 		for (const key in defaults) {
-			this.values[key].value = defaults[key];
+			this.values[key].setValue(defaults[key]);
 		}
 
-		this.table.refresher.refresh(this.triggers);
+		this.table.refresher.refresh(CampaignConfiguration.LOCAL);
+	}
+
+	refresh() {
+		for (const key in this.values) {
+			this.values[key].refresh();
+		}
 	}
 
 }
@@ -371,7 +438,7 @@ class CampaignConfiguration {
 	    "Guile", v/ L/
 	    "Reason", v/ L/
 	    "Other", v/ L/
-	    "Item", 
+	    "Item",
 	    "Crest", v/ L/
 	    "Equipment",
 	    "Permission",
@@ -627,6 +694,8 @@ class Sheet {
 		this.data = data;
 
 		this.refresher = new Refresher(this);
+
+		this.refresher.wait();
 
 		/* prominently display the version data */
 		const version = element("strong", [
@@ -1356,6 +1425,7 @@ class Sheet {
 
 		// We can do this now that all is initialized
 		this.stats.va.refresh();
+		this.refresher.signal();
 	}
 
 	predicates(base) {
@@ -1687,17 +1757,25 @@ class Sheet {
 
 			add({
 				name  : `unit|trait|${trait}|rank`,
-				about : wrap(),
+				about : wrap(
+					"Trait rank determined from skills/custom assignment"
+				),
 				expr  : ((env) => {
-					return Checks.rank(this, trait);
+					const custom = this.checks[trait]._rank.value;
+					const free   = env.read("game|free_traits");
+					return Checks.rank(this, trait, free * custom);
 				}),
 			});
 
 			add({
 				name  : `unit|trait|${trait}|bonus`,
-				about : wrap(),
+				about : wrap(
+					"Trait bonus as determined by trait rank"
+				),
 				expr  : ((env) =>  {
-					return Checks.bonus(this, trait);
+					const custom = this.checks[trait]._rank.value;
+					const free   = env.read("game|free_traits");
+					return Checks.bonus(this, trait, free * custom);
 				}),
 			});
 		}

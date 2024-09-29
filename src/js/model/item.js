@@ -770,6 +770,7 @@ class Items {
 
 	clear(preset) {
 
+		this.refresher.wait();
 
 		for (let stat in this.stats) {
 			this.stats[stat].value = 0;
@@ -784,6 +785,8 @@ class Items {
 		this.template    = preset || Item.DEFAULT;
 		this._custom_tags.clear();
 		this._base.value = 0;
+
+		this.refresher.signal();
 	}
 
 	/* buildable display */

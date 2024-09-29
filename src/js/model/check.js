@@ -33,7 +33,7 @@ for (let [trait, skills] of Object.entries(definitions.traits)) {
 	}
 }
 
-function rank(sheet, name) {
+function rank(sheet, name, extra=0) {
 
 	let level = 0;
 
@@ -42,12 +42,11 @@ function rank(sheet, name) {
 		level     += Number(apt == 1 || apt == 3);
 	}
 
-	return level;
+	return Math.clamp(level + extra, 0, LEVELS.length - 1);
 }
 
-
-function bonus(sheet, name) {
-	return LEVELS[rank(sheet, name)];
+function bonus(sheet, name, extra=0) {
+	return LEVELS[rank(sheet, name, extra)];
 }
 
 class Row {
@@ -57,14 +56,19 @@ class Row {
 		this.ui    = ui;
 		this.sheet = sheet;
 
+		const _variable_rank = `unit|trait|${check}|rank`;
+
 		this._rank    = new AttributeCell({
-			edit    : false,
+			edit    : true,
 			shown   : 0,
 			value   : 0,
 			trigger : (value) => {
-				return rank(this.sheet, this.name);
+				sheet.refresher.refresh(_variable_rank);
+				return sheet.runenv.read(_variable_rank);
 			}
 		});
+
+		const _variable_bonus = `unit|trait|${check}|bonus`;
 
 		this._bonus = new AttributeCell({
 			edit    : false,
@@ -72,11 +76,18 @@ class Row {
 			value   : 0,
 			before  : "(",
 			after   : ")",
-			trigger : (value) => {
-				return `${bonus(this.sheet, this.name)}%`;
-			}
+			trigger : (value) =>
+				`${sheet.runenv.read(_variable_bonus)}%`,
 		});
 
+		sheet.refresher.register(this._rank,
+			["game|free_traits", _variable_rank],
+			[_variable_bonus],
+		);
+
+		sheet.refresher.register(this._bonus,
+			[_variable_bonus]
+		);
 
 		this.root = element("tr", [
 			element("th", this.name),
@@ -140,7 +151,7 @@ class UserInterface {
 
 	clear() {
 		for (let row of this.rows.values()) {
-			row.value    = 0;
+			row._rank.value = 0;
 		}
 	}
 
@@ -149,7 +160,7 @@ class UserInterface {
 		const object = {};
 
 		for (let row of this.rows.values()) {
-			object[row.name] = row.value;
+			object[row.name] = row._rank.value;
 		}
 
 		return object;
@@ -163,7 +174,7 @@ class UserInterface {
 		}
 
 		for (let row of this.rows.values()) {
-			row.value    = object[row.name] || 0;
+			row._rank.value = object[row.name] || 0;
 		}
 	}
 }
