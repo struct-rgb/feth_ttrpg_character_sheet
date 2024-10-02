@@ -1,5 +1,5 @@
 {
-  "name": "Deity Ring",
+  "name": "Goddess Ring",
   "type": "Other",
   "description": "While equipped, grants Hit, Crit, Avo, and Crit Avo +4 and restores 10% HP at the start of wielder's phase.",
   "requires": "None",
@@ -18,13 +18,19 @@
     "maxrng": 0,
     "tpcost": 0,
     "spcost": 0,
+    "doubles": 0,
+    "doubled": 0,
     "tp": 0,
-    "sp": 0
+    "sp": 0,
+    "hp": 0,
+    "charm": 8,
+    "mov": 0
   },
-  "comment": "Incompatible with all Attributes.",
+  "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
     "equipment",
-    "changed"
+    "ring",
+    "depricated"
   ],
-  "hidden": false
+  "hidden": true
 }

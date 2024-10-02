@@ -8,6 +8,8 @@
 	element, delimit, tag, wrap
 */
 
+/* global Iter */
+
 /* global ReqWidget */
 
 if (typeof require !== "undefined") {
@@ -17,7 +19,6 @@ if (typeof require !== "undefined") {
 		element, delimit, tag, wrap,
 	}              = require("../common.js"));
 	(  Polish      = require("../lang/polish.js"));
-	(  Markup      = require("../lang/markup.js"));
 	({ ReqWidget } = require("../widget/dynamic.js"));
 	/* eslint-enable no-global-assign */
 }
@@ -84,13 +85,6 @@ const defineTypes = (definitions) => ({
 	class: Polish.Type.fromCategories({
 		name        : "name",
 		categories  : ["classes"],
-		definitions : definitions,
-		mapping     : (feature => feature.name),
-	}),
-
-	equipment: Polish.Type.fromCategories({
-		name        : "name",
-		categories  : ["equipment"],
 		definitions : definitions,
 		mapping     : (feature => feature.name),
 	}),
@@ -251,7 +245,7 @@ function createContext(base, host, definitions) {
 		expr: ((name, type) => {
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: host.character.class.type.includes(type),
 			};
 		}),
@@ -262,7 +256,7 @@ function createContext(base, host, definitions) {
 		expr: ((op, name) => {
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: !name || host.character.class.name == name,
 			};
 		}),
@@ -275,7 +269,7 @@ function createContext(base, host, definitions) {
 
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: active ? active == name : false,
 			};
 		}),
@@ -286,8 +280,8 @@ function createContext(base, host, definitions) {
 		expr: ((op, name) => {
 			return {
 				require: true,
-				succeed: false, 
-				boolean: host.item.template.name == name
+				succeed: false,
+				boolean: Iter.any(host.inv, (item) => item.template.name == name)
 			};
 		}),
 	});
@@ -302,7 +296,7 @@ function createContext(base, host, definitions) {
 
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: found,
 			};
 		}),
@@ -318,7 +312,7 @@ function createContext(base, host, definitions) {
 
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: found,
 			};
 		}),
@@ -334,7 +328,7 @@ function createContext(base, host, definitions) {
 
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: found,
 			};
 		}),
@@ -350,7 +344,7 @@ function createContext(base, host, definitions) {
 
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: found,
 			};
 		}),
@@ -361,7 +355,7 @@ function createContext(base, host, definitions) {
 		expr: ((op, name) => {
 			return {
 				require: true,
-				succeed: false, 
+				succeed: false,
 				boolean: host.battalion.adjutant.name == name,
 			};
 		}),
@@ -513,7 +507,7 @@ function toDOM(marker, node, dead=false, top=true) {
 
 		const body  = element("ul", {
 			class   : ["compact-list"],
-			content : ast[0].value == "All" || ast[0].value == "Any" 
+			content : ast[0].value == "All" || ast[0].value == "Any"
 				? ast.slice(1).map(e => element("li", toDOM(marker, e, dead, false)))
 				: element("li", toDOM(marker, ast, dead, false)),
 		});
@@ -580,7 +574,7 @@ function toDOM(marker, node, dead=false, top=true) {
 		return element("strong", [args[0].value, " Class"]);
 
 	case "Class":
-		return args.length >= 1 
+		return args.length >= 1
 			? element("strong", ["Class is ", args[0].value])
 			: element("strong", "Class");
 

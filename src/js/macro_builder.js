@@ -223,7 +223,6 @@ class UserInterface {
 		this._compact  = new Toggle("Compact Macro Expressions?", true);
 		this._testroll = new Toggle("Test Roll Prompt?", false);
 		this._ranges   = new Toggle("Explicit Attack Range?", false);
-		this._defend   = new Toggle("Subtract Foe's Defenses", false);
 		this._export   = new BigButton("Export as VTTES Character",
 			() => void this.exportVTTES()
 		);
@@ -335,15 +334,6 @@ class UserInterface {
 				),
 			),
 
-			tooltip(
-				this._defend.root,
-				wrap(
-					"Automatically subtract selected foe's defenses when you ",
-					"roll a macro with a hit chance. This only works if the ",
-					"sheet for that foe has defensive macros set up."
-				),
-			),
-
 			this._export.label,
 
 			element("br"),
@@ -392,8 +382,8 @@ class UserInterface {
 
 		try {
 			const expression = this.sheet.compiler.compile(source);
-			const jsexpr     = expression.js();
-			const jsfunc     = eval(jsexpr);
+			// const jsexpr     = expression.js();
+			// const jsfunc     = eval(jsexpr);
 			
 			console.log(expression);
 
@@ -406,10 +396,10 @@ class UserInterface {
 						| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
 						| (this._compact.checked ? Calculator.Env.COMPACT : 0)
 				), "\n",
-				"jsgen: ", jsexpr, "\n",
-				"jsout: ", jsfunc(
-					expression.env.with(Calculator.Env.RUNTIME)
-				), "\n",
+				// "jsgen: ", jsexpr, "\n",
+				// "jsout: ", jsfunc(
+				// 	expression.env.with(Calculator.Env.RUNTIME)
+				// ), "\n",
 			);
 
 			this.historyPush(source);
@@ -620,11 +610,34 @@ class UserInterface {
 
 	macro(display=true) {
 
-		const m    = new Builder();
-		const arts = this.sheet.arts.getActiveValues();
-		const wpn  = this.sheet.item;
+		const wpn    = this.sheet.inv.equipped("item");
+		const arts   = this.sheet.arts.getActiveValues();
+		const tactic = arts.filter(art =>  art.isTactical()).at(0);
 
-		/* Set up macro-generation environment */
+		// can't generate a macro with no action
+		if (!(wpn || tactic)) {
+			alert(wrap(
+				"An active weapon, implement, or tactical art is needed ",
+				"order to generate a macro."
+			));
+			return "";
+		}
+
+		// don't allow depricated arts to be used for macros
+		for (let art of arts) {
+			if (art.tagged("depricated")) {
+				alert(`${art.name}\n${art.description}`);
+				return "";
+			}
+		}
+
+		const m      = new Builder();
+		const eqp    =  this.sheet.inv.equipped("equipment");
+		const meta   = arts.filter(art => !art.isTactical());
+		const base   = tactic ? tactic : wpn;
+		const tagged = [base].concat(meta);
+	
+		// set up macro-generation environment
 		const env = new Calculator.Env(
 			Calculator.Env.MACROGEN
 				| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
@@ -633,7 +646,7 @@ class UserInterface {
 			this.sheet.definez,
 		);
 
-		/* Determine if this allows test rolls */
+		// determine if this allows test rolls
 		const roll = (
 			this._testroll.checked
 				? m.prompt("Test Roll",
@@ -642,27 +655,19 @@ class UserInterface {
 				: m.sum("1d100")
 		);
 
-		for (let art of arts) {
-			if (art.tagged("depricated")) {
-				alert(`${art.name}\n${art.description}`);
-				return "";
-			}
-		}
+		const hostname = (eqp ? `${base.name} & ${eqp.name}` : base.name);
 
-		const tactic = arts.filter(art =>  art.isTactical()).at(0);
-		const meta   = arts.filter(art => !art.isTactical());
-		const base   = tactic ? tactic : wpn;
-		const tagged = [base].concat(meta);
-
+		// common base for all macros
 		(m
 			.me("(FLAVOR TEXT GOES HERE)")
 			.table()
 			.row("name",
 				(meta.length
-					? `${base.name} w/ ${meta.map(art => art.name).join(" & ")}`
-					:    base.name))
+					? `${hostname} w/ ${meta.map(art => art.name).join(" & ")}`
+					:    hostname))
 		);
 
+		// row for if we need a hit calculation
 		if (tagged.count(f => f.tagged("no hit")) == 0) {
 			(m
 				.row("To Hit",
@@ -674,6 +679,7 @@ class UserInterface {
 			);
 		}
 
+		// row for if we need a crit calculation
 		if (tagged.count(f => f.tagged("no crit")) == 0) {
 			(m
 				.row("To Crit",
@@ -685,6 +691,7 @@ class UserInterface {
 			);
 		}
 
+		// row for damage or healing calculation
 		if (tagged.count(f => f.tagged("no might")) >= 1) {
 			/* exclude the might row */
 		} else if (tagged.count(f => f.tagged("healing")) >= 1) {
@@ -711,6 +718,7 @@ class UserInterface {
 			);
 		}
 
+		// rows for defensive statisics and speed
 		if (tagged.count(f => f.tagged("no stats")) == 0) {
 			(m
 				.row("Hit/Crit Avo",
@@ -733,6 +741,7 @@ class UserInterface {
 			);
 		}
 
+		// row for any costs this action has
 		if (tagged.count(f => f.tagged("no cost")) == 0) {
 			(m
 				.row("SP/TP Cost",
@@ -743,18 +752,18 @@ class UserInterface {
 			);
 		}
 
+		// add any custom rows the active features grant
 		for (let row of this.sheet.iterCustomRows(!tactic)) {
 			if (row.check(env)) row.create(m, env);
 		}
 
 		m.line("");
 
-
 		const feature = [base.name, tactic ? base.description : wpn.fullInfo()];
 
 		const options = {seen: new Set([base.name]), join: false};
 
-		/* Base description */
+		// base description
 		for (let line of this.marker.toText(feature, options)) {
 			m.line(m.italic(line));
 		}
@@ -768,6 +777,26 @@ class UserInterface {
 		} else {
 			/* Include any attributes on the item if we're using one. */
 			const explain = wpn.attributes.getActiveValues().filter(
+				attribute => attribute.tagged("explain")
+			);
+
+			for (let attribute of explain) {
+				const text = this.marker.toText(attribute, options);
+				for (let line of text) m.line(m.italic(line));
+			}
+		}
+
+		/* Equipment description */
+
+		if (eqp && eqp.tagged("explain")) {
+
+			const feature = [eqp.name, eqp.fullInfo()];
+
+			for (let line of this.marker.toText(feature, options)) {
+				m.line(m.italic(line));
+			}
+
+			const explain = eqp.attributes.getActiveValues().filter(
 				attribute => attribute.tagged("explain")
 			);
 
@@ -847,7 +876,8 @@ class UserInterface {
 		const macros  = [];
 		const items   = this.sheet.wb;
 		const arts    = this.sheet.arts;
-		const item    = this.sheet.item;
+		const item    = this.sheet.inv.get("item");
+		const equip   = this.sheet.inv.get("equipment");
 		const gambits = this.sheet.battalion.gambits;
 
 		// sync to prevent the item in the list from being stale
@@ -855,7 +885,8 @@ class UserInterface {
 
 		const state  = {
 			arts   : arts.getState(),
-			item   : items.activeID,
+			item   : item.uuid,
+			equip  : equip.uuid,
 			gambit : this.sheet.battalion.getGambit(),
 		};
 
@@ -863,7 +894,8 @@ class UserInterface {
 
 		const targets = Iter.chain(
 			[UserInterface.SEPERATOR_ITEMS],
-			Array.from(items.category.entries("inventory")),
+			// Array.from(items.category.entries("inventory")),
+			Array.from(this.sheet.iterItemEquipmentCombos()),
 			[UserInterface.SEPERATOR_TACTICS],
 			arts.values(),
 			[UserInterface.SEPERATOR_GAMBITS],
@@ -894,6 +926,9 @@ class UserInterface {
 			switch (target.constructor.name) {
 			case "Art": {
 
+				// Make sure the equipment is disabled
+				if (equip.uuid) items.change(equip.uuid);
+
 				// Only tactical arts among arts can host macros.
 				if (!target.isTactical()) continue;
 
@@ -918,10 +953,19 @@ class UserInterface {
 			case "Array": { // Items are handled here.
 
 				// Unpack the array.
-				const [key, _value] = target;
+				const [iKey, eKey, _combo] = target;
+				
+				// incorrect weapon/implement is active
+				if (iKey != item.uuid) items.change(iKey);
 
-				// This behaves more like a feature.
-				items.change(key);
+				if (eKey) {
+					// incorrect equipment is active
+					if (eKey != equip.uuid) items.change(eKey);
+				} else {
+					// equipment is active when it shouldn't be
+					if (equip.uuid) items.change(equip.uuid);
+				}
+
 				target = item;
 
 				// If this item is a brawl weapon with no Mystic or Mighty
@@ -998,8 +1042,19 @@ class UserInterface {
 		// Restore the state of things to how we found them.
 		gambits.delete("Counter");
 		this.sheet.battalion.toggleGambit(state.gambit.name);
-		items.change(state.item);
+		// items.change(state.item);
 		arts.setState(state.arts);
+
+		if (state.item && state.item != item.uuid)
+			items.change(state.item);
+
+		if (state.equip) {
+			// incorrect equipment is active
+			if (state.equip != equip.uuid) items.change(state.equip);
+		} else {
+			// equipment is active when it shouldn't be
+			if (equip.uuid) items.change(equip.uuid);
+		}
 
 		// This will prevent a phantom "Counter" from remaining.
 		this.sheet.battalion.refresh();
@@ -1047,21 +1102,22 @@ class UserInterface {
 
 		text.push("");
 
-		const active = sheet.wb.activeID;
+		const items  = sheet.wb;
+		const aItem  = sheet.inv.get("item").uuid;
+		const aEquip = sheet.inv.get("equipment").uuid;
 
-		for (let uid of sheet.wb.category.names("inventory")) {
-			sheet.wb.change(uid);
-			text.push(sheet.wb.model.blurb(), "\n\n");
+		for (let uuid of sheet.wb.category.names("inventory")) {
+			if (!items.category.isActive(uuid)) items.change(uuid);
+			text.push(sheet.inv.getByUUID(uuid).blurb(), "\n\n");
 			++added;
 		}
 
-		sheet.wb.change(active);
+		sheet.wb.change(aItem);
+		sheet.wb.change(aEquip);
 
 		if (added) text[hole] = "## Inventory\n\n";
 
 		/* Other Features */
-
-		list("## Equipment", sheet.equipment.values());
 
 		const className = sheet.character.class.name;
 		if (className != "None") text.push(`## ${className}\n\n`);
@@ -1120,21 +1176,22 @@ class UserInterface {
 
 		text.push("");
 
-		const active = sheet.wb.activeID;
+		const items  = sheet.wb;
+		const aItem  = sheet.inv.get("item").uuid;
+		const aEquip = sheet.inv.get("equipment").uuid;
 
-		for (let uid of sheet.wb.category.names("inventory")) {
-			sheet.wb.change(uid);
-			text.push(sheet.wb.model.html(), "\n\n");
+		for (let uuid of sheet.wb.category.names("inventory")) {
+			if (!items.category.isActive(uuid)) items.change(uuid);
+			text.push(sheet.inv.getByUUID(uuid).html(), "\n\n");
 			++added;
 		}
 
-		sheet.wb.change(active);
+		sheet.wb.change(aItem);
+		sheet.wb.change(aEquip);
 
 		if (added) text[hole] = "<h2>Inventory</h2>\n\n";
 
 		/* Other Features */
-
-		list("<h2>Equipment</h2>", sheet.equipment.values());
 
 		const className = sheet.character.class.name;
 		if (className != "None") text.push(`<h2>${className}</h2>\n\n`);
@@ -1327,54 +1384,6 @@ class UserInterface {
 		URL.revokeObjectURL(a.href);
 	}
 
-	// defensive() {
-
-	// 	const m       = new Builder(false);
-	// 	const stats   = definitions.stats.defensive;
-	// 	const buckets = new Map();
-
-	// 	const env = new Calculator.Env(
-	// 		Calculator.Env.MACROGEN
-	// 			| (this._labels.checked  ? Calculator.Env.LABEL   : 0)
-	// 			| (this._alias.checked   ? Calculator.Env.ALIAS   : 0)
-	// 			| (this._compact.checked ? Calculator.Env.COMPACT : 0),
-	// 		this.sheet.definez,
-	// 	);
-
-	// 	for (let item of this.sheet.wb.iter()) {
-	// 		for (let each of stats) {
-
-	// 			const value = env.read(`item|total|${each}`);
-	// 			if (value == "0") continue; 
-
-	// 			if (!buckets.has(each)) buckets.set(each, ["Other", "0"]);
-	// 			buckets.get(each).push(this.sheet.item.name, value);
-			
-	// 		}
-	// 	}
-
-	// 	const final = [];
-
-	// 	for (let each of stats) {
-
-	// 		const bucket = buckets.get(each);
-
-	// 		final.push([capitalize(each), m.merge(
-	// 			...m.sum(
-	// 				env.read(`unit|received|${each}`),
-	// 				bucket && bucket.length > 2
-	// 					? m.prompt(
-	// 						"Foe's Equipped Item?", ...bucket
-	// 					).join("")
-	// 					: "0"
-	// 				)
-	// 			).join(" ")
-	// 		])
-	// 	}
-
-	// 	// if (display) this._display.value = macros.join("\n\n");
-	// 	return final;
-	// }
 }
 
 return {

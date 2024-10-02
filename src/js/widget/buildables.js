@@ -4,26 +4,77 @@
  */
 
 /* global
-	CategoryModel, MultiActiveCategory, SingleActiveCategory
+	CategoryModel, MultiActiveCategory
 */
 
 /* global
 	BigButton, Iter, SwapText, Toggle, Version,
-	element, ellipse, tooltip, uniqueID, wrap
+	element, tooltip, uniqueID, wrap
  */
 
 class BuildableModel {
 
-	import() {
+	constructor() {
+		this.uuid    = null;
+		this.empties = false;
+	}
 
+	/**
+	 * Default implementation assumes one active at a time.
+	 * @param  {[type]}  key      [description]
+	 * @param  {[type]}  data     [description]
+	 * @param  {Boolean} doExport [description]
+	 * @return {[type]}           [description]
+	 */
+	give(key, data, doExport=true) {
+
+		const old    = this.uuid;
+		const result = doExport ? {id: old, data: this.export()} : null;
+
+		if (typeof data == "string" || data instanceof String) {
+
+			// some of my models try to reach out and alter their
+			// category's titles/bodies and this is to stop them from trying
+			// to do that because on a new buildable, the category element
+			// hasn't been added yet and doing so would be a nullptr exception
+			this.uuid = null;
+
+			// reset the model, populate defaults from the data string
+			this.clear(data);
+
+			// done afterward so clear is allowed to erase uuid beforehand
+			this.uuid = key;
+		} else {
+
+			// done before in case import uses uuid
+			this.uuid = key;
+
+			// read in the data object
+			this.import(data);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Default implementation assumes one active at a time.
+	 * @param  {[type]} key [description]
+	 * @return {[type]}     [description]
+	 */
+	take(key, copy=false) {
+		return copy ? this.export() : null;
+	}
+
+	import(object) {
+		return null;
+	}
+
+	clear(object) {
+		return null;
 	}
 
 	export() {
-
-	}
-
-	clear() {
-
+		return null;
 	}
 
 	getTitle(object) {
@@ -130,16 +181,8 @@ class InteractiveSelection {
 
 		this.map = new Map();
 
-		const getTitle = ((x) => {
-			return x.name;
-		});
-
-		const getBody = ((x) => {
-			return element("span", ellipse(x.description, 50));
-		});
-
 		this.model = new CategoryModel(
-			options.name, this.map, getTitle, getBody, () => []
+			options.name, this.map, options.getTitle, options.getBody, () => []
 		);
 
 		this.category = new MultiActiveCategory(this.model, {
@@ -258,6 +301,8 @@ class Buildables {
 
 	constructor(options) {
 
+		this.name = options.name;
+
 		this.groupShowTitle = options.groupShowTitle || Buildables.pass;
 		this._updateData    = options.update      || Buildables.pass;
 		this._updateBatch   = options.updateBatch || Buildables.pass;
@@ -300,7 +345,15 @@ class Buildables {
 			this.selectory.fill(this.exportAll());
 			this.swap.next();
 		});
-		this._copy         = new BigButton("Copy", () => void this.copy());
+		this._copy         = new BigButton("Copy",
+			(() => {
+				this.copy();
+
+				if (!("groupEntry" in this)) return;
+
+				this.setGroup();
+			}),
+		);
 		
 		this._import       = new BigButton("Import");
 		this._import.input.type   = "file";
@@ -388,7 +441,7 @@ class Buildables {
 		if (options.sortfilter) {
 			this._sf    = options.sortfilter;
 			this.select = this._sf._select;
-			this.root.appendChild(this._sf.root); 
+			this.root.appendChild(this._sf.root);
 		} else {
 			this.root.appendChild(this.select = element("select", {
 				class   : ["simple-border"],
@@ -471,28 +524,45 @@ class Buildables {
 			this.groupEntry.setAttribute("list", uid);
 		}
 
-		this.map      = new Map();
-		const model   = new CategoryModel(options.name, this.map, getTitle, getBody, () => []);
-		this.category = new SingleActiveCategory(model, {
+		this.map = new Map();
+
+		{
+			// TODO this is to catch a bug; remove when resolved
+		
+			const bb     = this;
+			const oldSet = this.map.set;
+
+			this.map.set = function(key, value) {
+
+				if (bb.name == "characters") {
+
+					console.log(`Saving ${JSON.stringify(value.name)}`);
+
+					if (Item.has(value.name)) {
+						console.trace(`Character: ${value.name}`);
+						alert("Press Ctrl-Shift-I and send Ryan a screenshot.");
+					}
+
+				}
+
+				oldSet.call(this, key, value);
+			};
+		
+		}
+
+		
+		const model   = new CategoryModel(
+			options.name, this.map, getTitle, getBody, () => []
+		);
+
+		this.category = new MultiActiveCategory(model, {
 			name        : options.name,
 			empty       : options.empty || "Something went wrong!",
 			selectable  : false,
 			reorderable : true,
 			removable   : true,
-			ontoggle    : ((category, key) => {
-
-				if (options.group == "custom" && Item.has(key)) {
-					console.trace(`Key: ${key}`);
-					debugger;
-				}
-			
-				if (key == category.active) {
-					return false;
-				}
-
-				this.change(key);
-			}),
-			onremove     : ((category, key) => void this.remove(key)),
+			ontoggle    : ((category, key) => void this.change(key)),
+			onremove     : ((category, key) => void this.remove(key, true)),
 			parent       : this.root,
 			defaultGroup : options.defaultGroup ?? "",
 			groupShowTitle : this.groupShowTitle,
@@ -511,12 +581,14 @@ class Buildables {
 
 			onGroupRemove  : ((category, group) => {
 
-				const active = category.element(this.activeID);
+				const active = Iter.any(category.active, (key) => {
+					return group.key == category.element(key).group;
+				});
 
-				if (group.key == active.group) {
+				if (active) {
 					alert(wrap(
 						"You cannot delete the contents of a group that ",
-						"contains the active item."
+						"contains an active item."
 					));
 					return;
 				}
@@ -539,9 +611,10 @@ class Buildables {
 
 		this.selectGroup = options.selectGroup ?? this.category.defaultGroup;
 
-		this.selectory = new InteractiveSelection(options);
+		options.getTitle = getTitle;
+		options.getBody  = getBody;
 
-		// this.root.appendChild(this.selectory.root);
+		this.selectory = new InteractiveSelection(options);
 
 		this.swap = new SwapText([this.root, this.selectory.root], true);
 
@@ -587,75 +660,124 @@ class Buildables {
 	}
 
 	setGroup(group=this.groupEntry.value) {
-		this.category.setGroupFor(this.activeID, group, Buildables.GROUP_OPTIONS);
-	}
-
-	get activeID() {// TODO see if this can be replaced with this.category.getActive()
-		return this.category.getActive() ? this._activeID : null;
-	}
-
-	set activeID(value) {
-		this._activeID = value;
-	}
-
-	add(group) {
-		if (this.category.size > 0) {
-			this.map.set(this._activeID, this.model.export());
+		for (const each of this.category.active) {
+			this.category.setGroupFor(each, group, Buildables.GROUP_OPTIONS);
 		}
-
-		const activeID = uniqueID();
-
-		this.map.set(activeID, {
-			name        : this.model.getTitle(),
-			description : this.model.getBody(),
-		});
-
-		this.category.add(activeID, {group: group ?? this.selectGroup});
-		this.category.toggleActive(activeID);
-
-		this._activeID = activeID;
-
-		this.model.clear(this.select.value);
-
-		return activeID;
 	}
 
-	get active() {
-		return this.map.get(this._activeID);
+	setTitle(key, title) {
+		if (key == null || !this.category.has(key)) return false;
+		this.category.element(key).title = title;
+		return true;
+	}
+
+	setBody(key, body) {
+		if (key == null || !this.category.has(key)) return false;
+		this.category.element(key).description = body;
+		return true;
+	}
+	
+	recieve(retrieved) {
+		
+		// if we got nothing, or got something we don't own, just discard it
+		if (!retrieved || !this.map.has(retrieved.id)) return;
+		
+		// store the updated data we got from the model
+		this.map.set(retrieved.id, retrieved.data);
+
+		// this should deactivate the element
+		this.category.toggleActive(retrieved.id);
+	}
+	
+	dummy(object) {
+		return {
+			name        : this.model.getTitle(object),
+			description : this.model.getBody(object),
+		};
+	}
+
+	add(group=this.selectGroup) {
+
+		const freshID  = uniqueID();
+
+		// give the new buildable to the model and take any olds it returns
+		this.recieve(this.model.give(freshID, this.select.value));
+
+		// get a copy of whatever the model just initialized
+		this.map.set(freshID, this.model.take(freshID, true));
+		this.category.add(freshID, {group});
+		this.category.toggleActive(freshID);
+
+		return freshID;
 	}
 
 	change(key) {
 
-		// Nothing to do for an invalid key
+		// nothing to do for an invalid key
 		if (key == null || !this.category.has(key)) return key;
 
-		// No need to change if the key is already active
-		if (key == this.activeID) return key;
-		
-		// Guard against a stale activeID in importAll
-		this.sync();
+		// trying to toggle off an active selection
+		if (this.category.isActive(key)) {
 
-		this._activeID = key;
+			// try to take the data back from the model
+			const data = this.model.take(key);
+
+			// if it didn't give us anything we're done here
+			if (!data) return key;
+
+			// store the data it gave us and toggle of the selection
+			this.map.set(key, data);
+			this.category.toggleActive(key);
+
+			return key;
+		}
+		
+		// turn on the new selection
 		this.category.toggleActive(key);
 
-		this.model.import(this.map.get(key));
+		// hand the data over to the model and process anything we get back
+		this.recieve(this.model.give(key, this.map.get(key)));
 
 		return key;
 	}
 
-	sync() {
-		if (this.map.has(this._activeID))
-			this.map.set(this._activeID, this.model.export());
-	}
+	sync(key) {
 
-	remove(key) {
-		if (key == this._activeID) {
-			alert("You cannot delete the active item.");
+		if (key) {
+			this.map.set(key, this.model.take(key, true));
 			return;
 		}
 
+		for (const key of this.category.active) {
+			this.map.set(key, this.model.take(key, true));
+		}
+	}
+
+	remove(key, interactive=false) {
+
+		// nothing to do for an invalid key
+		if (key == null || !this.category.has(key)) return key;
+
+		// if the key is active that means the model owns it
+		if (this.category.isActive(key)) {
+
+			// try to take the data back from the model
+			const data = this.model.take(key);
+
+			// if we don't get anything the model still owns the data
+			if (!data) {
+				if (interactive) alert("Can't delete this while active.");
+				return false;
+			}
+
+			// since we got it we own it and are allowed to delete it
+		}
+
+		// do the actual deletion
 		this.category.delete(key);
 		this.map.delete(key);
+		
+		return true;
 	}
 
 	save() {
@@ -663,24 +785,36 @@ class Buildables {
 		sheet.save();
 	}
 
-	copy(key) {
+	copy(key, group=this.selectGroup) {
 
-		key = key || this._activeID;
+		if (key == null) {
+			for (const each of Array.from(this.category.active))
+				this.copy(each, group);
+			return;
+		}
 
-		const activeID = uniqueID();
+		// nothing to do for an invalid key
+		if (!this.category.has(key)) return key;
 
-		const item = (key == this._activeID
-			? this.model.export()
-			: JSON.parse(JSON.stringify(this.map.get(key)))
+		const freshID = uniqueID();
+
+		const clone   = (
+			this.category.isActive(key)
+				? this.model.take(key, true)
+				: structuredClone(this.map.get(key))
 		);
 
-		this.map.set(activeID, item);
-		this.category.add(activeID);
+		// give the new buildable to the model and take any olds it returns
+		this.recieve(this.model.give(freshID, clone));
 
-		return this.change(activeID);
+		this.map.set(freshID, clone);
+		this.category.add(freshID, {group});
+		this.category.toggleActive(freshID);
+
+		return freshID;
 	}
 
-	clear() {
+	clear() { // TODO makesure this works with the rewrite
 		this.map.clear();
 		this.category.clear();
 		this.model.clear();
@@ -694,9 +828,8 @@ class Buildables {
 
 	exportAll(interactive=false) {
 
-		// get the uid of the  currently active data
-		const active = this.category.getActive();
-		
+		this.sync();
+
 		const data   = {
 			version  : Version.CURRENT.toString(),
 			active   : null,
@@ -705,22 +838,16 @@ class Buildables {
 		
 		for (let name of this.category.names()) {
 
-			// filter out unselected elemetns for user exported data
+			// filter out unselected elements for user exported data
 			if (interactive && !this.selectory.isSelected(name))
 				continue;
 
 			const element = {
-				id    : name,
-				group : this.category.element(name).group,
-				data  : null
+				id     : name,
+				group  : this.category.element(name).group,
+				active : this.category.isActive(name),
+				data   : this.map.get(name),
 			};
-
-			if (name == active) {
-				element.data = this.model.export();
-				data.active  = name;
-			} else {
-				element.data = this.map.get(name);
-			}
 			
 			data.elements.push(element);
 		}
@@ -735,7 +862,7 @@ class Buildables {
 		if (!interactive) {
 			this.map.clear();
 			this.category.clear();
-			this._activeID = null;
+			this.model.clear();
 		}
 
 		for (let each of data.elements) {
@@ -751,21 +878,31 @@ class Buildables {
 			// add the element to this buildables
 			this.map.set(each.id, this._updateData(each.data));
 			this.category.add(each.id, {group: each.group});
+
+			// this should add all object the model can hold one by one
+			if (each.active) this.change(each.id);
+		}
+	}
+
+	exportObject(key) {
+		return this.model.take(key, true);
+	}
+
+	export(key) {
+
+		if (key == null) {
+			for (const each of Array.from(this.category.active))
+				this.export(each);
+			return;
 		}
 
-		if (data.active) this.change(data.active);
-	}
+		if (!this.category.has(key)) return;
 
-	exportObject() {
-		return this.model.export();
-	}
-
-	export(batch=false) {
 		const a    = element("a");
-		const item = this.model.export();
+		const item = this.exportObject(key);
 		const file = new Blob([JSON.stringify(item, null, 4)], {type: "application/json"});
 		a.href     = URL.createObjectURL(file);
-		a.download = `${this.model.name.replace(/ /g, "_")}.json`;
+		a.download = `${item.name.replace(/ /g, "_")}.json`;
 		a.click();
 		URL.revokeObjectURL(a.href);
 	}
@@ -781,10 +918,10 @@ class Buildables {
 	}
 
 	importObject(object) {
-		const activeID = uniqueID();
-		this.map.set(activeID, object);
-		this.category.add(activeID, {group: this.selectGroup});
-		this.change(activeID);
+		const freshID = uniqueID();
+		this.map.set(freshID, object);
+		this.category.add(freshID, {group: this.selectGroup});
+		this.change(freshID);
 	}
 
 	import(e) {

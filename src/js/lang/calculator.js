@@ -979,7 +979,7 @@ const Tokens = (function() {
 
 				for (let each of argument) {
 					strings.push(recurse(each));
-				} 
+				}
 
 				return `{(${strings.join("),(")})}kh1`;
 			},
@@ -1214,7 +1214,7 @@ const Tokens = (function() {
 
 				for (let each of argument) {
 					strings.push(recurse(each));
-				} 
+				}
 
 				return strings.join("");
 			},
@@ -1502,9 +1502,9 @@ const Tokens = (function() {
 				recurse(argA); // compute first argument
 				
 				// mark location and allocate space for a conditional
-				// branch past the second argument 
+				// branch past the second argument
 				const branch = code.instructions.length;
-				code.instructions.push(null); 
+				code.instructions.push(null);
 
 				recurse(argB); // compute second argument
 
@@ -1543,9 +1543,9 @@ const Tokens = (function() {
 				recurse(argA); // compute first argument
 				
 				// mark location and allocate space for a conditional
-				// branch past the second argument 
+				// branch past the second argument
 				const branch = code.instructions.length;
-				code.instructions.push(null); 
+				code.instructions.push(null);
 
 				recurse(argB); // compute second argument
 
@@ -1800,7 +1800,7 @@ const Tokens = (function() {
 				// mark location and allocate space for a conditional
 				// branch to the true case later on
 				const branch = code.instructions.length;
-				code.instructions.push(null); 
+				code.instructions.push(null);
 
 				recurse(argZ); // compute false case
 
@@ -2053,7 +2053,7 @@ const Tokens = (function() {
 	};
 
 	return Object.freeze(namespace);
-})(); 
+})();
 
 function tokenize(source, wstrip=true, cstrip=true) {
 	/* regular expressions are one of the best things invented */
@@ -2236,7 +2236,7 @@ class Parser extends AbstractParser {
 		// track how much stack space is needed for locals here
 		this._locals  = new Parser.Frame();
 
-		// setting this internal flag to true kneecaps the parser to not 
+		// setting this internal flag to true kneecaps the parser to not
 		// understand relative or logical operators so that it can generate
 		// hacky conditional expressions to execute in roll20 macros
 		this._strict  = false;
@@ -2366,7 +2366,7 @@ class Parser extends AbstractParser {
 				);
 			}
 			this._toNext();
-			first = false;	
+			first = false;
 
 			args.push(out);
 
@@ -2467,7 +2467,7 @@ class Parser extends AbstractParser {
 		this._sink();
 		this._toNext();
 
-		let   first   = true; 
+		let   first   = true;
 		const options = [];
 		
 		for (;;) {
@@ -2488,7 +2488,7 @@ class Parser extends AbstractParser {
 					this.position,
 				);
 			}
-			first = false;		
+			first = false;
 
 			options.push(out);
 
@@ -2536,7 +2536,7 @@ class Parser extends AbstractParser {
 		}
 
 		const string = this._parseString();
-		if (string != null) return string; 
+		if (string != null) return string;
 
 		const token = this.token.match(Tokens.REGEXP.IDENTIFIER);
 		if (!token) return null;
@@ -2562,7 +2562,7 @@ class Parser extends AbstractParser {
 		this._sink();
 		this._toNext();
 
-		let   first   = true; 
+		let   first   = true;
 		const options = [];
 		
 		for (;;) {
@@ -2583,7 +2583,7 @@ class Parser extends AbstractParser {
 					this.position,
 				);
 			}
-			first = false;		
+			first = false;
 
 			options.push(out[0] == "text" ? out : [Tokens.TERMINALS.META, out]);
 
@@ -2687,7 +2687,7 @@ class Parser extends AbstractParser {
 		this._sink();
 		this._toNext();
 
-		let   first   = true; 
+		let   first   = true;
 		const options = [];
 		
 		for (;;) {
@@ -2708,7 +2708,7 @@ class Parser extends AbstractParser {
 					this.position,
 				);
 			}
-			first = false;		
+			first = false;
 
 			options.push(out);
 
@@ -3176,7 +3176,7 @@ class Parser extends AbstractParser {
 		}
 		this._toNext();
 
-		// setting this internal flag to true kneecaps the parser to not 
+		// setting this internal flag to true kneecaps the parser to not
 		// understand relative or logical operators so that it can generate
 		// hacky conditional expressions to execute in roll20 macros
 		const save   = this._strict;
@@ -3439,7 +3439,7 @@ class Parser extends AbstractParser {
 		/* now we know that it isn't so try everything else */
 
 		if (   token == Tokens.TERMINALS.MIN
-			|| token == Tokens.TERMINALS.MAX	
+			|| token == Tokens.TERMINALS.MAX
 		) {
 
 			/* check whether this is a min or max expression */
@@ -3991,7 +3991,7 @@ class Env {
 
 	/**
 	 * Used for metaprogramming, to determine whether this compulation is
-	 * executing code at compile time. Always starts as false but is 
+	 * executing code at compile time. Always starts as false but is
 	 * set to true once execution enters a meta() or metaif contruction.
 	 * Not a user-provided flag. Not-inherited. Variable.
 	 * @type {boolean}
@@ -4286,7 +4286,7 @@ class Compiler {
 
 	/**
 	 * Compute which variables depend on each other.
-	 * This uses a top down traversal and sets the "depends on" set as the 
+	 * This uses a top down traversal and sets the "depends on" set as the
 	 * set of all variables that reach it using this traversal method.
 	 */
 	compute_dependants(variable, set=new Set()) {
@@ -4385,7 +4385,7 @@ class Compiler {
 	template(source, macros=this.macros) {
 		const [name, tmp] = Template.parse(source, macros);
 		macros[name]      = tmp;
-		return name; 
+		return name;
 	}
 
 	createLocals(templates, macros=this.macros) {

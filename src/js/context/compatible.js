@@ -250,7 +250,7 @@ function createContext(object, definitions) {
 			for (let arg of args) {
 				if (arg.selected) return arg.value;
 			}
-			return def;
+			return (def === "true");
 		}),
 	});
 
@@ -290,6 +290,16 @@ function createContext(object, definitions) {
 			),
 			value    : arg,
 		})),
+	});
+
+	addx({
+		sign: ["True", [], Types.boolean],
+		expr: ((op, arg) => true),
+	});
+
+	addx({
+		sign: ["False", [], Types.boolean],
+		expr: ((op, arg) => false),
 	});
 
 	addx({

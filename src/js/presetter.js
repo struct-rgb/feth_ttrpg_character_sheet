@@ -9,7 +9,7 @@
 
 /* global
    BigButton, Toggle, Version
-   element, capitalize, nameof, tooltip, uniqueLabel, wrap
+   element, capitalize, choice, nameof, tooltip, uniqueLabel, wrap
  */
 
 /* global
@@ -2837,7 +2837,7 @@ const KITS = {
 			5 : {
 				"points"    : 4,
 				"items"     : [
-					["Miasma", "Bound"], 
+					["Miasma", "Bound"],
 					["Banshee", "Bound"]
 				],
 				"abilities" : ["Guile Prowess"],
@@ -2846,7 +2846,7 @@ const KITS = {
 			10 : {
 				"points"    : 8,
 				"items"     : [
-					["Miasma", "Bound"], 
+					["Miasma", "Bound"],
 					["Banshee", "Bound"],
 					["Swarm", "Bound"]
 				],
@@ -2856,7 +2856,7 @@ const KITS = {
 			15 : {
 				"points"    : 31,
 				"items"     : [
-					["Miasma", "Bound"], 
+					["Miasma", "Bound"],
 					["Banshee", "Bound"],
 					["Swarm", "Bound"],
 					["Death", "Bound"]
@@ -2867,7 +2867,7 @@ const KITS = {
 			25 : {
 				"points"    : 66,
 				"items"     : [
-					["Banshee", "Bound"], 
+					["Banshee", "Bound"],
 					["Swarm", "Bound"],
 					["Death", "Bound"],
 					["Hades", "Bound"]
@@ -2893,7 +2893,7 @@ const KITS = {
 			5 : {
 				"points"    : 4,
 				"items"     : [
-					["Ectoplasm", "Bound"], 
+					["Ectoplasm", "Bound"],
 					["Ectoplasm", "Refined", "Bound"]
 				],
 				"abilities" : ["Guile Prowess"],
@@ -2902,7 +2902,7 @@ const KITS = {
 			10 : {
 				"points"    : 6,
 				"items"     : [
-					["Ectoplasm", "Bound"], 
+					["Ectoplasm", "Bound"],
 					["Ectoplasm", "Refined", "Bound"]
 				],
 				"abilities" : ["Guile Prowess"],
@@ -2911,7 +2911,7 @@ const KITS = {
 			15 : {
 				"points"    : 31,
 				"items"     : [
-					["Ectoplasm", "Bound"], 
+					["Ectoplasm", "Bound"],
 					["Ectoplasm", "Refined", "Bound"]
 				],
 				"abilities" : ["Guile Prowess", "Heartseeker"],
@@ -2920,7 +2920,7 @@ const KITS = {
 			25 : {
 				"points"    : 66,
 				"items"     : [
-					["Ectoplasm", "Bound"], 
+					["Ectoplasm", "Bound"],
 					["Ectoplasm", "Refined", "Bound"]
 				],
 				"abilities" : ["Guile Prowess", "Heartseeker"],
@@ -3120,7 +3120,7 @@ class Tokenator {
 				this.select.appendChild(option);
 			}
 
-			this.root = element("span", 
+			this.root = element("span",
 				[this.button, this.image, this.input]
 			);
 		}
@@ -3321,13 +3321,13 @@ class Tokenator {
 		const compts = [
 			"source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in",
 			"destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "screen",
-			"overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", 
-			"difference", "exclusion", "hue", "saturation", "color", "luminosity", 
+			"overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light",
+			"difference", "exclusion", "hue", "saturation", "color", "luminosity",
 		];
 
 		this.composite2 = element("select", {
 			class: ["simple-border"],
-			content: compts.map(each => 
+			content: compts.map(each =>
 				element("option", {
 					content : each,
 					value   : each,
@@ -3650,7 +3650,7 @@ class Tokenator {
 				for (let each of kit.items) {
 
 					const stringle    = typeof each == "string";
-					const nitem       = stringle ? each : each[0]; 
+					const nitem       = stringle ? each : each[0];
 					const nattributes = stringle ?  []  : each.slice(1);
 
 					const item = Item.get(nitem);
@@ -3750,7 +3750,7 @@ class Tokenator {
 			ctx.fill();
 
 			ctx.globalCompositeOperation = "source-in";
-			ctx.drawImage(this.portrait.image, 
+			ctx.drawImage(this.portrait.image,
 				this.offsetX, this.offsetY, width, height
 			);
 		}

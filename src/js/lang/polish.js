@@ -291,13 +291,32 @@ const NOT_DEPENDANCY = new Set([
 	"Unknown", "Unfinished", "Barrier", "Agarthan"
 ]);
 
-// TODO account for the fact that ast[0] could be an array
-function depends(ast, set=new Set()) {
+function depends(ast, exclude=NOT_DEPENDANCY, set=new Set()) {
 
-	if (ast.length && !NOT_DEPENDANCY.has(ast[0].value)) set.add(ast[0].value);
+	const items     = ast.values();
+	const node      = items.next();
 
-	for (let i = 1; i < ast.length; ++i) {
-		if (ast[i] instanceof Array) depends(ast[i], set);
+	// if we don't get one then nothing to do
+	if (node.done) return set;
+
+	const predicate = node.value;
+	const type      = predicate.constructor.name;
+
+	// we only consider the "predicate" a depandancy
+	switch (type) {
+	case "Array":
+		depends(predicate, exclude, set);
+		break;
+	case "Symbol":
+		if (!exclude.has(predicate.value)) set.add(predicate.value);
+		break;
+	default:
+		throw new Error(`Encountered ${type} as predicate`);
+	}
+
+	// handle the rest of the elements
+	for (const node of items) {
+		if (node instanceof Array) depends(node, exclude, set);
 	}
 
 	return set;
@@ -444,7 +463,7 @@ class CompiledExpression {
 			}
 
 			const fn    = context[predicate.value];
-			const nargs = list.length - 1; 
+			const nargs = list.length - 1;
 
 			// check for the correct number of arguments.
 			if (fn.variadic) {
@@ -510,8 +529,8 @@ class CompiledExpression {
 
 			for (let element of list) {
 				args.push(
-					(element instanceof Symbol) 
-						? element.value 
+					(element instanceof Symbol)
+						? element.value
 						: walk(element)
 				);
 			}
@@ -691,7 +710,7 @@ class Type {
 	 * Creates a Type that can only be constructed by a set of provided strings
 	 * @param  {object}   options specified as kwargs
 	 * @return {function} the created types
-	 */	
+	 */
 	static fromSet(name, set, messenger) {
 		return new Type(name, (symbol) => {
 			if (!set.has(symbol.value)) {
@@ -715,7 +734,7 @@ class Type {
 		const list   = conjoin("or", categories);
 		const mapped = Iter.map(Iter.chain(...valuesOf(definitions, categories)), mapping);
 		const set    = new Set(flatten ? Iter.chain(...mapped) : mapped);
-		const error  = (symbol => 
+		const error  = (symbol =>
 			`${JSON.stringify(symbol.value)} is not a ${name} for any ${list}`
 		);
 

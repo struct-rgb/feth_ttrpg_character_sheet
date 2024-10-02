@@ -10,7 +10,7 @@ const Skills = (function() {
 
 const POINTS = [
 	// skill point gain past the "soft level cap"
-	3, 
+	3,
 	// skill point gain for each level up to the "soft cap"
 	4, 1, 1, 1, 1, 2, 2, 2, 2, 2,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -54,20 +54,11 @@ class Row {
 			this.old_value = points;
 			this.grade     = Grade.for(x, this.aptitude);
 
-			/** TODO ugly way to refresh tp */
-			if (this.sheet && this.sheet.stats) {
-				this.sheet.stats.refreshSecondary(); 
-			}
+			/** TODO rank's not tied directly to authority so idk whty this exists */
+			// if (this.name == "Authority" && this.sheet && this.sheet.battalion) {
+			// 	this.sheet.battalion._rank.refresh();
+			// }
 
-			/** TODO ugly way to refresh battalion stuff */
-			if (this.name == "Authority" && this.sheet && this.sheet.battalion) {
-				this.sheet.battalion._rank.refresh();
-			}
-
-			// this.sheet.character.reclass();
-			section._other.cell.refresh();
-
-			// TODO make sure that this works
 			this.sheet.refresher.refresh(this.triggers);
 
 			return this.grade;
@@ -136,18 +127,16 @@ class SkillUserInterface {
 		sheet.refresher.register(this._total, ["Level", "unit|level"]);
 
 		this._other = new Row("Other", this, sheet, (x) => {
-			const grade = Grade.fromNumber(
-				Array
-					.from(this.rows.values())
-					.map(row => Grade.toNumber(row.cell.shown))
+			return Grade.fromNumber(
+				Array.from(
+					this.rows.values(),
+					row => Grade.toNumber(row.grade)
+				)
 					.reduce((a, b) => Math.max(a, b))
 			);
-
-			// TODO make sure that this works
-			this.sheet.refresher.refresh("Other");
-
-			return grade;
 		});
+
+		sheet.refresher.register(this._other.cell, definitions.skills, ["Other"]);
 
 		const body = element("tbody",
 			skills.map(skill => {
@@ -162,8 +151,6 @@ class SkillUserInterface {
 				]),
 			)
 		);
-
-		// const foot = element("tfoot", );
 
 		this.root = element("div", [
 			element("table", [

@@ -3,7 +3,7 @@
  * @module feature
  */
 
-/* global 
+/* global
 	ConfigEnum, Filter, Iter, Version
 	assume, capitalize, delimit, element, tooltip, wrap
 */
@@ -66,7 +66,7 @@ class Feature {
 	static kind = "feature";
 
 	/**
-	 * Immutable empty object instance to preven unnessecary allocation. 
+	 * Immutable empty object instance to preven unnessecary allocation.
 	 * @constant
 	 * @type {Object}
 	 * @default
@@ -736,7 +736,7 @@ class Action extends Feature {
 		}
 	}
 
-	static MTTYPE = new ConfigEnum(0, "else", ["else", "str", "mag", "none"]); 
+	static MTTYPE = new ConfigEnum(0, "else", ["else", "str", "mag", "none"]);
 
 	/**
 	 * Generate a {@link CategoryElement} description
@@ -761,7 +761,7 @@ class Action extends Feature {
 		let   star  = undefined;
 		const bare  = {sign: false , range: false , dead};
 		const sign  = {sign: true  , range: false , dead};
-		const range = {sign: false , range: true  , dead}; 
+		const range = {sign: false , range: true  , dead};
 
 		if ((star = this.modifierForUI("tpcost", bare)))
 			mods.push([star, element("sub", "TP", "computed")]);
@@ -839,6 +839,7 @@ class Art extends Action {
 	constructor(template, compiler, predicator, marker) {
 		super(template, compiler, predicator, marker);
 
+		// for combat arts w/ whatever they're used with
 		let value = template.compatible || "False";
 		if (value instanceof Array) value = value.join("\n");
 
@@ -1237,8 +1238,34 @@ class Item extends Action {
 
 	static kind = "items";
 
+	static SUBTYPES = ["equipment", "weapon", "implement"];
+
+	constructor(template, compiler, predicator, marker) {
+		super(template, compiler, predicator, marker);
+
+		// for equipment with weapons/implements
+		let value = template.compatible || "True";
+		if (value instanceof Array) value = value.join("\n");
+
+		this.compatible = value;
+
+		// If this is not a super() call, freeze the object.
+		if (new.target === Item) {
+			Object.freeze(this);
+		}
+	}
+
 	getVariableName(key) {
 		return `item|template|${key}`;
+	}
+
+	getItemType() {
+
+		for (const each of Item.SUBTYPES) {
+			if (this.tagged(each)) return each;
+		}
+
+		return "implement";
 	}
 
 	static DEFAULT = "Unarmed";
@@ -1268,7 +1295,7 @@ class Item extends Action {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
@@ -1299,7 +1326,9 @@ class Item extends Action {
 					return feature.tagged("FE3H");
 				}),
 
-				element("strong", "Item Type"), element("br"),
+				Filter.Group.END,
+
+				element("br"), element("strong", "Item Type"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),
 
@@ -1676,13 +1705,13 @@ class Class extends Feature {
 			case 1:
 				/* These two cases are always valid. */
 				break;
-			case 2: 
+			case 2:
 				/* Has to be one of:
 				 * tactical == 1 && other == 1
 				 * tactical == 1 && combo == 1
 				 * combo    == 1 && other == 1
 				 * combo    == 2
-				 * 
+				 *
 				 * These fail (and also fail 3):
 				 * other    == 2
 				 * tactical == 2
@@ -1727,7 +1756,7 @@ class Class extends Feature {
 			if (each instanceof Array) {
 				/* Ensure one options is present. */
 				if (!only(each, here)) return false;
-				for (let one of each) here.delete(one); 
+				for (let one of each) here.delete(one);
 			} else {
 				/* Ensure this required feature is present. */
 				if (!here.has(each)) return false;
@@ -1833,7 +1862,7 @@ class Class extends Feature {
 
 		const rows = (
 			["hp", "spd", "str", "mag", "dex", "lck", "def", "res"]
-				.map(key => 
+				.map(key =>
 					[
 						element("td", key.toUpperCase()),
 						element("td", this.modifierForUI(key, false)),
@@ -2100,7 +2129,7 @@ class Ability extends Feature {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
@@ -2404,154 +2433,6 @@ class Ability extends Feature {
 }
 
 /**
- * A Feature subclass to repersent equipment
- */
-class Equipment extends Feature {
-
-	static kind = "equipment";
-	static DEFAULT = "";
-
-	getVariableName(key) {
-		return `equipment|${key}`;
-	}
-
-	constructor(template, compiler, predicator, marker) {
-		super(template, compiler, predicator, marker);
-		this.price = template.price || "";
-
-		if (new.target === Equipment) {
-			Object.freeze(this);
-		}
-	}
-
-	static select(trigger) {
-
-		trigger = trigger || (() => {});
-
-		const filter = new Filter.Select({
-			value   : this.DEFAULT,
-			trigger : trigger,
-			model   : this,
-			options : definitions[this.kind].map(cls => 
-				element("option", {
-					attrs   : {value: cls.name},
-					content : cls.name,
-				})
-			),
-			content : [
-				element("strong", "Campaign"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("All", true, (feature) => {
-					return (
-						!feature.tagged("FbF")
-							&&
-						!feature.tagged("CoA")
-							&&
-						!feature.tagged("FE3H")
-					);
-				}),
-				new Filter.Toggle("FbF", false, (feature) => {
-					return feature.tagged("FbF");
-				}),
-				new Filter.Toggle("CoA", false, (feature) => {
-					return feature.tagged("CoA");
-				}),
-				new Filter.Toggle("FE3H", false, (feature) => {
-					return feature.tagged("FE3H");
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Item Type"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Accessory", false, (feature) => {
-					return feature.type == "Accessory";
-				}),
-				new Filter.Toggle("Ring", false, (feature) => {
-					return feature.type == "Ring";
-				}),
-				new Filter.Toggle("Shield", false, (feature) => {
-					return feature.type == "Shield";
-				}),
-				element("br"),
-				new Filter.Toggle("Staff", false, (feature) => {
-					return feature.type == "Staff";
-				}),
-				new Filter.Toggle("Quiver", false, (feature) => {
-					return feature.type == "Quiver";
-				}),
-
-				Filter.Group.END,
-
-				element("br"),
-				element("strong", `Version ${Version.CURRENT}`),
-				element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("New", false, (feature) => {
-					return feature.tagged("new");
-				}),
-
-				new Filter.Toggle("Changed", false, (feature) => {
-					return feature.tagged("changed");
-				}),
-
-				new Filter.Toggle("Other", false, (feature) => {
-					return (
-						!feature.tagged("new")
-							&&
-						!feature.tagged("changed")
-					);
-				}),
-
-				Filter.Group.END,
-
-				element("br"), element("strong", "Other"), element("br"),
-
-				new Filter.Group(Filter.Group.OR, false),
-
-				new Filter.Toggle("Purchasable", false, (feature) => {
-					return feature.price > 0;
-				}),
-
-				Filter.Group.END,
-
-				element("br"),
-
-				new Filter.Toggle("Rework", false, (feature) => {
-					return feature.tagged("rework");
-				}),
-
-				new Filter.Toggle("Hide", true, (feature) => {
-					return !feature.hidden;
-				}),
-
-				new Filter.Toggle("Depricate", true, (feature) => {
-					return !feature.tagged("depricated");
-				}),
-
-				element("br"),
-
-				element("button", {
-					class   : ["simple-border"],
-					content : "Reset Filter",
-					attrs   : {
-						onclick: (() => void filter.reset())
-					}
-				})
-			],
-		});
-
-		return filter;
-	}
-}
-
-/**
  * A Feature subclass to represent map tiles
  */
 class Tile extends Action {
@@ -2585,7 +2466,7 @@ class Tile extends Action {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
@@ -2706,7 +2587,7 @@ class Adjutant extends Feature {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
@@ -2957,7 +2838,7 @@ class Gambit extends Action {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
@@ -3293,7 +3174,7 @@ class Attribute extends Action {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
@@ -3499,7 +3380,7 @@ class Condition extends Feature {
 			value   : this.DEFAULT,
 			trigger : trigger,
 			model   : this,
-			options : definitions[this.kind].map(cls => 
+			options : definitions[this.kind].map(cls =>
 				element("option", {
 					attrs   : {value: cls.name},
 					content : cls.name,
@@ -3626,7 +3507,7 @@ class Condition extends Feature {
 }
 
 Feature.SUBCLASSES = [
-	Ability, Item, Art, Equipment, Class, Attribute, Condition,
+	Ability, Item, Art, Class, Attribute, Condition,
 	Tile, Battalion, Adjutant, Preset, Gambit
 ];
 
@@ -3637,7 +3518,7 @@ if (typeof module !== "undefined") {
 
 	module.exports = {
 		Ability, Adjutant, Art, Attribute, Battalion, Class, Condition,
-		Equipment, Feature, Gambit, Item, Preset, Tile 
+		Feature, Gambit, Item, Preset
 	};
 }
 

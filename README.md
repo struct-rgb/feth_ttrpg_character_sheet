@@ -11,16 +11,6 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
-### Version 4.5.0
-
-#### Equipment and Inventory
-  * Made feature list widgets more generic in how their selection sets operate
-  * Eliminated equipment as a category and rolled it into Create > Inventory
-  * Create > Invetory was redesigned to prominently feature equipment
-
-#### Bugfixes
-  * **TODO** Old bug where active item name sometimes overwrote active character name
-
 ### Version 4.4.0
 
 #### General
@@ -28,9 +18,18 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
   * Moved other configuration options to Tools > Configure > Application
   * Adding a new Character or Item adds it to the set "Move To" group by default
   * Added "Passes Requirements" filter to Items, Abilities, Arts, and Gambits
+  * Fixed Attack+Speed limit on pointbuy to compute value and save/load limit
   * Campaign filters were added to classes
   * Improved Character and Item load times
   * Added new "Grimvalt" theme and did some style corrections
+
+#### Equipment and Inventory
+  * Reworked how buildable feature lists work to allow item multiselection.
+  * Equipment are now correctly handled as being a subtype of items.
+  * Create > Inventory was redesigned to prominently feature your equipment.
+  * It is now possible to create, import, and export custom equipment.
+  * Equipment are able to recieve attributes (if only any were compatible...)
+  * Batch macro generation was reworked to include your equipment in macros.
 
 #### Traits and Experiences
   * Added a Traits section below Skills to display active Trait bonuses
@@ -46,15 +45,23 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
   * Arts validation chose wrong Skill/Rank combos to equip multiskill arts as
   * It used to be possible reach negative zoom levels in the Rangefinder
   * Range Penalty calculation would create decreasing ranges for some arts.
+  * Other rank update based on stale rank values of other skills
 
 #### Game Data
-  * Clarified wording on Twinned Shot
-  * FE3H monster classes moved to the FE3H campaign label
+  * Clarified wording on Twinned Shot.
+  * Clarified wording on Relic attribute to work with equipment.
+  * FE3H monster classes moved to the FE3H campaign label.
+  * Fixed some bugs in Physic's compatibility with host items/arts.
+  * Added long awaited "Cleansing" combat art for Faith C-B playtesting.
 
 #### New Crash Screen
   * Added a better crash screen for when the builder fails to load on you
   * Raw save data can be manually edited or erased (do this at your own peril)
   * Can be found at Tools > Configure > Application as "Launch Session Editor"
+
+#### TODO
+  * Old bug where active item name sometimes overwrote active character name
+  * I added some popups to help detect it. Please follow them if they appear.
 
 ### Version 4.3.4
   * Bugfix: Arts validation crashed for arts (Steal) with multiple skill reqs

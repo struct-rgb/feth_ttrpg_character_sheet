@@ -1,6 +1,6 @@
 {
   "name": "Relic",
-  "description": "Enables the use of an associated art if wielder possesses weapon's associated Crest. If wielder is crestless, deals 10 lethal damage at start of wielder's phase. This attribute cannot be purchased and other attributes cannot be added to this weapon without expending Umbral Steel in addition to the attribute's cost.",
+  "description": "Enables the use of an associate art(s) and/or ability(s) if wielder possesses weapon's associated Crest. If wielder is crestless, deals 10 lethal damage at start of wielder's phase. This attribute cannot be purchased and other attributes cannot be added to this weapon without expending Umbral Steel in addition to the attribute's cost.",
   "rank": 0,
   "price": 0,
   "mttype": "else",

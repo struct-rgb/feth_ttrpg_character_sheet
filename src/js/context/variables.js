@@ -7,7 +7,7 @@
 	capitalize, element,  uniqueID, wrap
  */
 
-/* global 
+/* global
 	Attribute, Action, Equipment, Item, Gambit
  */
 
@@ -32,11 +32,11 @@ function sum(env, ...args) {
 	return (
 		env.runtime
 			? args.reduce((a, b) => a + b, 0)
-			: args.reduce((a, b) => 
+			: args.reduce((a, b) =>
 				a != 0
-					? (b != 0 
+					? (b != 0
 						? `${a} + ${b}`
-						: a) 
+						: a)
 					: b,
 			0)
 	);
@@ -126,7 +126,7 @@ function createContext(compiler, host, definitions) {
 					const modifier = feature.modifier(field, env);
 					if (modifier == 0) continue;
 
-					a = sum(env, a, label(env, feature.name, modifier)); 
+					a = sum(env, a, label(env, feature.name, modifier));
 				}
 
 				return a;
@@ -326,7 +326,7 @@ function createContext(compiler, host, definitions) {
 		expr  : ((env) => {
 			let highest = 0;
 			for (let name of this.skills.names) {
-				const grade = Grade.toNumber(this.skills[name].grade); 
+				const grade = Grade.toNumber(this.skills[name].grade);
 				highest     = Math.max(highest, grade);
 			}
 			return highest;
@@ -451,7 +451,7 @@ function createContext(compiler, host, definitions) {
 
 		add({
 			name  : `unit|base|${name}`,
-			about : 
+			about :
 				`The unit's base ${name} statistic before modifiers.`
 			,
 			expr  : ((env) => {
@@ -575,7 +575,7 @@ function createContext(compiler, host, definitions) {
 
 		prime.push(add({ // TODO HIDDEN CODE
 			name  : `abilities|${name}`,
-			about : 
+			about :
 				`The sum of all ${name} modifiers from active abilities.`
 			,
 			expr  : abilityfunc(name),
@@ -590,7 +590,7 @@ function createContext(compiler, host, definitions) {
 			expr  : ((env) => {
 				const key   = this.equipment.getActive();
 				if (key == null) return 0;
-				const equip = Equipment.get(key); 
+				const equip = Equipment.get(key);
 				return label(env, equip.name, equip.modifier(name, env));
 			}),
 		}));
@@ -616,7 +616,7 @@ function createContext(compiler, host, definitions) {
 	//    88    88ooo88 88      88      88ooooo 88   88
 	//    88    88~~~88 88  ooo 88  ooo 88~~~~~ 88   88
 	//    88    88   88 88. ~8~ 88. ~8~ 88.     88  .8D
-	//    YP    YP   YP  Y888P   Y888P  Y88888P Y8888D'		
+	//    YP    YP   YP  Y888P   Y888P  Y88888P Y8888D'
 	
 	add({
 		name  : "unit|tagged|healing",
@@ -964,7 +964,7 @@ function createContext(compiler, host, definitions) {
 			"The number of combat arts with an Axes, Swords, Lances, Brawl, ",
 			"or Bows skill type."
 		),
-		expr  : ((env) => 
+		expr  : ((env) =>
 			this.arts.getActiveValues().count((art) => {
 				const number = Item.TYPE.asNumber(art.type);
 				return !art.isTactical() && 1 <= number && number <= 5;
@@ -977,7 +977,7 @@ function createContext(compiler, host, definitions) {
 		about : wrap(
 			"The number of combat arts with a Faith, Guile, or Reason skill type."
 		),
-		expr  : ((env) => 
+		expr  : ((env) =>
 			this.arts.getActiveValues().count((art) => {
 				const number = Item.TYPE.asNumber(art.type);
 				return !art.isTactical() && 6 <= number && number <= 8;
@@ -1243,7 +1243,7 @@ function createContext(compiler, host, definitions) {
 				"Create => Inventory => Customize Statistics."
 			),
 			expr  : ((env) => {
-				return label(env, 
+				return label(env,
 					`${this.item.name} base`,
 					this.item.stats[name].value,
 				);
@@ -1256,7 +1256,7 @@ function createContext(compiler, host, definitions) {
 				`Equipped item's ${name} from the template it uses.`
 			),
 			expr  : ((env) => {
-				return label(env, 
+				return label(env,
 					this.item.name,
 					this.item.template.modifier(name, env),
 				);
@@ -1358,14 +1358,14 @@ function createContext(compiler, host, definitions) {
 			expr  : ((env) => {
 				const key   = this.equipment.getActive();
 				if (key == null) return 0;
-				const equip = Equipment.get(key); 
+				const equip = Equipment.get(key);
 				return label(env, equip.name, equip.modifier(name, env));
 			}),
 		}));
 
 		second.push(add({
 			name  : `abilities|${name}`,
-			about : 
+			about :
 				`Total ${name} from active abilities.`
 			,
 			expr  : abilityfunc(name),
@@ -1407,7 +1407,7 @@ function createContext(compiler, host, definitions) {
 			"with a Roll20 variable called \"Charm\" when variables are ",
 			"enabled within macrogen. Use for battalion macros."
 		),
-		expr  : "[Charm] {max(unit|total|lck, unit|total|dex)}" 
+		expr  : "[Charm] {max(unit|total|lck, unit|total|dex)}"
 	});
 
 	add({
@@ -1415,7 +1415,7 @@ function createContext(compiler, host, definitions) {
 		about : wrap(
 			"Higher of dexterity and luck. Use for non-battalion macros.",
 		),
-		expr  : "max(unit|total|lck, unit|total|dex)" 
+		expr  : "max(unit|total|lck, unit|total|dex)"
 	});
 
 	add({

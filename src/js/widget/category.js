@@ -442,8 +442,8 @@ class CategoryGroup extends CategoryElement {
 	constructor(options) {
 		super(options);
 		this.dl = element("dl");
-		this.swap.modes[0] = this.dl;
-		this.swap.show(0);
+		
+		this.swap.replace(0, this.dl);
 
 		this.dt.setAttribute("data-group", true);
 

@@ -233,7 +233,9 @@ class Stats {
 			draw  : false,
 		});
 
-		this.sheet.refresher.register(this.va, this.sheet.view_triggers);
+		this.refresher.register(this.va, this.sheet.view_triggers);
+
+		this.refresher.register(this.secondary.tp, definitions.skills);
 
 		this.root = element("div", [
 			element("table", primes),
@@ -332,7 +334,7 @@ class Stats {
 
 	/**
 	 * Set primary statistic and growth values from an object. The object should
-	 * have the fields "statistics" for primary stats, and "growths" for the 
+	 * have the fields "statistics" for primary stats, and "growths" for the
 	 * growths, each consisting of accurate stat names and integer values.
 	 * This is based on the format of the sheet export data file.
 	 * @param {object} object - object to set stats and growths from

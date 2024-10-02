@@ -28,7 +28,7 @@ class ChangeAnimation {
 
 	/**
 	 * Create an instance
-	 * @param {Array.HTMLElement} titles - array of HTMLElements to animate 
+	 * @param {Array.HTMLElement} titles - array of HTMLElements to animate
 	 * @param {Array.HTMLElement} inputs - inputs to disable as animation plays
 	 */
 	constructor(titles, inputs=[], incr_cls="incr-bell", decr_cls="decr-bell") {
@@ -172,7 +172,7 @@ class AttributePair {
 			before  : "( ",
 			after   : " )",
 			shown   : "0",
-			trigger : (cost) => `$${cost}`, 
+			trigger : (cost) => `$${cost}`,
 		});
 
 		this.roots  = [this.value.root, this.center.root, this.cattr.root];
@@ -190,7 +190,7 @@ class StatisticRow {
 		this.name   = name;
 
 		this._value = new AttributePair(name, {
-			range   : vrange,		
+			range   : vrange,
 			trigger : function (x) {
 				oninput("value");
 				oninput("final");
@@ -415,7 +415,7 @@ class Forecast {
 
 		this.pb = pb;
 
-		this.records = new Map(); 
+		this.records = new Map();
 
 		const update = ((_event) => {
 			if (this._toadd.value == 0) return;
@@ -670,7 +670,7 @@ class PointBuy {
 				)
 					+
 				this.rows.get("SPD")._value.value.value
-			), 
+			),
 		});
 
 		this._atkspdlim = new AttributeCell({
@@ -678,7 +678,7 @@ class PointBuy {
 			shown   : "14",
 			value   : 14,
 			root    : "span",
-			trigger : (cost) => String(cost), 
+			trigger : (cost) => String(cost),
 		});
 
 		const table = element("table", [
@@ -729,13 +729,13 @@ class PointBuy {
 						}
 					})
 				]),
-			]), 
+			]),
 		], "simple-border");
 
 		this.forecast   = new Forecast(this);
 
 		this.root = element("div", [
-			table, 
+			table,
 
 
 
@@ -745,7 +745,7 @@ class PointBuy {
 		const that = this;
 
 		this.bells = new ChangeAnimation(
-			Array.from(this.rows.values()).map(row => 
+			Array.from(this.rows.values()).map(row =>
 				[row._final.center.root, row._final.center.text]
 			).concat([
 				[this.pairs.final.center.root, this.pairs.final.center.text]
@@ -829,7 +829,7 @@ class PointBuy {
 
 		const array   = [];
 		const getter  = (key) => PointBuy.COST_SCALE * this.rows.get(key)[column];
-		const privacy = `_${column}`; 
+		const privacy = `_${column}`;
 
 		let costSum = 0, baseSum = 0, diffSum = 0;
 		for (let [_key, row] of this.rows.entries()) {
@@ -869,6 +869,8 @@ class PointBuy {
 			}
 		}
 
+		this._atkspdsum.refresh();
+
 		const row       = this.pairs[column];
 		row.value.value = baseSum;
 		row.cattr.value = Math.trunc(costSum / PointBuy.COST_SCALE);
@@ -903,6 +905,8 @@ class PointBuy {
 		if ("forecast" in obj) {
 			this.forecast.import(obj.forecast);
 		}
+
+		this._atkspdlim.value = obj.atkspdlim ?? 14;
 		this.update();
 	}
 
@@ -914,6 +918,7 @@ class PointBuy {
 			"bases": {},
 			"growths": {},
 			"forecast": this.forecast.export(),
+			"atkspdlim" : this._atkspdlim.value,
 			"comment": "",
 			"tags": [],
 			"hidden": false

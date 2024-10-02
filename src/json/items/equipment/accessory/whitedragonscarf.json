@@ -1,0 +1,37 @@
+{
+  "name": "White Dragon Scarf",
+  "type": "Other",
+  "description": "No special effect.",
+  "requires": "None",
+  "rank": "E",
+  "price": 0,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 2,
+    "crit": 2,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "doubles": 0,
+    "doubled": 0,
+    "tp": 0,
+    "sp": 0,
+    "hp": 0,
+    "charm": 2,
+    "mov": 0
+  },
+  "comment": "Items in modifers can either be integers or string expressions",
+  "tags": [
+    "equipment",
+    "accessory",
+    "FE3H",
+    "changed"
+  ],
+  "hidden": false
+}

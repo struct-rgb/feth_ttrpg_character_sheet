@@ -1,7 +1,7 @@
 
 /**
  * Module that implements dynamically updating widgets.
- * @module 
+ * @module
  */
 
 /* global require */

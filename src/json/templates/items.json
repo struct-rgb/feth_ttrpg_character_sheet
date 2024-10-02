@@ -4,6 +4,7 @@
     "rank"        : "rank",
     "description" : "markup",
     "requires"    : "requires",
+    "?compatible" : "compatible",
     "price"       : "number",
 
     "mttype": "mttype",

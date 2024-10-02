@@ -1,10 +1,12 @@
 
 /* global
-	AttributeCell, ModWidget, TagSetWidget, Toggle, Version 
+	AttributeCell, ModWidget, TagSetWidget, Toggle, Version
 	capitalize, delimit, element, tooltip, uniqueLabel, wrap
 */
 
 /* global CategoryModel, MultiActiveCategory */
+
+/* global Notebook */
 
 /* global Action, Attribute, Feature, Item */
 
@@ -232,13 +234,7 @@ class Items {
 				type     : "text",
 				value    : Item.DEFAULT,
 				onchange : (() => {
-					const activeID = this.sheet.wb.category.getActive();
-					if (activeID === null) return;
-
-					const element = this.sheet.wb.category.element(activeID);
-					element.title       = this.name;
-					element.description = this.body();
-
+					this.sheet.wb.setTitle(this.uuid, this.name);
 					this.refresher.refresh(`${itemID}|preview`);
 				}),
 			},
@@ -315,7 +311,6 @@ class Items {
 			).func(variable);
 
 			return ((base) => {
-				// this.sheet.stats.refreshSecondary();
 				this.refresher.refresh(variable);
 				return baseFunction();
 			});
@@ -357,66 +352,80 @@ class Items {
 			]);
 		};
 
-		this._rank  = new AttributeCell({
-			edit    : true,
-			value   : 0,
-			shown   : "E",
-			min     : -11,
-			max     : 11,
-			root    : "span",
-			trigger : ((base) => {
+		{
+			const refreshes = `${itemID}|rank`;
 
-				let sum = base + Grade.toNumber(this.template.rank);
+			this._rank  = new AttributeCell({
+				edit    : true,
+				value   : 0,
+				shown   : "E",
+				min     : -11,
+				max     : 11,
+				root    : "span",
+				trigger : ((base) => {
 
-				for (let attribute of this.attributes.getActive()) {
-					sum += Attribute.get(attribute).rank;
-				}
+					let sum = base + Grade.toNumber(this.template.rank);
 
-				this.refresher.refresh(`${itemID}|rank`);
-				return Grade.fromNumber(Math.max(Math.min(sum, 12), 0));
-			}),
-		});
+					for (let attribute of this.attributes.getActive()) {
+						sum += Attribute.get(attribute).rank;
+					}
 
-		this._price = new AttributeCell({
-			edit    : true,
-			after   : element("sub", "G"),
-			value   : 0,
-			shown   : "0",
-			min     : 0,
-			max     : 100000,
-			step    : 1,
-			root    : "span",
-			trigger : ((base) => {
-				let sum = base + (this.template.price || 0);
+					this.refresher.refresh(refreshes);
+					return Grade.fromNumber(Math.max(Math.min(sum, 12), 0));
+				}),
+			});
+		}
 
-				for (let attribute of this.attributes.getActive()) {
-					sum += Attribute.get(attribute).price;
-				}
+		{
+			const refreshes = `${itemID}|price`;
 
-				this.refresher.refresh(`${itemID}|price`);
-				return sum;
-			}),
-		});
+			this._price = new AttributeCell({
+				edit    : true,
+				after   : element("sub", "G"),
+				value   : 0,
+				shown   : "0",
+				min     : 0,
+				max     : 100000,
+				step    : 1,
+				root    : "span",
+				trigger : ((base) => {
+					let sum = base + (this.template.price || 0);
 
-		this._base = new AttributeCell({
-			edit    : true,
-			value   : 0,
-			shown   : "ELSE",
-			min     : Action.MTTYPE.min,
-			max     : Action.MTTYPE.max,
-			step    : 1,
-			root    : "span",
-			trigger : ((base) => {
-				const value = baseFunction();
-				const text  = Action.MTTYPE.asString(value);
-				this.sheet.stats.refreshSecondary();
-				return text.toUpperCase();
-			}),
-		});
+					for (let attribute of this.attributes.getActive()) {
+						sum += Attribute.get(attribute).price;
+					}
 
-		const baseFunction = new Calculator.Env(
-			Calculator.Env.RUNTIME, this.sheet.definez
-		).func(`${itemID}|total|mttype`);
+					this.refresher.refresh(refreshes);
+					return sum;
+				}),
+			});
+		}
+
+		{
+			const name = `${itemID}|total|mttype`;
+
+			const baseFunction = new Calculator.Env(
+				Calculator.Env.RUNTIME, this.sheet.definez
+			).func(name);
+
+			const refreshes = "unit|total|mttype";
+
+			this._base = new AttributeCell({
+				edit    : true,
+				value   : 0,
+				shown   : "ELSE",
+				min     : Action.MTTYPE.min,
+				max     : Action.MTTYPE.max,
+				step    : 1,
+				root    : "span",
+				trigger : ((base) => {
+					const value = baseFunction();
+					const text  = Action.MTTYPE.asString(value);
+					this.refresher.refresh(refreshes);
+					return text.toUpperCase();
+				}),
+			});
+		}
 
 		const second = element("tbody", [
 			wide("Might", "mt", makefn("mt")),
@@ -612,12 +621,7 @@ class Items {
 
 	set name(value) {
 		this._name.value = value;
-
-		const activeID = this.sheet.wb.category.getActive();
-		if (activeID === null) return;
-
-		const element = this.sheet.wb.category.element(activeID);
-		element.title = this._name.value;
+		this.sheet.wb.setTitle(this.uuid, this.name);
 	}
 
 	get description() {
@@ -651,11 +655,7 @@ class Items {
 
 		this.refresh();
 
-		const activeID = this.sheet.wb.category.getActive();
-		if (activeID === null) return;
-
-		const elemenn       = this.sheet.wb.category.element(activeID);
-		elemenn.description = this.body();
+		this.sheet.wb.setBody(this.uuid, value);
 
 		this._template_tags.clear();
 
@@ -718,11 +718,11 @@ class Items {
 		this.refresher.wait();
 
 		this.name        = item.name        || Item.DEFAULT;
-		this.rank        = item.rank        || 0; // refreshes
+		this.rank        = item.rank        || 0;
 		this.mttype      = item.mttype      || 0;
-		this.price       = item.price       || 0; // refreshes
+		this.price       = item.price       || 0;
 		this.replaceInfo = item.replace     || false;
-		this.template    = item.template    || Item.DEFAULT; // many refreshes
+		this.template    = item.template    || Item.DEFAULT;
 		this.information = item.description || "";
 		this.attributes.setState(item.attributes);
 
@@ -889,7 +889,7 @@ class Items {
 				.map(a => this.marker.toText(Attribute.get(a), {seen: set, named: true}))
 				.map(t => t.replace(/\s+/g, " "))
 				.join("\n"),
-			"\nUsage Requirements\n",
+			"Usage Requirements\n",
 			"  * ", this.template.type, " ", rank
 		].join("");
 	}
@@ -974,7 +974,7 @@ class Items {
 				.map(a => this.marker.toHTML(Attribute.get(a), {set, named: true}))
 				.map(t => t.replace(/\s+/g, " "))
 				.join("<br />"),
-			"\n<br /><b>Usage Requirements</b><br />\n",
+			"\n<b>Usage Requirements</b><br />\n",
 			"<ul>",
 			"<li>", this.template.type, " ", rank, "</li>",
 			"</ul>",

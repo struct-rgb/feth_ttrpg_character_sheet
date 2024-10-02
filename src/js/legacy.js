@@ -1,12 +1,29 @@
 
-/* global Version */
+/* global
+	Version,
+	uniqueID
+*/
+
 /* global Class */
 /* global Characters */
 /* global
-	Ability, Art
+	Ability, Art, Item
 */
 
+/* global CampaignConfiguration */
+
 const Legacy = (function() {
+
+function batch_from_4_3_0(old) {
+
+	for (let each of old.elements) {
+		each.active = (old.active == each.id);
+	}
+
+	delete old.active;
+
+	return old;
+}
 
 function batch_from_4_2_0(old) {
 
@@ -54,6 +71,12 @@ function batchOfItems(obj, to=Version.CURRENT) {
 		obj = batch_item_from_4_2_0(obj);
 	}
 
+	if (version.older("4.4.0")) {
+		obj = batch_from_4_3_0(obj);
+	}
+
+	obj.version = Version.CURRENT.toString();
+
 	return obj;
 
 }
@@ -81,6 +104,12 @@ function batchOfCharacters(obj, to=Version.CURRENT) {
 		obj = batch_character_from_4_2_0(obj);
 	}
 
+	if (version.older("4.4.0")) {
+		obj = batch_from_4_3_0(obj);
+	}
+
+	obj.version = Version.CURRENT.toString();
+
 	return obj;
 }
 
@@ -107,6 +136,12 @@ function batchOfBattalions(obj, to=Version.CURRENT) {
 		obj = batch_battalion_from_4_2_0(obj);
 	}
 
+	if (version.older("4.4.0")) {
+		obj = batch_from_4_3_0(obj);
+	}
+
+	obj.version = Version.CURRENT.toString();
+
 	return obj;
 }
 
@@ -130,6 +165,46 @@ function rename(state, map) {
 function character_from_4_3_0(old) {
 
 	old.experiences = old.experiences ?? [];
+
+	for (const each of old.equipment.added) {
+
+		if (!Item.has(each.id)) continue;
+
+		old.items.elements.push( {
+			"id": uniqueID(),
+			"group": "inventory",
+			"data": {
+				"version": "4.3.0",
+				"name": each.id,
+				"rank": 0,
+				"mttype": 0,
+				"price": 0,
+				"template": each.id,
+				"attributes": [],
+				"modifiers": {
+					"mt": 0,
+					"prot": 0,
+					"resl": 0,
+					"hit": 0,
+					"avo": 0,
+					"crit": 0,
+					"cravo": 0,
+					"sp": 0,
+					"tp": 0,
+					"spcost": 0,
+					"tpcost": 0,
+					"minrng": 0,
+					"maxrng": 0,
+					"doubles": 0,
+					"doubled": 0
+				},
+				"description": "",
+				"replace": false,
+				"tags": []
+			},
+			"active": each.id == old.equipment.active,
+		});
+	}
 
 	old.version = "4.4.0";
 
@@ -475,7 +550,7 @@ function character_from_2_2_0(old) {
 	old.skills[o.budding].aptitude  = (
 		old.skills[o.budding].aptitude == "Weakness"
 			? "BuddingWeakness"
-			: "Budding" 
+			: "Budding"
 	);
 
 	old.version = "2.3.0";
@@ -490,7 +565,7 @@ function character_from_1_18_0(old) {
 	return {
 		version     : Version.CURRENT.toString(), // only most current
 		name        : old.name        || Characters.DEFAULT,
-		description : old.description || Characters.DESCRIPTION,	
+		description : old.description || Characters.DESCRIPTION,
 		money       : old.money       || 0,
 		class       : Class.has(old.class) ? old.class : "None",
 		statistics  : {
@@ -506,7 +581,7 @@ function character_from_1_18_0(old) {
 			},
 			bases: old.statistics || {
 				hp  : 0,
-				str : 0, 
+				str : 0,
 				mag : 0,
 				dex : 0,
 				spd : 0,
@@ -517,7 +592,7 @@ function character_from_1_18_0(old) {
 			},
 			growths: old.growths || {
 				hp  : 0,
-				str : 0, 
+				str : 0,
 				mag : 0,
 				dex : 0,
 				spd : 0,
@@ -532,7 +607,7 @@ function character_from_1_18_0(old) {
 			budding  : old.budding  || "Axes",
 			ranks    : {
 				// Archery was changed to "Bows"
-				Axes      : ((o = old.skills) && o.Axes    ) || 0, 
+				Axes      : ((o = old.skills) && o.Axes    ) || 0,
 				Swords    : ((o = old.skills) && o.Swords  ) || 0,
 				Lances    : ((o = old.skills) && o.Lances  ) || 0,
 				Brawl     : ((o = old.skills) && o.Brawl   ) || 0,
@@ -639,6 +714,9 @@ function character(obj, to=Version.CURRENT) {
 		obj = character_from_4_3_0(obj);
 	}
 
+	// prevents double processing of the data
+	obj.version = Version.CURRENT.toString();
+
 	return obj;
 }
 
@@ -646,7 +724,7 @@ function item_from_3_2_0(old) {
 	old.attributes  = MToM_v3_3_0(old.attributes);
 	old.description = WToI_v3_3_0(old.description);
 	old.version     = "3.3.0";
-	return old; 
+	return old;
 }
 
 function item_from_4_2_0(old) {
@@ -731,7 +809,7 @@ function configuration(obj, to=Version.CURRENT) {
 	const version = new Version(obj.version);
 
 	if (version.older("3.4.0")) {
-		obj = structuredClone(GameConfiguraion.FbF);
+		obj = structuredClone(CampaignConfiguration.FbF);
 	}
 
 	return obj;

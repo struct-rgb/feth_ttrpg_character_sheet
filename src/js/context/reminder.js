@@ -13,7 +13,7 @@
 
 /* global
 	Ability, Adjutant, Art, Attribute, Class, Condition,
-	Equipment, Gambit, Item, Tile 
+	Gambit, Item, Tile
 */
 
 if (typeof require !== "undefined") {
@@ -26,8 +26,8 @@ if (typeof require !== "undefined") {
 		element, inBrowser, tooltip
 	}           = require("../common.js"));
 	// ({
-	// 	Ability, Adjutant, Art, Attribute, Class, Condition, Equipment, Gambit,
-	// 	Item, Tile 
+	// 	Ability, Adjutant, Art, Attribute, Class, Condition, Gambit,
+	// 	Item, Tile
 	// }           = require("../feature.js"));
 	(  Markup   = require("../lang/markup.js"));
 	/* eslint-enable no-global-assign */
@@ -43,7 +43,6 @@ function getFeatureNamespace(definitions) {
 		[ "art"       , Art ],
 		[ "attribute" , Attribute ],
 		[ "tile"      , Tile      ],
-		[ "equipment" , Equipment ],
 		[ "class"     , Class     ],
 		[ "gambit"    , Gambit    ],
 		[ "adjutant"  , Adjutant  ],
@@ -116,7 +115,7 @@ function getFeatureNamespace(definitions) {
 					value   : this.DEFAULT,
 					trigger : trigger,
 					model   : this,
-					options : Object.keys(definitions.tooltips).map(cls => 
+					options : Object.keys(definitions.tooltips).map(cls =>
 						element("option", {
 							attrs   : {value: cls},
 							content : cls,
@@ -186,7 +185,7 @@ function getFeatureNamespace(definitions) {
 					value   : this.DEFAULT,
 					trigger : trigger,
 					model   : this,
-					options : styles.map(cls => 
+					options : styles.map(cls =>
 						element("option", {
 							attrs   : {value: cls},
 							content : cls,
@@ -222,7 +221,6 @@ function getValidationNamespace(definitions) {
 		[ "art"       , mappify(definitions["arts"])       ],
 		[ "attribute" , mappify(definitions["attributes"]) ],
 		[ "tile"      , mappify(definitions["tiles"])      ],
-		[ "equipment" , mappify(definitions["equipment"])  ],
 		[ "class"     , mappify(definitions["classes"])    ],
 		[ "gambit"    , mappify(definitions["gambits"])    ],
 		[ "const"     , (function () {

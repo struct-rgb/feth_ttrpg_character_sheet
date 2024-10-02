@@ -4,8 +4,9 @@
   "requires": "Faith C",
   "compatible": [
     "Host false",
-    "  (Art  (Any (Text `Heal`) (Text `Restore`) (Text `healing spell`)))",
-    "  (Item (All (Skill Faith) (Tag `healing`)))"
+    "  (Tactic (All (Skill Faith) (Tag `healing`)))",
+    "  (Art    (Text `Heal` `Restore` `healing spell`))",
+    "  (Item   (All (Skill Faith) (Tag `healing`)))"
   ],
   "mttype": "else",
   "modifiers": {
@@ -27,7 +28,8 @@
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
     "scales",
-    "combo"
+    "combo",
+    "changed"
   ],
   "hidden": false,
   "type": "Faith",

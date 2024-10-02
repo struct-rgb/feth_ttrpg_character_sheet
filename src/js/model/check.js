@@ -3,7 +3,7 @@
  * @module Checks
  */
 
-/* global AttributeCell, element */
+/* global AttributeCell, element, uniqueID*/
 
 /* TODO this directive is to condense the many
  * violations that not having this here makes below
@@ -310,3 +310,4 @@ class Experiences {
 }
 
 /* exported Checks */
+/* exported Experiences */

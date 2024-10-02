@@ -6,7 +6,7 @@
  */
 
 /* global
-	Grade, Iter, SwapText, Theme, Toggle, Version,
+	Grade, Iter, SwapText, Theme, Toggle, VariableTable, Version,
 	capitalize, delimit, element, hilight, tooltip, uniqueID, uniqueLabel, wrap
 */
 
@@ -27,7 +27,7 @@
 /* global Experiences */
 
 /* global
-	Ability, Action, Adjutant, Art, Attribute, Class, Condition, Equipment,
+	Ability, Action, Adjutant, Art, Attribute, Class, Condition,
 	Feature, Gambit, Item, Preset, Tile
 */
 
@@ -35,11 +35,12 @@
 
 /* global Skills */
 /* global Stats */
-/* global Items, Inventory */
+/* global Inventory */
 /* global Characters */
 
 /* global Requirements */
 /* global Reminder */
+/* global Compatible */
 
 /* global
 	CategoryModel MultiActiveCategory SingleActiveCategory
@@ -529,11 +530,27 @@ class Refresher {
 	 */
 	register(element, triggers, propagate=[]) {
 
-		if (this.items.has(element)) return false;
+		// if (this.items.has(element)) return false;
 
-		this.items.set(element, new Set(triggers));
-		this.versions.set(element, this.version);
-		this.propagate.set(element, new Set(propagate));
+		if (this.items.has(element)) {
+
+			// amend the existing registration to include new data
+			// doesn't seem to cause memory leaks, but keep in mind
+			
+			const addTriggers  = this.items.get(element);
+			for (const each of triggers) addTriggers.add(each);
+
+			const addPropagate = this.propagate.get(element);
+			for (const each of propagate) addPropagate.add(each);
+
+		} else {
+
+			// create a new registration since we don't have one
+			this.items.set(element, new Set(triggers));
+			this.versions.set(element, this.version);
+			this.propagate.set(element, new Set(propagate));
+
+		}
 
 		for (let trigger of triggers) {
 			if (this.triggers.has(trigger)) {
@@ -546,7 +563,6 @@ class Refresher {
 		if (this.group) this.group.add(element);
 		return true;
 	}
-
 
 	/**
 	 * Marks elements with the given event(s) registered as being out of date
@@ -636,7 +652,7 @@ class Refresher {
 	}
 
 	/**
-	 * Remove the registraction of an element from the refresher.
+	 * Remove the registration of an element from the refresher.
 	 * @param  {Refreshable|Set<Refreshable>} value element to remove
 	 * @return {Number}                       number of elements removed
 	 */
@@ -664,17 +680,6 @@ class Refresher {
 
 		return 0;
 	}
-
-	/**
-	 * Refresh all dirty
-	 * @return {[type]} [description]
-	 */
-	// all() {
-	// 	for (let each of this.items.keys()) {
-	// 		if (this.dirty.has(each)) this.dirty.delete(each);
-	// 		each.refresh();
-	// 	}
-	// }
 
 }
 
@@ -1083,26 +1088,6 @@ class Sheet {
 			this.arts.root,
 		]));
 
-		/* Equipment category */
-
-		model = new CategoryModel(
-			Equipment.kind, Equipment.byName, myFeatureTitle, myFeatureBody, myTriggers
-		);
-
-		this.equipment = new SingleActiveCategory(model, {
-			empty       : "No equipment is owned",
-			selectable  : true,
-			reorderable : true,
-			removable   : true,
-			hideable    : true,
-			ontoggle    : refresh,
-			onremove    : forget,
-			select      : Equipment.select(),
-			refresher   : this.refresher,
-		});
-
-		sidebook.add("Equipment", this.equipment.root);
-
 		this.experiences = new Experiences();
 		sidebook.add("Experiences", this.experiences.root);
 
@@ -1140,10 +1125,6 @@ class Sheet {
 		});
 
 		this.inv  = new Inventory(this);
-
-		// this.item = new Items(this);
-		
-		this.item = this.inv.item;
 
 		const item_bb = new Buildables({
 			name         : "items",
@@ -2082,21 +2063,6 @@ class Sheet {
 				expr  : abilityfunc(name),
 			}));
 
-			// TODO move to secondary
-			// prime.push(add({
-			// 	name  : `equipment|${name}`,
-			// 	about : wrap(
-			// 		`The total ${name} modifier provided by the equipped `,
-			// 		"equipment. If none is equipped then evaluates to 0.",
-			// 	),
-			// 	expr  : ((env) => {
-			// 		const key   = this.equipment.getActive();
-			// 		if (key == null) return 0;
-			// 		const equip = Equipment.get(key);
-			// 		return label(env, equip.name, equip.modifier(name, env));
-			// 	}),
-			// }));
-
 			add({
 				name  : `unit|modifier|${name}`,
 				about : `The sum of all ${name} modifiers.`,
@@ -2163,39 +2129,6 @@ class Sheet {
 						return Number(item.tagged(name));
 					}),
 				});
-
-				// todo remove this
-				// if (item.tags.includes("equipment")) {
-				// 	add({
-				// 		name  : `equipment|tagged|${identifier}`,
-				// 		about : wrap(
-				// 			`A flag; 1 if equipment is tagged with '${tag}' and 0 if `,
-				// 			`item is not tagged with '${tag}'.`
-				// 		),
-				// 		expr  : ((env) => {
-
-				// 			// make sure equipment is equipped
-				// 			const equip = this.item.equipment;
-				// 			if (equip == null) return 0;
-
-				// 			// check any custom tags
-				// 			if (equip.tags.includes(name))
-				// 				return 1;
-
-				// 			// check the equipment's template
-				// 			if (Item.get(equip.template).tagged(name))
-				// 				return 1;
-
-				// 			// check each of the attributes
-				// 			for (let each of equip.attributes)
-				// 				if (Attribute.get(each.id).tagged(name))
-				// 					return 1;
-
-				// 			// does not have that tag
-				// 			return 0;
-				// 		}),
-				// 	});
-				// }
 
 				// this exists specfically to implement discipline master
 				add({
@@ -2334,14 +2267,14 @@ class Sheet {
 
 			const [num, str] = each;
 
-			add({
-				name  : `item|type|${str.toLowerCase()}`,
+			for (const itemID of Inventory.ITEM_IDS) add({
+				name  : `${itemID}|type|${str.toLowerCase()}`,
 				about : wrap(
 					`Evaluates to 1 if item type is ${str}, and otherwise `,
 					"evaluates to 0."
 				),
 				expr  : ((env) => {
-					const string = this.item.template.type;
+					const string = this.inv.get(itemID).template.type;
 					const number = Item.TYPE.asNumber(string);
 					return number == num;
 				}),
@@ -2374,18 +2307,19 @@ class Sheet {
 			const name       = each.name;
 			const identifier = Calculator.asIdentifier(name);
 
-			add({
-				name  : `item|has_attribute|${identifier}`,
+			for (const itemID of Inventory.ITEM_IDS) add({
+				name  : `${itemID}|has_attribute|${identifier}`,
 				about : wrap(
 					`Evaluates to 1 if item has the ${name} attribute, `,
 					"and otherwise evaluates to 0."
 				),
 				expr  : ((env) => {
-					return Number(this.item.attributes.active.has(name));
+					return Number(this.inv.get(itemID).attributes.active.has(name));
 				}),
 			});
 		}
 
+		// used to implement crest abilities; doesn't need equipment equivalent
 		add({
 			name  : "item|type|weapon",
 			about : wrap(
@@ -2393,12 +2327,13 @@ class Sheet {
 				"Brawling, or Bows, and otherwise evaluates to 0.",
 			),
 			expr  : ((env) => {
-				const string = this.item.template.type;
+				const string = this.inv.get("item").template.type;
 				const number = Item.TYPE.asNumber(string);
 				return 1 <= number && number <= 5;
 			}),
 		});
 
+		// used to implement crest abilities; doesn't need equipment equivalent
 		add({
 			name  : "item|type|spell",
 			about : wrap(
@@ -2406,7 +2341,7 @@ class Sheet {
 				"and otherwise evaluates to 0.",
 			),
 			expr  : ((env) => {
-				const string = this.item.template.type;
+				const string = this.inv.get("item").template.type;
 				const number = Item.TYPE.asNumber(string);
 				return 6 <= number && number <= 8;
 			}),
@@ -2471,13 +2406,13 @@ class Sheet {
 			}),
 		});
 
-		add({
-			name  : "item|type",
+		for (const itemID of Inventory.ITEM_IDS) add({
+			name  : `${itemID}|type`,
 			about : wrap(
 				"The skill type of the equipped item or 0 if none."
 			),
 			expr  : ((env) => {
-				const string = this.item.template.type;
+				const string = this.inv.get(itemID).template.type;
 				const number = Item.TYPE.asNumber(string);
 				return number;
 			}),
@@ -2825,8 +2760,9 @@ class Sheet {
 						"attributes."
 					),
 					expr  : ((env) => {
-						let a = 0;
-						for (let each of this.item.attributes.getActive()) {
+						let   a    = 0;
+						const item = this.inv.get(itemID);
+						for (let each of item.attributes.getActive()) {
 
 							const attr = Attribute.get(each);
 							const mod  = attr.modifier(name, env);
@@ -2893,20 +2829,6 @@ class Sheet {
 				),
 				expr  : combatfunc(name),
 			}));
-
-			// todo remove this
-			// second.push(add({
-			// 	name  : `equipment|${name}`,
-			// 	about : wrap(
-			// 		`Total ${name} from equipped equipment.`
-			// 	),
-			// 	expr  : ((env) => {
-			// 		const key   = this.equipment.getActive();
-			// 		if (key == null) return 0;
-			// 		const equip = Equipment.get(key);
-			// 		return label(env, equip.name, equip.modifier(name, env));
-			// 	}),
-			// }));
 
 			second.push(add({
 				name  : `abilities|${name}`,
@@ -3700,13 +3622,14 @@ class Sheet {
 	*iterCustomRows(includeItem=true) {
 
 		let row = undefined;
-		let tmp = undefined;
 
 		if (includeItem) {
-			for (row of this.item.template.rows) yield row;
+			for (const equipped of this.inv) {
 
-			for (let each of this.item.attributes.getActiveValues()) {
-				for (row of each.rows) yield row;
+				for (row of equipped.template.rows) yield row;
+
+				for (const each of equipped.attributes.getActiveValues())
+					for (row of each.rows) yield row;
 			}
 		}
 
@@ -3719,9 +3642,6 @@ class Sheet {
 			for (row of each.rows) yield row;
 		}
 
-		if ((tmp = this.equipment.getActive())) {
-			for (row of Equipment.get(tmp).rows) yield row;
-		}
 	}
 
 	modifier(name) {
@@ -3739,7 +3659,7 @@ class Sheet {
 	}
 
 	get aoe() {
-		return this.item.aoe;
+		return this.inv.get("item").aoe;
 	}
 
 	tablink(text, tabs) {
@@ -3902,6 +3822,59 @@ class Sheet {
 		}
 	}
 
+	*iterItemEquipmentCombos() {
+
+		this.wb.sync();
+
+		const items     = [];
+		const equipment = [];
+
+		for (const entry of this.wb.category.entries("inventory")) {
+
+			const [_key, value] = entry;
+			const isEquipment   = (Inventory.getItemType(value) == "equipment");
+
+			if (isEquipment && Inventory.isTaggedBB(value, "no macro"))
+				continue;
+
+			(isEquipment ? equipment : items).push(entry);
+		}
+
+		// handle the case where we have no equipment
+		if (equipment.length == 0) {
+			for (const [key, value] of items) {
+				yield [key, null, value.name];
+			}
+			return;
+		}
+
+		// for streamlining equipment item combinations
+		const ref      = {target: null};
+		const context  = Compatible.createContext(ref, definitions);
+		const compiler = new Polish.Compiler(context);
+
+		// handle the case where we have weapon/implement and equipment combos
+		for (const [iKey, iValue] of items) {
+			
+			// number of times this item was added to a combo
+			let combos = 0;
+			// object to perform compatibility check on
+			ref.target = Item.get(iValue.template);
+
+			for (const [eKey, eValue] of equipment) {
+
+				const archer = Item.get(eValue.template);
+
+				if (!compiler.compile(archer.compatible).exec()) continue;
+				
+				yield [iKey, eKey, `${iValue.name} & ${eValue.name}`];
+				++combos;
+			}
+
+			if (combos == 0) yield [iKey, null, iValue.name];
+		}
+	}
+
 	/**
 	 * Creates a new character from the settings of the Tools > NPCs tab.
 	 * @return {string} uuid of character in buildable
@@ -3909,9 +3882,8 @@ class Sheet {
 	create_npc() {
 
 		this.character._sf.reset();
-		this.item._sf.reset();
+		for (const each of this.inv) each._sf.reset();
 		this.abilities._sf.reset();
-		this.equipment._sf.reset();
 		this.arts._sf.reset();
 		this.battalion.gambits._sf.reset();
 		this.myPointBuy.forecast._sf.reset();
@@ -3970,25 +3942,27 @@ class Sheet {
 			/* add items */
 			for (let each of kit.items) {
 
-				const item  = each instanceof Array ? each[0]       : each;
+				const name  = each instanceof Array ? each[0]       : each;
 				const attrs = each instanceof Array ? each.slice(1) : [];
 
-				if (!Item.has(item)){
-					throw new Error(`item '${item}' is undefined`);
+				if (!Item.has(name)){
+					throw new Error(`item '${name}' is undefined`);
 				}
 
-				this.wb.select.value = item;
+				this.wb.select.value = name;
 				this.wb.add("inventory");
+
+				const item = this.inv.getByType(name);
 
 				/* add any attributes to the item */
 				for (let attr of attrs) {
-					this.item.attributes.add(attr);
-					this.item.attributes.toggleActive(attr);
+					item.attributes.add(attr);
+					item.attributes.toggleActive(attr);
 				}
 
 				/* include any attributes in the item's name */
 				if (attrs.length) {
-					this.item.name = `${attrs.join(" ")} ${this.item.name}`;
+					item.name = `${attrs.join(" ")} ${item.name}`;
 				}
 			}
 

@@ -165,10 +165,10 @@ function choice(options) {
 	if (options.length == 0) return null;
 
 	/* if given one option choose it */
-	if (options.length == 1) return options[1];
+	if (options.length == 1) return options[0];
 
 	/* if not interactive return the first option */
-	if (!choice.interactive) return options[1];
+	if (!choice.interactive) return options[0];
 
 	/* put together a prompt of choices */
 	const list = Array.from(options, (item, index) => `${index + 1}. ${item}`);
@@ -187,6 +187,8 @@ function choice(options) {
 		return options[response - 1];
 	}
 }
+
+choice.interactive = true;
 
 
 const CHOICES_REGEX = /(?<begin>\d)+(?:\s*-\s*(?<end>\d+))?/g;
@@ -455,11 +457,25 @@ class SwapText {
 		this.root.appendChild(this.modes[this.mode]);
 	}
 
-	show(mode) {
-		if (mode == this.mode) return;
+	show(mode, force=false) {
+		if (mode == this.mode && !force) return;
 		this.modes[this.mode].remove();
 		this.mode = mode;
 		this.root.appendChild(this.modes[this.mode]);
+	}
+
+	replace(mode, element) {
+
+		this.modes[0] = element;
+
+		// force update if current replaced
+		if (mode == this.mode)
+			this.show(mode, true);
+	}
+
+	_rangeCheck(mode) {
+		if (mode < 0 || this.modes.length <= mode)
+			throw new Error(`Mode ${mode} does not exist`);
 	}
 }
 
@@ -558,7 +574,7 @@ class Version {
 
 	static PATTERN = new RegExp("^(\\d+)\\.(\\d+)\\.(\\d+)$");
 
-	static CURRENT = new Version("4.5.0");
+	static CURRENT = new Version("4.4.0");
 
 	constructor(string) {
 		if (string == null) {
@@ -1022,7 +1038,7 @@ class VariableTable {
 				edit  : false,
 				root  : "span",
 				value : 0,
-				shown : "0", 
+				shown : "0",
 				min   : 0,
 				max   : 999
 			},
@@ -1030,7 +1046,7 @@ class VariableTable {
 				edit  : false,
 				root  : "span",
 				value : 0,
-				shown : "0", 
+				shown : "0",
 				min   : 0,
 				max   : 999
 			},
@@ -1038,7 +1054,7 @@ class VariableTable {
 				edit  : false,
 				root  : "span",
 				value : 0,
-				shown : "0", 
+				shown : "0",
 				min   : 0,
 				max   : 999,
 				before : "(",
@@ -1172,7 +1188,7 @@ class VariableTable {
 
 			els.push(element("td", {
 				class   : ["center", style_class],
-				attrs   : {colSpan: colSpan}, 
+				attrs   : {colSpan: colSpan},
 				content : this.cell(opts[i], comma).root,
 			}));
 		}
@@ -1418,7 +1434,7 @@ class Select {
 
 				if (item.dynamic)
 					item.dynamic = this;
-			} 
+			}
 			else
 			if (item instanceof Group) {
 				group = item;
@@ -1428,7 +1444,7 @@ class Select {
 		}
 
 		this.root = element("span", [
-			tooltip(this._select, content), 
+			tooltip(this._select, content),
 		]);
 
 		this.filter();
@@ -1454,7 +1470,7 @@ class Select {
 
 			if (Object.is(this._sticky, feature) || this.apply(feature))
 				this._select.appendChild(option);
-		} 
+		}
 	}
 
 	refresh() {
@@ -1739,7 +1755,7 @@ function _big_damage(sheet, template) {
 
 	sheet.myPresetter._level.value = level;
 
-	const original = sheet.cb.activeID;
+	const original = sheet.character.uuid;
 	const columns  = [];
 
 	for (let item of sheet.wb.iter()) {

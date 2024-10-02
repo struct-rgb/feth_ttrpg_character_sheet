@@ -14,6 +14,8 @@
 /* global Requirements */
 /* global Tagger */
 
+/* global BuildableModel */
+
 /* TODO this directive is to condense the many
  * violations that not having this here makes below
  * I probably don't want to use defintions globally,
@@ -35,7 +37,7 @@ class BattalionPreview {
 			Array.from(this.battalion.sheet.compiler.variables(
 				/battalion\|total\|.*/
 			)).map(f => f.called).concat([
-				"gambits"
+				"gambits", "battalion|rank", "battalion|preview"
 			])
 		);
 	}
@@ -113,9 +115,10 @@ class BattalionPreview {
 
 }
 
-class Battalions {
+class Battalions extends BuildableModel {
 	
 	constructor(sheet) {
+		super();
 
 		this.sheet  = sheet;
 		this.marker = this.sheet.marker;
@@ -136,16 +139,11 @@ class Battalions {
 		this._name = element("input", {
 			class : ["simple-border"],
 			attrs : {
-				type     : "text", 
+				type     : "text",
 				value    : "Blank Battalion",
 				onchange : (() => {
-					const activeID = this.sheet.bb.category.getActive();
-					if (activeID === null) return;
-
-					const element = this.sheet.bb.category.element(activeID);
-					element.title = this.name;
-
 					this.refresher.refresh("gambits");
+					this.sheet.bb.setTitle(this.uuid, this.name);
 				}),
 			},
 		});
@@ -275,6 +273,7 @@ class Battalions {
 
 				this.stats.first.cap.refresh();
 				this.stats.first.contract.refresh();
+				this.refresher.refresh("battalion|rank");
 
 				return Grade.fromNumber(Math.max(Math.min(sum, 12), 0));
 			}),
@@ -443,12 +442,7 @@ class Battalions {
 
 	set name(value) {
 		this._name.value = value;
-
-		const activeID = this.sheet.bb.category.getActive();
-		if (activeID === null) return;
-
-		const element = this.sheet.bb.category.element(activeID);
-		element.title = this.name;
+		this.sheet.bb.setTitle(this.uuid, value);
 	}
 
 	get template() {
@@ -462,11 +456,7 @@ class Battalions {
 
 		this.refresh();
 
-		const activeID = this.sheet.bb.category.getActive();
-		if (activeID === null) return;
-
-		const elemenn       = this.sheet.bb.category.element(activeID);
-		elemenn.description = this.body();
+		this.sheet.bb.setBody(this.uuid, value);
 	}
 
 	get adjutant() {
@@ -691,6 +681,8 @@ class Battalions {
 
 	import(battalion) {
 
+		this.refresher.wait();
+
 		/* this needs to be set before the adjutant */
 		this.gambits.setState(battalion.gambits);
 
@@ -702,6 +694,7 @@ class Battalions {
 		this.rank        = battalion.rank        || 0;
 		
 		this.refresh();
+		this.refresher.signal();
 	}
 
 	export() {
@@ -724,6 +717,10 @@ class Battalions {
 	}
 
 	clear(preset) {
+
+		this.refresher.wait();
+
+		if (preset == null) this.uuid = null;
 		this.name        = preset || Battalion.DEFAULT;
 		this.information = "";
 		this.replaceInfo = false;
@@ -732,6 +729,8 @@ class Battalions {
 		this.rank        = 0;
 		this.level       = 1;
 		this.gambits.clear();
+
+		this.refresher.signal();
 	}
 
 	/* builtable display */
@@ -741,7 +740,7 @@ class Battalions {
 	}
 
 	getBody(object=this) {
-		return element("span", object.template || object.description);
+		return element("span", object.description || object.template);
 	}
 
 	body() {

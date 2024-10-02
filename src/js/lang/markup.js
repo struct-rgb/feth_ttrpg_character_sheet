@@ -39,7 +39,7 @@ class CompilationError extends AbstractCompilationError {
 
 /**
  * Consumes an array of string tokens representing split source and returns
- * yeild a sequence of symbols tying each string to the position of its 
+ * yeild a sequence of symbols tying each string to the position of its
  * starting character in the original source string.
  * @param {Array.<string>} tokens array of strong tokens to process
  * @param {[type]}         start  character position to start counting at
@@ -108,7 +108,7 @@ class Tag {
 	 * Creates a tag object from tage fields
 	 * @param  {Symbol}         namespace namespace the names belong to
 	 * @param  {Array.<Symbol>} names     names of features linked to
-	 * @param  {Symbol?}        display   text to display in tag's location; if 
+	 * @param  {Symbol?}        display   text to display in tag's location; if
 	 * null then displayed text is contructed from names
 	 * @param  {Boolean}        silent    if reminders should not be expanded
 	 */
@@ -146,14 +146,14 @@ class Tag {
 	 * in places where {@link Symbol} arguments would normally be expected
 	 * @param  {string}         namespace namespace the names belong to
 	 * @param  {Array.<string>} names     names of features linked to
-	 * @param  {string?}        display   text to display in tag's location; if 
+	 * @param  {string?}        display   text to display in tag's location; if
 	 * null then displayed text is contructed from names
 	 * @param  {Boolean}        silent    if reminders should not be expanded
 	 * @return {Tag}                      Tag object created from data
 	 */
 	static create(namespace, names, display, silent=false) {
 
-		// TODO I double this will ever need accurate indicies for each
+		// TODO I doubt this will ever need accurate indicies for each
 		// symbol but if it does later, assign them as thought we were
 		// passed a single text tag to parse
 
@@ -506,7 +506,7 @@ class Compiler {
  * @param  {Map<string, Feature} namespaces - map of reminder namespaces
  * @param  {Tag}      tag                   - tag to process
  * @param  {Compiler} userdata              - compiler object containing namespace info
- * @return {boolean} always true; throws an exception if invalid        
+ * @return {boolean} always true; throws an exception if invalid
  */
 const ValidateTag = (namespaces, tag, inBrowser) => {
 
@@ -671,7 +671,7 @@ const DOMDeadParser = createParser(DOMDeadTag, (merge) => {
  * data on those features.
  * @param  {Map<string, Feature} namespaces - map of reminder namespaces
  * @param  {string}              string     - string of markup to parse
- * @param  {DOMTagUD}            userdata   - data 
+ * @param  {DOMTagUD}            userdata   - data
  * @return {HTMLElement} DOM tree representing markup with tags as tooltips
  */
 const DOMLinkParser = createParser(DOMLinkTag, (merge) => {
@@ -682,7 +682,7 @@ const DOMLinkParser = createParser(DOMLinkTag, (merge) => {
  * A parser that turns markup strings plaintext
  * @param  {Map<string, Feature} namespaces - map of reminder namespaces
  * @param  {string}              string     - string of markup to parse
- * @param  {Object}              data   
+ * @param  {Object}              data
  * @return {HTMLElement}        plaintext representing markup
  */
 const HtmlParser = createParser(HtmlTag, (merge) => {
@@ -696,7 +696,7 @@ const RawParser = createParser(RawTag, (merge) => {
 /**
  * A parser that turns markup strings plaintext
  * @param  {string}      string string of markup to parse
- * @param  {Object}      data   
+ * @param  {Object}      data
  * @return {HTMLElement}        plaintext representing markup
  */
 const TextParser = createParser(TextTag, (merge) => {
@@ -706,7 +706,7 @@ const TextParser = createParser(TextTag, (merge) => {
 /**
  * A parser to validate markup while compliling definitions files
  * @param  {string}      string string of markup to parse
- * @param  {Object}      data   
+ * @param  {Object}      data
  * @return {HTMLElement}        true; throws an exception if invalid
  */
 const ValidateParser = createParser(ValidateTag, (merge) => {
@@ -784,7 +784,7 @@ const TextParserWrapper = createReminderWrapper(
  * Optional parameters for @{link createLink}
  * @typedef {Object} CreateLinkOptions
  * @property {Boolean} dead    If tooltips should not be expanded
- * @property {string?} display Text to display tag with 
+ * @property {string?} display Text to display tag with
  * @property {Boolean} year    If reminders should not be expanded
  */
 

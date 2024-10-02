@@ -5,18 +5,21 @@
  */
 
 /* global
-   Ability, Art, Class, Equipment, Preset
+   Ability, Art, Class, Item, Preset
  */
+
+/* global BuildableModel */
 
 /* global Presetter */
 
-class Characters {
+class Characters extends BuildableModel {
 
 	static DEFAULT = "Blank Sheet";
 
 	static DEFAULT_CLASS = "None";
 
 	constructor(sheet) {
+		super();
 
 		this.sheet     = sheet;
 		this.refresher = sheet.refresher;
@@ -28,11 +31,7 @@ class Characters {
 				type     : "text",
 				value    : "Blank Sheet",
 				onchange : (() => {
-					const activeID = this.sheet.cb.category.getActive();
-					if (activeID === null) return;
-
-					const element = this.sheet.cb.category.element(activeID);
-					element.title = this.name;
+					this.sheet.cb.setTitle(this.uuid, this.name);
 				}),
 			},
 		});
@@ -89,7 +88,7 @@ class Characters {
 				type    : "number",
 				value   : 0,
 				min     : 0,
-				oninput : (() => console.log("TODO")), 
+				oninput : (() => console.log("TODO")),
 			},
 		});
 
@@ -99,11 +98,7 @@ class Characters {
 			attrs       : {
 				placeholder : "Write your character description here...",
 				onchange    : (() => {
-					const activeID = sheet.cb.category.getActive();
-					if (activeID === null) return;
-
-					const element = sheet.cb.category.element(activeID);
-					element.description = this.body();
+					this.sheet.cb.setBody(this.uuid, this.body());
 				}),
 			},
 		});
@@ -167,20 +162,13 @@ class Characters {
 
 	set name(value) {
 		
-		console.log(`Setting name=${JSON.stringify(value)}`);
-
 		if (Item.has(value)) {
 			console.trace(`Character: ${this.name} -> ${value}`);
 			alert("Press Ctrl-Shift-I and send Ryan a screenshot.");
 		}
 
 		this._name.value = value;
-
-		const activeID = this.sheet.cb.category.getActive();
-		if (activeID === null) return;
-
-		const element = this.sheet.cb.category.element(activeID);
-		element.title = this.name;
+		this.sheet.cb.setTitle(this.uuid, value);
 	}
 
 	get description() {
@@ -189,12 +177,7 @@ class Characters {
 
 	set description(value) {
 		this._description.value = value;
-
-		const activeID = this.sheet.cb.category.getActive();
-		if (activeID === null) return;
-
-		const element = this.sheet.cb.category.element(activeID);
-		element.description = this.body();
+		this.sheet.cb.setBody(this.uuid, this.body());
 	}
 
 	get money() {
@@ -305,7 +288,7 @@ class Characters {
 
 		this.sheet.stats.refresh();
 
-		if (this._pregroup) this.refresher.delete(this._pregroup); 
+		if (this._pregroup) this.refresher.delete(this._pregroup);
 		this._pregroup = this.refresher.createGroup();
 
 		this.reclass();
@@ -351,7 +334,7 @@ class Characters {
 
 		this.sheet.stats.refresh();
 
-		if (this._pregroup) this.refresher.delete(this._pregroup); 
+		if (this._pregroup) this.refresher.delete(this._pregroup);
 		this._pregroup = this.refresher.createGroup();
 
 		this.reclass();
@@ -379,51 +362,7 @@ class Characters {
 		this._infodiv.appendChild(p);
 	}
 
-	static listize(node, top=true) { // TODO replace with Requirements.toDOM
-
-		const name = node[0];
-
-		if (top) {
-
-			const elements = Characters.listize(node, false);
-
-			if (name == "All") {
-				return elements;
-			}
-
-			return element("ul", element("li", elements));
-		}
-
-		const args = node.slice(1);
-
-		switch (name) {
-
-		case "All":
-			return element("ul",
-				args.map(e => element("li", Characters.listize(e, false)))
-			);
-
-		case "Any":
-			return delimit(" or ",
-				args.map(e => Characters.listize(e, false))
-			);
-
-		case "Required":
-			return element("span",
-				[Characters.listize(args[0], false), " (required)"]
-			);
-
-		case "Permission":
-			return element("strong", args[0] || name);
-
-		default:
-			return element("strong", node.join(" "));
-		}
-	}
-
 	import(object) {
-
-		console.log(object);
 
 		if (typeof object != "object") {
 			throw Error(`expected object but got type ${typeof object}`);
@@ -449,7 +388,7 @@ class Characters {
 		this.description = object.description || "";
 		this.money       = object.money       || 0;
 
-		this.sheet.item.clear();
+		this.sheet.inv.clear();
 		this.sheet.wb.importAll(object.items);
 
 		if (object.battalions) {
@@ -470,8 +409,6 @@ class Characters {
 				each.removable = false;
 		}
 
-		this.sheet.equipment.setState(object.equipment);
-
 		this.triangle = 0;
 
 		this.sheet.checks.import(object.traits);
@@ -484,6 +421,8 @@ class Characters {
 		// Put this setting back to what it was.
 		this.sheet.myPointBuy.setAnimated(animate);
 		this.sheet.refresher.signal();
+
+		console.log(this.refresher.items.size);
 	}
 
 	export() {
@@ -499,7 +438,6 @@ class Characters {
 			battalions   : this.sheet.bb.exportAll(),
 			abilities    : this.sheet.abilities.getState(),
 			arts         : this.sheet.arts.getState(),
-			equipment    : this.sheet.equipment.getState(),
 			traits       : this.sheet.checks.export(),
 			experiences  : this.sheet.experiences.export(),
 		};
@@ -511,6 +449,13 @@ class Characters {
 			throw Error(`expected Preset but got ${preset.constructor.name}`);
 		}
 
+		if (Item.has(preset)) { // TODO remove after debugging
+			console.trace(`Character: ${preset}`);
+			alert("Press Ctrl-Shift-I and send Ryan a screenshot.");
+		}
+
+		this.refresher.wait();
+
 		this.clear();
 
 		this.name        = preset.name        || Characters.DEFAULT; // TODO Investigate
@@ -520,6 +465,8 @@ class Characters {
 		this.sheet.copy_stats_to_point_buy(false);
 
 		this.refresh();
+
+		this.refresher.signal();
 	}
 
 	/**
@@ -528,7 +475,7 @@ class Characters {
 	 */
 	clear(preset) {
 
-		if (preset) {
+		if (typeof preset == "string" || preset instanceof String) {
 
 			if (!Preset.has(preset)) {
 				throw new Error(`preset '${preset}' is undefined`);
@@ -537,13 +484,16 @@ class Characters {
 			return this.preset(Preset.get(preset));
 		}
 
+		this.refresher.wait();
+
+		this.uuid        = null;
 		this.class       = Characters.DEFAULT_CLASS;
 		this.name        = Characters.DEFAULT;
 		this.description = "";
 		this.money       = 0;
 		this.triangle    = 0;
 
-		for (let feature of [Ability, Art, Equipment]) {
+		for (let feature of [Ability, Art]) {
 			for (let category in this[feature.kind]) {
 				if (category == "class") continue;
 				this[feature.kind][category].clear();
@@ -555,17 +505,18 @@ class Characters {
 
 		this.sheet.stats.clear();
 		this.sheet.skills.clear();
-		this.sheet.item.clear();
+		this.sheet.inv.clear();
 		this.sheet.battalion.clear();
 
 		this.sheet.abilities.clear();
 		this.sheet.arts.clear();
-		this.sheet.equipment.clear();
 
 		this.sheet.experiences.clear();
 
 		this.refresh();
 		this.sheet.skills.refresh();
+
+		this.refresher.signal();
 	}
 
 	/* builtable display */

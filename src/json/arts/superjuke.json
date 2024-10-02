@@ -1,7 +1,7 @@
 {
   "name": "Super Juke",
-  "description": "@{equipment}{Tactiball Trophy} only; once per battle, apply @{const}{gbp}{[Mov +2]} to this unit for one turn. Must be used before unit moves, and allows unit to move and act afterwards.",
-  "requires": "Equipment `Tactiball Trophy`",
+  "description": "@{item}{Tactiball Trophy} only; once per battle, apply @{const}{gbp}{[Mov +2]} to this unit for one turn. Must be used before unit moves, and allows unit to move and act afterwards.",
+  "requires": "Item `Tactiball Trophy`",
   "compatible": "None",
   "mttype": "else",
   "modifiers": {
@@ -24,7 +24,8 @@
     "no might",
     "no hit",
     "no crit",
-    "no stats"
+    "no stats",
+    "changed"
   ],
   "hidden": false,
   "type": "Other",

@@ -168,7 +168,7 @@ function keyLookup(cache, func, key) {
 			? cache
 			: cache.set(key, func(key))
 	).get(key);
-}	
+}
 
 function keySorted(iterable, func=(x => x), reverse=false) {
 
@@ -1086,6 +1086,8 @@ function addTag(path, tag, omit, dry) {
 
 	if (omit && ("omit" in data) && data["omit"])
 		return path;
+
+	console.log(data);
 	
 	if (!data.tags.includes(tag))
 		data.tags.push(tag);
@@ -1310,7 +1312,7 @@ function main(args) {
 		make(ns.print, ns.omit, ns.nomarkdown, ns.dry_run);
 
 	} catch (error) {
-		// 
+		
 		if (error.code !== "MODULE_NOT_FOUND") {
 			throw error;
 		}
