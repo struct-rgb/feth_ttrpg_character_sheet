@@ -1918,6 +1918,16 @@ class Sheet {
 			expr  : "2",
 		});
 
+		add({
+			name  : "other|kindred",
+			about : wrap(
+				"The numerical value of the selected option of the Kinded ",
+				"select widget in the Create => Characters tab of the unit ",
+				"builder. Used in computing what traits Morph gives bonuses."
+			),
+			expr  : ((env) => this.character.kindred)
+		});
+
 		// d8888b. d8888b. d888888b .88b  d88.  .d8b.  d8888b. db    db
 		// 88  `8D 88  `8D   `88'   88'YbdP`88 d8' `8b 88  `8D `8b  d8'
 		// 88oodD' 88oobY'    88    88  88  88 88ooo88 88oobY'  `8bd8'

@@ -25,10 +25,6 @@ if (typeof require !== "undefined") {
 		Filter,
 		element, inBrowser, tooltip
 	}           = require("../common.js"));
-	// ({
-	// 	Ability, Adjutant, Art, Attribute, Class, Condition, Gambit,
-	// 	Item, Tile
-	// }           = require("../feature.js"));
 	(  Markup   = require("../lang/markup.js"));
 	/* eslint-enable no-global-assign */
 }

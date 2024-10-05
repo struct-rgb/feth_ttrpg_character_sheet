@@ -82,6 +82,29 @@ class Characters extends BuildableModel {
 			this._initiative.appendChild(option);
 		}
 
+		this._kindred = element("select", {
+			class: ["simple-border"],
+			attrs: {
+				value   : "Humankin",
+				oninput : (() => {
+					this.refresher.refresh("other|kindred");
+				}),
+			},
+		});
+
+		const kindred =  [
+			["Humanoid", 0],
+			["Beastkin", 1],
+			["Draconic", 2],
+		];
+
+		for (let template of kindred) {
+			const option       = element("option");
+			option.value       = template[1];
+			option.textContent = template[0];
+			this._kindred.appendChild(option);
+		}
+
 		this._money = element("input", {
 			class: ["simple-border"],
 			attrs: {
@@ -139,6 +162,9 @@ class Characters extends BuildableModel {
 
 			uniqueLabel("Combat Initiative", this._initiative), element("br"),
 			this._initiative, element("br"),
+
+			uniqueLabel("Kindred", this._kindred), element("br"),
+			this._kindred, element("br"),
 
 			uniqueLabel("Class", this._class), element("br"),
 			this._sf.root,
@@ -312,6 +338,14 @@ class Characters extends BuildableModel {
 		this._initiative.value = value;
 	}
 
+	get kindred() {
+		return Number(this._kindred.value);
+	}
+
+	set kindred(value) {
+		this._kindred.value = value;
+	}
+
 	get token() {
 		return this._token.src;
 	}
@@ -414,6 +448,8 @@ class Characters extends BuildableModel {
 		this.sheet.checks.import(object.traits);
 		this.sheet.experiences.import(object.experiences);
 
+		this.kindred = Math.clamp(object.kindred ?? 0, 0, 2);
+
 		/* We do want to refresh secondary stats now */
 		this.sheet.stats.pause        = false;
 		this.refresh();
@@ -431,6 +467,7 @@ class Characters extends BuildableModel {
 			name         : this.name,
 			description  : this.description,
 			money        : this.money,
+			kindred      : this.kindred,
 			class        : this.class.name,
 			statistics   : this.sheet.stats.export(),
 			skills       : this.sheet.skills.export(),
@@ -492,6 +529,7 @@ class Characters extends BuildableModel {
 		this.description = "";
 		this.money       = 0;
 		this.triangle    = 0;
+		this.kindred     = 0;
 
 		for (let feature of [Ability, Art]) {
 			for (let category in this[feature.kind]) {

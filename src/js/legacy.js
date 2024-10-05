@@ -206,6 +206,22 @@ function character_from_4_3_0(old) {
 		});
 	}
 
+	switch (old.class) {
+	case "Shifter":
+	case "Brute":
+	case "Protean":
+		old.kindred = 1;
+		break;
+	case "Wyrmling":
+	case "Immortal":
+	case "Stygian":
+		old.kindred = 2;
+		break;
+	default:
+		old.kindred = 0;
+		break;
+	}
+
 	old.version = "4.4.0";
 
 	return old;

@@ -36,6 +36,7 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
   * Added an Assign > Experiences section to allow Characters to feature those
   * The Macro builder generates a check macro from your Traits and Experiences
   * Custom trait bonuses be enabled with the "Free Traits Ranks" Campaign Setting
+  * Added "Kindred" to Create > Character because Morph needs it to calc bonuses
 
 #### Bugfixes
   * Other Prowess now consumes zero capacity.

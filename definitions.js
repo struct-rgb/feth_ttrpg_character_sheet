@@ -79,13 +79,15 @@ const definitions = {
       "Axes",
       "Swords",
       "Lances",
-      "Brawl"
+      "Brawl",
+      "Morph"
     ],
     "Precision": [
       "Swords",
       "Reason",
       "Bows",
-      "Riding"
+      "Riding",
+      "Morph"
     ],
     "Endurance": [
       "Brawl",
@@ -97,13 +99,15 @@ const definitions = {
       "Axes",
       "Guile",
       "Bows",
-      "Authority"
+      "Authority",
+      "Morph"
     ],
     "Spirit": [
       "Faith",
       "Lances",
       "Armor",
-      "Authority"
+      "Authority",
+      "Morph"
     ],
     "Acuity": [
       "Faith",
@@ -774,6 +778,105 @@ const definitions = {
         "Rank B+   8\n",
         "Rank A+   10\n"
       ]
+    },
+    "Swords": {
+      "name": "Swords",
+      "description": [
+        "Melee skill focused on hit, avoid, debuffs and multiple attacks. ",
+        "Strong against Axes and Bows."
+      ]
+    },
+    "Lances": {
+      "name": "Lances",
+      "description": [
+        "Melee skill focused on counterattacks and synergy with auxilary skills. ",
+        "Strong against Swords and Bows."
+      ]
+    },
+    "Axes": {
+      "name": "Axes",
+      "description": [
+        "Melee skill focused on offense, self-reliance, and rewarding risk. ",
+        "Strong against Lances and Bows."
+      ]
+    },
+    "Brawl": {
+      "name": "Brawl",
+      "description": [
+        "Melee skill focused on flexibility"
+      ]
+    },
+    "Bows": {
+      "name": "Bows",
+      "description": []
+    },
+    "Faith": {
+      "name": "Faith",
+      "description": [
+        "Spellcasting skill focused on ally support and magic resistance. ",
+        "Strong against Guile and Brawl."
+      ]
+    },
+    "Reason": {
+      "name": "Reason'",
+      "description": []
+    },
+    "Guile": {
+      "name": "Guile",
+      "description": []
+    },
+    "Armor": {
+      "name": "Armor",
+      "description": []
+    },
+    "Riding": {
+      "name": "Riding",
+      "description": []
+    },
+    "Flying": {
+      "name": "Flying",
+      "description": []
+    },
+    "Morph": {
+      "name": "Morph",
+      "description": []
+    },
+    "Other": {
+      "name": "Other",
+      "description": []
+    },
+    "Authority": {
+      "name": "Authority",
+      "description": []
+    },
+    "Athletics": {
+      "name": "Athletics",
+      "description": [
+        "Measure of power strength and prowess. Ex: smashing objects, ",
+        "bracing doors, wrestling foes, and sprinting."
+      ]
+    },
+    "Precision": {
+      "name": "Precision",
+      "description": [
+        "Measure"
+      ]
+    },
+    "Endurance": {
+      "name": "Endurance",
+      "description": []
+    },
+    "Canniness": {
+      "name": "Canniness",
+      "description": []
+    },
+    "Spirit": {
+      "name": "Authority",
+      "description": []
+    },
+    "Acuity": {
+      "name": "Authority",
+      "description": []
     }
   },
   "abilities": [
@@ -1504,6 +1607,43 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Apex Predator",
+      "description": "This unit receives +15 Crit Chance against Shifters, Wyrmlings, Brutes, Proteans, Immortals, and Stygians.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": "fill confirm([Apex Predator?], 15)",
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "---'s personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -5459,6 +5599,43 @@ const definitions = {
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "hand"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Cut and Run",
+      "description": "If unit has enough speed foe and lands at least one hit after initiating combat, this unit may move up to five spaces away after combat concludes.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "---'s personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -14762,6 +14939,43 @@ const definitions = {
         "blow",
         "rework",
         "depricated"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Pirouette",
+      "description": "This unit receives Points equal to its movement at the beginning of the map. If this unit does not use its turn to initiate combat, it may spend X number of Points to gain @{const}{gbp}{[Mov +X]}.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "---'s personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
       ],
       "hidden": false
     },

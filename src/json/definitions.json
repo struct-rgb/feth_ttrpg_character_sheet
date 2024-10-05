@@ -76,11 +76,11 @@
     }
   },
   "traits": {
-    "Athletics": ["Axes", "Swords", "Lances", "Brawl"],
-    "Precision": ["Swords", "Reason", "Bows", "Riding"],
+    "Athletics": ["Axes", "Swords", "Lances", "Brawl", "Morph"],
+    "Precision": ["Swords", "Reason", "Bows", "Riding", "Morph"],
     "Endurance": ["Brawl", "Armor", "Flying", "Riding"],
-    "Canniness": ["Axes", "Guile", "Bows", "Authority"],
-    "Spirit": ["Faith", "Lances", "Armor", "Authority"],
+    "Canniness": ["Axes", "Guile", "Bows", "Authority", "Morph"],
+    "Spirit": ["Faith", "Lances", "Armor", "Authority", "Morph"],
     "Acuity": ["Faith", "Reason", "Guile", "Flying"]
   },
   "skills": [
@@ -745,6 +745,105 @@
         "Rank B+ \u00A0 8\n",
         "Rank A+ \u00A0 10\n"
       ]
+    },
+    "Swords": {
+      "name": "Swords",
+      "description": [
+        "Melee skill focused on hit, avoid, debuffs and multiple attacks. ",
+        "Strong against Axes and Bows."
+      ]
+    },
+    "Lances": {
+      "name": "Lances",
+      "description": [
+        "Melee skill focused on counterattacks and synergy with auxilary skills. ",
+        "Strong against Swords and Bows."
+      ]
+    },
+    "Axes": {
+      "name": "Axes",
+      "description": [
+        "Melee skill focused on offense, self-reliance, and rewarding risk. ",
+        "Strong against Lances and Bows."
+      ]
+    },
+    "Brawl": {
+      "name": "Brawl",
+      "description": [
+        "Melee skill focused on flexibility"
+      ]
+    },
+    "Bows": {
+      "name": "Bows",
+      "description": []
+    },
+    "Faith": {
+      "name": "Faith",
+      "description": [
+        "Spellcasting skill focused on ally support and magic resistance. ",
+        "Strong against Guile and Brawl."
+      ]
+    },
+    "Reason": {
+      "name": "Reason'",
+      "description": []
+    },
+    "Guile": {
+      "name": "Guile",
+      "description": []
+    },
+    "Armor": {
+      "name": "Armor",
+      "description": []
+    },
+    "Riding": {
+      "name": "Riding",
+      "description": []
+    },
+    "Flying": {
+      "name": "Flying",
+      "description": []
+    },
+    "Morph": {
+      "name": "Morph",
+      "description": []
+    },
+    "Other": {
+      "name": "Other",
+      "description": []
+    },
+    "Authority": {
+      "name": "Authority",
+      "description": []
+    },
+    "Athletics": {
+      "name": "Athletics",
+      "description": [
+        "Measure of power strength and prowess. Ex: smashing objects, ",
+        "bracing doors, wrestling foes, and sprinting."
+      ]
+    },
+    "Precision": {
+      "name": "Precision",
+      "description": [
+        "Measure"
+      ]
+    },
+    "Endurance": {
+      "name": "Endurance",
+      "description": []
+    },
+    "Canniness": {
+      "name": "Canniness",
+      "description": []
+    },
+    "Spirit": {
+      "name": "Authority",
+      "description": []
+    },
+    "Acuity": {
+      "name": "Authority",
+      "description": []
     }
   }
 }

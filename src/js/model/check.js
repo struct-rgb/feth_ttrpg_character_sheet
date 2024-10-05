@@ -38,6 +38,24 @@ function rank(sheet, name, extra=0) {
 	let level = 0;
 
 	for (let skill of MAP.get(name)) {
+
+		// the benefits of Morph depend on unit's kindred
+		if (skill == "Morph") {
+			const kindred = sheet.character.kindred;
+
+			// unaltered humans get no benefit from Morph
+			if (kindred == 0)
+				continue;
+
+			// draconics get Canniness and Spirit
+			if (kindred == 2 && (name == "Athletics" || name == "Precision"))
+				continue;
+
+			// beastkin get Athletics and Precision
+			if (kindred == 1 && (name == "Canniness" || name == "Spirit"))
+				continue;
+		}
+
 		const apt  = sheet.skills.rows.get(skill).aptitude;
 		level     += Number(apt == 1 || apt == 3);
 	}
@@ -81,7 +99,7 @@ class Row {
 		});
 
 		sheet.refresher.register(this._rank,
-			["game|free_traits", _variable_rank],
+			["game|free_traits", "other|kindred", _variable_rank],
 			[_variable_bonus],
 		);
 
@@ -90,6 +108,7 @@ class Row {
 		);
 
 		this.root = element("tr", [
+			// element("th", tooltip(this.name, sheet.marker.get("const", this.name).text)),
 			element("th", this.name),
 			this._rank.root,
 			this._bonus.root,
@@ -136,7 +155,15 @@ class UserInterface {
 		this.root = element("div",
 			element("table", [
 				element("thead",
-					element("strong", "Traits", "underline")
+					element("span", "Traits", "underline", "bold")
+					// element("a", {
+					// 	content : "Traits",
+					// 	attrs   : {
+					// 		href   : "https://forgedbyfiresttrpg.miraheze.org/wiki/Skill",
+					// 		rel    : "noreferrer noopener",
+					// 		target : "_blank",
+					// 	}
+					// }),
 				),
 				body
 			])

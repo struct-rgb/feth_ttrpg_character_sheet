@@ -496,6 +496,10 @@ class Compiler {
 		return handler(context, source);
 	}
 
+	get(namespace, name, context=this.context) {
+		return context.get(namespace).get(name);
+	}
+
 	link(namespace, names, options={}, context=this.context) {
 		return createLink(context, namespace, names, options);
 	}

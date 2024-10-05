@@ -64,7 +64,12 @@ class Row {
 			return this.grade;
 		});
 
-		this.root = element("tr", [element("th", name), this.aptcell.root, this.cell.root]);
+		this.root = element("tr", [
+			// element("th", tooltip(name, sheet.marker.get("const", name).body())),
+			element("th", name),
+			this.aptcell.root,
+			this.cell.root
+		]);
 	}
 
 	get value() {
@@ -155,7 +160,7 @@ class SkillUserInterface {
 		this.root = element("div", [
 			element("table", [
 				element("thead",
-					element("strong", "Skills", "underline")
+					element("span", "Skills", "underline", "bold"),
 				),
 				body
 			])
