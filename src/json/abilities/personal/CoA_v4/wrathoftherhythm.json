@@ -12,7 +12,12 @@
     "def": 0,
     "res": 0,
     "lck": 0,
-    "mt": "fill locals|stacks()",
+    "mt": [
+      "bothif not(host|tagged|no_might or host|tagged|no_hit)",
+      "  then fill locals|stacks()",
+      "  else 0",
+      "end"
+    ],
     "prot": 0,
     "resl": 0,
     "hit": 0,
