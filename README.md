@@ -11,6 +11,9 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.4.1
+  * Renamed Infuse to Mage Armor and tweaked Shadowsprint for CoA
+
 ### Version 4.4.0
 
 #### General

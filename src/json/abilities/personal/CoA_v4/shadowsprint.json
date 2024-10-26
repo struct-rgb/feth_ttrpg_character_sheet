@@ -1,6 +1,6 @@
 {
   "name": "Shadow Sprint",
-  "description": "Once per map, Nockmed may apply Stealth to himself for two turns.",
+  "description": "Once per map, Nockmed may prevent all foes from targeting him for one turn.",
   "requires": "Innate",
   "modifiers": {
     "hp": 0,

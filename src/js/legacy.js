@@ -162,6 +162,17 @@ function rename(state, map) {
 	}
 }
 
+function character_from_4_4_0(old) {
+
+	rename(old.abilities, new Map([
+		[ "Infuse"     , "Mage Armor"    ],
+	]));
+
+	old.version = "4.4.1";
+
+	return old;
+}
+
 function character_from_4_3_0(old) {
 
 	old.experiences = old.experiences ?? [];
@@ -728,6 +739,10 @@ function character(obj, to=Version.CURRENT) {
 
 	if (version.older("4.4.0")) {
 		obj = character_from_4_3_0(obj);
+	}
+
+	if (version.older("4.4.1")) {
+		obj = character_from_4_4_0(obj);
 	}
 
 	// prevents double processing of the data

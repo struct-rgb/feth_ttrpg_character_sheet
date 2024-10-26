@@ -1,6 +1,6 @@
 {
-  "name": "Infuse",
-  "description": "Allies adjacent to this unit gain Mt +X in combat, where X is equal to this unit's spell Mt. Adjacent allies may also choose to target an foe's Resilience in combat.",
+  "name": "Mage Armor",
+  "description": "As a reaction, Alita may provide a certain buff to an adjacent ally based on which weapon they are hit by when a foe initiates combat with them:\n\nFoe receives 15% non-lethal damage before combat. Trigger: A foe initiates combat with an ally adjacent to Alita while equipped with a sword, lance, axe, brawl weapon, or shield.\n\nAdjacent ally receives @{const}{gbp}{[Res +X]} before combat, where X is equal to 15% of that ally's max HP. The condition ends after combat. Trigger: A foe initiates combat with an ally adjacent to Alita while equipped with a Reason, Guile, or Faith spell.",
   "requires": "Innate",
   "modifiers": {
     "hp": 0,

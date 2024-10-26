@@ -9797,43 +9797,6 @@ const definitions = {
       "omit": false
     },
     {
-      "name": "Infuse",
-      "description": "Allies adjacent to this unit gain Mt +X in combat, where X is equal to this unit's spell Mt. Adjacent allies may also choose to target an foe's Resilience in combat.",
-      "requires": "Innate",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 0
-      },
-      "comment": "Alita Blackwitch's personal.",
-      "tags": [
-        "CoA",
-        "personal",
-        "new"
-      ],
-      "hidden": false
-    },
-    {
       "name": "Inspiration",
       "description": "Before unit or adjacent ally enters combat, (Luc + 10)% chance to grant unit or adjacent ally @{const}{ap}{AP ≥ 2} in the combat.",
       "requires": "All (Authority D) (Level 5)",
@@ -11337,6 +11300,43 @@ const definitions = {
       "tags": [
         "condition",
         "in combat"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Mage Armor",
+      "description": "As a reaction, Alita may provide a certain buff to an adjacent ally based on which weapon they are hit by when a foe initiates combat with them:\n\nFoe receives 15% non-lethal damage before combat. Trigger: A foe initiates combat with an ally adjacent to Alita while equipped with a sword, lance, axe, brawl weapon, or shield.\n\nAdjacent ally receives @{const}{gbp}{[Res +X]} before combat, where X is equal to 15% of that ally's max HP. The condition ends after combat. Trigger: A foe initiates combat with an ally adjacent to Alita while equipped with a Reason, Guile, or Faith spell.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 0
+      },
+      "comment": "Alita Blackwitch's personal.",
+      "tags": [
+        "CoA",
+        "personal",
+        "new"
       ],
       "hidden": false
     },
@@ -16527,7 +16527,7 @@ const definitions = {
     },
     {
       "name": "Shadow Sprint",
-      "description": "Once per map, Nockmed may apply Stealth to himself for two turns.",
+      "description": "Once per map, Nockmed may prevent all foes from targeting him for one turn.",
       "requires": "Innate",
       "modifiers": {
         "hp": 0,
