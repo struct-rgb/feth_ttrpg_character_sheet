@@ -1,6 +1,6 @@
 {
   "name": "Tomebreaker",
-  "description": "Grants Hit +X and Avo +X in combat against Lances, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots.",
+  "description": "Grants Hit +X and Avo +X in combat against Faith, Reason, and Guile, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots.",
   "requires": "Bows B",
   "modifiers": {
     "hp": 0,
@@ -31,7 +31,8 @@
   "tags": [
     "breaker",
     "in combat",
-    "halfslot"
+    "halfslot",
+    "changed"
   ],
   "hidden": false
 }

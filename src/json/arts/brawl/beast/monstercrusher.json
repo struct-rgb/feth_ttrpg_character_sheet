@@ -15,10 +15,10 @@
     "minrng": 1,
     "maxrng": 1,
     "tpcost": 0,
-    "spcost": 4
+    "spcost": "bothif game|coa_rebalances then 6 else 4 end"
   },
   "comment": "",
-  "tags": ["effective", "monster effective", "beast", "variant"],
+  "tags": ["effective", "monster effective", "beast", "variant", "changed"],
   "hidden": false,
   "type": "Brawl",
   "rank": "C-B"

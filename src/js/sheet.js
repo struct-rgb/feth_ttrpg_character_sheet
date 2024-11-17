@@ -205,6 +205,7 @@ class CampaignConfiguration {
 		"maxcap_tactical"  :  2,
 		"maxcap_combat"    :  2,
 		"free_traits"      :  0,
+		"coa_rebalances"   :  0,
 	};
 
 	static CoA = {
@@ -213,6 +214,7 @@ class CampaignConfiguration {
 		"maxcap_tactical"  :  3,
 		"maxcap_combat"    :  3,
 		"free_traits"      :  1,
+		"coa_rebalances"   :  1,
 	};
 
 	static DEFINED = {
@@ -240,6 +242,9 @@ class CampaignConfiguration {
 			"Allow players to set their own ranks for traits instead of tying ",
 			"trait progression entirely to skill rank, as is the default."
 		),
+		"coa_rebalances"   : wrap(
+			"Use CoA specific rebalances to various features instead of defaults",
+		),
 	};
 
 	static FE3H = {
@@ -248,6 +253,7 @@ class CampaignConfiguration {
 		"maxcap_tactical"  :  3,
 		"maxcap_combat"    :  3,
 		"free_traits"      :  0,
+		"coa_rebalances"   :  0,
 	};
 
 	constructor(sheet) {
@@ -300,6 +306,11 @@ class CampaignConfiguration {
 		const update = ((base, variable, name) => {
 			this.table.refresher.refresh(name);
 			return variable();
+		});
+
+		const boolean = ((base, variable, name) => {
+			this.table.refresher.refresh(name);
+			return variable() ? "true" : "false";
 		});
 
 		const traits = ((base, variable, name) => {
@@ -357,6 +368,15 @@ class CampaignConfiguration {
 				{
 					var  : "game|free_traits",
 					call : traits,
+				}
+			),
+			this.table.row(
+				tooltip("CoA Rebalances",
+					CampaignConfiguration.DEFINED["coa_rebalances"]
+				),
+				{
+					var  : "game|coa_rebalances",
+					call : boolean,
 				}
 			)
 		]);

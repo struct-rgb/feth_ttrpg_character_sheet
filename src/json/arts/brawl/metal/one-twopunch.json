@@ -5,7 +5,7 @@
   "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
   "mttype": "else",
   "modifiers": {
-    "mt": "4 + fill affirm([First Attack Hit?], 0, 4)",
+    "mt": "4 + ask [First Attack Hit?] else No {0} case Yes {4} end",
     "prot": 0,
     "resl": 0,
     "hit": 10,
@@ -18,7 +18,7 @@
     "spcost": 4
   },
   "comment": "",
-  "tags": ["metal", "variant"],
+  "tags": ["metal", "variant", "changed"],
   "hidden": false,
   "type": "Brawl",
   "rank": "C-B"

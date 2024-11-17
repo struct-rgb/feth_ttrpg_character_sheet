@@ -551,7 +551,8 @@ const definitions = {
       "define": [
         "template breaker(type, skill)",
         "  ask cat(type, [breaker?])",
-        "    else No {",
+        "    else No {0}",
+        "    case Yes {",
         "      bothif skill >= 8 // Rank A",
         "        then 30",
         "      elseif skill >= 6 // Rank B",
@@ -560,7 +561,6 @@ const definitions = {
         "        then 0",
         "      end",
         "    }",
-        "    case Yes {0}",
         "  end",
         "end"
       ],
@@ -7761,7 +7761,7 @@ const definitions = {
     },
     {
       "name": "Fistbreaker",
-      "description": "Grants Hit +20 and Avo +20 in combat against Brawl. If an \"Reason Prowess\", \"Faith Prowess\", or \"Guile Prowess\" ability is the only \"Prowess\" ability equipped, and \"Fistbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Fistbreaker\" ability at a time.",
+      "description": "Grants Hit +X and Avo +X in combat against Brawl, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Reason Prowess\", \"Faith Prowess\", or \"Guile Prowess\" ability is the only one \"Prowess\" ability equipped, and \"Fistbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Fistbreaker\" ability at a time.",
       "requires": "Any (Reason B) (Faith B) (Guile B)",
       "modifiers": {
         "hp": 0,
@@ -7799,7 +7799,8 @@ const definitions = {
       "tags": [
         "breaker",
         "in combat",
-        "halfslot"
+        "halfslot",
+        "changed"
       ],
       "hidden": false
     },
@@ -17868,7 +17869,7 @@ const definitions = {
     },
     {
       "name": "Tomebreaker",
-      "description": "Grants Hit +X and Avo +X in combat against Lances, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots.",
+      "description": "Grants Hit +X and Avo +X in combat against Faith, Reason, and Guile, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots.",
       "requires": "Bows B",
       "modifiers": {
         "hp": 0,
@@ -17899,7 +17900,8 @@ const definitions = {
       "tags": [
         "breaker",
         "in combat",
-        "halfslot"
+        "halfslot",
+        "changed"
       ],
       "hidden": false
     },
@@ -22138,14 +22140,15 @@ const definitions = {
         "minrng": 1,
         "maxrng": 1,
         "tpcost": 0,
-        "spcost": 4
+        "spcost": "bothif game|coa_rebalances then 6 else 4 end"
       },
       "comment": "",
       "tags": [
         "effective",
         "monster effective",
         "beast",
-        "variant"
+        "variant",
+        "changed"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -22158,7 +22161,7 @@ const definitions = {
       "compatible": "All (Skill Brawl) (Not (Tag `no hit`))",
       "mttype": "else",
       "modifiers": {
-        "mt": "4 + fill affirm([First Attack Hit?], 0, 4)",
+        "mt": "4 + ask [First Attack Hit?] else No {0} case Yes {4} end",
         "prot": 0,
         "resl": 0,
         "hit": 10,
@@ -22173,7 +22176,8 @@ const definitions = {
       "comment": "",
       "tags": [
         "metal",
-        "variant"
+        "variant",
+        "changed"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -24465,7 +24469,7 @@ const definitions = {
         "minrng": 1,
         "maxrng": 2,
         "tiles": 0,
-        "spcost": 7,
+        "spcost": "bothif game|coa_rebalances then 5 else 7 end",
         "tpcost": 0,
         "sp": 0,
         "tp": 0
@@ -24475,7 +24479,8 @@ const definitions = {
         "wall",
         "aoe",
         "fire",
-        "variant"
+        "variant",
+        "changed"
       ],
       "hidden": false,
       "type": "Reason",

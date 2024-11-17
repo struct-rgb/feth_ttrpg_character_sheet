@@ -11,6 +11,12 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.4.2
+  * Added CoA Rebalances game setting to configure CoA specific rebalances
+  * Monster Crusher costs 6 SP with CoA Rebalances enabled
+  * Incineration costs 5 SP with CoA Rebalances enabled
+  * Bugfix: Tomebreaker, Fistbreaker, and One-Two Punch prompts were broken.
+
 ### Version 4.4.1
   * Renamed Infuse to Mage Armor and tweaked Shadowsprint for CoA
 

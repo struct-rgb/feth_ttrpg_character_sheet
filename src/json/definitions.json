@@ -518,7 +518,8 @@
       "define": [
         "template breaker(type, skill)",
         "  ask cat(type, [breaker?])",
-        "    else No {",
+        "    else No {0}",
+        "    case Yes {",
         "      bothif skill >= 8 // Rank A",
         "        then 30",
         "      elseif skill >= 6 // Rank B",
@@ -527,7 +528,6 @@
         "        then 0",
         "      end",
         "    }",
-        "    case Yes {0}",
         "  end",
         "end"
       ],

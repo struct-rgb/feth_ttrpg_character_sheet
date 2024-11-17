@@ -1,6 +1,6 @@
 {
   "name": "Fistbreaker",
-  "description": "Grants Hit +20 and Avo +20 in combat against Brawl. If an \"Reason Prowess\", \"Faith Prowess\", or \"Guile Prowess\" ability is the only \"Prowess\" ability equipped, and \"Fistbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Fistbreaker\" ability at a time.",
+  "description": "Grants Hit +X and Avo +X in combat against Brawl, where X is 20 if Rank B or higher and 30 if Rank A or higher. If an \"Reason Prowess\", \"Faith Prowess\", or \"Guile Prowess\" ability is the only one \"Prowess\" ability equipped, and \"Fistbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Fistbreaker\" ability at a time.",
   "requires": "Any (Reason B) (Faith B) (Guile B)",
   "modifiers": {
     "hp": 0,
@@ -38,7 +38,8 @@
   "tags": [
     "breaker",
     "in combat",
-    "halfslot"
+    "halfslot",
+    "changed"
   ],
   "hidden": false
 }

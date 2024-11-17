@@ -16,7 +16,7 @@
     "minrng": 1,
     "maxrng": 2,
     "tiles": 0,
-    "spcost": 7,
+    "spcost": "bothif game|coa_rebalances then 5 else 7 end",
     "tpcost": 0,
     "sp": 0,
     "tp": 0
@@ -26,7 +26,8 @@
     "wall",
     "aoe",
     "fire",
-    "variant"
+    "variant",
+    "changed"
   ],
   "hidden": false,
   "type": "Reason",
