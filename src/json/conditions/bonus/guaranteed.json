@@ -1,6 +1,6 @@
 {
     "name": "Guaranteed",
-    "description": "Listed SBAC triggers on affected unit, then this condition ends.",
+    "description": "Listed @{const}{sbac}{SBAC} triggers on affected unit, then this condition ends.",
 
     "modifiers": {
         "hp": 0,

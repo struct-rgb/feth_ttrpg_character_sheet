@@ -1,6 +1,6 @@
 {
   "name": "Chaintrigger",
-  "description": "When unit’s SBAC triggers, apply @{condition}{Lucky}{[Lucky]} to this unit for one turn.",
+  "description": "When unit’s @{const}{sbac}{SBAC} triggers, apply @{condition}{Lucky}{[Lucky]} to this unit for one turn.",
   "requires": "Level 8",
   "modifiers": {
     "hp": 0,

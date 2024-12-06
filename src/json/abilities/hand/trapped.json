@@ -1,6 +1,6 @@
 {
   "name": "Trapped Hand",
-  "description": "Whenever this unit rolls a SBAC during combat, choose to force foe to roll instead using their appropriate stat + 50, if applicable. On a success, this unit’s stat based activation ability activates.\n\nCannot be equipped with another “Hand” ability.",
+  "description": "Whenever this unit rolls a @{const}{sbac}{SBAC} during combat, choose to force foe to roll instead using their appropriate stat + 50, if applicable. On a success, this unit’s stat based activation ability activates.\n\nCannot be equipped with another “Hand” ability.",
   "requires": "All (Any (Swords C) (Brawl C) (Flying C)) (Level 11)",
   "modifiers": {
     "hp": 0,

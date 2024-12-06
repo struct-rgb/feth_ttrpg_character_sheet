@@ -1,6 +1,6 @@
 {
   "name": "Blessed Hand",
-  "description": "If this unit has a Faith tome equipped, this unit’s SBAC’s have a +20% chance to activate.",
+  "description": "If this unit has a Faith tome equipped, this unit’s @{const}{sbac}{SBACs} have a +20% chance to activate.",
   "requires": "All (Faith C) (Level 8)",
   "modifiers": {
     "hp": 0,

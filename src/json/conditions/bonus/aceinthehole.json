@@ -1,6 +1,6 @@
 {
     "name": "Ace in the Hole",
-    "description": "In combat, unit may choose to have one of its SBACs to function with a 100% success rate and this condition ends.",
+    "description": "In combat, unit may choose to have one of its @{const}{sbac}{SBACs} to function with a 100% success rate and this condition ends.",
 
     "modifiers": {
         "hp": 0,

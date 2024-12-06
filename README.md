@@ -11,6 +11,13 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.4.3
+  * Added tooltip that explains the SBAC acronym
+  * Consolidated options in Tools > Macros to take up less visual space.
+  * Reduced Divide and Conquer gambit capacity cost to 4
+  * Bugfix: Blue Flame Blade now generates a reasonable macro for its effect.
+  * Legacy 1.9.1 convert and import temporarily disabled because it's bugged.
+
 ### Version 4.4.2
   * Added CoA Rebalances game setting to configure CoA specific rebalances
   * Monster Crusher costs 6 SP with CoA Rebalances enabled

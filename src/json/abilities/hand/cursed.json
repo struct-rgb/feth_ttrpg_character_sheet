@@ -1,6 +1,6 @@
 {
   "name": "Cursed Hand",
-  "description": "If this unit has a Guile tome equipped, foes within 2 spaces are inflicted with a -20% SBAC activation chance. ",
+  "description": "If this unit has a Guile tome equipped, foes within 2 spaces are inflicted with a -20% @{const}{sbac}{SBAC} activation chance. ",
   "requires": "All (Guile C) (Level 8)",
   "modifiers": {
     "hp": 0,

@@ -779,6 +779,14 @@ const definitions = {
         "Rank A+   10\n"
       ]
     },
+    "sbac": {
+      "name": "SBAC",
+      "description": [
+        "Statistic-based actication chance abilities (SBACs) have a percentage ",
+        "chance (one of the user's statistics + a modifier) to activate when a ",
+        "specified trigger occurs. Crest abilities are not SBACs."
+      ]
+    },
     "Swords": {
       "name": "Swords",
       "description": [
@@ -3519,7 +3527,7 @@ const definitions = {
     },
     {
       "name": "Blessed Hand",
-      "description": "If this unit has a Faith tome equipped, this unit’s SBAC’s have a +20% chance to activate.",
+      "description": "If this unit has a Faith tome equipped, this unit’s @{const}{sbac}{SBACs} have a +20% chance to activate.",
       "requires": "All (Faith C) (Level 8)",
       "modifiers": {
         "hp": 0,
@@ -4754,7 +4762,7 @@ const definitions = {
     },
     {
       "name": "Chaintrigger",
-      "description": "When unit’s SBAC triggers, apply @{condition}{Lucky}{[Lucky]} to this unit for one turn.",
+      "description": "When unit’s @{const}{sbac}{SBAC} triggers, apply @{condition}{Lucky}{[Lucky]} to this unit for one turn.",
       "requires": "Level 8",
       "modifiers": {
         "hp": 0,
@@ -5568,7 +5576,7 @@ const definitions = {
     },
     {
       "name": "Cursed Hand",
-      "description": "If this unit has a Guile tome equipped, foes within 2 spaces are inflicted with a -20% SBAC activation chance. ",
+      "description": "If this unit has a Guile tome equipped, foes within 2 spaces are inflicted with a -20% @{const}{sbac}{SBAC} activation chance. ",
       "requires": "All (Guile C) (Level 8)",
       "modifiers": {
         "hp": 0,
@@ -15122,7 +15130,7 @@ const definitions = {
     },
     {
       "name": "Quicktrigger",
-      "description": "Unit’s SBACs have +20% chance to activate. ",
+      "description": "Unit’s @{const}{sbac}{SBACs} have +20% chance to activate. ",
       "requires": "Level 5",
       "modifiers": {
         "hp": 0,
@@ -17035,7 +17043,7 @@ const definitions = {
     },
     {
       "name": "Strategic Hand",
-      "description": "This unit may choose to disallow its SBACs from activating before their next combat this turn. If they choose to do so and a SBAC would have activated, this unit gains @{condition}{Ace in the Hole}{[Ace in the Hole]}.\n\nCannot be equipped with another “Hand” ability.",
+      "description": "This unit may choose to disallow its @{const}{sbac}{SBACs} from activating before their next combat this turn. If they choose to do so and a SBAC would have activated, this unit gains @{condition}{Ace in the Hole}{[Ace in the Hole]}.\n\nCannot be equipped with another “Hand” ability.",
       "requires": "All (Any (Bows C) (Reason C) (Riding C)) (Level 11)",
       "modifiers": {
         "hp": 0,
@@ -17978,7 +17986,7 @@ const definitions = {
     },
     {
       "name": "Trapped Hand",
-      "description": "Whenever this unit rolls a SBAC during combat, choose to force foe to roll instead using their appropriate stat + 50, if applicable. On a success, this unit’s stat based activation ability activates.\n\nCannot be equipped with another “Hand” ability.",
+      "description": "Whenever this unit rolls a @{const}{sbac}{SBAC} during combat, choose to force foe to roll instead using their appropriate stat + 50, if applicable. On a success, this unit’s stat based activation ability activates.\n\nCannot be equipped with another “Hand” ability.",
       "requires": "All (Any (Swords C) (Brawl C) (Flying C)) (Level 11)",
       "modifiers": {
         "hp": 0,
@@ -24725,11 +24733,23 @@ const definitions = {
         "sp": 0,
         "tp": 0
       },
+      "rows": [
+        {
+          "name": "Blue Flame X",
+          "when": "item|tagged|fire or item|has_attribute|Fire",
+          "expr": "item|total|mt",
+          "roll": false
+        }
+      ],
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
         "healing",
         "condition",
-        "fire"
+        "fire",
+        "no hit",
+        "no crit",
+        "no might",
+        "no stats"
       ],
       "hidden": false,
       "type": "Reason",
@@ -36519,7 +36539,7 @@ const definitions = {
   "conditions": [
     {
       "name": "Ace in the Hole",
-      "description": "In combat, unit may choose to have one of its SBACs to function with a 100% success rate and this condition ends.",
+      "description": "In combat, unit may choose to have one of its @{const}{sbac}{SBACs} to function with a 100% success rate and this condition ends.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -37370,7 +37390,7 @@ const definitions = {
     },
     {
       "name": "Guaranteed",
-      "description": "Listed SBAC triggers on affected unit, then this condition ends.",
+      "description": "Listed @{const}{sbac}{SBAC} triggers on affected unit, then this condition ends.",
       "modifiers": {
         "hp": 0,
         "sp": 0,
@@ -40507,7 +40527,7 @@ const definitions = {
         "mor": 0,
         "prot": 0,
         "resl": 0,
-        "cap": -5,
+        "cap": -4,
         "auto": 0,
         "plu": 1,
         "end": 0,

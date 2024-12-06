@@ -20,11 +20,23 @@
     "sp": 0,
     "tp": 0
   },
+  "rows": [
+    {
+      "name": "Blue Flame X",
+      "when": "item|tagged|fire or item|has_attribute|Fire",
+      "expr": "item|total|mt",
+      "roll": false
+    }
+  ],
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
     "healing",
     "condition",
-    "fire"
+    "fire",
+    "no hit",
+    "no crit",
+    "no might",
+    "no stats"
   ],
   "hidden": false,
   "type": "Reason",

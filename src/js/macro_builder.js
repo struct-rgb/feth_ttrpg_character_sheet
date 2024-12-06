@@ -223,9 +223,48 @@ class UserInterface {
 		this._compact  = new Toggle("Compact Macro Expressions?", true);
 		this._testroll = new Toggle("Test Roll Prompt?", false);
 		this._ranges   = new Toggle("Explicit Attack Range?", false);
-		this._export   = new BigButton("Export as VTTES Character",
-			() => void this.exportVTTES()
-		);
+
+		this._genmap = new Map([
+
+			["Character Blurb",
+				() => this.blurb()
+			],
+
+			["Single Roll20 Macro",
+				() => this.macro()
+			],
+
+			["Roll20 Macro Batch",
+				() => this.macros()
+			],
+
+			["VTTES Character File",
+				() => this.exportVTTES()
+			],
+
+		]);
+
+		this._select   = element("select", {
+			class: ["simple-border"],
+			attrs: {
+				value   : "Roll20 Macro Batch",
+			},
+			content : Array.from(this._genmap.keys(),
+				key => element("option", {
+					content : key,
+					attrs   : {value: key},
+				})
+			)
+		});
+
+		this._generate = element("input", {
+			class: ["simple-border"],
+			attrs: {
+				type    : "button",
+				value   : "Generate",
+				onclick : (() => this._genmap.get(this._select.value)())
+			}
+		});
 		
 		this._input   = element("input", {
 			class: ["simple-border", "calculator"],
@@ -252,89 +291,65 @@ class UserInterface {
 
 		this.root     = element("div", [
 
-			element("input", {
-				class: ["simple-border"],
-				attrs: {
-					type    : "button",
-					value   : "Create Blurb",
-					onclick : (() => this.blurb()),
-				}
-			}),
+			this._generate, this._select, element("br"),
 
-			element("input", {
-				class: ["simple-border"],
-				attrs: {
-					type    : "button",
-					value   : "Create Macro",
-					onclick : (() => this.macro()),
-				}
-			}),
+			element("details", [
+	
+				element("summary", "Advanced Generation Options"),
 
-			element("input", {
-				class: ["simple-border"],
-				attrs: {
-					type    : "button",
-					value   : "Batch Create Macros",
-					onclick : (() => this.macros()),
-				}
-			}),
-
-			element("br"),
-			
-			tooltip(
-				this._alias.root,
-				wrap(
-					"This will replace the raw base stats with Roll20 ",
-					"variables. I.e. instead of inserting your raw base ",
-					"str value of say, 5, it'll output @{Str}. This is ",
-					"mainly useful for if you don't want to have to ",
-					"regenerate all of your macros every time you ",
-					"level up.",
+				tooltip(
+					this._alias.root,
+					wrap(
+						"This will replace the raw base stats with Roll20 ",
+						"variables. I.e. instead of inserting your raw base ",
+						"str value of say, 5, it'll output @{Str}. This is ",
+						"mainly useful for if you don't want to have to ",
+						"regenerate all of your macros every time you ",
+						"level up.",
+					),
 				),
-			),
 
-			tooltip(
-				this._labels.root,
-				wrap(
-					"Label each modifier in the macro to make it easier to ",
-					"tell what item, attribute, ability, art, etc. that it ",
-					"comes from. This is mostly useful for verifying output.",
+				tooltip(
+					this._labels.root,
+					wrap(
+						"Label each modifier in the macro to make it easier to ",
+						"tell what item, attribute, ability, art, etc. that it ",
+						"comes from. This is mostly useful for verifying output.",
+					),
 				),
-			),
 
-			element("br"),
+				element("br"),
 
-			tooltip(
-				this._ranges.root,
-				wrap(
-					"Always include a prompt asking the user to input the ",
-					"range that an attack is being made at, even if no range ",
-					"penalty could possibly apply.",
+				tooltip(
+					this._ranges.root,
+					wrap(
+						"Always include a prompt asking the user to input the ",
+						"range that an attack is being made at, even if no range ",
+						"penalty could possibly apply.",
+					),
 				),
-			),
 
-			tooltip(
-				this._testroll.root,
-				wrap(
-					"Generated macros will include a prompt on whether this ",
-					"this roll is a test roll or a real roll. Dice will not ",
-					"be rolled for a test roll."
+				tooltip(
+					this._testroll.root,
+					wrap(
+						"Generated macros will include a prompt on whether this ",
+						"this roll is a test roll or a real roll. Dice will not ",
+						"be rolled for a test roll."
+					),
 				),
-			),
 
-			element("br"),
+				element("br"),
 
-			tooltip(
-				this._compact.root,
-				wrap(
-					"Make generated macros more compact by eliminating ",
-					"extraneous operations such as adding or subtracting zero ",
-					"and multiplying or dividing by one. This may or may not ",
-					"eliminate these operations if labels are also enabled.",
+				tooltip(
+					this._compact.root,
+					wrap(
+						"Make generated macros more compact by eliminating ",
+						"extraneous operations such as adding or subtracting zero ",
+						"and multiplying or dividing by one. This may or may not ",
+						"eliminate these operations if labels are also enabled.",
+					),
 				),
-			),
-
-			this._export.label,
+			]),
 
 			element("br"),
 

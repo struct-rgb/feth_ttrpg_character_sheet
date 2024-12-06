@@ -1235,8 +1235,10 @@ class Sheet {
 
 		const legacy_bb  = new Buildables({
 			name      : "legacy",
-			empty     : "No Version 1.9.1 or earlier character sheets.",
-			templates : ["Everything but export is disabled."],
+			// empty     : "No Version 1.9.1 or earlier character sheets.",
+			empty     : "This feature has been disabled.",
+			// templates : ["Everything but export is disabled."],
+			templates : ["This feature has been disabled."],
 			model     : (function () {
 
 				const model_data = {
@@ -1296,7 +1298,8 @@ class Sheet {
 				modern.elements[String(i)] = legacy.characters[i];
 			}
 
-			legacy_bb.importAll(modern);
+			// legacy_bb.importAll(modern); TODO fix or remove
+			// there's an issue with the new category multiselect model
 		}
 
 		this.lb = legacy_bb;

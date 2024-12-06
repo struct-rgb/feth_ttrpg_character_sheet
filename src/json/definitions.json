@@ -746,6 +746,14 @@
         "Rank A+ \u00A0 10\n"
       ]
     },
+    "sbac": {
+      "name": "SBAC",
+      "description": [
+        "Statistic-based actication chance abilities (SBACs) have a percentage ",
+        "chance (one of the user's statistics + a modifier) to activate when a ",
+        "specified trigger occurs. Crest abilities are not SBACs."
+      ]
+    },
     "Swords": {
       "name": "Swords",
       "description": [

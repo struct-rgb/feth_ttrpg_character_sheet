@@ -1,6 +1,6 @@
 {
   "name": "Strategic Hand",
-  "description": "This unit may choose to disallow its SBACs from activating before their next combat this turn. If they choose to do so and a SBAC would have activated, this unit gains @{condition}{Ace in the Hole}{[Ace in the Hole]}.\n\nCannot be equipped with another “Hand” ability.",
+  "description": "This unit may choose to disallow its @{const}{sbac}{SBACs} from activating before their next combat this turn. If they choose to do so and a SBAC would have activated, this unit gains @{condition}{Ace in the Hole}{[Ace in the Hole]}.\n\nCannot be equipped with another “Hand” ability.",
   "requires": "All (Any (Bows C) (Reason C) (Riding C)) (Level 11)",
   "modifiers": {
     "hp": 0,
