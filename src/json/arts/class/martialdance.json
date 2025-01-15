@@ -7,8 +7,8 @@
   "modifiers": {
     "mt": [
       "bothif item|total|maxrng == 1",
-      "  then 4 + floor((Lck {unit|total|lck}) * 0.3)",
-      "  else 1 + floor((Lck {unit|total|lck}) * 0.3)",
+      "  then fill scale(4, [Lck], unit|total|lck)",
+      "  else fill scale(1, [Lck], unit|total|lck)",
       "end"
     ],
     "prot": 0,

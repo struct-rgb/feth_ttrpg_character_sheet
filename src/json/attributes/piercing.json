@@ -16,7 +16,7 @@
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill affirm([Pierce on Enemy Phase?], label [After Combat] {4}, 0)",
+        "tpcost": "fill affirm([Pierce on Enemy Phase?], label([After Combat], 4), 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0

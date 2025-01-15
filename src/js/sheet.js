@@ -1788,7 +1788,7 @@ class Sheet {
 			name  : "unit|traits",
 			about : "Select for which trait to roll a check with.",
 			expr  : `
-				label [trait] {
+				label([trait],
 					ask [Trait?]
 						case [Athletics] {unit|trait|Athletics|bonus}
 						case [Precision] {unit|trait|Precision|bonus}
@@ -1797,7 +1797,7 @@ class Sheet {
 						case [Spirit]    {unit|trait|Spirit|bonus}
 						case [Acuity]    {unit|trait|Acuity|bonus}
 					end
-				}
+				)
 			`
 		});
 
@@ -1825,7 +1825,7 @@ class Sheet {
 			name  : "unit|ease",
 			about : "Check ease for this unit.",
 			expr  : `
-				label [ease] {ask [Ease?] end}
+				label([ease], ask [Ease?] end)
 					+ unit|traits
 					+ unit|experiences
 					+ ask [Other Modifiers?] end
@@ -1990,7 +1990,7 @@ class Sheet {
 					"gets replaced with a Roll20 variable name when used ",
 					"to generate a Roll20 macro."
 				),
-				expr  : `${capitalize(name)} {unit|base|${name}}`,
+				expr  : `alias([${capitalize(name)}], unit|base|${name})`,
 			}));
 
 			prime.push(add({
@@ -2905,7 +2905,7 @@ class Sheet {
 				"with a Roll20 variable called \"Charm\" when variables are ",
 				"enabled within macrogen. Use for battalion macros."
 			),
-			expr  : "[Charm] {max(unit|total|lck, unit|total|dex)}"
+			expr  : "alias([Charm], max(unit|total|lck, unit|total|dex))"
 		});
 
 		add({
@@ -3441,7 +3441,7 @@ class Sheet {
 						`The battalion's ${name} bonus from its level written out.`,
 					),
 					expr  : `
-						floor(battalion|mult|${name} * Level {unit|level})
+						floor(battalion|mult|${name} * alias([Level], unit|level))
 					`,
 				}));
 			}

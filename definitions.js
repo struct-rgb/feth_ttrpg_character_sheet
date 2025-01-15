@@ -396,7 +396,7 @@ const definitions = {
     {
       "define": [
         "template scale(base, title, variable)",
-        "  base + floor(([title] {fill simplify(variable)}) * 0.3)",
+        "  base + floor(alias([title], fill simplify(variable)) * 0.3)",
         "end"
       ],
       "about": [
@@ -413,7 +413,7 @@ const definitions = {
     {
       "define": [
         "template wall(statistic, value, divisor)",
-        "  floor(([statistic] {value}) / divisor)",
+        "  floor(alias([statistic], value) / divisor)",
         "end"
       ],
       "about": [
@@ -2778,44 +2778,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Axebreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Axes. If an \"Sword Prowess\" ability is the only \"Prowess\" ability equipped, and \"Axebreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Axebreaker\" ability at a time.",
-      "requires": "Swords A",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 6
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "breaker",
-        "in combat",
-        "halfslot",
-        "depricated"
-      ],
-      "hidden": true
-    },
-    {
       "name": "Axefaire",
       "description": "Grants Mt +5 when unit attacks with associated weapon type.",
       "requires": "Axes S+",
@@ -3966,44 +3928,6 @@ const definitions = {
         "halfslot"
       ],
       "hidden": false
-    },
-    {
-      "name": "Bowbreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Bows. If an \"Brawl Prowess\" ability is the only \"Prowess\" ability equipped, and \"Bowbreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
-      "requires": "Brawl A",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 6
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "breaker",
-        "in combat",
-        "halfslot",
-        "depricated"
-      ],
-      "hidden": true
     },
     {
       "name": "Bowfaire",
@@ -7813,44 +7737,6 @@ const definitions = {
       "hidden": false
     },
     {
-      "name": "Fistbreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Brawl. If an \"Reason Prowess\", \"Faith Prowess\", or \"Guile Prowess\" ability is the only \"Prowess\" ability equipped, and \"Fistbreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Fistbreaker\" ability at a time.",
-      "requires": "Any (Reason A) (Faith A) (Guile A)",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 6
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "breaker",
-        "in combat",
-        "halfslot",
-        "depricated"
-      ],
-      "hidden": true
-    },
-    {
       "name": "Flanking Maneuver",
       "description": "This unit has weapon advantage a foe in combat when this unit and one or more allies are adjacent to that foe.",
       "requires": "Class Hussar",
@@ -10420,44 +10306,6 @@ const definitions = {
         "halfslot"
       ],
       "hidden": false
-    },
-    {
-      "name": "Lancebreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Lances. If an \"Axe Prowess\" ability is the only \"Prowess\" ability equipped, and \"Lancebreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Lancebreaker\" ability at a time",
-      "requires": "Axes A",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 6
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "breaker",
-        "in combat",
-        "halfslot",
-        "depricated"
-      ],
-      "hidden": true
     },
     {
       "name": "Lancefaire",
@@ -17552,7 +17400,7 @@ const definitions = {
     },
     {
       "name": "Swordbreaker",
-      "description": "Grants Hit +X and Avo +X in combat against Lances, where X is 20 if Rank B or higher and 30 if Rank A or higher. If a \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time",
+      "description": "Grants Hit +X and Avo +X in combat against Swords, where X is 20 if Rank B or higher and 30 if Rank A or higher. If a \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time",
       "requires": "Lances B",
       "modifiers": {
         "hp": 0,
@@ -17584,44 +17432,6 @@ const definitions = {
         "breaker",
         "in combat",
         "halfslot"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Swordbreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Swords. If an \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time.",
-      "requires": "Lances A",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 6
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "breaker",
-        "in combat",
-        "halfslot",
-        "depricated"
       ],
       "hidden": false
     },
@@ -17910,44 +17720,6 @@ const definitions = {
         "in combat",
         "halfslot",
         "changed"
-      ],
-      "hidden": false
-    },
-    {
-      "name": "Tomebreaker+",
-      "description": "Grants Hit +30 and Avo +30 in combat against Faith, Reason, and Guile. If an \"Bow Prowess\" ability is the only \"Prowess\" ability equipped, and \"Tomebreaker+\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Bowbreaker\" ability at a time.",
-      "requires": "Bows A",
-      "modifiers": {
-        "hp": 0,
-        "sp": 0,
-        "str": 0,
-        "mag": 0,
-        "dex": 0,
-        "spd": 0,
-        "def": 0,
-        "res": 0,
-        "lck": 0,
-        "mt": 0,
-        "prot": 0,
-        "resl": 0,
-        "hit": 0,
-        "avo": 0,
-        "crit": 0,
-        "cravo": 0,
-        "minrng": 0,
-        "maxrng": 0,
-        "tpcost": 0,
-        "spcost": 0,
-        "tp": 0,
-        "mov": 0,
-        "capcost": 6
-      },
-      "comment": "Items in modifers can either be integers or string expressions",
-      "tags": [
-        "breaker",
-        "in combat",
-        "halfslot",
-        "depricated"
       ],
       "hidden": false
     },
@@ -21860,9 +21632,9 @@ const definitions = {
       },
       "comment": "",
       "tags": [
-        "healing",
         "variant",
-        "beast"
+        "beast",
+        "healing"
       ],
       "hidden": false,
       "type": "Brawl",
@@ -22626,9 +22398,9 @@ const definitions = {
       "description": "Restore (Mt + Mag / 2) HP to target ally.",
       "requires": "Faith C",
       "compatible": "None",
-      "mttype": "mag",
+      "mttype": "none",
       "modifiers": {
-        "mt": 30,
+        "mt": "floor((unit|total|mag) / 2) + 30",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -25576,8 +25348,8 @@ const definitions = {
       "modifiers": {
         "mt": [
           "bothif item|total|maxrng == 1",
-          "  then 4 + floor((Lck {unit|total|lck}) * 0.3)",
-          "  else 1 + floor((Lck {unit|total|lck}) * 0.3)",
+          "  then fill scale(4, [Lck], unit|total|lck)",
+          "  else fill scale(1, [Lck], unit|total|lck)",
           "end"
         ],
         "prot": 0,
@@ -29754,7 +29526,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill affirm([Cleave on Enemy Phase?], label [After Combat] {4}, 0)",
+        "tpcost": "fill affirm([Cleave on Enemy Phase?], label([After Combat], 4), 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0
@@ -30156,6 +29928,37 @@ const definitions = {
         "for shield"
       ],
       "hidden": false
+    },
+    {
+      "name": "Elemental",
+      "type": "Any",
+      "description": "Weapon becomes compatible with the #{attribute}{Fire}, #{attribute}{Ice}, #{attribute}{Wind}, and #{attribute}{Lightning} attributes as though it were a Reason @{style}{italic}{(it does not become compatible with any more attributes.)}\n\nDisabled on Faith, Reason, Guile, and Bows weapons.",
+      "rank": 1,
+      "price": 700,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "for sword",
+        "for lance",
+        "for axe",
+        "for shield"
+      ],
+      "hidden": true
     },
     {
       "name": "Fire",
@@ -30657,7 +30460,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill affirm([Pierce on Enemy Phase?], label [After Combat] {4}, 0)",
+        "tpcost": "fill affirm([Pierce on Enemy Phase?], label([After Combat], 4), 0)",
         "spcost": 0,
         "tp": 0,
         "sp": 0
@@ -30945,7 +30748,7 @@ const definitions = {
         "cravo": 0,
         "minrng": 0,
         "maxrng": 0,
-        "tpcost": "fill affirm([Sacrefice?], label [On Hit, After Combat] {3}, 0)",
+        "tpcost": "fill affirm([Sacrefice?], label([On Hit, After Combat], 3), 0)",
         "spcost": 0,
         "tp": -4,
         "sp": 0
@@ -43900,9 +43703,9 @@ const definitions = {
       "requires": "Faith D",
       "rank": "D",
       "price": 780,
-      "mttype": "mag",
+      "mttype": "none",
       "modifiers": {
-        "mt": 8,
+        "mt": "floor((unit|total|mag) / 2) + 8",
         "prot": 0,
         "resl": 0,
         "hit": 0,
@@ -44585,9 +44388,9 @@ const definitions = {
       "requires": "Faith A",
       "rank": "A",
       "price": 3760,
-      "mttype": "mag",
+      "mttype": "none",
       "modifiers": {
-        "mt": 15,
+        "mt": "floor((unit|total|mag) / 2) + 15",
         "prot": 0,
         "resl": 0,
         "hit": 0,

@@ -363,7 +363,7 @@
     {
       "define": [
         "template scale(base, title, variable)",
-        "  base + floor(([title] {fill simplify(variable)}) * 0.3)",
+        "  base + floor(alias([title], fill simplify(variable)) * 0.3)",
         "end"
       ],
       "about": [
@@ -380,7 +380,7 @@
     {
       "define": [
         "template wall(statistic, value, divisor)",
-        "  floor(([statistic] {value}) / divisor)",
+        "  floor(alias([statistic], value) / divisor)",
         "end"
       ],
       "about": [

@@ -11,6 +11,10 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.4.4
+  * Calculator label and alias syntax changed to resemble function calls
+  * Draining Blow was mistakenly using Mt calculation for Heal
+
 ### Version 4.4.3
   * Added tooltip that explains the SBAC acronym
   * Consolidated options in Tools > Macros to take up less visual space.

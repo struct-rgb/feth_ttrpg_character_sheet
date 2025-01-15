@@ -3,9 +3,9 @@
   "description": "Restore (Mt + Mag / 2) HP to target ally.",
   "requires": "Faith C",
   "compatible": "None",
-  "mttype": "mag",
+  "mttype": "none",
   "modifiers": {
-    "mt": 30,
+    "mt": "floor((unit|total|mag) / 2) + 30",
     "prot": 0,
     "resl": 0,
     "hit": 0,

@@ -1,6 +1,6 @@
 {
   "name": "Swordbreaker",
-  "description": "Grants Hit +X and Avo +X in combat against Lances, where X is 20 if Rank B or higher and 30 if Rank A or higher. If a \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time",
+  "description": "Grants Hit +X and Avo +X in combat against Swords, where X is 20 if Rank B or higher and 30 if Rank A or higher. If a \"Lance Prowess\" ability is the only \"Prowess\" ability equipped, and \"Swordbreaker\" is the only \"breaker\" ability equipped, both abilities consume half-slots. A unit may only equip one \"Swordbreaker\" ability at a time",
   "requires": "Lances B",
   "modifiers": {
     "hp": 0,

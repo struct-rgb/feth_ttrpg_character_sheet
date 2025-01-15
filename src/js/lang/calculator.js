@@ -126,6 +126,7 @@ const Tokens = (function() {
 		OPTION   : "case",
 		DEFAULT  : "else",
 		ALIAS    : "{",
+		ALIASFN  : "alias",
 		IF       : "if",
 		THEN     : "then",
 		ELSE     : "else",
@@ -1227,7 +1228,7 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.LABEL,
-				`${TERMINALS.LABEL} {1} {{2}}`,
+				`${TERMINALS.LABEL}({1}, {2})`,
 				wrap(
 					"Labels {2}'s result with {1} in the generated ",
 					"Roll20 macro",
@@ -1256,7 +1257,36 @@ const Tokens = (function() {
 
 			help: [
 				TERMINALS.ALIAS,
-				"{1} {{2}}",
+				"alias({1}, {2})",
+				wrap(
+					"Evaluates to {2} but writes {1} in the ",
+					"generated Roll20 macro as a variable name.",
+				),
+				"any identifier or [bracketed text]",
+				"any expression",
+			],
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, _argA, argB] = node;
+				recurse(argB);
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, argA, argB] = node;
+
+				if (!env.alias) {
+					return recurse(argB);
+				}
+
+				return `@{${recurse(argA)}}`;
+			},
+		}),
+
+		[TERMINALS.ALIASFN] : new Operator(0, {
+
+			help: [
+				TERMINALS.ALIASFN,
+				"alias({1}, {2})",
 				wrap(
 					"Evaluates to {2} but writes {1} in the ",
 					"generated Roll20 macro as a variable name.",
@@ -2612,6 +2642,15 @@ class Parser extends AbstractParser {
 		}
 		this._toNext();
 
+		if (this.token != Tokens.TERMINALS.BEGIN) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.BEGIN}' but found '${this.token}'`,
+				this.position ?? -1
+			);
+		}
+		this._sink();
+		this._toNext();
+
 		const title = this._parseText();
 
 		if (title == null) {
@@ -2623,9 +2662,9 @@ class Parser extends AbstractParser {
 		}
 		this._toNext();
 
-		if (this.token != Tokens.TERMINALS.ALIAS) {
+		if (this.token != Tokens.TERMINALS.ARGSEP) {
 			throw new CompilationError(
-				`Expected token '${Tokens.TERMINALS.ALIAS}' but found '${this.token}'`,
+				`Expected token '${Tokens.TERMINALS.ARGSEP}' but found '${this.token}'`,
 				this.position ?? -1
 			);
 		}
@@ -2641,15 +2680,73 @@ class Parser extends AbstractParser {
 			);
 		}
 
-		if (this.token != Tokens.TERMINALS.PERIOD) {
+		if (this.token != Tokens.TERMINALS.END) {
 			throw new CompilationError(
-				`Expected token '${Tokens.TERMINALS.PERIOD}' but found '${this.token}'`,
+				`Expected token '${Tokens.TERMINALS.END}' but found '${this.token}'`,
+				this.position ?? -1
+			);
+		}
+		this._swim();
+		this._toNext();
+
+		return [Tokens.TERMINALS.LABEL, title, expr];
+	}
+
+	_parseAliasExpression() {
+
+		if (this.token != Tokens.TERMINALS.ALIASFN) {
+			return null;
+		}
+		this._toNext();
+
+		if (this.token != Tokens.TERMINALS.BEGIN) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.BEGIN}' but found '${this.token}'`,
+				this.position ?? -1
+			);
+		}
+		this._sink();
+		this._toNext();
+
+		const title = this._parseText();
+
+		if (title == null) {
+			this._toPrev();
+			throw new CompilationError(
+				`Expected identifier or [bracketed text] after '${this.token}'`,
+				this.position
+			);
+		}
+		this._toNext();
+
+		if (this.token != Tokens.TERMINALS.ARGSEP) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.ARGSEP}' but found '${this.token}'`,
 				this.position ?? -1
 			);
 		}
 		this._toNext();
 
-		return [Tokens.TERMINALS.LABEL, title, expr];
+		const expr = this._parseExpression();
+
+		if (expr == null) {
+			this._toPrev();
+			throw new CompilationError(
+				`Expected expression after '${this.token}`,
+				this.position ?? -1
+			);
+		}
+
+		if (this.token != Tokens.TERMINALS.END) {
+			throw new CompilationError(
+				`Expected token '${Tokens.TERMINALS.END}' but found '${this.token}'`,
+				this.position ?? -1
+			);
+		}
+		this._swim();
+		this._toNext();
+
+		return [Tokens.TERMINALS.ALIASFN, title, expr];
 	}
 
 	_parseMinMaxExpression() {
@@ -2737,7 +2834,7 @@ class Parser extends AbstractParser {
 		return [comparison, options];
 	}
 
-	_parseAliasExpression() {
+	_parsePromptAliasExpression() {
 
 		const first  = this.token;
 		const fpos   = this.position;
@@ -2838,7 +2935,7 @@ class Parser extends AbstractParser {
 			let save = undefined, out = undefined;
 
 			save = this._index;
-			out  = this._parseAliasExpression();
+			out  = this._parsePromptAliasExpression();
 			if (out) {
 				options.push(out);
 				continue;
@@ -3351,6 +3448,10 @@ class Parser extends AbstractParser {
 		};
 	}
 
+	static FunctionLikeOperatorFactory(token, args, variadic=false) {
+		// TODO
+	}
+
 	_parseRandomExpression = (
 		Parser.BinaryOperatorFactory(
 			Tokens.SET.RANDOM,
@@ -3424,17 +3525,17 @@ class Parser extends AbstractParser {
 		if (!this.token) return null;
 
 		/* attempt to parse alias expression */
-		const save  = this._index;
-		const out   = this._parseAliasExpression();
-		if (out != null) return out;
-		this._index = save;
+		// const save  = this._index;
+		// const out   = this._parseAliasExpression();
+		// if (out != null) return out;
+		// this._index = save;
 
-		if (token.match(Tokens.REGEXP.STRING)) {
-			throw new CompilationError(
-				`Invalid location for [bracketed text] ${token}`,
-				this.position,
-			);
-		}
+		// if (token.match(Tokens.REGEXP.STRING)) {
+		// 	throw new CompilationError(
+		// 		`Invalid location for [bracketed text] ${token}`,
+		// 		this.position,
+		// 	);
+		// }
 
 		/* now we know that it isn't so try everything else */
 
@@ -3445,6 +3546,14 @@ class Parser extends AbstractParser {
 			/* check whether this is a min or max expression */
 			const save  = this._index;
 			const out   = this._parseMinMaxExpression();
+			if (out != null) return out;
+			this._index = save;
+
+		} else if (token == Tokens.TERMINALS.ALIASFN) {
+
+			/* check whether this is a alias expression */
+			const save  = this._index;
+			const out   = this._parseAliasExpression();
 			if (out != null) return out;
 			this._index = save;
 
