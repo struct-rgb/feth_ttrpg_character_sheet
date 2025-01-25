@@ -443,7 +443,8 @@ function toText(node, top=true) {
 		return args.map(e => toText(e, false)).join(" or ");
 
 	case "Required":
-		return `${toText(args[0].value, false)} (required)`;
+		// this expects its argument to be a whole expression so no .value
+		return `${toText(args[0], false)} (required)`;
 
 	case "Permission":
 		return fn;

@@ -553,9 +553,9 @@ const definitions = {
         "  ask cat(type, [breaker?])",
         "    else No {0}",
         "    case Yes {",
-        "      bothif skill >= 8 // Rank A",
+        "      bothif (skill) >= 8 // Rank A",
         "        then 30",
-        "      elseif skill >= 6 // Rank B",
+        "      elseif (skill) >= 6 // Rank B",
         "        then 20",
         "      else",
         "        then 0",
@@ -6348,6 +6348,39 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Divine Wisdom",
+      "description": "When this unit begins its turn already morphed, choose one mode. That effect applies until this unit chooses a different mode or demorphs:\n - This unit’s attacks are Effective against Dragons.\n - Morph Effective bonus damage against this unit is reduced to 0.\n - Once per turn, when an ally within two spaces rolls 1d100, you may replace the number rolled with 30.",
+      "requires": "Any (Class `Immortal`) (Class `Stygian`)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Dominion",
       "description": "Gives a major bonuses to gambit hit, automony, and plurality. A unit may not equip @{ability}{Authority} and @{ability}{Dominion} at the same time.",
       "requires": "Authority E+",
@@ -6399,6 +6432,41 @@ const definitions = {
         "spd": 2,
         "def": 0,
         "res": -1,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Dracomorph+",
+      "description": "Grants Spd +3.\n\nWhile morphed, this unit possesses the Canto ability, has Mov +2, and is also a Flying unit.",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 3,
+        "def": 0,
+        "res": 0,
         "lck": 0,
         "mt": 0,
         "prot": 0,
@@ -7543,6 +7611,39 @@ const definitions = {
         "static",
         "changed"
       ],
+      "hidden": false
+    },
+    {
+      "name": "Fell Potency",
+      "description": "When this unit begins its turn already morphed, choose one mode. That effect applies until this unit chooses a different mode or demorphs:\n - This unit’s attacks are Effective against Dragons.\n - Morph Effective bonus damage against this unit is reduced to 0.\n - Once per turn, when a foe within two spaces rolls 1d100, you may replace the number rolled with 70.",
+      "requires": "Any (Class `Immortal`) (Class `Stygian`)",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [],
       "hidden": false
     },
     {
@@ -10522,6 +10623,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Leptomorph+",
+      "description": "Grants Atk -1, Lck +5, and Spd +3.\n\nWhile morphed, this unit possesses the @{ability}{Glide} ability and Mov +2",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": -1,
+        "mag": -1,
+        "dex": 0,
+        "spd": 3,
+        "def": 0,
+        "res": 0,
+        "lck": 5,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Let Me Protect You",
       "description": "As an action, apply @{const}{gbp}{[Def +4]} to allies within two spaces for one turn.",
       "requires": "Innate",
@@ -12420,6 +12556,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Megalomorph+",
+      "description": "Grants HP +8, Dex -2, and Lck -2.\n\nWhile morphed, this unit possesses the @{ability}{Unbreaking} and @{ability}{Wide Gait} abilities.",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 8,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": -2,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": -2,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": "bothif other|morphed then -2 else 0 end",
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Merciless Executioner",
       "description": "Crit +10; if this unit crits a foe, apply any status conditions that would be applied to that foe after combat and up to one condition currently affecting that foe (you choose which) to up to two additional foes within 5 spaces of that foe after combat (even if that foe is defeated).",
       "requires": "Innate",
@@ -12524,6 +12695,41 @@ const definitions = {
         "def": 0,
         "res": 0,
         "lck": 3,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Micromorph+",
+      "description": "Grants Atk -1, Dex +6, and Lck +6.\n\nWhile morphed, this unit possesses the @{ability}{Pass} ability and Mov +2",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": -1,
+        "mag": -1,
+        "dex": 6,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 6,
         "mt": 0,
         "prot": 0,
         "resl": 0,
@@ -17649,6 +17855,41 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Tetramorph+",
+      "description": "Grants Atk +1, Dex +5, and Spd -1.\n\nWhile morphed, this unit possesses the @{ability}{Canto+} ability and Mov +2",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 1,
+        "mag": 1,
+        "dex": 5,
+        "spd": -1,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Throne of Corpses",
       "description": "For one turn after one of this army's units is defeated, attacks by this army's units have Mt +3 in combat and restore 20% of the attacker's HP on hit.",
       "requires": "Innate",
@@ -18196,6 +18437,41 @@ const definitions = {
         "mag": 0,
         "dex": 0,
         "spd": -1,
+        "def": 1,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": "bothif other|morphed then -2 else 0 end",
+        "capcost": 6
+      },
+      "comment": "Items in modifers can either be integers or string expressions",
+      "tags": [
+        "static"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Vermimorph+",
+      "description": "Grants HP +6 and Def +1.\n\nWhile morphed, this unit possesses the Voyager and Wide Gait abilities and is also an Armor unit.",
+      "requires": "Class Shifter",
+      "modifiers": {
+        "hp": 6,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
         "def": 1,
         "res": 0,
         "lck": 0,
@@ -34169,6 +34445,130 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Immortal",
+      "description": "A draconic Morph class that soars through the skies, inspiring awe or reigning terror from above. All variants have hybrid offenses, can recur TP, and possess limited environmental interaction.",
+      "type": [
+        "Morph",
+        "Dragon"
+      ],
+      "tier": "Advanced",
+      "requires": "Morph B",
+      "abilities": [
+        [
+          "Divine Wisdom",
+          "Fell Potency"
+        ],
+        "Dracomorph+",
+        "Consumption 1"
+      ],
+      "arts": [
+        [
+          "Frost Breath",
+          "Fire Breath",
+          "Fog Breath"
+        ]
+      ],
+      "growths": {
+        "hp": 30,
+        "str": 20,
+        "mag": 20,
+        "dex": 15,
+        "spd": 25,
+        "def": 10,
+        "res": 10,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 10,
+        "str": 4,
+        "mag": 4,
+        "dex": 8,
+        "spd": 3,
+        "def": 3,
+        "res": 2,
+        "lck": 0,
+        "mov": 4
+      },
+      "mount": 2,
+      "default_base": "Wyrmling",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": [
+        "Swords",
+        "Lances",
+        "Axes"
+      ],
+      "default_sidearm": [
+        "Faith",
+        "Reason",
+        "Guile"
+      ],
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Stygian",
+      "description": "A draconic Morph class that slithers through the seas, inspiring awe or reigning terror from the deep. All variants have hybrid offenses, can recur TP, and possess limited environmental interaction.",
+      "type": [
+        "Morph",
+        "Dragon"
+      ],
+      "tier": "Advanced",
+      "requires": "Morph B",
+      "abilities": [
+        [
+          "Divine Wisdom",
+          "Fell Potency"
+        ],
+        "Vermimorph+",
+        "Consumption 2"
+      ],
+      "arts": [
+        [
+          "Frost Breath",
+          "Fire Breath",
+          "Fog Breath"
+        ]
+      ],
+      "growths": {
+        "hp": 35,
+        "str": 20,
+        "mag": 20,
+        "dex": 15,
+        "spd": 15,
+        "def": 15,
+        "res": 15,
+        "lck": 0
+      },
+      "modifiers": {
+        "hp": 15,
+        "str": 4,
+        "mag": 4,
+        "dex": 11,
+        "spd": 2,
+        "def": 3,
+        "res": 3,
+        "lck": 0,
+        "mov": 4
+      },
+      "mount": 2,
+      "default_base": "Wyrmling",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": [
+        "Swords",
+        "Lances",
+        "Axes"
+      ],
+      "default_sidearm": [
+        "Faith",
+        "Reason",
+        "Guile"
+      ],
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
       "name": "Dark Flier",
       "description": "A mage who slings spells from upon the back of a pegasus. Choose one Advantage skill on reclass.",
       "type": [
@@ -34268,7 +34668,7 @@ const definitions = {
     },
     {
       "name": "Gryphon Rider",
-      "description": "A flyier who specializes in ferrying allies around the battlefield",
+      "description": "A flyer who specializes in ferrying allies around the battlefield",
       "type": [
         "Flying"
       ],
@@ -35758,6 +36158,115 @@ const definitions = {
       "default_base": "Brigand",
       "default_preset": "Power/Balance/Luck",
       "default_mainarm": "Axes",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Brute",
+      "description": "An mighty Morph class which can take on numerous specializations, which include limited flight, movement after actions, bypassing enemies, resistance to weapon break, and HP recovery. Can access a vastly extended SP pool.",
+      "type": [
+        "Morph"
+      ],
+      "tier": "Advanced",
+      "requires": "Morph D",
+      "abilities": [
+        [
+          "Axe Advantage",
+          "Lance Advantage",
+          "Sword Advantage",
+          "Bow Advantage",
+          "Brawl Advantage"
+        ],
+        [
+          "Megalomorph+",
+          "Tetramorph+",
+          "Leptomorph+",
+          "Micromorph+"
+        ],
+        "Stamina +15"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 15,
+        "mag": 10,
+        "dex": 15,
+        "spd": 15,
+        "def": 15,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 8,
+        "str": 4,
+        "mag": 2,
+        "dex": 6,
+        "spd": 3,
+        "def": 3,
+        "res": 2,
+        "lck": 6,
+        "mov": 4
+      },
+      "mount": 2,
+      "default_base": "Shifter",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Lances",
+      "default_sidearm": "None",
+      "comment": "Items in growth, modifiers, and mount should be integers",
+      "tags": [],
+      "hidden": false
+    },
+    {
+      "name": "Protean",
+      "description": "An mystic Morph class which can take on numerous specializations, which include limited flight, movement after actions, bypassing enemies, resistance to weapon break, and HP recovery. Can efficiently recur TP.",
+      "type": [
+        "Morph"
+      ],
+      "tier": "Advanced",
+      "requires": "Morph D",
+      "abilities": [
+        [
+          "Faith Advantage",
+          "Reason Advantage",
+          "Guile Advantage",
+          "Brawl Advantage"
+        ],
+        [
+          "Megalomorph+",
+          "Tetramorph+",
+          "Leptomorph+",
+          "Micromorph+"
+        ],
+        "Consumption 2"
+      ],
+      "arts": [],
+      "growths": {
+        "hp": 30,
+        "str": 10,
+        "mag": 15,
+        "dex": 15,
+        "spd": 15,
+        "def": 15,
+        "res": 10,
+        "lck": 15
+      },
+      "modifiers": {
+        "hp": 8,
+        "str": 2,
+        "mag": 4,
+        "dex": 6,
+        "spd": 3,
+        "def": 2,
+        "res": 3,
+        "lck": 6,
+        "mov": 4
+      },
+      "mount": 2,
+      "default_base": "Shifter",
+      "default_preset": "Balance/Balance/Balance",
+      "default_mainarm": "Lances",
       "default_sidearm": "None",
       "comment": "Items in growth, modifiers, and mount should be integers",
       "tags": [],

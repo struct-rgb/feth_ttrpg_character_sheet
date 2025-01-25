@@ -827,7 +827,7 @@ class RangeFinder {
 		const pixelAxis = axis * this.tileSize;
 
 		// If the size changes from odd to even or even to odd then we need to
-		// offset the entire graphic so that it says centered around the same 
+		// offset the entire graphic so that it says centered around the same
 		// point and doesn't move up+left (that's what the math does, though).
 		if ((size & 1) != (this.lastSize & 1)) {
 			if (size & 1) { // even -> odd

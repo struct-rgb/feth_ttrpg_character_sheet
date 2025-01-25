@@ -662,28 +662,30 @@ const Tokens = (function() {
 			},
 		}),
 
-		"$local"  : new Operator(0, {
+		// "$local"  : new Operator(0, {
 
-			codegen: function(recurse, code, node, env) {
-				const [_opcode, argument] = node;
+		// 	codegen: function(recurse, code, node, env) {
+		// 		const [_opcode, argument] = node;
 
-				code.instructions.push(function(env) {
-					env.push(env.scope[argument]);
-					return 1;
-				});
-			},
+		// 		code.instructions.push(function(env) {
+		// 			// TODO this doesn't work because scope expects an offset
+		// 			// but argument is the name of the variable in a string
+		// 			env.push(env.scope[argument]);
+		// 			return 1;
+		// 		});
+		// 	},
 
-			macrogen: function(recurse, node, env) {
-				const [_opcode, argument] = node;
-				return env.scope[argument];
-			},
+		// 	macrogen: function(recurse, node, env) {
+		// 		const [_opcode, argument] = node;
+		// 		return env.scope[argument];
+		// 	},
 
-			jsgen: function(recurse, node, env) {
-				const [_opcode, argument] = node;
-				return `env.scope[${jscape(argument)}]`;
-			},
+		// 	jsgen: function(recurse, node, env) {
+		// 		const [_opcode, argument] = node;
+		// 		return `env.scope[${jscape(argument)}]`;
+		// 	},
 
-		}),
+		// }),
 
 		"$global" : new Operator(0, {
 
@@ -1224,6 +1226,32 @@ const Tokens = (function() {
 
 	namespace.OPERATORS[2] =  {
 
+
+		"$local"  : new Operator(0, {
+
+			codegen: function(recurse, code, node, env) {
+				const [_opcode, _argument, offset] = node;
+
+				code.instructions.push(function(env) {
+					// TODO this doesn't work because scope expects an offset
+					// but argument is the name of the variable in a string
+					env.push(env.scope[offset]);
+					return 1;
+				});
+			},
+
+			macrogen: function(recurse, node, env) {
+				const [_opcode, _argument, offset] = node;
+				return env.scope[offset];
+			},
+
+			jsgen: function(recurse, node, env) {
+				const [_opcode, argument] = node;
+				return `env.scope[${jscape(argument)}]`;
+			},
+
+		}),
+
 		[TERMINALS.LABEL] : new Operator(0, {
 
 			help: [
@@ -1742,7 +1770,7 @@ const Tokens = (function() {
 		[TERMINALS.LET] : new Operator(0, {
 			help: [
 				TERMINALS.LET,
-				`${TERMINALS.LET} {1} = {2}, {3} then {4}`,
+				`${TERMINALS.LET} {1} = {2}, {3} then {4} ${TERMINALS.SHORT}`,
 				wrap(
 					"Define a local variable with the name {1} and assign it ",
 					"the result of the expression {2}, then define zero or ",
@@ -2183,8 +2211,11 @@ class Parser extends AbstractParser {
 	static Local = class {
 
 		constructor(name, offset) {
+			// variable's user defined name
 			this.name    = name;
+			// variable's stack location
 			this.offset  = offset;
+			// each read of variable in the AST
 			this.used    = [];
 
 			// this.runtime = false;
@@ -2217,17 +2248,18 @@ class Parser extends AbstractParser {
 			if (!this._vars.has(name)) return null;
 
 			const stack = this._vars.get(name);
-
-			if (stack.length == 0) return null;
-
+			const top   = stack.pop();
 			this._depth--;
-			return stack.pop();
+			
+			if (stack.length == 0) this._vars.delete(name);
+		
+			return top;
 		}
 
 		use(name) {
 			if (!this._vars.has(name)) return null;
 			const stack = this._vars.get(name).at(-1);
-			const usage = ["$local", name];
+			const usage = ["$local", name, stack.offset];
 			stack.used.push(usage);
 			return usage;
 		}
@@ -2342,7 +2374,7 @@ class Parser extends AbstractParser {
 		const mangle   = [this._mangle, 0];
 
 		this._mangle  += 1;
-		const instance = defined.instantiate(args, this._macros, mangle);
+		const instance = defined.instantiate(args, this._macros, mangle, this._locals);
 		this._mangle  -= 1;
 
 		return instance;
@@ -3769,7 +3801,7 @@ class Template {
 		
 	}
 
-	instantiate(values, macros={}, mangle=[1, 0]) {
+	instantiate(values, macros={}, mangle=[1, 0], frame=new Parser.Frame()) {
 
 		if (values.length != this.args.length) {
 			console.error(values);
@@ -3787,9 +3819,10 @@ class Template {
 		}
 
 		function mangler(token, pair) {
-			const parts = token.split("#");
-			const depth = pair[1] + (parts.length == 3 ? Number(parts[2]) : 0);
-			const scope = pair[0] + (parts.length == 3 ? Number(parts[1]) : 0);
+			const parts     = token.split("#");
+			const premangled = parts.length == 3;
+			const depth     = pair[1] + (premangled ? Number(parts[2]) : 0);
+			const scope     = pair[0] + (premangled ? Number(parts[1]) : 0);
 			return `${parts[0]}#${scope}#${depth}`;
 		}
 
@@ -3892,16 +3925,25 @@ class Template {
 				const assign = [];
 
 				for (let [name, expr] of node[1]) {
-					const cloned = clone(map, expr, macros, in_cat);
-					assign.push([mangler(name, mangle), cloned]);
+					const cloned  = clone(map, expr, macros, in_cat);
+					const mangled = mangler(name, mangle);
+
+					frame.create(mangled);
+					assign.push([mangled, cloned]);
 				}
 
-				return ["let", assign, clone(map, node[2], macros, in_cat)];
+				const expr = clone(map, node[2], macros, in_cat);
+
+				for (let [name, _expr] of assign)
+					frame.kill(name);
+
+				return ["let", assign, expr];
 			}
 
 			/* mangle the uses of internal locals */
 			if (node[0] == "$local") {
-				return ["$local", mangler(node[1], mangle)];
+				// return ["$local", mangler(node[1], mangle)];
+				return frame.use(mangler(node[1], mangle));
 			}
 
 			/* substitute some text feature */
@@ -3967,7 +4009,7 @@ class Template {
  */
 class Env {
 
-	constructor(flags, variables, macros) {
+	constructor(flags, variables/*, macros*/) {
 
 		if (flags === undefined) {
 			throw TypeError("flags is a required argument");
@@ -3981,27 +4023,27 @@ class Env {
 		this.stack     = [];
 		this.variables = variables;
 		this.calls     = new Set();
-		this.macros    = macros || new Map();
+		// this.macros    = macros || new Map();
 		this.scope     = [];
 	}
 
-	template(title, template) {
+	// template(title, template) {
 		
-		const replace = this.macros.has(title);
-		this.macros.set(title, template);
+	// 	const replace = this.macros.has(title);
+	// 	this.macros.set(title, template);
 
-		return Number(replace);
-	}
+	// 	return Number(replace);
+	// }
 
-	instantiate(title, args) {
-		if (!this.macros.has(title)) {
-			throw new CompilationError(
-				`Template ${title} is undefined in this environment.`
-			);
-		}
+	// instantiate(title, args) {
+	// 	if (!this.macros.has(title)) {
+	// 		throw new CompilationError(
+	// 			`Template ${title} is undefined in this environment.`
+	// 		);
+	// 	}
 
-		return this.macros.get(title).instantiate(args);
-	}
+	// 	return this.macros.get(title).instantiate(args);
+	// }
 
 	static flagset(flags) {
 		const values = [
@@ -4083,7 +4125,7 @@ class Env {
 	}
 
 	clone(flags) {
-		return new Env(this.flags | flags, this.variables, this.macros);
+		return new Env(this.flags | flags, this.variables/*, this.macros*/);
 	}
 
 	push(value) {

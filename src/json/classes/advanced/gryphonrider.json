@@ -1,6 +1,6 @@
 {
     "name": "Gryphon Rider",
-    "description": "A flyier who specializes in ferrying allies around the battlefield",
+    "description": "A flyer who specializes in ferrying allies around the battlefield",
     "type": ["Flying"],
     "tier": "Advanced",
     "requires": "All (Axes C+) (Required (Flying C+)) (Required (Level 15))",
