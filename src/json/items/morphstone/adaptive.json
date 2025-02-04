@@ -1,7 +1,7 @@
 {
-  "name": "Rampage Morphstone",
+  "name": "Adaptive Morphstone",
   "type": "Morph",
-  "description": "Cannot be unequipped while morphed.\n\nMorph and apply @{condition}{Berserk}{[Berserk]} to this unit until one turn after it demorphs.",
+  "description": "Cannot be unequipped while morphed.\n\nAs an action or as a reaction when its trigger occurs, use a tactical art that can only be used while morphed while not morphed. (Pay that tactical art’s cost in addition to this item’s.)",
   "requires": "Morph C",
   "rank": "C",
   "price": 0,
@@ -16,7 +16,7 @@
     "cravo": 0,
     "minrng": 0,
     "maxrng": 0,
-    "tpcost": 4,
+    "tpcost": 2,
     "spcost": 0,
     "tp": 0,
     "sp": 0

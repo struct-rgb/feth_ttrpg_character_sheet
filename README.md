@@ -11,6 +11,9 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Version 4.4.5
+  * Added missing Morphstone equipment, though they function as implements.
+
 ### Version 4.4.4
   * Draining Blow was mistakenly using Mt calculation for Heal
   * Added in Morph type Advanced classes proposed in Patch #7

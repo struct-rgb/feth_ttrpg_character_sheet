@@ -1379,6 +1379,9 @@ class Item extends Action {
 				new Filter.Toggle("Authority", false, (feature) => {
 					return feature.type == "Authority";
 				}),
+				new Filter.Toggle("Morph", false, (feature) => {
+					return feature.type == "Morph";
+				}),
 				new Filter.Toggle("Other", false, (feature) => {
 					return feature.type == "Other";
 				}),

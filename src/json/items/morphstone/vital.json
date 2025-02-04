@@ -1,0 +1,33 @@
+{
+  "name": "Vital Morphstone",
+  "type": "Morph",
+  "description": "Cannot be unequipped while morphed.\n\nAAs an action, morph, restore 20% HP to this unit, and end up to one status condition affecting it.",
+  "requires": "Morph D",
+  "rank": "D",
+  "price": 0,
+  "mttype": "none",
+  "modifiers": {
+    "mt": 0,
+    "prot": 0,
+    "resl": 0,
+    "hit": 0,
+    "avo": 0,
+    "crit": 0,
+    "cravo": 0,
+    "minrng": 0,
+    "maxrng": 0,
+    "tpcost": 0,
+    "spcost": 0,
+    "tp": 0,
+    "sp": 0
+  },
+  "comment": "Incompatible with all Attributes.",
+  "tags": [
+    "no might",
+    "no crit",
+    "no hit",
+    "no stats",
+    "no triangle"
+  ],
+  "hidden": false
+}

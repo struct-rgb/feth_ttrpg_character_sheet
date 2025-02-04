@@ -48892,6 +48892,72 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Quickshift Morphstone",
+      "type": "Morph",
+      "description": "Cannot be unequipped while morphed.\n\nAs a reaction with trigger: once per phase, foe initates combat with this unit.\n\nPay 2 TP to morph.",
+      "requires": "Morph D",
+      "rank": "D",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Vital Morphstone",
+      "type": "Morph",
+      "description": "Cannot be unequipped while morphed.\n\nAAs an action, morph, restore 20% HP to this unit, and end up to one status condition affecting it.",
+      "requires": "Morph D",
+      "rank": "D",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Iron Shield",
       "type": "Other",
       "description": "Deals nonlethal damage. Costs 500G to upgrade from #{item}{Wooden Shield}.",
@@ -48984,9 +49050,42 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Adaptive Morphstone",
+      "type": "Morph",
+      "description": "Cannot be unequipped while morphed.\n\nAs an action or as a reaction when its trigger occurs, use a tactical art that can only be used while morphed while not morphed. (Pay that tactical art’s cost in addition to this item’s.)",
+      "requires": "Morph C",
+      "rank": "C",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Rampage Morphstone",
       "type": "Morph",
-      "description": "Cannot be unequipped while morphed.\n\nMorph and apply @{condition}{Berserk}{[Berserk]} to this unit until one turn after it demorphs.",
+      "description": "Cannot be unequipped while morphed.\n\nAs an action, morph and apply @{condition}{Berserk}{[Berserk]} to this unit until one turn after it demorphs.",
       "requires": "Morph C",
       "rank": "C",
       "price": 0,
@@ -49002,6 +49101,72 @@ const definitions = {
         "minrng": 0,
         "maxrng": 0,
         "tpcost": 4,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Reversion Morphstone",
+      "type": "Morph",
+      "description": "Cannot be unequipped while morphed.\n\nAs a reaction with trigger: once per phase, foe initates combat with this unit.\n\nPay 7 TP to demorph.",
+      "requires": "Morph C",
+      "rank": "C",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 7,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Shroud Morphstone",
+      "type": "Morph",
+      "description": "As an action, morph and apply @{condition}{Seclude}{[Seclude]} to this unit and all units within two spaces for one turn.",
+      "requires": "Morph C",
+      "rank": "C",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 5,
         "spcost": 0,
         "tp": 0,
         "sp": 0
@@ -49105,6 +49270,105 @@ const definitions = {
         "changed",
         "weapon",
         "stone"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Biphasic Morphstone",
+      "type": "Morph",
+      "description": "Cannot be unequipped while morphed.\n\nAs a reaction with trigger: once per phase, foe initates combat with this unit.\n\nPay 2 TP to morph or 7 TP to demorph.",
+      "requires": "Morph B",
+      "rank": "B",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": "ask [Phase?] case [Quickshift] {2} case [Reversion] {7} end",
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Shadow Morphstone",
+      "type": "Morph",
+      "description": "As an action, morph and apply @{condition}{Stealth}{[Stealth]} to this unit until it demorphs; while affected by @{condition}{Stealth}{[Stealth]} this unit cannot initiate combat.",
+      "requires": "Morph B",
+      "rank": "B",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 5,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Zephyr Morphstone",
+      "type": "Morph",
+      "description": "As an action, morph and apply @{condition}{Flow}{[Flow]} to this unit until it demorphs; while affected by @{condition}{Flow}{[Flow]}, this unit cannot make counter attacks.",
+      "requires": "Morph B",
+      "rank": "B",
+      "price": 0,
+      "mttype": "none",
+      "modifiers": {
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 6,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "no might",
+        "no crit",
+        "no hit",
+        "no stats",
+        "no triangle"
       ],
       "hidden": false
     },
