@@ -11,6 +11,9 @@ If any game data is changed, [definitions.js](https://github.com/struct-rgb/feth
 
 ## Changelog
 
+### Verson 4.4.6
+  * Very minor data corrections
+
 ### Version 4.4.5
   * Added missing Morphstone equipment, though they function as implements.
 

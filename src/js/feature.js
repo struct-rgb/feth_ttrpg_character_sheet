@@ -2309,6 +2309,28 @@ class Ability extends Feature {
 
 				Filter.Group.END,
 
+				element("br"), element("strong", "Capacity"), element("br"),
+
+				new Filter.Group(Filter.Group.OR, false),
+
+				new Filter.Toggle("0", false, (feature) => {
+					return feature.modifier("capcost") == 0;
+				}),
+				new Filter.Toggle("2", false, (feature) => {
+					return feature.modifier("capcost") == 2;
+				}),
+				new Filter.Toggle("3", false, (feature) => {
+					return feature.modifier("capcost") == 3;
+				}),
+				new Filter.Toggle("4", false, (feature) => {
+					return feature.modifier("capcost") == 4;
+				}),
+				new Filter.Toggle("6", false, (feature) => {
+					return feature.modifier("capcost") == 6;
+				}),
+
+				Filter.Group.END,
+
 				element("br"), element("strong", "Family"), element("br"),
 
 				new Filter.Group(Filter.Group.OR, false),

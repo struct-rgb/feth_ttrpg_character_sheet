@@ -22,6 +22,7 @@
   },
   "comment": "Items in modifers can either be integers or string expressions",
   "tags": [
+    "no triangle",
     "no hit",
     "no crit",
     "no stats",

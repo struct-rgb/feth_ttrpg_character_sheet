@@ -1,7 +1,7 @@
 {
   "name": "Censure",
   "type": "Faith",
-  "description": "On hit, apply [Censured] to target foe for one turn.",
+  "description": "On hit, apply @{condition}{Censured}{[Censured]} to target foe for one turn.",
   "requires": "Faith C",
   "rank": "C",
   "price": 2150,

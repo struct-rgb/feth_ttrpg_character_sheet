@@ -3378,6 +3378,39 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Beginner's Luck",
+      "description": "If this unit would be reduced to zero HP by an attack during its first combat each battle, that attack misses.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 1
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true
+    },
+    {
       "name": "Beguiling Touch",
       "description": "Grants Res +2 in combat when this unit initiates combat. When this unit targets an ally with an art or item or hits a foe with an attack, this unit may apply @{condition}{Seclude}{[Seclude]} to that unit. This unit may end up to four instances of @{condition}{Seclude}{[Seclude]} of its choice before this application, if it was applied through an attack.",
       "requires": "Innate",
@@ -9098,6 +9131,39 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Head Start",
+      "description": "At the beginning of this unit's first phase each battle, apply [Mov +2] to this unit for one turn. Cannot be equipped alongside other abilities that cost 1 capacity.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 1
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true
+    },
+    {
       "name": "Heartseeker",
       "description": "Adjacent foes have Avo -20 in combat.",
       "requires": "Class Druid",
@@ -9824,7 +9890,7 @@ const definitions = {
       "rows": [
         {
           "when": "not(item|tagged|no_might) * not(item|tagged|no_hit)",
-          "expr": "unit|total|luc + 10 + other|trigger",
+          "expr": "unit|total|lck + 10 + other|trigger",
           "roll": true
         }
       ],
@@ -18742,6 +18808,39 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Warm Up",
+      "description": "The first time this unit would be defeated by lethal damage on the first turn of each battle, that damage becomes nonlethal. Cannot be equipped alongside other abilities that cost 1 capacity.",
+      "requires": "Innate",
+      "modifiers": {
+        "hp": 0,
+        "sp": 0,
+        "str": 0,
+        "mag": 0,
+        "dex": 0,
+        "spd": 0,
+        "def": 0,
+        "res": 0,
+        "lck": 0,
+        "mt": 0,
+        "prot": 0,
+        "resl": 0,
+        "hit": 0,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 0,
+        "maxrng": 0,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "mov": 0,
+        "capcost": 1
+      },
+      "comment": "",
+      "tags": [],
+      "hidden": true
+    },
+    {
       "name": "Wary Fighter",
       "description": "When this unit enters combat with HP ≥ 50%, grants both this unit and foe @{const}{ap}{AP -1} (min 1) for the duration of that combat.",
       "requires": "All (Any (Lances D+) (Bows D+) (Armor D+)) (Level 8)",
@@ -23012,6 +23111,7 @@ const definitions = {
       },
       "comment": "Items in modifers can either be integers or string expressions",
       "tags": [
+        "no triangle",
         "no hit",
         "no crit",
         "no stats",
@@ -42340,6 +42440,37 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Arrow of Indra",
+      "type": "Lances",
+      "description": "A magic lance; deals Effective damage towards Dragon units.",
+      "requires": "Lances A",
+      "rank": "A",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 20,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 0,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "weapon",
+        "template",
+        "CoA"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Black-Sand Steel Lance",
       "type": "Lances",
       "description": "No special effects. Costs 975G to upgrade from #{item}{Silver Lance}.",
@@ -43928,6 +44059,37 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Dragonsbane Gauntlet",
+      "type": "Brawl",
+      "description": "A gauntlet crafted from a Demon's claws. Has the @{attribute}{Mighty} and @{attribute}{Refined} attributes when obtained. Deals Effective damage towards Dragon units.",
+      "requires": "Brawl B",
+      "rank": "B",
+      "price": 1350,
+      "mttype": "else",
+      "modifiers": {
+        "mt": 5,
+        "prot": 0,
+        "resl": 0,
+        "hit": 100,
+        "avo": 0,
+        "crit": 15,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 1,
+        "tpcost": 7,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Items in modifers should be integers",
+      "tags": [
+        "weapon",
+        "template",
+        "CoA"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Roaring Fist Technique",
       "type": "Brawl",
       "rank": "B",
@@ -44455,7 +44617,7 @@ const definitions = {
     {
       "name": "Censure",
       "type": "Faith",
-      "description": "On hit, apply [Censured] to target foe for one turn.",
+      "description": "On hit, apply @{condition}{Censured}{[Censured]} to target foe for one turn.",
       "requires": "Faith C",
       "rank": "C",
       "price": 2150,
@@ -44856,6 +45018,38 @@ const definitions = {
       "comment": "Incompatible with all Attributes.",
       "tags": [
         "weapon"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Barrage of Light",
+      "type": "Faith",
+      "description": "@{const}{ap}{AP = 1}; on hit, deal half damage dealt to target foe to foes within two spaces of target foe.",
+      "requires": "Faith A",
+      "rank": "A",
+      "aoe": "Ring 1-2",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 9,
+        "prot": 0,
+        "resl": 0,
+        "hit": 75,
+        "avo": 0,
+        "crit": 15,
+        "cravo": 0,
+        "minrng": 3,
+        "maxrng": 10,
+        "tpcost": 12,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "weapon",
+        "aoe",
+        "CoA"
       ],
       "hidden": false
     },
@@ -46226,6 +46420,37 @@ const definitions = {
       "hidden": false
     },
     {
+      "name": "Pyrsós",
+      "type": "Reason",
+      "description": "An ancient-looking fire spell. No special effects.",
+      "requires": "Reason C",
+      "rank": "C",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 9,
+        "prot": 0,
+        "resl": 0,
+        "hit": 90,
+        "avo": 0,
+        "crit": 5,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 2,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes except Refined.",
+      "tags": [
+        "weapon",
+        "fire",
+        "CoA"
+      ],
+      "hidden": false
+    },
+    {
       "name": "Sagittae",
       "type": "Reason",
       "description": "A force spell; no special effects.",
@@ -46524,6 +46749,37 @@ const definitions = {
       "tags": [
         "weapon",
         "wind"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "Drakoktónos",
+      "type": "Reason",
+      "description": "A fire spell; deals Effective damage towards Dragon units.",
+      "requires": "Reason A",
+      "rank": "A",
+      "price": 0,
+      "mttype": "mag",
+      "modifiers": {
+        "mt": 15,
+        "prot": 0,
+        "resl": 0,
+        "hit": 80,
+        "avo": 0,
+        "crit": 0,
+        "cravo": 0,
+        "minrng": 1,
+        "maxrng": 2,
+        "tpcost": 9,
+        "spcost": 0,
+        "tp": 0,
+        "sp": 0
+      },
+      "comment": "Incompatible with all Attributes.",
+      "tags": [
+        "weapon",
+        "fire",
+        "CoA"
       ],
       "hidden": false
     },
